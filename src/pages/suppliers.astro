@@ -1,22 +1,32 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import type {Supplier} from "../types/supplier"
 
-export const prerender = true;
+export interface Supplier {
+  id: string;
+  name: string;
+  description: string;
+  logo_image: string;
+  marketing_image: string;
+  social_facebook: string;
+  social_instagram: string;
+  social_linkedin: string;
+  social_twitter: string;
+  social_youtube: string;
+  social_website: string;
+}
+
 
 const response = await fetch('http://localhost:4321/api/suppliers', {
-    method: 'POST',
+    method: 'GET',
     headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
     }
 })
 
-console.log(response);
+
 
 const suppliers = await response.json();
-
-console.log(suppliers)
 ---
 
 <Layout title="Suppliers">
