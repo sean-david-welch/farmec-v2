@@ -1,16 +1,16 @@
-import type { SSTConfig } from "sst";
-import { AstroSite } from "sst/constructs";
+import type { SSTConfig } from 'sst';
+import { AstroSite } from 'sst/constructs';
 
 export default {
-  config(_input) {
+  config(_input: any) {
     return {
-      name: "farmec-astro",
-      region: "us-east-1",
+      name: 'farmec-astro',
+      region: 'eu-west-1',
     };
   },
-  stacks(app) {
-    app.stack(function Site({ stack }) {
-      const site = new AstroSite(stack, "site");
+  stacks(app: any) {
+    app.stack(function Site({ stack }: any) {
+      const site = new AstroSite(stack, 'site');
       stack.addOutputs({
         url: site.url,
       });

@@ -1,5 +1,5 @@
 {
-  "name": "Farmec",
+  "name": "farmec",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
@@ -16,13 +16,15 @@
     "@astrojs/solid-js": "^3.0.2",
     "@astrojs/tailwind": "^5.0.2",
     "astro": "^3.1.0",
+    "pg": "^8.11.3",
     "solid-js": "^1.8.4",
     "tailwindcss": "^3.3.5"
   },
   "devDependencies": {
-    "sst": "^2.32.2",
+    "@types/pg": "^8.10.7",
+    "astro-sst": "^2.32.2",
     "aws-cdk-lib": "2.101.1",
     "constructs": "10.2.69",
-    "astro-sst": "^2.32.2"
+    "sst": "^2.32.2"
   }
 }
