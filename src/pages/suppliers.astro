@@ -1,0 +1,31 @@
+---
+import Layout from "../layouts/Layout.astro";
+import type {Supplier} from "../types/supplier"
+
+export const prerender = true;
+
+const response = await fetch('http://localhost:4321/api/suppliers', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+    }
+})
+
+console.log(response);
+
+const suppliers = await response.json();
+
+console.log(suppliers)
+---
+
+<Layout title="Suppliers">
+    <h1>Suppliers</h1>
+    <ul>
+        {suppliers.map((supplier: Supplier) => (
+            <li>
+                {supplier.name}             
+            </li>
+        ))}
+    </ul>
+</Layout>
