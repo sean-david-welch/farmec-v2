@@ -15,6 +15,7 @@ export interface Supplier {
   social_website: string;
 }
 
+export const prerender = true
 
 const response = await fetch('http://localhost:4321/api/suppliers', {
     method: 'GET',
