@@ -1,19 +1,7 @@
 ---
-import Layout from "../layouts/Layout.astro";
+import Layout from "../../layouts/Layout.astro";
+import type Supplier from "../../types/supplier"
 
-export interface Supplier {
-  id: string;
-  name: string;
-  description: string;
-  logo_image: string;
-  marketing_image: string;
-  social_facebook: string;
-  social_instagram: string;
-  social_linkedin: string;
-  social_twitter: string;
-  social_youtube: string;
-  social_website: string;
-}
 
 export const prerender = true
 
@@ -25,8 +13,6 @@ const response = await fetch('http://localhost:4321/api/suppliers', {
     }
 })
 
-
-
 const suppliers = await response.json();
 ---
 
@@ -34,9 +20,9 @@ const suppliers = await response.json();
     <h1>Suppliers</h1>
     <ul>
         {suppliers.map((supplier: Supplier) => (
-            <li>
+            <a href={`suppliers/${supplier.id}`}>
                 {supplier.name}             
-            </li>
+            </a>
         ))}
     </ul>
 </Layout>

@@ -1,0 +1,22 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import type Supplier from '../../types/supplier'
+
+const { id } = Astro.params;
+
+const response = await fetch(`http://localhost:4321/api/suppliers/${id}`, {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+    }
+});
+
+
+const supplier: Supplier[] = await response.json();
+const supplierData = supplier.length > 0 ? supplier[0] : null;
+---
+
+<Layout title={`Farmec | ${supplierData?.name}` || 'Farmec'}>
+    <h1>{supplierData ? supplierData.name : 'Supplier Not Found'}</h1>
+</Layout>
