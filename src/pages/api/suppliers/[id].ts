@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { pool } from '../../../../database/connection';
+import { pool } from '../../../database/connection';
 
 export const GET: APIRoute = async ({ params }): Promise<Response> => {
   const client = await pool.connect();
