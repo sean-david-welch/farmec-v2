@@ -1,0 +1,59 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  @apply scroll-smooth overflow-x-hidden max-w-full h-screen;
+}
+
+html::-webkit-scrollbar {
+  width: 0.3vw;
+}
+
+html::-webkit-scrollbar-thumb {
+  @apply bg-gray-900 rounded-lg;
+}
+
+html::-webkit-scrollbar-track {
+  @apply bg-zinc-900;
+}
+
+dialog::-webkit-scrollbar {
+  width: 0.01vw;
+}
+
+dialog::-webkit-scrollbar-thumb {
+  @apply bg-gray-900 rounded-lg;
+}
+
+dialog::-webkit-scrollbar-track {
+  @apply bg-zinc-900;
+}
+
+body {
+  background-image: linear-gradient(
+    to bottom,
+    rgb(227, 227, 227) 0%,
+    rgb(206, 206, 206) 50%,
+    rgb(201, 201, 201) 100%
+  );
+  color: rgb(233, 233, 233);
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 100vh;
+}
+
+.toTopButton {
+  @apply fixed bottom-5 right-5 cursor-pointer px-3 py-5 rounded-full bg-gray-800 border-2 border-zinc-800 transition-all duration-300 ease-in-out z-30;
+}
+
+.toTopButton:hover,
+.toTopButton:hover svg path {
+  @apply bg-zinc-700 fill-indigo-800 border-2 border-indigo-800;
+}
+
+.toTopButton svg path {
+  @apply fill-indigo-800;
+}
