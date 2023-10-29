@@ -1,10 +1,29 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import type Supplier from '../../types/supplier'
+import type Machine from '../../types/machine'
+
+export const prerender = true
+
+export async function getStaticPaths() {
+  const response = await fetch('http://localhost:4321/api/suppliers').then(response => response.json());
+
+
+  const paths = response.map((supplier: Supplier) => {
+        return { 
+            params: { id: supplier.id },
+            props: { supplier }
+        };
+    });
+
+  return paths;
+}
 
 const { id } = Astro.params;
+const {supplier } = Astro.props;
 
-const response = await fetch(`http://localhost:4321/api/suppliers/${id}`, {
+
+const machines = await fetch(`http://localhost:4321/api/machines/${id}`, {
     method: 'GET',
     headers: {
         'Content-Type': 'application/json',
@@ -12,11 +31,17 @@ const response = await fetch(`http://localhost:4321/api/suppliers/${id}`, {
     }
 });
 
-
-const supplier: Supplier[] = await response.json();
-const supplierData = supplier.length > 0 ? supplier[0] : null;
+const machineData: Machine[] =  await machines.json();
 ---
 
-<Layout title={`Farmec | ${supplierData?.name}` || 'Farmec'}>
-    <h1>{supplierData ? supplierData.name : 'Supplier Not Found'}</h1>
+<Layout title={`Farmec | ${supplier.name}` || 'Farmec'}>
+    <h1>{supplier.name || 'Supplier Not Found'}</h1>
+
+    <ul>
+        {machineData.map((machine: Machine) => (
+            <a href={`machines/${machine.id}`}>
+                {machine.name}             
+            </a>    
+        ))}
+    </ul>
 </Layout>
