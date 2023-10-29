@@ -20,7 +20,7 @@ export async function getStaticPaths() {
 }
 
 const { id } = Astro.params;
-const {supplier } = Astro.props;
+const { supplier } = Astro.props;
 
 
 const machines = await fetch(`http://localhost:4321/api/machines/${id}`, {
@@ -36,6 +36,7 @@ const machineData: Machine[] =  await machines.json();
 
 <Layout title={`Farmec | ${supplier.name}` || 'Farmec'}>
     <h1>{supplier.name || 'Supplier Not Found'}</h1>
+    <img src={supplier.marketing_image} alt={supplier.name}>
 
     <ul>
         {machineData.map((machine: Machine) => (
