@@ -33,12 +33,12 @@ export const PUT: APIRoute = async ({ request, params }): Promise<Response> => {
   try {
     const data = await request.json();
 
-    const sql = `UPDATE Machine SET
-    supplierId = $2,
+    const sql = `UPDATE Product SET
+    machineId = $2,
     name = $3,
-    machine_image = $4,
+    product_image = $4,
     description = $5,
-    machine_link = $6,
+    product_link = $6,
     WHERE id = $1
     RETURNING *;`;
 
@@ -46,9 +46,9 @@ export const PUT: APIRoute = async ({ request, params }): Promise<Response> => {
       id,
       data.supplierId,
       data.name,
-      data.machine_image,
+      data.product_image,
       data.description,
-      data.machine_link,
+      data.product_link,
     ];
 
     const result = await client.query(sql, values);
@@ -59,7 +59,7 @@ export const PUT: APIRoute = async ({ request, params }): Promise<Response> => {
       });
     } else {
       return new Response(
-        JSON.stringify({ error: 'Machine not found or no changes made' }),
+        JSON.stringify({ error: 'Product not found or no changes made' }),
         {
           status: 404,
           headers: { 'Content-Type': 'application/json' },
@@ -83,13 +83,13 @@ export const DELETE: APIRoute = async ({ params }): Promise<Response> => {
 
   try {
     const query = await client.query(
-      'DELETE FROM Machine WHERE id = $1 RETURNING *;',
+      'DELETE FROM Product WHERE id = $1 RETURNING *;',
       [id]
     );
 
     if (query.rowCount === 0) {
       return new Response(
-        JSON.stringify({ message: 'No Machine found with that ID.' }),
+        JSON.stringify({ message: 'No Product found with that ID.' }),
         {
           status: 404,
           headers: { 'Content-Type': 'application/json' },
@@ -98,7 +98,7 @@ export const DELETE: APIRoute = async ({ params }): Promise<Response> => {
     }
 
     return new Response(
-      JSON.stringify({ message: 'Machine deleted successfully.' }),
+      JSON.stringify({ message: 'Product deleted successfully.' }),
       {
         status: 200,
         headers: { 'Content-Type': 'application/json' },

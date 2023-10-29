@@ -7,7 +7,7 @@ export const GET: APIRoute = async ({ params }): Promise<Response> => {
   const client = await pool.connect();
 
   try {
-    const query = await client.query('select * from "Machine"');
+    const query = await client.query('select * from "Product"');
     return new Response(JSON.stringify(query.rows), {
       headers: {
         'Content-Type': 'application/json',
@@ -31,14 +31,14 @@ export const POST: APIRoute = async ({ request }): Promise<Response> => {
     const data = await request.json();
     const uuid = uuidv4();
 
-    const sql = `INSERT INTO Machine(id, supplierId, name, machine_image, description, machine_link)
+    const sql = `INSERT INTO Product(id, machineId,  name, product_image, description, product_link)
     VALUES($1, $2, $3, $4, $5, $6)
     RETURNING *;
     `;
 
     const values = [
       uuid,
-      data.supplierId,
+      data.machineId,
       data.name,
       data.machine_image,
       data.description,
