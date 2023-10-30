@@ -1,7 +1,10 @@
 ---
-import Layout from "../layouts/Layout.astro";
 import type Supplier from "../types/supplier"
 
+import styles from './suppliers/styles/Suppliers.module.css'
+import Layout from "../layouts/Layout.astro";
+
+import { Image } from "astro:assets";
 
 export const prerender = true
 
@@ -17,12 +20,44 @@ const suppliers = await response.json();
 ---
 
 <Layout title="Suppliers">
-    <h1>Suppliers</h1>
-    <ul>
-        {suppliers.map((supplier: Supplier) => (
-            <a href={`suppliers/${supplier.id}`}>
-                {supplier.name}             
-            </a>
-        ))}
-    </ul>
+    {suppliers.map((supplier: Supplier) => (
+        <div
+            class={styles.supplierCard}
+            id={supplier.name}>
+            <div class={styles.supplierGrid}>
+                <div class={styles.supplierHead}>
+                    <h1 class={styles.mainHeading}>
+                        {supplier.name}
+                    </h1>
+                    <Image
+                        src={supplier.logo_image || '/default.jpg'}
+                        alt={'/default.jpg'}
+                        class={styles.supplierLogo}
+                        width={200}
+                        height={200}
+                    />
+
+
+                </div>
+                <Image
+                    src={supplier.marketing_image || '/default.jpg'}
+                    alt={'/default.jpg'}
+                    class={styles.supplierImage}
+                    width={550}
+                    height={550}
+                />
+            </div>
+
+            <div class={styles.supplierInfo}>
+                <p class={styles.supplierDescription}>
+                    {supplier.description}
+                </p>
+                <button class={styles.btn}>
+                    <a href={`/suppliers/${supplier.id}`}>
+                        Learn More
+                    </a>
+                </button>
+            </div>
+        </div>
+    ))}
 </Layout>

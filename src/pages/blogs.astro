@@ -1,0 +1,28 @@
+---
+import Layout from "../layouts/Layout.astro";
+import type Blog from "../types/blog"
+
+export const prerender = true
+
+const response = await fetch('http://localhost:4321/api/blogs', {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+    }
+})
+
+const blogs = await response.json();
+---
+
+<Layout title="Blogs">
+    <h1>Blogs</h1>
+    <ul>
+        {blogs.map((blog: Blog) => (
+            <a href={`blogs/${blog.id}`}>
+                {blog.title}             
+            </a>
+        ))}
+    </ul>
+</Layout>
+---
