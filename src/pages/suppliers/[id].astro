@@ -1,5 +1,6 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+
 import type Supplier from '../../types/supplier'
 import type Machine from '../../types/machine'
 
@@ -8,30 +9,26 @@ export const prerender = true
 export async function getStaticPaths() {
   const response = await fetch('http://localhost:4321/api/suppliers').then(response => response.json());
 
-
-  const paths = response.map((supplier: Supplier) => {
+  return response.map((supplier: Supplier) => {
         return { 
             params: { id: supplier.id },
             props: { supplier }
         };
     });
-
-  return paths;
 }
 
 const { id } = Astro.params;
-const { supplier } = Astro.props;
+const { supplier } = Astro.props as { supplier: Supplier };
 
 
-const machines = await fetch(`http://localhost:4321/api/machines/${id}`, {
+const machines: Machine[] = await fetch(`http://localhost:4321/api/machines/${id}`, {
     method: 'GET',
     headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
     }
-});
+}).then(response => response.json());
 
-const machineData: Machine[] =  await machines.json();
 ---
 
 <Layout title={`Farmec | ${supplier.name}` || 'Farmec'}>
@@ -39,8 +36,8 @@ const machineData: Machine[] =  await machines.json();
     <img src={supplier.marketing_image} alt={supplier.name}>
 
     <ul>
-        {machineData.map((machine: Machine) => (
-            <a href={`machines/${machine.id}`}>
+        {machines.map((machine: Machine) => (
+            <a href={`/machines/${machine.id}`}>
                 {machine.name}             
             </a>    
         ))}

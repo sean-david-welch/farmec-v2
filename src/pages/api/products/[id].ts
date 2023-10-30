@@ -7,7 +7,7 @@ export const GET: APIRoute = async ({ params }) => {
 
   try {
     const query = await client.query(
-      'SELECT * FROM "Machine" WHERE "supplierId" = $1;',
+      'SELECT * FROM "Product" WHERE "machineId" = $1;',
       [id]
     );
     return new Response(JSON.stringify(query.rows), {

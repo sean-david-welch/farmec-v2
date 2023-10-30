@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "@types/pg": "^8.10.7",
+    "@types/uuid": "^9.0.6",
     "astro-sst": "^2.32.2",
     "aws-cdk-lib": "2.101.1",
     "constructs": "10.2.69",

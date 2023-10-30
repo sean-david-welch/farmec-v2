@@ -1,0 +1,41 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+import type Machine from '../../types/machine'
+import type Product from '../../types/product'
+
+export const prerender = true
+
+export async function getStaticPaths() {
+  const response = await fetch('http://localhost:4321/api/machines').then(response => response.json());
+
+  return response.map((machine: Machine) => {
+        return { 
+            params: { id: machine.id },
+            props: { machine }
+        };
+    });
+}
+
+const { id } = Astro.params;
+const { machine } = Astro.props as { machine: Machine };
+
+const products: Product[] = await fetch(`http://localhost:4321/api/products/${id}`, {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+    }
+}).then(response => response.json());
+---
+
+
+<Layout title={`Farmec | ${machine.name}` || 'Farmec'}>
+    <h1>{machine.name || 'Supplier Not Found'}</h1>
+
+    <ul>
+        {products.map((product: Product) => (
+            <h1>{product.name}</h1>
+        ))}
+    </ul>
+</Layout>

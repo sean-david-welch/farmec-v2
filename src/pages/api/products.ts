@@ -7,7 +7,7 @@ export const GET: APIRoute = async ({ params }): Promise<Response> => {
   const client = await pool.connect();
 
   try {
-    const query = await client.query('select * from "Product"');
+    const query = await client.query('select * from "Product";');
     return new Response(JSON.stringify(query.rows), {
       headers: {
         'Content-Type': 'application/json',
