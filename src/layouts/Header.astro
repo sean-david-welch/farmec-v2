@@ -1,4 +1,7 @@
 ---
+import styles from './styles/Header.module.css'
+import { Image } from "astro:assets";
+
 import type Supplier from "../types/supplier"
 
 export const prerender = true
@@ -15,7 +18,50 @@ const suppliers: Supplier[] = await response.json();
 ---
 
 <nav>
-    <ul>
-        <li><a href="/suppliers">Suppliers</a></li>
-    </ul>
+    <ul className={styles.navList}>
+        <a href='/' aria-label="logo button">
+            <Image src="https://res.cloudinary.com/dgpquyhuy/image/upload/v1691492819/farmeclogo.png" alt="Logo" width="50" height="50"/>
+        </a>
+            <ul link={'/about'} title="About Us">
+                <li className={styles.navDropItem}>
+                    <a href='/about'>Staff & Management</a>
+                </li>
+                <li className={styles.navDropItem}>
+                    <a href='/about#timeline'>Company History</a>
+                </li>
+                <li className={styles.navDropItem}>
+                    <a href='/about/policies'>Terms of Use</a>
+                </li>
+            </ul>
+
+            <ul link={'/suppliers'} title="Suppliers">
+                {suppliers?.map(supplier => (
+                    <li key={supplier.id} className={styles.navDropItem}>
+                        <a href={`/suppliers/${supplier.id}`}>
+                            {supplier.name}
+                        </a>
+                    </li>
+                ))}
+            </ul>
+
+            <ul link={'/spareparts'} title="Spare Parts">
+                {suppliers?.map(supplier => (
+                    <li key={supplier.id} className={styles.navDropItem}>
+                        <a href={`/spareparts/${supplier.id}`}>
+                            {supplier.name}
+                        </a>
+                    </li>
+                ))}
+            </ul>
+
+            <ul link="/blog" title="Blog">
+                <li className={styles.navDropItem}>
+                    <a href='/blog'>Latest Posts</a>
+                </li>
+                <li className={styles.navDropItem}>
+                    <a href='/blog/exhibitions'>
+                        Exhibition Information
+                    </a>
+                </li>
+            </ul>
 </nav>
