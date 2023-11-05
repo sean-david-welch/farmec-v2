@@ -21,12 +21,12 @@ const suppliers: Supplier[] = await response.json();
 ---
 
 <Layout title="Suppliers">
-    <h1 className={utils.sectionHeading}>Suppliers</h1>
+    <h1 class={utils.sectionHeading}>Suppliers</h1>
 
     <div class={utils.index}>
         <h1 class={utils.indexHeading}>Suppliers</h1>
         {suppliers.map(link => (
-            <a href={`suppliers/#${link.name}`}>
+            <a href={`#${link.name}`}>
                 <h1 class="indexItem">{link.name}</h1>
             </a>
         ))}

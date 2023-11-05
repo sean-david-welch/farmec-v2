@@ -1,7 +1,7 @@
 import { pool } from '../../database/connection';
-import type { APIRoute } from 'astro';
-
 import { v4 as uuidv4 } from 'uuid';
+
+import type { APIRoute } from 'astro';
 
 export const GET: APIRoute = async ({ params }): Promise<Response> => {
   const client = await pool.connect();

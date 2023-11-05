@@ -25,7 +25,7 @@ const suppliers: Supplier[] = await response.json();
     <ul class={styles.navList}>
 
         <li class={styles.navItem}>
-            <a href='/about' styles={styles.navListItem}>About Us</a>
+            <a href='/about' style={styles.navListItem}>About Us</a>
             <ul class={styles.navDrop}>
                 <li class={styles.navDropItem}>
                     <a href='/about'>Staff & Management</a>
@@ -40,10 +40,10 @@ const suppliers: Supplier[] = await response.json();
         </li>
 
         <li class={styles.navItem}>
-            <a href='/suppliers' styles={styles.navListItem}>Suppliers</a>
+            <a href='/suppliers' style={styles.navListItem}>Suppliers</a>
             <ul class={styles.navDrop}>
                 {suppliers?.map(supplier => (
-                    <li key={supplier.id} class={styles.navDropItem}>
+                    <li class={styles.navDropItem}>
                         <a href={`/suppliers/${supplier.id}`}>
                             {supplier.name}
                         </a>
@@ -53,10 +53,10 @@ const suppliers: Supplier[] = await response.json();
         </li>
 
         <li class={styles.navItem}>
-            <a href='/spareparts' styles={styles.navListItem}>Spareparts</a>
+            <a href='/spareparts' style={styles.navListItem}>Spareparts</a>
             <ul class={styles.navDrop}>
                 {suppliers?.map(supplier => (
-                    <li key={supplier.id} class={styles.navDropItem}>
+                    <li class={styles.navDropItem}>
                         <a href={`/spareparts/${supplier.id}`}>
                             {supplier.name}
                         </a>
@@ -66,7 +66,7 @@ const suppliers: Supplier[] = await response.json();
         </li>
 
         <li class={styles.navItem}>
-            <a href='/about' styles={styles.navListItem}>Blog</a>
+            <a href='/about' style={styles.navListItem}>Blog</a>
             <ul class={styles.navDrop}>
                 <li class={styles.navDropItem}>
                     <a href='/blog'>Latest Posts</a>
@@ -80,7 +80,7 @@ const suppliers: Supplier[] = await response.json();
         </li>
         
         <li class={styles.navItem}>
-            <a href='/#contact' styles={styles.navListItem}>Contact</a>
+            <a href='/#contact' style={styles.navListItem}>Contact</a>
         </li>
 
     </ul>

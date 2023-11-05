@@ -1,8 +1,15 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 
+import styles from '../../styles/Suppliers.module.css'
+import utils from '../../styles/Utils.module.css'
+
 import type Supplier from '../../types/supplier'
 import type Machine from '../../types/machine'
+
+import Machines from "../../components/server/machines.astro";
+
+import { Image } from "astro:assets";
 
 export const prerender = true
 
@@ -32,14 +39,43 @@ const machines: Machine[] = await fetch(`http://localhost:4321/api/machines/${id
 ---
 
 <Layout title={`Farmec | ${supplier.name}` || 'Farmec'}>
-    <h1>{supplier.name || 'Supplier Not Found'}</h1>
-    <img src={supplier.marketing_image} alt={supplier.name}>
+    <section id="supplierDetail">
+        <div class={styles.supplierHeading}>
+            <h1 class={utils.sectionHeading}>{supplier.name}</h1>
 
-    <ul>
-        {machines.map((machine: Machine) => (
-            <a href={`/machines/${machine.id}`}>
-                {machine.name}             
-            </a>    
-        ))}
-    </ul>
+            <!-- <SocialLinks
+                facebook={social_facebook}
+                twitter={social_twitter}
+                instagram={social_instagram}
+                linkedin={social_linkedin}
+                website={social_website}
+                youtube={social_youtube}
+            /> -->
+        </div>
+
+        <div class={utils.index}>
+            <h1 class={utils.indexHeading}>Suppliers</h1>
+            {machines.map(link => (
+                <a href={`#${link.name}`}>
+                    <h1 class="indexItem">{link.name}</h1>
+                </a>
+            ))}
+        </div>
+
+        <div class={styles.supplierDetail}>
+            <Image
+                src={supplier.marketing_image ?? '/default.jpg'}
+                alt={'/dafault.jpg'}
+                class={styles.supplierImage}
+                width={750}
+                height={750}
+            />
+
+            <p class={styles.supplierDescription}>{supplier.description}</p>
+
+        </div>
+
+        <Machines machines={machines} />
+        <!-- <Videos supplier={supplier} /> -->
+    </section>
 </Layout>
