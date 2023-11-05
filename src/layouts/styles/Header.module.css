@@ -24,7 +24,8 @@
 }
 
 .navItem {
-  @apply grid grid-cols-1 relative font-bold text-lg z-10;
+  @apply grid grid-cols-1 relative;
+  @apply font-bold text-lg z-10;
 }
 
 .navListItem {
@@ -49,7 +50,7 @@
   @apply transform;
 }
 
-.navDropActive {
+.navItem:hover .navDrop {
   @apply opacity-100;
   @apply visible;
 }

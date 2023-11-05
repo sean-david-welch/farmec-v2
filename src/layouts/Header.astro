@@ -1,7 +1,7 @@
 ---
-import styles from './styles/Header.module.css'
 import { Image } from "astro:assets";
 
+import styles from './styles/Header.module.css'
 import type Supplier from "../types/supplier"
 
 export const prerender = true
@@ -17,51 +17,71 @@ const response = await fetch('http://localhost:4321/api/suppliers', {
 const suppliers: Supplier[] = await response.json();
 ---
 
-<nav>
-    <ul className={styles.navList}>
-        <a href='/' aria-label="logo button">
-            <Image src="https://res.cloudinary.com/dgpquyhuy/image/upload/v1691492819/farmeclogo.png" alt="Logo" width="50" height="50"/>
-        </a>
-            <ul link={'/about'} title="About Us">
-                <li className={styles.navDropItem}>
+<nav class={styles.navbar}>
+    <a href='/' aria-label="logo button">
+        <Image src="https://res.cloudinary.com/dgpquyhuy/image/upload/v1691492819/farmeclogo.png" alt="Logo" width="250" height="250"/>
+    </a>
+
+    <ul class={styles.navList}>
+
+        <li class={styles.navItem}>
+            <a href='/about' styles={styles.navListItem}>About Us</a>
+            <ul class={styles.navDrop}>
+                <li class={styles.navDropItem}>
                     <a href='/about'>Staff & Management</a>
                 </li>
-                <li className={styles.navDropItem}>
+                <li class={styles.navDropItem}>
                     <a href='/about#timeline'>Company History</a>
                 </li>
-                <li className={styles.navDropItem}>
+                <li class={styles.navDropItem}>
                     <a href='/about/policies'>Terms of Use</a>
                 </li>
             </ul>
+        </li>
 
-            <ul link={'/suppliers'} title="Suppliers">
+        <li class={styles.navItem}>
+            <a href='/suppliers' styles={styles.navListItem}>Suppliers</a>
+            <ul class={styles.navDrop}>
                 {suppliers?.map(supplier => (
-                    <li key={supplier.id} className={styles.navDropItem}>
+                    <li key={supplier.id} class={styles.navDropItem}>
                         <a href={`/suppliers/${supplier.id}`}>
                             {supplier.name}
                         </a>
                     </li>
                 ))}
             </ul>
+        </li>
 
-            <ul link={'/spareparts'} title="Spare Parts">
+        <li class={styles.navItem}>
+            <a href='/spareparts' styles={styles.navListItem}>Spareparts</a>
+            <ul class={styles.navDrop}>
                 {suppliers?.map(supplier => (
-                    <li key={supplier.id} className={styles.navDropItem}>
+                    <li key={supplier.id} class={styles.navDropItem}>
                         <a href={`/spareparts/${supplier.id}`}>
                             {supplier.name}
                         </a>
                     </li>
                 ))}
             </ul>
+        </li>
 
-            <ul link="/blog" title="Blog">
-                <li className={styles.navDropItem}>
+        <li class={styles.navItem}>
+            <a href='/about' styles={styles.navListItem}>Blog</a>
+            <ul class={styles.navDrop}>
+                <li class={styles.navDropItem}>
                     <a href='/blog'>Latest Posts</a>
                 </li>
-                <li className={styles.navDropItem}>
+                <li class={styles.navDropItem}>
                     <a href='/blog/exhibitions'>
                         Exhibition Information
                     </a>
                 </li>
             </ul>
+        </li>
+        
+        <li class={styles.navItem}>
+            <a href='/#contact' styles={styles.navListItem}>Contact</a>
+        </li>
+
+    </ul>
 </nav>
