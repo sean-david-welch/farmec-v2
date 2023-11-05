@@ -1,4 +1,6 @@
 ---
+import utils from '../styles/Utils.module.css'
+
 import Header from './Header.astro';
 import Footer from './Footer.astro'
 
@@ -16,16 +18,18 @@ const { title } = Astro.props;
 		<meta name="description" content="Astro description" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link href="../styles/globals.css" rel="stylesheet" />
+		<link href="/styles/globals.css" rel="stylesheet" />
 
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
 	<body>
 		<Header/>
-		<main>
-			<slot />
-		</main>
+			<main class="max-w-full overflow-x-hidden mx-auto">
+				<div class={utils.container}>
+					<slot />
+				</div>
+			</main>
 		<Footer/>
 	</body>
 </html>

@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 * {
   margin: 0;
   padding: 0;
@@ -38,10 +42,5 @@ dialog::-webkit-scrollbar-track {
 }
 
 body {
-  background-image: linear-gradient(
-    to bottom,
-    #e3e3e3 0%,
-    #cecece 50%,
-    #c9c9c9 100%
-  );
+  background-color: #c7cdd5;
 }

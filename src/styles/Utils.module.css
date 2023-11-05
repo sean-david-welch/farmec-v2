@@ -1,0 +1,301 @@
+/* Misc */
+.container {
+  @apply mx-auto min-h-screen text-center max-w-full overflow-x-hidden my-28;
+}
+
+.home {
+  @apply flex flex-col justify-center text-center items-center text-gray-800;
+}
+
+.sectionHeading {
+  @apply my-5;
+  @apply text-3xl font-semibold mx-auto;
+  @apply text-zinc-900 underline decoration-red-600 decoration-4 underline-offset-8;
+}
+
+.mainHeading {
+  @apply text-2xl font-semibold underline mx-auto;
+}
+
+.subHeading {
+  @apply text-xl mx-40 font-medium text-zinc-800 text-center my-2;
+  @apply md:mx-5;
+}
+
+.paragraph {
+  @apply text-xl mx-auto font-medium;
+}
+
+.aboutHeading {
+  @apply mx-44;
+  @apply md:mx-2;
+}
+
+.typewriter {
+  @apply absolute z-10;
+  @apply text-gray-300 font-bold text-4xl py-2;
+  @apply h-[15vh] w-[70vw];
+  @apply left-1/2 bottom-5;
+  @apply transform translate-x-[-50%];
+  @apply md:text-xl;
+}
+
+.typewriterSkeleton {
+  @apply absolute z-10 py-5;
+  @apply left-1/2 bottom-5;
+  @apply h-[15vh] w-[70vw] invisible;
+  @apply transform translate-x-[-50%];
+  @apply md:text-xl;
+}
+/* Forms */
+.form {
+  @apply flex flex-col bg-zinc-800 text-center p-10;
+}
+
+.form > * {
+  @apply my-4;
+}
+
+.form label {
+  @apply my-2 block text-lg font-medium text-gray-900 dark:text-white;
+}
+
+.form textarea,
+.form input,
+.form select {
+  @apply block w-2/3 rounded-lg border border-gray-300 bg-zinc-600 p-2.5 text-sm text-gray-900 mx-auto;
+  @apply border-zinc-600 bg-zinc-700 text-white placeholder-gray-400 focus:border-red-700 focus:ring-red-700;
+}
+
+.form .btn {
+  @apply mt-4;
+}
+
+/* Buttons */
+.btn {
+  @apply mx-auto my-2 bg-red-700 hover:bg-red-600;
+  @apply flex flex-row items-center justify-center rounded-xl;
+  @apply px-8 py-2 text-center text-base font-semibold whitespace-nowrap;
+  @apply transition-all duration-700 ease-in-out;
+}
+
+.btn:hover {
+  @apply boxshadow;
+}
+
+.boxshadow {
+  box-shadow: 0 0 0 2px rgba(200, 1, 1, 0.5), 0 0 0 3px rgba(200, 1, 1, 0.5),
+    0 0 0 4px rgba(200, 1, 1, 0.5), 0 0 0 5px rgba(200, 1, 1, 0.5);
+}
+
+.btn svg {
+  @apply w-4 h-4 mx-1 whitespace-nowrap;
+}
+
+.btnForm {
+  @apply btn mx-auto pb-4 text-zinc-100;
+}
+
+.btnFooter {
+  @apply btn w-[150px];
+}
+
+.updateIcon {
+  @apply w-4 h-4 mx-2;
+}
+
+.optionsBtn {
+  @apply mx-auto flex flex-row justify-center;
+}
+
+.optionsBtn > * {
+  @apply mx-2;
+}
+
+.signIn {
+  @apply flex flex-row text-base justify-center;
+  @apply md:my-5 md:mx-auto md:text-xl;
+}
+
+.profileImage {
+  @apply mx-2 my-2 rounded-lg h-[40px] w-[40px];
+}
+
+.imageBlank {
+  @apply profileImage h-[48px] w-[32px];
+  @apply invisible;
+}
+
+.signInButton {
+  @apply btn text-gray-200;
+  @apply md:my-5 md:mx-auto md:text-xl;
+}
+
+.signOutButton {
+  @apply btn text-gray-200;
+  @apply md:my-5 md:mx-auto md:text-xl;
+}
+
+/* Mics */
+.ftmta {
+  @apply transition-all duration-700 ease-in-out;
+}
+
+.ftmta:hover {
+  @apply transform scale-[1.0125];
+}
+
+.login {
+  @apply flex flex-col items-center mx-auto;
+}
+
+.dialog {
+  @apply w-[85vw] max-h-[90vh];
+  @apply top-1/2 left-1/2 fixed z-50;
+  @apply bg-zinc-900 text-gray-200 rounded-2xl shadow-lg;
+  @apply border-4 border-zinc-600;
+  @apply transform -translate-x-1/2 -translate-y-1/2;
+  @apply transition-all duration-700 ease-in-out;
+  @apply opacity-0;
+}
+
+.dialogVisible {
+  @apply opacity-100;
+}
+
+.dialogBtn {
+  @apply fixed top-5 left-5 cursor-pointer px-3 py-2;
+  @apply rounded-full bg-zinc-800 border-2 border-zinc-800;
+  @apply transition-all duration-300 ease-in-out z-30;
+}
+
+.dialogBtn:hover {
+  @apply border-2 border-red-700;
+}
+
+.dialogBtn svg {
+  @apply w-4 h-4;
+}
+
+/* index */
+.index {
+  @apply flex flex-col items-start;
+  @apply p-5;
+  @apply bg-zinc-800 text-gray-200;
+  @apply mx-52 rounded-xl border-4 border-zinc-600 my-5;
+  @apply md:mx-5;
+}
+
+.accountIndex {
+  @apply index;
+  @apply mx-16;
+  @apply md:mx-5;
+}
+
+.index > * {
+  @apply my-2;
+}
+
+.indexHeading {
+  @apply my-5;
+  @apply text-xl font-medium;
+  @apply text-gray-200 underline decoration-red-600 decoration-4 underline-offset-8;
+}
+
+.indexItem {
+  @apply text-lg font-medium underline;
+}
+
+.toTopButton {
+  @apply fixed bottom-5 right-5 cursor-pointer;
+  @apply px-3 py-2 rounded-full bg-zinc-800 border-2 border-zinc-800;
+  @apply transition-all duration-300 ease-in-out z-30;
+}
+
+.toTopButton svg {
+  @apply w-6 h-6;
+}
+
+.toTopButton:hover,
+.toTopButton:hover svg path {
+  @apply bg-zinc-800 fill-red-700 border-2 border-red-700;
+}
+
+.toTopButton svg path {
+  @apply fill-gray-100;
+  @apply transition-all duration-150 ease-in-out;
+}
+
+.mainIcon svg {
+  @apply w-20 h-20 mx-auto;
+}
+
+/* Contact form */
+.contactSection {
+  @apply grid p-4 mb-10 mx-10;
+  @apply bg-zinc-800 rounded-lg;
+  grid-template-columns: 1fr 2fr 1fr;
+  @apply md:grid-cols-1;
+}
+
+.contactSection > * {
+  @apply my-2 mx-8;
+  @apply md:mx-2;
+}
+
+.contactForm label {
+  @apply block text-2xl font-medium text-gray-900 dark:text-white;
+}
+
+.contactForm input,
+.contactForm select,
+.contactForm textarea {
+  @apply rounded-xl border border-gray-300 p-2.5 text-sm text-zinc-800 my-4;
+  @apply border-zinc-600 bg-zinc-100 placeholder-zinc-800 focus:border-red-700 focus:ring-red-700;
+}
+
+.contactForm {
+  @apply flex flex-col bg-zinc-800 text-center mx-2 rounded-lg py-2 w-[20vw];
+  @apply md:mx-auto md:w-[80vw];
+}
+
+.recapcha {
+  @apply mx-auto;
+}
+
+.map {
+  @apply flex justify-center items-center;
+  @apply rounded-xl mx-auto;
+  @apply md:w-[80vw];
+}
+
+.infoSection {
+  @apply flex flex-col items-center;
+  @apply bg-zinc-300 rounded-lg;
+  @apply mx-auto w-[20vw];
+  @apply md:w-[80vw];
+}
+
+.infoSection > * {
+  @apply mx-auto;
+}
+
+.infoItem {
+  @apply bg-zinc-800 rounded-lg bottom-4 border-zinc-950;
+  @apply text-zinc-100 text-lg font-medium;
+  @apply my-4 w-4/5 p-1;
+}
+
+.infoItemText {
+  @apply text-zinc-100 text-lg font-medium;
+}
+
+/* Loading */
+.loadingPage {
+  @apply w-screen h-screen;
+}
+
+.spinner {
+  @apply absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2;
+  @apply w-[75px] h-[75px] rounded-[50px] border-[5px] border-solid border-red-700 border-t-[5px]  border-t-white;
+}

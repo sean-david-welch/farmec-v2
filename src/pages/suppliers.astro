@@ -1,7 +1,8 @@
 ---
 import type Supplier from "../types/supplier"
 
-import styles from './suppliers/styles/Suppliers.module.css'
+import styles from '../styles/Suppliers.module.css'
+import utils from '../styles/Utils.module.css'
 import Layout from "../layouts/Layout.astro";
 
 import { Image } from "astro:assets";
@@ -16,10 +17,21 @@ const response = await fetch('http://localhost:4321/api/suppliers', {
     }
 })
 
-const suppliers = await response.json();
+const suppliers: Supplier[] = await response.json();
 ---
 
 <Layout title="Suppliers">
+    <h1 className={utils.sectionHeading}>Suppliers</h1>
+
+    <div class={utils.index}>
+        <h1 class={utils.indexHeading}>Suppliers</h1>
+        {suppliers.map(link => (
+            <a href={`suppliers/#${link.name}`}>
+                <h1 class="indexItem">{link.name}</h1>
+            </a>
+        ))}
+    </div>
+
     {suppliers.map((supplier: Supplier) => (
         <div
             class={styles.supplierCard}
