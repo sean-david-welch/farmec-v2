@@ -6,8 +6,10 @@ import utils from '../../styles/Utils.module.css'
 
 import type Supplier from '../../types/supplier'
 import type Machine from '../../types/machine'
+import type { Video } from '../../types/video'
 
 import Machines from "../../components/server/machines.astro";
+import Videos from "../../components/server/videos.astro";
 
 import { Image } from "astro:assets";
 
@@ -29,6 +31,14 @@ const { supplier } = Astro.props as { supplier: Supplier };
 
 
 const machines: Machine[] = await fetch(`http://localhost:4321/api/machines/${id}`, {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+    }
+}).then(response => response.json());
+
+const videos: Video[] = await fetch(`http://localhost:4321/api/videos/${id}`, {
     method: 'GET',
     headers: {
         'Content-Type': 'application/json',
@@ -76,6 +86,6 @@ const machines: Machine[] = await fetch(`http://localhost:4321/api/machines/${id
         </div>
 
         <Machines machines={machines} />
-        <!-- <Videos supplier={supplier} /> -->
+        <Videos videos={videos} />
     </section>
 </Layout>

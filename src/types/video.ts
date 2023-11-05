@@ -16,3 +16,13 @@ export interface YoutubeApiResponse {
     items: YoutubeVideo[];
   };
 }
+
+export interface Video {
+  id: string;
+  supplierId: string;
+  web_url: string;
+  title: string;
+  description: string;
+  video_id: string;
+  thumbnail_url: string;
+}
