@@ -6,7 +6,7 @@ export const GET: APIRoute = async ({ params }): Promise<Response> => {
   const client = await pool.connect();
 
   try {
-    const query = await client.query('select * from "Blog"');
+    const query = await client.query('select * from "Employee"');
     return new Response(JSON.stringify(query.rows), {
       headers: {
         'Content-Type': 'application/json',
@@ -28,23 +28,24 @@ export const POST: APIRoute = async ({ request }): Promise<Response> => {
 
   try {
     const data = await request.json();
+
+    const sql = `INSERT INTO Employee(id, name, email, role, bio, profile_image, created, phone)
+      VALUES($1, $2, $3, $4, $5, $6, $7, $8)
+      RETURNING *;
+      `;
+
     const uuid = uuidv4();
-
-    const sql = `INSERT INTO Blog(id, title, date, main_image, subheading, body, created)
-    VALUES($1, $2, $3, $4, $5, $6, $7)
-    RETURNING *;
-    `;
-
     const currentDateTime = new Date().toISOString();
 
     const values = [
       uuid,
-      data.title,
-      data.date,
-      data.main_image,
-      data.subheading,
-      data.body,
+      data.name,
+      data.email,
+      data.role,
+      data.bio,
+      data.profile_image,
       currentDateTime,
+      data.phone,
     ];
 
     const result = await client.query(sql, values);
