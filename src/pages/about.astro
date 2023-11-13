@@ -1,0 +1,25 @@
+---
+import Layout from "../layouts/Layout.astro";
+import type {Employee, Timeline} from "../types/about"
+
+export const prerender = true
+
+const employees: Employee[] = await fetch('http://localhost:4321/api/employees').then(employees => employees.json());
+const timelines: Timeline[] = await fetch('http://localhost:4321/api/timelines').then(timelines => timelines.json());
+---
+
+<Layout title="About Us">
+    <h1>Employees</h1>
+    <ul>
+        {employees.map((employee: Employee) => (
+                <h1>{employee.name}</h1>
+        ))}
+    </ul>
+    <h1>Timeline</h1>
+    <ul>
+        {timelines.map((timeline: Timeline) => (
+                <h1>{timeline.title}</h1>
+        ))}
+    </ul>
+</Layout>
+---

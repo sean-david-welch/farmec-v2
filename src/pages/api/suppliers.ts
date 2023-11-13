@@ -26,7 +26,9 @@ export const GET: APIRoute = async ({ params }): Promise<Response> => {
 
 export const POST: APIRoute = async ({ request }): Promise<Response> => {
   const client = await pool.connect();
+
   const uuid = uuidv4();
+  const currentDateTime = new Date().toISOString();
 
   try {
     const data = await request.json();
@@ -48,7 +50,7 @@ export const POST: APIRoute = async ({ request }): Promise<Response> => {
       data.social_youtube,
       data.social_linkedin,
       data.social_website,
-      data.created,
+      currentDateTime,
     ];
 
     const result = await client.query(sql, values);

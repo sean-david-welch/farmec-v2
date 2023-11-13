@@ -29,10 +29,12 @@ export const POST: APIRoute = async ({ request }): Promise<Response> => {
 
   try {
     const data = await request.json();
-    const uuid = uuidv4();
 
-    const sql = `INSERT INTO Machine(id, supplierId, name, machine_image, description, machine_link)
-    VALUES($1, $2, $3, $4, $5, $6)
+    const uuid = uuidv4();
+    const currentDateTime = new Date().toISOString();
+
+    const sql = `INSERT INTO Machine(id, supplierId, name, machine_image, description, machine_link, created)
+    VALUES($1, $2, $3, $4, $5, $6, $7)
     RETURNING *;
     `;
 
@@ -43,6 +45,7 @@ export const POST: APIRoute = async ({ request }): Promise<Response> => {
       data.machine_image,
       data.description,
       data.machine_link,
+      currentDateTime,
     ];
 
     const result = await client.query(sql, values);

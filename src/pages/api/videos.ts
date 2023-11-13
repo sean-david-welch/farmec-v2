@@ -2,7 +2,7 @@ import { pool } from '../../database/connection';
 import { v4 as uuidv4 } from 'uuid';
 
 import type { APIRoute } from 'astro';
-import type { YoutubeApiResponse } from '../../types/video';
+import type { YoutubeApiResponse, Video } from '../../types/video';
 
 import { youtube as YouTube } from '@googleapis/youtube';
 
@@ -12,6 +12,7 @@ export const POST: APIRoute = async ({ request }): Promise<Response> => {
   try {
     const data = await request.json();
     const uuid = uuidv4();
+    const currentDateTime = new Date().toISOString();
 
     const { web_url } = data;
 
@@ -35,8 +36,8 @@ export const POST: APIRoute = async ({ request }): Promise<Response> => {
     const { title, thumbnails, description } =
       videoResponse.data.items[0].snippet;
 
-    const sql = `INSERT INTO Video(id, supplierId, web_url, title, description, video_id, thumbnail_url)
-    VALUES($1, $2, $3, $4, $5, $6, $7)
+    const sql = `INSERT INTO Video(id, supplierId, web_url, title, description, video_id, thumbnail_url, created)
+    VALUES($1, $2, $3, $4, $5, $6, $7, $8)
     RETURNING *;
     `;
 
@@ -48,6 +49,7 @@ export const POST: APIRoute = async ({ request }): Promise<Response> => {
       description,
       videoResponse.data.items[0].id,
       thumbnails.medium.url,
+      currentDateTime,
     ];
 
     const result = await client.query(sql, values);
