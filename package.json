@@ -3,18 +3,17 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "sst bind astro dev",
+    "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro",
-    "sst:deploy": "sst deploy",
-    "sst:dev": "sst dev"
+    "preview": "deno run --allow-net --allow-read --allow-env ./dist/server/entry.mjs"
   },
   "dependencies": {
-    "@astrojs/node": "^6.0.3",
+    "@astrojs/deno": "^5.0.1",
     "@astrojs/solid-js": "^3.0.2",
     "@astrojs/tailwind": "^5.0.2",
+    "@aws-sdk/client-s3": "^3.450.0",
+    "@aws-sdk/s3-request-presigner": "^3.450.0",
     "@googleapis/youtube": "^13.0.0",
     "astro": "^3.1.0",
     "pg": "^8.11.3",
@@ -24,10 +23,6 @@
   },
   "devDependencies": {
     "@types/pg": "^8.10.7",
-    "@types/uuid": "^9.0.6",
-    "astro-sst": "^2.32.2",
-    "aws-cdk-lib": "2.101.1",
-    "constructs": "10.2.69",
-    "sst": "^2.32.2"
+    "@types/uuid": "^9.0.6"
   }
 }

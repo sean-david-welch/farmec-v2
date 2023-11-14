@@ -1,11 +1,11 @@
 import { defineConfig } from 'astro/config';
-
-import aws from 'astro-sst/lambda';
 import solidJs from '@astrojs/solid-js';
 import tailwind from '@astrojs/tailwind';
 
+import deno from '@astrojs/deno';
+
 export default defineConfig({
   output: 'server',
-  adapter: aws(),
+  adapter: deno(),
   integrations: [solidJs(), tailwind()],
 });
