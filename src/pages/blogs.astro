@@ -1,28 +1,58 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import styles from '../styles/Blogs.module.css'
+import utils from '../styles/Utils.module.css'
+
+import { Image } from 'astro:assets';
+
+
 import type Blog from "../types/blog"
 
-export const prerender = true
 
-const response = await fetch('http://localhost:4321/api/blogs', {
-    method: 'GET',
-    headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-    }
-})
 
-const blogs = await response.json();
+const blogs: Blog[] = await fetch('http://localhost:4321/api/blogs').then(blogs => blogs.json());
 ---
 
 <Layout title="Blogs">
-    <h1>Blogs</h1>
-    <ul>
-        {blogs.map((blog: Blog) => (
-            <a href={`blogs/${blog.id}`}>
-                {blog.title}             
-            </a>
-        ))}
-    </ul>
+	<section id="blog">
+		<h1 class={utils.sectionHeading}>
+			Check out our Latest Blog Posts
+		</h1>
+		<p class={utils.subHeading}> Read our latest news</p>
+
+		<div class={utils.index}>
+			<h1 class={utils.indexHeading}>Suppliers</h1>
+			{blogs.map(link => (
+				<a href={`#${link.title}`}>
+					<h1 class="indexItem">{link.title}</h1>
+				</a>
+			))}
+		</div>
+
+		{blogs.map(blog => (
+			<div
+				class={styles.blogGrid}
+				id={blog.title || ''}>
+				<div class={styles.blogCard}>
+					<Image
+						src={blog.main_image || '/default.jpg'}
+						alt={'/default.jpg'}
+						width={400}
+						height={400}
+					/>
+					<div class={styles.blogLink}>
+						<h1 class={utils.mainHeading}>{blog.title}</h1>
+						<p class={utils.paragraph}>{blog.subheading}</p>
+						<p class={utils.paragraph}>{blog.body}</p>
+						<button class={utils.btnForm}>
+							<a href={`/blogs/${blog.id}`}>
+								Read More
+							</a>
+						</button>
+					</div>
+				</div>
+			</div>
+		))}
+	</section>
 </Layout>
 ---

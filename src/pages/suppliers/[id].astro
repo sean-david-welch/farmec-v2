@@ -6,29 +6,18 @@ import utils from '../../styles/Utils.module.css'
 
 import type Supplier from '../../types/supplier'
 import type Machine from '../../types/machine'
-import type { Video } from '../../types/video'
 
 import Machines from "../../components/server/machines.astro";
 import Videos from "../../components/server/videos.astro";
 
+import type { Video } from '../../types/video'
 import { Image } from "astro:assets";
 
-export const prerender = true
-
-export async function getStaticPaths() {
-  const response = await fetch('http://localhost:4321/api/suppliers').then(response => response.json());
-
-  return response.map((supplier: Supplier) => {
-        return { 
-            params: { id: supplier.id },
-            props: { supplier }
-        };
-    });
-}
-
 const { id } = Astro.params;
-const { supplier } = Astro.props as { supplier: Supplier };
 
+const supplier: Supplier = await fetch(`http://localhost:4321/api/suppliers/${id}`)
+    .then(response => response.json())
+    .then(suppliers => suppliers[0]);
 
 const machines: Machine[] = await fetch(`http://localhost:4321/api/machines/${id}`, {
     method: 'GET',

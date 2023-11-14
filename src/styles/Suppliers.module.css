@@ -136,3 +136,37 @@
   @apply rounded-2xl;
   @apply md:w-[300px];
 }
+
+/* Products */
+.productGrid {
+  @apply grid grid-cols-1 mx-52 my-10;
+  @apply md:mx-5;
+}
+
+.productCard {
+  @apply flex flex-col p-4;
+  @apply bg-zinc-800 border-4 border-zinc-600 rounded-2xl;
+  @apply transition-all duration-500 ease-in-out;
+}
+
+.productCard:hover {
+  @apply border-red-700;
+}
+
+.productCard > * {
+  @apply my-2;
+}
+
+.productCard img {
+  @apply mx-auto;
+  @apply transition-all duration-500 ease-in-out;
+}
+
+.productCard:hover img {
+  @apply transform scale-105;
+}
+
+.productCard p {
+  @apply mx-52;
+  @apply md:mx-5;
+}

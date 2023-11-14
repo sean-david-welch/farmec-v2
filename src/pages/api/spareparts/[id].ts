@@ -7,7 +7,7 @@ export const GET: APIRoute = async ({ params }) => {
 
   try {
     const query = await client.query(
-      `SELECT * FROM "Product" WHERE "machineId" = $1;`,
+      'SELECT * FROM "SpareParts" WHERE "supplierId" = $1;',
       [id]
     );
     return new Response(JSON.stringify(query.rows), {
@@ -33,12 +33,12 @@ export const PUT: APIRoute = async ({ request, params }): Promise<Response> => {
   try {
     const data = await request.json();
 
-    const sql = `UPDATE Product SET
-    machineId = $2,
+    const sql = `UPDATE SpareParts SET
+    supplierId = $2,
     name = $3,
-    product_image = $4,
-    description = $5,
-    product_link = $6,
+    parts_image = $4,
+    spare_parts_link = $5,
+    pdf_link = $6,
     WHERE id = $1
     RETURNING *;`;
 
@@ -46,9 +46,9 @@ export const PUT: APIRoute = async ({ request, params }): Promise<Response> => {
       id,
       data.supplierId,
       data.name,
-      data.product_image,
-      data.description,
-      data.product_link,
+      data.parts_image,
+      data.spare_parts_link,
+      data.pdf_link,
     ];
 
     const result = await client.query(sql, values);
@@ -59,7 +59,7 @@ export const PUT: APIRoute = async ({ request, params }): Promise<Response> => {
       });
     } else {
       return new Response(
-        JSON.stringify({ error: 'Product not found or no changes made' }),
+        JSON.stringify({ error: 'SpareParts not found or no changes made' }),
         {
           status: 404,
           headers: { 'Content-Type': 'application/json' },
@@ -83,13 +83,13 @@ export const DELETE: APIRoute = async ({ params }): Promise<Response> => {
 
   try {
     const query = await client.query(
-      'DELETE FROM Product WHERE id = $1 RETURNING *;',
+      'DELETE FROM SpareParts WHERE id = $1 RETURNING *;',
       [id]
     );
 
     if (query.rowCount === 0) {
       return new Response(
-        JSON.stringify({ message: 'No Product found with that ID.' }),
+        JSON.stringify({ message: 'No SpareParts found with that ID.' }),
         {
           status: 404,
           headers: { 'Content-Type': 'application/json' },
@@ -98,7 +98,7 @@ export const DELETE: APIRoute = async ({ params }): Promise<Response> => {
     }
 
     return new Response(
-      JSON.stringify({ message: 'Product deleted successfully.' }),
+      JSON.stringify({ message: 'SpareParts deleted successfully.' }),
       {
         status: 200,
         headers: { 'Content-Type': 'application/json' },

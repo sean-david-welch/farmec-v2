@@ -1,23 +1,13 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-
 import type Blog from '../../types/blog'
 
-export const prerender = true
-
-export async function getStaticPaths() {
-  const response = await fetch('http://localhost:4321/api/blogs').then(response => response.json());
-
-  return response.map((blog: Blog) => {
-        return { 
-            params: { id: blog.id },
-            props: { blog }
-        };
-    });
-}
-
 const { id } = Astro.params;
-const { blog } = Astro.props as { blog: Blog };
+
+const blog: Blog = await fetch(`http://localhost:4321/api/blogs/${id}`)
+    .then(response => response.json())
+    .then(blogs => blogs[0]);
+
 ---
 
 <Layout title={`Farmec | ${blog.title}` || 'Farmec'}>

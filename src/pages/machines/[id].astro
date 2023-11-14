@@ -1,41 +1,50 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 
-import type Machine from '../../types/machine'
+import styles from '../../styles/Suppliers.module.css'
+import utils from '../../styles/Utils.module.css'
+
 import type Product from '../../types/product'
+import { Image } from "astro:assets";
 
-export const prerender = true
-
-export async function getStaticPaths() {
-  const response = await fetch('http://localhost:4321/api/machines').then(response => response.json());
-
-  return response.map((machine: Machine) => {
-        return { 
-            params: { id: machine.id },
-            props: { machine }
-        };
-    });
-}
 
 const { id } = Astro.params;
-const { machine } = Astro.props as { machine: Machine };
 
-const products: Product[] = await fetch(`http://localhost:4321/api/products/${id}`, {
-    method: 'GET',
-    headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-    }
-}).then(response => response.json());
+const products: Product[] = await fetch(`http://localhost:4321/api/products/${id}`).then(response => response.json());
 ---
 
 
-<Layout title={`Farmec | ${machine.name}` || 'Farmec'}>
-    <h1>{machine.name || 'Supplier Not Found'}</h1>
-
-    <ul>
-        {products.map((product: Product) => (
-            <h1>{product.name}</h1>
+<Layout title={`Farmec | Products`}>
+    <div class={utils.index}>
+        <h1 class={utils.indexHeading}>Suppliers</h1>
+        {products.map(link => (
+            <a href={`#${link.name}`}>
+                <h1 class="indexItem">{link.name}</h1>
+            </a>
         ))}
-    </ul>
+    </div>
+
+    <section id="products">
+        <div class={styles.productGrid}>
+            {products.map(product => (
+                <div
+                    class={styles.productCard}
+                    id={product.name || ''}>
+                    <h1 class={utils.mainHeading}>{product.name}</h1>
+                    <a
+                        href={product.product_link || '#'}
+                        target="_blank">
+                        <Image
+                            src={product.product_image || '/default.jpg'}
+                            alt={'/default.jpg'}
+                            class={styles.productImage}
+                            width={500}
+                            height={500}
+                        />
+                    </a>
+                    <p class={utils.paragraph}>{product.description}</p>
+                </div>
+            ))}
+        </div>
+    </section>
 </Layout>
