@@ -27,6 +27,10 @@ export const generatePresignedUrl = async (
     const presignedUrl = await getSignedUrl(s3Client, command, {
       expiresIn: expiresInSeconds,
     });
+
+    console.log(s3Client);
+    console.log();
+
     return presignedUrl;
   } catch (error) {
     console.error('Error creating presigned URL', error);
