@@ -20,7 +20,7 @@ export const POST: APIRoute = async ({ request }): Promise<Response> => {
 
     const youtube = YouTube({
       version: 'v3',
-      auth: process.env.YOUTUBE_API_KEY,
+      auth: import.meta.env.YOUTUBE_API_KEY,
     });
 
     const videoResponse = (await youtube.videos.list({
@@ -33,8 +33,7 @@ export const POST: APIRoute = async ({ request }): Promise<Response> => {
       throw new Error('Video not found on YouTube');
     }
 
-    const { title, thumbnails, description } =
-      videoResponse.data.items[0].snippet;
+    const { title, thumbnails, description } = videoResponse.data.items[0].snippet;
 
     const sql = `INSERT INTO Video(id, supplierId, web_url, title, description, video_id, thumbnail_url, created)
     VALUES($1, $2, $3, $4, $5, $6, $7, $8)

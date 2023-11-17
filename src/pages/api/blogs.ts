@@ -50,19 +50,13 @@ export const POST: APIRoute = async ({ request }): Promise<Response> => {
 
     const result = await client.query(sql, values);
 
-    const presignedUrl = await generatePresignedUrl(
-      'farmec-bucket',
-      data.main_image as string
-    );
+    const presignedUrl = await generatePresignedUrl('farmec-bucket', data.main_image as string);
 
     console.log(presignedUrl);
 
-    return new Response(
-      JSON.stringify({ data: result.rows[0], uploadUrl: presignedUrl }),
-      {
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
+    return new Response(JSON.stringify({ data: result.rows[0], uploadUrl: presignedUrl }), {
+      headers: { 'Content-Type': 'application/json' },
+    });
   } catch (error) {
     console.error(error);
     return new Response(JSON.stringify({ error: 'Database query failed' }), {

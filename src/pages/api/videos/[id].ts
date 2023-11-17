@@ -10,10 +10,7 @@ export const GET: APIRoute = async ({ params }) => {
   const id = params.id;
 
   try {
-    const query = await client.query(
-      'SELECT * FROM "Video" WHERE "supplierId" = $1;',
-      [id]
-    );
+    const query = await client.query('SELECT * FROM "Video" WHERE "supplierId" = $1;', [id]);
     return new Response(JSON.stringify(query.rows), {
       headers: {
         'Content-Type': 'application/json',
@@ -43,7 +40,7 @@ export const PUT: APIRoute = async ({ request, params }): Promise<Response> => {
 
     const youtube = YouTube({
       version: 'v3',
-      auth: process.env.YOUTUBE_API_KEY,
+      auth: import.meta.env.YOUTUBE_API_KEY,
     });
 
     const videoResponse = (await youtube.videos.list({
@@ -56,8 +53,7 @@ export const PUT: APIRoute = async ({ request, params }): Promise<Response> => {
       throw new Error('Video not found on YouTube');
     }
 
-    const { title, thumbnails, description } =
-      videoResponse.data.items[0].snippet;
+    const { title, thumbnails, description } = videoResponse.data.items[0].snippet;
 
     const sql = `UPDATE Machine SET
         supplierId = $2,
@@ -101,37 +97,25 @@ export const DELETE: APIRoute = async ({ params }): Promise<Response> => {
   const id = params.id;
 
   try {
-    const query = await client.query(
-      'DELETE FROM Video WHERE id = $1 RETURNING *;',
-      [id]
-    );
+    const query = await client.query('DELETE FROM Video WHERE id = $1 RETURNING *;', [id]);
 
     if (query.rowCount === 0) {
-      return new Response(
-        JSON.stringify({ message: 'No Video found with that ID.' }),
-        {
-          status: 404,
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
+      return new Response(JSON.stringify({ message: 'No Video found with that ID.' }), {
+        status: 404,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
-    return new Response(
-      JSON.stringify({ message: 'Video deleted successfully.' }),
-      {
-        status: 200,
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
+    return new Response(JSON.stringify({ message: 'Video deleted successfully.' }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
   } catch (error) {
     console.error(error);
-    return new Response(
-      JSON.stringify({ error: 'Error performing the delete operation' }),
-      {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
+    return new Response(JSON.stringify({ error: 'Error performing the delete operation' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   } finally {
     client.release();
   }

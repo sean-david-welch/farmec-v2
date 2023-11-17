@@ -1,13 +1,26 @@
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import type { PutObjectCommandInput } from '@aws-sdk/client-s3';
-
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+
+const validateAndLogCredentials = () => {
+  const accessKeyId = import.meta.env.AWS_ACCESS_KEY;
+  const secretAccessKey = import.meta.env.AWS_SECRET;
+
+  if (!accessKeyId || !secretAccessKey) {
+    throw new Error('AWS credentials are not set in environment variables');
+  }
+
+  console.log(`Using Access Key ID: ${accessKeyId.substring(0, 4)}****`);
+  return { accessKeyId, secretAccessKey };
+};
+
+const { accessKeyId, secretAccessKey } = validateAndLogCredentials();
 
 const s3Client = new S3Client({
   region: 'eu-west-1',
   credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY!,
-    secretAccessKey: process.env.AWS_SECRET!,
+    accessKeyId: accessKeyId,
+    secretAccessKey: secretAccessKey,
   },
 });
 
@@ -27,9 +40,6 @@ export const generatePresignedUrl = async (
     const presignedUrl = await getSignedUrl(s3Client, command, {
       expiresIn: expiresInSeconds,
     });
-
-    console.log(s3Client);
-    console.log();
 
     return presignedUrl;
   } catch (error) {

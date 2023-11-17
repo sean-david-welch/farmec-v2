@@ -15,6 +15,7 @@
     "@astrojs/tailwind": "^5.0.2",
     "@aws-sdk/client-s3": "^3.450.0",
     "@aws-sdk/s3-request-presigner": "^3.450.0",
+    "@firebase/auth": "^1.4.0",
     "@googleapis/youtube": "^13.0.0",
     "astro": "^3.1.0",
     "pg": "^8.11.3",
