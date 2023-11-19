@@ -1,9 +1,4 @@
-import { initializeApp, applicationDefault } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
-
-initializeApp({
-  credential: applicationDefault(),
-});
 
 export const verifyToken = async (token: string) => {
   if (!token) {

@@ -4,7 +4,7 @@ import { initializeApp } from '@firebase/app';
 
 const firebaseConfig = {
   apiKey: import.meta.env.FB_WEB_API_KEY,
-  authDomain: 'YOUR_AUTH_DOMAIN',
+  authDomain: import.meta.env.FB_AUTH_URL,
   projectId: import.meta.env.FB_PROJECT_ID,
 };
 

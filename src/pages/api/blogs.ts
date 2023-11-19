@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import type { APIRoute } from 'astro';
+import { verifyToken } from '../../utils/admin';
 
 import { pool } from '../../database/connection';
 import { generatePresignedUrl } from '../../utils/aws';
@@ -26,6 +27,15 @@ export const GET: APIRoute = async ({ params }): Promise<Response> => {
 };
 
 export const POST: APIRoute = async ({ request }): Promise<Response> => {
+  const token = request.headers.get('Authorization')?.split('Bearer ')[1];
+  if (!token) {
+    return new Response(JSON.stringify({ error: 'No token provided' }), {
+      status: 401,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  await verifyToken(token);
   const client = await pool.connect();
 
   try {

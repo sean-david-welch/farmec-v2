@@ -21,3 +21,5 @@ pnpm-debug.log*
 .DS_Store
 
 .sst
+
+service-account.json
