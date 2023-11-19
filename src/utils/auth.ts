@@ -3,12 +3,9 @@ import { signInWithEmailAndPassword, signOut, getAuth } from '@firebase/auth';
 import { initializeApp } from '@firebase/app';
 
 const firebaseConfig = {
-  apiKey: 'YOUR_API_KEY',
+  apiKey: import.meta.env.FB_WEB_API_KEY,
   authDomain: 'YOUR_AUTH_DOMAIN',
-  projectId: 'YOUR_PROJECT_ID',
-  storageBucket: 'YOUR_STORAGE_BUCKET',
-  messagingSenderId: 'YOUR_MESSAGING_SENDER_ID',
-  appId: 'YOUR_APP_ID',
+  projectId: import.meta.env.FB_PROJECT_ID,
 };
 
 const app = initializeApp(firebaseConfig);
