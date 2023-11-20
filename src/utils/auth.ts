@@ -1,25 +1,25 @@
-import { signInWithEmailAndPassword, signOut, getAuth } from '@firebase/auth';
+import { app } from '../lib/firebase-client';
+import { getAuth, signOut, signInWithEmailAndPassword, inMemoryPersistence } from 'firebase/auth';
 
-import { initializeApp } from '@firebase/app';
+const auth = getAuth(app);
 
-const firebaseConfig = {
-  apiKey: import.meta.env.FB_WEB_API_KEY,
-  authDomain: import.meta.env.FB_AUTH_URL,
-  projectId: import.meta.env.FB_PROJECT_ID,
-};
+export const signInUser = async (email: string, password: string): Promise<string | undefined> => {
+  let idToken: string | undefined;
 
-const app = initializeApp(firebaseConfig);
+  auth.setPersistence(inMemoryPersistence);
 
-export const auth = getAuth(app);
-
-export const signInUser = async (email: string, password: string): Promise<void> => {
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
+
     const user = userCredential.user;
     console.log('User signed in:', user);
+
+    idToken = await user.getIdToken();
   } catch (error: any) {
     console.error('Error signing in:', error);
   }
+
+  return idToken;
 };
 
 export const signOutUser = async (): Promise<void> => {

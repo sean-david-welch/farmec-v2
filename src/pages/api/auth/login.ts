@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { app } from '../../../lib/firebase';
+import { app } from '../../../lib/firebase-server';
 import { getAuth } from 'firebase-admin/auth';
 
 export const GET: APIRoute = async ({ request, cookies, redirect }) => {
@@ -26,7 +26,11 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
 
   cookies.set('session', sessionCookie, {
     path: '/',
+    httpOnly: true,
   });
 
-  return redirect('/dashboard');
+  return new Response(JSON.stringify({ success: true }), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json' },
+  });
 };
