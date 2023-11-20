@@ -27,15 +27,6 @@ export const GET: APIRoute = async ({ params }): Promise<Response> => {
 };
 
 export const POST: APIRoute = async ({ request }): Promise<Response> => {
-  const token = request.headers.get('Authorization')?.split('Bearer ')[1];
-  if (!token) {
-    return new Response(JSON.stringify({ error: 'No token provided' }), {
-      status: 401,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
-
-  await verifyToken(token);
   const client = await pool.connect();
 
   try {

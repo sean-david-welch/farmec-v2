@@ -2,12 +2,15 @@
 import Layout from '../layouts/Layout.astro';
 import RegisterForm from '../components/client/ReigsterForm';
 import LoginForm from '../components/client/LoginForm';
+import LogoutForm from '../components/client/LogoutForm';
 ---
 
 <Layout title="Welcome to Astro.">
 	<h1>Main Page</h1>
 
 	<LoginForm client:load />
+	<LogoutForm client:load />
+
 	<RegisterForm client:load />
 </Layout>
 

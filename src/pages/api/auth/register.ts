@@ -1,24 +1,23 @@
-import type { APIRoute } from 'astro';
+import type { APIRoute, AstroCookies } from 'astro';
 
 import { getAuth } from 'firebase-admin/auth';
+import { verifyToken } from '../../../utils/admin';
 import { pool } from '../../../database/connection';
 
 export const POST: APIRoute = async ({ request }): Promise<Response> => {
+  await verifyToken(request);
   const client = await pool.connect();
 
   try {
-    const formData = await request.formData();
+    const data = await request.json();
 
-    const email = formData.get('email')?.toString();
-    const password = formData.get('password')?.toString();
-    const name = formData.get('name')?.toString();
-    const role = formData.get('role')?.toString();
+    const { email, password, role } = data;
 
-    if (!email || !password || !name) {
+    if (!email || !password) {
       return new Response('Missing form data', { status: 400 });
     }
 
-    const userRecord = await getAuth().createUser({ email, password, displayName: name });
+    const userRecord = await getAuth().createUser({ email, password });
 
     const sql = `INSERT INTO users(uid, email, role) VALUES($1, $2, $3) RETURNING *`;
 
