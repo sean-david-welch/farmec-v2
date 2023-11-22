@@ -22,8 +22,14 @@ const RegisterForm = () => {
       });
 
       const result = await response.json();
-      console.log(result);
-      // Handle success (e.g., redirect or show message)
+
+      if (response) {
+        setEmail('');
+        setPassword('');
+        setRole('user');
+      } else {
+        console.error('Registration failed:', result);
+      }
     } catch (error) {
       console.error('Error submitting form:', error);
       // Handle errors

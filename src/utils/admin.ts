@@ -3,7 +3,6 @@ import { app } from '../lib/firebase-server';
 
 export const verifyToken = async (request: Request) => {
   const cookiesHeader = request.headers.get('cookie') || '';
-  console.log(cookiesHeader);
 
   const cookies = new Map(
     cookiesHeader.split('; ').map(cookie => {
@@ -12,10 +11,8 @@ export const verifyToken = async (request: Request) => {
     })
   );
 
-  console.log(cookies);
-
   const token = cookies.get('session');
-  console.log(token);
+  console.log('Token: ', token);
 
   if (!token) {
     return new Response(JSON.stringify({ error: 'No token provided' }), {
@@ -27,10 +24,11 @@ export const verifyToken = async (request: Request) => {
   try {
     const auth = getAuth(app);
 
-    const decodedToken = await auth.verifyIdToken(token);
+    const decodedToken = await auth.verifySessionCookie(token);
 
     return decodedToken;
   } catch (error) {
-    throw new Error('Invalid token');
+    console.error('Error verifying token:', error);
+    throw error;
   }
 };

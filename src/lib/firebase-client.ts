@@ -3,8 +3,8 @@ import type { FirebaseApp } from 'firebase/app';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDd4w_sHjO1X8oo6tafrx0XikIRr82jQtI',
-  authDomain: 'farmec-ireland-1675438662747',
-  projectId: 'farmec-ireland-1675438662747.firebaseapp.com',
+  authDomain: 'farmec-ireland-1675438662747.firebaseapp.com',
+  projectId: 'farmec-ireland-1675438662747',
 };
 
 if (!firebaseConfig.apiKey || !firebaseConfig.authDomain || !firebaseConfig.projectId) {

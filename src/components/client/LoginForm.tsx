@@ -8,6 +8,7 @@ import { signInUser } from '../../utils/auth';
 const LoginForm = () => {
   const [email, setEmail] = createSignal('');
   const [password, setPassword] = createSignal('');
+  const [errorMessage, setErrorMessage] = createSignal('');
 
   const handleSubmit = async (event: SubmitEvent) => {
     event.preventDefault();
@@ -20,22 +21,47 @@ const LoginForm = () => {
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${idToken}` },
       });
 
-      await response.json();
-      // Handle success (e.g., redirect or show message)
+      const result = await response.json();
+
+      if (result) {
+        setEmail('');
+        setPassword('');
+      }
     } catch (error) {
+      if (error.response && error.response.status === 401) {
+        setErrorMessage('Incorrect email or password.');
+      } else {
+        setErrorMessage('An unexpected error occurred. Please try again later.');
+      }
       console.error('Error submitting form:', error);
-      // Handle errors
     }
   };
 
   return (
     <form onSubmit={handleSubmit} class={utils.form}>
       <label>Email:</label>
-      <input type="email" value={email()} onInput={e => setEmail(e.currentTarget.value)} required />
+      <input
+        type="email"
+        value={email()}
+        onInput={e => {
+          setEmail(e.currentTarget.value);
+          setErrorMessage('');
+        }}
+        required
+      />
 
       <label>Password:</label>
-      <input type="password" value={password()} onInput={e => setPassword(e.currentTarget.value)} required />
+      <input
+        type="password"
+        value={password()}
+        onInput={e => {
+          setPassword(e.currentTarget.value);
+          setErrorMessage('');
+        }}
+        required
+      />
 
+      {errorMessage() && <div class={styles.errorMessage}>{errorMessage()}</div>}
       <button type="submit">Login</button>
     </form>
   );
