@@ -53,8 +53,6 @@ export const POST: APIRoute = async ({ request }): Promise<Response> => {
 
     const presignedUrl = await generatePresignedUrl('farmec-bucket', data.main_image as string);
 
-    console.log(presignedUrl);
-
     return new Response(JSON.stringify({ data: result.rows[0], uploadUrl: presignedUrl }), {
       headers: { 'Content-Type': 'application/json' },
     });

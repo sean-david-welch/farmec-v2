@@ -10,7 +10,6 @@ const validateAndLogCredentials = () => {
     throw new Error('AWS credentials are not set in environment variables');
   }
 
-  console.log(`Using Access Key ID: ${accessKeyId.substring(0, 4)}****`);
   return { accessKeyId, secretAccessKey };
 };
 

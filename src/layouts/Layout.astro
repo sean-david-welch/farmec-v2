@@ -1,4 +1,8 @@
 ---
+import { app } from '../lib/firebase-server';
+import { getAuth } from 'firebase-admin/auth';
+import { ViewTransitions } from 'astro:transitions';
+
 import utils from '../styles/Utils.module.css'
 
 import Header from './Header.astro';
@@ -9,6 +13,24 @@ interface Props {
 	title: string;
 }
 const { title } = Astro.props;
+
+
+const auth = getAuth(app);
+
+if (Astro.cookies.has("session")) {
+  const sessionCookie = Astro.cookies.get("session");
+  if (sessionCookie) {
+    const decodedCookie = await auth.verifySessionCookie(sessionCookie.value);
+    if (decodedCookie) {
+      console.log("User Authenticated");
+    } else {
+      console.log("No User");
+    }
+  }
+} else {
+	console.log("No User");
+}
+
 ---
 
 <!doctype html>
@@ -22,6 +44,7 @@ const { title } = Astro.props;
 
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
+		<ViewTransitions />
 	</head>
 	<body>
 		<Header/>

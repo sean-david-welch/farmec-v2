@@ -26,14 +26,19 @@ const LoginForm = () => {
       if (result) {
         setEmail('');
         setPassword('');
+
+        window.location.reload();
       }
-    } catch (error) {
+    } catch (error: any) {
       if (error.response && error.response.status === 401) {
         setErrorMessage('Incorrect email or password.');
       } else {
         setErrorMessage('An unexpected error occurred. Please try again later.');
       }
-      console.error('Error submitting form:', error);
+
+      if (error instanceof Error) {
+        console.error('Error submitting form:', error.message);
+      }
     }
   };
 

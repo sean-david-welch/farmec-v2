@@ -17,7 +17,7 @@ const response = await fetch('http://localhost:4321/api/suppliers', {
 const suppliers: Supplier[] = await response.json();
 ---
 
-<nav class={styles.navbar}>
+<nav class={styles.navbar} transition:persist>
     <a href='/' aria-label="logo button">
         <Image src="https://res.cloudinary.com/dgpquyhuy/image/upload/v1691492819/farmeclogo.png" alt="Logo" width="250" height="250"/>
     </a>

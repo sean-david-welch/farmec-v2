@@ -15,10 +15,11 @@ const LoginForm = () => {
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${idToken}` },
       });
 
-      // Handle success (e.g., redirect or show message)
+      if (response) {
+        window.location.reload();
+      }
     } catch (error) {
       console.error('Error submitting form:', error);
-      // Handle errors
     }
   };
 

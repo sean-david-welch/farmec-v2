@@ -12,7 +12,6 @@ export const verifyToken = async (request: Request) => {
   );
 
   const token = cookies.get('session');
-  console.log('Token: ', token);
 
   if (!token) {
     return new Response(JSON.stringify({ error: 'No token provided' }), {
