@@ -17,18 +17,27 @@ const { title } = Astro.props;
 
 const auth = getAuth(app);
 
-if (Astro.cookies.has("session")) {
-  const sessionCookie = Astro.cookies.get("session");
-  if (sessionCookie) {
+let user = null;
+
+const sessionCookie = Astro.cookies.get("session");
+if (sessionCookie) {
+  try {
     const decodedCookie = await auth.verifySessionCookie(sessionCookie.value);
-    if (decodedCookie) {
-      console.log("User Authenticated");
-    } else {
-      console.log("No User");
+    const uid = decodedCookie.uid;
+    console.log("User Authenticated");
+
+    // Fetch user data from the API
+    const response = await fetch(`http://localhost:4321/api/users/${uid}`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch user data');
     }
+    user = await response.json();
+	console.log("User:", user)
+  } catch (error) {
+    console.error("Error:", error);
   }
 } else {
-	console.log("No User");
+  console.log("No User");
 }
 
 ---
@@ -50,7 +59,7 @@ if (Astro.cookies.has("session")) {
 		<Header/>
 			<main class="max-w-full overflow-x-hidden mx-auto">
 				<div class={utils.container}>
-					<slot />
+					<slot/>
 				</div>
 			</main>
 		<Footer/>

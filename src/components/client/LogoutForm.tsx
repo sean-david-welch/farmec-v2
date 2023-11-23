@@ -10,7 +10,7 @@ const LoginForm = () => {
     try {
       const idToken = await signOutUser();
 
-      const response = await fetch('/api/auth/logout', {
+      const response = await fetch('http://localhost:4321/api/auth/logout', {
         method: 'GET',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${idToken}` },
       });
