@@ -10,8 +10,7 @@ import RegisterForm from '../components/client/RegisterForm';
 ---
 
 <Layout title='Login'>
-    <LogoutForm client:load />
-
+    <LogoutForm client:only="solid-js" />
     <RegisterForm client:only="solid-js" />
 </Layout>
 

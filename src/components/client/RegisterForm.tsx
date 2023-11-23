@@ -4,12 +4,8 @@ import { $user, addUser } from '../../utils/userStore';
 import { useStore } from '@nanostores/solid';
 import { createSignal, onMount } from 'solid-js';
 
-import type User from '../../types/user';
-
 const RegisterForm = () => {
   const user = useStore($user);
-
-  console.log('User', user);
 
   const [email, setEmail] = createSignal('');
   const [password, setPassword] = createSignal('');
@@ -26,7 +22,6 @@ const RegisterForm = () => {
 
   onMount(() => {
     fetchUserData();
-    console.log('Mounted User:', user());
   });
 
   const handleSubmit = async (event: SubmitEvent) => {

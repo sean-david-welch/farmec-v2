@@ -1,9 +1,23 @@
 import utils from '../../styles/Utils.module.css';
 
 import { signOutUser } from '../../utils/auth';
-import { removeUser } from '../../utils/userStore';
+
+import { useStore } from '@nanostores/solid';
+import { createSignal, onMount } from 'solid-js';
+import { $user, addUser, removeUser } from '../../utils/userStore';
 
 const LogoutForm = () => {
+  const user = useStore($user);
+
+  onMount(() => {
+    if (typeof window !== 'undefined') {
+      const storedUserData = localStorage.getItem('user');
+      if (storedUserData) {
+        addUser(JSON.parse(storedUserData));
+      }
+    }
+  });
+
   const handleSubmit = async (event: SubmitEvent) => {
     event.preventDefault();
 
@@ -23,17 +37,21 @@ const LogoutForm = () => {
           localStorage.removeItem('user');
         }
 
-        window.location.reload();
+        window.location.href = '/';
       }
     } catch (error) {
       console.error('Error submitting form:', error);
     }
   };
 
-  return (
+  return user() ? (
     <form onSubmit={handleSubmit} class={utils.form}>
       <button type="submit">Logout</button>
     </form>
+  ) : (
+    <a href="/login">
+      <button type="submit">Login</button>
+    </a>
   );
 };
 
