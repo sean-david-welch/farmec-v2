@@ -1,8 +1,6 @@
 import { atom } from 'nanostores';
 import type User from '../types/user';
 
-import { useStore } from '@nanostores/solid';
-
 export const $user = atom<User[]>([]);
 
 export const addUser = (user: User) => {

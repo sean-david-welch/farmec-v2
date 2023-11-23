@@ -1,9 +1,9 @@
 import utils from '../../styles/Utils.module.css';
-import styles from '../../styles/Blogs.module.css';
 
 import { signOutUser } from '../../utils/auth';
+import { removeUser } from '../../utils/userStore';
 
-const LoginForm = () => {
+const LogoutForm = () => {
   const handleSubmit = async (event: SubmitEvent) => {
     event.preventDefault();
 
@@ -16,6 +16,14 @@ const LoginForm = () => {
       });
 
       if (response) {
+        const storedUser = localStorage.getItem('user');
+
+        if (storedUser) {
+          const userData = JSON.parse(storedUser);
+          removeUser(userData.uid);
+          localStorage.removeItem('user');
+        }
+
         window.location.reload();
       }
     } catch (error) {
@@ -30,4 +38,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default LogoutForm;

@@ -21,11 +21,13 @@ const LoginForm = () => {
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${idToken}` },
       });
 
-      const result = await response.json();
+      const user = await response.json();
 
-      if (result) {
+      if (user) {
         setEmail('');
         setPassword('');
+
+        localStorage.setItem('user', JSON.stringify(user));
 
         window.location.reload();
       }

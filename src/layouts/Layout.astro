@@ -1,6 +1,5 @@
 ---
-import { app } from '../lib/firebase-server';
-import { getAuth } from 'firebase-admin/auth';
+
 import { ViewTransitions } from 'astro:transitions';
 
 import utils from '../styles/Utils.module.css'
@@ -13,32 +12,6 @@ interface Props {
 	title: string;
 }
 const { title } = Astro.props;
-
-
-const auth = getAuth(app);
-
-let user = null;
-
-const sessionCookie = Astro.cookies.get("session");
-if (sessionCookie) {
-  try {
-    const decodedCookie = await auth.verifySessionCookie(sessionCookie.value);
-    const uid = decodedCookie.uid;
-    console.log("User Authenticated");
-
-    // Fetch user data from the API
-    const response = await fetch(`http://localhost:4321/api/users/${uid}`);
-    if (!response.ok) {
-      throw new Error('Failed to fetch user data');
-    }
-    user = await response.json();
-	console.log("User:", user)
-  } catch (error) {
-    console.error("Error:", error);
-  }
-} else {
-  console.log("No User");
-}
 
 ---
 
