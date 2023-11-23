@@ -1,25 +1,31 @@
 import styles from '../../styles/Blogs.module.css';
 import utils from '../../styles/Utils.module.css';
 
+import type { Component } from 'solid-js';
 import { addUser } from '../../utils/userStore';
 import { createSignal, onMount, createEffect } from 'solid-js';
 
 import type User from '../../types/user';
 
-const RegisterForm = () => {
+interface props {
+  user: User | null;
+}
+
+const RegisterForm: Component<props> = props => {
+  const [user, setUser] = createSignal(props.user);
+
   const [email, setEmail] = createSignal('');
   const [password, setPassword] = createSignal('');
   const [role, setRole] = createSignal('user');
 
   const fetchUserData = () => {
-    const storedUserData = localStorage.getItem('user');
-    if (storedUserData) {
-      const storedUser = JSON.parse(storedUserData);
-      setUser(storedUser);
+    if (typeof window !== 'undefined') {
+      const storedUserData = localStorage.getItem('user');
+      if (storedUserData) {
+        setUser(JSON.parse(storedUserData));
+      }
     }
   };
-
-  const [user, setUser] = createSignal<User | null>(null);
 
   onMount(() => {
     fetchUserData();

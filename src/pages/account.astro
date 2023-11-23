@@ -7,11 +7,15 @@ import Layout from "../layouts/Layout.astro";
 
 import RegisterForm from '../components/client/RegisterForm';
 import LogoutForm from '../components/client/LogoutForm';
+
+let user = null;  
+
 ---
 
 <Layout title='Login'>
     <LogoutForm client:load />
 
-    <RegisterForm client:load />
+
+    <RegisterForm user={user} client:load />
 
 </Layout>
