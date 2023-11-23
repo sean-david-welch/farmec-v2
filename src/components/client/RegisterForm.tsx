@@ -1,11 +1,31 @@
 import styles from '../../styles/Blogs.module.css';
 import utils from '../../styles/Utils.module.css';
-import { createSignal } from 'solid-js';
+
+import { addUser } from '../../utils/userStore';
+import { createSignal, onMount, createEffect } from 'solid-js';
+
+import type User from '../../types/user';
 
 const RegisterForm = () => {
   const [email, setEmail] = createSignal('');
   const [password, setPassword] = createSignal('');
   const [role, setRole] = createSignal('user');
+
+  const fetchUserData = () => {
+    const storedUserData = localStorage.getItem('user');
+    if (storedUserData) {
+      const storedUser = JSON.parse(storedUserData);
+      setUser(storedUser);
+    }
+  };
+
+  const [user, setUser] = createSignal<User | null>(null);
+
+  onMount(() => {
+    fetchUserData();
+
+    console.log('Mounted User:', user());
+  });
 
   const handleSubmit = async (event: SubmitEvent) => {
     event.preventDefault();
@@ -23,7 +43,7 @@ const RegisterForm = () => {
 
       const result = await response.json();
 
-      if (response) {
+      if (response.ok) {
         setEmail('');
         setPassword('');
         setRole('user');
@@ -32,11 +52,10 @@ const RegisterForm = () => {
       }
     } catch (error) {
       console.error('Error submitting form:', error);
-      // Handle errors
     }
   };
 
-  return (
+  return user() && user()?.role === 'admin' ? (
     <form onSubmit={handleSubmit} class={utils.form}>
       <label>Email:</label>
       <input type="email" value={email()} onInput={e => setEmail(e.currentTarget.value)} required />
@@ -52,7 +71,7 @@ const RegisterForm = () => {
 
       <button type="submit">Register</button>
     </form>
-  );
+  ) : null;
 };
 
 export default RegisterForm;

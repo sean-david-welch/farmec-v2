@@ -26,6 +26,7 @@ export const POST: APIRoute = async ({ request }): Promise<Response> => {
     const result = await client.query(sql, values);
 
     return new Response(JSON.stringify(result.rows[0]), {
+      status: 200,
       headers: { 'Content-Type': 'application/json' },
     });
   } catch (error) {

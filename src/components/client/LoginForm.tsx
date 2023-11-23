@@ -29,7 +29,7 @@ const LoginForm = () => {
 
         localStorage.setItem('user', JSON.stringify(user));
 
-        window.location.reload();
+        window.location.href = '/';
       }
     } catch (error: any) {
       if (error.response && error.response.status === 401) {

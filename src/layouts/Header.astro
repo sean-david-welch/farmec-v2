@@ -1,5 +1,6 @@
 ---
 import { Image } from "astro:assets";
+import AccountButton from "../components/client/AccountButton"
 
 import styles from '../styles/Header.module.css'
 import type Supplier from "../types/supplier"
@@ -83,5 +84,6 @@ const suppliers: Supplier[] = await response.json();
             <a href='/#contact' style={styles.navListItem}>Contact</a>
         </li>
 
+        <AccountButton client:load />
     </ul>
 </nav>
