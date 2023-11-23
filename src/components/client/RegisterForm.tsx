@@ -1,18 +1,15 @@
-import styles from '../../styles/Blogs.module.css';
 import utils from '../../styles/Utils.module.css';
 
-import type { Component } from 'solid-js';
-import { addUser } from '../../utils/userStore';
-import { createSignal, onMount, createEffect } from 'solid-js';
+import { $user, addUser } from '../../utils/userStore';
+import { useStore } from '@nanostores/solid';
+import { createSignal, onMount } from 'solid-js';
 
 import type User from '../../types/user';
 
-interface props {
-  user: User | null;
-}
+const RegisterForm = () => {
+  const user = useStore($user);
 
-const RegisterForm: Component<props> = props => {
-  const [user, setUser] = createSignal(props.user);
+  console.log('User', user);
 
   const [email, setEmail] = createSignal('');
   const [password, setPassword] = createSignal('');
@@ -22,14 +19,13 @@ const RegisterForm: Component<props> = props => {
     if (typeof window !== 'undefined') {
       const storedUserData = localStorage.getItem('user');
       if (storedUserData) {
-        setUser(JSON.parse(storedUserData));
+        addUser(JSON.parse(storedUserData));
       }
     }
   };
 
   onMount(() => {
     fetchUserData();
-
     console.log('Mounted User:', user());
   });
 

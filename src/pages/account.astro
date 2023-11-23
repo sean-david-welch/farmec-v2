@@ -4,18 +4,14 @@ import utils from '../styles/Utils.module.css'
 
 
 import Layout from "../layouts/Layout.astro";
-
-import RegisterForm from '../components/client/RegisterForm';
 import LogoutForm from '../components/client/LogoutForm';
-
-let user = null;  
+import RegisterForm from '../components/client/RegisterForm';
 
 ---
 
 <Layout title='Login'>
     <LogoutForm client:load />
 
-
-    <RegisterForm user={user} client:load />
-
+    <RegisterForm client:only="solid-js" />
 </Layout>
+

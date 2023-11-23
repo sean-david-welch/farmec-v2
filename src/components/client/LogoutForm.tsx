@@ -19,8 +19,7 @@ const LogoutForm = () => {
         const storedUser = localStorage.getItem('user');
 
         if (storedUser) {
-          const userData = JSON.parse(storedUser);
-          removeUser(userData.uid);
+          removeUser();
           localStorage.removeItem('user');
         }
 
