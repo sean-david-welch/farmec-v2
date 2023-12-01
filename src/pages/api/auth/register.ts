@@ -1,11 +1,9 @@
-import type { APIRoute, AstroCookies } from 'astro';
+import type { APIRoute } from 'astro';
 
 import { getAuth } from 'firebase-admin/auth';
-import { verifyToken } from '../../../utils/admin';
 import { pool } from '../../../database/connection';
 
 export const POST: APIRoute = async ({ request }): Promise<Response> => {
-  await verifyToken(request);
   const client = await pool.connect();
 
   try {
