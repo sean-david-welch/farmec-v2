@@ -4,7 +4,7 @@ import { signOutUser } from '../../utils/auth';
 
 import { useStore } from '@nanostores/solid';
 import { createSignal, onMount } from 'solid-js';
-import { $user, addUser, removeUser } from '../../utils/userStore';
+import { $user, addUser, removeUser } from '../../utils/store';
 
 const LogoutForm = () => {
   const user = useStore($user);

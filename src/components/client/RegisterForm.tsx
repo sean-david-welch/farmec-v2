@@ -1,6 +1,6 @@
 import utils from '../../styles/Utils.module.css';
 
-import { $user, addUser } from '../../utils/userStore';
+import { $user, addUser } from '../../utils/store';
 import { useStore } from '@nanostores/solid';
 import { createSignal, onMount } from 'solid-js';
 

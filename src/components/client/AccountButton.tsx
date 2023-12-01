@@ -1,6 +1,6 @@
 import styles from '../../styles/Header.module.css';
 import { createSignal, createEffect } from 'solid-js';
-import { addUser } from '../../utils/userStore';
+import { addUser } from '../../utils/store';
 
 const AccountButton = () => {
   const [user, setUser] = createSignal(null);
