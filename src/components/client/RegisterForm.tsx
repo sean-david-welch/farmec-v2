@@ -52,7 +52,7 @@ const RegisterForm = () => {
     }
   };
 
-  return user() ? (
+  return user() && user()?.role === 'admin' ? (
     <form onSubmit={handleSubmit} class={utils.form}>
       <label>Email:</label>
       <input type="email" value={email()} onInput={e => setEmail(e.currentTarget.value)} required />

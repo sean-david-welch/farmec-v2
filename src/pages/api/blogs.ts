@@ -1,6 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
 import type { APIRoute } from 'astro';
-import { verifyToken } from '../../utils/admin';
 
 import { pool } from '../../database/connection';
 import { generatePresignedUrl } from '../../utils/aws';

@@ -1,12 +1,12 @@
 import { app } from '../lib/firebase-client';
-import { getAuth, signOut, signInWithEmailAndPassword, inMemoryPersistence } from 'firebase/auth';
+import { getAuth, signOut, signInWithEmailAndPassword, browserLocalPersistence } from 'firebase/auth';
 
 const auth = getAuth(app);
 
 export const signInUser = async (email: string, password: string): Promise<string | undefined> => {
   let idToken: string | undefined;
 
-  auth.setPersistence(inMemoryPersistence);
+  auth.setPersistence(browserLocalPersistence);
 
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);

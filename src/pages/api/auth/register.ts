@@ -1,9 +1,11 @@
 import type { APIRoute } from 'astro';
 
+import { app } from '../../../lib/firebase-server';
 import { getAuth } from 'firebase-admin/auth';
 import { pool } from '../../../database/connection';
 
 export const POST: APIRoute = async ({ request }): Promise<Response> => {
+  const auth = getAuth(app);
   const client = await pool.connect();
 
   try {
@@ -15,10 +17,18 @@ export const POST: APIRoute = async ({ request }): Promise<Response> => {
       return new Response('Missing form data', { status: 400 });
     }
 
-    const userRecord = await getAuth().createUser({ email, password });
+    const userRecord = await auth.createUser({ email, password });
+
+    if (role === 'admin') {
+      await auth.setCustomUserClaims(userRecord.uid, { admin: true });
+    }
+
+    const updatedUserRecord = await auth.getUser(userRecord.uid);
+    if (!updatedUserRecord.customClaims?.admin) {
+      throw new Error('Failed to set custom admin claim');
+    }
 
     const sql = `INSERT INTO users(uid, email, role) VALUES($1, $2, $3) RETURNING *`;
-
     const values = [userRecord.uid, email, role];
 
     const result = await client.query(sql, values);

@@ -7,10 +7,12 @@ import Layout from "../layouts/Layout.astro";
 import LogoutForm from '../components/client/LogoutForm';
 import RegisterForm from '../components/client/RegisterForm';
 
+
 ---
 
 <Layout title='Login'>
     <LogoutForm client:only="solid-js" />
+
     <RegisterForm client:only="solid-js" />
 </Layout>
 

@@ -1,6 +1,5 @@
 import styles from '../../styles/Header.module.css';
 import { createSignal, createEffect } from 'solid-js';
-import { addUser } from '../../utils/store';
 
 const AccountButton = () => {
   const [user, setUser] = createSignal(null);
@@ -10,7 +9,6 @@ const AccountButton = () => {
     if (storedUserData) {
       const storedUser = JSON.parse(storedUserData);
       setUser(storedUser);
-      addUser(storedUser);
     }
   });
 
