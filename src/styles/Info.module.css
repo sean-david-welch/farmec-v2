@@ -1,3 +1,18 @@
+.info {
+  @apply py-5;
+}
+
+.infoSection {
+  @apply flex flex-col items-center;
+  @apply bg-zinc-300 rounded-lg;
+  @apply mx-auto w-[20vw];
+  @apply md:w-[80vw];
+}
+
+.infoSection > * {
+  @apply mx-auto;
+}
+
 .infoSection {
   @apply mt-10 mb-5;
 }
@@ -78,7 +93,7 @@
 }
 
 .specialListItem {
-  @apply text-2xl font-semibold text-zinc-800;
+  @apply text-sm font-semibold text-zinc-800;
 }
 
 .specialListItem:nth-child(3) {

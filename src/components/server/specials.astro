@@ -47,12 +47,12 @@ const statsItems = [
     <div class={styles.specials}>
         {statsItems.map((item) => (
             <a href={item.link}>
-                <ul class={styles.statList}>
-                    <li class={styles.statListItem}>{item.title}</li>
-                    <li class={styles.statListItem}>
-                        <i class={item.icon}></i>
+                <ul class={styles.specialList}>
+                    <li class={styles.specialListItem}>
+                        <img src={item.icon} alt="icon">
                     </li>
-                    <li class={styles.statListItem}>{item.description}</li>
+                    <li class={styles.specialListItem}>{item.title}</li>
+                    <li class={styles.specialListItem}>{item.description}</li>
                 </ul>
             </a>
         ))}

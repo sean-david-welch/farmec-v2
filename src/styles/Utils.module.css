@@ -39,14 +39,6 @@
   @apply transform translate-x-[-50%];
   @apply md:text-xl;
 }
-
-.typewriterSkeleton {
-  @apply absolute z-10 py-5;
-  @apply left-1/2 bottom-5;
-  @apply h-[15vh] w-[70vw] invisible;
-  @apply transform translate-x-[-50%];
-  @apply md:text-xl;
-}
 /* Forms */
 .form {
   @apply flex flex-col bg-zinc-800 text-center p-10;
@@ -84,8 +76,8 @@
 }
 
 .boxshadow {
-  box-shadow: 0 0 0 2px rgba(200, 1, 1, 0.5), 0 0 0 3px rgba(200, 1, 1, 0.5),
-    0 0 0 4px rgba(200, 1, 1, 0.5), 0 0 0 5px rgba(200, 1, 1, 0.5);
+  box-shadow: 0 0 0 2px rgba(200, 1, 1, 0.5), 0 0 0 3px rgba(200, 1, 1, 0.5), 0 0 0 4px rgba(200, 1, 1, 0.5),
+    0 0 0 5px rgba(200, 1, 1, 0.5);
 }
 
 .btn svg {
@@ -267,17 +259,6 @@
   @apply flex justify-center items-center;
   @apply rounded-xl mx-auto;
   @apply md:w-[80vw];
-}
-
-.infoSection {
-  @apply flex flex-col items-center;
-  @apply bg-zinc-300 rounded-lg;
-  @apply mx-auto w-[20vw];
-  @apply md:w-[80vw];
-}
-
-.infoSection > * {
-  @apply mx-auto;
 }
 
 .infoItem {

@@ -17,26 +17,28 @@ const Slider = (props: Props) => {
   };
 
   return (
-    <div class={styles.slideshow}>
-      <For each={props.images}>
-        {(_, index) => (
-          <img
-            src={props.images[currentIndex()]}
-            alt="slides"
-            class={`${styles.slides} ${currentIndex() === index() ? styles.fadeIn : styles.fadeOut}`}
-          />
-        )}
-      </For>
-      <button class={styles.prevButton} onClick={prevStep} aria-label="last slide">
-        <div>
-          <img src="/icons/chevron-left.svg" alt="Previous Icon" />
-        </div>
-      </button>
-      <button class={styles.nextButton} onClick={nextStep} aria-label="next slide">
-        <div>
-          <img src="/icons/chevron-right.svg" alt="Next Icon" />
-        </div>
-      </button>
+    <div class={styles.heroContainer}>
+      <div class={styles.slideshow}>
+        <For each={props.images}>
+          {(_, index) => (
+            <img
+              src={props.images[currentIndex()]}
+              alt="slides"
+              class={`${styles.slides} ${currentIndex() === index() ? styles.fadeIn : styles.fadeOut}`}
+            />
+          )}
+        </For>
+        <button class={styles.prevButton} onClick={prevStep} aria-label="last slide">
+          <div>
+            <img src="/icons/chevron-left.svg" alt="Previous Icon" />
+          </div>
+        </button>
+        <button class={styles.nextButton} onClick={nextStep} aria-label="next slide">
+          <div>
+            <img src="/icons/chevron-right.svg" alt="Next Icon" />
+          </div>
+        </button>
+      </div>
     </div>
   );
 };

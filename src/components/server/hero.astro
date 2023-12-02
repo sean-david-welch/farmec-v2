@@ -2,17 +2,14 @@
 import type Carousel from '../../types/carousel';
 
 import Slider from '../client/Slider';
-import TypewiterComponent from '../client/Typewriter'
-
-import styles from '../../styles/Carousel.module.css'
-
+import Heading from './heading.astro';
 
 const carousels: Carousel[] = await fetch('http://localhost:4321/api/carousels').then(carousels => carousels.json());
 
 const images = carousels.map(carousels => carousels.image)
 ---
 
-<div style={styles.heroContainer}>
+<section id="Hero">
     <Slider images={images} client:load />
-    <TypewiterComponent client:load />
-</div>
+    <Heading />
+</section>
