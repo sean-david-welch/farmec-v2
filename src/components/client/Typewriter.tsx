@@ -1,44 +1,35 @@
-import { onMount, createSignal } from 'solid-js';
+import { onMount } from 'solid-js';
 import Typewriter from 'typewriter-effect';
 import utils from '../../styles/Utils.module.css';
 
 const TypewriterComponent = () => {
-  const [isClient, setIsClient] = createSignal(false);
-  let typewriterElement: HTMLHeadingElement | undefined;
+  let typewriterElement: HTMLElement | null = null;
 
   onMount(() => {
-    setIsClient(true);
-
     if (typewriterElement) {
       const typewriter = new Typewriter(typewriterElement, {
-        loop: false,
-        cursor: '',
-        delay: 50,
+        loop: true,
+        delay: 75,
       });
 
-      typewriter.stop().typeString('Importers & Distributors of Quality Agricultural Machinery').start();
+      if (typeof typewriter.typeString === 'function') {
+        typewriter.typeString('Importers & Distributors of Quality Agricultural Machinery').start();
+      } else {
+        console.error('typeString method is not available on typewriter instance');
+      }
     }
   });
 
   return (
-    <>
-      {!isClient() ? (
-        <div class={utils.typewriterSkeleton}></div>
-      ) : (
-        <div class={utils.typewriter}>
-          <h1
-            ref={el => {
-              typewriterElement = el;
-            }}></h1>
-          <button class={utils.btn}>
-            <a href="#Info">
-              Find Out More:
-              {/* FontAwesomeIcon equivalent */}
-            </a>
-          </button>
-        </div>
-      )}
-    </>
+    <div class={utils.typewriter}>
+      <h1>Importers & Distributors of Quality Agricultural Machinery</h1>
+
+      <button class={utils.btn}>
+        <a href="#Info">
+          Find Out More: <img src="/icons/chevron-down.svg" alt="down" />
+        </a>
+      </button>
+    </div>
   );
 };
 

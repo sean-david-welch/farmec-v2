@@ -1,13 +1,20 @@
 ---
 import Hero from '../components/server/hero.astro';
 import Layout from '../layouts/Layout.astro';
-import type Carousel from '../types/carousel';
 
-const carousels: Carousel[] = await fetch('http://localhost:4321/api/carousels').then(carousels => carousels.json());
+import utils from '../styles/Utils.module.css'
 
-const images = carousels.map(carousels => carousels.image)
+import Contact from '../components/server/contact.astro';
+import Displays from '../components/server/displays.astro';
+
 ---
 
 <Layout title="Farmec Ireland Ltd.">
-	<Hero/>
+	<section id="Home">
+		<div class={utils.home}>
+			<Hero/>
+			<Displays />
+			<Contact />
+		</div>
+	</section>
 </Layout>
