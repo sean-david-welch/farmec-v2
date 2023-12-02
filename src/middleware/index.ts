@@ -1,16 +1,31 @@
-import type { MiddlewareHandler, MiddlewareNext, APIContext } from 'astro';
+import type { MiddlewareNext, APIContext } from 'astro';
 import { verifyToken } from '../utils/admin';
 
-const middleware: MiddlewareHandler<Promise<void>> = async (
+type CustomMiddlewareHandler = (
   context: APIContext,
   next: MiddlewareNext<Promise<void>>
-) => {
-  console.log('middle running');
+) => Promise<void | Response> | void | Response;
 
+const middleware: CustomMiddlewareHandler = async (context: APIContext, next: MiddlewareNext<Promise<void>>) => {
   if (['POST', 'PUT', 'DELETE'].includes(context.request.method)) {
-    console.log('checked method');
+    const result = await verifyToken(context.request);
 
-    await verifyToken(context.request);
+    if (result instanceof Response) {
+      return result;
+    }
+
+    const url = new URL(context.request.url);
+    const path = url.pathname;
+    console.log('path', path);
+
+    const isAdmin = result.admin === true;
+
+    if (!isAdmin && !path.startsWith('/api/services/')) {
+      return new Response(JSON.stringify({ error: 'Access denied' }), {
+        status: 403,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
   }
 
   return next();

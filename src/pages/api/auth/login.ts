@@ -21,7 +21,7 @@ export const GET: APIRoute = async ({ request, cookies }) => {
 
     const user = {
       uid: result.uid,
-      role: result.role,
+      email: result.email,
     };
 
     const threeDays = 60 * 60 * 24 * 3 * 1000;

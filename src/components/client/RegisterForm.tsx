@@ -52,7 +52,7 @@ const RegisterForm = () => {
     }
   };
 
-  return user() && user()?.role === 'admin' ? (
+  return (
     <form onSubmit={handleSubmit} class={utils.form}>
       <label>Email:</label>
       <input type="email" value={email()} onInput={e => setEmail(e.currentTarget.value)} required />
@@ -68,7 +68,7 @@ const RegisterForm = () => {
 
       <button type="submit">Register</button>
     </form>
-  ) : null;
+  );
 };
 
 export default RegisterForm;

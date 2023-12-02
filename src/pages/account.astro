@@ -1,5 +1,5 @@
 ---
-import styles from '../styles/About.module.css'
+import styles from '../styles/Account.module.css'
 import utils from '../styles/Utils.module.css'
 
 
@@ -8,11 +8,26 @@ import LogoutForm from '../components/client/LogoutForm';
 import RegisterForm from '../components/client/RegisterForm';
 
 
+
 ---
 
 <Layout title='Login'>
-    <LogoutForm client:only="solid-js" />
-
-    <RegisterForm client:only="solid-js" />
+    <div class={styles.accountMap}>
+        <LogoutForm client:only="solid-js" />
+        <RegisterForm client:only="solid-js" />
+    </div>
 </Layout>
 
+<script>
+    import { createSignal } from 'solid-js';
+const [isAdmin, setIsAdmin] = createSignal(false);
+  fetch('http://localhost:4321/api/auth/admin', {
+      credentials: 'include'
+  })
+  .then(response => response.json())
+  .then(data => {
+      setIsAdmin(data.isAdmin);
+  })
+  .catch(error => console.error('Error fetching admin status:', error));
+
+</script>

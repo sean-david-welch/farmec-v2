@@ -1,6 +1,6 @@
 /* Misc */
 .container {
-  @apply mx-auto min-h-screen text-center max-w-full overflow-x-hidden my-28;
+  @apply mx-auto min-h-screen text-center max-w-full overflow-x-hidden my-28 p-20;
 }
 
 .home {

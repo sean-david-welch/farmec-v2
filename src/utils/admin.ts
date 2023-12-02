@@ -12,6 +12,7 @@ export const verifyToken = async (request: Request) => {
   );
 
   const token = cookies.get('session');
+  console.log('token in middleware', token);
 
   if (!token) {
     return new Response(JSON.stringify({ error: 'No token provided' }), {
@@ -24,6 +25,10 @@ export const verifyToken = async (request: Request) => {
     const auth = getAuth(app);
 
     const decodedToken = await auth.verifySessionCookie(token);
+    const isAdmin = decodedToken.admin === true;
+
+    console.log('Admin:', isAdmin);
+    console.log('token:', decodedToken);
 
     return decodedToken;
   } catch (error) {

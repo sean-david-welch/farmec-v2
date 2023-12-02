@@ -21,10 +21,12 @@ export const POST: APIRoute = async ({ request }): Promise<Response> => {
 
     if (role === 'admin') {
       await auth.setCustomUserClaims(userRecord.uid, { admin: true });
+    } else {
+      await auth.setCustomUserClaims(userRecord.uid, { admin: false });
     }
 
     const updatedUserRecord = await auth.getUser(userRecord.uid);
-    if (!updatedUserRecord.customClaims?.admin) {
+    if (updatedUserRecord.customClaims && updatedUserRecord.customClaims.admin === undefined) {
       throw new Error('Failed to set custom admin claim');
     }
 
