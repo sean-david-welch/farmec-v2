@@ -5,20 +5,29 @@ import fastifyCookie from '@fastify/cookie';
 import fastifyPostgres from '@fastify/postgres';
 import fastifyFormbody from '@fastify/formbody';
 
+import secrets from './utils/secrets';
+import mainRouter from './router/router';
+
 const app = fastify();
 
 app.register(fastifyCors, {
-  origin: 'https://bounce-frontend-vite.onrender.com',
+  origin: 'http://localhost:3000',
   credentials: true,
 });
+
 app.register(fastifyCompress);
 app.register(fastifyCookie);
 app.register(fastifyFormbody);
 
-// app.register(router, { prefix: '/api' });
+app.register(fastifyPostgres, {
+  connectionString: secrets.database_url,
+});
 
-app.get('/docs.json', (request, reply) => {
+app.register(mainRouter, { prefix: '/api' });
+
+app.get('/', (request, reply) => {
   reply.header('Content-Type', 'application/json');
+  reply.send('Fastify App Running');
 });
 
 app
