@@ -17,7 +17,7 @@ const app = fastify({
 });
 
 app.register(fastifyCors, {
-  origin: 'http://localhost:3000',
+  origin: '*',
   credentials: true,
 });
 

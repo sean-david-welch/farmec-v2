@@ -8,12 +8,12 @@ class SuppliersController {
     this.supplierService = supplierService;
   }
 
-  async GetSuppliers(request: FastifyRequest, reply: FastifyReply) {
+  async getSuppliers(request: FastifyRequest, reply: FastifyReply) {
     try {
-      const suppliers = await this.supplierService.GetSuppliers();
+      const suppliers = await this.supplierService.getSuppliers();
       return reply.code(200).send(suppliers);
     } catch (error) {
-      console.error(error);
+      console.error('Controller Error:', error);
       return reply.code(500).send({ error: 'Internal Server Error' });
     }
   }
