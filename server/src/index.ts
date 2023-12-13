@@ -8,7 +8,13 @@ import fastifyFormbody from '@fastify/formbody';
 import secrets from './utils/secrets';
 import mainRouter from './router/router';
 
-const app = fastify();
+const app = fastify({
+  logger: {
+    transport: {
+      target: 'pino-pretty',
+    },
+  },
+});
 
 app.register(fastifyCors, {
   origin: 'http://localhost:3000',
