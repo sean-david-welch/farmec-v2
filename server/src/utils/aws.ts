@@ -4,24 +4,11 @@ import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 
 import secrets from './secrets';
 
-const validateAndLogCredentials = () => {
-  const accessKeyId = secrets.aws_access_key;
-  const secretAccessKey = secrets.aws_secret;
-
-  if (!accessKeyId || !secretAccessKey) {
-    throw new Error('AWS credentials are not set in environment variables');
-  }
-
-  return { accessKeyId, secretAccessKey };
-};
-
-const { accessKeyId, secretAccessKey } = validateAndLogCredentials();
-
 const s3Client = new S3Client({
   region: 'eu-west-1',
   credentials: {
-    accessKeyId: accessKeyId,
-    secretAccessKey: secretAccessKey,
+    accessKeyId: secrets.aws_access_key,
+    secretAccessKey: secrets.aws_secret,
   },
 });
 
