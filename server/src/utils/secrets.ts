@@ -20,6 +20,5 @@ const secrets = {
   aws_access_key: process.env.AWS_ACCESS_KEY,
   aws_secret: process.env.AWS_SECRET,
 };
-console.log(secrets);
 
 export default secrets;
