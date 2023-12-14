@@ -7,6 +7,9 @@ const suppliers = async (fastify: FastifyInstance) => {
   const suppliersController = new SuppliersController(supplierService);
 
   fastify.get('/suppliers', suppliersController.getSuppliers.bind(suppliersController));
+  fastify.post('/suppliers', suppliersController.createSupplier.bind(suppliersController));
+
+  fastify.put('/suppliers', suppliersController.updateSupplier.bind(suppliersController));
 };
 
 export default suppliers;
