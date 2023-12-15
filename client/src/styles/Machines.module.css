@@ -1,0 +1,29 @@
+.machineCard {
+  @apply grid grid-cols-1 my-2 mx-52;
+  @apply md:mx-5;
+}
+
+.machineGrid {
+  @apply flex flex-row justify-center;
+  @apply bg-zinc-600 border-4 border-zinc-800 rounded-2xl;
+  @apply transition-all duration-700 ease-in-out;
+  @apply md:flex-col;
+}
+
+.machineGrid:hover {
+  @apply bg-zinc-700 border-zinc-900 scale-[1.01];
+}
+
+.machineGrid img {
+  @apply rounded-l-2xl border-r-4 border-zinc-800;
+  @apply md:object-cover md:border-b-4 md:border-r-0 md:rounded-t-2xl md:rounded-bl-none;
+}
+
+.machineInfo {
+  @apply flex flex-col;
+  @apply p-4;
+}
+
+.machineInfo > * {
+  @apply my-2;
+}

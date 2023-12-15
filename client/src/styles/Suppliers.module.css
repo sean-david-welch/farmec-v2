@@ -1,0 +1,172 @@
+/* Suppliers Page */
+.supplierCard {
+  @apply bg-zinc-800 mx-52 my-10 p-5 rounded-2xl;
+  @apply border-4 border-zinc-600;
+  @apply md:mx-5;
+}
+
+.supplierGrid {
+  @apply grid grid-cols-2 my-4;
+  @apply md:grid-cols-1;
+}
+
+.supplierImage {
+  @apply border-2 border-zinc-400 rounded-lg;
+}
+
+.supplierDetail .supplierImage {
+  @apply mx-auto;
+}
+
+.supplierHead {
+  @apply grid grid-cols-1 items-center justify-center;
+}
+
+.supplierHead > * {
+  @apply md:my-2;
+}
+
+.supplierLogo {
+  @apply mx-auto;
+}
+
+.supplierInfo {
+  @apply grid grid-cols-1 items-center justify-center my-4;
+}
+
+.supplierInfo > * {
+  @apply my-5;
+}
+
+.supplierDescription {
+  @apply text-center mx-20 text-lg;
+  @apply md:mx-5;
+}
+
+/* Supplier Detail */
+.supplierHeading {
+  @apply text-zinc-800;
+}
+
+.supplierHeading > * {
+  @apply my-5;
+}
+
+.supplierDetail {
+  @apply grid grid-cols-1 items-center justify-center;
+  @apply bg-zinc-800 mx-52 my-10 p-5 rounded-2xl;
+  @apply border-4 border-zinc-600;
+  @apply md:mx-5;
+}
+
+.supplierDetail > * {
+  @apply my-5;
+}
+
+/* Social Links */
+.socialLinks {
+  @apply flex flex-row justify-center items-center;
+}
+
+.socialLinks > a {
+  @apply rounded-full h-11 w-11 flex items-center justify-center mx-4;
+  @apply transition-all ease-in-out duration-700;
+  @apply md:h-8 md:w-8 md:mx-2;
+}
+
+.socialLinks > a:hover {
+  @apply transform scale-105;
+}
+
+.icon {
+  @apply h-8 w-8;
+  @apply md:h-5 md:w-5;
+}
+
+.socialLinks path {
+  @apply fill-gray-100;
+  @apply transition-all ease-in-out duration-700;
+}
+
+.twitterButton {
+  @apply bg-blue-500;
+}
+
+.linkedinButton {
+  @apply bg-blue-700;
+}
+
+.whatsappButton {
+  @apply bg-green-900;
+}
+
+.facebookButton {
+  @apply bg-blue-800;
+}
+
+.youtubeButton {
+  @apply bg-red-600;
+}
+
+.websiteButton {
+  @apply bg-blue-300;
+}
+
+.instagramButton {
+  @apply bg-gradient-to-br from-purple-500 via-pink-500 to-red-500;
+}
+
+.videoGrid {
+  @apply grid grid-cols-2 my-4 mx-40;
+  @apply md:grid-cols-1 md:mx-2;
+}
+
+.videoCard {
+  @apply flex flex-col items-center justify-center;
+  @apply bg-zinc-800 mx-12 my-10 p-2 rounded-2xl;
+  @apply border-4 border-zinc-600;
+  @apply md:mx-2;
+}
+
+.videoCard > * {
+  @apply my-2;
+}
+
+.video {
+  @apply rounded-2xl;
+  @apply md:w-[300px];
+}
+
+/* Products */
+.productGrid {
+  @apply grid grid-cols-1 mx-52 my-10;
+  @apply md:mx-5;
+}
+
+.productCard {
+  @apply flex flex-col p-4;
+  @apply bg-zinc-800 border-4 border-zinc-600 rounded-2xl;
+  @apply transition-all duration-500 ease-in-out;
+}
+
+.productCard:hover {
+  @apply border-red-700;
+}
+
+.productCard > * {
+  @apply my-2;
+}
+
+.productCard img {
+  @apply mx-auto;
+  @apply transition-all duration-500 ease-in-out;
+}
+
+.productCard:hover img {
+  @apply transform scale-105;
+}
+
+.productCard p {
+  @apply mx-52;
+  @apply md:mx-5;
+}
