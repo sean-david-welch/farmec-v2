@@ -27,6 +27,22 @@ class SupplierService {
     }
   }
 
+  async getSupplierId(id: string) {
+    const client = await this.fastify.pg.connect();
+
+    try {
+      const query = await client.query('select * from "Supplier" where id = $1', [id]);
+
+      return query.rows[0];
+    } catch (error) {
+      console.error('Service Error:', error);
+
+      throw new Error('Database query failed');
+    } finally {
+      client.release();
+    }
+  }
+
   async createSupplier(data: Supplier) {
     const client = await this.fastify.pg.connect();
 

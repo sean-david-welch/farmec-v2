@@ -1,5 +1,5 @@
 export default interface Supplier {
-  id: string;
+  id?: string;
   name: string;
   description: string;
   logo_image: string;
@@ -10,4 +10,5 @@ export default interface Supplier {
   social_twitter: string;
   social_youtube: string;
   social_website: string;
+  created?: string;
 }

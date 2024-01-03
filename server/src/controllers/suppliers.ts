@@ -24,6 +24,20 @@ class SuppliersController {
     }
   }
 
+  async getSupplierId(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
+    const id = request.id;
+
+    try {
+      const supplier = await this.supplierService.getSupplierId(id);
+
+      return reply.code(200).send(supplier);
+    } catch (error) {
+      console.error('Controller Error:', error);
+
+      return reply.code(500).send({ error: 'Internal Server Error' });
+    }
+  }
+
   async createSupplier(request: FastifyRequest<{ Body: Supplier }>, reply: FastifyReply) {
     const data = request.body;
     try {
@@ -32,8 +46,8 @@ class SuppliersController {
 
       const supplierData = {
         ...data,
-        logoImageUrl,
-        marketingImageUrl,
+        logo_image: logoImageUrl,
+        marketing_image: marketingImageUrl,
       };
 
       const supplier = await this.supplierService.createSupplier(supplierData);
@@ -54,19 +68,14 @@ class SuppliersController {
     const id = request.params.id;
     const data = request.body;
 
-    const images = {
-      logo: data.logo_image as string,
-      marketing: data.logo_image as string,
-    };
-
     try {
       const { logoUploadUrl, logoImageUrl } = await generatePresignedUrl(this.folder, data.logo_image);
       const { marketingUploadUrl, marketingImageUrl } = await generatePresignedUrl(this.folder, data.marketing_image);
 
       const supplierData = {
         ...data,
-        logoImageUrl,
-        marketingImageUrl,
+        logo_image: logoImageUrl,
+        marketing_image: marketingImageUrl,
       };
 
       const supplier = await this.supplierService.updateSupplier(id, supplierData);

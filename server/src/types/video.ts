@@ -26,3 +26,13 @@ export interface Video {
   video_id: string;
   thumbnail_url: string;
 }
+
+export interface VideoDTO {
+  video: Video;
+  youtube: {
+    id: string;
+    title: string;
+    thumbnail: string;
+    description: string;
+  };
+}

@@ -19,6 +19,8 @@ const secrets = {
 
   aws_access_key: process.env.AWS_ACCESS_KEY,
   aws_secret: process.env.AWS_SECRET,
+
+  youtube_api_key: process.env.YOUTUBE_API_KEY,
 };
 
 export default secrets;
