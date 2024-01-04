@@ -6,3 +6,6 @@ run: build
 
 test:
 	@go test -v ./...
+
+dev:
+	@air

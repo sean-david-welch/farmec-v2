@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"log"
 	"net/http"
 
 	"githib.com/sean-david-welch/Farmec-Astro/api/services"
@@ -17,10 +18,24 @@ func NewSuppliersContoller(supplierService *services.SupplierService) *Suppliers
 
 func (controller *SuppliersController) GetSuppliers(context *gin.Context) {
 	suppliers, err := controller.supplierService.GetSuppliers()
-
+	
 	if err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
-		return
+        log.Printf("Error getting suppliers: %v", err)
+        context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while getting suppliers"})
+        return
 	}
 	context.JSON(http.StatusOK, suppliers)
+}
+
+func (controller *SuppliersController) GetSupplierByID(context *gin.Context) {
+	id := context.Param("id")
+	supplier, err := controller.supplierService.GetSupplierByID(id)
+
+	if err != nil {
+        log.Printf("Error getting suppliers: %v", err)
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while getting suppliers"})
+		return
+	}
+
+	context.JSON(http.StatusOK, supplier)
 }
