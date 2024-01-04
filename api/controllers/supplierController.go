@@ -20,6 +20,7 @@ func (controller *SuppliersController) GetSuppliers(context *gin.Context) {
 
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
+		return
 	}
 	context.JSON(http.StatusOK, suppliers)
 }
