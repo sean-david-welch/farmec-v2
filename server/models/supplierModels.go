@@ -1,7 +1,6 @@
 package models
 
 import (
-	"database/sql"
 	"time"
 )
 
@@ -33,16 +32,16 @@ type Sparepart struct {
 }
 
 type Supplier struct {
-	ID              string `json:"id"`
-	Name            string `json:"name"`
-	Description     string `json:"description"`
-	LogoImage       string `json:"logo_image"`
-	MarketingImage  sql.NullString `json:"marketing_image"`
-	SocialFacebook  sql.NullString `json:"social_facebook"`
-	SocialInstagram sql.NullString `json:"social_instagram"`
-	SocialLinkedin  sql.NullString `json:"social_linkedin"`
-	SocialTwitter   sql.NullString `json:"social_twitter"`
-	SocialYoutube   sql.NullString `json:"social_youtube"`
-	SocialWebsite   sql.NullString `json:"social_website"`
-	Created         time.Time `json:"created"`
+    ID              string  `json:"id"`
+    Name            string  `json:"name"`
+    LogoImage       string  `json:"logo_image"`
+    MarketingImage  *string `json:"marketing_image"`
+    Description     string  `json:"description"`
+    SocialFacebook  *string `json:"social_facebook"`
+    SocialInstagram *string `json:"social_instagram"`
+    SocialLinkedin  *string `json:"social_linkedin"`
+    SocialTwitter   *string `json:"social_twitter"`
+    SocialYoutube   *string `json:"social_youtube"`
+    SocialWebsite   *string `json:"social_website"`
+    Created         time.Time `json:"created"`
 }

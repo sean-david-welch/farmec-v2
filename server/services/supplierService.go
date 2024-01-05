@@ -3,7 +3,10 @@ package services
 import (
 	"database/sql"
 	"fmt"
+	"log"
+	"time"
 
+	"github.com/google/uuid"
 	"github.com/sean-david-welch/farmec-v2/server/models"
 )
 
@@ -29,7 +32,7 @@ func scanSupplier(row interface{}, supplier *models.Supplier) error {
         return fmt.Errorf("unsupported type: %T", value)
 	}
 
-    return scanner.Scan(&supplier.ID, &supplier.Name, &supplier.Description, &supplier.LogoImage, &supplier.MarketingImage, &supplier.SocialFacebook, &supplier.SocialInstagram, &supplier.SocialLinkedin, &supplier.SocialTwitter, &supplier.SocialYoutube, &supplier.SocialWebsite, &supplier.Created)
+    return scanner.Scan(&supplier.ID, &supplier.Name,  &supplier.LogoImage, &supplier.MarketingImage, &supplier.Description, &supplier.SocialFacebook, &supplier.SocialInstagram, &supplier.SocialLinkedin, &supplier.SocialTwitter, &supplier.SocialYoutube, &supplier.SocialWebsite, &supplier.Created)
 }
 
 // pointer receiver avoids copying entire struct
@@ -61,6 +64,27 @@ func (service *SupplierService) GetSuppliers() ([]models.Supplier, error) {
 	return suppliers, nil
 }
 
+func (service *SupplierService) CreateSupplier(supplier *models.Supplier) error {
+
+	supplier.ID = uuid.NewString()
+	supplier.Created = time.Now()
+
+	log.Printf("Creating supplier: %+v", supplier)
+
+
+	query := `INSERT INTO "Supplier" 
+	(id, name, logo_image, marketing_image, description, social_facebook, social_instagram, social_linkedin, social_twitter, social_youtube, social_website, created) 
+	VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`
+
+	_, err := service.db.Exec(query, supplier.ID, supplier.Name, supplier.LogoImage, supplier.MarketingImage, supplier.Description, supplier.SocialFacebook, supplier.SocialInstagram, supplier.SocialLinkedin, supplier.SocialTwitter, supplier.SocialYoutube, supplier.SocialWebsite, supplier.Created)
+
+	if err != nil {
+		return fmt.Errorf("error creating supplier: %w", err)
+	}
+
+	return nil
+}
+
 func (service *SupplierService) GetSupplierByID(id string) (*models.Supplier, error) {
 	query := `SELECT * FROM "Supplier" WHERE id = $1`
 	row := service.db.QueryRow(query, id)
@@ -79,20 +103,6 @@ func (service *SupplierService) GetSupplierByID(id string) (*models.Supplier, er
 	return &supplier, nil
 }
 
-func (service *SupplierService) CreateSupplier(supplier *models.Supplier) error {
-	query := `INSERT INTO "Supplier" 
-				(name, description, logo_image, marketing_image, social_facebook, social_instagram, social_linkedin, social_twitter, social_youtube, social_website, created) 
-				VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`
-
-	_, err := service.db.Exec(query, supplier.Name, supplier.Description, supplier.LogoImage, supplier.MarketingImage, supplier.SocialFacebook, supplier.SocialInstagram, supplier.SocialLinkedin, supplier.SocialTwitter, supplier.SocialYoutube, supplier.SocialWebsite, supplier.Created)
-
-	if err != nil {
-		return fmt.Errorf("error creating supplier: %w", err)
-	}
-
-	return nil
-}
-
 func (service *SupplierService) UpdateSupplier(id string, supplier *models.Supplier) error {
     query := `UPDATE "Supplier" SET 
                 name = $1, 
@@ -105,10 +115,9 @@ func (service *SupplierService) UpdateSupplier(id string, supplier *models.Suppl
                 social_twitter = $8, 
                 social_youtube = $9, 
                 social_website = $10, 
-                created = $11 
-                WHERE id = $12`
+                WHERE id = $11`
 
-    _, err := service.db.Exec(query, supplier.Name, supplier.Description, supplier.LogoImage, supplier.MarketingImage, supplier.SocialFacebook, supplier.SocialInstagram, supplier.SocialLinkedin, supplier.SocialTwitter, supplier.SocialYoutube, supplier.SocialWebsite, supplier.Created, id)
+    _, err := service.db.Exec(query, supplier.Name, supplier.Description, supplier.LogoImage, supplier.MarketingImage, supplier.SocialFacebook, supplier.SocialInstagram, supplier.SocialLinkedin, supplier.SocialTwitter, supplier.SocialYoutube, supplier.SocialWebsite, id)
 
     if err != nil {
         return fmt.Errorf("error updating supplier: %w", err)
