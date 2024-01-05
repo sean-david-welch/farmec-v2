@@ -9,15 +9,15 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/services"
 )
 
-type SuppliersController struct {
+type SupplierController struct {
 	supplierService *services.SupplierService
 }
 
-func NewSuppliersContoller(supplierService *services.SupplierService) *SuppliersController {
-	return &SuppliersController{supplierService: supplierService}
+func NewSupplierContoller(supplierService *services.SupplierService) *SupplierController {
+	return &SupplierController{supplierService: supplierService}
 }
 
-func (controller *SuppliersController) GetSuppliers(context *gin.Context) {
+func (controller *SupplierController) GetSuppliers(context *gin.Context) {
 	suppliers, err := controller.supplierService.GetSuppliers()
 	
 	if err != nil {
@@ -28,7 +28,7 @@ func (controller *SuppliersController) GetSuppliers(context *gin.Context) {
 	context.JSON(http.StatusOK, suppliers)
 }
 
-func (controller *SuppliersController) CreateSupplier(context *gin.Context) {
+func (controller *SupplierController) CreateSupplier(context *gin.Context) {
     var supplier models.Supplier
     
     if err := context.ShouldBindJSON(&supplier); err != nil {
@@ -46,7 +46,7 @@ func (controller *SuppliersController) CreateSupplier(context *gin.Context) {
     context.JSON(http.StatusCreated, supplier)
 }
 
-func (controller *SuppliersController) GetSupplierByID(context *gin.Context) {
+func (controller *SupplierController) GetSupplierByID(context *gin.Context) {
 	id := context.Param("id")
 	supplier, err := controller.supplierService.GetSupplierById(id)
 
@@ -59,7 +59,7 @@ func (controller *SuppliersController) GetSupplierByID(context *gin.Context) {
 	context.JSON(http.StatusOK, supplier)
 }
 
-func (controller *SuppliersController) UpdateSupplier(context *gin.Context) {
+func (controller *SupplierController) UpdateSupplier(context *gin.Context) {
 	id := context.Param("id")
 
 	var supplier models.Supplier
@@ -79,7 +79,7 @@ func (controller *SuppliersController) UpdateSupplier(context *gin.Context) {
 	context.JSON(http.StatusAccepted, supplier)
 }
 
-func (controller *SuppliersController) DeleteSupplier(context *gin.Context) {
+func (controller *SupplierController) DeleteSupplier(context *gin.Context) {
 	id := context.Param("id")
 
 	err := controller.supplierService.DeleteSupplier(id)

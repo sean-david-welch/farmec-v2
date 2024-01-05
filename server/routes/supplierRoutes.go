@@ -1,12 +1,24 @@
 package routes
 
 import (
+	"database/sql"
+
 	"github.com/gin-gonic/gin"
 
 	"github.com/sean-david-welch/farmec-v2/server/controllers"
+	"github.com/sean-david-welch/farmec-v2/server/repository"
+	"github.com/sean-david-welch/farmec-v2/server/services"
 )
 
-func SupplierRoutes(router *gin.Engine, supplierController *controllers.SuppliersController) {
+func InitializeSupplier(router *gin.Engine, db *sql.DB) {
+    supplierRepository := repository.NewSupplierRepository(db)
+    supplierService := services.NewSupplierService(supplierRepository)
+    supplierController := controllers.NewSupplierContoller(supplierService)
+
+    SupplierRoutes(router, supplierController)
+}
+
+func SupplierRoutes(router *gin.Engine, supplierController *controllers.SupplierController) {
 	supplierGroup := router.Group("/api/suppliers")
 	// supplierGroup.Use(AuthMiddleware())
 
