@@ -30,7 +30,9 @@ func NewS3Client(region, accessKey, secretKey string) (*S3Client, error) {
     }, nil
 }
 
-func (client *S3Client) GeneratePresignedUrl(bucketName, folder, image string) (string, string, error) {
+func (client *S3Client) GeneratePresignedUrl(folder string, image string) (string, string, error) {
+    const bucketName = "farmec-bucket"
+    
     imageKey := fmt.Sprintf("%s/%s", folder, image)
     imageUrl := fmt.Sprintf("https://%s.s3.amazonaws.com/%s", bucketName, imageKey)
 

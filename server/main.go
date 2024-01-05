@@ -10,6 +10,7 @@ import (
 
 	"github.com/sean-david-welch/farmec-v2/server/config"
 	"github.com/sean-david-welch/farmec-v2/server/routes"
+	"github.com/sean-david-welch/farmec-v2/server/utils"
 )
 
 func main() {
@@ -21,12 +22,15 @@ func main() {
 		log.Fatal(err)
 	}
 	defer db.Close()
+
+	s3Client, err := utils.NewS3Client("eu-west-1", secrets.AwsAccessKey, secrets.AwsSecret); if err != nil {
+		log.Fatal("Failed to create S3 client: ", err)
+	}
 	
 	router := gin.Default()
-
 	router.Use(gin.Logger(), gin.Recovery(), cors.Default())
 
-    routes.InitializeSupplier(router, db)
+    routes.InitializeSupplier(router, db, s3Client)
 
 
 	router.Run(":8080")

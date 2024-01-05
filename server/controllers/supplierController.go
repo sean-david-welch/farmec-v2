@@ -36,14 +36,20 @@ func (controller *SupplierController) CreateSupplier(context *gin.Context) {
         return
     }
 
-    err := controller.supplierService.CreateSupplier(&supplier)
+    presignedUrl, imageUrl, err := controller.supplierService.CreateSupplier(&supplier)
     if err != nil {
         log.Printf("Error creating supplier: %v", err)
         context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while creating supplier", "details": err.Error()})
         return
     }
 
-    context.JSON(http.StatusCreated, supplier)
+	response := gin.H{
+        "supplier": supplier,
+        "presignedUrl": presignedUrl,
+        "imageUrl": imageUrl,
+    }
+
+    context.JSON(http.StatusCreated, response)
 }
 
 func (controller *SupplierController) GetSupplierByID(context *gin.Context) {

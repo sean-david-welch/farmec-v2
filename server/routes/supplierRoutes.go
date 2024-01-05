@@ -8,11 +8,12 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/controllers"
 	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/services"
+	"github.com/sean-david-welch/farmec-v2/server/utils"
 )
 
-func InitializeSupplier(router *gin.Engine, db *sql.DB) {
+func InitializeSupplier(router *gin.Engine, db *sql.DB, s3Client *utils.S3Client) {
     supplierRepository := repository.NewSupplierRepository(db)
-    supplierService := services.NewSupplierService(supplierRepository)
+    supplierService := services.NewSupplierService(supplierRepository, s3Client, "suppliers")
     supplierController := controllers.NewSupplierContoller(supplierService)
 
     SupplierRoutes(router, supplierController)
