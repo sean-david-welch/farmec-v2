@@ -8,18 +8,18 @@ import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
 
-	"github.com/sean-david-welch/Farmec-Astro/api/config"
-	"github.com/sean-david-welch/Farmec-Astro/api/controllers"
-	"github.com/sean-david-welch/Farmec-Astro/api/routes"
-	"github.com/sean-david-welch/Farmec-Astro/api/services"
+	secrets "github.com/sean-david-welch/farmec-v2/server/config"
+	"github.com/sean-david-welch/farmec-v2/server/controllers"
+	"github.com/sean-david-welch/farmec-v2/server/routes"
+	"github.com/sean-david-welch/farmec-v2/server/services"
 )
 
 func main() {
-	config, err := config.NewConfig(); if err != nil {
+	secrets, err := secrets.NewSecrets(); if err != nil {
 		log.Fatal("Error loading configuration: ", err)
 	}
 
-	db, err := sql.Open("postgres", config.DatabaseURL); if err != nil {
+	db, err := sql.Open("postgres", secrets.DatabaseURL); if err != nil {
 		log.Fatal(err)
 	}
 	defer db.Close()

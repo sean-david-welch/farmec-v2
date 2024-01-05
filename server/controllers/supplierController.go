@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sean-david-welch/Farmec-Astro/api/models"
-	"github.com/sean-david-welch/Farmec-Astro/api/services"
+	"github.com/sean-david-welch/farmec-v2/server/models"
+	"github.com/sean-david-welch/farmec-v2/server/services"
 )
 
 type SuppliersController struct {

@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/sean-david-welch/Farmec-Astro/api/models"
+	"github.com/sean-david-welch/farmec-v2/server/models"
 )
 
 type SupplierService struct {

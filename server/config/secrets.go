@@ -1,4 +1,4 @@
-package config
+package secrets
 
 import (
 	"os"
@@ -6,16 +6,16 @@ import (
 	"github.com/joho/godotenv"
 )
 
-type Config struct {
+type Secrets struct {
 	DatabaseURL string
 }
 
-func NewConfig() (*Config, error) {
+func NewSecrets() (*Secrets, error) {
 	if err := godotenv.Load(); err != nil {
 		return nil, err
 	}
 
-	return &Config{
+	return &Secrets{
 		DatabaseURL: os.Getenv("DATABASE_URL"),
 	}, nil
 }
