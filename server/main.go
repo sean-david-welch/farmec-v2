@@ -8,14 +8,14 @@ import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
 
-	secrets "github.com/sean-david-welch/farmec-v2/server/config"
+	"github.com/sean-david-welch/farmec-v2/server/config"
 	"github.com/sean-david-welch/farmec-v2/server/controllers"
 	"github.com/sean-david-welch/farmec-v2/server/routes"
 	"github.com/sean-david-welch/farmec-v2/server/services"
 )
 
 func main() {
-	secrets, err := secrets.NewSecrets(); if err != nil {
+	secrets, err := config.NewSecrets(); if err != nil {
 		log.Fatal("Error loading configuration: ", err)
 	}
 
