@@ -10,6 +10,7 @@ import (
 
 	"github.com/sean-david-welch/farmec-v2/server/config"
 	"github.com/sean-david-welch/farmec-v2/server/controllers"
+	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/routes"
 	"github.com/sean-david-welch/farmec-v2/server/services"
 )
@@ -28,7 +29,8 @@ func main() {
 
 	router.Use(gin.Logger(), gin.Recovery(), cors.Default())
 
-	supplierService := services.NewSupplierService(db)
+	supplierRepository := repository.NewSupplierRepository(db)
+	supplierService := services.NewSupplierService(supplierRepository)
 	supplierController := controllers.NewSuppliersContoller(supplierService)
 	routes.SupplierRoutes(router, supplierController)
 

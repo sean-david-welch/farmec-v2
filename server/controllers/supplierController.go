@@ -48,7 +48,7 @@ func (controller *SuppliersController) CreateSupplier(context *gin.Context) {
 
 func (controller *SuppliersController) GetSupplierByID(context *gin.Context) {
 	id := context.Param("id")
-	supplier, err := controller.supplierService.GetSupplierByID(id)
+	supplier, err := controller.supplierService.GetSupplierById(id)
 
 	if err != nil {
         log.Printf("Error getting suppliers: %v", err)

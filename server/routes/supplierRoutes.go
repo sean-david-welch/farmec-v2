@@ -17,8 +17,6 @@ func SupplierRoutes(router *gin.Engine, supplierController *controllers.Supplier
 		supplierGroup.PUT("/:id", supplierController.UpdateSupplier) 
 		supplierGroup.DELETE("/:id", supplierController.DeleteSupplier) 
 
-
-
 		// for sub resources 
 		// supplierGroup.GET("/:id/products", supplierController.GetSupplierProducts)
 	}
