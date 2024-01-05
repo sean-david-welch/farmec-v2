@@ -4,8 +4,9 @@ import (
 	"log"
 	"net/http"
 
-	"githib.com/sean-david-welch/Farmec-Astro/api/services"
 	"github.com/gin-gonic/gin"
+	"github.com/sean-david-welch/Farmec-Astro/api/models"
+	"github.com/sean-david-welch/Farmec-Astro/api/services"
 )
 
 type SuppliersController struct {
@@ -38,4 +39,22 @@ func (controller *SuppliersController) GetSupplierByID(context *gin.Context) {
 	}
 
 	context.JSON(http.StatusOK, supplier)
+}
+
+func (controller *SuppliersController) CreateSupplier(context *gin.Context) {
+	var supplier models.Supplier
+	
+	if err := context.ShouldBindJSON(&supplier); err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
+		return
+	}
+
+	err := controller.supplierService.CreateSupplier(&supplier)
+	if err != nil {
+		log.Printf("Error creating supplier: %v", err)
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while creating supplier"})
+		return
+	}
+
+	context.JSON(http.StatusCreated, supplier)
 }
