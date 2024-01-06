@@ -2,11 +2,9 @@ package lib
 
 import (
 	"context"
-	"log"
-	"net/http"
 
 	firebase "firebase.google.com/go"
-	"github.com/gin-gonic/gin"
+	"firebase.google.com/go/auth"
 	"github.com/sean-david-welch/farmec-v2/server/config"
 	"google.golang.org/api/option"
 )
@@ -15,7 +13,7 @@ type Firebase struct {
 	App *firebase.App
 }
 
-func NewFirebase(secrets *config.Secrets) *Firebase {
+func NewFirebase(secrets *config.Secrets) (*Firebase, error) {
 	opt := option.WithCredentialsJSON([]byte(`{
 			"type": "service_account",
 			"project_id": "` + secrets.ProjectId + `",
@@ -30,37 +28,27 @@ func NewFirebase(secrets *config.Secrets) *Firebase {
 		}`))
 
 	app, err := firebase.NewApp(context.Background(), nil, opt); if err != nil {
-        log.Fatalf("error initializing app: %v\n", err)
+		return nil, err
 	}
 
-	return &Firebase{App: app}
+	return &Firebase{App: app}, nil
 }
 
-func (firebase *Firebase) VerifyToken() gin.HandlerFunc {
-	return func(con *gin.Context) {
-		cookie, err := con.Cookie("session"); if err != nil {
-			con.JSON(http.StatusUnauthorized, gin.H{"error": "no toekn provided"})
-			con.Abort()
-			return
-		}
+func (firebase *Firebase) VerifyToken(token string) (*auth.Token, bool, error) {
+	ctx := context.Background()
 
-		client, err := firebase.App.Auth(context.Background()); if err != nil {
-			con.JSON(http.StatusInternalServerError, gin.H{"error": "error getting auth client"})
-			con.Abort()
-			return
-		}
+	authClient, err := firebase.App.Auth(ctx); if err != nil {
+		return nil, false, err
+	} 
 
-		decodedToken, err := client.VerifySessionCookie(context.Background(), cookie); if err != nil {
-			con.JSON(http.StatusUnauthorized, gin.H{"error": "Error Verifying Token"})
-			con.Abort()
-			return
-		}
-
-		isAdmin := decodedToken.Claims["admin"] == true
-
-		con.Set("isAdmin", isAdmin)
-		con.Set("token", decodedToken)
-
-		con.Next()
+	decodedToken, err := authClient.VerifyIDToken(ctx, token); if err != nil {
+		return nil, false, err
 	}
+
+	isAdmin := false
+	if adminClaim, ok := decodedToken.Claims["admin"]; ok {
+		isAdmin, _ = adminClaim.(bool)
+	}
+
+	return decodedToken, isAdmin, nil
 }
