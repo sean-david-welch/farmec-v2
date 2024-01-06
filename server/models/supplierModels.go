@@ -35,7 +35,7 @@ type Supplier struct {
     ID              string  `json:"id"`
     Name            string  `json:"name"`
     LogoImage       string  `json:"logo_image"`
-    MarketingImage  *string `json:"marketing_image"`
+    MarketingImage  string `json:"marketing_image"`
     Description     string  `json:"description"`
     SocialFacebook  *string `json:"social_facebook"`
     SocialInstagram *string `json:"social_instagram"`

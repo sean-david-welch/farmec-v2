@@ -11,7 +11,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/utils"
 )
 
-func InitializeSupplier(router *gin.Engine, db *sql.DB, s3Client *utils.S3Client) {
+func InitializeSuppliers(router *gin.Engine, db *sql.DB, s3Client *utils.S3Client) {
     supplierRepository := repository.NewSupplierRepository(db)
     supplierService := services.NewSupplierService(supplierRepository, s3Client, "suppliers")
     supplierController := controllers.NewSupplierContoller(supplierService)

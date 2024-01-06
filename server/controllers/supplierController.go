@@ -36,7 +36,7 @@ func (controller *SupplierController) CreateSupplier(context *gin.Context) {
         return
     }
 
-    presignedUrl, imageUrl, err := controller.supplierService.CreateSupplier(&supplier)
+    result, err := controller.supplierService.CreateSupplier(&supplier)
     if err != nil {
         log.Printf("Error creating supplier: %v", err)
         context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while creating supplier", "details": err.Error()})
@@ -45,8 +45,10 @@ func (controller *SupplierController) CreateSupplier(context *gin.Context) {
 
 	response := gin.H{
         "supplier": supplier,
-        "presignedUrl": presignedUrl,
-        "imageUrl": imageUrl,
+        "presignedLogoUrl": result.PresignedLogoUrl,
+        "logoUrl": result.LogoUrl,
+        "presignedMarketingUrl": result.PresginedMarketingUrl,
+        "marketingUrl": result.MarketingUrl,
     }
 
     context.JSON(http.StatusCreated, response)
@@ -75,20 +77,30 @@ func (controller *SupplierController) UpdateSupplier(context *gin.Context) {
 		return 
 	}
 
-	err := controller.supplierService.UpdateSupplier(id, &supplier)
-	if err != nil {
-		log.Printf("Error updating supplier: %v", err)
+    result, err := controller.supplierService.UpdateSupplier(id, &supplier)
+    if err != nil {
+        log.Printf("Error updating supplier: %v", err)
         context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while updating supplier", "details": err.Error()})
         return
-	}
+    }
 
-	context.JSON(http.StatusAccepted, supplier)
+	response := gin.H{
+        "supplier": supplier,
+        "presignedLogoUrl": result.PresignedLogoUrl,
+        "logoUrl": result.LogoUrl,
+        "presignedMarketingUrl": result.PresginedMarketingUrl,
+        "marketingUrl": result.MarketingUrl,
+    }
+
+
+	context.JSON(http.StatusAccepted, response)
 }
 
 func (controller *SupplierController) DeleteSupplier(context *gin.Context) {
 	id := context.Param("id")
 
 	err := controller.supplierService.DeleteSupplier(id)
+	
 	if err != nil {
 		log.Printf("Error deleting supplier: %v", err)
         context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while deleting supplier", "details": err.Error()})

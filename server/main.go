@@ -30,7 +30,7 @@ func main() {
 	router := gin.Default()
 	router.Use(gin.Logger(), gin.Recovery(), cors.Default())
 
-    routes.InitializeSupplier(router, db, s3Client)
+    routes.InitializeSuppliers(router, db, s3Client)
 
 
 	router.Run(":8080")

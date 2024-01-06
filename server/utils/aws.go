@@ -51,16 +51,13 @@ func (client *S3Client) GeneratePresignedUrl(folder string, image string) (strin
     return presignReq.URL, imageUrl, nil
 }
 
-func (client *S3Client) GenerateDeletePresignedUrl(bucketName, key string) (string, error) {
-    presignClient := s3.NewPresignClient(client.Client)
-    presignReq, err := presignClient.PresignDeleteObject(context.TODO(), &s3.DeleteObjectInput{
+func (client *S3Client) DeleteImageFromS3(key string) error {
+    const bucketName = "farmec-bucket"
+
+    _, err := client.Client.DeleteObject(context.TODO(), &s3.DeleteObjectInput{
         Bucket: aws.String(bucketName),
         Key:    aws.String(key),
-    }, s3.WithPresignExpires(5*time.Minute))
+    })
 
-    if err != nil {
-        return "", err
-    }
-
-    return presignReq.URL, nil
+    return err
 }
