@@ -30,4 +30,15 @@ func InitializeVideos(router *gin.Engine, db *sql.DB, secrets *config.Secrets, f
 	VideoRoutes(router, videoController, authMiddleware)
 }
 
-func VideoRoutes(router *gin.Engine, controller *controllers.VideoController, authMiddleware *middleware.AuthMiddleware) {}
+func VideoRoutes(router *gin.Engine, videoController *controllers.VideoController, authMiddleware *middleware.AuthMiddleware) {
+	videoGroup := router.Group("/api/videos")
+
+	videoGroup.GET("/:id", videoController.GetVideos)
+
+	protected := videoGroup.Group("/")
+	protected.Use(authMiddleware.Middleware()); {
+		protected.POST("", videoController.CreateVideo)
+		protected.PUT("/:id", videoController.UpdateVideo)
+		protected.DELETE("/:id", videoController.DeleteVideo)
+	}
+}
