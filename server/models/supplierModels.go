@@ -45,3 +45,14 @@ type Supplier struct {
     SocialWebsite   *string `json:"social_website"`
     Created         time.Time `json:"created"`
 }
+
+type Video struct {
+    ID            string `json:"id"`
+    SupplierID    string `json:"supplierId"`
+    WebURL        string `json:"web_url"`
+    Title         *string `json:"title"`
+    Description   *string `json:"description"`
+    VideoID       *string `json:"video_id"`
+    ThumbnailURL  *string `json:"thumbnail_url"`
+    Created       time.Time `json:"created"`
+}

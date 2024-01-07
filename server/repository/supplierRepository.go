@@ -132,7 +132,7 @@ func (repository *SupplierRepository) DeleteSupplier(id string) error {
 	_, err := repository.db.Exec(query, id)
 
 	if err != nil {
-		return fmt.Errorf("error deletting supplier: %w", err)
+		return fmt.Errorf("error deleting supplier: %w", err)
 	}
 
 	return nil 
