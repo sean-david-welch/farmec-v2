@@ -3,7 +3,6 @@ package repository
 import (
 	"database/sql"
 	"fmt"
-	"log"
 	"time"
 
 	"github.com/google/uuid"
@@ -69,9 +68,6 @@ func (repository *SupplierRepository) CreateSupplier(supplier *models.Supplier) 
 	supplier.ID = uuid.NewString()
 	supplier.Created = time.Now()
 
-	log.Printf("Creating supplier: %+v", supplier)
-
-
 	query := `INSERT INTO "Supplier" 
 	(id, name, logo_image, marketing_image, description, social_facebook, social_instagram, social_linkedin, social_twitter, social_youtube, social_website, created) 
 	VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`
@@ -97,7 +93,7 @@ func (repository *SupplierRepository) GetSupplierById(id string) (*models.Suppli
 			return nil, nil
 		}
 
-		return nil, fmt.Errorf("error scanning rown: %w", err)
+		return nil, fmt.Errorf("error scanning row: %w", err)
 	}
 
 	return &supplier, nil

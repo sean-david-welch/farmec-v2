@@ -25,18 +25,18 @@ func InitializeVideos(router *gin.Engine, db *sql.DB, secrets *config.Secrets, f
 	videoService := services.NewVideoService(videoRepository, youtubeService)
 	videoController := controllers.NewVideoController(videoService)
 
-	authMiddleware := middleware.NewAuthMiddleware(firebase)
+	adminMiddleware := middleware.NewAdminMiddleware(firebase)
 
-	VideoRoutes(router, videoController, authMiddleware)
+	VideoRoutes(router, videoController, adminMiddleware)
 }
 
-func VideoRoutes(router *gin.Engine, videoController *controllers.VideoController, authMiddleware *middleware.AuthMiddleware) {
+func VideoRoutes(router *gin.Engine, videoController *controllers.VideoController, adminMiddleware *middleware.AdminMiddleware) {
 	videoGroup := router.Group("/api/videos")
 
 	videoGroup.GET("/:id", videoController.GetVideos)
 
 	protected := videoGroup.Group("/")
-	protected.Use(authMiddleware.Middleware()); {
+	protected.Use(adminMiddleware.Middleware()); {
 		protected.POST("", videoController.CreateVideo)
 		protected.PUT("/:id", videoController.UpdateVideo)
 		protected.DELETE("/:id", videoController.DeleteVideo)

@@ -37,6 +37,7 @@ func main() {
 
     routes.InitializeSuppliers(router, db, s3Client, firebase)
 	routes.InitializeVideos(router, db, secrets, firebase)
+	routes.InitializeMachines(router, db, s3Client, firebase)
 
 
 	router.Run(":8080")

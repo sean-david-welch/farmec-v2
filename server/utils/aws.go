@@ -3,6 +3,8 @@ package utils
 import (
 	"context"
 	"fmt"
+	"net/url"
+	"path"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -51,10 +53,16 @@ func (client *S3Client) GeneratePresignedUrl(folder string, image string) (strin
     return presignReq.URL, imageUrl, nil
 }
 
-func (client *S3Client) DeleteImageFromS3(key string) error {
+func (client *S3Client) DeleteImageFromS3(imageUrl string) error {
     const bucketName = "farmec-bucket"
 
-    _, err := client.Client.DeleteObject(context.TODO(), &s3.DeleteObjectInput{
+    parsedUrl, err := url.Parse(imageUrl); if err != nil {
+        return fmt.Errorf("error parsing url: %w", err)
+    }
+
+    key := path.Base(parsedUrl.Path)
+
+    _, err = client.Client.DeleteObject(context.TODO(), &s3.DeleteObjectInput{
         Bucket: aws.String(bucketName),
         Key:    aws.String(key),
     })

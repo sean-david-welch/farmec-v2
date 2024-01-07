@@ -18,19 +18,19 @@ func InitializeSuppliers(router *gin.Engine, db *sql.DB, s3Client *utils.S3Clien
     supplierService := services.NewSupplierService(supplierRepository, s3Client, "suppliers")
     supplierController := controllers.NewSupplierContoller(supplierService)
 
-	authMiddleware := middleware.NewAuthMiddleware(firebase)
+	adminMiddleware := middleware.NewAdminMiddleware(firebase)
 
-    SupplierRoutes(router, supplierController, authMiddleware)
+    SupplierRoutes(router, supplierController, adminMiddleware)
 }
 
-func SupplierRoutes(router *gin.Engine, supplierController *controllers.SupplierController, authMiddleware *middleware.AuthMiddleware) {
+func SupplierRoutes(router *gin.Engine, supplierController *controllers.SupplierController, adminMiddleware *middleware.AdminMiddleware) {
 	supplierGroup := router.Group("/api/suppliers")
 
 	supplierGroup.GET("", supplierController.GetSuppliers)
 	supplierGroup.GET("/:id", supplierController.GetSupplierByID) 
 	
 	protected := supplierGroup.Group("/")
-	protected.Use(authMiddleware.Middleware())
+	protected.Use(adminMiddleware.Middleware())
 	{
 		protected.POST("", supplierController.CreateSupplier)
 		protected.PUT("/:id", supplierController.UpdateSupplier) 

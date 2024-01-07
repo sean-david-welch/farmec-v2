@@ -11,3 +11,8 @@ type DeleteSupplierResult struct {
 	LogoUrl string
 	MarketingUrl string
 }
+
+type MachineResult struct {
+	PresginedMachine string
+	MachineUrl string
+}

@@ -9,8 +9,10 @@ type Machine struct {
     SupplierID    string `json:"supplierId"`
     Name          string `json:"name"`
     MachineImage  string `json:"machine_image"`
-    Description   string `json:"description"`
-    MachineLink   string `json:"machine_link"`
+    Description   *string `json:"description"`
+    MachineLink   *string `json:"machine_link"`
+    Created       time.Time `json:"created"`
+
 }
 
 type Product struct {

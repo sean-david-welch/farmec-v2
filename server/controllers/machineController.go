@@ -1,0 +1,90 @@
+package controllers
+
+import (
+	"log"
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+	"github.com/sean-david-welch/farmec-v2/server/models"
+	"github.com/sean-david-welch/farmec-v2/server/services"
+)
+
+type MachineController struct {
+	machineService *services.MachineService
+}
+
+func NewMachineController(machineService *services.MachineService) *MachineController {
+	return &MachineController{machineService: machineService}
+}
+
+func (controller *MachineController) GetMachines(context *gin.Context) {
+	id := context.Param("id")
+
+	machines, err := controller.machineService.GetMachines(id); if err != nil {
+		log.Printf("Error getting machines: %v", err)
+        context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while getting machines"})
+        return
+	}	
+
+	context.JSON(http.StatusOK, machines)
+}
+
+func (controller *MachineController) CreateMachine(context *gin.Context) {
+	var machine models.Machine
+
+	if err := context.ShouldBindJSON(&machine); err != nil {
+        context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body", "details": err.Error()})
+        return
+	}
+
+	result, err := controller.machineService.CreateMachine(&machine); if err != nil {
+        log.Printf("Error creating machine: %v", err)
+        context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while creating machine", "details": err.Error()})
+        return
+	}
+
+	response := gin.H{
+		"machine": machine,
+		"presginedUrl": result.PresginedMachine,
+		"machineUrl": result.MachineUrl,
+	}
+
+	context.JSON(http.StatusCreated, response)
+}
+
+func (controller *MachineController) UpdateMachine(context *gin.Context) {
+	id := context.Param("id")
+
+	var machine models.Machine
+
+	if err := context.ShouldBindJSON(&machine); err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body", "details": err.Error()})
+		return 
+	}
+
+	result, err := controller.machineService.UpdateMachine(id, &machine); if err != nil {
+		log.Printf("Error updating machine: %v", err)
+        context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while updating machine", "details": err.Error()})
+        return
+	}
+
+	response := gin.H{
+		"machine": machine,
+		"presignedUrl": result.PresginedMachine,
+		"marketingUrl": result.MachineUrl,
+	}
+
+	context.JSON(http.StatusAccepted, response)
+}
+
+func (controller *MachineController) DeleteMachine(context *gin.Context) {
+	id := context.Param("id")
+
+	if err := controller.machineService.DeleteMachine(id); err != nil {
+		log.Printf("Error deleting machine: %v", err)
+        context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while deleting machine", "details": err.Error()})
+        return
+	}
+
+    context.JSON(http.StatusOK, gin.H{"message": "Supplier deleted successfully", "id": id})
+}
