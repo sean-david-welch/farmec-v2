@@ -27,53 +27,51 @@ func (service *MachineService) GetMachines(id string) ([]models.Machine, error) 
 	return service.repository.GetMachines(id)
 }
 
-func (service *MachineService) CreateMachine(machine *models.Machine) (*types.MachineResult, error) {
-	machineImage := machine.MachineImage
-
-	if machineImage == "" {
-		return nil, errors.New("machine image is Empty")
+func (service *MachineService) CreateMachine(machine *models.Machine) (*types.ModelResult, error) {
+	machineImage := machine.MachineImage; if machineImage == "" {
+		return nil, errors.New("machine image is empty")
 	}
 
-	presignedUrl, machineUrl, err := service.s3Client.GeneratePresignedUrl(service.folder, machineImage)
+	presignedUrl, imageUrl, err := service.s3Client.GeneratePresignedUrl(service.folder, machineImage)
 	if err != nil {
 		return nil, err
 	}
 
-	machine.MachineImage = machineUrl
+	machine.MachineImage = imageUrl
 
 	service.repository.CreateMachine(machine); if err != nil {
 		return nil, err
 	}
 
-	result := &types.MachineResult{
-		PresginedMachine: presignedUrl,
-		MachineUrl: machineUrl,
+	result := &types.ModelResult{
+		PresginedUrl: presignedUrl,
+		ImageUrl: imageUrl,
 	}
 
 	return result, nil
 }
 
-func(service *MachineService) UpdateMachine(id string, machine *models.Machine) (*types.MachineResult, error) {
+func(service *MachineService) UpdateMachine(id string, machine *models.Machine) (*types.ModelResult, error) {
 	machineImage := machine.MachineImage
 
-	var presignedUrl, machineUrl string
+	var presignedUrl, imageUrl string
 	var err error
 
 	if machineImage != "" {
-		presignedUrl, machineUrl, err = service.s3Client.GeneratePresignedUrl(service.folder, machineImage)
+		presignedUrl, imageUrl, err = service.s3Client.GeneratePresignedUrl(service.folder, machineImage)
 		if err != nil {
 			return nil, err
 		}
-		machine.MachineImage = machineUrl
+		machine.MachineImage = imageUrl
 	}
 
 	service.repository.UpdateMachine(id, machine); if err != nil {
 		return nil, err
 	}
 
-	result := &types.MachineResult{
-		PresginedMachine: presignedUrl,
-		MachineUrl: machineUrl,
+	result := &types.ModelResult{
+		PresginedUrl: presignedUrl,
+		ImageUrl: imageUrl,
 	}
 
 	return result, nil

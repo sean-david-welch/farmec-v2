@@ -36,8 +36,9 @@ func main() {
 	router.Use(gin.Logger(), gin.Recovery(), cors.Default())
 
     routes.InitializeSuppliers(router, db, s3Client, firebase)
-	routes.InitializeVideos(router, db, secrets, firebase)
 	routes.InitializeMachines(router, db, s3Client, firebase)
+	routes.InitializeProduct(router, db, s3Client, firebase)
+	routes.InitializeVideos(router, db, secrets, firebase)
 
 
 	router.Run(":8080")

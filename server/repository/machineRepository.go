@@ -121,7 +121,7 @@ func (repository *MachineRepository) DeleteMachine(id string) error {
 	query := `DELETE FROM "Machine" WHERE id = $1`
 
 	_, err := repository.db.Exec(query, id); if err != nil {
-		return fmt.Errorf("error deleting suppler: %w", err)
+		return fmt.Errorf("error deleting machine: %w", err)
 	}
 
 	return nil

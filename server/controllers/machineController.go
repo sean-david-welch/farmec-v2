@@ -45,8 +45,8 @@ func (controller *MachineController) CreateMachine(context *gin.Context) {
 
 	response := gin.H{
 		"machine": machine,
-		"presginedUrl": result.PresginedMachine,
-		"machineUrl": result.MachineUrl,
+		"presginedUrl": result.PresginedUrl,
+		"imageUrl": result.ImageUrl,
 	}
 
 	context.JSON(http.StatusCreated, response)
@@ -70,8 +70,8 @@ func (controller *MachineController) UpdateMachine(context *gin.Context) {
 
 	response := gin.H{
 		"machine": machine,
-		"presignedUrl": result.PresginedMachine,
-		"marketingUrl": result.MachineUrl,
+		"presignedUrl": result.PresginedUrl,
+		"imageUrl": result.ImageUrl,
 	}
 
 	context.JSON(http.StatusAccepted, response)
@@ -86,5 +86,5 @@ func (controller *MachineController) DeleteMachine(context *gin.Context) {
         return
 	}
 
-    context.JSON(http.StatusOK, gin.H{"message": "Supplier deleted successfully", "id": id})
+    context.JSON(http.StatusOK, gin.H{"message": "Machine deleted successfully", "id": id})
 }

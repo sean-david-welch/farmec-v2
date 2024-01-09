@@ -7,12 +7,7 @@ type SupplierResult struct {
 	MarketingUrl string 
 }
 
-type DeleteSupplierResult struct {
-	LogoUrl string
-	MarketingUrl string
-}
-
-type MachineResult struct {
-	PresginedMachine string
-	MachineUrl string
+type ModelResult struct {
+	PresginedUrl string
+	ImageUrl string
 }
