@@ -87,7 +87,7 @@ func (repository *PartsRepository) GetPartById(id string) (*models.Sparepart, er
 func (repository *PartsRepository) CreatePart(part *models.Sparepart) error {
 	part.ID = uuid.NewString()
 	
-	query := `INSERT INTO "SpareParts" (ID, SupplierID, Name, PartsImage, SparePartsLink, PdfLink)
+	query := `INSERT INTO "SpareParts" (ID, supplierID, name, partsImage, sparePartsLink, pdfLink)
 	VALUES ($1, $2, $3, $4, $5, $6)`
 
 	_, err := repository.db.Exec(query, part.ID, part.SupplierID, part.Name, part.PartsImage, part.SparePartsLink, part.PdfLink)
@@ -101,7 +101,7 @@ func (repository *PartsRepository) CreatePart(part *models.Sparepart) error {
 
 func (repository *PartsRepository) UpdatePart(id string, part *models.Sparepart) error {
 	query := `UPDATE "SpareParts"
-	SET SupplierID = $1, Name = $2, PartsImage = $3, SparePartsLink  = $4, PdfLink = $5
+	SET supplierID = $1, name = $2, partsImage = $3, sparePartsLink  = $4, pdfLink = $5
 	WHERE ID = $6`
 
 	_, err := repository.db.Exec(query, part.SupplierID, part.Name, part.PartsImage, part.SparePartsLink, part.PdfLink)

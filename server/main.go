@@ -40,6 +40,7 @@ func main() {
 	routes.InitializeProduct(router, db, s3Client, firebase)
 	routes.InitializeVideos(router, db, secrets, firebase)
 	routes.InitializeParts(router, db, s3Client, firebase)
+	routes.InitializeCarousel(router, db, s3Client, firebase)
 
 
 	router.Run(":8080")

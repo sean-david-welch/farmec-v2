@@ -89,7 +89,7 @@ func (repository *ProductRepository) GetProductById(id string) (*models.Product,
 func (repository *ProductRepository) CreateProduct(product *models.Product) error {
 	product.ID = uuid.NewString()
 
-	query := `INSERT INTO "Product" (ID, MachineID, Name, ProductImage, Description, ProductLink)
+	query := `INSERT INTO "Product" (id, machineID, name, productImage, description, productLink)
 	VALUES ($1, $2, $3, $4, $5, $6)`
 
 	_, err := repository.db.Exec(query, product.ID, product.MachineID, product.Name, product.ProductImage, product.Description, product.ProductLink)
@@ -103,8 +103,8 @@ func (repository *ProductRepository) CreateProduct(product *models.Product) erro
 
 func (repository *ProductRepository) UpdateMachine(id string, product *models.Product) error {
 	query :=  `UPDATE "Product"
-	SET MachineID = $1, Name = $2, ProductImage = $3, Description = $4, ProductLink = $5
-	WHERE ID = $6`
+	SET machineID = $1, name = $2, productImage = $3, description = $4, productLink = $5
+	WHERE id = $6`
 
 	_, err := repository.db.Exec(query, product.MachineID, product.Name, product.ProductImage, product.Description, product.ProductLink, id)
 
