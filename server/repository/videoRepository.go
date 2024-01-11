@@ -29,7 +29,7 @@ func (repository *VideoRepositoy) GetVideos(id string) ([]models.Video, error) {
 	for rows.Next() {
 		var video models.Video
 
-		err := rows.Scan(&video.ID, &video.SupplierID, &video.WebURL, &video.Title, &video.Description, &video.VideoID, &video.ThumbnailURL)
+		err := rows.Scan(&video.ID, &video.SupplierID, &video.WebURL, &video.Title, &video.Description, &video.VideoID, &video.ThumbnailURL, &video.Created)
 		if err != nil {
 			return nil, fmt.Errorf("error scanning row: %w", err)
 		}

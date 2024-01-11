@@ -23,7 +23,7 @@ func InitializeParts(router *gin.Engine, db *sql.DB, s3Client *utils.S3Client, f
 }
 
 func PartsRoutes(router *gin.Engine, partsController *controllers.PartsController, adminMiddleware *middleware.AdminMiddleware) {
-	partsGroup := router.Group("/api/sparepartss")
+	partsGroup := router.Group("/api/spareparts")
 
 	partsGroup.GET("/:id", partsController.GetParts)
 

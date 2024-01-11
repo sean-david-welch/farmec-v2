@@ -45,7 +45,7 @@ func (repository *ProductRepository) GetProducts(id string) ([]models.Product, e
 	var products []models.Product
 
 	query := `SELECT * FROM "Product" WHERE "machineId" = $1`
-	rows, err := repository.db.Query(query); if err != nil {
+	rows, err := repository.db.Query(query, id); if err != nil {
 		return nil, fmt.Errorf("error executing query: %w", err)
 	}
 

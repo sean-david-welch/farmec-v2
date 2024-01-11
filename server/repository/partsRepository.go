@@ -45,7 +45,7 @@ func (repository *PartsRepository) GetParts(id string) ([]models.Sparepart, erro
 	var parts []models.Sparepart
 
 	query := `SELECT * FROM "SpareParts" WHERE "supplierId" = $1`
-	rows, err := repository.db.Query(query); if err != nil {
+	rows, err := repository.db.Query(query, id); if err != nil {
 		return nil, fmt.Errorf("error executing query: %w", err)
 	}
 	defer rows.Close()
