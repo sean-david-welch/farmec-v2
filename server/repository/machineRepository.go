@@ -108,7 +108,7 @@ func (repository *MachineRepository) UpdateMachine(id string, machine *models.Ma
 	SET SupplierID = $1, Name = $2, MachineImage = $3, Description = $4, MachineLink = $5
 	WHERE ID = $6`
 
-	_, err := repository.db.Exec(query, machine.SupplierID, machine.Name, machine.MachineImage, machine.Description, machine.MachineLink)
+	_, err := repository.db.Exec(query, machine.SupplierID, machine.Name, machine.MachineImage, machine.Description, machine.MachineLink, id)
 	
 	if err != nil {
 		return fmt.Errorf("error updating machine: %w", err)

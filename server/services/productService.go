@@ -37,7 +37,7 @@ func (service *ProductService) CreateProduct(product *models.Product) (*types.Mo
 		return nil, err
 	}
 
-	product.ProductImage = productImage
+	product.ProductImage = imageUrl
 
 	service.repository.CreateProduct(product); if err != nil {
 		return nil, err
@@ -51,21 +51,21 @@ func (service *ProductService) CreateProduct(product *models.Product) (*types.Mo
 	return result, nil
 }
 
-func (serice *ProductService) UpdateProduct(id string, product *models.Product) (*types.ModelResult, error) {
+func (service *ProductService) UpdateProduct(id string, product *models.Product) (*types.ModelResult, error) {
 	productImage := product.ProductImage
 
 	var presignedUrl, imageUrl string
 	var err error
 
 	if productImage != "" {
-		presignedUrl, imageUrl, err = serice.s3Client.GeneratePresignedUrl(serice.folder, productImage)
+		presignedUrl, imageUrl, err = service.s3Client.GeneratePresignedUrl(service.folder, productImage)
 		if err != nil {
 			return nil, err
 		}
 		product.ProductImage = imageUrl
 	}
 
-	serice.repository.UpdateMachine(id, product); if err != nil {
+	service.repository.UpdateMachine(id, product); if err != nil {
 		return nil, err
 	}
 

@@ -71,7 +71,7 @@ func (controller *ProductController) UpdateProduct(context *gin.Context) {
 	response := gin.H{
 		"product": product,
 		"presignedUrl": result.PresginedUrl,
-		"imgateUrl": result.ImageUrl,
+		"imageUrl": result.ImageUrl,
 	}
 
 	context.JSON(http.StatusAccepted, response)
