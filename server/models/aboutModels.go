@@ -1,13 +1,15 @@
 package models
 
+import "time"
+
 type Employee struct {
     ID           string `json:"id"`
     Name         string `json:"name"`
     Email        string `json:"email"`
     Role         string `json:"role"`
-    Bio          string `json:"bio"`
+    Bio          *string `json:"bio"`
     ProfileImage string `json:"profile_image"`
-    Created      string `json:"created"`
+    Created      time.Time `json:"created"`
     Phone        string `json:"phone"`
 }
 

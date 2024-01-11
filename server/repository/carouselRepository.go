@@ -35,7 +35,7 @@ func (repository *CarouselRepository) GetCarousels() ([]models.Carousel, error) 
 		var carousel models.Carousel
 
 		if err := rows.Scan(&carousel.ID, &carousel.Name, &carousel.Image); err != nil {
-			return nil, fmt.Errorf("")
+			return nil, fmt.Errorf("error occurred while scanning rows: %w", err)
 		}
 		carousels = append(carousels, carousel)
 	}
