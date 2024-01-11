@@ -42,6 +42,9 @@ func main() {
 	routes.InitializeVideos(router, db, secrets, firebase)
 	routes.InitializeParts(router, db, s3Client, firebase)
 
+	// About Module Resources
+	routes.InitilizeEmployee(router, db, s3Client, firebase)
+
 	// Misc Resources
 	routes.InitializeCarousel(router, db, s3Client, firebase)
 
