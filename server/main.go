@@ -35,11 +35,14 @@ func main() {
 	router := gin.Default()
 	router.Use(gin.Logger(), gin.Recovery(), cors.Default())
 
+	// Supplier Module Resoucess 
     routes.InitializeSuppliers(router, db, s3Client, firebase)
 	routes.InitializeMachines(router, db, s3Client, firebase)
 	routes.InitializeProduct(router, db, s3Client, firebase)
 	routes.InitializeVideos(router, db, secrets, firebase)
 	routes.InitializeParts(router, db, s3Client, firebase)
+
+	// Misc Resources
 	routes.InitializeCarousel(router, db, s3Client, firebase)
 
 

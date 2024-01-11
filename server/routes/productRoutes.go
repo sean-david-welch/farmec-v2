@@ -27,7 +27,7 @@ func ProductRoutes(router *gin.Engine, productController *controllers.ProductCon
 
 	productGroup.GET("/:id", productController.GetProducts)
 
-	protected := productGroup.Group("/")
+	protected := productGroup.Group("")
 	protected.Use(adminMiddleware.Middleware()); {
 		protected.POST("", productController.CreateProduct)
 		protected.PUT("/:id", productController.UpdateProduct)

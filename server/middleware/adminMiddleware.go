@@ -1,6 +1,8 @@
 package middleware
 
 import (
+	"log"
+
 	"github.com/gin-gonic/gin"
 	"github.com/sean-david-welch/farmec-v2/server/lib"
 )
@@ -17,6 +19,8 @@ func NewAdminMiddleware(firebaseService *lib.Firebase) *AdminMiddleware {
 
 func (middleware *AdminMiddleware) Middleware() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+		log.Println("AdminMiddleware triggered")
+
 		token, err := ctx.Cookie("session"); if err != nil {
 			ctx.AbortWithStatusJSON(401, gin.H{"error": "Unauthorized, No token provided"})
             return

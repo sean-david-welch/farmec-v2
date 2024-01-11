@@ -27,7 +27,7 @@ func PartsRoutes(router *gin.Engine, partsController *controllers.PartsControlle
 
 	partsGroup.GET("/:id", partsController.GetParts)
 
-	protected := partsGroup.Group("/")
+	protected := partsGroup.Group("")
 	protected.Use(adminMiddleware.Middleware()); {
 		protected.POST("", partsController.CreateParts)
 		protected.PUT("/:id", partsController.UpdateParts)

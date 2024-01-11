@@ -27,7 +27,7 @@ func MachineRoutes(router *gin.Engine, machineController *controllers.MachineCon
 
 	machineGroup.GET("/:id", machineController.GetMachines)
 	
-	protected := machineGroup.Group("/")
+	protected := machineGroup.Group("")
 	protected.Use(adminMiddleware.Middleware()); {
 		protected.POST("", machineController.CreateMachine)
 		protected.PUT("/:id", machineController.UpdateMachine)

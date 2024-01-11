@@ -27,7 +27,7 @@ func CarouselRoutes(router *gin.Engine, carouselController *controllers.Carousel
 
 	carouselGroup.GET("", carouselController.GetCarousels)
 
-	protected := carouselGroup.Group("/")
+	protected := carouselGroup.Group("")
 	protected.Use(adminMiddleware.Middleware()); {
 		protected.POST("", carouselController.CreateCarousel)
 		protected.PUT("/:id", carouselController.UpdateCarousel)

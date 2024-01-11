@@ -29,7 +29,7 @@ func SupplierRoutes(router *gin.Engine, supplierController *controllers.Supplier
 	supplierGroup.GET("", supplierController.GetSuppliers)
 	supplierGroup.GET("/:id", supplierController.GetSupplierByID) 
 	
-	protected := supplierGroup.Group("/")
+	protected := supplierGroup.Group("")
 	protected.Use(adminMiddleware.Middleware())
 	{
 		protected.POST("", supplierController.CreateSupplier)
