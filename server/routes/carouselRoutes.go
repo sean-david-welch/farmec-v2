@@ -34,3 +34,4 @@ func CarouselRoutes(router *gin.Engine, carouselController *controllers.Carousel
 		protected.DELETE("/:id", carouselController.DeleteCarousel)
 	}
 }
+
