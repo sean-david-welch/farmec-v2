@@ -15,10 +15,10 @@ func InitializeTimelines(router *gin.Engine, db *sql.DB, adminMiddleware *middle
 	service := services.NewTimelineService(repository)
 	controller := controllers.NewTimelineController(service)
 
-	TimelineRoute(router, controller, adminMiddleware)
+	TimelineRoutes(router, controller, adminMiddleware)
 }
 
-func TimelineRoute(router *gin.Engine, controller *controllers.TimelineController, adminMiddleware *middleware.AdminMiddleware) {
+func TimelineRoutes(router *gin.Engine, controller *controllers.TimelineController, adminMiddleware *middleware.AdminMiddleware) {
 	timelineGroup := router.Group("/api/timeline")
 
 	timelineGroup.GET("", controller.GetTimelines)

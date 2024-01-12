@@ -48,6 +48,8 @@ func main() {
 	// About Module Resources
 	routes.InitilizeEmployee(router, db, s3Client, adminMiddleware)
 	routes.InitializeTimelines(router, db, adminMiddleware)
+	routes.InitializePrivacy(router, db, adminMiddleware)
+	routes.InitializeTerms(router, db, adminMiddleware)
 
 	// Misc Resources
 	routes.InitializeCarousel(router, db, s3Client, adminMiddleware)

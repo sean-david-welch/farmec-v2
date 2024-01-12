@@ -10,10 +10,10 @@ import (
 )
 
 type TermsController struct {
-	service *services.TermService
+	service *services.TermsService
 }
 
-func NewTermsController(service *services.TermService) *TermsController {
+func NewTermsController(service *services.TermsService) *TermsController {
 	return &TermsController{service: service}
 }
 

@@ -9,15 +9,15 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/models"
 )
 
-type TermRepository struct {
+type TermsRepository struct {
 	db *sql.DB
 }
 
-func NewTermRepository(db *sql.DB) *TermRepository {
-	return &TermRepository{db: db}
+func NewTermsRepository(db *sql.DB) *TermsRepository {
+	return &TermsRepository{db: db}
 }
 
-func(repository *TermRepository) GetTerms() ([]models.Terms, error) {
+func(repository *TermsRepository) GetTerms() ([]models.Terms, error) {
 	var terms []models.Terms
 
 	query := `SELECT * FROM "Terms"`
@@ -43,7 +43,7 @@ func(repository *TermRepository) GetTerms() ([]models.Terms, error) {
 	return terms, err
 }
 
-func(repository *TermRepository) CreateTerm(term *models.Terms) error {
+func(repository *TermsRepository) CreateTerm(term *models.Terms) error {
 	term.ID = uuid.NewString()
 	term.Created = time.Now()
 
@@ -56,7 +56,7 @@ func(repository *TermRepository) CreateTerm(term *models.Terms) error {
 	return nil
 }
 
-func(repository *TermRepository) UpdateTerm(id string, term *models.Terms) error {
+func(repository *TermsRepository) UpdateTerm(id string, term *models.Terms) error {
 	query := `UPDATE "Terms" SET title = $1, body = $2 where id = $3`
 
 	_, err := repository.db.Exec(query, &term.Title, &term.Body, id); if err != nil {
@@ -66,7 +66,7 @@ func(repository *TermRepository) UpdateTerm(id string, term *models.Terms) error
 	return nil
 }
 
-func(repository *TermRepository) DeleteTerm(id string) error {
+func(repository *TermsRepository) DeleteTerm(id string) error {
 	query := `DELETE FROM "Terms" WHERE "id" = $1`
 
 	_, err := repository.db.Exec(query, id); if err != nil {
