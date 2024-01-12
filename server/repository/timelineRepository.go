@@ -63,9 +63,8 @@ func(repository *TimelineRepository) CreateTimeline(timeline *models.Timeline) e
 	return nil
 }
 
-func(repository *TimelineRepository) UpdateTimeine(id string, timeline *models.Timeline) error {
-	
-	query := `UPDATE "Timline" SET (title = $1, data = %2, body = $3) WHERE "id" = $4`
+func(repository *TimelineRepository) UpdateTimeline(id string, timeline *models.Timeline) error {
+	query := `UPDATE "Timeline" SET title = $1, data = %2, body = $3 WHERE "id" = $4`
 
 	_, err := repository.db.Exec(query,  &timeline.Title, &timeline.Date, &timeline.Body, id); if err != nil {
 		return fmt.Errorf("error occurred while updating timeline: %w", err)
@@ -75,7 +74,7 @@ func(repository *TimelineRepository) UpdateTimeine(id string, timeline *models.T
 }
 
 func(repository *TimelineRepository) DeleteTimeline(id string) error {
-	query := `DELETE FROM "Timline" WHERE "id" = $1`
+	query := `DELETE FROM "Timeline" WHERE "id" = $1`
 
 	_, err := repository.db.Exec(query, id); if err != nil {
 		return fmt.Errorf("error occurred while deleting timeline: %w", err)

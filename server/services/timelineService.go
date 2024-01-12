@@ -30,7 +30,7 @@ func(service *TimelineService) CreateTimeline(timeline *models.Timeline) error {
 }
 
 func(service *TimelineService) UpdateTimeline(id string, timeline *models.Timeline) error {
-	if err := service.repository.UpdateTimeine(id, timeline); err != nil {
+	if err := service.repository.UpdateTimeline(id, timeline); err != nil {
 		return err
 	}
 

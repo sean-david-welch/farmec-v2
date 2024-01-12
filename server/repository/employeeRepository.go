@@ -88,7 +88,7 @@ func(repository *EmployeeRepository) CreateEmployee(employee *models.Employee) e
 }
 
 func(repository *EmployeeRepository) UpdateEmployee(id string, employee *models.Employee) error {
-	query := `UPDATE "Employee" SET (name = $1, email = $2, role = $3, bio = $4, profileImage = $5, phone = %6) WHERE "id" = $7`
+	query := `UPDATE "Employee" SET name = $1, email = $2, role = $3, bio = $4, profileImage = $5, phone = $6 WHERE "id" = $7`
 
 	
 	_, err := repository.db.Exec(query, &employee.Name, &employee.Email, &employee.Role, &employee.Bio, &employee.ProfileImage, &employee.Phone, id)
