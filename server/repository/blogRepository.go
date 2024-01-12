@@ -1,0 +1,111 @@
+package repository
+
+import (
+	"database/sql"
+	"fmt"
+	"time"
+
+	"github.com/google/uuid"
+	"github.com/sean-david-welch/farmec-v2/server/models"
+)
+
+// type Blog struct {
+//     ID        string `json:"id"`
+//     Title     string `json:"title"`
+//     Date      string `json:"date"`
+//     MainImage string `json:"main_image"`
+//     Subheading string `json:"subheading"`
+//     Body      string `json:"body"`
+// 	   Created   time.Time `json:"created"`
+// }
+
+type BlogRepository struct {
+	db *sql.DB
+}
+
+func NewBlogRepository(db *sql.DB) *BlogRepository {
+	return &BlogRepository{db: db}
+}
+
+func(repository *BlogRepository) GetBlogs() ([]models.Blog, error) {
+	var blogs []models.Blog
+
+	query := `SELECT * FROM "Blog"`
+	rows, err := repository.db.Query(query); if err != nil {
+		return nil, fmt.Errorf("error occurred while querying databse: %w", err)
+	}
+	defer rows.Close()
+
+	for rows.Next(){
+		var blog models.Blog
+
+		err := rows.Scan(&blog.ID, &blog.Title, &blog.Date, &blog.MainImage, &blog.Subheading, &blog.Body, &blog.Created)
+		if err != nil {
+			return nil, fmt.Errorf("error occurred while scanning rows: %w", err)
+		} 
+
+		blogs = append(blogs, blog)
+	}
+
+
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("error occurred after iterating over rows: %w", err)
+	}
+
+	return blogs, nil
+}
+
+func(repository *BlogRepository) GetBlogById(id string) (*models.Blog, error) {
+	query := `SELECT * FROM "Blog" WHERE "id" = $1`
+	row := repository.db.QueryRow(query, id)
+
+	var blog models.Blog
+	
+	err := row.Scan(&blog.ID, &blog.Title, &blog.Date, &blog.MainImage, &blog.Subheading, &blog.Body, &blog.Created)
+	if err != nil {
+
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+
+		return nil, fmt.Errorf("error occurred while getting blog: %w", err)
+	}
+
+	return &blog, nil
+}
+
+func(repository *BlogRepository) CreateBlog(blog *models.Blog) error {
+	blog.ID = uuid.NewString()
+	blog.Created = time.Now()
+
+	query := `INSERT INTO "Blog" (id, title, date, mainImage, subHeading, body, created) VALUES ($1, $2, $3, $4, $5, $6, $7)`
+
+    _, err := repository.db.Exec(query, blog.ID, blog.Title, blog.Date, blog.MainImage, blog.Subheading, blog.Body, blog.Created)
+	if err != nil {
+		return fmt.Errorf("error occurred while creating blog: %w", err)
+	}
+
+	return nil
+}
+
+func(repository *BlogRepository) UpdateBlog(id string, blog *models.Blog) error {
+	query := `UPDATE "Blog" SET "title" = $1, "date" = $2, "mainImage" = $3, "subHeading" = $4, "body" = $5 WHERE "id" = $6`
+
+    _, err := repository.db.Exec(query, blog.Title, blog.Date, blog.MainImage, blog.Subheading, blog.Body, blog.Created, id)
+	if err != nil {
+		return fmt.Errorf("error occurred while updating blog: %w", err)
+	}
+	
+	return nil
+}
+
+func(repository *BlogRepository) DeleteBlog(id string) error {
+	query := `DELETE FROM "Blog" WHERE "id" = $1`
+
+	_, err := repository.db.Exec(query, id); if err != nil {
+		return fmt.Errorf("error occurred while deleting blog: %w", err)
+	}
+
+	return nil
+}
+

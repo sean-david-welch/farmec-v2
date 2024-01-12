@@ -49,7 +49,7 @@ func(repository *TermsRepository) CreateTerm(term *models.Terms) error {
 
 	query := `INSERT INTO "Terms" (id, title, body, created) VALUES ($1, $2, $3, $4)`
 
-	_, err := repository.db.Exec(query, &term.ID, &term.Title, &term.Body, &term.Created); if err != nil {
+	_, err := repository.db.Exec(query, term.ID, term.Title, term.Body, term.Created); if err != nil {
 		return fmt.Errorf("error occurred while creating term term: %w", err)
 	}
 	
@@ -59,7 +59,7 @@ func(repository *TermsRepository) CreateTerm(term *models.Terms) error {
 func(repository *TermsRepository) UpdateTerm(id string, term *models.Terms) error {
 	query := `UPDATE "Terms" SET title = $1, body = $2 where id = $3`
 
-	_, err := repository.db.Exec(query, &term.Title, &term.Body, id); if err != nil {
+	_, err := repository.db.Exec(query, term.Title, term.Body, id); if err != nil {
 		return fmt.Errorf("error occurred while updating term term: %w", err)
 	}
 

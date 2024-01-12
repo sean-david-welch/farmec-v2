@@ -56,7 +56,7 @@ func(repository *TimelineRepository) CreateTimeline(timeline *models.Timeline) e
 
 	query := `INSERT INTO "Timeline" (id, title, date, body, created) VALUES ($1, $2, $3, $4, $5)`
 
-	_, err := repository.db.Exec(query, &timeline.ID, &timeline.Title, &timeline.Date, &timeline.Body, &timeline.Created); if err != nil {
+	_, err := repository.db.Exec(query, timeline.ID, timeline.Title, timeline.Date, timeline.Body, timeline.Created); if err != nil {
 		return fmt.Errorf("error occurred while creating timeline: %w", err)
 	}
 	
@@ -66,7 +66,7 @@ func(repository *TimelineRepository) CreateTimeline(timeline *models.Timeline) e
 func(repository *TimelineRepository) UpdateTimeline(id string, timeline *models.Timeline) error {
 	query := `UPDATE "Timeline" SET title = $1, data = %2, body = $3 WHERE "id" = $4`
 
-	_, err := repository.db.Exec(query,  &timeline.Title, &timeline.Date, &timeline.Body, id); if err != nil {
+	_, err := repository.db.Exec(query,  timeline.Title, timeline.Date, timeline.Body, id); if err != nil {
 		return fmt.Errorf("error occurred while updating timeline: %w", err)
 	}
 	

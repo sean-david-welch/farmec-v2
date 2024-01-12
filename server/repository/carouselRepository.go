@@ -71,7 +71,7 @@ func (repository *CarouselRepository) CreateCarousel(carousel *models.Carousel) 
 	(id, name, image)
 	VALUES ($1, $2, $3)`
 
-	_, err := repository.db.Exec(query, &carousel.ID, &carousel.Name, &carousel.Image); if err != nil {
+	_, err := repository.db.Exec(query, carousel.ID, carousel.Name, carousel.Image); if err != nil {
 		return fmt.Errorf("error creating carousel: %w", err)
 	}
 	
@@ -81,7 +81,7 @@ func (repository *CarouselRepository) CreateCarousel(carousel *models.Carousel) 
 func (repository *CarouselRepository) UpdateCarousel(id string, carousel *models.Carousel) error {
 	query := `UPDATE "Carousel" SET name = $1, image = $2 WHERE id = $3`
 
-	_, err := repository.db.Exec(query, &carousel.Name, &carousel.Image, id); if err != nil {
+	_, err := repository.db.Exec(query, carousel.Name, carousel.Image, id); if err != nil {
 		return fmt.Errorf("error updating carousel: %w", err)
 	}
 

@@ -79,7 +79,7 @@ func(repository *EmployeeRepository) CreateEmployee(employee *models.Employee) e
 	query := `INSERT INTO "Employee" (id, name, email, role, bio, profileImage, created, phone)
 				VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`
 
-	_, err := repository.db.Exec(query, &employee.ID, &employee.Name, &employee.Email, &employee.Role, &employee.Bio, &employee.ProfileImage, &employee.Created, &employee.Phone)
+	_, err := repository.db.Exec(query, employee.ID, employee.Name, employee.Email, employee.Role, employee.Bio, employee.ProfileImage, employee.Created, employee.Phone)
 	if err != nil {
 		return err
 	}
@@ -91,7 +91,7 @@ func(repository *EmployeeRepository) UpdateEmployee(id string, employee *models.
 	query := `UPDATE "Employee" SET name = $1, email = $2, role = $3, bio = $4, profileImage = $5, phone = $6 WHERE "id" = $7`
 
 	
-	_, err := repository.db.Exec(query, &employee.Name, &employee.Email, &employee.Role, &employee.Bio, &employee.ProfileImage, &employee.Phone, id)
+	_, err := repository.db.Exec(query, employee.Name, employee.Email, employee.Role, employee.Bio, employee.ProfileImage, employee.Phone, id)
 	if err != nil {
 		return err
 	}

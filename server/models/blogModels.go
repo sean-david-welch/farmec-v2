@@ -9,6 +9,7 @@ type Blog struct {
     MainImage string `json:"main_image"`
     Subheading string `json:"subheading"`
     Body      string `json:"body"`
+    Created   time.Time `json:"created"`
 }
 
 type Exhibition struct {

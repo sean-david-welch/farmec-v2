@@ -63,7 +63,7 @@ func(repository *PrivacyRepository) CreatePrivacy(privacy *models.Privacy) error
 
 	query := `INSERT INTO "Privacy" (id, title, body, created) VALUES ($1, $2, $3, $4)`
 
-	_, err := repository.db.Exec(query, &privacy.ID, &privacy.Title, &privacy.Body, &privacy.Created); if err != nil {
+	_, err := repository.db.Exec(query, privacy.ID, privacy.Title, privacy.Body, privacy.Created); if err != nil {
 		return fmt.Errorf("error occurred while creating privacy term: %w", err)
 	}
 	
@@ -73,7 +73,7 @@ func(repository *PrivacyRepository) CreatePrivacy(privacy *models.Privacy) error
 func(repository *PrivacyRepository) UpdatePrivacy(id string, privacy *models.Privacy) error {
 	query := `UPDATE "Privacy" SET title = $1, body = $2 where id = $3`
 
-	_, err := repository.db.Exec(query, &privacy.Title, &privacy.Body, id); if err != nil {
+	_, err := repository.db.Exec(query, privacy.Title, privacy.Body, id); if err != nil {
 		return fmt.Errorf("error occurred while updating privacy term: %w", err)
 	}
 
