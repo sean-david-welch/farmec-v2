@@ -8,7 +8,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sean-david-welch/farmec-v2/server/config"
 	"github.com/sean-david-welch/farmec-v2/server/controllers"
-	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
 	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/services"
@@ -16,7 +15,7 @@ import (
 	"google.golang.org/api/youtube/v3"
 )
 
-func InitializeVideos(router *gin.Engine, db *sql.DB, secrets *config.Secrets, firebase *lib.Firebase) {
+func InitializeVideos(router *gin.Engine, db *sql.DB, secrets *config.Secrets, adminMiddleware *middleware.AdminMiddleware) {
 	youtubeService, err := youtube.NewService(context.Background(), option.WithAPIKey(secrets.YoutubeApiKey)); if err != nil {
 		log.Fatal("error calling YouTube API: ", err)
 	}
@@ -24,8 +23,6 @@ func InitializeVideos(router *gin.Engine, db *sql.DB, secrets *config.Secrets, f
 	videoRepository := repository.NewVideoRepository(db)
 	videoService := services.NewVideoService(videoRepository, youtubeService)
 	videoController := controllers.NewVideoController(videoService)
-
-	adminMiddleware := middleware.NewAdminMiddleware(firebase)
 
 	VideoRoutes(router, videoController, adminMiddleware)
 }
@@ -35,8 +32,7 @@ func VideoRoutes(router *gin.Engine, videoController *controllers.VideoControlle
 
 	videoGroup.GET("/:id", videoController.GetVideos)
 
-	protected := videoGroup.Group("")
-	protected.Use(adminMiddleware.Middleware()); {
+	protected := videoGroup.Group("").Use(adminMiddleware.Middleware()); {
 		protected.POST("", videoController.CreateVideo)
 		protected.PUT("/:id", videoController.UpdateVideo)
 		protected.DELETE("/:id", videoController.DeleteVideo)

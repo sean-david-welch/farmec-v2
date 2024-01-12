@@ -18,7 +18,7 @@ type Timeline struct {
     Title   string `json:"title"`
     Date    string `json:"date"`
     Body    string `json:"body"`
-    Created string `json:"created"`
+    Created time.Time `json:"created"`
 }
 
 type Privacy struct {

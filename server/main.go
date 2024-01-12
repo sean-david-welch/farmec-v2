@@ -10,6 +10,7 @@ import (
 
 	"github.com/sean-david-welch/farmec-v2/server/config"
 	"github.com/sean-david-welch/farmec-v2/server/lib"
+	"github.com/sean-david-welch/farmec-v2/server/middleware"
 	"github.com/sean-david-welch/farmec-v2/server/routes"
 	"github.com/sean-david-welch/farmec-v2/server/utils"
 )
@@ -31,22 +32,25 @@ func main() {
 	firebase, err := lib.NewFirebase(secrets); if err != nil {
 		log.Fatal("Failed to initialize Firebase: ", err)
 	}
+
+	adminMiddleware := middleware.NewAdminMiddleware(firebase)
 	
 	router := gin.Default()
 	router.Use(gin.Logger(), gin.Recovery(), cors.Default())
 
 	// Supplier Module Resoucess 
-    routes.InitializeSuppliers(router, db, s3Client, firebase)
-	routes.InitializeMachines(router, db, s3Client, firebase)
-	routes.InitializeProduct(router, db, s3Client, firebase)
-	routes.InitializeVideos(router, db, secrets, firebase)
-	routes.InitializeParts(router, db, s3Client, firebase)
+    routes.InitializeSuppliers(router, db, s3Client, adminMiddleware)
+	routes.InitializeMachines(router, db, s3Client, adminMiddleware)
+	routes.InitializeProduct(router, db, s3Client, adminMiddleware)
+	routes.InitializeParts(router, db, s3Client, adminMiddleware)
+	routes.InitializeVideos(router, db, secrets, adminMiddleware)
 
 	// About Module Resources
-	routes.InitilizeEmployee(router, db, s3Client, firebase)
+	routes.InitilizeEmployee(router, db, s3Client, adminMiddleware)
+	routes.InitializeTimelines(router, db, adminMiddleware)
 
 	// Misc Resources
-	routes.InitializeCarousel(router, db, s3Client, firebase)
+	routes.InitializeCarousel(router, db, s3Client, adminMiddleware)
 
 
 	router.Run(":8080")

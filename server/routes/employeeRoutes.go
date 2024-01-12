@@ -5,22 +5,19 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/sean-david-welch/farmec-v2/server/controllers"
-	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
 	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/services"
 	"github.com/sean-david-welch/farmec-v2/server/utils"
 )
 
-func InitilizeEmployee(router *gin.Engine, db *sql.DB, s3Client *utils.S3Client, firebase *lib.Firebase) {
+func InitilizeEmployee(router *gin.Engine, db *sql.DB, s3Client *utils.S3Client, adminMiddleware *middleware.AdminMiddleware) {
 	repository := repository.NewEmployeeRepository(db)
 	service := services.NewEmployeeService(repository, s3Client, "employees")
 	cotroller := controllers.NewEmployeeController(service)
 
-	admimMiddleware := middleware.NewAdminMiddleware(firebase)
 
-
-	EmployeeRoutes(router, cotroller, admimMiddleware)
+	EmployeeRoutes(router, cotroller, adminMiddleware)
 }
 
 func EmployeeRoutes(router *gin.Engine, controller *controllers.EmployeeController, middleware *middleware.AdminMiddleware) {
@@ -28,8 +25,7 @@ func EmployeeRoutes(router *gin.Engine, controller *controllers.EmployeeControll
 
 	employeeGroup.GET("", controller.GetEmployees)
 
-	protected := employeeGroup.Group("")
-	protected.Use(middleware.Middleware()); {
+	protected := employeeGroup.Group("").Use(middleware.Middleware()); {
 		protected.POST("", controller.CreateEmployee)
 		protected.PUT("/:id", controller.UpdateEmployee)
 		protected.DELETE("/:id", controller.DeleteEmployee)
