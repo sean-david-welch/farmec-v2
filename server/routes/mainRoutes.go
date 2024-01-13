@@ -29,4 +29,5 @@ func InitializeRoutes(router *gin.Engine, db *sql.DB, secrets *config.Secrets, s
 
 	// Misc Resources
 	InitializeCarousel(router, db, s3Client, adminMiddleware)
+	InitializeRegistrations(router, db, adminMiddleware)
 }

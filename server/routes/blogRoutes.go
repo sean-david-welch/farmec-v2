@@ -28,6 +28,6 @@ func BlogRoutes(router *gin.Engine, controller *controllers.BlogController, admi
 	protected := blogGroup.Group("").Use(adminMiddleware.Middleware()); {
 		protected.POST("", controller.CreateBlog)
 		protected.PUT("/:id", controller.UpdateBlog)
-		protected.DELETE(":/id", controller.DeleteBlog)
+		protected.DELETE("/:id", controller.DeleteBlog)
 	}
 }
