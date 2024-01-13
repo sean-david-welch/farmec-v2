@@ -38,25 +38,7 @@ func main() {
 	router := gin.Default()
 	router.Use(gin.Logger(), gin.Recovery(), cors.Default())
 
-	// Supplier Module Resouces
-    routes.InitializeSuppliers(router, db, s3Client, adminMiddleware)
-	routes.InitializeMachines(router, db, s3Client, adminMiddleware)
-	routes.InitializeProduct(router, db, s3Client, adminMiddleware)
-	routes.InitializeParts(router, db, s3Client, adminMiddleware)
-	routes.InitializeVideos(router, db, secrets, adminMiddleware)
-
-	// About Module Resources
-	routes.InitilizeEmployee(router, db, s3Client, adminMiddleware)
-	routes.InitializeTimelines(router, db, adminMiddleware)
-	routes.InitializePrivacy(router, db, adminMiddleware)
-	routes.InitializeTerms(router, db, adminMiddleware)
-
-	// Blog Modeule Resources
-	routes.InitializeBlogs(router, db, s3Client, adminMiddleware)
-
-	// Misc Resources
-	routes.InitializeCarousel(router, db, s3Client, adminMiddleware)
-
+	routes.InitializeRoutes(router, db, secrets, s3Client, adminMiddleware)
 
 	router.Run("localhost:8080")
 }
