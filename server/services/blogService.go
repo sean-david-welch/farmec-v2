@@ -82,7 +82,15 @@ func(service *BlogService) UpdateBlog(id string, blog *models.Blog) (*types.Mode
 
 func(service *BlogService) DeleteBlog(id string) error {
 	blog, err := service.repository.GetBlogById(id); if err != nil {
-		return nil, err
+		return err
+	}
+
+	if err := service.s3Client.DeleteImageFromS3(blog.MainImage); err != nil {
+		return err
+	}
+
+	if err := service.repository.DeleteBlog(id); err != nil {
+		return err
 	}
 
 	return nil
