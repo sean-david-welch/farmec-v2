@@ -8,6 +8,11 @@ type Carousel struct {
     Image string `json:"image"`
 }
 
+type DealerOwnerInfo struct {
+    Dealer    string
+    OwnerName string
+}
+
 type WarrantyClaim struct {
     ID             string        `json:"id"`
     Dealer         string        `json:"dealer"`

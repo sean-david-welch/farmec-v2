@@ -34,11 +34,12 @@ func main() {
 	}
 
 	adminMiddleware := middleware.NewAdminMiddleware(firebase)
+	authMiddleware := middleware.NewAuthMiddleware(firebase)
 	
 	router := gin.Default()
 	router.Use(gin.Logger(), gin.Recovery(), cors.Default())
 
-	routes.InitializeRoutes(router, db, secrets, s3Client, adminMiddleware)
+	routes.InitializeRoutes(router, db, secrets, s3Client, adminMiddleware, authMiddleware)
 
 	router.Run("localhost:8080")
 }

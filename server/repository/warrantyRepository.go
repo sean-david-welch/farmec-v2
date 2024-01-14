@@ -17,17 +17,17 @@ func NewWarrantyRepository(db *sql.DB) *WarrantyRepository {
 	return &WarrantyRepository{db: db}
 }
 
-func(repo *WarrantyRepository) GetWarranties() ([]models.WarrantyClaim, error) {
-	var warranties []models.WarrantyClaim
+func(repository*WarrantyRepository) GetWarranties() ([]models.DealerOwnerInfo, error) {
+	var warranties []models.DealerOwnerInfo
 
     query := `SELECT "dealer", "ownerName" FROM "WarrantyClaim"`
-	rows, err := repo.db.Query(query); if err != nil {
+	rows, err := repository.db.Query(query); if err != nil {
 		return nil, fmt.Errorf("error occurred while querying database: %w", err)
 	}
 	defer rows.Close()
 
 	for rows.Next() {
-		var warranty models.WarrantyClaim
+		var warranty models.DealerOwnerInfo
 
 		if err := rows.Scan()
 		err != nil {
@@ -44,13 +44,13 @@ func(repo *WarrantyRepository) GetWarranties() ([]models.WarrantyClaim, error) {
 	return warranties, nil
 }
 
-func(repo *WarrantyRepository) GetWarrantyById(id string) (*models.WarrantyClaim, []models.PartsRequired, error) {
+func(repository*WarrantyRepository) GetWarrantyById(id string) (*models.WarrantyClaim, []models.PartsRequired, error) {
 	var warranty models.WarrantyClaim
 	var parts []models.PartsRequired
 
 	warrantyQuery := `SELECT * FROM "WarrantyClaim" WHERE id = $1`
 
-	row := repo.db.QueryRow(warrantyQuery, id)
+	row := repository.db.QueryRow(warrantyQuery, id)
 	
 	if err := row.Scan(&warranty.ID, &warranty.Dealer, &warranty.DealerContact, &warranty.OwnerName, 
 		&warranty.MachineModel, &warranty.SerialNumber, &warranty.InstallDate, &warranty.FailureDate, &warranty.RepairDate, 
@@ -60,7 +60,7 @@ func(repo *WarrantyRepository) GetWarrantyById(id string) (*models.WarrantyClaim
 	}
 
 	partsQuery := `SELECT * FROM "PartsRequired" WHERE warrantyId = $1`
-	rows, err := repo.db.Query(partsQuery, id); if err != nil {
+	rows, err := repository.db.Query(partsQuery, id); if err != nil {
         return nil, nil, fmt.Errorf("error querying parts required from database: %w", err)
     }
     defer rows.Close()
@@ -82,11 +82,11 @@ func(repo *WarrantyRepository) GetWarrantyById(id string) (*models.WarrantyClaim
 	return &warranty, parts, nil
 }
 
-func(repo *WarrantyRepository) CreateWarranty(warranty *models.WarrantyClaim, parts []models.PartsRequired) error {
+func(repository*WarrantyRepository) CreateWarranty(warranty *models.WarrantyClaim, parts []models.PartsRequired) error {
 	warranty.ID = uuid.NewString()
 	warranty.Created = time.Now()
 
-	transaction, err := repo.db.Begin(); if err != nil {
+	transaction, err := repository.db.Begin(); if err != nil {
 		return err
 	}
 
@@ -124,8 +124,8 @@ func(repo *WarrantyRepository) CreateWarranty(warranty *models.WarrantyClaim, pa
 	return nil		
 }
 
-func(repo *WarrantyRepository) UpdateWarranty(id string, warranty *models.WarrantyClaim, parts []models.PartsRequired) error {
-    transaction, err := repo.db.Begin(); if err != nil {
+func(repository*WarrantyRepository) UpdateWarranty(id string, warranty *models.WarrantyClaim, parts []models.PartsRequired) error {
+    transaction, err := repository.db.Begin(); if err != nil {
         return err
     }
 
@@ -169,8 +169,8 @@ func(repo *WarrantyRepository) UpdateWarranty(id string, warranty *models.Warran
     return nil		
 }
 
-func(repo *WarrantyRepository) DeleteWarranty(id string) error {
-	transaction, err := repo.db.Begin(); if err != nil {
+func(repository*WarrantyRepository) DeleteWarranty(id string) error {
+	transaction, err := repository.db.Begin(); if err != nil {
 		return err
 	}
 

@@ -10,21 +10,21 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/services"
 )
 
-func InitializeRegistrations(router *gin.Engine, db *sql.DB, adminMiddleware *middleware.AdminMiddleware) {
+func InitializeRegistrations(router *gin.Engine, db *sql.DB, authMiddleware *middleware.AuthMiddleware) {
 	repository := repository.NewRegistrationRepository(db)
 	service := services.NewRegistrationService(repository)
 	controller := controllers.NewRegistrationController(service)
 
-	RegistrationRoutes(router, controller, adminMiddleware)
+	RegistrationRoutes(router, controller, authMiddleware)
 }
 
-func RegistrationRoutes(router *gin.Engine, controller *controllers.RegistrationController, adminMiddleware *middleware.AdminMiddleware) {
+func RegistrationRoutes(router *gin.Engine, controller *controllers.RegistrationController, authMiddleware *middleware.AuthMiddleware) {
 	registrationGroup := router.Group("/api/registrations")
 
 	registrationGroup.GET("", controller.GetRegistrations)
 	registrationGroup.GET("/:id", controller.GetRegistrationById)
 
-	protecteed := registrationGroup.Group("").Use(adminMiddleware.Middleware()); {
+	protecteed := registrationGroup.Group("").Use(authMiddleware.Middleware()); {
 		protecteed.POST("", controller.CreateRegistration)
 		protecteed.PUT("/:id", controller.UpdateRegistration)
 		protecteed.DELETE("/:id", controller.DeleteRegistration)

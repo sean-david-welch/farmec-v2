@@ -18,26 +18,26 @@ func NewAdminMiddleware(firebaseService *lib.Firebase) *AdminMiddleware {
 }
 
 func (middleware *AdminMiddleware) Middleware() gin.HandlerFunc {
-	return func(ctx *gin.Context) {
+	return func(context *gin.Context) {
 		log.Println("AdminMiddleware triggered")
 
-		token, err := ctx.Cookie("session"); if err != nil {
-			ctx.AbortWithStatusJSON(401, gin.H{"error": "Unauthorized, No token provided"})
+		token, err := context.Cookie("session"); if err != nil {
+			context.AbortWithStatusJSON(401, gin.H{"error": "Unauthorized, No token provided"})
             return
 		}
 
 		decodedToken, isAdmin, err := middleware.FirebaseService.VerifyToken(token); if err != nil {
-			ctx.AbortWithStatusJSON(401, gin.H{"error": "Unauthorized, Invalid Token"})
+			context.AbortWithStatusJSON(401, gin.H{"error": "Unauthorized, Invalid Token"})
 			return
 		}
 
         if !isAdmin {
-            ctx.AbortWithStatusJSON(403, gin.H{"error": "Forbidden, requires admin privileges"})
+            context.AbortWithStatusJSON(403, gin.H{"error": "Forbidden, requires admin privileges"})
             return
         }
 
-		ctx.Set("decodedToken", decodedToken)
+		context.Set("decodedToken", decodedToken)
 
-		ctx.Next()
+		context.Next()
 	}
 }

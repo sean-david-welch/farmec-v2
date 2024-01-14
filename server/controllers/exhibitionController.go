@@ -17,61 +17,61 @@ func NewExhibitionController(service *services.ExhibitionService) *ExhibitionCon
 	return &ExhibitionController{service: service}
 }
 
-func(controller *ExhibitionController) GetExhibitions(ctx *gin.Context) {
+func(controller *ExhibitionController) GetExhibitions(context *gin.Context) {
 	exhibitions, err := controller.service.GetExhibitions(); if err != nil {
 		log.Printf("error getting exhibitions: %v", err)
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while getting exhibitions"})
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while getting exhibitions"})
 		return
 	}
 
-	ctx.JSON(http.StatusOK, exhibitions)
+	context.JSON(http.StatusOK, exhibitions)
 }
 
-func(controller *ExhibitionController) CreateExhibition(ctx *gin.Context) {
+func(controller *ExhibitionController) CreateExhibition(context *gin.Context) {
 	var exhibition *models.Exhibition
 
-	if err := ctx.ShouldBindJSON(&exhibition); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid request body", "details": err.Error()})
+	if err := context.ShouldBindJSON(&exhibition); err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"error": "invalid request body", "details": err.Error()})
 		return
 	}
 
 	if err := controller.service.CreateExhibition(exhibition); err != nil {
 		log.Printf("error occurred while creating exhibition: %v", err)
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while creating exhibition", "details": err.Error()})
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while creating exhibition", "details": err.Error()})
 		return
 	}
 
-	ctx.JSON(http.StatusCreated, exhibition)
+	context.JSON(http.StatusCreated, exhibition)
 }
 
-func(controller *ExhibitionController) UpdateExhibition(ctx *gin.Context) {
-	id := ctx.Param("id")
+func(controller *ExhibitionController) UpdateExhibition(context *gin.Context) {
+	id := context.Param("id")
 	
 	var exhibition *models.Exhibition
 
-	if err := ctx.ShouldBindJSON(&exhibition); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid request body", "details": err.Error()})
+	if err := context.ShouldBindJSON(&exhibition); err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"error": "invalid request body", "details": err.Error()})
 		return
 	}
 
 	if err := controller.service.UpdateExhibition(id, exhibition); err != nil {
 		log.Printf("error occurred while updating exhibition: %v", err)
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while updating exhibition", "details": err.Error()})
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while updating exhibition", "details": err.Error()})
 		return
 	}
 
-	ctx.JSON(http.StatusAccepted, exhibition)
+	context.JSON(http.StatusAccepted, exhibition)
 }
 
-func(controller *ExhibitionController) DeleteExhibition(ctx *gin.Context) {
-	id := ctx.Param("id")
+func(controller *ExhibitionController) DeleteExhibition(context *gin.Context) {
+	id := context.Param("id")
 
 	if err := controller.service.DeleteExhibition(id); err != nil {
 		log.Printf("error occurred while deleting exhibition: %v", err)
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while deleting exhibition"})
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while deleting exhibition"})
 		return
 	}
 
-	ctx.JSON(http.StatusAccepted, gin.H{"message": "exhibition deleted successfully", "id": id})
+	context.JSON(http.StatusAccepted, gin.H{"message": "exhibition deleted successfully", "id": id})
 }
 

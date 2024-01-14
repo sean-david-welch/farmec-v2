@@ -35,13 +35,13 @@ func NewFirebase(secrets *config.Secrets) (*Firebase, error) {
 }
 
 func (firebase *Firebase) VerifyToken(token string) (*auth.Token, bool, error) {
-	ctx := context.Background()
+	context := context.Background()
 
-	authClient, err := firebase.App.Auth(ctx); if err != nil {
+	authClient, err := firebase.App.Auth(context); if err != nil {
 		return nil, false, err
 	} 
 
-	decodedToken, err := authClient.VerifyIDToken(ctx, token); if err != nil {
+	decodedToken, err := authClient.VerifyIDToken(context, token); if err != nil {
 		return nil, false, err
 	}
 

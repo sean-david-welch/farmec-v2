@@ -9,7 +9,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/utils"
 )
 
-func InitializeRoutes(router *gin.Engine, db *sql.DB, secrets *config.Secrets, s3Client *utils.S3Client, adminMiddleware *middleware.AdminMiddleware) {
+func InitializeRoutes(router *gin.Engine, db *sql.DB, secrets *config.Secrets, s3Client *utils.S3Client, adminMiddleware *middleware.AdminMiddleware, authMiddleware *middleware.AuthMiddleware) {
 	// Supplier Module Resouces
 	InitializeSuppliers(router, db, s3Client, adminMiddleware)
 	InitializeMachines(router, db, s3Client, adminMiddleware)
@@ -29,5 +29,6 @@ func InitializeRoutes(router *gin.Engine, db *sql.DB, secrets *config.Secrets, s
 
 	// Misc Resources
 	InitializeCarousel(router, db, s3Client, adminMiddleware)
-	InitializeRegistrations(router, db, adminMiddleware)
+	InitializeRegistrations(router, db, authMiddleware)
+	InitializeWarranty(router, db, authMiddleware)
 }
