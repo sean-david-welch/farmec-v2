@@ -10,8 +10,8 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/services"
 )
 
-func InitializePrivacy(router *gin.Engine, db *sql.DB, adminMiddleware *middleware.AdminMiddleware) {
-	repository := repository.NewPrivacyRepository(db)
+func InitializePrivacy(router *gin.Engine, database *sql.DB, adminMiddleware *middleware.AdminMiddleware) {
+	repository := repository.NewPrivacyRepository(database)
 	service := services.NewPrivacyService(repository)
 	controller := controllers.NewPrivacyController(service)
 

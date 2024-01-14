@@ -11,8 +11,8 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/utils"
 )
 
-func InitializeMachines(router *gin.Engine, db *sql.DB, s3Client *utils.S3Client, adminMiddleware *middleware.AdminMiddleware) {
-	machineRepository := repository.NewMachineRepository(db)
+func InitializeMachines(router *gin.Engine, database *sql.DB, s3Client *utils.S3Client, adminMiddleware *middleware.AdminMiddleware) {
+	machineRepository := repository.NewMachineRepository(database)
 	machineService := services.NewMachineService(machineRepository, s3Client, "machines")
 	machineController := controllers.NewMachineController(machineService)
 

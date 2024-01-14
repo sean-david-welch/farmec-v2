@@ -18,11 +18,11 @@ import (
 // }
 
 type ProductRepository struct {
-	db *sql.DB
+	database *sql.DB
 }
 
-func NewProductRepository(db *sql.DB) *ProductRepository {
-	return &ProductRepository{db: db}
+func NewProductRepository(database *sql.DB) *ProductRepository {
+	return &ProductRepository{database: database}
 }
 
 func ScanProduct(row interface{}, product *models.Product) error {
@@ -45,7 +45,7 @@ func (repository *ProductRepository) GetProducts(id string) ([]models.Product, e
 	var products []models.Product
 
 	query := `SELECT * FROM "Product" WHERE "machineId" = $1`
-	rows, err := repository.db.Query(query, id); if err != nil {
+	rows, err := repository.database.Query(query, id); if err != nil {
 		return nil, fmt.Errorf("error executing query: %w", err)
 	}
 
@@ -70,7 +70,7 @@ func (repository *ProductRepository) GetProducts(id string) ([]models.Product, e
 
 func (repository *ProductRepository) GetProductById(id string) (*models.Product, error) {
 	query := `SELECT * FROM "Product" WHERE "id" = $1`
-	row := repository.db.QueryRow(query, id)
+	row := repository.database.QueryRow(query, id)
 
 
 	var product models.Product
@@ -92,7 +92,7 @@ func (repository *ProductRepository) CreateProduct(product *models.Product) erro
 	query := `INSERT INTO "Product" (id, machineID, name, productImage, description, productLink)
 	VALUES ($1, $2, $3, $4, $5, $6)`
 
-	_, err := repository.db.Exec(query, product.ID, product.MachineID, product.Name, product.ProductImage, product.Description, product.ProductLink)
+	_, err := repository.database.Exec(query, product.ID, product.MachineID, product.Name, product.ProductImage, product.Description, product.ProductLink)
 
 	if err != nil {
 		return fmt.Errorf("error creating product: %w", err)
@@ -106,7 +106,7 @@ func (repository *ProductRepository) UpdateMachine(id string, product *models.Pr
 	SET machineID = $1, name = $2, productImage = $3, description = $4, productLink = $5
 	WHERE id = $6`
 
-	_, err := repository.db.Exec(query, product.MachineID, product.Name, product.ProductImage, product.Description, product.ProductLink, id)
+	_, err := repository.database.Exec(query, product.MachineID, product.Name, product.ProductImage, product.Description, product.ProductLink, id)
 
 	if err != nil {
 		return fmt.Errorf("error updating product: %w", err)
@@ -118,7 +118,7 @@ func (repository *ProductRepository) UpdateMachine(id string, product *models.Pr
 func (repository *ProductRepository) DeleteProduct(id string) error {
 	query := `DELETE FROM "Product" WHERE id = $1`
 
-	_, err := repository.db.Exec(query, id); if err != nil {
+	_, err := repository.database.Exec(query, id); if err != nil {
 		return fmt.Errorf("error deleting product: %w", err)
 	}
 	

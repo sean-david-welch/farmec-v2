@@ -18,18 +18,18 @@ import (
 // }
 
 type TimelineRepository struct {
-	db *sql.DB
+	database *sql.DB
 }
 
-func NewTimelineRepository(db *sql.DB) *TimelineRepository {
-	return &TimelineRepository{db: db}
+func NewTimelineRepository(database *sql.DB) *TimelineRepository {
+	return &TimelineRepository{database: database}
 }
 
 func(repository *TimelineRepository) GetTimelines() ([]models.Timeline, error) {
 	var timelines []models.Timeline
 
 	query := `SELECT * FROM "Timeline"`
-	rows, err := repository.db.Query(query); if err != nil {
+	rows, err := repository.database.Query(query); if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
@@ -56,7 +56,7 @@ func(repository *TimelineRepository) CreateTimeline(timeline *models.Timeline) e
 
 	query := `INSERT INTO "Timeline" (id, title, date, body, created) VALUES ($1, $2, $3, $4, $5)`
 
-	_, err := repository.db.Exec(query, timeline.ID, timeline.Title, timeline.Date, timeline.Body, timeline.Created); if err != nil {
+	_, err := repository.database.Exec(query, timeline.ID, timeline.Title, timeline.Date, timeline.Body, timeline.Created); if err != nil {
 		return fmt.Errorf("error occurred while creating timeline: %w", err)
 	}
 	
@@ -66,7 +66,7 @@ func(repository *TimelineRepository) CreateTimeline(timeline *models.Timeline) e
 func(repository *TimelineRepository) UpdateTimeline(id string, timeline *models.Timeline) error {
 	query := `UPDATE "Timeline" SET title = $1, data = %2, body = $3 WHERE "id" = $4`
 
-	_, err := repository.db.Exec(query,  timeline.Title, timeline.Date, timeline.Body, id); if err != nil {
+	_, err := repository.database.Exec(query,  timeline.Title, timeline.Date, timeline.Body, id); if err != nil {
 		return fmt.Errorf("error occurred while updating timeline: %w", err)
 	}
 	
@@ -76,7 +76,7 @@ func(repository *TimelineRepository) UpdateTimeline(id string, timeline *models.
 func(repository *TimelineRepository) DeleteTimeline(id string) error {
 	query := `DELETE FROM "Timeline" WHERE "id" = $1`
 
-	_, err := repository.db.Exec(query, id); if err != nil {
+	_, err := repository.database.Exec(query, id); if err != nil {
 		return fmt.Errorf("error occurred while deleting timeline: %w", err)
 	}
 

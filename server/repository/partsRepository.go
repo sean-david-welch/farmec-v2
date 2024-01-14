@@ -18,11 +18,11 @@ import (
 // }
 
 type PartsRepository struct {
-	db *sql.DB
+	database *sql.DB
 }
 
-func NewPartsRepository(db *sql.DB) *PartsRepository {
-	return &PartsRepository{db: db}
+func NewPartsRepository(database *sql.DB) *PartsRepository {
+	return &PartsRepository{database: database}
 }
 
 func ScanParts(row interface{}, part *models.Sparepart) error {
@@ -45,7 +45,7 @@ func (repository *PartsRepository) GetParts(id string) ([]models.Sparepart, erro
 	var parts []models.Sparepart
 
 	query := `SELECT * FROM "SpareParts" WHERE "supplierId" = $1`
-	rows, err := repository.db.Query(query, id); if err != nil {
+	rows, err := repository.database.Query(query, id); if err != nil {
 		return nil, fmt.Errorf("error executing query: %w", err)
 	}
 	defer rows.Close()
@@ -68,7 +68,7 @@ func (repository *PartsRepository) GetParts(id string) ([]models.Sparepart, erro
 
 func (repository *PartsRepository) GetPartById(id string) (*models.Sparepart, error) {
 	query := `SELECT * FROM "SpareParts" WHERE id = $1`
-	row := repository.db.QueryRow(query, id)
+	row := repository.database.QueryRow(query, id)
 
 	var part models.Sparepart
 
@@ -90,7 +90,7 @@ func (repository *PartsRepository) CreatePart(part *models.Sparepart) error {
 	query := `INSERT INTO "SpareParts" (ID, supplierID, name, partsImage, sparePartsLink, pdfLink)
 	VALUES ($1, $2, $3, $4, $5, $6)`
 
-	_, err := repository.db.Exec(query, part.ID, part.SupplierID, part.Name, part.PartsImage, part.SparePartsLink, part.PdfLink)
+	_, err := repository.database.Exec(query, part.ID, part.SupplierID, part.Name, part.PartsImage, part.SparePartsLink, part.PdfLink)
 
 	if err != nil {
 		return fmt.Errorf("error creating spare part: %w", err)
@@ -104,7 +104,7 @@ func (repository *PartsRepository) UpdatePart(id string, part *models.Sparepart)
 	SET supplierID = $1, name = $2, partsImage = $3, sparePartsLink  = $4, pdfLink = $5
 	WHERE ID = $6`
 
-	_, err := repository.db.Exec(query, part.SupplierID, part.Name, part.PartsImage, part.SparePartsLink, part.PdfLink)
+	_, err := repository.database.Exec(query, part.SupplierID, part.Name, part.PartsImage, part.SparePartsLink, part.PdfLink)
 
 	if err != nil {
 		return fmt.Errorf("error updating part: %w", err)
@@ -116,7 +116,7 @@ func (repository *PartsRepository) UpdatePart(id string, part *models.Sparepart)
 func (repository *PartsRepository) DeletePart(id string) error {
 	query := `DELETE FROM "SpareParts" WHERE id = $1`
 
-	_, err := repository.db.Exec(query, id); if err != nil {
+	_, err := repository.database.Exec(query, id); if err != nil {
 		return fmt.Errorf("error deleting part: %w", err)
 	}
 	

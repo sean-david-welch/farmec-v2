@@ -61,7 +61,7 @@ type MachineRegistration struct {
     Created        time.Time `json:"created"` 
 }
 
-type PaymentProduct struct {
+type LineItem struct {
     ID     string `json:"id"`
     Name   string `json:"name"`
     Price  int    `json:"price"`

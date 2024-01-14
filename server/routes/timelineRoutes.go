@@ -10,8 +10,8 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/services"
 )
 
-func InitializeTimelines(router *gin.Engine, db *sql.DB, adminMiddleware *middleware.AdminMiddleware) {
-	repository := repository.NewTimelineRepository(db)
+func InitializeTimelines(router *gin.Engine, database *sql.DB, adminMiddleware *middleware.AdminMiddleware) {
+	repository := repository.NewTimelineRepository(database)
 	service := services.NewTimelineService(repository)
 	controller := controllers.NewTimelineController(service)
 

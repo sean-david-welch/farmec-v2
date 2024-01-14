@@ -21,18 +21,18 @@ import (
 // }
 
 type EmployeeRepository struct {
-	db *sql.DB
+	database *sql.DB
 }
 
-func NewEmployeeRepository(db *sql.DB) *EmployeeRepository {
-	return &EmployeeRepository{db: db}
+func NewEmployeeRepository(database *sql.DB) *EmployeeRepository {
+	return &EmployeeRepository{database: database}
 }
 
 func (repository *EmployeeRepository) GetEmployees() ([]models.Employee, error) {
 	var employees []models.Employee
 	
 	query := `SELECT * FROM "Employee"`
-	rows, err := repository.db.Query(query); if err != nil {
+	rows, err := repository.database.Query(query); if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
@@ -56,7 +56,7 @@ func (repository *EmployeeRepository) GetEmployees() ([]models.Employee, error) 
 
 func(repository *EmployeeRepository) GetEmployeeById(id string) (*models.Employee, error) {
 	query := `SELECT * FROM "Employee" WHERE "id" = $1`
-	row := repository.db.QueryRow(query, id)
+	row := repository.database.QueryRow(query, id)
 
 	var employee models.Employee
 
@@ -79,7 +79,7 @@ func(repository *EmployeeRepository) CreateEmployee(employee *models.Employee) e
 	query := `INSERT INTO "Employee" (id, name, email, role, bio, profileImage, created, phone)
 				VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`
 
-	_, err := repository.db.Exec(query, employee.ID, employee.Name, employee.Email, employee.Role, employee.Bio, employee.ProfileImage, employee.Created, employee.Phone)
+	_, err := repository.database.Exec(query, employee.ID, employee.Name, employee.Email, employee.Role, employee.Bio, employee.ProfileImage, employee.Created, employee.Phone)
 	if err != nil {
 		return err
 	}
@@ -91,7 +91,7 @@ func(repository *EmployeeRepository) UpdateEmployee(id string, employee *models.
 	query := `UPDATE "Employee" SET name = $1, email = $2, role = $3, bio = $4, profileImage = $5, phone = $6 WHERE "id" = $7`
 
 	
-	_, err := repository.db.Exec(query, employee.Name, employee.Email, employee.Role, employee.Bio, employee.ProfileImage, employee.Phone, id)
+	_, err := repository.database.Exec(query, employee.Name, employee.Email, employee.Role, employee.Bio, employee.ProfileImage, employee.Phone, id)
 	if err != nil {
 		return err
 	}
@@ -101,7 +101,7 @@ func(repository *EmployeeRepository) UpdateEmployee(id string, employee *models.
 
 func (repository *EmployeeRepository) DeleteEmployee(id string) error {
 	query := `DELETE FROM "Employee" WHERE "id" = $1`
-	_, err := repository.db.Exec(query, id); if err != nil {
+	_, err := repository.database.Exec(query, id); if err != nil {
 		return err
 	}
 

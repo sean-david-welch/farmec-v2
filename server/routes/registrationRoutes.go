@@ -10,8 +10,8 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/services"
 )
 
-func InitializeRegistrations(router *gin.Engine, db *sql.DB, authMiddleware *middleware.AuthMiddleware) {
-	repository := repository.NewRegistrationRepository(db)
+func InitializeRegistrations(router *gin.Engine, database *sql.DB, authMiddleware *middleware.AuthMiddleware) {
+	repository := repository.NewRegistrationRepository(database)
 	service := services.NewRegistrationService(repository)
 	controller := controllers.NewRegistrationController(service)
 

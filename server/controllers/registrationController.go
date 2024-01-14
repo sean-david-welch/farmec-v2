@@ -44,13 +44,13 @@ func(controller *RegistrationController) CreateRegistration(context *gin.Context
 
 	if err := context.ShouldBindJSON(&registration); err != nil {
 		log.Printf("error when creating registration: %v", err)
-		context.JSON(http.StatusBadRequest, gin.H{"error": "error occurred while creating blog -  bad request"})
+		context.JSON(http.StatusBadRequest, gin.H{"error": "error occurred while creating registration -  bad request"})
 		return
 	}
 
 	if err := controller.service.CreateRegistration(registration); err != nil {
 		log.Printf("error when creating registration: %v", err)
-		context.JSON(http.StatusInternalServerError, gin.H{"error": "error when creating blog"})
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "error when creating registration"})
 	}
 
 	context.JSON(http.StatusCreated, registration)
@@ -62,13 +62,13 @@ func(controller *RegistrationController) UpdateRegistration(context *gin.Context
 
 	if err := context.ShouldBindJSON(&registration); err != nil {
 		log.Printf("error when updating registration: %v", err)
-		context.JSON(http.StatusBadRequest, gin.H{"error": "error occurred while updating blog -  bad request"})
+		context.JSON(http.StatusBadRequest, gin.H{"error": "error occurred while updating registration -  bad request"})
 		return
 	}
 
 	if err := controller.service.UpdateRegistration(id, registration); err != nil {
 		log.Printf("error when updating registration: %v", err)
-		context.JSON(http.StatusInternalServerError, gin.H{"error": "error when updating blog"})
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "error when updating registration"})
 	}
 
 	context.JSON(http.StatusAccepted, registration)
@@ -79,7 +79,7 @@ func(controller *RegistrationController) DeleteRegistration(context *gin.Context
 
 	if err := controller.service.DeleteRegistration(id); err != nil {
 		log.Printf("error occurred while deleting registration: %v", err)
-		context.JSON(http.StatusInternalServerError, gin.H{"error": "error while deleting blog"})
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "error while deleting registration"})
 	}
 
 	context.JSON(http.StatusAccepted, gin.H{"message": "registration deleted successfully", "id": id})

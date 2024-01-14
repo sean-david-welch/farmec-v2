@@ -10,8 +10,8 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/services"
 )
 
-func InitializeTerms(router *gin.Engine, db *sql.DB, adminMiddleware *middleware.AdminMiddleware) {
-	repository := repository.NewTermsRepository(db)
+func InitializeTerms(router *gin.Engine, database *sql.DB, adminMiddleware *middleware.AdminMiddleware) {
+	repository := repository.NewTermsRepository(database)
 	service := services.NewTermsService(repository)
 	controller := controllers.NewTermsController(service)
 

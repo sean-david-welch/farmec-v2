@@ -15,12 +15,12 @@ import (
 	"google.golang.org/api/youtube/v3"
 )
 
-func InitializeVideos(router *gin.Engine, db *sql.DB, secrets *config.Secrets, adminMiddleware *middleware.AdminMiddleware) {
+func InitializeVideos(router *gin.Engine, database *sql.DB, secrets *config.Secrets, adminMiddleware *middleware.AdminMiddleware) {
 	youtubeService, err := youtube.NewService(context.Background(), option.WithAPIKey(secrets.YoutubeApiKey)); if err != nil {
 		log.Fatal("error calling YouTube API: ", err)
 	}
 
-	videoRepository := repository.NewVideoRepository(db)
+	videoRepository := repository.NewVideoRepository(database)
 	videoService := services.NewVideoService(videoRepository, youtubeService)
 	videoController := controllers.NewVideoController(videoService)
 

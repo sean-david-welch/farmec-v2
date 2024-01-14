@@ -15,18 +15,18 @@ import (
 // }
 
 type CarouselRepository struct {
-	db *sql.DB
+	database *sql.DB
 }
 
-func NewCarouselRepository(db *sql.DB) *CarouselRepository {
-	return &CarouselRepository{db: db}
+func NewCarouselRepository(database *sql.DB) *CarouselRepository {
+	return &CarouselRepository{database: database}
 }
 
 func (repository *CarouselRepository) GetCarousels() ([]models.Carousel, error) {
 	var carousels []models.Carousel
 
 	query := `SELECT * FROM "Carousel"`
-	rows, err := repository.db.Query(query); if err != nil {
+	rows, err := repository.database.Query(query); if err != nil {
 		return nil, fmt.Errorf("error executing query: %w", err)
 	}
 	defer rows.Close()
@@ -49,7 +49,7 @@ func (repository *CarouselRepository) GetCarousels() ([]models.Carousel, error) 
 
 func (repository *CarouselRepository) GetCarouselById(id string) (*models.Carousel, error) {
 	query := `SELECT * FROM "Carousel" WHERE id = $1`
-	row := repository.db.QueryRow(query, id)
+	row := repository.database.QueryRow(query, id)
 
 	var carousel models.Carousel
 
@@ -71,7 +71,7 @@ func (repository *CarouselRepository) CreateCarousel(carousel *models.Carousel) 
 	(id, name, image)
 	VALUES ($1, $2, $3)`
 
-	_, err := repository.db.Exec(query, carousel.ID, carousel.Name, carousel.Image); if err != nil {
+	_, err := repository.database.Exec(query, carousel.ID, carousel.Name, carousel.Image); if err != nil {
 		return fmt.Errorf("error creating carousel: %w", err)
 	}
 	
@@ -81,7 +81,7 @@ func (repository *CarouselRepository) CreateCarousel(carousel *models.Carousel) 
 func (repository *CarouselRepository) UpdateCarousel(id string, carousel *models.Carousel) error {
 	query := `UPDATE "Carousel" SET name = $1, image = $2 WHERE id = $3`
 
-	_, err := repository.db.Exec(query, carousel.Name, carousel.Image, id); if err != nil {
+	_, err := repository.database.Exec(query, carousel.Name, carousel.Image, id); if err != nil {
 		return fmt.Errorf("error updating carousel: %w", err)
 	}
 
@@ -91,7 +91,7 @@ func (repository *CarouselRepository) UpdateCarousel(id string, carousel *models
 func (repository *CarouselRepository) DeleteCarousel(id string) error {
 	query := `DELETE FROM "Carousel" WHERE id = $1`
 
-	_, err := repository.db.Exec(query, id); if err != nil {
+	_, err := repository.database.Exec(query, id); if err != nil {
 		return fmt.Errorf("error deleting supplier: %w", err)
 	}
 	

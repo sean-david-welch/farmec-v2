@@ -10,11 +10,11 @@ import (
 )
 
 type SupplierRepository struct {
-	db *sql.DB
+	database *sql.DB
 }
 
-func NewSupplierRepository(db *sql.DB) *SupplierRepository {
-	return &SupplierRepository{db: db}
+func NewSupplierRepository(database *sql.DB) *SupplierRepository {
+	return &SupplierRepository{database: database}
 }
 
 func scanSupplier(row interface{}, supplier *models.Supplier) error {
@@ -39,7 +39,7 @@ func (repository *SupplierRepository) GetSuppliers() ([]models.Supplier, error) 
 	var suppliers []models.Supplier
 
 	query := `SELECT * FROM "Supplier"`
-	rows, err := repository.db.Query(query)
+	rows, err := repository.database.Query(query)
 
     if err != nil {
         return nil, fmt.Errorf("error executing query: %w", err)
@@ -72,7 +72,7 @@ func (repository *SupplierRepository) CreateSupplier(supplier *models.Supplier) 
 	(id, name, logo_image, marketing_image, description, social_facebook, social_instagram, social_linkedin, social_twitter, social_youtube, social_website, created) 
 	VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`
 
-	_, err := repository.db.Exec(query, supplier.ID, supplier.Name, supplier.LogoImage, supplier.MarketingImage, supplier.Description, supplier.SocialFacebook, supplier.SocialInstagram, supplier.SocialLinkedin, supplier.SocialTwitter, supplier.SocialYoutube, supplier.SocialWebsite, supplier.Created)
+	_, err := repository.database.Exec(query, supplier.ID, supplier.Name, supplier.LogoImage, supplier.MarketingImage, supplier.Description, supplier.SocialFacebook, supplier.SocialInstagram, supplier.SocialLinkedin, supplier.SocialTwitter, supplier.SocialYoutube, supplier.SocialWebsite, supplier.Created)
 
 	if err != nil {
 		return fmt.Errorf("error creating supplier: %w", err)
@@ -83,7 +83,7 @@ func (repository *SupplierRepository) CreateSupplier(supplier *models.Supplier) 
 
 func (repository *SupplierRepository) GetSupplierById(id string) (*models.Supplier, error) {
 	query := `SELECT * FROM "Supplier" WHERE id = $1`
-	row := repository.db.QueryRow(query, id)
+	row := repository.database.QueryRow(query, id)
 
 	var supplier models.Supplier
 
@@ -113,7 +113,7 @@ func (repository *SupplierRepository) UpdateSupplier(id string, supplier *models
                 social_website = $10 
                 WHERE id = $11`
 
-    _, err := repository.db.Exec(query, supplier.Name, supplier.LogoImage, supplier.MarketingImage, supplier.Description, supplier.SocialFacebook, supplier.SocialInstagram, supplier.SocialLinkedin, supplier.SocialTwitter, supplier.SocialYoutube, supplier.SocialWebsite, id)
+    _, err := repository.database.Exec(query, supplier.Name, supplier.LogoImage, supplier.MarketingImage, supplier.Description, supplier.SocialFacebook, supplier.SocialInstagram, supplier.SocialLinkedin, supplier.SocialTwitter, supplier.SocialYoutube, supplier.SocialWebsite, id)
 
     if err != nil {
         return fmt.Errorf("error updating supplier: %w", err)
@@ -125,7 +125,7 @@ func (repository *SupplierRepository) UpdateSupplier(id string, supplier *models
 func (repository *SupplierRepository) DeleteSupplier(id string) error {
 	query := `DELETE FROM "Supplier" WHERE id = $1`
 
-	_, err := repository.db.Exec(query, id)
+	_, err := repository.database.Exec(query, id)
 
 	if err != nil {
 		return fmt.Errorf("error deleting supplier: %w", err)

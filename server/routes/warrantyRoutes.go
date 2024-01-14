@@ -10,8 +10,8 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/services"
 )
 
-func InitializeWarranty(router *gin.Engine, db *sql.DB, authMiddleware *middleware.AuthMiddleware) {
-	repository := repository.NewWarrantyRepository(db)
+func InitializeWarranty(router *gin.Engine, database *sql.DB, authMiddleware *middleware.AuthMiddleware) {
+	repository := repository.NewWarrantyRepository(database)
 	service := services.NewWarrantyService(repository)
 	controller := controllers.NewWarrantyController(service)
 

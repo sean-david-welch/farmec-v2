@@ -10,18 +10,18 @@ import (
 )
 
 type TermsRepository struct {
-	db *sql.DB
+	database *sql.DB
 }
 
-func NewTermsRepository(db *sql.DB) *TermsRepository {
-	return &TermsRepository{db: db}
+func NewTermsRepository(database *sql.DB) *TermsRepository {
+	return &TermsRepository{database: database}
 }
 
 func(repository *TermsRepository) GetTerms() ([]models.Terms, error) {
 	var terms []models.Terms
 
 	query := `SELECT * FROM "Terms"`
-	rows, err := repository.db.Query(query); if err != nil {
+	rows, err := repository.database.Query(query); if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
@@ -49,7 +49,7 @@ func(repository *TermsRepository) CreateTerm(term *models.Terms) error {
 
 	query := `INSERT INTO "Terms" (id, title, body, created) VALUES ($1, $2, $3, $4)`
 
-	_, err := repository.db.Exec(query, term.ID, term.Title, term.Body, term.Created); if err != nil {
+	_, err := repository.database.Exec(query, term.ID, term.Title, term.Body, term.Created); if err != nil {
 		return fmt.Errorf("error occurred while creating term term: %w", err)
 	}
 	
@@ -59,7 +59,7 @@ func(repository *TermsRepository) CreateTerm(term *models.Terms) error {
 func(repository *TermsRepository) UpdateTerm(id string, term *models.Terms) error {
 	query := `UPDATE "Terms" SET title = $1, body = $2 where id = $3`
 
-	_, err := repository.db.Exec(query, term.Title, term.Body, id); if err != nil {
+	_, err := repository.database.Exec(query, term.Title, term.Body, id); if err != nil {
 		return fmt.Errorf("error occurred while updating term term: %w", err)
 	}
 
@@ -69,7 +69,7 @@ func(repository *TermsRepository) UpdateTerm(id string, term *models.Terms) erro
 func(repository *TermsRepository) DeleteTerm(id string) error {
 	query := `DELETE FROM "Terms" WHERE "id" = $1`
 
-	_, err := repository.db.Exec(query, id); if err != nil {
+	_, err := repository.database.Exec(query, id); if err != nil {
 		return fmt.Errorf("error occurred while deleting term term: %w", err)
 	}
 

@@ -20,18 +20,18 @@ import (
 
 
 type ExhibitionRepository struct {
-	db *sql.DB
+	database *sql.DB
 }
 
-func NewExhibitionRepository(db *sql.DB) *ExhibitionRepository {
-	return &ExhibitionRepository{db: db}
+func NewExhibitionRepository(database *sql.DB) *ExhibitionRepository {
+	return &ExhibitionRepository{database: database}
 }
 
 func(repository *ExhibitionRepository) GetExhibitions() ([]models.Exhibition, error) {
 	var exhibitions []models.Exhibition
 
 	query := `SELECT * FROM "Exhibition"`
-	rows, err := repository.db.Query(query); if err != nil {
+	rows, err := repository.database.Query(query); if err != nil {
 		return nil, fmt.Errorf("error occurred while querying database: %w", err)
 	}
 	defer rows.Close()
@@ -55,7 +55,7 @@ func(repository *ExhibitionRepository) CreateExhibition(exhibition *models.Exhib
 	exhibition.Created = time.Now()
 
 	query := `INSERT INTO "Exhibition" (id, title, data, location, info, created) VALUES ($1, $2, $3, $4, $5, $6)`
-	_, err := repository.db.Exec(query, exhibition.ID, exhibition.Title, exhibition.Date, exhibition.Location, exhibition.Info, exhibition.Created)
+	_, err := repository.database.Exec(query, exhibition.ID, exhibition.Title, exhibition.Date, exhibition.Location, exhibition.Info, exhibition.Created)
 	if err != nil {
 		return fmt.Errorf("error creating exhibition: %w", err)
 	}
@@ -66,7 +66,7 @@ func(repository *ExhibitionRepository) CreateExhibition(exhibition *models.Exhib
 func(repository *ExhibitionRepository) UpdateExhibition(id string, exhibition *models.Exhibition) error {
 	query := `UPDATE "Exhibiton" SET "title" = $1, "date" = $2, "location" = $3, "info" = $4 WHERE "id" = $1`
 
-	_, err := repository.db.Exec(query, exhibition.Title, exhibition.Date, exhibition.Location, exhibition.Info)
+	_, err := repository.database.Exec(query, exhibition.Title, exhibition.Date, exhibition.Location, exhibition.Info)
 	if err != nil {
 		return fmt.Errorf("error updating exhibition: %w", err)
 	}
@@ -77,7 +77,7 @@ func(repository *ExhibitionRepository) UpdateExhibition(id string, exhibition *m
 func(repository *ExhibitionRepository) DeleteExhibition(id string) error {
 	query := `DELETE FROM "Exhibition" WHERE "id" = $1`
 
-	_, err := repository.db.Exec(query, id); if err != nil {
+	_, err := repository.database.Exec(query, id); if err != nil {
 		return fmt.Errorf("error deleting exhibiton: %w", err)
 	}
 

@@ -31,18 +31,18 @@ import (
 // }
 
 type RegistrationRepository struct {
-	db *sql.DB
+	database *sql.DB
 }
 
-func NewRegistrationRepository(db *sql.DB) *RegistrationRepository {
-	return &RegistrationRepository{db: db}
+func NewRegistrationRepository(database *sql.DB) *RegistrationRepository {
+	return &RegistrationRepository{database: database}
 }
 
 func(repository*RegistrationRepository) GetRegistrations() ([]models.MachineRegistration, error) {
 	var registrations []models.MachineRegistration
 
 	query := `SELECT * FROM "MachineRegistration"`
-	rows, err := repository.db.Query(query); if err != nil {
+	rows, err := repository.database.Query(query); if err != nil {
 		return nil, fmt.Errorf("error while querying database: %w", err)
 	}
 	defer rows.Close()
@@ -76,7 +76,7 @@ func(repository*RegistrationRepository) GetRegistrationById(id string) (*models.
 	var registration models.MachineRegistration
 
 	query := `SELECT * FROM "MachineRegistration" WHERE "id" = $1`
-	row := repository.db.QueryRow(query, id)
+	row := repository.database.QueryRow(query, id)
 
 	if err := row.Scan(
 		&registration.ID, &registration.DealerName, &registration.DealerAddress,
@@ -103,7 +103,7 @@ func(repository*RegistrationRepository) CreateRegistration(registration *models.
         "completed_by", "created"
     ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)`
 
-    _, err := repository.db.Exec(
+    _, err := repository.database.Exec(
         query, 
         registration.ID, registration.DealerName, registration.DealerAddress, registration.OwnerName, 
         registration.OwnerAddress, registration.MachineModel, registration.SerialNumber, 
@@ -126,7 +126,7 @@ func(repository*RegistrationRepository) UpdateRegistration(id string, registrati
 	"safety_induction" = $14, "operator_handbook" = $15, "date" = $16, "completed_by" = $17, 
 	WHERE "id" = $1`
 
-	_, err := repository.db.Exec(
+	_, err := repository.database.Exec(
 	query, 
 	id, registration.DealerName, registration.DealerAddress, registration.OwnerName, 
 	registration.OwnerAddress, registration.MachineModel, registration.SerialNumber, 
@@ -144,7 +144,7 @@ func(repository*RegistrationRepository) UpdateRegistration(id string, registrati
 func(repository*RegistrationRepository) DeleteRegistration(id string) error {
 	query := `DELETE FROM "MachineRegistration" WHERE "id" = $1`
 
-	_, err := repository.db.Exec(query, id); if err != nil {
+	_, err := repository.database.Exec(query, id); if err != nil {
 		return fmt.Errorf("error occurred while deleting registration")
 	}
 

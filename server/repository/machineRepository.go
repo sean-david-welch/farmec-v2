@@ -20,11 +20,11 @@ import (
 // }
 
 type MachineRepository struct {
-	db *sql.DB
+	database *sql.DB
 }
 
-func NewMachineRepository(db *sql.DB) *MachineRepository {
-	return &MachineRepository{db: db}
+func NewMachineRepository(database *sql.DB) *MachineRepository {
+	return &MachineRepository{database: database}
 }
 
 func ScanMachine(row interface{}, machine *models.Machine) error {
@@ -47,7 +47,7 @@ func (repository *MachineRepository) GetMachines(id string) ([]models.Machine, e
 	var machines []models.Machine
 
 	query := `SELECT * FROM "Machine" WHERE "supplierId" = $1`
-	rows, err := repository.db.Query(query, id); if err != nil {
+	rows, err := repository.database.Query(query, id); if err != nil {
 		return nil, fmt.Errorf("error executing query: %w", err)
 	}
 
@@ -71,7 +71,7 @@ func (repository *MachineRepository) GetMachines(id string) ([]models.Machine, e
 
 func (repository *MachineRepository) GetMachineById(id string) (*models.Machine, error) {
 	query := `SELECT * FROM "Machine" WHERE id = $1`
-	row := repository.db.QueryRow(query, id)
+	row := repository.database.QueryRow(query, id)
 
 	var machine models.Machine
 
@@ -94,7 +94,7 @@ func (repository *MachineRepository) CreateMachine(machine *models.Machine) erro
 	query := `INSERT INTO Machine (id, supplierId, name, machineImage, description, machineLink, created) 
 	VALUES ($1, $2, $3, $4, $5, $6, $7)`	
 
-	_, err := repository.db.Exec(query, machine.ID, machine.SupplierID, machine.Name, machine.MachineImage, machine.Description, machine.MachineLink, machine.Created)
+	_, err := repository.database.Exec(query, machine.ID, machine.SupplierID, machine.Name, machine.MachineImage, machine.Description, machine.MachineLink, machine.Created)
 
 	if err != nil {
 		return fmt.Errorf("error creating machine: %w", err)
@@ -108,7 +108,7 @@ func (repository *MachineRepository) UpdateMachine(id string, machine *models.Ma
 	SET supplierID = $1, name = $2, machineImage = $3, description = $4, machineLink = $5
 	WHERE ID = $6`
 
-	_, err := repository.db.Exec(query, machine.SupplierID, machine.Name, machine.MachineImage, machine.Description, machine.MachineLink, id)
+	_, err := repository.database.Exec(query, machine.SupplierID, machine.Name, machine.MachineImage, machine.Description, machine.MachineLink, id)
 	
 	if err != nil {
 		return fmt.Errorf("error updating machine: %w", err)
@@ -120,7 +120,7 @@ func (repository *MachineRepository) UpdateMachine(id string, machine *models.Ma
 func (repository *MachineRepository) DeleteMachine(id string) error {
 	query := `DELETE FROM "Machine" WHERE id = $1`
 
-	_, err := repository.db.Exec(query, id); if err != nil {
+	_, err := repository.database.Exec(query, id); if err != nil {
 		return fmt.Errorf("error deleting machine: %w", err)
 	}
 
