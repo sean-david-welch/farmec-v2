@@ -11,10 +11,10 @@ import (
 
 type CheckoutService struct {
 	secrets *config.Secrets
-	repository *repository.LineItemRepository
+	repository repository.LineItemRepository
 }
 
-func NewCheckoutService(secrets *config.Secrets, repository *repository.LineItemRepository) *CheckoutService {
+func NewCheckoutService(secrets *config.Secrets, repository repository.LineItemRepository) *CheckoutService {
 	return &CheckoutService{secrets: secrets, repository: repository}
 }
 

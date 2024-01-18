@@ -74,8 +74,8 @@ func (repository *PartsRepository) GetPartById(id string) (*types.Sparepart, err
 
 	if err := ScanParts(row, &part); err != nil {
 
-		if err == sql.ErrNoRows {
-			return nil, nil
+				if err == sql.ErrNoRows {
+			return nil, fmt.Errorf("error item found with the given id: %w", err)
 		}
 
 		return nil, fmt.Errorf("error scanning row: %w", err)

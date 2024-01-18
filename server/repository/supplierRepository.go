@@ -89,8 +89,8 @@ func (repository *SupplierRepository) GetSupplierById(id string) (*types.Supplie
 
 	if err := scanSupplier(row, &supplier); err != nil {
 
-		if err == sql.ErrNoRows {
-			return nil, nil
+				if err == sql.ErrNoRows {
+			return nil, fmt.Errorf("error item found with the given id: %w", err)
 		}
 
 		return nil, fmt.Errorf("error scanning row: %w", err)

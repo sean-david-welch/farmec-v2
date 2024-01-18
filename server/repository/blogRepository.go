@@ -54,8 +54,8 @@ func(repository *BlogRepository) GetBlogById(id string) (*types.Blog, error) {
 	err := row.Scan(&blog.ID, &blog.Title, &blog.Date, &blog.MainImage, &blog.Subheading, &blog.Body, &blog.Created)
 	if err != nil {
 
-		if err == sql.ErrNoRows {
-			return nil, nil
+				if err == sql.ErrNoRows {
+			return nil, fmt.Errorf("error item found with the given id: %w", err)
 		}
 
 		return nil, fmt.Errorf("error occurred while getting blog: %w", err)

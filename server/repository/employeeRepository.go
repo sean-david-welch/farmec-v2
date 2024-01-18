@@ -62,8 +62,8 @@ func(repository *EmployeeRepository) GetEmployeeById(id string) (*types.Employee
 
 	err := row.Scan(&employee.ID, &employee.Name, &employee.Email, &employee.Role, &employee.Bio, &employee.ProfileImage, &employee.Created, &employee.Phone)
 	if err != nil {
-		if err == sql.ErrNoRows {
-			return nil, nil
+				if err == sql.ErrNoRows {
+			return nil, fmt.Errorf("error item found with the given id: %w", err)
 		}
 
 		return nil, fmt.Errorf("error scanning row: %w", err)

@@ -6,10 +6,10 @@ import (
 )
 
 type LineItemService struct {
-	repository *repository.LineItemRepository
+	repository repository.LineItemRepository
 }
 
-func NewLineItemService(repository *repository.LineItemRepository) *LineItemService {
+func NewLineItemService(repository repository.LineItemRepository) *LineItemService {
 	return &LineItemService{repository: repository}
 }
 

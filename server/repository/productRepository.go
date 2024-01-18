@@ -76,8 +76,8 @@ func (repository *ProductRepository) GetProductById(id string) (*types.Product, 
 	var product types.Product
 
 	if err := ScanProduct(row, &product); err != nil {
-		if err == sql.ErrNoRows {
-			return nil, nil
+				if err == sql.ErrNoRows {
+			return nil, fmt.Errorf("error item found with the given id: %w", err)
 		}
 
 		return nil, fmt.Errorf("error scanning row: %w", err)

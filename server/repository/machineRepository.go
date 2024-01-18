@@ -77,8 +77,8 @@ func (repository *MachineRepository) GetMachineById(id string) (*types.Machine, 
 
 	if err := ScanMachine(row, &machine); err != nil {
 
-		if err == sql.ErrNoRows {
-			return nil, nil
+				if err == sql.ErrNoRows {
+			return nil, fmt.Errorf("error item found with the given id: %w", err)
 		}
 
 		return nil, fmt.Errorf("error scanning row: %w", err)

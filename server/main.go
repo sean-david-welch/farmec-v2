@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 
 	"github.com/gin-contrib/cors"
@@ -41,5 +42,6 @@ func main() {
 
 	routes.InitializeRoutes(router, database, secrets, s3Client, adminMiddleware, authMiddleware)
 
+	fmt.Println("server running on http://localhost:8080")
 	router.Run("localhost:8080")
 }
