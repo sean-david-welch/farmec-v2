@@ -9,26 +9,23 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
-// type Employee struct {
-//     ID           string `json:"id"`
-//     Name         string `json:"name"`
-//     Email        string `json:"email"`
-//     Role         string `json:"role"`
-//     Bio          string `json:"bio"`
-//     ProfileImage string `json:"profile_image"`
-//     Created      string `json:"created"`
-//     Phone        string `json:"phone"`
-// }
+type EmployeeRepository interface {
+	GetEmployees() ([]types.Employee, error) 
+	GetEmployeeById(id string) (*types.Employee, error) 
+	CreateEmployee(employee *types.Employee) error 
+	UpdateEmployee(id string, employee *types.Employee) error 
+	DeleteEmployee(id string) error 
+}
 
-type EmployeeRepository struct {
+type EmployeeRepositoryImpl struct {
 	database *sql.DB
 }
 
-func NewEmployeeRepository(database *sql.DB) *EmployeeRepository {
-	return &EmployeeRepository{database: database}
+func NewEmployeeRepository(database *sql.DB) *EmployeeRepositoryImpl {
+	return &EmployeeRepositoryImpl{database: database}
 }
 
-func (repository *EmployeeRepository) GetEmployees() ([]types.Employee, error) {
+func (repository *EmployeeRepositoryImpl) GetEmployees() ([]types.Employee, error) {
 	var employees []types.Employee
 	
 	query := `SELECT * FROM "Employee"`
@@ -54,7 +51,7 @@ func (repository *EmployeeRepository) GetEmployees() ([]types.Employee, error) {
 	return employees, nil
 }
 
-func(repository *EmployeeRepository) GetEmployeeById(id string) (*types.Employee, error) {
+func(repository *EmployeeRepositoryImpl) GetEmployeeById(id string) (*types.Employee, error) {
 	query := `SELECT * FROM "Employee" WHERE "id" = $1`
 	row := repository.database.QueryRow(query, id)
 
@@ -72,7 +69,7 @@ func(repository *EmployeeRepository) GetEmployeeById(id string) (*types.Employee
 	return &employee, nil
 }
 
-func(repository *EmployeeRepository) CreateEmployee(employee *types.Employee) error {
+func(repository *EmployeeRepositoryImpl) CreateEmployee(employee *types.Employee) error {
 	employee.ID = uuid.NewString()
 	employee.Created = time.Now()
 
@@ -87,7 +84,7 @@ func(repository *EmployeeRepository) CreateEmployee(employee *types.Employee) er
 	return nil
 }
 
-func(repository *EmployeeRepository) UpdateEmployee(id string, employee *types.Employee) error {
+func(repository *EmployeeRepositoryImpl) UpdateEmployee(id string, employee *types.Employee) error {
 	query := `UPDATE "Employee" SET name = $1, email = $2, role = $3, bio = $4, profileImage = $5, phone = $6 WHERE "id" = $7`
 
 	
@@ -99,7 +96,7 @@ func(repository *EmployeeRepository) UpdateEmployee(id string, employee *types.E
 	return nil
 }
 
-func (repository *EmployeeRepository) DeleteEmployee(id string) error {
+func (repository *EmployeeRepositoryImpl) DeleteEmployee(id string) error {
 	query := `DELETE FROM "Employee" WHERE "id" = $1`
 	_, err := repository.database.Exec(query, id); if err != nil {
 		return err

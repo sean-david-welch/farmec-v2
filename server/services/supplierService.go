@@ -8,25 +8,33 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/utils"
 )
 
-type SupplierService struct {
-	folder string
-	s3Client *utils.S3Client
-    repository *repository.SupplierRepository
+type SupplierService interface {
+	GetSuppliers() ([]types.Supplier, error) 
+	CreateSupplier(supplier *types.Supplier) (*types.SupplierResult, error) 
+	GetSupplierById(id string) (*types.Supplier, error) 
+	UpdateSupplier(id string, supplier *types.Supplier) (*types.SupplierResult, error) 
+	DeleteSupplier(id string) (error) 
 }
 
-func NewSupplierService(repository *repository.SupplierRepository, s3Client *utils.S3Client, folder string) *SupplierService {
-    return &SupplierService{
+type SupplierServiceImpl struct {
+	folder string
+	s3Client *utils.S3Client
+    repository repository.SupplierRepository
+}
+
+func NewSupplierService(repository repository.SupplierRepository, s3Client *utils.S3Client, folder string) *SupplierServiceImpl {
+    return &SupplierServiceImpl{
 		repository: repository, 
 		s3Client: s3Client, 
 		folder: folder,
 	}
 }
 
-func (service *SupplierService) GetSuppliers() ([]types.Supplier, error) {
+func (service *SupplierServiceImpl) GetSuppliers() ([]types.Supplier, error) {
     return service.repository.GetSuppliers()
 }
 
-func (service *SupplierService) CreateSupplier(supplier *types.Supplier) (*types.SupplierResult, error) {	
+func (service *SupplierServiceImpl) CreateSupplier(supplier *types.Supplier) (*types.SupplierResult, error) {	
 	logoImage := supplier.LogoImage
 	marketingImage := supplier.MarketingImage
 
@@ -61,11 +69,11 @@ func (service *SupplierService) CreateSupplier(supplier *types.Supplier) (*types
 	return result, nil
 }
 
-func (service *SupplierService) GetSupplierById(id string) (*types.Supplier, error) {
+func (service *SupplierServiceImpl) GetSupplierById(id string) (*types.Supplier, error) {
     return service.repository.GetSupplierById(id)
 }
 
-func (service *SupplierService) UpdateSupplier(id string, supplier *types.Supplier) (*types.SupplierResult, error) {
+func (service *SupplierServiceImpl) UpdateSupplier(id string, supplier *types.Supplier) (*types.SupplierResult, error) {
 	logoImage := supplier.LogoImage
 	marketingImage := supplier.MarketingImage
 
@@ -103,7 +111,7 @@ func (service *SupplierService) UpdateSupplier(id string, supplier *types.Suppli
 	return result, nil
 }
 
-func (service *SupplierService) DeleteSupplier(id string) (error) {
+func (service *SupplierServiceImpl) DeleteSupplier(id string) (error) {
 	supplier, err := service.repository.GetSupplierById(id); if err != nil {
         return err
     }

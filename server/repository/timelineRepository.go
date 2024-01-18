@@ -9,23 +9,22 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
-// type Timeline struct {
-//     ID      string `json:"id"`
-//     Title   string `json:"title"`
-//     Date    string `json:"date"`
-//     Body    string `json:"body"`
-//     Created string `json:"created"`
-// }
+type TimelineRepository interface {
+	GetTimelines() ([]types.Timeline, error) 
+	CreateTimeline(timeline *types.Timeline) error 
+	UpdateTimeline(id string, timeline *types.Timeline) error 
+	DeleteTimeline(id string) error 	
+}
 
-type TimelineRepository struct {
+type TimelineRepositoryImpl struct {
 	database *sql.DB
 }
 
-func NewTimelineRepository(database *sql.DB) *TimelineRepository {
-	return &TimelineRepository{database: database}
+func NewTimelineRepository(database *sql.DB) *TimelineRepositoryImpl {
+	return &TimelineRepositoryImpl{database: database}
 }
 
-func(repository *TimelineRepository) GetTimelines() ([]types.Timeline, error) {
+func(repository *TimelineRepositoryImpl) GetTimelines() ([]types.Timeline, error) {
 	var timelines []types.Timeline
 
 	query := `SELECT * FROM "Timeline"`
@@ -50,7 +49,7 @@ func(repository *TimelineRepository) GetTimelines() ([]types.Timeline, error) {
 	return timelines, nil
 }
 
-func(repository *TimelineRepository) CreateTimeline(timeline *types.Timeline) error {
+func(repository *TimelineRepositoryImpl) CreateTimeline(timeline *types.Timeline) error {
 	timeline.ID = uuid.NewString()
 	timeline.Created = time.Now()
 
@@ -63,7 +62,7 @@ func(repository *TimelineRepository) CreateTimeline(timeline *types.Timeline) er
 	return nil
 }
 
-func(repository *TimelineRepository) UpdateTimeline(id string, timeline *types.Timeline) error {
+func(repository *TimelineRepositoryImpl) UpdateTimeline(id string, timeline *types.Timeline) error {
 	query := `UPDATE "Timeline" SET title = $1, data = %2, body = $3 WHERE "id" = $4`
 
 	_, err := repository.database.Exec(query,  timeline.Title, timeline.Date, timeline.Body, id); if err != nil {
@@ -73,7 +72,7 @@ func(repository *TimelineRepository) UpdateTimeline(id string, timeline *types.T
 	return nil
 }
 
-func(repository *TimelineRepository) DeleteTimeline(id string) error {
+func(repository *TimelineRepositoryImpl) DeleteTimeline(id string) error {
 	query := `DELETE FROM "Timeline" WHERE "id" = $1`
 
 	_, err := repository.database.Exec(query, id); if err != nil {

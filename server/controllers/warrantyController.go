@@ -10,10 +10,10 @@ import (
 )
 
 type WarrantyController struct {
-	service *services.WarrantyService
+	service services.WarrantyService
 }
 
-func NewWarrantyController(service *services.WarrantyService) *WarrantyController {
+func NewWarrantyController(service services.WarrantyService) *WarrantyController {
 	return &WarrantyController{service: service}
 }
 

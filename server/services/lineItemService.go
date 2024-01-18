@@ -5,15 +5,23 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
-type LineItemService struct {
+type LineItemService interface {
+	GetLineItems() ([]types.LineItem, error)
+	GetLineItemById(id string) (*types.LineItem, error)
+	CreateLineItem(lineItem *types.LineItem) error
+	UpdateLineItem(id string, lineItem *types.LineItem) error
+	DeleteLineItem(id string) error
+}
+
+type LineItemServiceImpl struct {
 	repository repository.LineItemRepository
 }
 
-func NewLineItemService(repository repository.LineItemRepository) *LineItemService {
-	return &LineItemService{repository: repository}
+func NewLineItemService(repository repository.LineItemRepository) *LineItemServiceImpl {
+	return &LineItemServiceImpl{repository: repository}
 }
 
-func(service *LineItemService) GetLineItems() ([]types.LineItem, error) {
+func(service *LineItemServiceImpl) GetLineItems() ([]types.LineItem, error) {
 	lineItems, err := service.repository.GetLineItems(); if err != nil {
 		return nil, err
 	}
@@ -21,7 +29,7 @@ func(service *LineItemService) GetLineItems() ([]types.LineItem, error) {
 	return lineItems, nil
 }
 
-func(service *LineItemService) GetLineItemById(id string) (*types.LineItem, error) {
+func(service *LineItemServiceImpl) GetLineItemById(id string) (*types.LineItem, error) {
 	lineItem, err := service.repository.GetLineItemById(id); if err != nil {
 		return nil, err
 	}
@@ -29,7 +37,7 @@ func(service *LineItemService) GetLineItemById(id string) (*types.LineItem, erro
 	return lineItem, nil
 }
 
-func(service *LineItemService) CreateLineItem(lineItem *types.LineItem) error {
+func(service *LineItemServiceImpl) CreateLineItem(lineItem *types.LineItem) error {
 	if err := service.repository.CreateLineItem(lineItem); err != nil {
 		return err
 	}
@@ -37,7 +45,7 @@ func(service *LineItemService) CreateLineItem(lineItem *types.LineItem) error {
 	return nil
 }
 
-func(service *LineItemService) UpdateLineItem(id string, lineItem *types.LineItem) error {
+func(service *LineItemServiceImpl) UpdateLineItem(id string, lineItem *types.LineItem) error {
 	if err := service.repository.UpdateLineItem(id, lineItem); err != nil {
 		return err
 	}
@@ -45,7 +53,7 @@ func(service *LineItemService) UpdateLineItem(id string, lineItem *types.LineIte
 	return nil
 }
 
-func (service *LineItemService) DeleteLineItem(id string) error {
+func (service *LineItemServiceImpl) DeleteLineItem(id string) error {
 	if err := service.repository.DeleteLineItem(id); err != nil {
 		return err
 	}

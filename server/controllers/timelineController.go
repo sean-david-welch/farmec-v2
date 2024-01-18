@@ -10,10 +10,10 @@ import (
 )
 
 type TimelineController struct {
-	service *services.TimelineService
+	service services.TimelineService
 }
 
-func NewTimelineController(service *services.TimelineService) *TimelineController {
+func NewTimelineController(service services.TimelineService) *TimelineController {
 	return &TimelineController{service: service}
 }
 

@@ -9,25 +9,22 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
-// type Exhibition struct {
-//     ID        string    `json:"id"`
-//     Title     string    `json:"title"`
-//     Date      string    `json:"date"`
-//     Location  string    `json:"location"`
-//     Info      string    `json:"info"`
-//     Created   time.Time `json:"created"`
-// }
+type ExhibitionRepository interface {
+	GetExhibitions() ([]types.Exhibition, error)
+	CreateExhibition(exhibition *types.Exhibition) error
+	UpdateExhibition(id string, exhibition *types.Exhibition) error
+	DeleteExhibition(id string) error
+}
 
-
-type ExhibitionRepository struct {
+type ExhibitionRepositoryImpl struct {
 	database *sql.DB
 }
 
-func NewExhibitionRepository(database *sql.DB) *ExhibitionRepository {
-	return &ExhibitionRepository{database: database}
+func NewExhibitionRepository(database *sql.DB) *ExhibitionRepositoryImpl {
+	return &ExhibitionRepositoryImpl{database: database}
 }
 
-func(repository *ExhibitionRepository) GetExhibitions() ([]types.Exhibition, error) {
+func(repository *ExhibitionRepositoryImpl) GetExhibitions() ([]types.Exhibition, error) {
 	var exhibitions []types.Exhibition
 
 	query := `SELECT * FROM "Exhibition"`
@@ -50,7 +47,7 @@ func(repository *ExhibitionRepository) GetExhibitions() ([]types.Exhibition, err
 	return exhibitions, nil
 }
 
-func(repository *ExhibitionRepository) CreateExhibition(exhibition *types.Exhibition) error {
+func(repository *ExhibitionRepositoryImpl) CreateExhibition(exhibition *types.Exhibition) error {
 	exhibition.ID = uuid.NewString()
 	exhibition.Created = time.Now()
 
@@ -63,7 +60,7 @@ func(repository *ExhibitionRepository) CreateExhibition(exhibition *types.Exhibi
 	return nil
 }
 
-func(repository *ExhibitionRepository) UpdateExhibition(id string, exhibition *types.Exhibition) error {
+func(repository *ExhibitionRepositoryImpl) UpdateExhibition(id string, exhibition *types.Exhibition) error {
 	query := `UPDATE "Exhibiton" SET "title" = $1, "date" = $2, "location" = $3, "info" = $4 WHERE "id" = $1`
 
 	_, err := repository.database.Exec(query, exhibition.Title, exhibition.Date, exhibition.Location, exhibition.Info)
@@ -74,7 +71,7 @@ func(repository *ExhibitionRepository) UpdateExhibition(id string, exhibition *t
 	return nil
 }
 
-func(repository *ExhibitionRepository) DeleteExhibition(id string) error {
+func(repository *ExhibitionRepositoryImpl) DeleteExhibition(id string) error {
 	query := `DELETE FROM "Exhibition" WHERE "id" = $1`
 
 	_, err := repository.database.Exec(query, id); if err != nil {

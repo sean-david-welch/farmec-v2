@@ -19,7 +19,7 @@ func InitializeLineItems(router *gin.Engine, database *sql.DB, adminMiddleware *
 }
 
 func LineItemRoutes(router *gin.Engine, controller *controllers.LineItemController, adminMiddleware *middleware.AdminMiddleware) {
-	lineItemGroup := router.Group("/api/lineItems")
+	lineItemGroup := router.Group("/api/line-items")
 
 	lineItemGroup.GET("", controller.GetLineItems)
 	lineItemGroup.GET("/:id", controller.GetLineItemById)

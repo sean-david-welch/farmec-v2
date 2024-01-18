@@ -10,10 +10,10 @@ import (
 )
 
 type CarouselController struct {
-	carouselService *services.CarouselService
+	carouselService services.CarouselService
 }
 
-func NewCarouselController (carouselService *services.CarouselService) *CarouselController {
+func NewCarouselController (carouselService services.CarouselService) *CarouselController {
 	return &CarouselController{carouselService: carouselService}
 }
 

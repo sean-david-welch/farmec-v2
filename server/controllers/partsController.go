@@ -10,10 +10,10 @@ import (
 )
 
 type PartsController struct {
-	partsService *services.PartsService
+	partsService services.PartsService
 }
 
-func NewPartsController(partsService *services.PartsService) *PartsController {
+func NewPartsController(partsService services.PartsService) *PartsController {
 	return &PartsController{partsService: partsService}
 }
 

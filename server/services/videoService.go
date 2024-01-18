@@ -9,19 +9,27 @@ import (
 	"google.golang.org/api/youtube/v3"
 )
 
-type VideoService struct {
-	repository *repository.VideoRepositoy
+type VideoService interface {
+	TransformData(video *types.Video) (*types.Video, error) 
+	GetVideos(id string) ([]types.Video, error) 
+	CreateVideo(video *types.Video) error 
+	UpdateVideo(id string, video *types.Video) error 
+	DeleteVideo(id string) error 
+}
+
+type VideoServiceImpl struct {
+	repository repository.VideoRepository
 	youtubeService *youtube.Service
 }
 
-func NewVideoService(repository *repository.VideoRepositoy, youtubeService *youtube.Service) *VideoService {
-	return &VideoService{
+func NewVideoService(repository repository.VideoRepository, youtubeService *youtube.Service) *VideoServiceImpl {
+	return &VideoServiceImpl{
 		repository: repository,
 		youtubeService: youtubeService,
 	}
 }
 
-func (service *VideoService) TransformData(video *types.Video) (*types.Video, error) {
+func (service *VideoServiceImpl) TransformData(video *types.Video) (*types.Video, error) {
 	splits := strings.Split(video.WebURL, "v=")
 	if len(splits) < 2 {
 		return nil, fmt.Errorf("invalid web_url format")
@@ -60,11 +68,11 @@ func (service *VideoService) TransformData(video *types.Video) (*types.Video, er
 	return videoData, nil
 }
 
-func (service *VideoService) GetVideos(id string) ([]types.Video, error) {
+func (service *VideoServiceImpl) GetVideos(id string) ([]types.Video, error) {
 	return service.repository.GetVideos(id)
 }
 
-func (service *VideoService) CreateVideo(video *types.Video) error {
+func (service *VideoServiceImpl) CreateVideo(video *types.Video) error {
 	videoData, err := service.TransformData(video); if err != nil {
 		return err
 	}
@@ -76,7 +84,7 @@ func (service *VideoService) CreateVideo(video *types.Video) error {
 	return nil
 }
 
-func (service *VideoService) UpdateVideo(id string, video *types.Video) error {
+func (service *VideoServiceImpl) UpdateVideo(id string, video *types.Video) error {
 	videoData, err := service.TransformData(video); if err != nil {
 		return err
 	}
@@ -88,7 +96,7 @@ func (service *VideoService) UpdateVideo(id string, video *types.Video) error {
 	return nil
 }
 
-func (service *VideoService) DeleteVideo(id string) error {
+func (service *VideoServiceImpl) DeleteVideo(id string) error {
 	err := service.repository.DeleteVideo(id); if err != nil {
 		return err
 	}

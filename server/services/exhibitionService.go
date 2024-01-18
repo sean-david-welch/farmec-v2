@@ -5,15 +5,22 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
-type ExhibitionService struct {
-	repository *repository.ExhibitionRepository
+type ExhibitionService interface {
+	GetExhibitions() ([]types.Exhibition, error)
+	CreateExhibition(exhibition *types.Exhibition) error
+	UpdateExhibition(id string, exhibition *types.Exhibition) error
+	DeleteExhibition(id string) error
 }
 
-func NewExhibitionService(repository *repository.ExhibitionRepository) *ExhibitionService {
-	return &ExhibitionService{repository: repository}
+type ExhibitionServiceImpl struct {
+	repository repository.ExhibitionRepository
 }
 
-func(service *ExhibitionService) GetExhibitions() ([]types.Exhibition, error) {
+func NewExhibitionService(repository repository.ExhibitionRepository) *ExhibitionServiceImpl {
+	return &ExhibitionServiceImpl{repository: repository}
+}
+
+func(service *ExhibitionServiceImpl) GetExhibitions() ([]types.Exhibition, error) {
 	exhibitions, err := service.repository.GetExhibitions(); if err != nil {
 		return nil, err
 	}
@@ -21,7 +28,7 @@ func(service *ExhibitionService) GetExhibitions() ([]types.Exhibition, error) {
 	return exhibitions, nil
 }
 
-func(service *ExhibitionService) CreateExhibition(exhibition *types.Exhibition) error {
+func(service *ExhibitionServiceImpl) CreateExhibition(exhibition *types.Exhibition) error {
 	if err := service.repository.CreateExhibition(exhibition); err != nil {
 		return err
 	}
@@ -29,7 +36,7 @@ func(service *ExhibitionService) CreateExhibition(exhibition *types.Exhibition) 
 	return nil
 }
 
-func(service *ExhibitionService) UpdateExhibition(id string, exhibition *types.Exhibition) error {
+func(service *ExhibitionServiceImpl) UpdateExhibition(id string, exhibition *types.Exhibition) error {
 	if err := service.repository.UpdateExhibition(id, exhibition); err != nil {
 		return err
 	}
@@ -37,7 +44,7 @@ func(service *ExhibitionService) UpdateExhibition(id string, exhibition *types.E
 	return nil
 }
 
-func(service *ExhibitionService) DeleteExhibition(id string) error {
+func(service *ExhibitionServiceImpl) DeleteExhibition(id string) error {
 	if err := service.repository.DeleteExhibition(id); err != nil {
 		return err
 	}

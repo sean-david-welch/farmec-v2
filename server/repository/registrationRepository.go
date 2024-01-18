@@ -9,36 +9,23 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
-// type MachineRegistration struct {
-//     ID             string    `json:"id"`
-//     DealerName     string    `json:"dealer_name"`
-//     DealerAddress  string    `json:"dealer_address"`
-//     OwnerName      string    `json:"owner_name"`
-//     OwnerAddress   string    `json:"owner_address"`
-//     MachineModel   string    `json:"machine_model"`
-//     SerialNumber   string    `json:"serial_number"`
-//     InstallDate    string    `json:"install_date"`
-//     InvoiceNumber  string    `json:"invoice_number"`
-//     CompleteSupply bool      `json:"complete_supply"`
-//     PdiComplete    bool      `json:"pdi_complete"`
-//     PtoCorrect     bool      `json:"pto_correct"`
-//     MachineTestRun bool      `json:"machine_test_run"`
-//     SafetyInduction bool     `json:"safety_induction"`
-//     OperatorHandbook bool    `json:"operator_handbook"`
-//     Date           string    `json:"date"`
-//     CompletedBy    string    `json:"completed_by"`
-//     Created        time.Time `json:"created"`
-// }
+type RegistrationRepository interface {
+	GetRegistrations() ([]types.MachineRegistration, error)
+	GetRegistrationById(id string) (*types.MachineRegistration, error)
+	CreateRegistration(registration *types.MachineRegistration) error
+	UpdateRegistration(id string, registration *types.MachineRegistration) error
+	DeleteRegistration(id string) error
+}
 
-type RegistrationRepository struct {
+type RegistrationRepositoryImpl struct {
 	database *sql.DB
 }
 
-func NewRegistrationRepository(database *sql.DB) *RegistrationRepository {
-	return &RegistrationRepository{database: database}
+func NewRegistrationRepository(database *sql.DB) *RegistrationRepositoryImpl {
+	return &RegistrationRepositoryImpl{database: database}
 }
 
-func(repository*RegistrationRepository) GetRegistrations() ([]types.MachineRegistration, error) {
+func(repository *RegistrationRepositoryImpl) GetRegistrations() ([]types.MachineRegistration, error) {
 	var registrations []types.MachineRegistration
 
 	query := `SELECT * FROM "MachineRegistration"`
@@ -72,7 +59,7 @@ func(repository*RegistrationRepository) GetRegistrations() ([]types.MachineRegis
 	return registrations, nil
 }
 
-func(repository*RegistrationRepository) GetRegistrationById(id string) (*types.MachineRegistration, error) {
+func(repository *RegistrationRepositoryImpl) GetRegistrationById(id string) (*types.MachineRegistration, error) {
 	var registration types.MachineRegistration
 
 	query := `SELECT * FROM "MachineRegistration" WHERE "id" = $1`
@@ -92,7 +79,7 @@ func(repository*RegistrationRepository) GetRegistrationById(id string) (*types.M
 	return &registration, nil
 }
 
-func(repository*RegistrationRepository) CreateRegistration(registration *types.MachineRegistration) error {
+func(repository *RegistrationRepositoryImpl) CreateRegistration(registration *types.MachineRegistration) error {
 	registration.ID = uuid.NewString()
 	registration.Created = time.Now()
 
@@ -118,7 +105,7 @@ func(repository*RegistrationRepository) CreateRegistration(registration *types.M
 	return nil
 }
 
-func(repository*RegistrationRepository) UpdateRegistration(id string, registration *types.MachineRegistration) error {
+func(repository *RegistrationRepositoryImpl) UpdateRegistration(id string, registration *types.MachineRegistration) error {
 	query := `UPDATE "MachineRegistration" SET 
 	"dealer_name" = $2, "dealer_address" = $3, "owner_name" = $4, "owner_address" = $5, 
 	"machine_model" = $6, "serial_number" = $7, "install_date" = $8, "invoice_number" = $9, 
@@ -141,7 +128,7 @@ func(repository*RegistrationRepository) UpdateRegistration(id string, registrati
 	return nil
 }
 
-func(repository*RegistrationRepository) DeleteRegistration(id string) error {
+func(repository *RegistrationRepositoryImpl) DeleteRegistration(id string) error {
 	query := `DELETE FROM "MachineRegistration" WHERE "id" = $1`
 
 	_, err := repository.database.Exec(query, id); if err != nil {

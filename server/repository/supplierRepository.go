@@ -9,12 +9,20 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
-type SupplierRepository struct {
+type SupplierRepository interface {
+	GetSuppliers() ([]types.Supplier, error) 
+	CreateSupplier(supplier *types.Supplier) error 
+	GetSupplierById(id string) (*types.Supplier, error) 
+	UpdateSupplier(id string, supplier *types.Supplier) error 
+	DeleteSupplier(id string) error 
+}
+
+type SupplierRepositoryImpl struct {
 	database *sql.DB
 }
 
-func NewSupplierRepository(database *sql.DB) *SupplierRepository {
-	return &SupplierRepository{database: database}
+func NewSupplierRepository(database *sql.DB) *SupplierRepositoryImpl {
+	return &SupplierRepositoryImpl{database: database}
 }
 
 func scanSupplier(row interface{}, supplier *types.Supplier) error {
@@ -34,8 +42,8 @@ func scanSupplier(row interface{}, supplier *types.Supplier) error {
     return scanner.Scan(&supplier.ID, &supplier.Name,  &supplier.LogoImage, &supplier.MarketingImage, &supplier.Description, &supplier.SocialFacebook, &supplier.SocialInstagram, &supplier.SocialLinkedin, &supplier.SocialTwitter, &supplier.SocialYoutube, &supplier.SocialWebsite, &supplier.Created)
 }
 
-// pointer receiver avoids copying entire struct
-func (repository *SupplierRepository) GetSuppliers() ([]types.Supplier, error) {
+
+func (repository *SupplierRepositoryImpl) GetSuppliers() ([]types.Supplier, error) {
 	var suppliers []types.Supplier
 
 	query := `SELECT * FROM "Supplier"`
@@ -63,7 +71,7 @@ func (repository *SupplierRepository) GetSuppliers() ([]types.Supplier, error) {
 	return suppliers, nil
 }
 
-func (repository *SupplierRepository) CreateSupplier(supplier *types.Supplier) error {
+func (repository *SupplierRepositoryImpl) CreateSupplier(supplier *types.Supplier) error {
 
 	supplier.ID = uuid.NewString()
 	supplier.Created = time.Now()
@@ -81,7 +89,7 @@ func (repository *SupplierRepository) CreateSupplier(supplier *types.Supplier) e
 	return nil
 }
 
-func (repository *SupplierRepository) GetSupplierById(id string) (*types.Supplier, error) {
+func (repository *SupplierRepositoryImpl) GetSupplierById(id string) (*types.Supplier, error) {
 	query := `SELECT * FROM "Supplier" WHERE id = $1`
 	row := repository.database.QueryRow(query, id)
 
@@ -99,7 +107,7 @@ func (repository *SupplierRepository) GetSupplierById(id string) (*types.Supplie
 	return &supplier, nil
 }
 
-func (repository *SupplierRepository) UpdateSupplier(id string, supplier *types.Supplier) error {
+func (repository *SupplierRepositoryImpl) UpdateSupplier(id string, supplier *types.Supplier) error {
     query := `UPDATE "Supplier" SET 
                 name = $1, 
                 logo_image = $2, 
@@ -122,7 +130,7 @@ func (repository *SupplierRepository) UpdateSupplier(id string, supplier *types.
     return nil
 }
 
-func (repository *SupplierRepository) DeleteSupplier(id string) error {
+func (repository *SupplierRepositoryImpl) DeleteSupplier(id string) error {
 	query := `DELETE FROM "Supplier" WHERE id = $1`
 
 	_, err := repository.database.Exec(query, id)

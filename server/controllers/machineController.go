@@ -10,10 +10,10 @@ import (
 )
 
 type MachineController struct {
-	machineService *services.MachineService
+	machineService services.MachineService
 }
 
-func NewMachineController(machineService *services.MachineService) *MachineController {
+func NewMachineController(machineService services.MachineService) *MachineController {
 	return &MachineController{machineService: machineService}
 }
 

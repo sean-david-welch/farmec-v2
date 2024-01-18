@@ -10,10 +10,10 @@ import (
 )
 
 type PrivacyController struct {
-	service *services.PrivacyService
+	service services.PrivacyService
 }
 
-func NewPrivacyController(service *services.PrivacyService) *PrivacyController {
+func NewPrivacyController(service services.PrivacyService) *PrivacyController {
 	return &PrivacyController{service: service}
 }
 

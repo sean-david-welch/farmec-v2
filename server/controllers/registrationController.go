@@ -10,10 +10,10 @@ import (
 )
 
 type RegistrationController struct {
-	service *services.RegistrationService
+	service services.RegistrationService
 }
 
-func NewRegistrationController(service *services.RegistrationService) *RegistrationController {
+func NewRegistrationController(service services.RegistrationService) *RegistrationController {
 	return &RegistrationController{service: service}
 }
 

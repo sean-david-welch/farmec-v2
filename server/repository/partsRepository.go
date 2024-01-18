@@ -8,21 +8,20 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
-// type Sparepart struct {
-//     ID              string `json:"id"`
-//     SupplierID      string `json:"supplierId"`
-//     Name            string `json:"name"`
-//     PartsImage      string `json:"parts_image"`
-//     SparePartsLink  string `json:"spare_parts_link"`
-//     PdfLink         string `json:"pdf_link"`
-// }
+type PartsRepository interface {
+	GetParts(id string) ([]types.Sparepart, error) 
+	GetPartById(id string) (*types.Sparepart, error) 
+	CreatePart(part *types.Sparepart) error 
+	UpdatePart(id string, part *types.Sparepart) error 
+	DeletePart(id string) error 
+}
 
-type PartsRepository struct {
+type PartsRepositoryImpl struct {
 	database *sql.DB
 }
 
-func NewPartsRepository(database *sql.DB) *PartsRepository {
-	return &PartsRepository{database: database}
+func NewPartsRepository(database *sql.DB) *PartsRepositoryImpl {
+	return &PartsRepositoryImpl{database: database}
 }
 
 func ScanParts(row interface{}, part *types.Sparepart) error {
@@ -41,7 +40,7 @@ func ScanParts(row interface{}, part *types.Sparepart) error {
 	return scanner.Scan(&part.ID, &part.SupplierID, &part.Name, &part.PartsImage, &part.SparePartsLink, &part.PdfLink)
 }
 
-func (repository *PartsRepository) GetParts(id string) ([]types.Sparepart, error) {
+func (repository *PartsRepositoryImpl) GetParts(id string) ([]types.Sparepart, error) {
 	var parts []types.Sparepart
 
 	query := `SELECT * FROM "SpareParts" WHERE "supplierId" = $1`
@@ -66,7 +65,7 @@ func (repository *PartsRepository) GetParts(id string) ([]types.Sparepart, error
 	return parts, nil
 }
 
-func (repository *PartsRepository) GetPartById(id string) (*types.Sparepart, error) {
+func (repository *PartsRepositoryImpl) GetPartById(id string) (*types.Sparepart, error) {
 	query := `SELECT * FROM "SpareParts" WHERE id = $1`
 	row := repository.database.QueryRow(query, id)
 
@@ -84,7 +83,7 @@ func (repository *PartsRepository) GetPartById(id string) (*types.Sparepart, err
 	return &part, nil
 }
 
-func (repository *PartsRepository) CreatePart(part *types.Sparepart) error {
+func (repository *PartsRepositoryImpl) CreatePart(part *types.Sparepart) error {
 	part.ID = uuid.NewString()
 	
 	query := `INSERT INTO "SpareParts" (ID, supplierID, name, partsImage, sparePartsLink, pdfLink)
@@ -99,7 +98,7 @@ func (repository *PartsRepository) CreatePart(part *types.Sparepart) error {
 	return nil
 }
 
-func (repository *PartsRepository) UpdatePart(id string, part *types.Sparepart) error {
+func (repository *PartsRepositoryImpl) UpdatePart(id string, part *types.Sparepart) error {
 	query := `UPDATE "SpareParts"
 	SET supplierID = $1, name = $2, partsImage = $3, sparePartsLink  = $4, pdfLink = $5
 	WHERE ID = $6`
@@ -113,7 +112,7 @@ func (repository *PartsRepository) UpdatePart(id string, part *types.Sparepart) 
 	return nil
 }
 
-func (repository *PartsRepository) DeletePart(id string) error {
+func (repository *PartsRepositoryImpl) DeletePart(id string) error {
 	query := `DELETE FROM "SpareParts" WHERE id = $1`
 
 	_, err := repository.database.Exec(query, id); if err != nil {

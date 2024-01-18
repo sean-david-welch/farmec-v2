@@ -8,25 +8,32 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/utils"
 )
 
-type MachineService struct {
-	folder string 
-	s3Client *utils.S3Client
-	repository *repository.MachineRepository
+type MachineService interface {
+	GetMachines(id string) ([]types.Machine, error) 
+	CreateMachine(machine *types.Machine) (*types.ModelResult, error) 
+	UpdateMachine(id string, machine *types.Machine) (*types.ModelResult, error) 
+	DeleteMachine(id string) error 
 }
 
-func NewMachineService(repository *repository.MachineRepository, s3Client *utils.S3Client, folder string) *MachineService {
-	return &MachineService{
+type MachineServiceImpl struct {
+	folder string 
+	s3Client *utils.S3Client
+	repository repository.MachineRepository
+}
+
+func NewMachineService(repository repository.MachineRepository, s3Client *utils.S3Client, folder string) *MachineServiceImpl {
+	return &MachineServiceImpl{
 		repository: repository,
 		s3Client: s3Client,
 		folder: folder,
 	}
 }
 
-func (service *MachineService) GetMachines(id string) ([]types.Machine, error) {
+func (service *MachineServiceImpl) GetMachines(id string) ([]types.Machine, error) {
 	return service.repository.GetMachines(id)
 }
 
-func (service *MachineService) CreateMachine(machine *types.Machine) (*types.ModelResult, error) {
+func (service *MachineServiceImpl) CreateMachine(machine *types.Machine) (*types.ModelResult, error) {
 	machineImage := machine.MachineImage; if machineImage == "" {
 		return nil, errors.New("machine image is empty")
 	}
@@ -50,7 +57,7 @@ func (service *MachineService) CreateMachine(machine *types.Machine) (*types.Mod
 	return result, nil
 }
 
-func(service *MachineService) UpdateMachine(id string, machine *types.Machine) (*types.ModelResult, error) {
+func(service *MachineServiceImpl) UpdateMachine(id string, machine *types.Machine) (*types.ModelResult, error) {
 	machineImage := machine.MachineImage
 
 	var presignedUrl, imageUrl string
@@ -76,7 +83,7 @@ func(service *MachineService) UpdateMachine(id string, machine *types.Machine) (
 	return result, nil
 }
 
-func (service *MachineService) DeleteMachine(id string) error {
+func (service *MachineServiceImpl) DeleteMachine(id string) error {
 	machine, err := service.repository.GetMachineById(id); if err != nil {
 		return err
 	}

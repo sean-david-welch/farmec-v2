@@ -8,25 +8,32 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/utils"
 )
 
-type ProductService struct {
-	folder string
-	s3Client *utils.S3Client
-	repository *repository.ProductRepository
+type ProductService interface {
+	GetProducts(id string) ([]types.Product, error) 
+	CreateProduct(product *types.Product) (*types.ModelResult, error) 
+	UpdateProduct(id string, product *types.Product) (*types.ModelResult, error) 
+	DeleteProduct(id string) error 
 }
 
-func NewProductService(repository *repository.ProductRepository, s3Client *utils.S3Client, folder string) *ProductService {
-	return &ProductService{
+type ProductServiceImpl struct {
+	folder string
+	s3Client *utils.S3Client
+	repository repository.ProductRepository
+}
+
+func NewProductService(repository repository.ProductRepository, s3Client *utils.S3Client, folder string) *ProductServiceImpl {
+	return &ProductServiceImpl{
 		repository: repository,
 		s3Client: s3Client,
 		folder: folder,
 	}
 }
 
-func (service *ProductService) GetProducts(id string) ([]types.Product, error) {
+func (service *ProductServiceImpl) GetProducts(id string) ([]types.Product, error) {
 	return service.repository.GetProducts(id)
 }
 
-func (service *ProductService) CreateProduct(product *types.Product) (*types.ModelResult, error) {
+func (service *ProductServiceImpl) CreateProduct(product *types.Product) (*types.ModelResult, error) {
  	productImage := product.ProductImage; if productImage == "" {
 		return nil, errors.New("machine image is empty")
 	}
@@ -50,7 +57,7 @@ func (service *ProductService) CreateProduct(product *types.Product) (*types.Mod
 	return result, nil
 }
 
-func (service *ProductService) UpdateProduct(id string, product *types.Product) (*types.ModelResult, error) {
+func (service *ProductServiceImpl) UpdateProduct(id string, product *types.Product) (*types.ModelResult, error) {
 	productImage := product.ProductImage
 
 	var presignedUrl, imageUrl string
@@ -77,7 +84,7 @@ func (service *ProductService) UpdateProduct(id string, product *types.Product) 
 }
 
 
-func (service *ProductService) DeleteProduct(id string) error {
+func (service *ProductServiceImpl) DeleteProduct(id string) error {
 	product, err := service.repository.GetProductById(id); if err != nil {
 		return nil
 	}

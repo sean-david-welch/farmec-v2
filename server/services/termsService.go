@@ -5,15 +5,22 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
-type TermsService struct {
-	repository *repository.TermsRepository
+type TermsService interface {
+	GetTerms() ([]types.Terms, error)
+	CreateTerm(term *types.Terms) error
+	UpdateTerm(id string, term *types.Terms) error
+	DeleteTerm(id string) error
 }
 
-func NewTermsService(repository *repository.TermsRepository) *TermsService {
-	return &TermsService{repository: repository}
+type TermsServiceImpl struct {
+	repository repository.TermsRepository
 }
 
-func(service *TermsService) GetTerms() ([]types.Terms, error) {
+func NewTermsService(repository repository.TermsRepository) *TermsServiceImpl {
+	return &TermsServiceImpl{repository: repository}
+}
+
+func(service *TermsServiceImpl) GetTerms() ([]types.Terms, error) {
 	terms, err := service.repository.GetTerms(); if err != nil {
 		return nil, err
 	}
@@ -21,7 +28,7 @@ func(service *TermsService) GetTerms() ([]types.Terms, error) {
 	return terms, nil
 }
 
-func(service *TermsService) CreateTerm(term *types.Terms) error {
+func(service *TermsServiceImpl) CreateTerm(term *types.Terms) error {
 	if err := service.repository.CreateTerm(term); err != nil {
 		return err
 	}
@@ -29,7 +36,7 @@ func(service *TermsService) CreateTerm(term *types.Terms) error {
 	return nil
 }
 
-func(service *TermsService) UpdateTerm(id string, term *types.Terms) error {
+func(service *TermsServiceImpl) UpdateTerm(id string, term *types.Terms) error {
 	if err := service.repository.UpdateTerm(id, term); err != nil {
 		return err
 	}
@@ -37,7 +44,7 @@ func(service *TermsService) UpdateTerm(id string, term *types.Terms) error {
 	return nil
 }
 
-func(service *TermsService) DeleteTerm(id string) error {
+func(service *TermsServiceImpl) DeleteTerm(id string) error {
 	if err := service.repository.DeleteTerm(id); err != nil {
 		return err
 	}

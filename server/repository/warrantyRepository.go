@@ -9,15 +9,23 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
-type WarrantyRepository struct {
+type WarrantyRepository interface {
+	GetWarranties() ([]types.DealerOwnerInfo, error) 
+	GetWarrantyById(id string) (*types.WarrantyClaim, []types.PartsRequired, error) 
+	CreateWarranty(warranty *types.WarrantyClaim, parts []types.PartsRequired) error 
+	UpdateWarranty(id string, warranty *types.WarrantyClaim, parts []types.PartsRequired) error 
+	DeleteWarranty(id string) error 
+}
+
+type WarrantyRepositoryImpl struct {
 	database *sql.DB
 }
 
-func NewWarrantyRepository(database *sql.DB) *WarrantyRepository {
-	return &WarrantyRepository{database: database}
+func NewWarrantyRepository(database *sql.DB) *WarrantyRepositoryImpl {
+	return &WarrantyRepositoryImpl{database: database}
 }
 
-func(repository*WarrantyRepository) GetWarranties() ([]types.DealerOwnerInfo, error) {
+func(repository *WarrantyRepositoryImpl) GetWarranties() ([]types.DealerOwnerInfo, error) {
 	var warranties []types.DealerOwnerInfo
 
     query := `SELECT "dealer", "ownerName" FROM "WarrantyClaim"`
@@ -44,7 +52,7 @@ func(repository*WarrantyRepository) GetWarranties() ([]types.DealerOwnerInfo, er
 	return warranties, nil
 }
 
-func(repository*WarrantyRepository) GetWarrantyById(id string) (*types.WarrantyClaim, []types.PartsRequired, error) {
+func(repository *WarrantyRepositoryImpl) GetWarrantyById(id string) (*types.WarrantyClaim, []types.PartsRequired, error) {
 	var warranty types.WarrantyClaim
 	var parts []types.PartsRequired
 
@@ -82,7 +90,7 @@ func(repository*WarrantyRepository) GetWarrantyById(id string) (*types.WarrantyC
 	return &warranty, parts, nil
 }
 
-func(repository*WarrantyRepository) CreateWarranty(warranty *types.WarrantyClaim, parts []types.PartsRequired) error {
+func(repository *WarrantyRepositoryImpl) CreateWarranty(warranty *types.WarrantyClaim, parts []types.PartsRequired) error {
 	warranty.ID = uuid.NewString()
 	warranty.Created = time.Now()
 
@@ -124,7 +132,7 @@ func(repository*WarrantyRepository) CreateWarranty(warranty *types.WarrantyClaim
 	return nil		
 }
 
-func(repository*WarrantyRepository) UpdateWarranty(id string, warranty *types.WarrantyClaim, parts []types.PartsRequired) error {
+func(repository *WarrantyRepositoryImpl) UpdateWarranty(id string, warranty *types.WarrantyClaim, parts []types.PartsRequired) error {
     transaction, err := repository.database.Begin(); if err != nil {
         return err
     }
@@ -169,7 +177,7 @@ func(repository*WarrantyRepository) UpdateWarranty(id string, warranty *types.Wa
     return nil		
 }
 
-func(repository*WarrantyRepository) DeleteWarranty(id string) error {
+func(repository *WarrantyRepositoryImpl) DeleteWarranty(id string) error {
 	transaction, err := repository.database.Begin(); if err != nil {
 		return err
 	}

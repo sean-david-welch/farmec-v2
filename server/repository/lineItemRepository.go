@@ -16,15 +16,15 @@ type LineItemRepository interface {
 	DeleteLineItem(id string) error 
 }
 
-type SQLLineItemRepository struct {
+type LineItemRepositoryImpl struct {
 	database *sql.DB
 }
 
-func NewLineItemRepository(database *sql.DB) *SQLLineItemRepository {
-	return &SQLLineItemRepository{database: database}
+func NewLineItemRepository(database *sql.DB) *LineItemRepositoryImpl {
+	return &LineItemRepositoryImpl{database: database}
 }
 
-func(repository *SQLLineItemRepository) GetLineItems() ([]types.LineItem, error) {
+func(repository *LineItemRepositoryImpl) GetLineItems() ([]types.LineItem, error) {
 	var lineItems []types.LineItem
 
 	query := `SELECT * FROM "LineItems"`
@@ -50,7 +50,7 @@ func(repository *SQLLineItemRepository) GetLineItems() ([]types.LineItem, error)
 	return lineItems, nil
 }
 
-func(repository *SQLLineItemRepository) GetLineItemById(id string) (*types.LineItem, error) {
+func(repository *LineItemRepositoryImpl) GetLineItemById(id string) (*types.LineItem, error) {
 	var lineItem types.LineItem
 
 	query := `SELECT * FROM "LineItems" WHERE "id" = $1`
@@ -68,7 +68,7 @@ func(repository *SQLLineItemRepository) GetLineItemById(id string) (*types.LineI
 	return &lineItem, nil
 }
 
-func(repository *SQLLineItemRepository) CreateLineItem(lineItem *types.LineItem) error {
+func(repository *LineItemRepositoryImpl) CreateLineItem(lineItem *types.LineItem) error {
 	lineItem.ID = uuid.NewString()
 
 	query := `INSERT INTO "Lineitems" 
@@ -81,7 +81,7 @@ func(repository *SQLLineItemRepository) CreateLineItem(lineItem *types.LineItem)
 	return nil 
 }
 
-func(repository *SQLLineItemRepository) UpdateLineItem(id string, lineItem *types.LineItem) error {
+func(repository *LineItemRepositoryImpl) UpdateLineItem(id string, lineItem *types.LineItem) error {
 	query := `UPDATE "Lineitems" 
 	SET "name" = $2, "price" = $3, "image" = $4 WHERE "id" = $1`
 
@@ -92,7 +92,7 @@ func(repository *SQLLineItemRepository) UpdateLineItem(id string, lineItem *type
 	return nil 
 }
 
-func(repository *SQLLineItemRepository) DeleteLineItem(id string) error {
+func(repository *LineItemRepositoryImpl) DeleteLineItem(id string) error {
 	query := `DELETE FROM "LineItems" WHERE "id" = $1`
 
 	_, err := repository.database.Exec(query, id); if err != nil {

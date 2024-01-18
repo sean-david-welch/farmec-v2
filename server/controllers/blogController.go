@@ -10,10 +10,10 @@ import (
 )
 
 type BlogController struct {
-	service *services.BlogService
+	service services.BlogService
 }
 
-func NewBlogController(service *services.BlogService) *BlogController {
+func NewBlogController(service services.BlogService) *BlogController {
 	return &BlogController{service: service}
 }
 

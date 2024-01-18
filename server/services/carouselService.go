@@ -8,25 +8,32 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/utils"
 )
 
-type CarouselService struct {
-	repository *repository.CarouselRepository
+type CarouselService interface {
+	GetCarousels() ([]types.Carousel, error) 
+	CreateCarousel(carousel *types.Carousel) (*types.ModelResult, error) 
+	UpdateCarousel(id string, carousel *types.Carousel) (*types.ModelResult, error) 
+	DeleteCarousel(id string) error 
+} 
+
+type CarouselServiceImpl struct {
+	repository repository.CarouselRepository
 	s3Client *utils.S3Client
 	folder string
 }
 
-func NewCarouselService(repository *repository.CarouselRepository, s3Client *utils.S3Client, folder string) *CarouselService {
-	return &CarouselService{
+func NewCarouselService(repository repository.CarouselRepository, s3Client *utils.S3Client, folder string) *CarouselServiceImpl {
+	return &CarouselServiceImpl{
 		repository: repository,
 		s3Client: s3Client,
 		folder: folder,
 	}
 }
 
-func (service *CarouselService) GetCarousels() ([]types.Carousel, error) {
+func (service *CarouselServiceImpl) GetCarousels() ([]types.Carousel, error) {
 	return service.repository.GetCarousels()
 }
 
-func (service *CarouselService) CreateCarousel(carousel *types.Carousel) (*types.ModelResult, error) {
+func (service *CarouselServiceImpl) CreateCarousel(carousel *types.Carousel) (*types.ModelResult, error) {
 	image := carousel.Image; if image != "" {
 		return nil, errors.New("image is empty")
 	}
@@ -50,7 +57,7 @@ func (service *CarouselService) CreateCarousel(carousel *types.Carousel) (*types
 	return result, nil
 }	
 
-func (service *CarouselService) UpdateCarousel(id string, carousel *types.Carousel) (*types.ModelResult, error) {
+func (service *CarouselServiceImpl) UpdateCarousel(id string, carousel *types.Carousel) (*types.ModelResult, error) {
 	image := carousel.Image;
 
 	var presignedUrl, imageUrl string
@@ -76,7 +83,7 @@ func (service *CarouselService) UpdateCarousel(id string, carousel *types.Carous
 	return result, nil
 }
 
-func (service *CarouselService) DeleteCarousel(id string) error {
+func (service *CarouselServiceImpl) DeleteCarousel(id string) error {
 	carousel, err := service.repository.GetCarouselById(id); if err != nil {
 		return err
 	}

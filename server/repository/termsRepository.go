@@ -9,15 +9,22 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
-type TermsRepository struct {
+type TermsRepository interface {
+	GetTerms() ([]types.Terms, error) 
+	CreateTerm(term *types.Terms) error 
+	UpdateTerm(id string, term *types.Terms) error 
+	DeleteTerm(id string) error 
+}
+
+type TermsRepositoryImpl struct {
 	database *sql.DB
 }
 
-func NewTermsRepository(database *sql.DB) *TermsRepository {
-	return &TermsRepository{database: database}
+func NewTermsRepository(database *sql.DB) *TermsRepositoryImpl {
+	return &TermsRepositoryImpl{database: database}
 }
 
-func(repository *TermsRepository) GetTerms() ([]types.Terms, error) {
+func(repository *TermsRepositoryImpl) GetTerms() ([]types.Terms, error) {
 	var terms []types.Terms
 
 	query := `SELECT * FROM "Terms"`
@@ -43,7 +50,7 @@ func(repository *TermsRepository) GetTerms() ([]types.Terms, error) {
 	return terms, err
 }
 
-func(repository *TermsRepository) CreateTerm(term *types.Terms) error {
+func(repository *TermsRepositoryImpl) CreateTerm(term *types.Terms) error {
 	term.ID = uuid.NewString()
 	term.Created = time.Now()
 
@@ -56,7 +63,7 @@ func(repository *TermsRepository) CreateTerm(term *types.Terms) error {
 	return nil
 }
 
-func(repository *TermsRepository) UpdateTerm(id string, term *types.Terms) error {
+func(repository *TermsRepositoryImpl) UpdateTerm(id string, term *types.Terms) error {
 	query := `UPDATE "Terms" SET title = $1, body = $2 where id = $3`
 
 	_, err := repository.database.Exec(query, term.Title, term.Body, id); if err != nil {
@@ -66,7 +73,7 @@ func(repository *TermsRepository) UpdateTerm(id string, term *types.Terms) error
 	return nil
 }
 
-func(repository *TermsRepository) DeleteTerm(id string) error {
+func(repository *TermsRepositoryImpl) DeleteTerm(id string) error {
 	query := `DELETE FROM "Terms" WHERE "id" = $1`
 
 	_, err := repository.database.Exec(query, id); if err != nil {

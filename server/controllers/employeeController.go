@@ -10,10 +10,10 @@ import (
 )
 
 type EmployeeController struct {
-	service *services.EmployeeService
+	service services.EmployeeService
 }
 
-func NewEmployeeController(service *services.EmployeeService) *EmployeeController {
+func NewEmployeeController(service services.EmployeeService) *EmployeeController {
 	return &EmployeeController{service: service}
 }
 

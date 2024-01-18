@@ -5,15 +5,23 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
-type RegistrationService struct {
-	repository*repository.RegistrationRepository
+type RegistrationService interface {
+	GetRegistrations() ([]types.MachineRegistration, error) 
+	GetRegistrationById(id string) (*types.MachineRegistration, error) 
+	CreateRegistration(registration *types.MachineRegistration) error 
+	UpdateRegistration(id string, registration *types.MachineRegistration) error 
+	DeleteRegistration(id string) error 
 }
 
-func NewRegistrationService(repository*repository.RegistrationRepository) *RegistrationService {
-	return &RegistrationService{repository: repository}
+type RegistrationServiceImpl struct {
+	repository repository.RegistrationRepository
 }
 
-func(service *RegistrationService) GetRegistrations() ([]types.MachineRegistration, error) {
+func NewRegistrationService(repository repository.RegistrationRepository) *RegistrationServiceImpl {
+	return &RegistrationServiceImpl{repository: repository}
+}
+
+func(service *RegistrationServiceImpl) GetRegistrations() ([]types.MachineRegistration, error) {
 	registrations, err := service.repository.GetRegistrations(); if err != nil {
 		return nil, err
 	}
@@ -21,7 +29,7 @@ func(service *RegistrationService) GetRegistrations() ([]types.MachineRegistrati
 	return registrations, nil
 }
 
-func(service *RegistrationService) GetRegistrationById(id string) (*types.MachineRegistration, error) {
+func(service *RegistrationServiceImpl) GetRegistrationById(id string) (*types.MachineRegistration, error) {
 	registration, err := service.repository.GetRegistrationById(id); if err != nil {
 		return nil, err
 	}
@@ -29,7 +37,7 @@ func(service *RegistrationService) GetRegistrationById(id string) (*types.Machin
 	return registration, nil
 }
 
-func(service *RegistrationService) CreateRegistration(registration *types.MachineRegistration) error {
+func(service *RegistrationServiceImpl) CreateRegistration(registration *types.MachineRegistration) error {
 	if err := service.repository.CreateRegistration(registration); err != nil {
 		return err
 	}
@@ -37,7 +45,7 @@ func(service *RegistrationService) CreateRegistration(registration *types.Machin
 	return nil 
 }
 
-func(service *RegistrationService) UpdateRegistration(id string, registration *types.MachineRegistration) error {
+func(service *RegistrationServiceImpl) UpdateRegistration(id string, registration *types.MachineRegistration) error {
 	if err := service.repository.UpdateRegistration(id, registration); err != nil {
 		return err
 	}
@@ -45,7 +53,7 @@ func(service *RegistrationService) UpdateRegistration(id string, registration *t
 	return nil
 }
 
-func(service *RegistrationService) DeleteRegistration(id string) error {
+func(service *RegistrationServiceImpl) DeleteRegistration(id string) error {
 	if err := service.repository.DeleteRegistration(id); err != nil {
 		return err
 	}

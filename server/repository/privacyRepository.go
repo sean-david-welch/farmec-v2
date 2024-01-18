@@ -9,29 +9,22 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
-type PrivacyRepository struct {
+type PrivacyRepository interface {
+	GetPrivacy() ([]types.Privacy, error) 
+	CreatePrivacy(privacy *types.Privacy) error 
+	UpdatePrivacy(id string, privacy *types.Privacy) error 
+	DeletePrivacy(id string) error 
+}
+
+type PrivacyRepositoryImpl struct {
 	database *sql.DB
 }
 
-// type Privacy struct {
-//     ID      string `json:"id"`
-//     Title   string `json:"title"`
-//     Body    string `json:"body"`
-//     Created time.Time `json:"created"`
-// }
-
-// type Terms struct {
-//     ID      string `json:"id"`
-//     Title   string `json:"title"`
-//     Body    string `json:"body"`
-//     Created time.Time `json:"created"`
-// }
-
-func NewPrivacyRepository(database *sql.DB) *PrivacyRepository {
-	return &PrivacyRepository{database: database}
+func NewPrivacyRepository(database *sql.DB) *PrivacyRepositoryImpl {
+	return &PrivacyRepositoryImpl{database: database}
 }
 
-func(repository *PrivacyRepository) GetPrivacy() ([]types.Privacy, error) {
+func(repository *PrivacyRepositoryImpl) GetPrivacy() ([]types.Privacy, error) {
 	var privacyTerms []types.Privacy
 
 	query := `SELECT * FROM "Privacy"`
@@ -57,7 +50,7 @@ func(repository *PrivacyRepository) GetPrivacy() ([]types.Privacy, error) {
 	return privacyTerms, err
 }
 
-func(repository *PrivacyRepository) CreatePrivacy(privacy *types.Privacy) error {
+func(repository *PrivacyRepositoryImpl) CreatePrivacy(privacy *types.Privacy) error {
 	privacy.ID = uuid.NewString()
 	privacy.Created = time.Now()
 
@@ -70,7 +63,7 @@ func(repository *PrivacyRepository) CreatePrivacy(privacy *types.Privacy) error 
 	return nil
 }
 
-func(repository *PrivacyRepository) UpdatePrivacy(id string, privacy *types.Privacy) error {
+func(repository *PrivacyRepositoryImpl) UpdatePrivacy(id string, privacy *types.Privacy) error {
 	query := `UPDATE "Privacy" SET title = $1, body = $2 where id = $3`
 
 	_, err := repository.database.Exec(query, privacy.Title, privacy.Body, id); if err != nil {
@@ -80,7 +73,7 @@ func(repository *PrivacyRepository) UpdatePrivacy(id string, privacy *types.Priv
 	return nil
 }
 
-func(repository *PrivacyRepository) DeletePrivacy(id string) error {
+func(repository *PrivacyRepositoryImpl) DeletePrivacy(id string) error {
 	query := `DELETE FROM "Privacy" WHERE "id" = $1`
 
 	_, err := repository.database.Exec(query, id); if err != nil {

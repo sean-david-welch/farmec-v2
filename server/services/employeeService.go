@@ -6,17 +6,24 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/utils"
 )
 
-type EmployeeService struct {
-	repository *repository.EmployeeRepository
+type EmployeeService interface {
+	GetEmployees() ([]types.Employee, error) 
+	CreateEmployee(employee *types.Employee) (*types.ModelResult, error) 
+	UpdateEmployee(id string, employee *types.Employee) (*types.ModelResult, error) 
+	DeleteEmployee(id string) error 
+}
+
+type EmployeeServiceImpl struct {
+	repository repository.EmployeeRepository
 	s3Client *utils.S3Client
 	folder string
 }
 
-func NewEmployeeService(repository *repository.EmployeeRepository, s3Client *utils.S3Client, folder string) *EmployeeService {
-	return &EmployeeService{repository: repository, s3Client: s3Client, folder: folder}
+func NewEmployeeService(repository repository.EmployeeRepository, s3Client *utils.S3Client, folder string) *EmployeeServiceImpl {
+	return &EmployeeServiceImpl{repository: repository, s3Client: s3Client, folder: folder}
 }
 
-func(service *EmployeeService) GetEmployees() ([]types.Employee, error) {
+func(service *EmployeeServiceImpl) GetEmployees() ([]types.Employee, error) {
 	employees, err := service.repository.GetEmployees(); if err != nil {
 		return nil, err
 	}
@@ -24,7 +31,7 @@ func(service *EmployeeService) GetEmployees() ([]types.Employee, error) {
 	return employees, nil
 }
 
-func(service *EmployeeService) CreateEmployee(employee *types.Employee) (*types.ModelResult, error) {
+func(service *EmployeeServiceImpl) CreateEmployee(employee *types.Employee) (*types.ModelResult, error) {
 	image := employee.ProfileImage
 
 	presginedUrl, imageUrl, err := service.s3Client.GeneratePresignedUrl(service.folder, image); if err != nil {
@@ -45,7 +52,7 @@ func(service *EmployeeService) CreateEmployee(employee *types.Employee) (*types.
 	return result, nil
 }
 
-func(service *EmployeeService) UpdateEmployee(id string, employee *types.Employee) (*types.ModelResult, error) {
+func(service *EmployeeServiceImpl) UpdateEmployee(id string, employee *types.Employee) (*types.ModelResult, error) {
 	image := employee.ProfileImage
 
 	var presginedUrl, imageUrl string
@@ -70,7 +77,7 @@ func(service *EmployeeService) UpdateEmployee(id string, employee *types.Employe
 	return result, nil
 }
 
-func(service *EmployeeService) DeleteEmployee(id string) error {
+func(service *EmployeeServiceImpl) DeleteEmployee(id string) error {
 	employee, err := service.repository.GetEmployeeById(id); if err != nil {
 		return err
 	}

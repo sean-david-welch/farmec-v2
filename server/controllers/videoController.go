@@ -10,10 +10,10 @@ import (
 )
 
 type VideoController struct {
-	videoService *services.VideoService
+	videoService services.VideoService
 }
 
-func NewVideoController(videoService *services.VideoService) *VideoController{
+func NewVideoController(videoService services.VideoService) *VideoController{
 	return &VideoController{videoService: videoService}
 }
 

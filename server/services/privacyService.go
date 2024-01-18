@@ -5,15 +5,22 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
-type PrivacyService struct {
-	repository *repository.PrivacyRepository
+type PrivacyService interface {
+	GetPrivacys() ([]types.Privacy, error) 
+	CreatePrivacy(privacy *types.Privacy) error 
+	UpdatePrivacy(id string, privacy *types.Privacy) error 
+	DeletePrivacy(id string) error 
 }
 
-func NewPrivacyService(repository *repository.PrivacyRepository) *PrivacyService {
-	return &PrivacyService{repository: repository}
+type PrivacyServiceImpl struct {
+	repository repository.PrivacyRepository
 }
 
-func(service *PrivacyService) GetPrivacys() ([]types.Privacy, error) {
+func NewPrivacyService(repository repository.PrivacyRepository) *PrivacyServiceImpl {
+	return &PrivacyServiceImpl{repository: repository}
+}
+
+func(service *PrivacyServiceImpl) GetPrivacys() ([]types.Privacy, error) {
 	privacys, err := service.repository.GetPrivacy(); if err != nil {
 		return nil, err
 	}
@@ -21,7 +28,7 @@ func(service *PrivacyService) GetPrivacys() ([]types.Privacy, error) {
 	return privacys, nil
 }
 
-func(service *PrivacyService) CreatePrivacy(privacy *types.Privacy) error {
+func(service *PrivacyServiceImpl) CreatePrivacy(privacy *types.Privacy) error {
 	if err := service.repository.CreatePrivacy(privacy); err != nil {
 		return err
 	}
@@ -29,7 +36,7 @@ func(service *PrivacyService) CreatePrivacy(privacy *types.Privacy) error {
 	return nil
 }
 
-func(service *PrivacyService) UpdatePrivacy(id string, privacy *types.Privacy) error {
+func(service *PrivacyServiceImpl) UpdatePrivacy(id string, privacy *types.Privacy) error {
 	if err := service.repository.UpdatePrivacy(id, privacy); err != nil {
 		return err
 	}
@@ -37,7 +44,7 @@ func(service *PrivacyService) UpdatePrivacy(id string, privacy *types.Privacy) e
 	return nil
 }
 
-func(service *PrivacyService) DeletePrivacy(id string) error {
+func(service *PrivacyServiceImpl) DeletePrivacy(id string) error {
 	if err := service.repository.DeletePrivacy(id); err != nil {
 		return err
 	}

@@ -10,10 +10,10 @@ import (
 )
 
 type ExhibitionController struct {
-	service *services.ExhibitionService
+	service services.ExhibitionService
 }
 
-func NewExhibitionController(service *services.ExhibitionService) *ExhibitionController {
+func NewExhibitionController(service services.ExhibitionService) *ExhibitionController {
 	return &ExhibitionController{service: service}
 }
 

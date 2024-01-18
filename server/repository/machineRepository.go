@@ -9,22 +9,20 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
-// type Machine struct {
-//     ID            string `json:"id"`
-//     SupplierID    string `json:"supplierId"`
-//     Name          string `json:"name"`
-//     MachineImage  string `json:"machine_image"`
-//     Description   *string `json:"description"`
-//     MachineLink   *string `json:"machine_link"`
-// 	   Created       time.Time `json:"created"`
-// }
+type MachineRepository interface {
+	GetMachines(id string) ([]types.Machine, error)
+	GetMachineById(id string) (*types.Machine, error)
+	CreateMachine(machine *types.Machine) error
+	UpdateMachine(id string, machine *types.Machine) error
+	DeleteMachine(id string) error
+}
 
-type MachineRepository struct {
+type MachineRepositoryImpl struct {
 	database *sql.DB
 }
 
-func NewMachineRepository(database *sql.DB) *MachineRepository {
-	return &MachineRepository{database: database}
+func NewMachineRepository(database *sql.DB) *MachineRepositoryImpl {
+	return &MachineRepositoryImpl{database: database}
 }
 
 func ScanMachine(row interface{}, machine *types.Machine) error {
@@ -43,7 +41,7 @@ func ScanMachine(row interface{}, machine *types.Machine) error {
 	return scanner.Scan(&machine.ID, &machine.SupplierID, &machine.Name, &machine.MachineImage, &machine.Description, &machine.MachineLink, &machine.Created)
 }
 
-func (repository *MachineRepository) GetMachines(id string) ([]types.Machine, error) {
+func (repository *MachineRepositoryImpl) GetMachines(id string) ([]types.Machine, error) {
 	var machines []types.Machine
 
 	query := `SELECT * FROM "Machine" WHERE "supplierId" = $1`
@@ -69,7 +67,7 @@ func (repository *MachineRepository) GetMachines(id string) ([]types.Machine, er
 	return machines, nil
 }
 
-func (repository *MachineRepository) GetMachineById(id string) (*types.Machine, error) {
+func (repository *MachineRepositoryImpl) GetMachineById(id string) (*types.Machine, error) {
 	query := `SELECT * FROM "Machine" WHERE id = $1`
 	row := repository.database.QueryRow(query, id)
 
@@ -87,7 +85,7 @@ func (repository *MachineRepository) GetMachineById(id string) (*types.Machine, 
 	return &machine, nil
 }
 
-func (repository *MachineRepository) CreateMachine(machine *types.Machine) error {
+func (repository *MachineRepositoryImpl) CreateMachine(machine *types.Machine) error {
 	machine.ID = uuid.NewString()
 	machine.Created = time.Now()
 
@@ -103,7 +101,7 @@ func (repository *MachineRepository) CreateMachine(machine *types.Machine) error
 	return nil
 }
 
-func (repository *MachineRepository) UpdateMachine(id string, machine *types.Machine) error {
+func (repository *MachineRepositoryImpl) UpdateMachine(id string, machine *types.Machine) error {
 	query := `UPDATE Machine 
 	SET supplierID = $1, name = $2, machineImage = $3, description = $4, machineLink = $5
 	WHERE ID = $6`
@@ -117,7 +115,7 @@ func (repository *MachineRepository) UpdateMachine(id string, machine *types.Mac
 	return nil
 }
 
-func (repository *MachineRepository) DeleteMachine(id string) error {
+func (repository *MachineRepositoryImpl) DeleteMachine(id string) error {
 	query := `DELETE FROM "Machine" WHERE id = $1`
 
 	_, err := repository.database.Exec(query, id); if err != nil {

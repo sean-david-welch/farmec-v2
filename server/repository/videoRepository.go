@@ -9,15 +9,22 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
-type VideoRepositoy struct {
+type VideoRepository interface {
+	GetVideos(id string) ([]types.Video, error) 
+	CreateVideo(video *types.Video) error 
+	UpdateVideo(id string, video *types.Video) error 
+	DeleteVideo(id string) error 
+}
+
+type VideoRepositoryImpl struct {
 	database *sql.DB
 }
 
-func NewVideoRepository(database *sql.DB) *VideoRepositoy {
-	return &VideoRepositoy{database: database}
+func NewVideoRepository(database *sql.DB) *VideoRepositoryImpl {
+	return &VideoRepositoryImpl{database: database}
 }
 
-func (repository *VideoRepositoy) GetVideos(id string) ([]types.Video, error) {
+func (repository *VideoRepositoryImpl) GetVideos(id string) ([]types.Video, error) {
 	var videos []types.Video
 
 	query := `SELECT * FROM "Video" WHERE "supplierId" = $1`
@@ -44,7 +51,7 @@ func (repository *VideoRepositoy) GetVideos(id string) ([]types.Video, error) {
 	return videos, nil
 }
 
-func (repository *VideoRepositoy) CreateVideo(video *types.Video) error {
+func (repository *VideoRepositoryImpl) CreateVideo(video *types.Video) error {
 
 	video.ID = uuid.NewString()
 	video.Created = time.Now()
@@ -59,7 +66,7 @@ func (repository *VideoRepositoy) CreateVideo(video *types.Video) error {
 	return nil
 }
 
-func (repository *VideoRepositoy) UpdateVideo(id string, video *types.Video) error {
+func (repository *VideoRepositoryImpl) UpdateVideo(id string, video *types.Video) error {
     query := `UPDATE "Video" SET "supplierId" = $1, "web_url" = $2, "title" = $3, "description" = $4, "video_id" = $5, "thumbnail_url" = $6 WHERE "id" = $7`
 
     _, err := repository.database.Exec(query, video.SupplierID, video.WebURL, video.Title, video.Description, video.VideoID, video.ThumbnailURL, id)
@@ -71,7 +78,7 @@ func (repository *VideoRepositoy) UpdateVideo(id string, video *types.Video) err
 	return nil
 }
 
-func (repository *VideoRepositoy) DeleteVideo(id string) error {
+func (repository *VideoRepositoryImpl) DeleteVideo(id string) error {
 	query := `DELETE FROM "Video" WHERE "id" = $1`
 
 	_, err := repository.database.Exec(query, id); if err != nil {

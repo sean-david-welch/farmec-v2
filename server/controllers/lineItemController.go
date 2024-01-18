@@ -10,10 +10,10 @@ import (
 )
 
 type LineItemController struct {
-	service *services.LineItemService
+	service services.LineItemService
 }
 
-func NewLineItemController(service *services.LineItemService) *LineItemController {
+func NewLineItemController(service services.LineItemService) *LineItemController {
 	return &LineItemController{service: service}
 }
 
