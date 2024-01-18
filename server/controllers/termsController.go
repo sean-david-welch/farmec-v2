@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sean-david-welch/farmec-v2/server/models"
 	"github.com/sean-david-welch/farmec-v2/server/services"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type TermsController struct {
@@ -28,7 +28,7 @@ func(controller *TermsController) GetTerms(context *gin.Context) {
 } 
 
 func(controller *TermsController) CreateTerm(context *gin.Context) {
-	var term models.Terms
+	var term types.Terms
 
 	if err := context.ShouldBindJSON(&term); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "invalid request body", "details": err.Error()})
@@ -46,7 +46,7 @@ func(controller *TermsController) CreateTerm(context *gin.Context) {
 
 func(controller *TermsController) UpdateTerm(context *gin.Context) {
 	id := context.Param("id")
-	var term models.Terms
+	var term types.Terms
 
 	if err := context.ShouldBindJSON(&term); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "invalid request body", "details": err.Error()})

@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/google/uuid"
-	"github.com/sean-david-welch/farmec-v2/server/models"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 // type LineItem struct {
@@ -23,8 +23,8 @@ func NewLineItemRepository(database *sql.DB) *LineItemRepository {
 	return &LineItemRepository{database: database}
 }
 
-func(repository *LineItemRepository) GetLineItems() ([]models.LineItem, error) {
-	var lineItems []models.LineItem
+func(repository *LineItemRepository) GetLineItems() ([]types.LineItem, error) {
+	var lineItems []types.LineItem
 
 	query := `SELECT * FROM "LineItems"`
 	rows, err := repository.database.Query(query); if err != nil {
@@ -33,7 +33,7 @@ func(repository *LineItemRepository) GetLineItems() ([]models.LineItem, error) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var lineItem models.LineItem
+		var lineItem types.LineItem
 
 		if err := rows.Scan(&lineItem.ID, &lineItem.Name, &lineItem.Price, &lineItem.Image); err != nil {
 			return nil, fmt.Errorf("error occurred while scanning line item: %w", err)
@@ -49,8 +49,8 @@ func(repository *LineItemRepository) GetLineItems() ([]models.LineItem, error) {
 	return lineItems, nil
 }
 
-func(repository *LineItemRepository) GetLineItemById(id string) (*models.LineItem, error) {
-	var lineItem *models.LineItem
+func(repository *LineItemRepository) GetLineItemById(id string) (*types.LineItem, error) {
+	var lineItem *types.LineItem
 
 	query := `SELECT * FROM "LineItems" WHERE "id" = $1`
 	row := repository.database.QueryRow(query, id)
@@ -62,7 +62,7 @@ func(repository *LineItemRepository) GetLineItemById(id string) (*models.LineIte
 	return lineItem, nil
 }
 
-func(repository *LineItemRepository) CreateLineItem(lineItem *models.LineItem) error {
+func(repository *LineItemRepository) CreateLineItem(lineItem *types.LineItem) error {
 	lineItem.ID = uuid.NewString()
 
 	query := `INSERT INTO "Lineitems" (id, name, price, image) VALUES ($1, $2, $3, $4)`
@@ -74,7 +74,7 @@ func(repository *LineItemRepository) CreateLineItem(lineItem *models.LineItem) e
 	return nil 
 }
 
-func(repository *LineItemRepository) UpdateLineItem(id string, lineItem *models.LineItem) error {
+func(repository *LineItemRepository) UpdateLineItem(id string, lineItem *types.LineItem) error {
 	query := `UPDATE "Lineitems" SET "name" = $2", "price" = $3, "image" = $4 WHERE "id" = $1`
 
 	_, err := repository.database.Exec(query, lineItem.ID, lineItem.Name, lineItem.Price, lineItem.Image); if err != nil {

@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/sean-david-welch/farmec-v2/server/models"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 // type MachineRegistration struct {
@@ -38,8 +38,8 @@ func NewRegistrationRepository(database *sql.DB) *RegistrationRepository {
 	return &RegistrationRepository{database: database}
 }
 
-func(repository*RegistrationRepository) GetRegistrations() ([]models.MachineRegistration, error) {
-	var registrations []models.MachineRegistration
+func(repository*RegistrationRepository) GetRegistrations() ([]types.MachineRegistration, error) {
+	var registrations []types.MachineRegistration
 
 	query := `SELECT * FROM "MachineRegistration"`
 	rows, err := repository.database.Query(query); if err != nil {
@@ -48,7 +48,7 @@ func(repository*RegistrationRepository) GetRegistrations() ([]models.MachineRegi
 	defer rows.Close()
 
 	for rows.Next(){
-		var registration models.MachineRegistration
+		var registration types.MachineRegistration
 
 		err := rows.Scan(
 			&registration.ID, &registration.DealerName, &registration.DealerAddress,
@@ -72,8 +72,8 @@ func(repository*RegistrationRepository) GetRegistrations() ([]models.MachineRegi
 	return registrations, nil
 }
 
-func(repository*RegistrationRepository) GetRegistrationById(id string) (*models.MachineRegistration, error) {
-	var registration models.MachineRegistration
+func(repository*RegistrationRepository) GetRegistrationById(id string) (*types.MachineRegistration, error) {
+	var registration types.MachineRegistration
 
 	query := `SELECT * FROM "MachineRegistration" WHERE "id" = $1`
 	row := repository.database.QueryRow(query, id)
@@ -92,7 +92,7 @@ func(repository*RegistrationRepository) GetRegistrationById(id string) (*models.
 	return &registration, nil
 }
 
-func(repository*RegistrationRepository) CreateRegistration(registration *models.MachineRegistration) error {
+func(repository*RegistrationRepository) CreateRegistration(registration *types.MachineRegistration) error {
 	registration.ID = uuid.NewString()
 	registration.Created = time.Now()
 
@@ -118,7 +118,7 @@ func(repository*RegistrationRepository) CreateRegistration(registration *models.
 	return nil
 }
 
-func(repository*RegistrationRepository) UpdateRegistration(id string, registration *models.MachineRegistration) error {
+func(repository*RegistrationRepository) UpdateRegistration(id string, registration *types.MachineRegistration) error {
 	query := `UPDATE "MachineRegistration" SET 
 	"dealer_name" = $2, "dealer_address" = $3, "owner_name" = $4, "owner_address" = $5, 
 	"machine_model" = $6, "serial_number" = $7, "install_date" = $8, "invoice_number" = $9, 

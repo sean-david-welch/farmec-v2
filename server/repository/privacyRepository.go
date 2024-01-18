@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/sean-david-welch/farmec-v2/server/models"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type PrivacyRepository struct {
@@ -31,8 +31,8 @@ func NewPrivacyRepository(database *sql.DB) *PrivacyRepository {
 	return &PrivacyRepository{database: database}
 }
 
-func(repository *PrivacyRepository) GetPrivacy() ([]models.Privacy, error) {
-	var privacyTerms []models.Privacy
+func(repository *PrivacyRepository) GetPrivacy() ([]types.Privacy, error) {
+	var privacyTerms []types.Privacy
 
 	query := `SELECT * FROM "Privacy"`
 	rows, err := repository.database.Query(query); if err != nil {
@@ -41,7 +41,7 @@ func(repository *PrivacyRepository) GetPrivacy() ([]models.Privacy, error) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var privacyTerm models.Privacy
+		var privacyTerm types.Privacy
 
 		if err := rows.Scan(&privacyTerm.ID, privacyTerm.Title, privacyTerm.Body, privacyTerm.Created); err != nil {
 			return nil, fmt.Errorf("error occurred while scanning row: %w", err)
@@ -57,7 +57,7 @@ func(repository *PrivacyRepository) GetPrivacy() ([]models.Privacy, error) {
 	return privacyTerms, err
 }
 
-func(repository *PrivacyRepository) CreatePrivacy(privacy *models.Privacy) error {
+func(repository *PrivacyRepository) CreatePrivacy(privacy *types.Privacy) error {
 	privacy.ID = uuid.NewString()
 	privacy.Created = time.Now()
 
@@ -70,7 +70,7 @@ func(repository *PrivacyRepository) CreatePrivacy(privacy *models.Privacy) error
 	return nil
 }
 
-func(repository *PrivacyRepository) UpdatePrivacy(id string, privacy *models.Privacy) error {
+func(repository *PrivacyRepository) UpdatePrivacy(id string, privacy *types.Privacy) error {
 	query := `UPDATE "Privacy" SET title = $1, body = $2 where id = $3`
 
 	_, err := repository.database.Exec(query, privacy.Title, privacy.Body, id); if err != nil {

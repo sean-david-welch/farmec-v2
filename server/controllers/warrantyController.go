@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sean-david-welch/farmec-v2/server/models"
 	"github.com/sean-david-welch/farmec-v2/server/services"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type WarrantyController struct {
@@ -45,8 +45,8 @@ func(controller *WarrantyController) GetWarrantyById(context *gin.Context) {
 }
 
 func(controller *WarrantyController) CreateWarranty(context *gin.Context) {
-	var warranty *models.WarrantyClaim
-	var parts []models.PartsRequired
+	var warranty *types.WarrantyClaim
+	var parts []types.PartsRequired
 
 	body := gin.H{
 		"warranty": warranty,
@@ -71,8 +71,8 @@ func(controller *WarrantyController) CreateWarranty(context *gin.Context) {
 func(controller *WarrantyController) UpdateWarranty(context *gin.Context) {
 	id := context.Param("id")
 
-	var warranty *models.WarrantyClaim
-	var parts []models.PartsRequired
+	var warranty *types.WarrantyClaim
+	var parts []types.PartsRequired
 
 	body := gin.H{
 		"warranty": warranty,

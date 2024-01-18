@@ -1,8 +1,8 @@
 package services
 
 import (
-	"github.com/sean-david-welch/farmec-v2/server/models"
 	"github.com/sean-david-welch/farmec-v2/server/repository"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type PrivacyService struct {
@@ -13,7 +13,7 @@ func NewPrivacyService(repository *repository.PrivacyRepository) *PrivacyService
 	return &PrivacyService{repository: repository}
 }
 
-func(service *PrivacyService) GetPrivacys() ([]models.Privacy, error) {
+func(service *PrivacyService) GetPrivacys() ([]types.Privacy, error) {
 	privacys, err := service.repository.GetPrivacy(); if err != nil {
 		return nil, err
 	}
@@ -21,7 +21,7 @@ func(service *PrivacyService) GetPrivacys() ([]models.Privacy, error) {
 	return privacys, nil
 }
 
-func(service *PrivacyService) CreatePrivacy(privacy *models.Privacy) error {
+func(service *PrivacyService) CreatePrivacy(privacy *types.Privacy) error {
 	if err := service.repository.CreatePrivacy(privacy); err != nil {
 		return err
 	}
@@ -29,7 +29,7 @@ func(service *PrivacyService) CreatePrivacy(privacy *models.Privacy) error {
 	return nil
 }
 
-func(service *PrivacyService) UpdatePrivacy(id string, privacy *models.Privacy) error {
+func(service *PrivacyService) UpdatePrivacy(id string, privacy *types.Privacy) error {
 	if err := service.repository.UpdatePrivacy(id, privacy); err != nil {
 		return err
 	}

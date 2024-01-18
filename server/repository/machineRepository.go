@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/sean-david-welch/farmec-v2/server/models"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 // type Machine struct {
@@ -27,7 +27,7 @@ func NewMachineRepository(database *sql.DB) *MachineRepository {
 	return &MachineRepository{database: database}
 }
 
-func ScanMachine(row interface{}, machine *models.Machine) error {
+func ScanMachine(row interface{}, machine *types.Machine) error {
 	var scanner interface {
 		Scan(dest ...interface{}) error
 	}
@@ -43,8 +43,8 @@ func ScanMachine(row interface{}, machine *models.Machine) error {
 	return scanner.Scan(&machine.ID, &machine.SupplierID, &machine.Name, &machine.MachineImage, &machine.Description, &machine.MachineLink, &machine.Created)
 }
 
-func (repository *MachineRepository) GetMachines(id string) ([]models.Machine, error) {
-	var machines []models.Machine
+func (repository *MachineRepository) GetMachines(id string) ([]types.Machine, error) {
+	var machines []types.Machine
 
 	query := `SELECT * FROM "Machine" WHERE "supplierId" = $1`
 	rows, err := repository.database.Query(query, id); if err != nil {
@@ -54,7 +54,7 @@ func (repository *MachineRepository) GetMachines(id string) ([]models.Machine, e
 	defer rows.Close()
 
 	for rows.Next(){
-		var machine models.Machine
+		var machine types.Machine
 
 		if err := ScanMachine(rows, &machine); err != nil {
 			return nil, fmt.Errorf("error scanning row: %w", err)
@@ -69,11 +69,11 @@ func (repository *MachineRepository) GetMachines(id string) ([]models.Machine, e
 	return machines, nil
 }
 
-func (repository *MachineRepository) GetMachineById(id string) (*models.Machine, error) {
+func (repository *MachineRepository) GetMachineById(id string) (*types.Machine, error) {
 	query := `SELECT * FROM "Machine" WHERE id = $1`
 	row := repository.database.QueryRow(query, id)
 
-	var machine models.Machine
+	var machine types.Machine
 
 	if err := ScanMachine(row, &machine); err != nil {
 
@@ -87,7 +87,7 @@ func (repository *MachineRepository) GetMachineById(id string) (*models.Machine,
 	return &machine, nil
 }
 
-func (repository *MachineRepository) CreateMachine(machine *models.Machine) error {
+func (repository *MachineRepository) CreateMachine(machine *types.Machine) error {
 	machine.ID = uuid.NewString()
 	machine.Created = time.Now()
 
@@ -103,7 +103,7 @@ func (repository *MachineRepository) CreateMachine(machine *models.Machine) erro
 	return nil
 }
 
-func (repository *MachineRepository) UpdateMachine(id string, machine *models.Machine) error {
+func (repository *MachineRepository) UpdateMachine(id string, machine *types.Machine) error {
 	query := `UPDATE Machine 
 	SET supplierID = $1, name = $2, machineImage = $3, description = $4, machineLink = $5
 	WHERE ID = $6`

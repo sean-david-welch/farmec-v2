@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/sean-david-welch/farmec-v2/server/models"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type WarrantyRepository struct {
@@ -17,8 +17,8 @@ func NewWarrantyRepository(database *sql.DB) *WarrantyRepository {
 	return &WarrantyRepository{database: database}
 }
 
-func(repository*WarrantyRepository) GetWarranties() ([]models.DealerOwnerInfo, error) {
-	var warranties []models.DealerOwnerInfo
+func(repository*WarrantyRepository) GetWarranties() ([]types.DealerOwnerInfo, error) {
+	var warranties []types.DealerOwnerInfo
 
     query := `SELECT "dealer", "ownerName" FROM "WarrantyClaim"`
 	rows, err := repository.database.Query(query); if err != nil {
@@ -27,7 +27,7 @@ func(repository*WarrantyRepository) GetWarranties() ([]models.DealerOwnerInfo, e
 	defer rows.Close()
 
 	for rows.Next() {
-		var warranty models.DealerOwnerInfo
+		var warranty types.DealerOwnerInfo
 
 		if err := rows.Scan()
 		err != nil {
@@ -44,9 +44,9 @@ func(repository*WarrantyRepository) GetWarranties() ([]models.DealerOwnerInfo, e
 	return warranties, nil
 }
 
-func(repository*WarrantyRepository) GetWarrantyById(id string) (*models.WarrantyClaim, []models.PartsRequired, error) {
-	var warranty models.WarrantyClaim
-	var parts []models.PartsRequired
+func(repository*WarrantyRepository) GetWarrantyById(id string) (*types.WarrantyClaim, []types.PartsRequired, error) {
+	var warranty types.WarrantyClaim
+	var parts []types.PartsRequired
 
 	warrantyQuery := `SELECT * FROM "WarrantyClaim" WHERE id = $1`
 
@@ -66,7 +66,7 @@ func(repository*WarrantyRepository) GetWarrantyById(id string) (*models.Warranty
     defer rows.Close()
 
 	for rows.Next() {
-		var part models.PartsRequired
+		var part types.PartsRequired
 
 		if err := rows.Scan(&part.ID, &part.WarrantyID, &part.PartNumber, &part.QuantityNeeded, &part.InvoiceNumber, &part.Description); err != nil {
 			return nil, nil, fmt.Errorf("error while iterating over rows")
@@ -82,7 +82,7 @@ func(repository*WarrantyRepository) GetWarrantyById(id string) (*models.Warranty
 	return &warranty, parts, nil
 }
 
-func(repository*WarrantyRepository) CreateWarranty(warranty *models.WarrantyClaim, parts []models.PartsRequired) error {
+func(repository*WarrantyRepository) CreateWarranty(warranty *types.WarrantyClaim, parts []types.PartsRequired) error {
 	warranty.ID = uuid.NewString()
 	warranty.Created = time.Now()
 
@@ -124,7 +124,7 @@ func(repository*WarrantyRepository) CreateWarranty(warranty *models.WarrantyClai
 	return nil		
 }
 
-func(repository*WarrantyRepository) UpdateWarranty(id string, warranty *models.WarrantyClaim, parts []models.PartsRequired) error {
+func(repository*WarrantyRepository) UpdateWarranty(id string, warranty *types.WarrantyClaim, parts []types.PartsRequired) error {
     transaction, err := repository.database.Begin(); if err != nil {
         return err
     }

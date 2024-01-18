@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/sean-david-welch/farmec-v2/server/models"
 	"github.com/sean-david-welch/farmec-v2/server/repository"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 	"google.golang.org/api/youtube/v3"
 )
 
@@ -21,7 +21,7 @@ func NewVideoService(repository *repository.VideoRepositoy, youtubeService *yout
 	}
 }
 
-func (service *VideoService) TransformData(video *models.Video) (*models.Video, error) {
+func (service *VideoService) TransformData(video *types.Video) (*types.Video, error) {
 	splits := strings.Split(video.WebURL, "v=")
 	if len(splits) < 2 {
 		return nil, fmt.Errorf("invalid web_url format")
@@ -45,7 +45,7 @@ func (service *VideoService) TransformData(video *models.Video) (*models.Video, 
     }
 
 	item := response.Items[0]
-    videoData := &models.Video{
+    videoData := &types.Video{
         ID: video.ID,
         SupplierID: video.SupplierID,
         WebURL: video.WebURL,
@@ -60,11 +60,11 @@ func (service *VideoService) TransformData(video *models.Video) (*models.Video, 
 	return videoData, nil
 }
 
-func (service *VideoService) GetVideos(id string) ([]models.Video, error) {
+func (service *VideoService) GetVideos(id string) ([]types.Video, error) {
 	return service.repository.GetVideos(id)
 }
 
-func (service *VideoService) CreateVideo(video *models.Video) error {
+func (service *VideoService) CreateVideo(video *types.Video) error {
 	videoData, err := service.TransformData(video); if err != nil {
 		return err
 	}
@@ -76,7 +76,7 @@ func (service *VideoService) CreateVideo(video *models.Video) error {
 	return nil
 }
 
-func (service *VideoService) UpdateVideo(id string, video *models.Video) error {
+func (service *VideoService) UpdateVideo(id string, video *types.Video) error {
 	videoData, err := service.TransformData(video); if err != nil {
 		return err
 	}

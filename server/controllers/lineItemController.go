@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sean-david-welch/farmec-v2/server/models"
 	"github.com/sean-david-welch/farmec-v2/server/services"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type LineItemController struct {
@@ -40,7 +40,7 @@ func(controller *LineItemController) GetLineItemById(context *gin.Context) {
 }
 
 func(controller *LineItemController) CreateLineItem(context *gin.Context) {
-	var lineItem *models.LineItem
+	var lineItem *types.LineItem
 
 	if err := context.ShouldBindJSON(&lineItem); err != nil {
 		log.Printf("error when creating lineItem: %v", err)
@@ -58,7 +58,7 @@ func(controller *LineItemController) CreateLineItem(context *gin.Context) {
 
 func(controller *LineItemController) UpdateLineItem(context *gin.Context) {
 	id := context.Param("id")
-	var lineItem *models.LineItem
+	var lineItem *types.LineItem
 
 	if err := context.ShouldBindJSON(&lineItem); err != nil {
 		log.Printf("error when updating lineItem: %v", err)

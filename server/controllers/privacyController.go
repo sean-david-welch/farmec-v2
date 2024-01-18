@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sean-david-welch/farmec-v2/server/models"
 	"github.com/sean-david-welch/farmec-v2/server/services"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type PrivacyController struct {
@@ -28,7 +28,7 @@ func(controller *PrivacyController) GetPrivacys(context *gin.Context) {
 } 
 
 func(controller *PrivacyController) CreatePrivacy(context *gin.Context) {
-	var privacy models.Privacy
+	var privacy types.Privacy
 
 	if err := context.ShouldBindJSON(&privacy); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "invalid request body", "details": err.Error()})
@@ -46,7 +46,7 @@ func(controller *PrivacyController) CreatePrivacy(context *gin.Context) {
 
 func(controller *PrivacyController) UpdatePrivacy(context *gin.Context) {
 	id := context.Param("id")
-	var privacy models.Privacy
+	var privacy types.Privacy
 
 	if err := context.ShouldBindJSON(&privacy); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "invalid request body", "details": err.Error()})

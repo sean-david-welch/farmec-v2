@@ -3,7 +3,6 @@ package services
 import (
 	"errors"
 
-	"github.com/sean-david-welch/farmec-v2/server/models"
 	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"github.com/sean-david-welch/farmec-v2/server/utils"
@@ -23,11 +22,11 @@ func NewMachineService(repository *repository.MachineRepository, s3Client *utils
 	}
 }
 
-func (service *MachineService) GetMachines(id string) ([]models.Machine, error) {
+func (service *MachineService) GetMachines(id string) ([]types.Machine, error) {
 	return service.repository.GetMachines(id)
 }
 
-func (service *MachineService) CreateMachine(machine *models.Machine) (*types.ModelResult, error) {
+func (service *MachineService) CreateMachine(machine *types.Machine) (*types.ModelResult, error) {
 	machineImage := machine.MachineImage; if machineImage == "" {
 		return nil, errors.New("machine image is empty")
 	}
@@ -51,7 +50,7 @@ func (service *MachineService) CreateMachine(machine *models.Machine) (*types.Mo
 	return result, nil
 }
 
-func(service *MachineService) UpdateMachine(id string, machine *models.Machine) (*types.ModelResult, error) {
+func(service *MachineService) UpdateMachine(id string, machine *types.Machine) (*types.ModelResult, error) {
 	machineImage := machine.MachineImage
 
 	var presignedUrl, imageUrl string

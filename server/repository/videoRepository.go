@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/sean-david-welch/farmec-v2/server/models"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type VideoRepositoy struct {
@@ -17,8 +17,8 @@ func NewVideoRepository(database *sql.DB) *VideoRepositoy {
 	return &VideoRepositoy{database: database}
 }
 
-func (repository *VideoRepositoy) GetVideos(id string) ([]models.Video, error) {
-	var videos []models.Video
+func (repository *VideoRepositoy) GetVideos(id string) ([]types.Video, error) {
+	var videos []types.Video
 
 	query := `SELECT * FROM "Video" WHERE "supplierId" = $1`
 	rows, err := repository.database.Query(query, id); if err != nil {
@@ -27,7 +27,7 @@ func (repository *VideoRepositoy) GetVideos(id string) ([]models.Video, error) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var video models.Video
+		var video types.Video
 
 		err := rows.Scan(&video.ID, &video.SupplierID, &video.WebURL, &video.Title, &video.Description, &video.VideoID, &video.ThumbnailURL, &video.Created)
 		if err != nil {
@@ -44,7 +44,7 @@ func (repository *VideoRepositoy) GetVideos(id string) ([]models.Video, error) {
 	return videos, nil
 }
 
-func (repository *VideoRepositoy) CreateVideo(video *models.Video) error {
+func (repository *VideoRepositoy) CreateVideo(video *types.Video) error {
 
 	video.ID = uuid.NewString()
 	video.Created = time.Now()
@@ -59,7 +59,7 @@ func (repository *VideoRepositoy) CreateVideo(video *models.Video) error {
 	return nil
 }
 
-func (repository *VideoRepositoy) UpdateVideo(id string, video *models.Video) error {
+func (repository *VideoRepositoy) UpdateVideo(id string, video *types.Video) error {
     query := `UPDATE "Video" SET "supplierId" = $1, "web_url" = $2, "title" = $3, "description" = $4, "video_id" = $5, "thumbnail_url" = $6 WHERE "id" = $7`
 
     _, err := repository.database.Exec(query, video.SupplierID, video.WebURL, video.Title, video.Description, video.VideoID, video.ThumbnailURL, id)

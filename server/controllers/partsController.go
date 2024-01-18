@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sean-david-welch/farmec-v2/server/models"
 	"github.com/sean-david-welch/farmec-v2/server/services"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type PartsController struct {
@@ -30,7 +30,7 @@ func (controller *PartsController) GetParts(context *gin.Context) {
 }
 
 func (controller *PartsController) CreateParts(context *gin.Context) {
-	var part models.Sparepart
+	var part types.Sparepart
 
 	if err := context.ShouldBindJSON(&part); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Ivalid request body", "details": err.Error()})
@@ -56,7 +56,7 @@ func (controller *PartsController) CreateParts(context *gin.Context) {
 func (controller *PartsController) UpdateParts(context *gin.Context) {
 	id := context.Param("id")
 
-	var part models.Sparepart
+	var part types.Sparepart
 
 	if err := context.ShouldBindJSON(&part); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Request Body", "details": err.Error()})

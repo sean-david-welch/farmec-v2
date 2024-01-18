@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sean-david-welch/farmec-v2/server/models"
 	"github.com/sean-david-welch/farmec-v2/server/services"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type CarouselController struct {
@@ -28,7 +28,7 @@ func (controller *CarouselController) GetCarousels(context *gin.Context) {
 }
 
 func (controller *CarouselController) CreateCarousel(context *gin.Context) {
-	var carousel models.Carousel
+	var carousel types.Carousel
 
 	if err := context.ShouldBindJSON(&carousel); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "invalid request body", "details": err.Error()})
@@ -53,7 +53,7 @@ func (controller *CarouselController) CreateCarousel(context *gin.Context) {
 func (controller *CarouselController) UpdateCarousel(context *gin.Context) {
 	id := context.Param("id")
 
-	var carousel models.Carousel
+	var carousel types.Carousel
 
 	if err := context.ShouldBindJSON(&carousel); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "invalid request body", "details": err.Error()})

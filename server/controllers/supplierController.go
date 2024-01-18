@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sean-david-welch/farmec-v2/server/models"
 	"github.com/sean-david-welch/farmec-v2/server/services"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type SupplierController struct {
@@ -29,7 +29,7 @@ func (controller *SupplierController) GetSuppliers(context *gin.Context) {
 }
 
 func (controller *SupplierController) CreateSupplier(context *gin.Context) {
-    var supplier models.Supplier
+    var supplier types.Supplier
     
     if err := context.ShouldBindJSON(&supplier); err != nil {
         context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body", "details": err.Error()})
@@ -70,7 +70,7 @@ func (controller *SupplierController) GetSupplierByID(context *gin.Context) {
 func (controller *SupplierController) UpdateSupplier(context *gin.Context) {
 	id := context.Param("id")
 
-	var supplier models.Supplier
+	var supplier types.Supplier
 
 	if err := context.ShouldBindJSON(&supplier); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body", "details": err.Error()})

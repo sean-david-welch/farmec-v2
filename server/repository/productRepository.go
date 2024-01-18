@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/google/uuid"
-	"github.com/sean-david-welch/farmec-v2/server/models"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 // type Product struct {
@@ -25,7 +25,7 @@ func NewProductRepository(database *sql.DB) *ProductRepository {
 	return &ProductRepository{database: database}
 }
 
-func ScanProduct(row interface{}, product *models.Product) error {
+func ScanProduct(row interface{}, product *types.Product) error {
 	var scanner interface {
 		Scan(dest ...interface{}) error
 	}
@@ -41,8 +41,8 @@ func ScanProduct(row interface{}, product *models.Product) error {
 	return scanner.Scan(&product.ID, &product.MachineID, &product.Name, &product.ProductImage, &product.Description, &product.ProductLink)
 }
 
-func (repository *ProductRepository) GetProducts(id string) ([]models.Product, error) {
-	var products []models.Product
+func (repository *ProductRepository) GetProducts(id string) ([]types.Product, error) {
+	var products []types.Product
 
 	query := `SELECT * FROM "Product" WHERE "machineId" = $1`
 	rows, err := repository.database.Query(query, id); if err != nil {
@@ -52,7 +52,7 @@ func (repository *ProductRepository) GetProducts(id string) ([]models.Product, e
 	defer rows.Close()
 
 	for rows.Next(){
-		var product models.Product
+		var product types.Product
 
 		if err := ScanProduct(rows, &product); err != nil {
 			return nil, fmt.Errorf("error scanning row: %w", err)
@@ -68,12 +68,12 @@ func (repository *ProductRepository) GetProducts(id string) ([]models.Product, e
 	return products, nil
 }
 
-func (repository *ProductRepository) GetProductById(id string) (*models.Product, error) {
+func (repository *ProductRepository) GetProductById(id string) (*types.Product, error) {
 	query := `SELECT * FROM "Product" WHERE "id" = $1`
 	row := repository.database.QueryRow(query, id)
 
 
-	var product models.Product
+	var product types.Product
 
 	if err := ScanProduct(row, &product); err != nil {
 		if err == sql.ErrNoRows {
@@ -86,7 +86,7 @@ func (repository *ProductRepository) GetProductById(id string) (*models.Product,
 	return &product, nil
 }
 
-func (repository *ProductRepository) CreateProduct(product *models.Product) error {
+func (repository *ProductRepository) CreateProduct(product *types.Product) error {
 	product.ID = uuid.NewString()
 
 	query := `INSERT INTO "Product" (id, machineID, name, productImage, description, productLink)
@@ -101,7 +101,7 @@ func (repository *ProductRepository) CreateProduct(product *models.Product) erro
 	return nil
 }
 
-func (repository *ProductRepository) UpdateMachine(id string, product *models.Product) error {
+func (repository *ProductRepository) UpdateMachine(id string, product *types.Product) error {
 	query :=  `UPDATE "Product"
 	SET machineID = $1, name = $2, productImage = $3, description = $4, productLink = $5
 	WHERE id = $6`

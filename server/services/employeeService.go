@@ -1,7 +1,6 @@
 package services
 
 import (
-	"github.com/sean-david-welch/farmec-v2/server/models"
 	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"github.com/sean-david-welch/farmec-v2/server/utils"
@@ -17,7 +16,7 @@ func NewEmployeeService(repository *repository.EmployeeRepository, s3Client *uti
 	return &EmployeeService{repository: repository, s3Client: s3Client, folder: folder}
 }
 
-func(service *EmployeeService) GetEmployees() ([]models.Employee, error) {
+func(service *EmployeeService) GetEmployees() ([]types.Employee, error) {
 	employees, err := service.repository.GetEmployees(); if err != nil {
 		return nil, err
 	}
@@ -25,7 +24,7 @@ func(service *EmployeeService) GetEmployees() ([]models.Employee, error) {
 	return employees, nil
 }
 
-func(service *EmployeeService) CreateEmployee(employee *models.Employee) (*types.ModelResult, error) {
+func(service *EmployeeService) CreateEmployee(employee *types.Employee) (*types.ModelResult, error) {
 	image := employee.ProfileImage
 
 	presginedUrl, imageUrl, err := service.s3Client.GeneratePresignedUrl(service.folder, image); if err != nil {
@@ -46,7 +45,7 @@ func(service *EmployeeService) CreateEmployee(employee *models.Employee) (*types
 	return result, nil
 }
 
-func(service *EmployeeService) UpdateEmployee(id string, employee *models.Employee) (*types.ModelResult, error) {
+func(service *EmployeeService) UpdateEmployee(id string, employee *types.Employee) (*types.ModelResult, error) {
 	image := employee.ProfileImage
 
 	var presginedUrl, imageUrl string

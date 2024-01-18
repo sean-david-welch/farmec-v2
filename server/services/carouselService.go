@@ -3,7 +3,6 @@ package services
 import (
 	"errors"
 
-	"github.com/sean-david-welch/farmec-v2/server/models"
 	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"github.com/sean-david-welch/farmec-v2/server/utils"
@@ -23,11 +22,11 @@ func NewCarouselService(repository *repository.CarouselRepository, s3Client *uti
 	}
 }
 
-func (service *CarouselService) GetCarousels() ([]models.Carousel, error) {
+func (service *CarouselService) GetCarousels() ([]types.Carousel, error) {
 	return service.repository.GetCarousels()
 }
 
-func (service *CarouselService) CreateCarousel(carousel *models.Carousel) (*types.ModelResult, error) {
+func (service *CarouselService) CreateCarousel(carousel *types.Carousel) (*types.ModelResult, error) {
 	image := carousel.Image; if image != "" {
 		return nil, errors.New("image is empty")
 	}
@@ -51,7 +50,7 @@ func (service *CarouselService) CreateCarousel(carousel *models.Carousel) (*type
 	return result, nil
 }	
 
-func (service *CarouselService) UpdateCarousel(id string, carousel *models.Carousel) (*types.ModelResult, error) {
+func (service *CarouselService) UpdateCarousel(id string, carousel *types.Carousel) (*types.ModelResult, error) {
 	image := carousel.Image;
 
 	var presignedUrl, imageUrl string

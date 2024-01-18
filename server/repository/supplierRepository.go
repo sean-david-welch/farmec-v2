@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/sean-david-welch/farmec-v2/server/models"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type SupplierRepository struct {
@@ -17,7 +17,7 @@ func NewSupplierRepository(database *sql.DB) *SupplierRepository {
 	return &SupplierRepository{database: database}
 }
 
-func scanSupplier(row interface{}, supplier *models.Supplier) error {
+func scanSupplier(row interface{}, supplier *types.Supplier) error {
 	var scanner interface {
 		Scan(dest ...interface{}) error
 	}
@@ -35,8 +35,8 @@ func scanSupplier(row interface{}, supplier *models.Supplier) error {
 }
 
 // pointer receiver avoids copying entire struct
-func (repository *SupplierRepository) GetSuppliers() ([]models.Supplier, error) {
-	var suppliers []models.Supplier
+func (repository *SupplierRepository) GetSuppliers() ([]types.Supplier, error) {
+	var suppliers []types.Supplier
 
 	query := `SELECT * FROM "Supplier"`
 	rows, err := repository.database.Query(query)
@@ -47,7 +47,7 @@ func (repository *SupplierRepository) GetSuppliers() ([]models.Supplier, error) 
 	defer rows.Close()
 
 	for rows.Next() {
-		var supplier models.Supplier
+		var supplier types.Supplier
 
 		// scans rows and copys them to supplier struct
 		if err := scanSupplier(rows, &supplier); err != nil {
@@ -63,7 +63,7 @@ func (repository *SupplierRepository) GetSuppliers() ([]models.Supplier, error) 
 	return suppliers, nil
 }
 
-func (repository *SupplierRepository) CreateSupplier(supplier *models.Supplier) error {
+func (repository *SupplierRepository) CreateSupplier(supplier *types.Supplier) error {
 
 	supplier.ID = uuid.NewString()
 	supplier.Created = time.Now()
@@ -81,11 +81,11 @@ func (repository *SupplierRepository) CreateSupplier(supplier *models.Supplier) 
 	return nil
 }
 
-func (repository *SupplierRepository) GetSupplierById(id string) (*models.Supplier, error) {
+func (repository *SupplierRepository) GetSupplierById(id string) (*types.Supplier, error) {
 	query := `SELECT * FROM "Supplier" WHERE id = $1`
 	row := repository.database.QueryRow(query, id)
 
-	var supplier models.Supplier
+	var supplier types.Supplier
 
 	if err := scanSupplier(row, &supplier); err != nil {
 
@@ -99,7 +99,7 @@ func (repository *SupplierRepository) GetSupplierById(id string) (*models.Suppli
 	return &supplier, nil
 }
 
-func (repository *SupplierRepository) UpdateSupplier(id string, supplier *models.Supplier) error {
+func (repository *SupplierRepository) UpdateSupplier(id string, supplier *types.Supplier) error {
     query := `UPDATE "Supplier" SET 
                 name = $1, 
                 logo_image = $2, 

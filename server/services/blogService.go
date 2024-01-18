@@ -1,7 +1,6 @@
 package services
 
 import (
-	"github.com/sean-david-welch/farmec-v2/server/models"
 	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"github.com/sean-david-welch/farmec-v2/server/utils"
@@ -17,7 +16,7 @@ func NewBlogService(repository *repository.BlogRepository, s3Client *utils.S3Cli
 	return &BlogService{repository: repository, s3Client: s3Client, folder: folder}
 }
 
-func(service *BlogService) GetBlogs() ([]models.Blog, error) {
+func(service *BlogService) GetBlogs() ([]types.Blog, error) {
 	blogs, err := service.repository.GetBlogs(); if err != nil {
 		return nil, err
 	}
@@ -25,7 +24,7 @@ func(service *BlogService) GetBlogs() ([]models.Blog, error) {
 	return blogs, nil
 }
 
-func(service *BlogService) GetBlogsByID(id string) (*models.Blog, error) {
+func(service *BlogService) GetBlogsByID(id string) (*types.Blog, error) {
 	blog, err := service.repository.GetBlogById(id); if err != nil {
 		return nil, err
 	}
@@ -33,7 +32,7 @@ func(service *BlogService) GetBlogsByID(id string) (*models.Blog, error) {
 	return blog, nil
 }
 
-func(service *BlogService) CreateBlog(blog *models.Blog) (*types.ModelResult, error) {
+func(service *BlogService) CreateBlog(blog *types.Blog) (*types.ModelResult, error) {
 	image := blog.MainImage
 
 	presignedUrl, imageUrl, err := service.s3Client.GeneratePresignedUrl(service.folder, image); if err != nil {
@@ -54,7 +53,7 @@ func(service *BlogService) CreateBlog(blog *models.Blog) (*types.ModelResult, er
 	return result, nil
 }
 
-func(service *BlogService) UpdateBlog(id string, blog *models.Blog) (*types.ModelResult, error) {
+func(service *BlogService) UpdateBlog(id string, blog *types.Blog) (*types.ModelResult, error) {
 	image := blog.MainImage
 
 	var presignedUrl, imageUrl string

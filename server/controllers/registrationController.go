@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sean-david-welch/farmec-v2/server/models"
 	"github.com/sean-david-welch/farmec-v2/server/services"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type RegistrationController struct {
@@ -40,7 +40,7 @@ func(controller *RegistrationController) GetRegistrationById(context *gin.Contex
 }
 
 func(controller *RegistrationController) CreateRegistration(context *gin.Context) {
-	var registration *models.MachineRegistration
+	var registration *types.MachineRegistration
 
 	if err := context.ShouldBindJSON(&registration); err != nil {
 		log.Printf("error when creating registration: %v", err)
@@ -58,7 +58,7 @@ func(controller *RegistrationController) CreateRegistration(context *gin.Context
 
 func(controller *RegistrationController) UpdateRegistration(context *gin.Context) {
 	id := context.Param("id")
-	var registration *models.MachineRegistration
+	var registration *types.MachineRegistration
 
 	if err := context.ShouldBindJSON(&registration); err != nil {
 		log.Printf("error when updating registration: %v", err)

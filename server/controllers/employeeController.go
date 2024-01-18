@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sean-david-welch/farmec-v2/server/models"
 	"github.com/sean-david-welch/farmec-v2/server/services"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type EmployeeController struct {
@@ -28,7 +28,7 @@ func(controller *EmployeeController) GetEmployees(context *gin.Context) {
 }
 
 func(controller *EmployeeController) CreateEmployee(context *gin.Context) {
-	var employee models.Employee
+	var employee types.Employee
 
 	if err := context.ShouldBindJSON(&employee); err != nil {
 		log.Printf("Error creating employee: %v", err)
@@ -54,7 +54,7 @@ func(controller *EmployeeController) CreateEmployee(context *gin.Context) {
 
 func(controller *EmployeeController) UpdateEmployee(context *gin.Context) {
 	id := context.Param("id")
-	var employee models.Employee
+	var employee types.Employee
 
 	if err := context.ShouldBindJSON(&employee); err != nil {
 		log.Printf("Error creating employee: %v", err)

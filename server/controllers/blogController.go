@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sean-david-welch/farmec-v2/server/models"
 	"github.com/sean-david-welch/farmec-v2/server/services"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type BlogController struct {
@@ -39,7 +39,7 @@ func(controller *BlogController) GetBlogByID(context *gin.Context) {
 }
 
 func(controller *BlogController) CreateBlog(context *gin.Context) {
-	var blog models.Blog
+	var blog types.Blog
 
 	if err := context.ShouldBindJSON(&blog); err != nil {
 		log.Printf("error while creating blog: %v", err)
@@ -61,7 +61,7 @@ func(controller *BlogController) CreateBlog(context *gin.Context) {
 func(controller *BlogController) UpdateBlog(context *gin.Context) {
 	id := context.Param("id")
 	
-	var blog models.Blog
+	var blog types.Blog
 
 	if err := context.ShouldBindJSON(&blog); err != nil {
 		log.Printf("error while updating blog: %v", err)

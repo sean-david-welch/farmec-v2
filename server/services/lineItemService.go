@@ -1,8 +1,8 @@
 package services
 
 import (
-	"github.com/sean-david-welch/farmec-v2/server/models"
 	"github.com/sean-david-welch/farmec-v2/server/repository"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type LineItemService struct {
@@ -13,7 +13,7 @@ func NewLineItemService(repository *repository.LineItemRepository) *LineItemServ
 	return &LineItemService{repository: repository}
 }
 
-func(service *LineItemService) GetLineItems() ([]models.LineItem, error) {
+func(service *LineItemService) GetLineItems() ([]types.LineItem, error) {
 	lineItems, err := service.repository.GetLineItems(); if err != nil {
 		return nil, err
 	}
@@ -21,7 +21,7 @@ func(service *LineItemService) GetLineItems() ([]models.LineItem, error) {
 	return lineItems, nil
 }
 
-func(service *LineItemService) GetLineItemById(id string) (*models.LineItem, error) {
+func(service *LineItemService) GetLineItemById(id string) (*types.LineItem, error) {
 	lineItem, err := service.repository.GetLineItemById(id); if err != nil {
 		return nil, err
 	}
@@ -29,7 +29,7 @@ func(service *LineItemService) GetLineItemById(id string) (*models.LineItem, err
 	return lineItem, nil
 }
 
-func(service *LineItemService) CreateLineItem(lineItem *models.LineItem) error {
+func(service *LineItemService) CreateLineItem(lineItem *types.LineItem) error {
 	if err := service.repository.CreateLineItem(lineItem); err != nil {
 		return err
 	}
@@ -37,7 +37,7 @@ func(service *LineItemService) CreateLineItem(lineItem *models.LineItem) error {
 	return nil
 }
 
-func(service *LineItemService) UpdateLineItem(id string, lineItem *models.LineItem) error {
+func(service *LineItemService) UpdateLineItem(id string, lineItem *types.LineItem) error {
 	if err := service.repository.UpdateLineItem(id, lineItem); err != nil {
 		return err
 	}

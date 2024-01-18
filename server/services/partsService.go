@@ -3,7 +3,6 @@ package services
 import (
 	"errors"
 
-	"github.com/sean-david-welch/farmec-v2/server/models"
 	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"github.com/sean-david-welch/farmec-v2/server/utils"
@@ -23,11 +22,11 @@ func NewPartsService(repository *repository.PartsRepository, s3Client *utils.S3C
 	}
 }
 
-func (service *PartsService) GetParts(id string) ([]models.Sparepart, error) {
+func (service *PartsService) GetParts(id string) ([]types.Sparepart, error) {
 	return service.repository.GetParts(id)
 }
 
-func (service *PartsService) CreatePart(part *models.Sparepart) (*types.ModelResult, error) {
+func (service *PartsService) CreatePart(part *types.Sparepart) (*types.ModelResult, error) {
 	partsImage := part.PartsImage; if partsImage == "" {
 		return nil, errors.New("parts image is empty")
 	}
@@ -51,7 +50,7 @@ func (service *PartsService) CreatePart(part *models.Sparepart) (*types.ModelRes
 	return result, nil
 }
 
-func (service *PartsService) UpdatePart(id string, part *models.Sparepart) (*types.ModelResult, error) {
+func (service *PartsService) UpdatePart(id string, part *types.Sparepart) (*types.ModelResult, error) {
 	partsImage := part.PartsImage
 
 	var presignedUrl, imageUrl string

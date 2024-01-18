@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/sean-david-welch/farmec-v2/server/models"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 // type Timeline struct {
@@ -25,8 +25,8 @@ func NewTimelineRepository(database *sql.DB) *TimelineRepository {
 	return &TimelineRepository{database: database}
 }
 
-func(repository *TimelineRepository) GetTimelines() ([]models.Timeline, error) {
-	var timelines []models.Timeline
+func(repository *TimelineRepository) GetTimelines() ([]types.Timeline, error) {
+	var timelines []types.Timeline
 
 	query := `SELECT * FROM "Timeline"`
 	rows, err := repository.database.Query(query); if err != nil {
@@ -35,7 +35,7 @@ func(repository *TimelineRepository) GetTimelines() ([]models.Timeline, error) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var timeline models.Timeline
+		var timeline types.Timeline
 
 		if err := rows.Scan(&timeline.ID, &timeline.Title, &timeline.Date, &timeline.Body, &timeline.Created); err != nil {
 			return nil, fmt.Errorf("error occurred while scanning rows: %w", err)
@@ -50,7 +50,7 @@ func(repository *TimelineRepository) GetTimelines() ([]models.Timeline, error) {
 	return timelines, nil
 }
 
-func(repository *TimelineRepository) CreateTimeline(timeline *models.Timeline) error {
+func(repository *TimelineRepository) CreateTimeline(timeline *types.Timeline) error {
 	timeline.ID = uuid.NewString()
 	timeline.Created = time.Now()
 
@@ -63,7 +63,7 @@ func(repository *TimelineRepository) CreateTimeline(timeline *models.Timeline) e
 	return nil
 }
 
-func(repository *TimelineRepository) UpdateTimeline(id string, timeline *models.Timeline) error {
+func(repository *TimelineRepository) UpdateTimeline(id string, timeline *types.Timeline) error {
 	query := `UPDATE "Timeline" SET title = $1, data = %2, body = $3 WHERE "id" = $4`
 
 	_, err := repository.database.Exec(query,  timeline.Title, timeline.Date, timeline.Body, id); if err != nil {

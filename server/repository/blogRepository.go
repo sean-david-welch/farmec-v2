@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/sean-david-welch/farmec-v2/server/models"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 // type Blog struct {
@@ -27,8 +27,8 @@ func NewBlogRepository(database *sql.DB) *BlogRepository {
 	return &BlogRepository{database: database}
 }
 
-func(repository *BlogRepository) GetBlogs() ([]models.Blog, error) {
-	var blogs []models.Blog
+func(repository *BlogRepository) GetBlogs() ([]types.Blog, error) {
+	var blogs []types.Blog
 
 	query := `SELECT * FROM "Blog"`
 	rows, err := repository.database.Query(query); if err != nil {
@@ -37,7 +37,7 @@ func(repository *BlogRepository) GetBlogs() ([]models.Blog, error) {
 	defer rows.Close()
 
 	for rows.Next(){
-		var blog models.Blog
+		var blog types.Blog
 
 		err := rows.Scan(&blog.ID, &blog.Title, &blog.Date, &blog.MainImage, &blog.Subheading, &blog.Body, &blog.Created)
 		if err != nil {
@@ -55,11 +55,11 @@ func(repository *BlogRepository) GetBlogs() ([]models.Blog, error) {
 	return blogs, nil
 }
 
-func(repository *BlogRepository) GetBlogById(id string) (*models.Blog, error) {
+func(repository *BlogRepository) GetBlogById(id string) (*types.Blog, error) {
 	query := `SELECT * FROM "Blog" WHERE "id" = $1`
 	row := repository.database.QueryRow(query, id)
 
-	var blog models.Blog
+	var blog types.Blog
 	
 	err := row.Scan(&blog.ID, &blog.Title, &blog.Date, &blog.MainImage, &blog.Subheading, &blog.Body, &blog.Created)
 	if err != nil {
@@ -74,7 +74,7 @@ func(repository *BlogRepository) GetBlogById(id string) (*models.Blog, error) {
 	return &blog, nil
 }
 
-func(repository *BlogRepository) CreateBlog(blog *models.Blog) error {
+func(repository *BlogRepository) CreateBlog(blog *types.Blog) error {
 	blog.ID = uuid.NewString()
 	blog.Created = time.Now()
 
@@ -88,7 +88,7 @@ func(repository *BlogRepository) CreateBlog(blog *models.Blog) error {
 	return nil
 }
 
-func(repository *BlogRepository) UpdateBlog(id string, blog *models.Blog) error {
+func(repository *BlogRepository) UpdateBlog(id string, blog *types.Blog) error {
 	query := `UPDATE "Blog" SET "title" = $1, "date" = $2, "mainImage" = $3, "subHeading" = $4, "body" = $5 WHERE "id" = $6`
 
     _, err := repository.database.Exec(query, blog.Title, blog.Date, blog.MainImage, blog.Subheading, blog.Body, blog.Created, id)

@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sean-david-welch/farmec-v2/server/models"
 	"github.com/sean-david-welch/farmec-v2/server/services"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type ExhibitionController struct {
@@ -28,7 +28,7 @@ func(controller *ExhibitionController) GetExhibitions(context *gin.Context) {
 }
 
 func(controller *ExhibitionController) CreateExhibition(context *gin.Context) {
-	var exhibition *models.Exhibition
+	var exhibition *types.Exhibition
 
 	if err := context.ShouldBindJSON(&exhibition); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "invalid request body", "details": err.Error()})
@@ -47,7 +47,7 @@ func(controller *ExhibitionController) CreateExhibition(context *gin.Context) {
 func(controller *ExhibitionController) UpdateExhibition(context *gin.Context) {
 	id := context.Param("id")
 	
-	var exhibition *models.Exhibition
+	var exhibition *types.Exhibition
 
 	if err := context.ShouldBindJSON(&exhibition); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "invalid request body", "details": err.Error()})

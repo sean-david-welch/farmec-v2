@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/google/uuid"
-	"github.com/sean-david-welch/farmec-v2/server/models"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 // type Carousel struct {
@@ -22,8 +22,8 @@ func NewCarouselRepository(database *sql.DB) *CarouselRepository {
 	return &CarouselRepository{database: database}
 }
 
-func (repository *CarouselRepository) GetCarousels() ([]models.Carousel, error) {
-	var carousels []models.Carousel
+func (repository *CarouselRepository) GetCarousels() ([]types.Carousel, error) {
+	var carousels []types.Carousel
 
 	query := `SELECT * FROM "Carousel"`
 	rows, err := repository.database.Query(query); if err != nil {
@@ -32,7 +32,7 @@ func (repository *CarouselRepository) GetCarousels() ([]models.Carousel, error) 
 	defer rows.Close()
 
 	for rows.Next() {
-		var carousel models.Carousel
+		var carousel types.Carousel
 
 		if err := rows.Scan(&carousel.ID, &carousel.Name, &carousel.Image); err != nil {
 			return nil, fmt.Errorf("error occurred while scanning rows: %w", err)
@@ -47,11 +47,11 @@ func (repository *CarouselRepository) GetCarousels() ([]models.Carousel, error) 
 	return carousels, nil
 }
 
-func (repository *CarouselRepository) GetCarouselById(id string) (*models.Carousel, error) {
+func (repository *CarouselRepository) GetCarouselById(id string) (*types.Carousel, error) {
 	query := `SELECT * FROM "Carousel" WHERE id = $1`
 	row := repository.database.QueryRow(query, id)
 
-	var carousel models.Carousel
+	var carousel types.Carousel
 
 	if err := row.Scan(&carousel.ID, &carousel.Name, &carousel.Image); err != nil {
 		if err == sql.ErrNoRows {
@@ -64,7 +64,7 @@ func (repository *CarouselRepository) GetCarouselById(id string) (*models.Carous
 	return &carousel, nil
 }
 
-func (repository *CarouselRepository) CreateCarousel(carousel *models.Carousel) error {
+func (repository *CarouselRepository) CreateCarousel(carousel *types.Carousel) error {
 	carousel.ID = uuid.NewString()
 
 	query := `INSERT INTO "Carousel"
@@ -78,7 +78,7 @@ func (repository *CarouselRepository) CreateCarousel(carousel *models.Carousel) 
 	return nil
 }
 
-func (repository *CarouselRepository) UpdateCarousel(id string, carousel *models.Carousel) error {
+func (repository *CarouselRepository) UpdateCarousel(id string, carousel *types.Carousel) error {
 	query := `UPDATE "Carousel" SET name = $1, image = $2 WHERE id = $3`
 
 	_, err := repository.database.Exec(query, carousel.Name, carousel.Image, id); if err != nil {

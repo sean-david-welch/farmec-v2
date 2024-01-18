@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/google/uuid"
-	"github.com/sean-david-welch/farmec-v2/server/models"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 // type Sparepart struct {
@@ -25,7 +25,7 @@ func NewPartsRepository(database *sql.DB) *PartsRepository {
 	return &PartsRepository{database: database}
 }
 
-func ScanParts(row interface{}, part *models.Sparepart) error {
+func ScanParts(row interface{}, part *types.Sparepart) error {
 	var scanner interface {
 		Scan(dest ...interface{}) error
 	}
@@ -41,8 +41,8 @@ func ScanParts(row interface{}, part *models.Sparepart) error {
 	return scanner.Scan(&part.ID, &part.SupplierID, &part.Name, &part.PartsImage, &part.SparePartsLink, &part.PdfLink)
 }
 
-func (repository *PartsRepository) GetParts(id string) ([]models.Sparepart, error) {
-	var parts []models.Sparepart
+func (repository *PartsRepository) GetParts(id string) ([]types.Sparepart, error) {
+	var parts []types.Sparepart
 
 	query := `SELECT * FROM "SpareParts" WHERE "supplierId" = $1`
 	rows, err := repository.database.Query(query, id); if err != nil {
@@ -51,7 +51,7 @@ func (repository *PartsRepository) GetParts(id string) ([]models.Sparepart, erro
 	defer rows.Close()
 
 	for rows.Next() {
-		var part models.Sparepart
+		var part types.Sparepart
 
 		if err := ScanParts(rows, &part); err != nil {
 			return nil, fmt.Errorf("error scanning row: %w", err)
@@ -66,11 +66,11 @@ func (repository *PartsRepository) GetParts(id string) ([]models.Sparepart, erro
 	return parts, nil
 }
 
-func (repository *PartsRepository) GetPartById(id string) (*models.Sparepart, error) {
+func (repository *PartsRepository) GetPartById(id string) (*types.Sparepart, error) {
 	query := `SELECT * FROM "SpareParts" WHERE id = $1`
 	row := repository.database.QueryRow(query, id)
 
-	var part models.Sparepart
+	var part types.Sparepart
 
 	if err := ScanParts(row, &part); err != nil {
 
@@ -84,7 +84,7 @@ func (repository *PartsRepository) GetPartById(id string) (*models.Sparepart, er
 	return &part, nil
 }
 
-func (repository *PartsRepository) CreatePart(part *models.Sparepart) error {
+func (repository *PartsRepository) CreatePart(part *types.Sparepart) error {
 	part.ID = uuid.NewString()
 	
 	query := `INSERT INTO "SpareParts" (ID, supplierID, name, partsImage, sparePartsLink, pdfLink)
@@ -99,7 +99,7 @@ func (repository *PartsRepository) CreatePart(part *models.Sparepart) error {
 	return nil
 }
 
-func (repository *PartsRepository) UpdatePart(id string, part *models.Sparepart) error {
+func (repository *PartsRepository) UpdatePart(id string, part *types.Sparepart) error {
 	query := `UPDATE "SpareParts"
 	SET supplierID = $1, name = $2, partsImage = $3, sparePartsLink  = $4, pdfLink = $5
 	WHERE ID = $6`

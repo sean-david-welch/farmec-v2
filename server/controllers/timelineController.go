@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sean-david-welch/farmec-v2/server/models"
 	"github.com/sean-david-welch/farmec-v2/server/services"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type TimelineController struct {
@@ -28,7 +28,7 @@ func(controller *TimelineController) GetTimelines(context *gin.Context) {
 } 
 
 func(controller *TimelineController) CreateTimeline(context *gin.Context) {
-	var timeline models.Timeline
+	var timeline types.Timeline
 
 	if err := context.ShouldBindJSON(&timeline); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "invalid request body", "details": err.Error()})
@@ -46,7 +46,7 @@ func(controller *TimelineController) CreateTimeline(context *gin.Context) {
 
 func(controller *TimelineController) UpdateTimeline(context *gin.Context) {
 	id := context.Param("id")
-	var timeline models.Timeline
+	var timeline types.Timeline
 
 	if err := context.ShouldBindJSON(&timeline); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "invalid request body", "details": err.Error()})

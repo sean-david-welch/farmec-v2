@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/sean-david-welch/farmec-v2/server/models"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 // type Employee struct {
@@ -28,8 +28,8 @@ func NewEmployeeRepository(database *sql.DB) *EmployeeRepository {
 	return &EmployeeRepository{database: database}
 }
 
-func (repository *EmployeeRepository) GetEmployees() ([]models.Employee, error) {
-	var employees []models.Employee
+func (repository *EmployeeRepository) GetEmployees() ([]types.Employee, error) {
+	var employees []types.Employee
 	
 	query := `SELECT * FROM "Employee"`
 	rows, err := repository.database.Query(query); if err != nil {
@@ -38,7 +38,7 @@ func (repository *EmployeeRepository) GetEmployees() ([]models.Employee, error) 
 	defer rows.Close()
 
 	for rows.Next() {
-		var employee models.Employee
+		var employee types.Employee
 
 		err := rows.Scan(&employee.ID, &employee.Name, &employee.Email, &employee.Role, &employee.Bio, &employee.ProfileImage, &employee.Created, &employee.Phone)
 		if err != nil {
@@ -54,11 +54,11 @@ func (repository *EmployeeRepository) GetEmployees() ([]models.Employee, error) 
 	return employees, nil
 }
 
-func(repository *EmployeeRepository) GetEmployeeById(id string) (*models.Employee, error) {
+func(repository *EmployeeRepository) GetEmployeeById(id string) (*types.Employee, error) {
 	query := `SELECT * FROM "Employee" WHERE "id" = $1`
 	row := repository.database.QueryRow(query, id)
 
-	var employee models.Employee
+	var employee types.Employee
 
 	err := row.Scan(&employee.ID, &employee.Name, &employee.Email, &employee.Role, &employee.Bio, &employee.ProfileImage, &employee.Created, &employee.Phone)
 	if err != nil {
@@ -72,7 +72,7 @@ func(repository *EmployeeRepository) GetEmployeeById(id string) (*models.Employe
 	return &employee, nil
 }
 
-func(repository *EmployeeRepository) CreateEmployee(employee *models.Employee) error {
+func(repository *EmployeeRepository) CreateEmployee(employee *types.Employee) error {
 	employee.ID = uuid.NewString()
 	employee.Created = time.Now()
 
@@ -87,7 +87,7 @@ func(repository *EmployeeRepository) CreateEmployee(employee *models.Employee) e
 	return nil
 }
 
-func(repository *EmployeeRepository) UpdateEmployee(id string, employee *models.Employee) error {
+func(repository *EmployeeRepository) UpdateEmployee(id string, employee *types.Employee) error {
 	query := `UPDATE "Employee" SET name = $1, email = $2, role = $3, bio = $4, profileImage = $5, phone = $6 WHERE "id" = $7`
 
 	

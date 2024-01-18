@@ -1,8 +1,8 @@
 package services
 
 import (
-	"github.com/sean-david-welch/farmec-v2/server/models"
 	"github.com/sean-david-welch/farmec-v2/server/repository"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type TimelineService struct {
@@ -13,7 +13,7 @@ func NewTimelineService(repository *repository.TimelineRepository) *TimelineServ
 	return &TimelineService{repository: repository}
 }
 
-func(service *TimelineService) GetTimelines() ([]models.Timeline, error) {
+func(service *TimelineService) GetTimelines() ([]types.Timeline, error) {
 	timelines, err := service.repository.GetTimelines(); if err != nil {
 		return nil, err
 	}
@@ -21,7 +21,7 @@ func(service *TimelineService) GetTimelines() ([]models.Timeline, error) {
 	return timelines, nil
 }
 
-func(service *TimelineService) CreateTimeline(timeline *models.Timeline) error {
+func(service *TimelineService) CreateTimeline(timeline *types.Timeline) error {
 	if err := service.repository.CreateTimeline(timeline); err != nil {
 		return err
 	}
@@ -29,7 +29,7 @@ func(service *TimelineService) CreateTimeline(timeline *models.Timeline) error {
 	return nil
 }
 
-func(service *TimelineService) UpdateTimeline(id string, timeline *models.Timeline) error {
+func(service *TimelineService) UpdateTimeline(id string, timeline *types.Timeline) error {
 	if err := service.repository.UpdateTimeline(id, timeline); err != nil {
 		return err
 	}

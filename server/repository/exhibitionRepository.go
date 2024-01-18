@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/sean-david-welch/farmec-v2/server/models"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 // type Exhibition struct {
@@ -27,8 +27,8 @@ func NewExhibitionRepository(database *sql.DB) *ExhibitionRepository {
 	return &ExhibitionRepository{database: database}
 }
 
-func(repository *ExhibitionRepository) GetExhibitions() ([]models.Exhibition, error) {
-	var exhibitions []models.Exhibition
+func(repository *ExhibitionRepository) GetExhibitions() ([]types.Exhibition, error) {
+	var exhibitions []types.Exhibition
 
 	query := `SELECT * FROM "Exhibition"`
 	rows, err := repository.database.Query(query); if err != nil {
@@ -37,7 +37,7 @@ func(repository *ExhibitionRepository) GetExhibitions() ([]models.Exhibition, er
 	defer rows.Close()
 
 	for rows.Next(){
-		var exhibition models.Exhibition
+		var exhibition types.Exhibition
 
 		err := rows.Scan(&exhibition.ID, &exhibition.Title, &exhibition.Date, &exhibition.Location, &exhibition.Info, &exhibition.Created)
 		if err != nil {
@@ -50,7 +50,7 @@ func(repository *ExhibitionRepository) GetExhibitions() ([]models.Exhibition, er
 	return exhibitions, nil
 }
 
-func(repository *ExhibitionRepository) CreateExhibition(exhibition *models.Exhibition) error {
+func(repository *ExhibitionRepository) CreateExhibition(exhibition *types.Exhibition) error {
 	exhibition.ID = uuid.NewString()
 	exhibition.Created = time.Now()
 
@@ -63,7 +63,7 @@ func(repository *ExhibitionRepository) CreateExhibition(exhibition *models.Exhib
 	return nil
 }
 
-func(repository *ExhibitionRepository) UpdateExhibition(id string, exhibition *models.Exhibition) error {
+func(repository *ExhibitionRepository) UpdateExhibition(id string, exhibition *types.Exhibition) error {
 	query := `UPDATE "Exhibiton" SET "title" = $1, "date" = $2, "location" = $3, "info" = $4 WHERE "id" = $1`
 
 	_, err := repository.database.Exec(query, exhibition.Title, exhibition.Date, exhibition.Location, exhibition.Info)

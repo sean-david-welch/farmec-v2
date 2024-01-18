@@ -1,8 +1,8 @@
 package services
 
 import (
-	"github.com/sean-david-welch/farmec-v2/server/models"
 	"github.com/sean-david-welch/farmec-v2/server/repository"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type RegistrationService struct {
@@ -13,7 +13,7 @@ func NewRegistrationService(repository*repository.RegistrationRepository) *Regis
 	return &RegistrationService{repository: repository}
 }
 
-func(service *RegistrationService) GetRegistrations() ([]models.MachineRegistration, error) {
+func(service *RegistrationService) GetRegistrations() ([]types.MachineRegistration, error) {
 	registrations, err := service.repository.GetRegistrations(); if err != nil {
 		return nil, err
 	}
@@ -21,7 +21,7 @@ func(service *RegistrationService) GetRegistrations() ([]models.MachineRegistrat
 	return registrations, nil
 }
 
-func(service *RegistrationService) GetRegistrationById(id string) (*models.MachineRegistration, error) {
+func(service *RegistrationService) GetRegistrationById(id string) (*types.MachineRegistration, error) {
 	registration, err := service.repository.GetRegistrationById(id); if err != nil {
 		return nil, err
 	}
@@ -29,7 +29,7 @@ func(service *RegistrationService) GetRegistrationById(id string) (*models.Machi
 	return registration, nil
 }
 
-func(service *RegistrationService) CreateRegistration(registration *models.MachineRegistration) error {
+func(service *RegistrationService) CreateRegistration(registration *types.MachineRegistration) error {
 	if err := service.repository.CreateRegistration(registration); err != nil {
 		return err
 	}
@@ -37,7 +37,7 @@ func(service *RegistrationService) CreateRegistration(registration *models.Machi
 	return nil 
 }
 
-func(service *RegistrationService) UpdateRegistration(id string, registration *models.MachineRegistration) error {
+func(service *RegistrationService) UpdateRegistration(id string, registration *types.MachineRegistration) error {
 	if err := service.repository.UpdateRegistration(id, registration); err != nil {
 		return err
 	}

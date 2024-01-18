@@ -1,8 +1,8 @@
 package services
 
 import (
-	"github.com/sean-david-welch/farmec-v2/server/models"
 	"github.com/sean-david-welch/farmec-v2/server/repository"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type ExhibitionService struct {
@@ -13,7 +13,7 @@ func NewExhibitionService(repository *repository.ExhibitionRepository) *Exhibiti
 	return &ExhibitionService{repository: repository}
 }
 
-func(service *ExhibitionService) GetExhibitions() ([]models.Exhibition, error) {
+func(service *ExhibitionService) GetExhibitions() ([]types.Exhibition, error) {
 	exhibitions, err := service.repository.GetExhibitions(); if err != nil {
 		return nil, err
 	}
@@ -21,7 +21,7 @@ func(service *ExhibitionService) GetExhibitions() ([]models.Exhibition, error) {
 	return exhibitions, nil
 }
 
-func(service *ExhibitionService) CreateExhibition(exhibition *models.Exhibition) error {
+func(service *ExhibitionService) CreateExhibition(exhibition *types.Exhibition) error {
 	if err := service.repository.CreateExhibition(exhibition); err != nil {
 		return err
 	}
@@ -29,7 +29,7 @@ func(service *ExhibitionService) CreateExhibition(exhibition *models.Exhibition)
 	return nil
 }
 
-func(service *ExhibitionService) UpdateExhibition(id string, exhibition *models.Exhibition) error {
+func(service *ExhibitionService) UpdateExhibition(id string, exhibition *types.Exhibition) error {
 	if err := service.repository.UpdateExhibition(id, exhibition); err != nil {
 		return err
 	}

@@ -1,8 +1,8 @@
 package services
 
 import (
-	"github.com/sean-david-welch/farmec-v2/server/models"
 	"github.com/sean-david-welch/farmec-v2/server/repository"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type TermsService struct {
@@ -13,7 +13,7 @@ func NewTermsService(repository *repository.TermsRepository) *TermsService {
 	return &TermsService{repository: repository}
 }
 
-func(service *TermsService) GetTerms() ([]models.Terms, error) {
+func(service *TermsService) GetTerms() ([]types.Terms, error) {
 	terms, err := service.repository.GetTerms(); if err != nil {
 		return nil, err
 	}
@@ -21,7 +21,7 @@ func(service *TermsService) GetTerms() ([]models.Terms, error) {
 	return terms, nil
 }
 
-func(service *TermsService) CreateTerm(term *models.Terms) error {
+func(service *TermsService) CreateTerm(term *types.Terms) error {
 	if err := service.repository.CreateTerm(term); err != nil {
 		return err
 	}
@@ -29,7 +29,7 @@ func(service *TermsService) CreateTerm(term *models.Terms) error {
 	return nil
 }
 
-func(service *TermsService) UpdateTerm(id string, term *models.Terms) error {
+func(service *TermsService) UpdateTerm(id string, term *types.Terms) error {
 	if err := service.repository.UpdateTerm(id, term); err != nil {
 		return err
 	}

@@ -3,7 +3,6 @@ package services
 import (
 	"errors"
 
-	"github.com/sean-david-welch/farmec-v2/server/models"
 	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"github.com/sean-david-welch/farmec-v2/server/utils"
@@ -23,11 +22,11 @@ func NewSupplierService(repository *repository.SupplierRepository, s3Client *uti
 	}
 }
 
-func (service *SupplierService) GetSuppliers() ([]models.Supplier, error) {
+func (service *SupplierService) GetSuppliers() ([]types.Supplier, error) {
     return service.repository.GetSuppliers()
 }
 
-func (service *SupplierService) CreateSupplier(supplier *models.Supplier) (*types.SupplierResult, error) {	
+func (service *SupplierService) CreateSupplier(supplier *types.Supplier) (*types.SupplierResult, error) {	
 	logoImage := supplier.LogoImage
 	marketingImage := supplier.MarketingImage
 
@@ -62,11 +61,11 @@ func (service *SupplierService) CreateSupplier(supplier *models.Supplier) (*type
 	return result, nil
 }
 
-func (service *SupplierService) GetSupplierById(id string) (*models.Supplier, error) {
+func (service *SupplierService) GetSupplierById(id string) (*types.Supplier, error) {
     return service.repository.GetSupplierById(id)
 }
 
-func (service *SupplierService) UpdateSupplier(id string, supplier *models.Supplier) (*types.SupplierResult, error) {
+func (service *SupplierService) UpdateSupplier(id string, supplier *types.Supplier) (*types.SupplierResult, error) {
 	logoImage := supplier.LogoImage
 	marketingImage := supplier.MarketingImage
 

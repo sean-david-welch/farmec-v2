@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/sean-david-welch/farmec-v2/server/models"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type TermsRepository struct {
@@ -17,8 +17,8 @@ func NewTermsRepository(database *sql.DB) *TermsRepository {
 	return &TermsRepository{database: database}
 }
 
-func(repository *TermsRepository) GetTerms() ([]models.Terms, error) {
-	var terms []models.Terms
+func(repository *TermsRepository) GetTerms() ([]types.Terms, error) {
+	var terms []types.Terms
 
 	query := `SELECT * FROM "Terms"`
 	rows, err := repository.database.Query(query); if err != nil {
@@ -27,7 +27,7 @@ func(repository *TermsRepository) GetTerms() ([]models.Terms, error) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var term models.Terms
+		var term types.Terms
 
 		if err := rows.Scan(&term.ID, &term.Title, &term.Body, &term.Created); err != nil {
 			return nil, fmt.Errorf("error occurred while scanning row: %w", err)
@@ -43,7 +43,7 @@ func(repository *TermsRepository) GetTerms() ([]models.Terms, error) {
 	return terms, err
 }
 
-func(repository *TermsRepository) CreateTerm(term *models.Terms) error {
+func(repository *TermsRepository) CreateTerm(term *types.Terms) error {
 	term.ID = uuid.NewString()
 	term.Created = time.Now()
 
@@ -56,7 +56,7 @@ func(repository *TermsRepository) CreateTerm(term *models.Terms) error {
 	return nil
 }
 
-func(repository *TermsRepository) UpdateTerm(id string, term *models.Terms) error {
+func(repository *TermsRepository) UpdateTerm(id string, term *types.Terms) error {
 	query := `UPDATE "Terms" SET title = $1, body = $2 where id = $3`
 
 	_, err := repository.database.Exec(query, term.Title, term.Body, id); if err != nil {

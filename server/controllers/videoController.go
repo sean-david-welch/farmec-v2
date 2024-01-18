@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sean-david-welch/farmec-v2/server/models"
 	"github.com/sean-david-welch/farmec-v2/server/services"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type VideoController struct {
@@ -30,7 +30,7 @@ func (controller *VideoController) GetVideos(context *gin.Context) {
 } 
 
 func (controller *VideoController) CreateVideo(context *gin.Context) {
-	var video models.Video
+	var video types.Video
 
 	if err := context.ShouldBindJSON(&video); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Request Body", "Details": err.Error()})
@@ -49,7 +49,7 @@ func (controller *VideoController) CreateVideo(context *gin.Context) {
 func (controller *VideoController) UpdateVideo(context *gin.Context) {
 	id := context.Param("id")
 
-	var video models.Video
+	var video types.Video
 
 	if err := context.ShouldBindJSON(&video); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Request Body", "Details": err.Error()})

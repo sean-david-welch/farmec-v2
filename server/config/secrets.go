@@ -26,6 +26,11 @@ type Secrets struct {
 	YoutubeApiKey string
 	StripeSecretKey string
 	StripePublicKey string
+
+	EmailHost string
+	EmailPass string
+	EmailUser string
+	EmailPort string
 }
 
 func NewSecrets() (*Secrets, error) {
@@ -54,5 +59,10 @@ func NewSecrets() (*Secrets, error) {
 
 		StripeSecretKey: os.Getenv("STRIPE_SECRET_KEY"),
 		StripePublicKey: os.Getenv("STRIPE_PUBLIC_KEY"),
+
+		EmailHost: os.Getenv("EMAIL_HOST"),
+		EmailPass: os.Getenv("EMAIL_PASSWORD"),
+		EmailUser: os.Getenv("EMAIL_USER"),
+		EmailPort: os.Getenv("EMAIL_PASSWORD"),
 	}, nil
 }
