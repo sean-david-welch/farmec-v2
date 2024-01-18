@@ -64,9 +64,6 @@ type MachineRegistration struct {
 type LineItem struct {
     ID     string `json:"id"`
     Name   string `json:"name"`
-    Price  int    `json:"price"`
+    Price  float64    `json:"price"`
     Image  string `json:"image"`
 }
-
-
-

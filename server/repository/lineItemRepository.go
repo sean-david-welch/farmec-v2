@@ -8,13 +8,6 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
-// type LineItem struct {
-//     ID     string `json:"id"`
-//     Name   string `json:"name"`
-//     Price  int    `json:"price"`
-//     Image  string `json:"image"`
-// }
-
 type LineItemRepository struct {
 	database *sql.DB
 }
@@ -50,7 +43,7 @@ func(repository *LineItemRepository) GetLineItems() ([]types.LineItem, error) {
 }
 
 func(repository *LineItemRepository) GetLineItemById(id string) (*types.LineItem, error) {
-	var lineItem *types.LineItem
+	var lineItem types.LineItem
 
 	query := `SELECT * FROM "LineItems" WHERE "id" = $1`
 	row := repository.database.QueryRow(query, id)
@@ -59,7 +52,7 @@ func(repository *LineItemRepository) GetLineItemById(id string) (*types.LineItem
 		return nil, fmt.Errorf("error occurrred while scanning line item: %w", err)
 	}
 
-	return lineItem, nil
+	return &lineItem, nil
 }
 
 func(repository *LineItemRepository) CreateLineItem(lineItem *types.LineItem) error {
