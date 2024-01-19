@@ -46,7 +46,7 @@ func scanSupplier(row interface{}, supplier *types.Supplier) error {
 func (repository *SupplierRepositoryImpl) GetSuppliers() ([]types.Supplier, error) {
 	var suppliers []types.Supplier
 
-	query := `SELECT * FROM "Supplier"`
+	query := `SELECT * FROM "Supplier" ORDER BY created DESC`
 	rows, err := repository.database.Query(query)
 
     if err != nil {
