@@ -34,12 +34,12 @@ func NewS3Client(region, accessKey, secretKey string) (*S3Client, error) {
 
 func (client *S3Client) GeneratePresignedUrl(folder string, image string) (string, string, error) {
     const bucketName = "farmec-bucket"
+    const cloudfrontDomain = "https://d3eerclezczw8.cloudfront.net"
     
     imageKey := fmt.Sprintf("%s/%s", folder, image)
-    imageUrl := fmt.Sprintf("https://%s.s3.amazonaws.com/%s", bucketName, imageKey)
+    imageUrl := fmt.Sprintf("%s/%s", cloudfrontDomain, imageKey)
 
     presignClient := s3.NewPresignClient(client.Client)
-
 
     presignReq, err := presignClient.PresignPutObject(context.TODO(), &s3.PutObjectInput{
         Bucket: aws.String(bucketName),

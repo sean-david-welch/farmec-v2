@@ -1,6 +1,7 @@
 package controllers_test
 
 import (
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -38,27 +39,38 @@ func (m *MockLineItemService) DeleteLineItem(id string) error {
 }
 
 func TestGetLineItems(t *testing.T) {
-	// Initialize Gin and the mock service
 	gin.SetMode(gin.TestMode)
 	mockService := new(MockLineItemService)
 	controller := controllers.NewLineItemController(mockService)
 
-	// Define the expected result
-	expectedLineItems := []types.LineItem{{ /* ... populate line items ... */ }}
+	expectedLineItems := []types.LineItem{
+	{
+        ID: "1",
+        Name: "Apple",
+        Price: 1.99,
+        Image: "apple.jpg",
+    },
+    {
+        ID: "2",
+        Name: "Banana",
+        Price: 0.99,
+        Image: "banana.jpg",
+    }}
 	mockService.On("GetLineItems").Return(expectedLineItems, nil)
 
-	// Create an HTTP request and recorder
 	req, _ := http.NewRequest("GET", "/lineitems", nil)
 	w := httptest.NewRecorder()
 
-	// Set up the Gin context
 	r := gin.Default()
 	r.GET("/lineitems", controller.GetLineItems)
 	r.ServeHTTP(w, req)
 
-	// Assertions
 	assert.Equal(t, http.StatusOK, w.Code)
-	// ... Additional assertions for response body ...
+
+	var receivedLineItems []types.LineItem
+    err := json.Unmarshal(w.Body.Bytes(), &receivedLineItems)
+    assert.NoError(t, err)
+    assert.Equal(t, expectedLineItems, receivedLineItems)
 
 	mockService.AssertExpectations(t)
 }

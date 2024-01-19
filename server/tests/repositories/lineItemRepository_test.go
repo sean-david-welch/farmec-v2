@@ -33,12 +33,7 @@ func TestGetLineItems(t *testing.T) {
     assert.NoError(t, err)
     if err == nil {
         assert.Len(t, retrievedItems, len(lineItems))
-        for i, item := range retrievedItems {
-			assert.Equal(t, lineItems[i].ID, item.ID)
-			assert.Equal(t, lineItems[i].Name, item.Name)
-			assert.Equal(t, lineItems[i].Price, item.Price)
-			assert.Equal(t, lineItems[i].Image, item.Image)
-        }
+        assert.Equal(t, lineItems, retrievedItems)
     }
 
     if err := mock.ExpectationsWereMet(); err != nil {

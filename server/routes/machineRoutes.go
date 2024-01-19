@@ -13,7 +13,7 @@ import (
 
 func InitializeMachines(router *gin.Engine, database *sql.DB, s3Client *utils.S3Client, adminMiddleware *middleware.AdminMiddleware) {
 	machineRepository := repository.NewMachineRepository(database)
-	machineService := services.NewMachineService(machineRepository, s3Client, "machines")
+	machineService := services.NewMachineService(machineRepository, s3Client, "Machines")
 	machineController := controllers.NewMachineController(machineService)
 
 	MachineRoutes(router, machineController, adminMiddleware)

@@ -13,7 +13,7 @@ import (
 
 func InitilizeEmployee(router *gin.Engine, database *sql.DB, s3Client *utils.S3Client, adminMiddleware *middleware.AdminMiddleware) {
 	repository := repository.NewEmployeeRepository(database)
-	service := services.NewEmployeeService(repository, s3Client, "employees")
+	service := services.NewEmployeeService(repository, s3Client, "Employees")
 	cotroller := controllers.NewEmployeeController(service)
 
 
