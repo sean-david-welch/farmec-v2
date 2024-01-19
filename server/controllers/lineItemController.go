@@ -48,12 +48,18 @@ func(controller *LineItemController) CreateLineItem(context *gin.Context) {
 		return
 	}
 
-	if err := controller.service.CreateLineItem(lineItem); err != nil {
+	result, err := controller.service.CreateLineItem(lineItem); if err != nil {
 		log.Printf("error when creating lineItem: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error when creating lineItem"})
 	}
 
-	context.JSON(http.StatusCreated, lineItem)
+	response := gin.H{
+		"lineItem": lineItem,
+		"presginedUrl": result.PresginedUrl,
+		"imageUrl": result.ImageUrl,
+	}
+
+	context.JSON(http.StatusCreated, response)
 }
 
 func(controller *LineItemController) UpdateLineItem(context *gin.Context) {
@@ -66,12 +72,18 @@ func(controller *LineItemController) UpdateLineItem(context *gin.Context) {
 		return
 	}
 
-	if err := controller.service.UpdateLineItem(id, lineItem); err != nil {
+	result, err := controller.service.UpdateLineItem(id, lineItem); if err != nil {
 		log.Printf("error when updating lineItem: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error when updating lineItem"})
 	}
 
-	context.JSON(http.StatusAccepted, lineItem)
+	response := gin.H{
+		"lineItem": lineItem,
+		"presginedUrl": result.PresginedUrl,
+		"imageUrl": result.ImageUrl,
+	}
+
+	context.JSON(http.StatusAccepted, response)
 }
 
 func(controller *LineItemController) DeleteLineItem(context *gin.Context) {

@@ -29,8 +29,8 @@ func InitializeRoutes(router *gin.Engine, database *sql.DB, secrets *config.Secr
 	
 	// Misc Resources
 	InitializeWarranty(router, database, authMiddleware)
-	InitializeLineItems(router, database, adminMiddleware)
 	InitializeRegistrations(router, database, authMiddleware)
+	InitializeLineItems(router, database, s3Client, adminMiddleware)
 	InitializeCarousel(router, database, s3Client, adminMiddleware)
 
 	// Util Resources

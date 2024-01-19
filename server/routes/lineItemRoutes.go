@@ -8,11 +8,12 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
 	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/services"
+	"github.com/sean-david-welch/farmec-v2/server/utils"
 )
 
-func InitializeLineItems(router *gin.Engine, database *sql.DB, adminMiddleware *middleware.AdminMiddleware) {
+func InitializeLineItems(router *gin.Engine, database *sql.DB, s3Client *utils.S3Client, adminMiddleware *middleware.AdminMiddleware) {
 	repository := repository.NewLineItemRepository(database)
-	service := services.NewLineItemService(repository)
+	service := services.NewLineItemService(repository, s3Client, "Lineitems")
 	controller := controllers.NewLineItemController(service)
 
 	LineItemRoutes(router, controller, adminMiddleware)

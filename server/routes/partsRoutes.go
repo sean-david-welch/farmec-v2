@@ -13,7 +13,7 @@ import (
 
 func InitializeParts(router *gin.Engine, database *sql.DB, s3Client *utils.S3Client, adminMiddleware *middleware.AdminMiddleware) {
 	partsRepository := repository.NewPartsRepository(database)
-	partsService := services.NewPartsService(partsRepository, s3Client, "spareparts")
+	partsService := services.NewPartsService(partsRepository, s3Client, "Spareparts")
 	partsController := controllers.NewPartsController(partsService)
 
 	PartsRoutes(router, partsController, adminMiddleware)
