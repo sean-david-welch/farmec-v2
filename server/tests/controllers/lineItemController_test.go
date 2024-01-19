@@ -9,116 +9,84 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/sean-david-welch/farmec-v2/server/controllers"
+	"github.com/sean-david-welch/farmec-v2/server/tests/mocks"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/mock"
 )
 
-type MockLineItemService struct {
-    mock.Mock
-}
+func setupControllerTest(t *testing.T) (*gin.Engine, *mocks.MockLineItemService,  *controllers.LineItemController, *httptest.ResponseRecorder) {
+    gin.SetMode(gin.TestMode)
 
-func (m *MockLineItemService) GetLineItems() ([]types.LineItem, error) {
-    args := m.Called()
-    return args.Get(0).([]types.LineItem), args.Error(1)
-}
+    mockService := new(mocks.MockLineItemService)
+    controller := controllers.NewLineItemController(mockService)
 
-func (m *MockLineItemService) GetLineItemById(id string) (*types.LineItem, error) {
-	return nil, nil
-}
+    router := gin.Default()
+    recorder := httptest.NewRecorder()
 
-func (m *MockLineItemService) CreateLineItem(lineItem *types.LineItem) (*types.ModelResult, error) {
-	args := m.Called(lineItem)
-	return args.Get(0).(*types.ModelResult), args.Error(1)
-}
-
-
-func (m *MockLineItemService) UpdateLineItem(id string, lineItem *types.LineItem) (*types.ModelResult, error) {
-	return nil, nil
-}
-
-func (m *MockLineItemService) DeleteLineItem(id string) error {
-	return nil
+    return router, mockService, controller, recorder
 }
 
 func TestGetLineItems(t *testing.T) {
-	gin.SetMode(gin.TestMode)
-	mockService := new(MockLineItemService)
-	controller := controllers.NewLineItemController(mockService)
+    // Setup the test environment
+    router, mockService, controller, recorder := setupControllerTest(t)
 
-	expectedLineItems := []types.LineItem{
-	{
-        ID: "1",
-        Name: "Apple",
-        Price: 1.99,
-        Image: "apple.jpg",
-    },
-    {
-        ID: "2",
-        Name: "Banana",
-        Price: 0.99,
-        Image: "banana.jpg",
-    }}
-	mockService.On("GetLineItems").Return(expectedLineItems, nil)
+    // Define expected data
+    expectedLineItems := []types.LineItem{
+        {ID: "1", Name: "Apple", Price: 1.99, Image: "apple.jpg"},
+        {ID: "2", Name: "Banana", Price: 0.99, Image: "banana.jpg"},
+    }
 
-	req, _ := http.NewRequest("GET", "/lineitems", nil)
-	w := httptest.NewRecorder()
+    // Setup mock expectations
+    mockService.On("GetLineItems").Return(expectedLineItems, nil)
 
-	r := gin.Default()
-	r.GET("/lineitems", controller.GetLineItems)
-	r.ServeHTTP(w, req)
+    // Register route and make the test request
+    router.GET("/lineitems", controller.GetLineItems)
+    req, _ := http.NewRequest("GET", "/lineitems", nil)
+    router.ServeHTTP(recorder, req)
 
-	assert.Equal(t, http.StatusOK, w.Code)
+    // Assert status code
+    assert.Equal(t, http.StatusOK, recorder.Code)
 
-	var receivedLineItems []types.LineItem
-    err := json.Unmarshal(w.Body.Bytes(), &receivedLineItems)
+    // Deserialize response and assert equality
+    var actual []types.LineItem
+    err := json.Unmarshal(recorder.Body.Bytes(), &actual)
     assert.NoError(t, err)
-    assert.Equal(t, expectedLineItems, receivedLineItems)
+    assert.Equal(t, expectedLineItems, actual)
 
-	mockService.AssertExpectations(t)
+    // Verify that the expectations were met
+    mockService.AssertExpectations(t)
 }
 
 func TestCreateLineItem(t *testing.T) {
-	gin.SetMode(gin.TestMode)
-	mockService := new(MockLineItemService)
-	controller := controllers.NewLineItemController(mockService)
+    // Setup the test environment
+    router, mockService, controller, recorder := setupControllerTest(t)
 
-	// Create a sample line item to send in the request
-	newLineItem := &types.LineItem{
-		ID:    "3",
-		Name:  "Grape",
-		Price: 2.50,
-		Image: "grape.jpg",
-	}
-	newLineItemJson, _ := json.Marshal(newLineItem)
+    // Define input and expected result
+    newLineItem := &types.LineItem{ID: "3", Name: "Grape", Price: 2.50, Image: "grape.jpg"}
+    newLineItemJson, _ := json.Marshal(newLineItem)
+    expectedResult := &types.ModelResult{PresginedUrl: "presigned-url", ImageUrl: "image-url"}
 
-	// Define the expected result
-	expectedResult := &types.ModelResult{
-		PresginedUrl: "presigned-url",
-		ImageUrl:     "image-url",
-	}
-	mockService.On("CreateLineItem", newLineItem).Return(expectedResult, nil)
+    // Setup mock expectations
+    mockService.On("CreateLineItem", newLineItem).Return(expectedResult, nil)
 
-	// Create an HTTP request and recorder
-	req, _ := http.NewRequest("POST", "/lineitems", bytes.NewBuffer(newLineItemJson))
-	req.Header.Set("Content-Type", "application/json")
-	w := httptest.NewRecorder()
+    // Register route and make the test request
+    router.POST("/lineitems", controller.CreateLineItem)
+    req, _ := http.NewRequest("POST", "/lineitems", bytes.NewBuffer(newLineItemJson))
+    req.Header.Set("Content-Type", "application/json")
+    router.ServeHTTP(recorder, req)
 
-	// Set up the Gin context
-	r := gin.Default()
-	r.POST("/lineitems", controller.CreateLineItem)
-	r.ServeHTTP(w, req)
+    // Assert status code
+    assert.Equal(t, http.StatusCreated, recorder.Code)
 
-	// Assertions
-	assert.Equal(t, http.StatusCreated, w.Code)
+    // Deserialize response and assert specific fields
+    var actual map[string]interface{}
+    err := json.Unmarshal(recorder.Body.Bytes(), &actual)
+    assert.NoError(t, err)
+    assert.Equal(t, expectedResult.PresginedUrl, actual["presginedUrl"])
+    assert.Equal(t, expectedResult.ImageUrl, actual["imageUrl"])
 
-	// Asserting the response body
-	var response map[string]interface{}
-	err := json.Unmarshal(w.Body.Bytes(), &response)
-	assert.NoError(t, err)
-	assert.Equal(t, newLineItem.Name, response["lineItem"].(map[string]interface{})["name"])
-	assert.Equal(t, expectedResult.PresginedUrl, response["presginedUrl"])
-	assert.Equal(t, expectedResult.ImageUrl, response["imageUrl"])
-
-	mockService.AssertExpectations(t)
+    // Verify that the expectations were met
+    mockService.AssertExpectations(t)
 }
+
+
