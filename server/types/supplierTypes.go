@@ -30,7 +30,6 @@ type Sparepart struct {
     Name            string `json:"name"`
     PartsImage      string `json:"parts_image"`
     SparePartsLink  string `json:"spare_parts_link"`
-    PdfLink         *string `json:"pdf_link"`
 }
 
 type Supplier struct {

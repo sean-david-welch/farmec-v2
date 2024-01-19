@@ -37,7 +37,7 @@ func ScanParts(row interface{}, part *types.Sparepart) error {
 	default: return fmt.Errorf("unsupported type: %T", value)
 	}
 
-	return scanner.Scan(&part.ID, &part.SupplierID, &part.Name, &part.PartsImage, &part.SparePartsLink, &part.PdfLink)
+	return scanner.Scan(&part.ID, &part.SupplierID, &part.Name, &part.PartsImage, &part.SparePartsLink)
 }
 
 func (repository *PartsRepositoryImpl) GetParts(id string) ([]types.Sparepart, error) {
@@ -89,7 +89,7 @@ func (repository *PartsRepositoryImpl) CreatePart(part *types.Sparepart) error {
 	query := `INSERT INTO "SpareParts" (ID, supplierID, name, partsImage, sparePartsLink, pdfLink)
 	VALUES ($1, $2, $3, $4, $5, $6)`
 
-	_, err := repository.database.Exec(query, part.ID, part.SupplierID, part.Name, part.PartsImage, part.SparePartsLink, part.PdfLink)
+	_, err := repository.database.Exec(query, part.ID, part.SupplierID, part.Name, part.PartsImage, part.SparePartsLink)
 
 	if err != nil {
 		return fmt.Errorf("error creating spare part: %w", err)
@@ -103,7 +103,7 @@ func (repository *PartsRepositoryImpl) UpdatePart(id string, part *types.Sparepa
 	SET supplierID = $1, name = $2, partsImage = $3, sparePartsLink  = $4, pdfLink = $5
 	WHERE ID = $6`
 
-	_, err := repository.database.Exec(query, part.SupplierID, part.Name, part.PartsImage, part.SparePartsLink, part.PdfLink)
+	_, err := repository.database.Exec(query, part.SupplierID, part.Name, part.PartsImage, part.SparePartsLink)
 
 	if err != nil {
 		return fmt.Errorf("error updating part: %w", err)
