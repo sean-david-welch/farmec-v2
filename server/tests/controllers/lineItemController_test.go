@@ -1,6 +1,7 @@
 package controllers_test
 
 import (
+	"bytes"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
@@ -27,8 +28,10 @@ func (m *MockLineItemService) GetLineItemById(id string) (*types.LineItem, error
 }
 
 func (m *MockLineItemService) CreateLineItem(lineItem *types.LineItem) (*types.ModelResult, error) {
-	return nil, nil
+	args := m.Called(lineItem)
+	return args.Get(0).(*types.ModelResult), args.Error(1)
 }
+
 
 func (m *MockLineItemService) UpdateLineItem(id string, lineItem *types.LineItem) (*types.ModelResult, error) {
 	return nil, nil
@@ -71,6 +74,51 @@ func TestGetLineItems(t *testing.T) {
     err := json.Unmarshal(w.Body.Bytes(), &receivedLineItems)
     assert.NoError(t, err)
     assert.Equal(t, expectedLineItems, receivedLineItems)
+
+	mockService.AssertExpectations(t)
+}
+
+func TestCreateLineItem(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	mockService := new(MockLineItemService)
+	controller := controllers.NewLineItemController(mockService)
+
+	// Create a sample line item to send in the request
+	newLineItem := &types.LineItem{
+		ID:    "3",
+		Name:  "Grape",
+		Price: 2.50,
+		Image: "grape.jpg",
+	}
+	newLineItemJson, _ := json.Marshal(newLineItem)
+
+	// Define the expected result
+	expectedResult := &types.ModelResult{
+		PresginedUrl: "presigned-url",
+		ImageUrl:     "image-url",
+	}
+	mockService.On("CreateLineItem", newLineItem).Return(expectedResult, nil)
+
+	// Create an HTTP request and recorder
+	req, _ := http.NewRequest("POST", "/lineitems", bytes.NewBuffer(newLineItemJson))
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+
+	// Set up the Gin context
+	r := gin.Default()
+	r.POST("/lineitems", controller.CreateLineItem)
+	r.ServeHTTP(w, req)
+
+	// Assertions
+	assert.Equal(t, http.StatusCreated, w.Code)
+
+	// Asserting the response body
+	var response map[string]interface{}
+	err := json.Unmarshal(w.Body.Bytes(), &response)
+	assert.NoError(t, err)
+	assert.Equal(t, newLineItem.Name, response["lineItem"].(map[string]interface{})["name"])
+	assert.Equal(t, expectedResult.PresginedUrl, response["presginedUrl"])
+	assert.Equal(t, expectedResult.ImageUrl, response["imageUrl"])
 
 	mockService.AssertExpectations(t)
 }
