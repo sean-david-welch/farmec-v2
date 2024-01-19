@@ -9,7 +9,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/utils"
 )
 
-func InitializeRoutes(router *gin.Engine, database *sql.DB, secrets *config.Secrets, s3Client *utils.S3Client, adminMiddleware *middleware.AdminMiddleware, authMiddleware *middleware.AuthMiddleware) {
+func InitializeRoutes(router *gin.Engine, database *sql.DB, secrets *config.Secrets, s3Client utils.S3Client, adminMiddleware *middleware.AdminMiddleware, authMiddleware *middleware.AuthMiddleware) {
 	// Supplier Module Resouces
 	InitializeParts(router, database, s3Client, adminMiddleware)
 	InitializeVideos(router, database, secrets, adminMiddleware)

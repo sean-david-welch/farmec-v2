@@ -17,11 +17,11 @@ type CarouselService interface {
 
 type CarouselServiceImpl struct {
 	repository repository.CarouselRepository
-	s3Client *utils.S3Client
+	s3Client utils.S3Client
 	folder string
 }
 
-func NewCarouselService(repository repository.CarouselRepository, s3Client *utils.S3Client, folder string) *CarouselServiceImpl {
+func NewCarouselService(repository repository.CarouselRepository, s3Client utils.S3Client, folder string) *CarouselServiceImpl {
 	return &CarouselServiceImpl{
 		repository: repository,
 		s3Client: s3Client,

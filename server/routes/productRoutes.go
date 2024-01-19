@@ -11,7 +11,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/utils"
 )
 
-func InitializeProduct(router *gin.Engine, database *sql.DB, s3Client *utils.S3Client, adminMiddleware *middleware.AdminMiddleware) {
+func InitializeProduct(router *gin.Engine, database *sql.DB, s3Client utils.S3Client, adminMiddleware *middleware.AdminMiddleware) {
 	productRepository := repository.NewProductRepository(database)
 	productService := services.NewProductService(productRepository, s3Client, "Products")
 	productController := controllers.NewProductController(productService)

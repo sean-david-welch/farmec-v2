@@ -13,11 +13,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 )
 
-type S3Client struct {
+type S3Client interface {
+    GeneratePresignedUrl(folder, image string) (string, string, error)
+    DeleteImageFromS3(imageUrl string) error
+}
+
+type S3ClientImpl struct {
     Client *s3.Client
 }
 
-func NewS3Client(region, accessKey, secretKey string) (*S3Client, error) {
+func NewS3Client(region, accessKey, secretKey string) (*S3ClientImpl, error) {
     conf, err := config.LoadDefaultConfig(context.TODO(),
         config.WithRegion(region),
         config.WithCredentialsProvider(credentials.NewStaticCredentialsProvider(accessKey, secretKey, "")),
@@ -27,12 +32,12 @@ func NewS3Client(region, accessKey, secretKey string) (*S3Client, error) {
         return nil, err
     }
 
-    return &S3Client{
+    return &S3ClientImpl{
         Client: s3.NewFromConfig(conf),
     }, nil
 }
 
-func (client *S3Client) GeneratePresignedUrl(folder string, image string) (string, string, error) {
+func (client *S3ClientImpl) GeneratePresignedUrl(folder string, image string) (string, string, error) {
     const bucketName = "farmec-bucket"
     const cloudfrontDomain = "https://d3eerclezczw8.cloudfront.net"
     
@@ -53,7 +58,7 @@ func (client *S3Client) GeneratePresignedUrl(folder string, image string) (strin
     return presignReq.URL, imageUrl, nil
 }
 
-func (client *S3Client) DeleteImageFromS3(imageUrl string) error {
+func (client *S3ClientImpl) DeleteImageFromS3(imageUrl string) error {
     const bucketName = "farmec-bucket"
 
     parsedUrl, err := url.Parse(imageUrl); if err != nil {

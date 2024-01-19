@@ -15,11 +15,11 @@ type EmployeeService interface {
 
 type EmployeeServiceImpl struct {
 	repository repository.EmployeeRepository
-	s3Client *utils.S3Client
+	s3Client utils.S3Client
 	folder string
 }
 
-func NewEmployeeService(repository repository.EmployeeRepository, s3Client *utils.S3Client, folder string) *EmployeeServiceImpl {
+func NewEmployeeService(repository repository.EmployeeRepository, s3Client utils.S3Client, folder string) *EmployeeServiceImpl {
 	return &EmployeeServiceImpl{repository: repository, s3Client: s3Client, folder: folder}
 }
 

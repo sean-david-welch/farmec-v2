@@ -26,12 +26,12 @@ func (m *MockLineItemService) GetLineItemById(id string) (*types.LineItem, error
 	return nil, nil
 }
 
-func (m *MockLineItemService) CreateLineItem(lineItem *types.LineItem) error {
-	return nil
+func (m *MockLineItemService) CreateLineItem(lineItem *types.LineItem) (*types.ModelResult, error) {
+	return nil, nil
 }
 
-func (m *MockLineItemService) UpdateLineItem(id string, lineItem *types.LineItem) error {
-	return nil
+func (m *MockLineItemService) UpdateLineItem(id string, lineItem *types.LineItem) (*types.ModelResult, error) {
+	return nil, nil
 }
 
 func (m *MockLineItemService) DeleteLineItem(id string) error {

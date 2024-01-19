@@ -17,11 +17,11 @@ type MachineService interface {
 
 type MachineServiceImpl struct {
 	folder string 
-	s3Client *utils.S3Client
+	s3Client utils.S3Client
 	repository repository.MachineRepository
 }
 
-func NewMachineService(repository repository.MachineRepository, s3Client *utils.S3Client, folder string) *MachineServiceImpl {
+func NewMachineService(repository repository.MachineRepository, s3Client utils.S3Client, folder string) *MachineServiceImpl {
 	return &MachineServiceImpl{
 		repository: repository,
 		s3Client: s3Client,

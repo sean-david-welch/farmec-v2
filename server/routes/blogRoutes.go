@@ -11,7 +11,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/utils"
 )
 
-func InitializeBlogs(router *gin.Engine, database *sql.DB, s3Client *utils.S3Client, adminMiddleware *middleware.AdminMiddleware) {
+func InitializeBlogs(router *gin.Engine, database *sql.DB, s3Client utils.S3Client, adminMiddleware *middleware.AdminMiddleware) {
 	repository := repository.NewBlogRepository(database)
 	service := services.NewBlogService(repository, s3Client, "Blogs")
 	controller := controllers.NewBlogController(service)

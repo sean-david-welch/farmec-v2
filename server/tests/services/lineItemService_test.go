@@ -57,3 +57,30 @@ func TestGetLineItems(t *testing.T) {
 
     mockRepo.AssertExpectations(t)
 }
+
+func TestCreateLineItem(t *testing.T) {
+    // Create a mock repository
+    mockRepo := new(MockLineItemRepository)
+    service := services.NewLineItemService(mockRepo)
+
+    // Define a line item to be created
+    newLineItem := &types.LineItem{
+        ID: "3", 
+        Name: "Item 3", 
+        Price: 15.99, 
+        Image: "image3.jpg",
+    }
+
+    // Set up expectations
+    mockRepo.On("CreateLineItem", newLineItem).Return(nil)
+
+    // Call the method
+    err := service.CreateLineItem(newLineItem)
+
+    // Assert that no error occurred
+    assert.NoError(t, err)
+
+    // Assert that the expectations were met
+    mockRepo.AssertExpectations(t)
+}
+

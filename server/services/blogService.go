@@ -16,11 +16,11 @@ type BlogService interface {
 
 type BlogServiceImpl struct {
 	repository repository.BlogRepository
-	s3Client *utils.S3Client
+	s3Client utils.S3Client
 	folder string
 }
 
-func NewBlogService(repository repository.BlogRepository, s3Client *utils.S3Client, folder string) *BlogServiceImpl {
+func NewBlogService(repository repository.BlogRepository, s3Client utils.S3Client, folder string) *BlogServiceImpl {
 	return &BlogServiceImpl{repository: repository, s3Client: s3Client, folder: folder}
 }
 

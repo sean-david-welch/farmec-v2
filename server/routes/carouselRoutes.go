@@ -11,7 +11,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/utils"
 )
 
-func InitializeCarousel(router *gin.Engine, database *sql.DB, s3Client *utils.S3Client, adminMiddleare *middleware.AdminMiddleware) {
+func InitializeCarousel(router *gin.Engine, database *sql.DB, s3Client utils.S3Client, adminMiddleare *middleware.AdminMiddleware) {
 	carouselRepository := repository.NewCarouselRepository(database)
 	carouselService := services.NewCarouselService(carouselRepository, s3Client, "Carousels")
 	carouselController := controllers.NewCarouselController(carouselService)

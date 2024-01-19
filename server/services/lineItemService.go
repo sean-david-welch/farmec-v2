@@ -16,11 +16,11 @@ type LineItemService interface {
 
 type LineItemServiceImpl struct {
 	repository repository.LineItemRepository
-	s3Client *utils.S3Client
+	s3Client utils.S3Client
 	folder string
 }
 
-func NewLineItemService(repository repository.LineItemRepository, s3Client *utils.S3Client, folder string) *LineItemServiceImpl {
+func NewLineItemService(repository repository.LineItemRepository, s3Client utils.S3Client, folder string) *LineItemServiceImpl {
 	return &LineItemServiceImpl{repository: repository, s3Client: s3Client, folder: folder}
 }
 
