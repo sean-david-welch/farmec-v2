@@ -42,3 +42,25 @@ func TestGetBlogs(test *testing.T) {
 		test.Errorf("expectations unfullfilled: %s", err)
 	}
 }
+
+func TestCreateBlog(test *testing.T) {
+	db, mock, err := mocks.InitMockDatabase(test); if err != nil {
+		test.Fatalf("failed to init mock database: %s", err)
+	}
+	defer db.Close()
+
+	blog := &types.Blog{Title: "Blog 1", Date: "17/01/24", MainImage: "image.jpg", Subheading: "Subheading 1", Body: "Body 1", Created: time.Now()}
+	mock.ExpectExec(`INSERT INTO "Blog" \(id, title, date, main_image, subheading, body, created\) VALUES \(\$1, \$2, \$3, \$4, \$5, \$6, \$7\)`).
+		WithArgs(sqlmock.AnyArg(), blog.Title, blog.Date, blog.MainImage, blog.Subheading, blog.Body, sqlmock.AnyArg()).
+		WillReturnResult(sqlmock.NewResult(1, 1))
+
+	repo := repository.NewBlogRepository(db)
+	err = repo.CreateBlog(blog)
+
+	assert.NoError(test, err)
+
+	if err := mock.ExpectationsWereMet(); err != nil {
+		test.Errorf("there were unfulfilled expectations: %s", err)
+	}
+}
+
