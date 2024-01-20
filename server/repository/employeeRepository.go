@@ -10,11 +10,11 @@ import (
 )
 
 type EmployeeRepository interface {
-	GetEmployees() ([]types.Employee, error) 
-	GetEmployeeById(id string) (*types.Employee, error) 
-	CreateEmployee(employee *types.Employee) error 
-	UpdateEmployee(id string, employee *types.Employee) error 
-	DeleteEmployee(id string) error 
+	GetEmployees() ([]types.Employee, error)
+	GetEmployeeById(id string) (*types.Employee, error)
+	CreateEmployee(employee *types.Employee) error
+	UpdateEmployee(id string, employee *types.Employee) error
+	DeleteEmployee(id string) error
 }
 
 type EmployeeRepositoryImpl struct {
@@ -27,9 +27,10 @@ func NewEmployeeRepository(database *sql.DB) *EmployeeRepositoryImpl {
 
 func (repository *EmployeeRepositoryImpl) GetEmployees() ([]types.Employee, error) {
 	var employees []types.Employee
-	
+
 	query := `SELECT * FROM "Employee"`
-	rows, err := repository.database.Query(query); if err != nil {
+	rows, err := repository.database.Query(query)
+	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
@@ -37,7 +38,7 @@ func (repository *EmployeeRepositoryImpl) GetEmployees() ([]types.Employee, erro
 	for rows.Next() {
 		var employee types.Employee
 
-		err := rows.Scan(&employee.ID, &employee.Name, &employee.Email, &employee.Role, &employee.Bio, &employee.ProfileImage, &employee.Created, &employee.Phone)
+		err := rows.Scan(&employee.ID, &employee.Name, &employee.Email, &employee.Role, &employee.ProfileImage, &employee.Created)
 		if err != nil {
 			return nil, fmt.Errorf("error occurred while scanning rows: %v", err)
 		}
@@ -51,15 +52,15 @@ func (repository *EmployeeRepositoryImpl) GetEmployees() ([]types.Employee, erro
 	return employees, nil
 }
 
-func(repository *EmployeeRepositoryImpl) GetEmployeeById(id string) (*types.Employee, error) {
+func (repository *EmployeeRepositoryImpl) GetEmployeeById(id string) (*types.Employee, error) {
 	query := `SELECT * FROM "Employee" WHERE "id" = $1`
 	row := repository.database.QueryRow(query, id)
 
 	var employee types.Employee
 
-	err := row.Scan(&employee.ID, &employee.Name, &employee.Email, &employee.Role, &employee.Bio, &employee.ProfileImage, &employee.Created, &employee.Phone)
+	err := row.Scan(&employee.ID, &employee.Name, &employee.Email, &employee.Role, &employee.ProfileImage, &employee.Created)
 	if err != nil {
-				if err == sql.ErrNoRows {
+		if err == sql.ErrNoRows {
 			return nil, fmt.Errorf("error item found with the given id: %w", err)
 		}
 
@@ -69,14 +70,14 @@ func(repository *EmployeeRepositoryImpl) GetEmployeeById(id string) (*types.Empl
 	return &employee, nil
 }
 
-func(repository *EmployeeRepositoryImpl) CreateEmployee(employee *types.Employee) error {
+func (repository *EmployeeRepositoryImpl) CreateEmployee(employee *types.Employee) error {
 	employee.ID = uuid.NewString()
 	employee.Created = time.Now()
 
-	query := `INSERT INTO "Employee" (id, name, email, role, bio, profileImage, created, phone)
-				VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`
+	query := `INSERT INTO "Employee" (id, name, email, role, profileImage, created)
+				VALUES ($1, $2, $3, $4, $5, $6)`
 
-	_, err := repository.database.Exec(query, employee.ID, employee.Name, employee.Email, employee.Role, employee.Bio, employee.ProfileImage, employee.Created, employee.Phone)
+	_, err := repository.database.Exec(query, employee.ID, employee.Name, employee.Email, employee.Role, employee.ProfileImage, employee.Created)
 	if err != nil {
 		return err
 	}
@@ -84,21 +85,21 @@ func(repository *EmployeeRepositoryImpl) CreateEmployee(employee *types.Employee
 	return nil
 }
 
-func(repository *EmployeeRepositoryImpl) UpdateEmployee(id string, employee *types.Employee) error {
-	query := `UPDATE "Employee" SET name = $1, email = $2, role = $3, bio = $4, profileImage = $5, phone = $6 WHERE "id" = $7`
+func (repository *EmployeeRepositoryImpl) UpdateEmployee(id string, employee *types.Employee) error {
+	query := `UPDATE "Employee" SET name = $1, email = $2, role = $3, profileImage = $5 WHERE "id" = $1`
 
-	
-	_, err := repository.database.Exec(query, employee.Name, employee.Email, employee.Role, employee.Bio, employee.ProfileImage, employee.Phone, id)
+	_, err := repository.database.Exec(query, id, employee.Name, employee.Email, employee.Role, employee.ProfileImage)
 	if err != nil {
 		return err
 	}
-	
+
 	return nil
 }
 
 func (repository *EmployeeRepositoryImpl) DeleteEmployee(id string) error {
 	query := `DELETE FROM "Employee" WHERE "id" = $1`
-	_, err := repository.database.Exec(query, id); if err != nil {
+	_, err := repository.database.Exec(query, id)
+	if err != nil {
 		return err
 	}
 

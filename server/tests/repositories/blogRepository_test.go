@@ -10,8 +10,10 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"github.com/stretchr/testify/assert"
 )
+
 func TestGetBlogs(test *testing.T) {
-	db, mock, err := mocks.InitMockDatabase(test); if err != nil {
+	db, mock, err := mocks.InitMockDatabase(test)
+	if err != nil {
 		test.Fatalf("Failed to initialize mock database: %s", err)
 	}
 	defer db.Close()
@@ -21,19 +23,21 @@ func TestGetBlogs(test *testing.T) {
 		{ID: "2", Title: "Blog 2", Date: "17/01/24", MainImage: "image.jpg", Subheading: "Subheading 2", Body: "Body 2", Created: time.Now()},
 	}
 
-	rows := sqlmock.NewRows([]string{"id", "title", "date", "main_image", "subheading", "body", "created"})	
-	for _, blog := range blogs { 
+	rows := sqlmock.NewRows([]string{"id", "title", "date", "main_image", "subheading", "body", "created"})
+	for _, blog := range blogs {
 		rows.AddRow(blog.ID, blog.Title, blog.Date, blog.MainImage, blog.Subheading, blog.Body, blog.Created)
 	}
 
 	mock.ExpectQuery(`SELECT \* FROM "Blog"`).WillReturnRows(rows)
 
 	repo := repository.NewBlogRepository(db)
-	retrievedBlogs, err := repo.GetBlogs(); if err != nil {
+	retrievedBlogs, err := repo.GetBlogs()
+	if err != nil {
 		test.Fatalf("error occurred when getting blogs")
 	}
 
-	assert.NoError(test, err); if err == nil {
+	assert.NoError(test, err)
+	if err == nil {
 		assert.Len(test, retrievedBlogs, len(blogs))
 		assert.Equal(test, blogs, retrievedBlogs)
 	}
@@ -44,7 +48,8 @@ func TestGetBlogs(test *testing.T) {
 }
 
 func TestCreateBlog(test *testing.T) {
-	db, mock, err := mocks.InitMockDatabase(test); if err != nil {
+	db, mock, err := mocks.InitMockDatabase(test)
+	if err != nil {
 		test.Fatalf("failed to init mock database: %s", err)
 	}
 	defer db.Close()
@@ -63,4 +68,3 @@ func TestCreateBlog(test *testing.T) {
 		test.Errorf("there were unfulfilled expectations: %s", err)
 	}
 }
-
