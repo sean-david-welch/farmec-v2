@@ -38,12 +38,12 @@ func TestGetLineItems(test *testing.T) {
 
     router.GET("/lineitems", controller.GetLineItems)
 
-    PerformRequest(test, router, "GET", "/lineitems", nil, recorder)
+    mocks.PerformRequest(test, router, "GET", "/lineitems", nil, recorder)
     
     assert.Equal(test, http.StatusOK, recorder.Code)
 
     var actual []types.LineItem
-    UnmarshalResponse(test, recorder, &actual)
+    mocks.UnmarshalResponse(test, recorder, &actual)
 
 
     assert.Equal(test, expectedLineItems, actual)
@@ -62,12 +62,12 @@ func TestCreateLineItem(test *testing.T) {
     mockService.On("CreateLineItem", newLineItem).Return(expectedResult, nil)
 
     router.POST("/lineitems", controller.CreateLineItem)
-    PerformRequest(test, router, "POST", "/lineitems", bytes.NewBuffer(newLineItemJSON), recorder)
+    mocks.PerformRequest(test, router, "POST", "/lineitems", bytes.NewBuffer(newLineItemJSON), recorder)
 
     assert.Equal(test, http.StatusCreated, recorder.Code)
 
     var actual types.ModelResult
-    UnmarshalResponse(test, recorder, &actual)
+    mocks.UnmarshalResponse(test, recorder, &actual)
 
 
     assert.Equal(test, expectedResult, &actual)

@@ -5,15 +5,17 @@ import (
 
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/sean-david-welch/farmec-v2/server/repository"
+	"github.com/sean-david-welch/farmec-v2/server/tests/mocks"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"github.com/stretchr/testify/assert"
 )
 
-func TestGetLineItems(t *testing.T) {
-    db, mock, err := sqlmock.New(); if err != nil {
-        t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
+func TestGetLineItems(test *testing.T) {
+    db, mock, err := mocks.InitMockDatabase(test); if err != nil {
+        test.Fatalf("Failed to initialize mock database: %s", err)
     }
     defer db.Close()
+
 
     lineItems := []types.LineItem{
         {ID: "1", Name: "Item 1", Price: 10.99, Image: "image1.jpg"},
@@ -30,20 +32,20 @@ func TestGetLineItems(t *testing.T) {
     repo := repository.NewLineItemRepository(db)
     retrievedItems, err := repo.GetLineItems()
 
-    assert.NoError(t, err)
+    assert.NoError(test, err)
     if err == nil {
-        assert.Len(t, retrievedItems, len(lineItems))
-        assert.Equal(t, lineItems, retrievedItems)
+        assert.Len(test, retrievedItems, len(lineItems))
+        assert.Equal(test, lineItems, retrievedItems)
     }
 
     if err := mock.ExpectationsWereMet(); err != nil {
-        t.Errorf("there were unfulfilled expectations: %s", err)
+        test.Errorf("there were unfulfilled expectations: %s", err)
     }
 }
 
-func TestCreateLineItem(t *testing.T) {
-    db, mock, err := sqlmock.New(); if err != nil {
-        t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
+func TestCreateLineItem(test *testing.T) {
+    db, mock, err := mocks.InitMockDatabase(test); if err != nil {
+        test.Fatalf("Failed to initialize mock database: %s", err)
     }
     defer db.Close()
 
@@ -56,9 +58,9 @@ func TestCreateLineItem(t *testing.T) {
     repo := repository.NewLineItemRepository(db)
     err = repo.CreateLineItem(lineItem)
 
-    assert.NoError(t, err)
+    assert.NoError(test, err)
 
     if err := mock.ExpectationsWereMet(); err != nil {
-        t.Errorf("there were unfulfilled expectations: %s", err)
+        test.Errorf("there were unfulfilled expectations: %s", err)
     }
 }
