@@ -14,7 +14,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func setupControllerTest(t *testing.T) (*gin.Engine, *mocks.MockLineItemService,  *controllers.LineItemController, *httptest.ResponseRecorder) {
+func setupControllerTest(test *testing.T) (*gin.Engine, *mocks.MockLineItemService,  *controllers.LineItemController, *httptest.ResponseRecorder) {
     gin.SetMode(gin.TestMode)
 
     mockService := new(mocks.MockLineItemService)
@@ -26,67 +26,50 @@ func setupControllerTest(t *testing.T) (*gin.Engine, *mocks.MockLineItemService,
     return router, mockService, controller, recorder
 }
 
-func TestGetLineItems(t *testing.T) {
-    // Setup the test environment
-    router, mockService, controller, recorder := setupControllerTest(t)
+func TestGetLineItems(test *testing.T) {
+    router, mockService, controller, recorder := setupControllerTest(test)
 
-    // Define expected data
     expectedLineItems := []types.LineItem{
         {ID: "1", Name: "Apple", Price: 1.99, Image: "apple.jpg"},
         {ID: "2", Name: "Banana", Price: 0.99, Image: "banana.jpg"},
     }
 
-    // Setup mock expectations
     mockService.On("GetLineItems").Return(expectedLineItems, nil)
 
-    // Register route and make the test request
     router.GET("/lineitems", controller.GetLineItems)
-    req, _ := http.NewRequest("GET", "/lineitems", nil)
-    router.ServeHTTP(recorder, req)
 
-    // Assert status code
-    assert.Equal(t, http.StatusOK, recorder.Code)
+    PerformRequest(test, router, "GET", "/lineitems", nil, recorder)
+    
+    assert.Equal(test, http.StatusOK, recorder.Code)
 
-    // Deserialize response and assert equality
     var actual []types.LineItem
-    err := json.Unmarshal(recorder.Body.Bytes(), &actual)
-    assert.NoError(t, err)
-    assert.Equal(t, expectedLineItems, actual)
+    UnmarshalResponse(test, recorder, &actual)
 
-    // Verify that the expectations were met
-    mockService.AssertExpectations(t)
+
+    assert.Equal(test, expectedLineItems, actual)
+    mockService.AssertExpectations(test)
 }
 
-func TestCreateLineItem(t *testing.T) {
-    // Setup the test environment
-    router, mockService, controller, recorder := setupControllerTest(t)
+func TestCreateLineItem(test *testing.T) {
+    router, mockService, controller, recorder := setupControllerTest(test)
 
-    // Define input and expected result
     newLineItem := &types.LineItem{ID: "3", Name: "Grape", Price: 2.50, Image: "grape.jpg"}
-    newLineItemJson, _ := json.Marshal(newLineItem)
-    expectedResult := &types.ModelResult{PresginedUrl: "presigned-url", ImageUrl: "image-url"}
+    newLineItemJSON, err := json.Marshal(newLineItem); if err != nil {
+        test.Fatal("Error marshalling new line item:", err)
+    }
 
-    // Setup mock expectations
+    expectedResult := &types.ModelResult{PresginedUrl: "presigned-url", ImageUrl: "image-url"}
     mockService.On("CreateLineItem", newLineItem).Return(expectedResult, nil)
 
-    // Register route and make the test request
     router.POST("/lineitems", controller.CreateLineItem)
-    req, _ := http.NewRequest("POST", "/lineitems", bytes.NewBuffer(newLineItemJson))
-    req.Header.Set("Content-Type", "application/json")
-    router.ServeHTTP(recorder, req)
+    PerformRequest(test, router, "POST", "/lineitems", bytes.NewBuffer(newLineItemJSON), recorder)
 
-    // Assert status code
-    assert.Equal(t, http.StatusCreated, recorder.Code)
+    assert.Equal(test, http.StatusCreated, recorder.Code)
 
-    // Deserialize response and assert specific fields
-    var actual map[string]interface{}
-    err := json.Unmarshal(recorder.Body.Bytes(), &actual)
-    assert.NoError(t, err)
-    assert.Equal(t, expectedResult.PresginedUrl, actual["presginedUrl"])
-    assert.Equal(t, expectedResult.ImageUrl, actual["imageUrl"])
+    var actual types.ModelResult
+    UnmarshalResponse(test, recorder, &actual)
 
-    // Verify that the expectations were met
-    mockService.AssertExpectations(t)
+
+    assert.Equal(test, expectedResult, &actual)
+    mockService.AssertExpectations(test)
 }
-
-
