@@ -51,4 +51,43 @@ func TestGetExhibition(test *testing.T) {
 	}
 
 	assert.NoError(test, err)
+	if err == nil {
+		assert.Len(test, retrieved, len(exhibitions))
+		assert.Equal(test, exhibitions, retrieved)
+	}
+
+	if err := mock.ExpectationsWereMet(); err != nil {
+		test.Errorf("expectations unfullfilled")
+	}
+}
+
+func TextCreateExhibition(test *testing.T) {
+	db, mock, err := mocks.InitMockDatabase(test)
+	if err != nil {
+		test.Fatalf("failed to init mock database: %s", err)
+	}
+	defer db.Close()
+
+	exhibition := &types.Exhibition{
+		ID:       "1",
+		Title:    "Exhibit 1",
+		Date:     "01/01/24",
+		Location: "Dublin",
+		Info:     "Stand 1",
+		Created:  time.Now(),
+	}
+
+	mock.ExpectExec(`INSERT INTO "Exhibition" \(id, title, data, location, info, created\) 
+		VALUES \(\$1, \$2, \$3, \$4, \$5, \$6\)`).
+		WithArgs(sqlmock.AnyArg(), exhibition.Title, exhibition.Date, exhibition.Location, exhibition.Info, sqlmock.AnyArg()).
+		WillReturnResult(sqlmock.NewResult(1, 1))
+
+	repo := repository.NewExhibitionRepository(db)
+	err = repo.CreateExhibition(exhibition)
+
+	assert.NoError(test, err)
+
+	if err := mock.ExpectationsWereMet(); err != nil {
+		test.Errorf("unfullfilled expectations: %s", err)
+	}
 }

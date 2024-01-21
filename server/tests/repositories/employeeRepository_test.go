@@ -58,7 +58,7 @@ func TestGetEmployee(test *testing.T) {
 	}
 
 	if err := mock.ExpectationsWereMet(); err != nil {
-		test.Errorf("expectations unfullfillled: %s", err)
+		test.Errorf("expectations unfullfilled: %s", err)
 	}
 }
 
