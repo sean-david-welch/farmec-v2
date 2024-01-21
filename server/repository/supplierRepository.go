@@ -10,11 +10,11 @@ import (
 )
 
 type SupplierRepository interface {
-	GetSuppliers() ([]types.Supplier, error) 
-	CreateSupplier(supplier *types.Supplier) error 
-	GetSupplierById(id string) (*types.Supplier, error) 
-	UpdateSupplier(id string, supplier *types.Supplier) error 
-	DeleteSupplier(id string) error 
+	GetSuppliers() ([]types.Supplier, error)
+	CreateSupplier(supplier *types.Supplier) error
+	GetSupplierById(id string) (*types.Supplier, error)
+	UpdateSupplier(id string, supplier *types.Supplier) error
+	DeleteSupplier(id string) error
 }
 
 type SupplierRepositoryImpl struct {
@@ -36,12 +36,11 @@ func scanSupplier(row interface{}, supplier *types.Supplier) error {
 	case *sql.Rows:
 		scanner = value
 	default:
-        return fmt.Errorf("unsupported type: %T", value)
+		return fmt.Errorf("unsupported type: %T", value)
 	}
 
-    return scanner.Scan(&supplier.ID, &supplier.Name,  &supplier.LogoImage, &supplier.MarketingImage, &supplier.Description, &supplier.SocialFacebook, &supplier.SocialInstagram, &supplier.SocialLinkedin, &supplier.SocialTwitter, &supplier.SocialYoutube, &supplier.SocialWebsite, &supplier.Created)
+	return scanner.Scan(&supplier.ID, &supplier.Name, &supplier.LogoImage, &supplier.MarketingImage, &supplier.Description, &supplier.SocialFacebook, &supplier.SocialInstagram, &supplier.SocialLinkedin, &supplier.SocialTwitter, &supplier.SocialYoutube, &supplier.SocialWebsite, &supplier.Created)
 }
-
 
 func (repository *SupplierRepositoryImpl) GetSuppliers() ([]types.Supplier, error) {
 	var suppliers []types.Supplier
@@ -49,9 +48,9 @@ func (repository *SupplierRepositoryImpl) GetSuppliers() ([]types.Supplier, erro
 	query := `SELECT * FROM "Supplier" ORDER BY created DESC`
 	rows, err := repository.database.Query(query)
 
-    if err != nil {
-        return nil, fmt.Errorf("error executing query: %w", err)
-    }
+	if err != nil {
+		return nil, fmt.Errorf("error executing query: %w", err)
+	}
 	defer rows.Close()
 
 	for rows.Next() {
@@ -59,13 +58,13 @@ func (repository *SupplierRepositoryImpl) GetSuppliers() ([]types.Supplier, erro
 
 		// scans rows and copys them to supplier struct
 		if err := scanSupplier(rows, &supplier); err != nil {
-            return nil, fmt.Errorf("error scanning row: %w", err)
+			return nil, fmt.Errorf("error scanning row: %w", err)
 		}
 		suppliers = append(suppliers, supplier)
 	}
 
 	if err = rows.Err(); err != nil {
-        return nil, fmt.Errorf("error after iterating over rows: %w", err)
+		return nil, fmt.Errorf("error after iterating over rows: %w", err)
 	}
 
 	return suppliers, nil
@@ -97,7 +96,7 @@ func (repository *SupplierRepositoryImpl) GetSupplierById(id string) (*types.Sup
 
 	if err := scanSupplier(row, &supplier); err != nil {
 
-				if err == sql.ErrNoRows {
+		if err == sql.ErrNoRows {
 			return nil, fmt.Errorf("error item found with the given id: %w", err)
 		}
 
@@ -108,7 +107,7 @@ func (repository *SupplierRepositoryImpl) GetSupplierById(id string) (*types.Sup
 }
 
 func (repository *SupplierRepositoryImpl) UpdateSupplier(id string, supplier *types.Supplier) error {
-    query := `UPDATE "Supplier" SET 
+	query := `UPDATE "Supplier" SET 
                 name = $1, 
                 logo_image = $2, 
                 marketing_image = $3, 
@@ -121,13 +120,13 @@ func (repository *SupplierRepositoryImpl) UpdateSupplier(id string, supplier *ty
                 social_website = $10 
                 WHERE id = $11`
 
-    _, err := repository.database.Exec(query, supplier.Name, supplier.LogoImage, supplier.MarketingImage, supplier.Description, supplier.SocialFacebook, supplier.SocialInstagram, supplier.SocialLinkedin, supplier.SocialTwitter, supplier.SocialYoutube, supplier.SocialWebsite, id)
+	_, err := repository.database.Exec(query, supplier.Name, supplier.LogoImage, supplier.MarketingImage, supplier.Description, supplier.SocialFacebook, supplier.SocialInstagram, supplier.SocialLinkedin, supplier.SocialTwitter, supplier.SocialYoutube, supplier.SocialWebsite, id)
 
-    if err != nil {
-        return fmt.Errorf("error updating supplier: %w", err)
-    }
+	if err != nil {
+		return fmt.Errorf("error updating supplier: %w", err)
+	}
 
-    return nil
+	return nil
 }
 
 func (repository *SupplierRepositoryImpl) DeleteSupplier(id string) error {
@@ -139,5 +138,5 @@ func (repository *SupplierRepositoryImpl) DeleteSupplier(id string) error {
 		return fmt.Errorf("error deleting supplier: %w", err)
 	}
 
-	return nil 
+	return nil
 }
