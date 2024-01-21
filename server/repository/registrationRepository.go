@@ -25,24 +25,25 @@ func NewRegistrationRepository(database *sql.DB) *RegistrationRepositoryImpl {
 	return &RegistrationRepositoryImpl{database: database}
 }
 
-func(repository *RegistrationRepositoryImpl) GetRegistrations() ([]types.MachineRegistration, error) {
+func (repository *RegistrationRepositoryImpl) GetRegistrations() ([]types.MachineRegistration, error) {
 	var registrations []types.MachineRegistration
 
 	query := `SELECT * FROM "MachineRegistration"`
-	rows, err := repository.database.Query(query); if err != nil {
+	rows, err := repository.database.Query(query)
+	if err != nil {
 		return nil, fmt.Errorf("error while querying database: %w", err)
 	}
 	defer rows.Close()
 
-	for rows.Next(){
+	for rows.Next() {
 		var registration types.MachineRegistration
 
 		err := rows.Scan(
 			&registration.ID, &registration.DealerName, &registration.DealerAddress,
 			&registration.OwnerName, &registration.OwnerAddress, &registration.MachineModel,
 			&registration.SerialNumber, &registration.InstallDate, &registration.InvoiceNumber,
-			&registration.CompleteSupply, &registration.PdiComplete, &registration.PtoCorrect, 
-			&registration.MachineTestRun, &registration.SafetyInduction, &registration.OperatorHandbook, 
+			&registration.CompleteSupply, &registration.PdiComplete, &registration.PtoCorrect,
+			&registration.MachineTestRun, &registration.SafetyInduction, &registration.OperatorHandbook,
 			&registration.Date, &registration.CompletedBy, &registration.Created,
 		)
 		if err != nil {
@@ -59,7 +60,7 @@ func(repository *RegistrationRepositoryImpl) GetRegistrations() ([]types.Machine
 	return registrations, nil
 }
 
-func(repository *RegistrationRepositoryImpl) GetRegistrationById(id string) (*types.MachineRegistration, error) {
+func (repository *RegistrationRepositoryImpl) GetRegistrationById(id string) (*types.MachineRegistration, error) {
 	var registration types.MachineRegistration
 
 	query := `SELECT * FROM "MachineRegistration" WHERE "id" = $1`
@@ -69,8 +70,8 @@ func(repository *RegistrationRepositoryImpl) GetRegistrationById(id string) (*ty
 		&registration.ID, &registration.DealerName, &registration.DealerAddress,
 		&registration.OwnerName, &registration.OwnerAddress, &registration.MachineModel,
 		&registration.SerialNumber, &registration.InstallDate, &registration.InvoiceNumber,
-		&registration.CompleteSupply, &registration.PdiComplete, &registration.PtoCorrect, 
-		&registration.MachineTestRun, &registration.SafetyInduction, &registration.OperatorHandbook, 
+		&registration.CompleteSupply, &registration.PdiComplete, &registration.PtoCorrect,
+		&registration.MachineTestRun, &registration.SafetyInduction, &registration.OperatorHandbook,
 		&registration.Date, &registration.CompletedBy, &registration.Created,
 	); err != nil {
 		return nil, fmt.Errorf("error occurred while iterating over row: %w", err)
@@ -79,33 +80,34 @@ func(repository *RegistrationRepositoryImpl) GetRegistrationById(id string) (*ty
 	return &registration, nil
 }
 
-func(repository *RegistrationRepositoryImpl) CreateRegistration(registration *types.MachineRegistration) error {
+func (repository *RegistrationRepositoryImpl) CreateRegistration(registration *types.MachineRegistration) error {
 	registration.ID = uuid.NewString()
 	registration.Created = time.Now()
 
-    query := `INSERT INTO "MachineRegistration" (
+	query := `INSERT INTO "MachineRegistration" (
         "id", "dealer_name", "dealer_address", "owner_name", "owner_address", "machine_model", 
         "serial_number", "install_date", "invoice_number", "complete_supply", "pdi_complete", 
         "pto_correct", "machine_test_run", "safety_induction", "operator_handbook", "date", 
         "completed_by", "created"
     ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)`
 
-    _, err := repository.database.Exec(
-        query, 
-        registration.ID, registration.DealerName, registration.DealerAddress, registration.OwnerName, 
-        registration.OwnerAddress, registration.MachineModel, registration.SerialNumber, 
-        registration.InstallDate, registration.InvoiceNumber, registration.CompleteSupply, 
-        registration.PdiComplete, registration.PtoCorrect, registration.MachineTestRun, 
-        registration.SafetyInduction, registration.OperatorHandbook, registration.Date, 
-        registration.CompletedBy, registration.Created,
-    ); if err != nil {
+	_, err := repository.database.Exec(
+		query,
+		registration.ID, registration.DealerName, registration.DealerAddress, registration.OwnerName,
+		registration.OwnerAddress, registration.MachineModel, registration.SerialNumber,
+		registration.InstallDate, registration.InvoiceNumber, registration.CompleteSupply,
+		registration.PdiComplete, registration.PtoCorrect, registration.MachineTestRun,
+		registration.SafetyInduction, registration.OperatorHandbook, registration.Date,
+		registration.CompletedBy, registration.Created,
+	)
+	if err != nil {
 		return fmt.Errorf("error occurred while creating machine registration: %w", err)
 	}
-	
+
 	return nil
 }
 
-func(repository *RegistrationRepositoryImpl) UpdateRegistration(id string, registration *types.MachineRegistration) error {
+func (repository *RegistrationRepositoryImpl) UpdateRegistration(id string, registration *types.MachineRegistration) error {
 	query := `UPDATE "MachineRegistration" SET 
 	"dealer_name" = $2, "dealer_address" = $3, "owner_name" = $4, "owner_address" = $5, 
 	"machine_model" = $6, "serial_number" = $7, "install_date" = $8, "invoice_number" = $9, 
@@ -114,24 +116,26 @@ func(repository *RegistrationRepositoryImpl) UpdateRegistration(id string, regis
 	WHERE "id" = $1`
 
 	_, err := repository.database.Exec(
-	query, 
-	id, registration.DealerName, registration.DealerAddress, registration.OwnerName, 
-	registration.OwnerAddress, registration.MachineModel, registration.SerialNumber, 
-	registration.InstallDate, registration.InvoiceNumber, registration.CompleteSupply, 
-	registration.PdiComplete, registration.PtoCorrect, registration.MachineTestRun, 
-	registration.SafetyInduction, registration.OperatorHandbook, registration.Date, 
-	registration.CompletedBy, 
-	); if err != nil {
+		query,
+		id, registration.DealerName, registration.DealerAddress, registration.OwnerName,
+		registration.OwnerAddress, registration.MachineModel, registration.SerialNumber,
+		registration.InstallDate, registration.InvoiceNumber, registration.CompleteSupply,
+		registration.PdiComplete, registration.PtoCorrect, registration.MachineTestRun,
+		registration.SafetyInduction, registration.OperatorHandbook, registration.Date,
+		registration.CompletedBy,
+	)
+	if err != nil {
 		return fmt.Errorf("error occurred while updating registration")
 	}
-	
+
 	return nil
 }
 
-func(repository *RegistrationRepositoryImpl) DeleteRegistration(id string) error {
+func (repository *RegistrationRepositoryImpl) DeleteRegistration(id string) error {
 	query := `DELETE FROM "MachineRegistration" WHERE "id" = $1`
 
-	_, err := repository.database.Exec(query, id); if err != nil {
+	_, err := repository.database.Exec(query, id)
+	if err != nil {
 		return fmt.Errorf("error occurred while deleting registration")
 	}
 

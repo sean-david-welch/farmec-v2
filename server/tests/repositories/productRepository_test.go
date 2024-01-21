@@ -80,7 +80,7 @@ func TestCreateProduct(test *testing.T) {
 
 	mock.ExpectExec(`INSERT INTO "Product" \(id, machineId, name, product_image, description, product_link\)
 		VALUES \(\$1, \$2, \$3, \$4, \$5, \$6\)`).
-		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), product.Name, product.ProductImage, product.ProductLink).
+		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), product.Name, product.ProductImage, product.Description, product.ProductLink).
 		WillReturnResult(sqlmock.NewResult(1, 1))
 
 	repo := repository.NewProductRepository(db)
