@@ -41,7 +41,7 @@ func TestGetParts(test *testing.T) {
 		rows.AddRow(part.ID, part.SupplierID, part.Name, part.PartsImage, part.SparePartsLink)
 	}
 
-	mock.ExpectQuery(`SELECT \* FROM "SpareParts"`).WillReturnRows(rows)
+	mock.ExpectQuery(`SELECT \* FROM "SpareParts" WHERE "supplierId" = \$1`).WillReturnRows(rows)
 
 	repo := repository.NewPartsRepository(db)
 	retrieved, err := repo.GetParts(supplierId)

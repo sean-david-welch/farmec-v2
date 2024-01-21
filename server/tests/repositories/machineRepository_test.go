@@ -51,7 +51,7 @@ func TestGetMachine(test *testing.T) {
 		rows.AddRow(machine.ID, machine.SupplierID, machine.Name, machine.MachineImage, machine.Description, machine.MachineLink, machine.Created)
 	}
 
-	mock.ExpectQuery(`SELECT \* FROM "Machine"`).WillReturnRows(rows)
+	mock.ExpectQuery(`SELECT \* FROM "Machine" WHERE "supplierId" = \$1`).WillReturnRows(rows)
 
 	repo := repository.NewMachineRepository(db)
 	retrieved, err := repo.GetMachines(supplierId)

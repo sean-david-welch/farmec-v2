@@ -43,7 +43,7 @@ func TestGetProduct(test *testing.T) {
 		rows.AddRow(product.ID, product.MachineID, product.Name, product.ProductImage, product.Description, product.ProductLink)
 	}
 
-	mock.ExpectQuery(`SELECT \* FROM "Product"`).WillReturnRows(rows)
+	mock.ExpectQuery(`SELECT \* FROM "Product" WHERE "machineId" = \$1`).WillReturnRows(rows)
 
 	repo := repository.NewProductRepository(db)
 	retrieved, err := repo.GetProducts(machineId)
