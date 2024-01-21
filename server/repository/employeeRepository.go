@@ -74,7 +74,7 @@ func (repository *EmployeeRepositoryImpl) CreateEmployee(employee *types.Employe
 	employee.ID = uuid.NewString()
 	employee.Created = time.Now()
 
-	query := `INSERT INTO "Employee" (id, name, email, role, profileImage, created)
+	query := `INSERT INTO "Employee" (id, name, email, role, profile_image, created)
 				VALUES ($1, $2, $3, $4, $5, $6)`
 
 	_, err := repository.database.Exec(query, employee.ID, employee.Name, employee.Email, employee.Role, employee.ProfileImage, employee.Created)
@@ -86,7 +86,7 @@ func (repository *EmployeeRepositoryImpl) CreateEmployee(employee *types.Employe
 }
 
 func (repository *EmployeeRepositoryImpl) UpdateEmployee(id string, employee *types.Employee) error {
-	query := `UPDATE "Employee" SET name = $1, email = $2, role = $3, profileImage = $5 WHERE "id" = $1`
+	query := `UPDATE "Employee" SET name = $1, email = $2, role = $3, profile_image = $5 WHERE "id" = $1`
 
 	_, err := repository.database.Exec(query, id, employee.Name, employee.Email, employee.Role, employee.ProfileImage)
 	if err != nil {

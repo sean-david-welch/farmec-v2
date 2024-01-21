@@ -40,7 +40,7 @@ func TestGetEmployee(test *testing.T) {
 
 	rows := sqlmock.NewRows([]string{"id", "name", "email", "role", "profile_image", "created"})
 	for _, employee := range employees {
-		rows.AddRow(employee.ID, test.Name, employee.Email, employee.Role, employee.ProfileImage, employee.Created)
+		rows.AddRow(employee.ID, employee.Name, employee.Email, employee.Role, employee.ProfileImage, employee.Created)
 	}
 
 	mock.ExpectQuery(`SELECT \* FROM "Employee"`).WillReturnRows(rows)
@@ -79,7 +79,7 @@ func TestCreateEmployee(test *testing.T) {
 	}
 
 	mock.ExpectExec(`INSERT INTO "Employee" 
-		\("id", "name", "email", "role", "profile_image", "created"\) VALUES \(\$1, \$2, \$3, \$4, \$5, \$6\)`).
+		\(id, name, email, role, profile_image, created\) VALUES \(\$1, \$2, \$3, \$4, \$5, \$6\)`).
 		WithArgs(sqlmock.AnyArg(), employee.Name, employee.Email, employee.Role, employee.ProfileImage, sqlmock.AnyArg()).
 		WillReturnResult(sqlmock.NewResult(1, 1))
 

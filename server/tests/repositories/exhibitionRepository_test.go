@@ -42,7 +42,7 @@ func TestGetExhibition(test *testing.T) {
 		rows.AddRow(exhibit.ID, exhibit.Title, exhibit.Date, exhibit.Location, exhibit.Info, exhibit.Created)
 	}
 
-	mock.ExpectQuery(`SELECT \* FROM "Exhibitions"`).WillReturnRows(rows)
+	mock.ExpectQuery(`SELECT \* FROM "Exhibition"`).WillReturnRows(rows)
 
 	repo := repository.NewExhibitionRepository(db)
 	retrieved, err := repo.GetExhibitions()
