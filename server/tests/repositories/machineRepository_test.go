@@ -90,7 +90,7 @@ func TestCreateMachine(test *testing.T) {
 		Created:      time.Now(),
 	}
 
-	mock.ExpectExec(`INSERT INTO "Machine" \(id, supplierId, name, machineImage, description, machineLink, created\) 
+	mock.ExpectExec(`INSERT INTO "Machine" \(id, supplierId, name, machine_image, description, machine_link, created\) 
 	VALUES \(\$1, \$2, \$3, \$4, \$5, \$6, \$7\)`).
 		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), machine.Name, machine.MachineImage, machine.Description, machine.MachineLink, sqlmock.AnyArg()).
 		WillReturnResult(sqlmock.NewResult(1, 1))
