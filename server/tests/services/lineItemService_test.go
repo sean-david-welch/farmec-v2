@@ -55,5 +55,5 @@ func TestCreateLineItem(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NotNil(t, result)
 	assert.Equal(t, "image-url", result.ImageUrl)
-	assert.Equal(t, "presigned-url", result.PresginedUrl)
+	assert.Equal(t, "presigned-url", result.PresignedUrl)
 }

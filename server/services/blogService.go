@@ -57,7 +57,7 @@ func (service *BlogServiceImpl) CreateBlog(blog *types.Blog) (*types.ModelResult
 	}
 
 	result := &types.ModelResult{
-		PresginedUrl: presignedUrl,
+		PresignedUrl: presignedUrl,
 		ImageUrl:     imageUrl,
 	}
 
@@ -83,7 +83,7 @@ func (service *BlogServiceImpl) UpdateBlog(id string, blog *types.Blog) (*types.
 	}
 
 	result := &types.ModelResult{
-		PresginedUrl: presignedUrl,
+		PresignedUrl: presignedUrl,
 		ImageUrl:     image,
 	}
 

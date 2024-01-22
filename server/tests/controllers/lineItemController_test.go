@@ -15,7 +15,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func setupControllerTest(t *testing.T) (*gin.Engine, *mocks.MockLineItemService, *controllers.LineItemController, *httptest.ResponseRecorder) {
+func LineItemControllerTesr(t *testing.T) (*gin.Engine, *mocks.MockLineItemService, *controllers.LineItemController, *httptest.ResponseRecorder) {
 	gin.SetMode(gin.TestMode)
 
 	ctrl := gomock.NewController(t)
@@ -31,7 +31,7 @@ func setupControllerTest(t *testing.T) (*gin.Engine, *mocks.MockLineItemService,
 }
 
 func TestGetLineItems(t *testing.T) {
-	router, mockService, controller, recorder := setupControllerTest(t)
+	router, mockService, controller, recorder := LineItemControllerTesr(t)
 
 	expectedLineItems := []types.LineItem{
 		{ID: "1", Name: "Apple", Price: 1.99, Image: "apple.jpg"},
@@ -40,9 +40,9 @@ func TestGetLineItems(t *testing.T) {
 
 	mockService.EXPECT().GetLineItems().Return(expectedLineItems, nil)
 
-	router.GET("/lineitems", controller.GetLineItems)
+	router.GET("/api/lineitems", controller.GetLineItems)
 
-	mocks.PerformRequest(t, router, "GET", "/lineitems", nil, recorder)
+	mocks.PerformRequest(t, router, "GET", "/api/lineitems", nil, recorder)
 
 	assert.Equal(t, http.StatusOK, recorder.Code)
 
@@ -53,17 +53,17 @@ func TestGetLineItems(t *testing.T) {
 }
 
 func TestCreateLineItem(t *testing.T) {
-	router, mockService, controller, recorder := setupControllerTest(t)
+	router, mockService, controller, recorder := LineItemControllerTesr(t)
 
 	newLineItem := &types.LineItem{ID: "3", Name: "Grape", Price: 2.50, Image: "grape.jpg"}
 	newLineItemJSON, _ := json.Marshal(newLineItem)
 
-	expectedResult := &types.ModelResult{PresginedUrl: "presigned-url", ImageUrl: "image-url"}
+	expectedResult := &types.ModelResult{PresignedUrl: "presigned-url", ImageUrl: "image-url"}
 
 	mockService.EXPECT().CreateLineItem(newLineItem).Return(expectedResult, nil)
 
-	router.POST("/lineitems", controller.CreateLineItem)
-	mocks.PerformRequest(t, router, "POST", "/lineitems", bytes.NewBuffer(newLineItemJSON), recorder)
+	router.POST("/api/lineitems", controller.CreateLineItem)
+	mocks.PerformRequest(t, router, "POST", "/api/lineitems", bytes.NewBuffer(newLineItemJSON), recorder)
 
 	assert.Equal(t, http.StatusCreated, recorder.Code)
 

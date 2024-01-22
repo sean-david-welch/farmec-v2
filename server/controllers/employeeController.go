@@ -17,8 +17,9 @@ func NewEmployeeController(service services.EmployeeService) *EmployeeController
 	return &EmployeeController{service: service}
 }
 
-func(controller *EmployeeController) GetEmployees(context *gin.Context) {
-	employees, err := controller.service.GetEmployees(); if err != nil {
+func (controller *EmployeeController) GetEmployees(context *gin.Context) {
+	employees, err := controller.service.GetEmployees()
+	if err != nil {
 		log.Printf("error getting employees: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while getting employees"})
 		return
@@ -27,7 +28,7 @@ func(controller *EmployeeController) GetEmployees(context *gin.Context) {
 	context.JSON(http.StatusOK, employees)
 }
 
-func(controller *EmployeeController) CreateEmployee(context *gin.Context) {
+func (controller *EmployeeController) CreateEmployee(context *gin.Context) {
 	var employee types.Employee
 
 	if err := context.ShouldBindJSON(&employee); err != nil {
@@ -36,23 +37,23 @@ func(controller *EmployeeController) CreateEmployee(context *gin.Context) {
 		return
 	}
 
-	result, err := controller.service.CreateEmployee(&employee); if err != nil {
+	result, err := controller.service.CreateEmployee(&employee)
+	if err != nil {
 		log.Printf("Error creating employee: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while creating employee", "details": err.Error()})
 		return
 	}
 
 	response := gin.H{
-		"employee": employee,
-		"presginedUrl": result.PresginedUrl,
-		"imageUrl": result.ImageUrl,
+		"employee":     employee,
+		"PresignedUrl": result.PresignedUrl,
+		"imageUrl":     result.ImageUrl,
 	}
 
 	context.JSON(http.StatusCreated, response)
 }
 
-
-func(controller *EmployeeController) UpdateEmployee(context *gin.Context) {
+func (controller *EmployeeController) UpdateEmployee(context *gin.Context) {
 	id := context.Param("id")
 	var employee types.Employee
 
@@ -62,28 +63,29 @@ func(controller *EmployeeController) UpdateEmployee(context *gin.Context) {
 		return
 	}
 
-	result, err := controller.service.UpdateEmployee(id, &employee); if err != nil {
+	result, err := controller.service.UpdateEmployee(id, &employee)
+	if err != nil {
 		log.Printf("Error creating employee: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while creating employee", "details": err.Error()})
 		return
 	}
 
 	response := gin.H{
-		"employee": employee,
-		"presginedUrl": result.PresginedUrl,
-		"imageUrl": result.ImageUrl,
+		"employee":     employee,
+		"PresignedUrl": result.PresignedUrl,
+		"imageUrl":     result.ImageUrl,
 	}
 
 	context.JSON(http.StatusAccepted, response)
 }
 
-func(controller *EmployeeController) DeleteEmployee(context *gin.Context) {
+func (controller *EmployeeController) DeleteEmployee(context *gin.Context) {
 	id := context.Param("id")
 
 	if err := controller.service.DeleteEmployee(id); err != nil {
 		log.Printf("Error deleting employee: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while deleting employee", "details": err.Error()})
-		return 
+		return
 	}
 
 	context.JSON(http.StatusOK, gin.H{"message": "employee deleted successfully", "id": id})

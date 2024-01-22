@@ -45,7 +45,7 @@ func (service *LineItemServiceImpl) GetLineItemById(id string) (*types.LineItem,
 func (service *LineItemServiceImpl) CreateLineItem(lineItem *types.LineItem) (*types.ModelResult, error) {
 	image := lineItem.Image
 
-	presginedUrl, imageUrl, err := service.s3Client.GeneratePresignedUrl(service.folder, image)
+	PresignedUrl, imageUrl, err := service.s3Client.GeneratePresignedUrl(service.folder, image)
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +57,7 @@ func (service *LineItemServiceImpl) CreateLineItem(lineItem *types.LineItem) (*t
 	}
 
 	result := &types.ModelResult{
-		PresginedUrl: presginedUrl,
+		PresignedUrl: PresignedUrl,
 		ImageUrl:     imageUrl,
 	}
 
@@ -67,11 +67,11 @@ func (service *LineItemServiceImpl) CreateLineItem(lineItem *types.LineItem) (*t
 func (service *LineItemServiceImpl) UpdateLineItem(id string, lineItem *types.LineItem) (*types.ModelResult, error) {
 	image := lineItem.Image
 
-	var presginedUrl, imageUrl string
+	var PresignedUrl, imageUrl string
 	var err error
 
 	if image == "" {
-		presginedUrl, imageUrl, err = service.s3Client.GeneratePresignedUrl(service.folder, image)
+		PresignedUrl, imageUrl, err = service.s3Client.GeneratePresignedUrl(service.folder, image)
 		if err != nil {
 			return nil, err
 		}
@@ -83,7 +83,7 @@ func (service *LineItemServiceImpl) UpdateLineItem(id string, lineItem *types.Li
 	}
 
 	result := &types.ModelResult{
-		PresginedUrl: presginedUrl,
+		PresignedUrl: PresignedUrl,
 		ImageUrl:     imageUrl,
 	}
 

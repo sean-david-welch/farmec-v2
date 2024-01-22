@@ -1,19 +1,19 @@
 package types
 
 type SupplierResult struct {
-    PresignedLogoUrl string
-	LogoUrl string
+	PresignedLogoUrl      string
+	LogoUrl               string
 	PresginedMarketingUrl string
-	MarketingUrl string 
+	MarketingUrl          string
 }
 
 type ModelResult struct {
-	PresginedUrl string
-	ImageUrl string
+	PresignedUrl string
+	ImageUrl     string
 }
 
 type EmailData struct {
-    Name string
-    Email string
-    Message string
+	Name    string
+	Email   string
+	Message string
 }

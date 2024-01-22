@@ -35,7 +35,7 @@ func (service *EmployeeServiceImpl) GetEmployees() ([]types.Employee, error) {
 func (service *EmployeeServiceImpl) CreateEmployee(employee *types.Employee) (*types.ModelResult, error) {
 	image := employee.ProfileImage
 
-	presginedUrl, imageUrl, err := service.s3Client.GeneratePresignedUrl(service.folder, image)
+	PresignedUrl, imageUrl, err := service.s3Client.GeneratePresignedUrl(service.folder, image)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func (service *EmployeeServiceImpl) CreateEmployee(employee *types.Employee) (*t
 	}
 
 	result := &types.ModelResult{
-		PresginedUrl: presginedUrl,
+		PresignedUrl: PresignedUrl,
 		ImageUrl:     imageUrl,
 	}
 
@@ -57,11 +57,11 @@ func (service *EmployeeServiceImpl) CreateEmployee(employee *types.Employee) (*t
 func (service *EmployeeServiceImpl) UpdateEmployee(id string, employee *types.Employee) (*types.ModelResult, error) {
 	image := employee.ProfileImage
 
-	var presginedUrl, imageUrl string
+	var PresignedUrl, imageUrl string
 	var err error
 
 	if image == "" {
-		presginedUrl, imageUrl, err = service.s3Client.GeneratePresignedUrl(service.folder, image)
+		PresignedUrl, imageUrl, err = service.s3Client.GeneratePresignedUrl(service.folder, image)
 		if err != nil {
 			return nil, err
 		}
@@ -73,7 +73,7 @@ func (service *EmployeeServiceImpl) UpdateEmployee(id string, employee *types.Em
 	}
 
 	result := &types.ModelResult{
-		PresginedUrl: presginedUrl,
+		PresignedUrl: PresignedUrl,
 		ImageUrl:     imageUrl,
 	}
 

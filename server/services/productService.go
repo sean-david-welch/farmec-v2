@@ -9,23 +9,23 @@ import (
 )
 
 type ProductService interface {
-	GetProducts(id string) ([]types.Product, error) 
-	CreateProduct(product *types.Product) (*types.ModelResult, error) 
-	UpdateProduct(id string, product *types.Product) (*types.ModelResult, error) 
-	DeleteProduct(id string) error 
+	GetProducts(id string) ([]types.Product, error)
+	CreateProduct(product *types.Product) (*types.ModelResult, error)
+	UpdateProduct(id string, product *types.Product) (*types.ModelResult, error)
+	DeleteProduct(id string) error
 }
 
 type ProductServiceImpl struct {
-	folder string
-	s3Client utils.S3Client
+	folder     string
+	s3Client   utils.S3Client
 	repository repository.ProductRepository
 }
 
 func NewProductService(repository repository.ProductRepository, s3Client utils.S3Client, folder string) *ProductServiceImpl {
 	return &ProductServiceImpl{
 		repository: repository,
-		s3Client: s3Client,
-		folder: folder,
+		s3Client:   s3Client,
+		folder:     folder,
 	}
 }
 
@@ -34,7 +34,8 @@ func (service *ProductServiceImpl) GetProducts(id string) ([]types.Product, erro
 }
 
 func (service *ProductServiceImpl) CreateProduct(product *types.Product) (*types.ModelResult, error) {
- 	productImage := product.ProductImage; if productImage == "" {
+	productImage := product.ProductImage
+	if productImage == "" {
 		return nil, errors.New("machine image is empty")
 	}
 
@@ -45,13 +46,14 @@ func (service *ProductServiceImpl) CreateProduct(product *types.Product) (*types
 
 	product.ProductImage = imageUrl
 
-	service.repository.CreateProduct(product); if err != nil {
+	service.repository.CreateProduct(product)
+	if err != nil {
 		return nil, err
 	}
 
 	result := &types.ModelResult{
-		PresginedUrl: presignedUrl,
-		ImageUrl: imageUrl,
+		PresignedUrl: presignedUrl,
+		ImageUrl:     imageUrl,
 	}
 
 	return result, nil
@@ -71,21 +73,22 @@ func (service *ProductServiceImpl) UpdateProduct(id string, product *types.Produ
 		product.ProductImage = imageUrl
 	}
 
-	service.repository.UpdateMachine(id, product); if err != nil {
+	service.repository.UpdateMachine(id, product)
+	if err != nil {
 		return nil, err
 	}
 
 	result := &types.ModelResult{
-		PresginedUrl: presignedUrl,
-		ImageUrl: imageUrl,
+		PresignedUrl: presignedUrl,
+		ImageUrl:     imageUrl,
 	}
 
 	return result, err
 }
 
-
 func (service *ProductServiceImpl) DeleteProduct(id string) error {
-	product, err := service.repository.GetProductById(id); if err != nil {
+	product, err := service.repository.GetProductById(id)
+	if err != nil {
 		return nil
 	}
 
@@ -93,11 +96,9 @@ func (service *ProductServiceImpl) DeleteProduct(id string) error {
 		return err
 	}
 
-
 	if err := service.repository.DeleteProduct(id); err != nil {
 		return err
 	}
 
 	return nil
 }
-

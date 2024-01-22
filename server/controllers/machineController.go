@@ -20,11 +20,12 @@ func NewMachineController(machineService services.MachineService) *MachineContro
 func (controller *MachineController) GetMachines(context *gin.Context) {
 	id := context.Param("id")
 
-	machines, err := controller.machineService.GetMachines(id); if err != nil {
+	machines, err := controller.machineService.GetMachines(id)
+	if err != nil {
 		log.Printf("Error getting machines: %v", err)
-        context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while getting machines"})
-        return
-	}	
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while getting machines"})
+		return
+	}
 
 	context.JSON(http.StatusOK, machines)
 }
@@ -33,20 +34,21 @@ func (controller *MachineController) CreateMachine(context *gin.Context) {
 	var machine types.Machine
 
 	if err := context.ShouldBindJSON(&machine); err != nil {
-        context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body", "details": err.Error()})
-        return
+		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body", "details": err.Error()})
+		return
 	}
 
-	result, err := controller.machineService.CreateMachine(&machine); if err != nil {
-        log.Printf("Error creating machine: %v", err)
-        context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while creating machine", "details": err.Error()})
-        return
+	result, err := controller.machineService.CreateMachine(&machine)
+	if err != nil {
+		log.Printf("Error creating machine: %v", err)
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while creating machine", "details": err.Error()})
+		return
 	}
 
 	response := gin.H{
-		"machine": machine,
-		"presginedUrl": result.PresginedUrl,
-		"imageUrl": result.ImageUrl,
+		"machine":      machine,
+		"PresignedUrl": result.PresignedUrl,
+		"imageUrl":     result.ImageUrl,
 	}
 
 	context.JSON(http.StatusCreated, response)
@@ -59,19 +61,20 @@ func (controller *MachineController) UpdateMachine(context *gin.Context) {
 
 	if err := context.ShouldBindJSON(&machine); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body", "details": err.Error()})
-		return 
+		return
 	}
 
-	result, err := controller.machineService.UpdateMachine(id, &machine); if err != nil {
+	result, err := controller.machineService.UpdateMachine(id, &machine)
+	if err != nil {
 		log.Printf("Error updating machine: %v", err)
-        context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while updating machine", "details": err.Error()})
-        return
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while updating machine", "details": err.Error()})
+		return
 	}
 
 	response := gin.H{
-		"machine": machine,
-		"presignedUrl": result.PresginedUrl,
-		"imageUrl": result.ImageUrl,
+		"machine":      machine,
+		"presignedUrl": result.PresignedUrl,
+		"imageUrl":     result.ImageUrl,
 	}
 
 	context.JSON(http.StatusAccepted, response)
@@ -82,9 +85,9 @@ func (controller *MachineController) DeleteMachine(context *gin.Context) {
 
 	if err := controller.machineService.DeleteMachine(id); err != nil {
 		log.Printf("Error deleting machine: %v", err)
-        context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while deleting machine", "details": err.Error()})
-        return
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while deleting machine", "details": err.Error()})
+		return
 	}
 
-    context.JSON(http.StatusOK, gin.H{"message": "Machine deleted successfully", "id": id})
+	context.JSON(http.StatusOK, gin.H{"message": "Machine deleted successfully", "id": id})
 }

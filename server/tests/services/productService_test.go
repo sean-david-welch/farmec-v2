@@ -73,6 +73,6 @@ func TestCreateProduct(test *testing.T) {
 	assert.NoError(test, err)
 	assert.NotNil(test, result)
 
-	assert.Equal(test, "presignedurl", result.PresginedUrl)
+	assert.Equal(test, "presignedurl", result.PresignedUrl)
 	assert.Equal(test, "imageurl", result.ImageUrl)
 }

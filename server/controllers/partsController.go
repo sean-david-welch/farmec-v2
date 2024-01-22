@@ -20,7 +20,8 @@ func NewPartsController(partsService services.PartsService) *PartsController {
 func (controller *PartsController) GetParts(context *gin.Context) {
 	id := context.Param("id")
 
-	parts, err := controller.partsService.GetParts(id); if err != nil {
+	parts, err := controller.partsService.GetParts(id)
+	if err != nil {
 		log.Printf("Error getting parts: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while getting parts"})
 		return
@@ -35,19 +36,20 @@ func (controller *PartsController) CreateParts(context *gin.Context) {
 	if err := context.ShouldBindJSON(&part); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Ivalid request body", "details": err.Error()})
 		return
-	} 
+	}
 
-	result, err := controller.partsService.CreatePart(&part); if err != nil {
+	result, err := controller.partsService.CreatePart(&part)
+	if err != nil {
 		log.Printf("Error creating part: %v", err)
-		context.JSON(http.StatusInternalServerError, 
+		context.JSON(http.StatusInternalServerError,
 			gin.H{"error": "Error occurred while creating part", "details": err.Error()})
 		return
 	}
 
 	response := gin.H{
-		"part": part,
-		"presignedUrl": result.PresginedUrl,
-		"imageUrl": result.ImageUrl,
+		"part":         part,
+		"presignedUrl": result.PresignedUrl,
+		"imageUrl":     result.ImageUrl,
 	}
 
 	context.JSON(http.StatusCreated, response)
@@ -63,18 +65,18 @@ func (controller *PartsController) UpdateParts(context *gin.Context) {
 		return
 	}
 
-	result, err := controller.partsService.UpdatePart(id, &part); if err != nil {
+	result, err := controller.partsService.UpdatePart(id, &part)
+	if err != nil {
 		log.Printf("Error updating part: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while updating machine", "details": err.Error()})
 		return
 	}
 
 	response := gin.H{
-		"part": part,
-		"presginedUrl": result.PresginedUrl,
-		"imageUrl": result.ImageUrl,
+		"part":         part,
+		"PresignedUrl": result.PresignedUrl,
+		"imageUrl":     result.ImageUrl,
 	}
-
 
 	context.JSON(http.StatusAccepted, response)
 }

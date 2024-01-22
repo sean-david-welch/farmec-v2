@@ -51,7 +51,7 @@ func (service *CarouselServiceImpl) CreateCarousel(carousel *types.Carousel) (*t
 	}
 
 	result := &types.ModelResult{
-		PresginedUrl: presignedUrl,
+		PresignedUrl: presignedUrl,
 		ImageUrl:     imageUrl,
 	}
 
@@ -77,7 +77,7 @@ func (service *CarouselServiceImpl) UpdateCarousel(id string, carousel *types.Ca
 	}
 
 	result := &types.ModelResult{
-		PresginedUrl: presignedUrl,
+		PresignedUrl: presignedUrl,
 		ImageUrl:     imageUrl,
 	}
 

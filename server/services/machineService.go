@@ -9,23 +9,23 @@ import (
 )
 
 type MachineService interface {
-	GetMachines(id string) ([]types.Machine, error) 
-	CreateMachine(machine *types.Machine) (*types.ModelResult, error) 
-	UpdateMachine(id string, machine *types.Machine) (*types.ModelResult, error) 
-	DeleteMachine(id string) error 
+	GetMachines(id string) ([]types.Machine, error)
+	CreateMachine(machine *types.Machine) (*types.ModelResult, error)
+	UpdateMachine(id string, machine *types.Machine) (*types.ModelResult, error)
+	DeleteMachine(id string) error
 }
 
 type MachineServiceImpl struct {
-	folder string 
-	s3Client utils.S3Client
+	folder     string
+	s3Client   utils.S3Client
 	repository repository.MachineRepository
 }
 
 func NewMachineService(repository repository.MachineRepository, s3Client utils.S3Client, folder string) *MachineServiceImpl {
 	return &MachineServiceImpl{
 		repository: repository,
-		s3Client: s3Client,
-		folder: folder,
+		s3Client:   s3Client,
+		folder:     folder,
 	}
 }
 
@@ -34,7 +34,8 @@ func (service *MachineServiceImpl) GetMachines(id string) ([]types.Machine, erro
 }
 
 func (service *MachineServiceImpl) CreateMachine(machine *types.Machine) (*types.ModelResult, error) {
-	machineImage := machine.MachineImage; if machineImage == "" {
+	machineImage := machine.MachineImage
+	if machineImage == "" {
 		return nil, errors.New("machine image is empty")
 	}
 
@@ -45,19 +46,20 @@ func (service *MachineServiceImpl) CreateMachine(machine *types.Machine) (*types
 
 	machine.MachineImage = imageUrl
 
-	service.repository.CreateMachine(machine); if err != nil {
+	service.repository.CreateMachine(machine)
+	if err != nil {
 		return nil, err
 	}
 
 	result := &types.ModelResult{
-		PresginedUrl: presignedUrl,
-		ImageUrl: imageUrl,
+		PresignedUrl: presignedUrl,
+		ImageUrl:     imageUrl,
 	}
 
 	return result, nil
 }
 
-func(service *MachineServiceImpl) UpdateMachine(id string, machine *types.Machine) (*types.ModelResult, error) {
+func (service *MachineServiceImpl) UpdateMachine(id string, machine *types.Machine) (*types.ModelResult, error) {
 	machineImage := machine.MachineImage
 
 	var presignedUrl, imageUrl string
@@ -71,20 +73,22 @@ func(service *MachineServiceImpl) UpdateMachine(id string, machine *types.Machin
 		machine.MachineImage = imageUrl
 	}
 
-	service.repository.UpdateMachine(id, machine); if err != nil {
+	service.repository.UpdateMachine(id, machine)
+	if err != nil {
 		return nil, err
 	}
 
 	result := &types.ModelResult{
-		PresginedUrl: presignedUrl,
-		ImageUrl: imageUrl,
+		PresignedUrl: presignedUrl,
+		ImageUrl:     imageUrl,
 	}
 
 	return result, nil
 }
 
 func (service *MachineServiceImpl) DeleteMachine(id string) error {
-	machine, err := service.repository.GetMachineById(id); if err != nil {
+	machine, err := service.repository.GetMachineById(id)
+	if err != nil {
 		return err
 	}
 

@@ -77,6 +77,6 @@ func TestCreateMachine(test *testing.T) {
 
 	assert.NoError(test, err)
 	assert.NotNil(test, result)
-	assert.Equal(test, "presigned-url", result.PresginedUrl)
+	assert.Equal(test, "presigned-url", result.PresignedUrl)
 	assert.Equal(test, "image-url", result.ImageUrl)
 }
