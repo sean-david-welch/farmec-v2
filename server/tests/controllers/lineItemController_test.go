@@ -8,68 +8,67 @@ import (
 	"testing"
 
 	"github.com/gin-gonic/gin"
+	"github.com/golang/mock/gomock"
 	"github.com/sean-david-welch/farmec-v2/server/controllers"
 	"github.com/sean-david-welch/farmec-v2/server/tests/mocks"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"github.com/stretchr/testify/assert"
 )
 
-func setupControllerTest(test *testing.T) (*gin.Engine, *mocks.MockLineItemService,  *controllers.LineItemController, *httptest.ResponseRecorder) {
-    gin.SetMode(gin.TestMode)
+func setupControllerTest(t *testing.T) (*gin.Engine, *mocks.MockLineItemService, *controllers.LineItemController, *httptest.ResponseRecorder) {
+	gin.SetMode(gin.TestMode)
 
-    mockService := new(mocks.MockLineItemService)
-    controller := controllers.NewLineItemController(mockService)
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
 
-    router := gin.Default()
-    recorder := httptest.NewRecorder()
+	mockService := mocks.NewMockLineItemService(ctrl)
+	controller := controllers.NewLineItemController(mockService)
 
-    return router, mockService, controller, recorder
+	router := gin.Default()
+	recorder := httptest.NewRecorder()
+
+	return router, mockService, controller, recorder
 }
 
-func TestGetLineItems(test *testing.T) {
-    router, mockService, controller, recorder := setupControllerTest(test)
+func TestGetLineItems(t *testing.T) {
+	router, mockService, controller, recorder := setupControllerTest(t)
 
-    expectedLineItems := []types.LineItem{
-        {ID: "1", Name: "Apple", Price: 1.99, Image: "apple.jpg"},
-        {ID: "2", Name: "Banana", Price: 0.99, Image: "banana.jpg"},
-    }
+	expectedLineItems := []types.LineItem{
+		{ID: "1", Name: "Apple", Price: 1.99, Image: "apple.jpg"},
+		{ID: "2", Name: "Banana", Price: 0.99, Image: "banana.jpg"},
+	}
 
-    mockService.On("GetLineItems").Return(expectedLineItems, nil)
+	mockService.EXPECT().GetLineItems().Return(expectedLineItems, nil)
 
-    router.GET("/lineitems", controller.GetLineItems)
+	router.GET("/lineitems", controller.GetLineItems)
 
-    mocks.PerformRequest(test, router, "GET", "/lineitems", nil, recorder)
-    
-    assert.Equal(test, http.StatusOK, recorder.Code)
+	mocks.PerformRequest(t, router, "GET", "/lineitems", nil, recorder)
 
-    var actual []types.LineItem
-    mocks.UnmarshalResponse(test, recorder, &actual)
+	assert.Equal(t, http.StatusOK, recorder.Code)
 
+	var actual []types.LineItem
+	mocks.UnmarshalResponse(t, recorder, &actual)
 
-    assert.Equal(test, expectedLineItems, actual)
-    mockService.AssertExpectations(test)
+	assert.Equal(t, expectedLineItems, actual)
 }
 
-func TestCreateLineItem(test *testing.T) {
-    router, mockService, controller, recorder := setupControllerTest(test)
+func TestCreateLineItem(t *testing.T) {
+	router, mockService, controller, recorder := setupControllerTest(t)
 
-    newLineItem := &types.LineItem{ID: "3", Name: "Grape", Price: 2.50, Image: "grape.jpg"}
-    newLineItemJSON, err := json.Marshal(newLineItem); if err != nil {
-        test.Fatal("Error marshalling new line item:", err)
-    }
+	newLineItem := &types.LineItem{ID: "3", Name: "Grape", Price: 2.50, Image: "grape.jpg"}
+	newLineItemJSON, _ := json.Marshal(newLineItem)
 
-    expectedResult := &types.ModelResult{PresginedUrl: "presigned-url", ImageUrl: "image-url"}
-    mockService.On("CreateLineItem", newLineItem).Return(expectedResult, nil)
+	expectedResult := &types.ModelResult{PresginedUrl: "presigned-url", ImageUrl: "image-url"}
 
-    router.POST("/lineitems", controller.CreateLineItem)
-    mocks.PerformRequest(test, router, "POST", "/lineitems", bytes.NewBuffer(newLineItemJSON), recorder)
+	mockService.EXPECT().CreateLineItem(newLineItem).Return(expectedResult, nil)
 
-    assert.Equal(test, http.StatusCreated, recorder.Code)
+	router.POST("/lineitems", controller.CreateLineItem)
+	mocks.PerformRequest(t, router, "POST", "/lineitems", bytes.NewBuffer(newLineItemJSON), recorder)
 
-    var actual types.ModelResult
-    mocks.UnmarshalResponse(test, recorder, &actual)
+	assert.Equal(t, http.StatusCreated, recorder.Code)
 
+	var actual types.ModelResult
+	mocks.UnmarshalResponse(t, recorder, &actual)
 
-    assert.Equal(test, expectedResult, &actual)
-    mockService.AssertExpectations(test)
+	assert.Equal(t, expectedResult, &actual)
 }
