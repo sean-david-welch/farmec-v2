@@ -118,7 +118,7 @@ func TestCreateSupplier(test *testing.T) {
 	assert.NotNil(test, result)
 
 	assert.Equal(test, "presignedurl1", result.PresignedLogoUrl)
-	assert.Equal(test, "presignedurl2", result.PresginedMarketingUrl)
+	assert.Equal(test, "presignedurl2", result.PresignedMarketingUrl)
 
 	assert.Equal(test, "imageurl1", result.LogoUrl)
 	assert.Equal(test, "imageurl2", result.MarketingUrl)

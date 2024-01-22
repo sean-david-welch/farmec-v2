@@ -13,21 +13,22 @@ type VideoController struct {
 	videoService services.VideoService
 }
 
-func NewVideoController(videoService services.VideoService) *VideoController{
+func NewVideoController(videoService services.VideoService) *VideoController {
 	return &VideoController{videoService: videoService}
 }
 
 func (controller *VideoController) GetVideos(context *gin.Context) {
 	id := context.Param("id")
 
-	videos, err := controller.videoService.GetVideos(id); if err != nil {
+	videos, err := controller.videoService.GetVideos(id)
+	if err != nil {
 		log.Printf("Error getting suppliers: %v", err)
-        context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while getting suppliers"})
-        return
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while getting suppliers"})
+		return
 	}
 
 	context.JSON(http.StatusOK, videos)
-} 
+}
 
 func (controller *VideoController) CreateVideo(context *gin.Context) {
 	var video types.Video

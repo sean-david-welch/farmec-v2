@@ -17,8 +17,9 @@ func NewWarrantyController(service services.WarrantyService) *WarrantyController
 	return &WarrantyController{service: service}
 }
 
-func(controller *WarrantyController) GetWarranties(context *gin.Context) {
-	warranties, err := controller.service.GetWarranties(); if err != nil {
+func (controller *WarrantyController) GetWarranties(context *gin.Context) {
+	warranties, err := controller.service.GetWarranties()
+	if err != nil {
 		log.Printf("error occurred while getting warranties: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while getting warranties"})
 		return
@@ -27,48 +28,43 @@ func(controller *WarrantyController) GetWarranties(context *gin.Context) {
 	context.JSON(http.StatusOK, warranties)
 }
 
-func(controller *WarrantyController) GetWarrantyById(context *gin.Context) {
+func (controller *WarrantyController) GetWarrantyById(context *gin.Context) {
 	id := context.Param("id")
 
-	warranty, parts, err := controller.service.GetWarrantyById(id); if err != nil {
-		log.Printf("error occurred while getting warrantiy and adjoining parts: %v", err)	
+	warranty, parts, err := controller.service.GetWarrantyById(id)
+	if err != nil {
+		log.Printf("error occurred while getting warrantiy and adjoining parts: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while getting warrantiy and adjoining parts"})
 		return
 	}
 
 	response := gin.H{
 		"warranty": warranty,
-		"parts": parts,
+		"parts":    parts,
 	}
 
 	context.JSON(http.StatusOK, response)
 }
 
-func(controller *WarrantyController) CreateWarranty(context *gin.Context) {
-	var warranty *types.WarrantyClaim
-	var parts []types.PartsRequired
+func (controller *WarrantyController) CreateWarranty(context *gin.Context) {
+	var warrantyParts types.WarranrtyParts
 
-	body := gin.H{
-		"warranty": warranty,
-		"parts": parts,
-	}
-
-	if err := context.ShouldBindJSON(body); err != nil {
+	if err := context.ShouldBindJSON(&warrantyParts); err != nil {
 		log.Printf("error occurred - bad request: %v", err)
 		context.JSON(http.StatusBadRequest, gin.H{"error": "error occurred bad request"})
 		return
 	}
 
-	if err := controller.service.CreateWarranty(warranty, parts); err != nil {
+	if err := controller.service.CreateWarranty(warrantyParts.Warranty, warrantyParts.Parts); err != nil {
 		log.Printf("error occurred while creating warranty: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while creating warranty claim"})
 		return
 	}
 
-	context.JSON(http.StatusCreated, body)	
+	context.JSON(http.StatusCreated, warrantyParts)
 }
 
-func(controller *WarrantyController) UpdateWarranty(context *gin.Context) {
+func (controller *WarrantyController) UpdateWarranty(context *gin.Context) {
 	id := context.Param("id")
 
 	var warranty *types.WarrantyClaim
@@ -76,7 +72,7 @@ func(controller *WarrantyController) UpdateWarranty(context *gin.Context) {
 
 	body := gin.H{
 		"warranty": warranty,
-		"parts": parts,
+		"parts":    parts,
 	}
 
 	if err := context.ShouldBindJSON(body); err != nil {
@@ -91,10 +87,10 @@ func(controller *WarrantyController) UpdateWarranty(context *gin.Context) {
 		return
 	}
 
-	context.JSON(http.StatusAccepted, body)	
+	context.JSON(http.StatusAccepted, body)
 }
 
-func(controller *WarrantyController) DeleteWarranty(context *gin.Context) {
+func (controller *WarrantyController) DeleteWarranty(context *gin.Context) {
 	id := context.Param("id")
 
 	if err := controller.service.DeleteWarranty(id); err != nil {
