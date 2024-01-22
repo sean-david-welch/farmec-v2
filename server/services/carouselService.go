@@ -9,23 +9,23 @@ import (
 )
 
 type CarouselService interface {
-	GetCarousels() ([]types.Carousel, error) 
-	CreateCarousel(carousel *types.Carousel) (*types.ModelResult, error) 
-	UpdateCarousel(id string, carousel *types.Carousel) (*types.ModelResult, error) 
-	DeleteCarousel(id string) error 
-} 
+	GetCarousels() ([]types.Carousel, error)
+	CreateCarousel(carousel *types.Carousel) (*types.ModelResult, error)
+	UpdateCarousel(id string, carousel *types.Carousel) (*types.ModelResult, error)
+	DeleteCarousel(id string) error
+}
 
 type CarouselServiceImpl struct {
 	repository repository.CarouselRepository
-	s3Client utils.S3Client
-	folder string
+	s3Client   utils.S3Client
+	folder     string
 }
 
 func NewCarouselService(repository repository.CarouselRepository, s3Client utils.S3Client, folder string) *CarouselServiceImpl {
 	return &CarouselServiceImpl{
 		repository: repository,
-		s3Client: s3Client,
-		folder: folder,
+		s3Client:   s3Client,
+		folder:     folder,
 	}
 }
 
@@ -34,7 +34,8 @@ func (service *CarouselServiceImpl) GetCarousels() ([]types.Carousel, error) {
 }
 
 func (service *CarouselServiceImpl) CreateCarousel(carousel *types.Carousel) (*types.ModelResult, error) {
-	image := carousel.Image; if image != "" {
+	image := carousel.Image
+	if image == "" {
 		return nil, errors.New("image is empty")
 	}
 
@@ -45,25 +46,25 @@ func (service *CarouselServiceImpl) CreateCarousel(carousel *types.Carousel) (*t
 
 	carousel.Image = imageUrl
 
-	service.repository.CreateCarousel(carousel); if err != nil {
+	if err := service.repository.CreateCarousel(carousel); err != nil {
 		return nil, err
 	}
 
 	result := &types.ModelResult{
 		PresginedUrl: presignedUrl,
-		ImageUrl: imageUrl,
+		ImageUrl:     imageUrl,
 	}
 
 	return result, nil
-}	
+}
 
 func (service *CarouselServiceImpl) UpdateCarousel(id string, carousel *types.Carousel) (*types.ModelResult, error) {
-	image := carousel.Image;
+	image := carousel.Image
 
 	var presignedUrl, imageUrl string
 	var err error
 
-	if image != "" {
+	if image == "" {
 		presignedUrl, imageUrl, err = service.s3Client.GeneratePresignedUrl(service.folder, image)
 		if err != nil {
 			return nil, err
@@ -71,20 +72,21 @@ func (service *CarouselServiceImpl) UpdateCarousel(id string, carousel *types.Ca
 		carousel.Image = imageUrl
 	}
 
-	service.repository.UpdateCarousel(id, carousel); if err != nil {
+	if err := service.repository.UpdateCarousel(id, carousel); err != nil {
 		return nil, err
 	}
 
 	result := &types.ModelResult{
 		PresginedUrl: presignedUrl,
-		ImageUrl: imageUrl,
+		ImageUrl:     imageUrl,
 	}
 
 	return result, nil
 }
 
 func (service *CarouselServiceImpl) DeleteCarousel(id string) error {
-	carousel, err := service.repository.GetCarouselById(id); if err != nil {
+	carousel, err := service.repository.GetCarouselById(id)
+	if err != nil {
 		return err
 	}
 
@@ -92,11 +94,9 @@ func (service *CarouselServiceImpl) DeleteCarousel(id string) error {
 		return err
 	}
 
-
 	if err := service.repository.DeleteCarousel(id); err != nil {
 		return err
 	}
 
 	return nil
 }
-

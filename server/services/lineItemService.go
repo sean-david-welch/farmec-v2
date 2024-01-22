@@ -70,7 +70,7 @@ func (service *LineItemServiceImpl) UpdateLineItem(id string, lineItem *types.Li
 	var presginedUrl, imageUrl string
 	var err error
 
-	if image != "" {
+	if image == "" {
 		presginedUrl, imageUrl, err = service.s3Client.GeneratePresignedUrl(service.folder, image)
 		if err != nil {
 			return nil, err
