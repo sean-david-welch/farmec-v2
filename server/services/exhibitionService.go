@@ -20,15 +20,16 @@ func NewExhibitionService(repository repository.ExhibitionRepository) *Exhibitio
 	return &ExhibitionServiceImpl{repository: repository}
 }
 
-func(service *ExhibitionServiceImpl) GetExhibitions() ([]types.Exhibition, error) {
-	exhibitions, err := service.repository.GetExhibitions(); if err != nil {
+func (service *ExhibitionServiceImpl) GetExhibitions() ([]types.Exhibition, error) {
+	exhibitions, err := service.repository.GetExhibitions()
+	if err != nil {
 		return nil, err
 	}
 
 	return exhibitions, nil
 }
 
-func(service *ExhibitionServiceImpl) CreateExhibition(exhibition *types.Exhibition) error {
+func (service *ExhibitionServiceImpl) CreateExhibition(exhibition *types.Exhibition) error {
 	if err := service.repository.CreateExhibition(exhibition); err != nil {
 		return err
 	}
@@ -36,7 +37,7 @@ func(service *ExhibitionServiceImpl) CreateExhibition(exhibition *types.Exhibiti
 	return nil
 }
 
-func(service *ExhibitionServiceImpl) UpdateExhibition(id string, exhibition *types.Exhibition) error {
+func (service *ExhibitionServiceImpl) UpdateExhibition(id string, exhibition *types.Exhibition) error {
 	if err := service.repository.UpdateExhibition(id, exhibition); err != nil {
 		return err
 	}
@@ -44,7 +45,7 @@ func(service *ExhibitionServiceImpl) UpdateExhibition(id string, exhibition *typ
 	return nil
 }
 
-func(service *ExhibitionServiceImpl) DeleteExhibition(id string) error {
+func (service *ExhibitionServiceImpl) DeleteExhibition(id string) error {
 	if err := service.repository.DeleteExhibition(id); err != nil {
 		return err
 	}
