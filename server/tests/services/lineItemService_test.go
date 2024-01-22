@@ -12,7 +12,7 @@ import (
 
 func LineItemTestService(t *testing.T) (*mocks.MockLineItemRepository, *mocks.MockS3Client, services.LineItemService) {
 	ctrl := gomock.NewController(t)
-	defer ctrl.Finish() // Finish has to be called when the test completes
+	defer ctrl.Finish()
 
 	mockRepo := mocks.NewMockLineItemRepository(ctrl)
 	mockS3Client := mocks.NewMockS3Client(ctrl)
@@ -29,7 +29,6 @@ func TestGetLineItems(t *testing.T) {
 		{ID: "2", Name: "Item 2", Price: 20.99, Image: "image2.jpg"},
 	}
 
-	// Setting up expectations using gomock
 	mockRepo.EXPECT().GetLineItems().Return(expectedLineItems, nil)
 
 	lineItems, err := service.GetLineItems()
@@ -48,7 +47,6 @@ func TestCreateLineItem(t *testing.T) {
 		Image: "image3.jpg",
 	}
 
-	// Setting up expectations using gomock
 	mockS3Client.EXPECT().GeneratePresignedUrl(gomock.Any(), gomock.Any()).Return("presigned-url", "image-url", nil)
 	mockRepo.EXPECT().CreateLineItem(newLineItem).Return(nil)
 

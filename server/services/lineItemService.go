@@ -16,36 +16,39 @@ type LineItemService interface {
 
 type LineItemServiceImpl struct {
 	repository repository.LineItemRepository
-	s3Client utils.S3Client
-	folder string
+	s3Client   utils.S3Client
+	folder     string
 }
 
 func NewLineItemService(repository repository.LineItemRepository, s3Client utils.S3Client, folder string) *LineItemServiceImpl {
 	return &LineItemServiceImpl{repository: repository, s3Client: s3Client, folder: folder}
 }
 
-func(service *LineItemServiceImpl) GetLineItems() ([]types.LineItem, error) {
-	lineItems, err := service.repository.GetLineItems(); if err != nil {
+func (service *LineItemServiceImpl) GetLineItems() ([]types.LineItem, error) {
+	lineItems, err := service.repository.GetLineItems()
+	if err != nil {
 		return nil, err
 	}
 
 	return lineItems, nil
 }
 
-func(service *LineItemServiceImpl) GetLineItemById(id string) (*types.LineItem, error) {
-	lineItem, err := service.repository.GetLineItemById(id); if err != nil {
+func (service *LineItemServiceImpl) GetLineItemById(id string) (*types.LineItem, error) {
+	lineItem, err := service.repository.GetLineItemById(id)
+	if err != nil {
 		return nil, err
 	}
 
 	return lineItem, nil
 }
 
-func(service *LineItemServiceImpl) CreateLineItem(lineItem *types.LineItem) (*types.ModelResult, error) {
+func (service *LineItemServiceImpl) CreateLineItem(lineItem *types.LineItem) (*types.ModelResult, error) {
 	image := lineItem.Image
 
-	presginedUrl, imageUrl, err := service.s3Client.GeneratePresignedUrl(service.folder, image); if err != nil {
+	presginedUrl, imageUrl, err := service.s3Client.GeneratePresignedUrl(service.folder, image)
+	if err != nil {
 		return nil, err
-	}	
+	}
 
 	lineItem.Image = imageUrl
 
@@ -53,23 +56,23 @@ func(service *LineItemServiceImpl) CreateLineItem(lineItem *types.LineItem) (*ty
 		return nil, err
 	}
 
-
-	result := &types.ModelResult {
+	result := &types.ModelResult{
 		PresginedUrl: presginedUrl,
-		ImageUrl: imageUrl,
+		ImageUrl:     imageUrl,
 	}
 
 	return result, nil
 }
 
-func(service *LineItemServiceImpl) UpdateLineItem(id string, lineItem *types.LineItem) (*types.ModelResult, error) {
+func (service *LineItemServiceImpl) UpdateLineItem(id string, lineItem *types.LineItem) (*types.ModelResult, error) {
 	image := lineItem.Image
 
 	var presginedUrl, imageUrl string
 	var err error
 
 	if image != "" {
-		presginedUrl, imageUrl, err = service.s3Client.GeneratePresignedUrl(service.folder, image); if err != nil {
+		presginedUrl, imageUrl, err = service.s3Client.GeneratePresignedUrl(service.folder, image)
+		if err != nil {
 			return nil, err
 		}
 		lineItem.Image = imageUrl
@@ -81,14 +84,15 @@ func(service *LineItemServiceImpl) UpdateLineItem(id string, lineItem *types.Lin
 
 	result := &types.ModelResult{
 		PresginedUrl: presginedUrl,
-		ImageUrl: imageUrl,
+		ImageUrl:     imageUrl,
 	}
 
 	return result, nil
 }
 
 func (service *LineItemServiceImpl) DeleteLineItem(id string) error {
-	lineItem, err := service.repository.GetLineItemById(id); if err != nil {
+	lineItem, err := service.repository.GetLineItemById(id)
+	if err != nil {
 		return err
 	}
 
