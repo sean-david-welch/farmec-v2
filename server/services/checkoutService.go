@@ -9,25 +9,31 @@ import (
 	"github.com/stripe/stripe-go/v76/checkout/session"
 )
 
-type CheckoutService struct {
-	secrets *config.Secrets
+type CheckoutService interface {
+	CreateCheckoutSession(id string) (*stripe.CheckoutSession, error)
+	RetrieveCheckoutSession(sessionId string) (*stripe.CheckoutSession, error)
+}
+
+type CheckoutServiceImpl struct {
+	secrets    *config.Secrets
 	repository repository.LineItemRepository
 }
 
-func NewCheckoutService(secrets *config.Secrets, repository repository.LineItemRepository) *CheckoutService {
-	return &CheckoutService{secrets: secrets, repository: repository}
+func NewCheckoutService(secrets *config.Secrets, repository repository.LineItemRepository) *CheckoutServiceImpl {
+	return &CheckoutServiceImpl{secrets: secrets, repository: repository}
 }
 
-func(service *CheckoutService) CreateCheckoutSession(id string) (*stripe.CheckoutSession, error) {
+func (service *CheckoutServiceImpl) CreateCheckoutSession(id string) (*stripe.CheckoutSession, error) {
 	stripe.Key = service.secrets.StripeSecretKey
 
-	product, err := service.repository.GetLineItemById(id); if err != nil {
+	product, err := service.repository.GetLineItemById(id)
+	if err != nil {
 		return nil, err
 	}
 
 	params := &stripe.CheckoutSessionParams{
-		UIMode: stripe.String("embedded"),
-		ReturnURL: stripe.String(service.secrets.Domain + "/return?session_id={CHECKOUT_SESSION_ID}"),
+		UIMode:             stripe.String("embedded"),
+		ReturnURL:          stripe.String(service.secrets.Domain + "/return?session_id={CHECKOUT_SESSION_ID}"),
 		PaymentMethodTypes: stripe.StringSlice([]string{"card"}),
 		LineItems: []*stripe.CheckoutSessionLineItemParams{
 			{
@@ -47,17 +53,19 @@ func(service *CheckoutService) CreateCheckoutSession(id string) (*stripe.Checkou
 		AutomaticTax: &stripe.CheckoutSessionAutomaticTaxParams{Enabled: stripe.Bool(true)},
 	}
 
-	sess, err := session.New(params); if err != nil {
+	sess, err := session.New(params)
+	if err != nil {
 		log.Printf("session.Ne1: %v", err)
 	}
 
 	return sess, nil
 }
 
-func(service *CheckoutService) RetrieveCheckoutSession(sessionId string) (*stripe.CheckoutSession, error) {
+func (service *CheckoutServiceImpl) RetrieveCheckoutSession(sessionId string) (*stripe.CheckoutSession, error) {
 	stripe.Key = service.secrets.StripeSecretKey
 
-	sess, err := session.Get(sessionId, nil); if err != nil {
+	sess, err := session.Get(sessionId, nil)
+	if err != nil {
 		return nil, err
 	}
 

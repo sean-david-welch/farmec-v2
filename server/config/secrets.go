@@ -7,30 +7,26 @@ import (
 )
 
 type Secrets struct {
-	Domain string
-	DatabaseURL string
-
-	ProjectId string
-	PrivateKeyId string
-	PrivateKey string
-	ClientEmail string
-	ClientId string
-	AuthUri string
-	TokenUri string
+	Domain                  string
+	DatabaseURL             string
+	ProjectId               string
+	PrivateKeyId            string
+	PrivateKey              string
+	ClientEmail             string
+	ClientId                string
+	AuthUri                 string
+	TokenUri                string
 	AuthProviderX509CertUrl string
-	ClientX509CertUrl string
-
-	AwsAccessKey string
-	AwsSecret string
-	
-	YoutubeApiKey string
-	StripeSecretKey string
-	StripePublicKey string
-
-	EmailHost string
-	EmailPass string
-	EmailUser string
-	EmailPort string
+	ClientX509CertUrl       string
+	AwsAccessKey            string
+	AwsSecret               string
+	YoutubeApiKey           string
+	StripeSecretKey         string
+	StripePublicKey         string
+	EmailHost               string
+	EmailPass               string
+	EmailUser               string
+	EmailPort               string
 }
 
 func NewSecrets() (*Secrets, error) {
@@ -40,26 +36,27 @@ func NewSecrets() (*Secrets, error) {
 
 	return &Secrets{
 		Domain: os.Getenv("DOMAIN"),
+		// Database
 		DatabaseURL: os.Getenv("DATABASE_URL"),
-
-		ProjectId: os.Getenv("PROJECT_ID"),
-		PrivateKeyId: os.Getenv("PRIVATE_KEY_ID"),
-		PrivateKey: os.Getenv("PRIVATE_KEY"),
-		ClientEmail: os.Getenv("CLIENT_EMAIL"),
-		ClientId: os.Getenv("CLIENT_ID"),
-		AuthUri: os.Getenv("AUTH_URI"),
-		TokenUri: os.Getenv("TOKEN_URI"),
+		// Firebase
+		ProjectId:               os.Getenv("PROJECT_ID"),
+		PrivateKeyId:            os.Getenv("PRIVATE_KEY_ID"),
+		PrivateKey:              os.Getenv("PRIVATE_KEY"),
+		ClientEmail:             os.Getenv("CLIENT_EMAIL"),
+		ClientId:                os.Getenv("CLIENT_ID"),
+		AuthUri:                 os.Getenv("AUTH_URI"),
+		TokenUri:                os.Getenv("TOKEN_URI"),
 		AuthProviderX509CertUrl: os.Getenv("AUTH_PROVIDER_X509_CERT_URL"),
-		ClientX509CertUrl: os.Getenv("CLIENT_X509_CERT_URL"),
-
+		ClientX509CertUrl:       os.Getenv("CLIENT_X509_CERT_URL"),
+		// AWS
 		AwsAccessKey: os.Getenv("AWS_ACCESS_KEY"),
-		AwsSecret: os.Getenv("AWS_SECRET"),
-
+		AwsSecret:    os.Getenv("AWS_SECRET"),
+		// Youtube
 		YoutubeApiKey: os.Getenv("YOUTUBE_API_KEY"),
-
+		// Stripe
 		StripeSecretKey: os.Getenv("STRIPE_SECRET_KEY"),
 		StripePublicKey: os.Getenv("STRIPE_PUBLIC_KEY"),
-
+		// Email
 		EmailHost: os.Getenv("EMAIL_HOST"),
 		EmailPass: os.Getenv("EMAIL_PASSWORD"),
 		EmailUser: os.Getenv("EMAIL_USER"),
