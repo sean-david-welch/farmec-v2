@@ -1,12 +1,14 @@
 import AppRoutes from './Routes';
+import Layout from './layouts/Layout';
 
 function App() {
-  return (
-    <>
-      <h1>Hello World</h1>
-      <AppRoutes />
-    </>
-  );
+    return (
+        <>
+            <Layout>
+                <AppRoutes />
+            </Layout>
+        </>
+    );
 }
 
 export default App;
