@@ -1,20 +1,19 @@
+import React, { useState } from 'react';
 import utils from '../../styles/Utils.module.css';
 import styles from '../../styles/Blogs.module.css';
 
-import { createSignal } from 'solid-js';
-
-import { signInUser } from '../../utils/auth';
+import { signInUser } from '../utils/auth';
 
 const LoginForm = () => {
-    const [email, setEmail] = createSignal('');
-    const [password, setPassword] = createSignal('');
-    const [errorMessage, setErrorMessage] = createSignal('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
 
-    const handleSubmit = async (event: SubmitEvent) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         try {
-            const idToken = await signInUser(email(), password());
+            const idToken = await signInUser(email, password);
 
             const response = await fetch('/api/auth/login', {
                 method: 'GET',
@@ -26,9 +25,7 @@ const LoginForm = () => {
             if (user) {
                 setEmail('');
                 setPassword('');
-
                 localStorage.setItem('user', JSON.stringify(user));
-
                 window.location.href = '/';
             }
         } catch (error: any) {
@@ -38,20 +35,18 @@ const LoginForm = () => {
                 setErrorMessage('An unexpected error occurred. Please try again later.');
             }
 
-            if (error instanceof Error) {
-                console.error('Error submitting form:', error.message);
-            }
+            console.error('Error submitting form:', error.message || error);
         }
     };
 
     return (
-        <form onSubmit={handleSubmit} class={utils.form}>
+        <form onSubmit={handleSubmit} className={utils.form}>
             <label>Email:</label>
             <input
                 type="email"
-                value={email()}
-                onInput={e => {
-                    setEmail(e.currentTarget.value);
+                value={email}
+                onChange={e => {
+                    setEmail(e.target.value);
                     setErrorMessage('');
                 }}
                 required
@@ -60,15 +55,15 @@ const LoginForm = () => {
             <label>Password:</label>
             <input
                 type="password"
-                value={password()}
-                onInput={e => {
-                    setPassword(e.currentTarget.value);
+                value={password}
+                onChange={e => {
+                    setPassword(e.target.value);
                     setErrorMessage('');
                 }}
                 required
             />
 
-            {errorMessage() && <div class={styles.errorMessage}>{errorMessage()}</div>}
+            {errorMessage && <div className={styles.errorMessage}>{errorMessage}</div>}
             <button type="submit">Login</button>
         </form>
     );
