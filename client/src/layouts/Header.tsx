@@ -1,98 +1,97 @@
-import { Component, For, createResource } from 'solid-js';
+import styles from '../styles/Header.module.css';
+
 import AccountButton from '../components/AccountButton';
 
-import styles from '../styles/Header.module.css';
-import type Supplier from '../types/supplier';
-import { useLocation } from '@solidjs/router';
+import { useLocation } from 'react-router-dom';
+import { useSuppliers } from '../hooks/useSuppliers';
 
-const Header: Component = () => {
+const Header: React.FC = () => {
     const location = useLocation();
     const isHomepage = () => location.pathname === '/';
 
-    const [suppliers] = createResource<Supplier[]>(async () => {
-        return fetch(`http://localhost:8080/api/suppliers`).then(response => response.json());
-    });
+    const { suppliers } = useSuppliers();
 
     return (
-        <nav class={isHomepage() ? styles.transparentNav : styles.navbar}>
+        <nav className={isHomepage() ? styles.transparentNav : styles.navbar}>
             <a href="/" aria-label="logo button">
                 <img
-                    src="https://farmec-bucket.s3.eu-west-1.amazonaws.com/farmec_images/farmeclogo.webp"
+                    src="https://d3eerclezczw8.cloudfront.net/farmec_images/farmeclogo.webp"
                     alt="Logo"
                     width="250"
                     height="250"
                 />
             </a>
 
-            <ul class={styles.navList}>
-                <li class={styles.navItem}>
-                    <a href="/about" style={styles.navListItem}>
+            <ul className={styles.navList}>
+                <li className={styles.navItem}>
+                    <a href="/about" className={styles.navListItem}>
                         About Us
                     </a>
-                    <ul class={styles.navDrop}>
-                        <li class={styles.navDropItem}>
+                    <ul className={styles.navDrop}>
+                        <li className={styles.navDropItem}>
                             <a href="/about">Staff & Management</a>
                         </li>
-                        <li class={styles.navDropItem}>
+                        <li className={styles.navDropItem}>
                             <a href="/about#timeline">Company History</a>
                         </li>
-                        <li class={styles.navDropItem}>
+                        <li className={styles.navDropItem}>
                             <a href="/about/policies">Terms of Use</a>
                         </li>
                     </ul>
                 </li>
 
-                <li class={styles.navItem}>
-                    <a href="/suppliers" style={styles.navListItem}>
+                <li className={styles.navItem}>
+                    <a href="/suppliers" className={styles.navListItem}>
                         Suppliers
                     </a>
-                    <ul class={styles.navDrop}>
-                        <For each={suppliers()}>
-                            {supplier => (
-                                <li class={styles.navDropItem}>
+                    {suppliers.data && (
+                        <ul className={styles.navDrop}>
+                            {suppliers.data.map(supplier => (
+                                <li className={styles.navDropItem} key={supplier.id}>
                                     <a href={`/suppliers/${supplier.id}`}>{supplier.name}</a>
                                 </li>
-                            )}
-                        </For>
-                    </ul>
+                            ))}
+                        </ul>
+                    )}
                 </li>
 
-                <li class={styles.navItem}>
-                    <a href="/spareparts" style={styles.navListItem}>
+                <li className={styles.navItem}>
+                    <a href="/spareparts" className={styles.navListItem}>
                         Spareparts
                     </a>
-                    <ul class={styles.navDrop}>
-                        <For each={suppliers()}>
-                            {supplier => (
-                                <li class={styles.navDropItem}>
+
+                    {suppliers.data && (
+                        <ul className={styles.navDrop}>
+                            {suppliers.data.map(supplier => (
+                                <li className={styles.navDropItem} key={supplier.id}>
                                     <a href={`/spareparts/${supplier.id}`}>{supplier.name}</a>
                                 </li>
-                            )}
-                        </For>
-                    </ul>
+                            ))}
+                        </ul>
+                    )}
                 </li>
 
-                <li class={styles.navItem}>
-                    <a href="/blogs" style={styles.navListItem}>
+                <li className={styles.navItem}>
+                    <a href="/blogs" className={styles.navListItem}>
                         Blog
                     </a>
-                    <ul class={styles.navDrop}>
-                        <li class={styles.navDropItem}>
+                    <ul className={styles.navDrop}>
+                        <li className={styles.navDropItem}>
                             <a href="/blog">Latest Posts</a>
                         </li>
-                        <li class={styles.navDropItem}>
+                        <li className={styles.navDropItem}>
                             <a href="/blog/exhibitions">Exhibition Information</a>
                         </li>
                     </ul>
                 </li>
 
-                <li class={styles.navItem}>
-                    <a href="/#contact" style={styles.navListItem}>
+                <li className={styles.navItem}>
+                    <a href="/#contact" className={styles.navListItem}>
                         Contact
                     </a>
                 </li>
 
-                <AccountButton />
+                {/* <AccountButton /> */}
             </ul>
         </nav>
     );

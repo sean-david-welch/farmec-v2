@@ -1,13 +1,14 @@
-import AppRoutes from './Routes';
-import Layout from './layouts/Layout';
+import AppRoutes from './routes/Router';
+
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 function App() {
+    const queryClient = new QueryClient();
+
     return (
-        <>
-            <Layout>
-                <AppRoutes />
-            </Layout>
-        </>
+        <QueryClientProvider client={queryClient}>
+            <AppRoutes />
+        </QueryClientProvider>
     );
 }
 
