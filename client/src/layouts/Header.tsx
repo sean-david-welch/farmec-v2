@@ -91,7 +91,7 @@ const Header: React.FC = () => {
                     </a>
                 </li>
 
-                {/* <AccountButton /> */}
+                <AccountButton />
             </ul>
         </nav>
     );
