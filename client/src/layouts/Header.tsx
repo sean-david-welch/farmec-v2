@@ -3,7 +3,7 @@ import styles from '../styles/Header.module.css';
 import AccountButton from '../components/AccountButton';
 
 import { useLocation } from 'react-router-dom';
-import { useSuppliers } from '../hooks/useSuppliers';
+import { useSuppliers } from '../hooks/supplierHooks';
 
 const Header: React.FC = () => {
     const location = useLocation();

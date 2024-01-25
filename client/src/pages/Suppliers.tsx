@@ -1,4 +1,4 @@
-import { useSuppliers } from '../hooks/useSuppliers';
+import { useSuppliers } from '../hooks/supplierHooks';
 import styles from '../styles/Suppliers.module.css';
 
 const Suppliers: React.FC = () => {

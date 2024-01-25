@@ -5,7 +5,7 @@ import Videos from '../templates/Videos';
 import Machines from '../templates/Machines';
 
 import { useParams } from 'react-router-dom';
-import { useSupplierDetails } from '../hooks/useSupplierDetails';
+import { useSupplierDetails } from '../hooks/supplierHooks';
 
 const SuppliersDetails: React.FC = () => {
     const params = useParams<{ id: string }>();
