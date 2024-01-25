@@ -10,7 +10,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/services"
 )
 
-func InitializeExhibitions(router *gin.Engine, database *sql.DB, adminMiddleware *middleware.AdminMiddleware) {
+func InitExhibitions(router *gin.Engine, database *sql.DB, adminMiddleware *middleware.AdminMiddleware) {
 	repository := repository.NewExhibitionRepository(database)
 	service := services.NewExhibitionService(repository)
 	controller := controllers.NewExhibitionController(service)
@@ -23,7 +23,8 @@ func ExhibitionRoutes(router *gin.Engine, controller *controllers.ExhibitionCont
 
 	exhibitionGroup.GET("", controller.GetExhibitions)
 
-	protected := exhibitionGroup.Group("").Use(adminMiddleware.Middleware()); {
+	protected := exhibitionGroup.Group("").Use(adminMiddleware.Middleware())
+	{
 		protected.POST("", controller.CreateExhibition)
 		protected.PUT("/:id", controller.UpdateExhibition)
 		protected.DELETE("/:id", controller.DeleteExhibition)

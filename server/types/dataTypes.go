@@ -17,3 +17,9 @@ type EmailData struct {
 	Email   string
 	Message string
 }
+
+type UserData struct {
+	Email    string
+	Password string
+	Role     string
+}

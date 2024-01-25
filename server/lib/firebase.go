@@ -27,7 +27,8 @@ func NewFirebase(secrets *config.Secrets) (*Firebase, error) {
 			"client_x509_cert_url": "` + secrets.ClientX509CertUrl + `"
 		}`))
 
-	app, err := firebase.NewApp(context.Background(), nil, opt); if err != nil {
+	app, err := firebase.NewApp(context.Background(), nil, opt)
+	if err != nil {
 		return nil, err
 	}
 
@@ -37,11 +38,13 @@ func NewFirebase(secrets *config.Secrets) (*Firebase, error) {
 func (firebase *Firebase) VerifyToken(token string) (*auth.Token, bool, error) {
 	context := context.Background()
 
-	authClient, err := firebase.App.Auth(context); if err != nil {
+	authClient, err := firebase.App.Auth(context)
+	if err != nil {
 		return nil, false, err
-	} 
+	}
 
-	decodedToken, err := authClient.VerifyIDToken(context, token); if err != nil {
+	decodedToken, err := authClient.VerifyIDToken(context, token)
+	if err != nil {
 		return nil, false, err
 	}
 

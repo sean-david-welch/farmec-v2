@@ -11,7 +11,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/utils"
 )
 
-func InitializeProduct(router *gin.Engine, database *sql.DB, s3Client utils.S3Client, adminMiddleware *middleware.AdminMiddleware) {
+func InitProduct(router *gin.Engine, database *sql.DB, s3Client utils.S3Client, adminMiddleware *middleware.AdminMiddleware) {
 	productRepository := repository.NewProductRepository(database)
 	productService := services.NewProductService(productRepository, s3Client, "Products")
 	productController := controllers.NewProductController(productService)
@@ -24,7 +24,8 @@ func ProductRoutes(router *gin.Engine, productController *controllers.ProductCon
 
 	productGroup.GET("/:id", productController.GetProducts)
 
-	protected := productGroup.Group("").Use(adminMiddleware.Middleware()); {
+	protected := productGroup.Group("").Use(adminMiddleware.Middleware())
+	{
 		protected.POST("", productController.CreateProduct)
 		protected.PUT("/:id", productController.UpdateProduct)
 		protected.DELETE("/:id", productController.DeleteProduct)

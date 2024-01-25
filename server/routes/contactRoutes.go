@@ -7,7 +7,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/services"
 )
 
-func InitializeContact(router *gin.Engine, secrets *config.Secrets) {
+func InitContact(router *gin.Engine, secrets *config.Secrets) {
 	service := services.NewContactService(secrets)
 	controller := controllers.NewContactController(service)
 

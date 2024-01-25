@@ -11,7 +11,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/utils"
 )
 
-func InitializeCarousel(router *gin.Engine, database *sql.DB, s3Client utils.S3Client, adminMiddleare *middleware.AdminMiddleware) {
+func InitCarousel(router *gin.Engine, database *sql.DB, s3Client utils.S3Client, adminMiddleare *middleware.AdminMiddleware) {
 	carouselRepository := repository.NewCarouselRepository(database)
 	carouselService := services.NewCarouselService(carouselRepository, s3Client, "Carousels")
 	carouselController := controllers.NewCarouselController(carouselService)
@@ -24,10 +24,10 @@ func CarouselRoutes(router *gin.Engine, carouselController *controllers.Carousel
 
 	carouselGroup.GET("", carouselController.GetCarousels)
 
-	protected := carouselGroup.Group("").Use(adminMiddleware.Middleware()); {
+	protected := carouselGroup.Group("").Use(adminMiddleware.Middleware())
+	{
 		protected.POST("", carouselController.CreateCarousel)
 		protected.PUT("/:id", carouselController.UpdateCarousel)
 		protected.DELETE("/:id", carouselController.DeleteCarousel)
 	}
 }
-

@@ -12,23 +12,24 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/utils"
 )
 
-func InitializeSuppliers(router *gin.Engine, database *sql.DB, s3Client utils.S3Client, adminMiddleware *middleware.AdminMiddleware) {
-    supplierRepository := repository.NewSupplierRepository(database)
-    supplierService := services.NewSupplierService(supplierRepository, s3Client, "Suppliers")
-    supplierController := controllers.NewSupplierContoller(supplierService)
+func InitSuppliers(router *gin.Engine, database *sql.DB, s3Client utils.S3Client, adminMiddleware *middleware.AdminMiddleware) {
+	supplierRepository := repository.NewSupplierRepository(database)
+	supplierService := services.NewSupplierService(supplierRepository, s3Client, "Suppliers")
+	supplierController := controllers.NewSupplierContoller(supplierService)
 
-    SupplierRoutes(router, supplierController, adminMiddleware)
+	SupplierRoutes(router, supplierController, adminMiddleware)
 }
 
 func SupplierRoutes(router *gin.Engine, supplierController *controllers.SupplierController, adminMiddleware *middleware.AdminMiddleware) {
 	supplierGroup := router.Group("/api/suppliers")
 
 	supplierGroup.GET("", supplierController.GetSuppliers)
-	supplierGroup.GET("/:id", supplierController.GetSupplierByID) 
-	
-	protected := supplierGroup.Group("").Use(adminMiddleware.Middleware()); {
+	supplierGroup.GET("/:id", supplierController.GetSupplierByID)
+
+	protected := supplierGroup.Group("").Use(adminMiddleware.Middleware())
+	{
 		protected.POST("", supplierController.CreateSupplier)
-		protected.PUT("/:id", supplierController.UpdateSupplier) 
-		protected.DELETE("/:id", supplierController.DeleteSupplier) 	
+		protected.PUT("/:id", supplierController.UpdateSupplier)
+		protected.DELETE("/:id", supplierController.DeleteSupplier)
 	}
 }

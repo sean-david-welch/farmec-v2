@@ -11,7 +11,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/utils"
 )
 
-func InitializeLineItems(router *gin.Engine, database *sql.DB, s3Client utils.S3Client, adminMiddleware *middleware.AdminMiddleware) {
+func InitLineItems(router *gin.Engine, database *sql.DB, s3Client utils.S3Client, adminMiddleware *middleware.AdminMiddleware) {
 	repository := repository.NewLineItemRepository(database)
 	service := services.NewLineItemService(repository, s3Client, "Lineitems")
 	controller := controllers.NewLineItemController(service)
@@ -25,7 +25,8 @@ func LineItemRoutes(router *gin.Engine, controller *controllers.LineItemControll
 	lineItemGroup.GET("", controller.GetLineItems)
 	lineItemGroup.GET("/:id", controller.GetLineItemById)
 
-	protecteed := lineItemGroup.Group("").Use(adminMiddleware.Middleware()); {
+	protecteed := lineItemGroup.Group("").Use(adminMiddleware.Middleware())
+	{
 		protecteed.POST("", controller.CreateLineItem)
 		protecteed.PUT("/:id", controller.UpdateLineItem)
 		protecteed.DELETE("/:id", controller.DeleteLineItem)

@@ -10,7 +10,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/services"
 )
 
-func InitializeTerms(router *gin.Engine, database *sql.DB, adminMiddleware *middleware.AdminMiddleware) {
+func InitTerms(router *gin.Engine, database *sql.DB, adminMiddleware *middleware.AdminMiddleware) {
 	repository := repository.NewTermsRepository(database)
 	service := services.NewTermsService(repository)
 	controller := controllers.NewTermsController(service)
@@ -23,7 +23,8 @@ func TermsRoutes(router *gin.Engine, controller *controllers.TermsController, ad
 
 	termsGroup.GET("", controller.GetTerms)
 
-	protected := termsGroup.Group("").Use(adminMiddleware.Middleware()); {
+	protected := termsGroup.Group("").Use(adminMiddleware.Middleware())
+	{
 		protected.POST("", controller.CreateTerm)
 		protected.PUT("/:id", controller.UpdateTerm)
 		protected.DELETE("/:id", controller.DeleteTerm)

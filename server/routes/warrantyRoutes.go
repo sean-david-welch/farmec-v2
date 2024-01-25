@@ -10,7 +10,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/services"
 )
 
-func InitializeWarranty(router *gin.Engine, database *sql.DB, authMiddleware *middleware.AuthMiddleware) {
+func InitWarranty(router *gin.Engine, database *sql.DB, authMiddleware *middleware.AuthMiddleware) {
 	repository := repository.NewWarrantyRepository(database)
 	service := services.NewWarrantyService(repository)
 	controller := controllers.NewWarrantyController(service)
@@ -24,7 +24,8 @@ func WarrantyRoutes(router *gin.Engine, controller *controllers.WarrantyControll
 	warrantyGroup.GET("", controller.GetWarranties)
 	warrantyGroup.GET("/:id", controller.GetWarrantyById)
 
-	protected := warrantyGroup.Group("").Use(authMiddleware.Middleware()); {
+	protected := warrantyGroup.Group("").Use(authMiddleware.Middleware())
+	{
 		protected.POST("", controller.CreateWarranty)
 		protected.PUT("/:id", controller.UpdateWarranty)
 		protected.DELETE("/:id", controller.DeleteWarranty)

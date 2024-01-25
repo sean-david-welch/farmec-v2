@@ -15,8 +15,9 @@ import (
 	"google.golang.org/api/youtube/v3"
 )
 
-func InitializeVideos(router *gin.Engine, database *sql.DB, secrets *config.Secrets, adminMiddleware *middleware.AdminMiddleware) {
-	youtubeService, err := youtube.NewService(context.Background(), option.WithAPIKey(secrets.YoutubeApiKey)); if err != nil {
+func InitVideos(router *gin.Engine, database *sql.DB, secrets *config.Secrets, adminMiddleware *middleware.AdminMiddleware) {
+	youtubeService, err := youtube.NewService(context.Background(), option.WithAPIKey(secrets.YoutubeApiKey))
+	if err != nil {
 		log.Fatal("error calling YouTube API: ", err)
 	}
 
@@ -32,7 +33,8 @@ func VideoRoutes(router *gin.Engine, videoController *controllers.VideoControlle
 
 	videoGroup.GET("/:id", videoController.GetVideos)
 
-	protected := videoGroup.Group("").Use(adminMiddleware.Middleware()); {
+	protected := videoGroup.Group("").Use(adminMiddleware.Middleware())
+	{
 		protected.POST("", videoController.CreateVideo)
 		protected.PUT("/:id", videoController.UpdateVideo)
 		protected.DELETE("/:id", videoController.DeleteVideo)

@@ -10,7 +10,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/services"
 )
 
-func InitializeCheckout(router *gin.Engine, database *sql.DB, secrets *config.Secrets) {
+func InitCheckout(router *gin.Engine, database *sql.DB, secrets *config.Secrets) {
 	repository := repository.NewLineItemRepository(database)
 	service := services.NewCheckoutService(secrets, repository)
 	controller := controllers.NewCheckoutController(service)

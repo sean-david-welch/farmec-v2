@@ -11,7 +11,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/utils"
 )
 
-func InitializeMachines(router *gin.Engine, database *sql.DB, s3Client utils.S3Client, adminMiddleware *middleware.AdminMiddleware) {
+func InitMachines(router *gin.Engine, database *sql.DB, s3Client utils.S3Client, adminMiddleware *middleware.AdminMiddleware) {
 	machineRepository := repository.NewMachineRepository(database)
 	machineService := services.NewMachineService(machineRepository, s3Client, "Machines")
 	machineController := controllers.NewMachineController(machineService)
@@ -23,8 +23,9 @@ func MachineRoutes(router *gin.Engine, machineController *controllers.MachineCon
 	machineGroup := router.Group("/api/machines")
 
 	machineGroup.GET("/:id", machineController.GetMachines)
-	
-	protected := machineGroup.Group("").Use(adminMiddleware.Middleware()); {
+
+	protected := machineGroup.Group("").Use(adminMiddleware.Middleware())
+	{
 		protected.POST("", machineController.CreateMachine)
 		protected.PUT("/:id", machineController.UpdateMachine)
 		protected.DELETE("/:id", machineController.DeleteMachine)

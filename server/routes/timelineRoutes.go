@@ -10,7 +10,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/services"
 )
 
-func InitializeTimelines(router *gin.Engine, database *sql.DB, adminMiddleware *middleware.AdminMiddleware) {
+func InitTimelines(router *gin.Engine, database *sql.DB, adminMiddleware *middleware.AdminMiddleware) {
 	repository := repository.NewTimelineRepository(database)
 	service := services.NewTimelineService(repository)
 	controller := controllers.NewTimelineController(service)
@@ -23,7 +23,8 @@ func TimelineRoutes(router *gin.Engine, controller *controllers.TimelineControll
 
 	timelineGroup.GET("", controller.GetTimelines)
 
-	protected := timelineGroup.Group("").Use(adminMiddleware.Middleware()); {
+	protected := timelineGroup.Group("").Use(adminMiddleware.Middleware())
+	{
 		protected.POST("", controller.CreateTimeline)
 		protected.PUT("/:id", controller.UpdateTimeline)
 		protected.DELETE("/:id", controller.DeleteTimeline)

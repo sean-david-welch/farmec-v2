@@ -17,30 +17,34 @@ import (
 )
 
 func main() {
-	secrets, err := config.NewSecrets(); if err != nil {
+	secrets, err := config.NewSecrets()
+	if err != nil {
 		log.Fatal("Error loading configuration: ", err)
 	}
 
-	database, err := sql.Open("postgres", secrets.DatabaseURL); if err != nil {
+	database, err := sql.Open("postgres", secrets.DatabaseURL)
+	if err != nil {
 		log.Fatal(err)
 	}
 	defer database.Close()
 
-	s3Client, err := utils.NewS3Client("eu-west-1", secrets.AwsAccessKey, secrets.AwsSecret); if err != nil {
+	s3Client, err := utils.NewS3Client("eu-west-1", secrets.AwsAccessKey, secrets.AwsSecret)
+	if err != nil {
 		log.Fatal("Failed to create S3 client: ", err)
 	}
 
-	firebase, err := lib.NewFirebase(secrets); if err != nil {
+	firebase, err := lib.NewFirebase(secrets)
+	if err != nil {
 		log.Fatal("Failed to initialize Firebase: ", err)
 	}
 
 	adminMiddleware := middleware.NewAdminMiddleware(firebase)
 	authMiddleware := middleware.NewAuthMiddleware(firebase)
-	
+
 	router := gin.Default()
 	router.Use(gin.Logger(), gin.Recovery(), cors.Default())
 
-	routes.InitializeRoutes(router, database, secrets, s3Client, adminMiddleware, authMiddleware)
+	routes.InitRoutes(router, database, secrets, s3Client, adminMiddleware, authMiddleware, firebase)
 
 	fmt.Println("server running on http://localhost:8080")
 	router.Run("localhost:8080")

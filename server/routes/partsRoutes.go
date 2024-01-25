@@ -11,7 +11,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/utils"
 )
 
-func InitializeParts(router *gin.Engine, database *sql.DB, s3Client utils.S3Client, adminMiddleware *middleware.AdminMiddleware) {
+func InitParts(router *gin.Engine, database *sql.DB, s3Client utils.S3Client, adminMiddleware *middleware.AdminMiddleware) {
 	partsRepository := repository.NewPartsRepository(database)
 	partsService := services.NewPartsService(partsRepository, s3Client, "Spareparts")
 	partsController := controllers.NewPartsController(partsService)
@@ -24,7 +24,8 @@ func PartsRoutes(router *gin.Engine, partsController *controllers.PartsControlle
 
 	partsGroup.GET("/:id", partsController.GetParts)
 
-	protected := partsGroup.Group("").Use(adminMiddleware.Middleware()); {
+	protected := partsGroup.Group("").Use(adminMiddleware.Middleware())
+	{
 		protected.POST("", partsController.CreateParts)
 		protected.PUT("/:id", partsController.UpdateParts)
 		protected.DELETE("/:id", partsController.DeletePart)
