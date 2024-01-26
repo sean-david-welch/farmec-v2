@@ -62,11 +62,5 @@ func (firebase *Firebase) VerifyToken(cookie string) (*auth.Token, bool, error) 
 		isAdmin, _ = adminClaim.(bool)
 	}
 
-	if isAdmin {
-		log.Println("User is admin")
-	} else {
-		log.Println("User is not admin")
-	}
-
 	return decodedCookie, isAdmin, nil
 }

@@ -80,8 +80,7 @@ export const useCreateSupplier = () => {
             return response.json();
         },
 
-        onSuccess: data => {
-            console.log('data:', data);
+        onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['suppliers'] });
         },
     });

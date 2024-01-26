@@ -2,75 +2,112 @@ package utils
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"log"
 	"net/url"
-	"path"
+	"strings"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
+	"github.com/aws/smithy-go/transport/http"
 )
 
 type S3Client interface {
-    GeneratePresignedUrl(folder, image string) (string, string, error)
-    DeleteImageFromS3(imageUrl string) error
+	GeneratePresignedUrl(folder, image string) (string, string, error)
+	DeleteImageFromS3(imageUrl string) error
 }
 
 type S3ClientImpl struct {
-    Client *s3.Client
+	Client *s3.Client
 }
 
 func NewS3Client(region, accessKey, secretKey string) (*S3ClientImpl, error) {
-    conf, err := config.LoadDefaultConfig(context.TODO(),
-        config.WithRegion(region),
-        config.WithCredentialsProvider(credentials.NewStaticCredentialsProvider(accessKey, secretKey, "")),
-    )
+	conf, err := config.LoadDefaultConfig(context.TODO(),
+		config.WithRegion(region),
+		config.WithCredentialsProvider(credentials.NewStaticCredentialsProvider(accessKey, secretKey, "")),
+	)
 
-    if err != nil {
-        return nil, err
-    }
+	if err != nil {
+		return nil, err
+	}
 
-    return &S3ClientImpl{
-        Client: s3.NewFromConfig(conf),
-    }, nil
+	return &S3ClientImpl{
+		Client: s3.NewFromConfig(conf),
+	}, nil
 }
 
 func (client *S3ClientImpl) GeneratePresignedUrl(folder string, image string) (string, string, error) {
-    const bucketName = "farmec-bucket"
-    const cloudfrontDomain = "https://d3eerclezczw8.cloudfront.net"
-    
-    imageKey := fmt.Sprintf("%s/%s", folder, image)
-    imageUrl := fmt.Sprintf("%s/%s", cloudfrontDomain, imageKey)
+	const bucketName = "farmec-bucket"
+	const cloudfrontDomain = "https://d3eerclezczw8.cloudfront.net"
 
-    presignClient := s3.NewPresignClient(client.Client)
+	if folder == "" || image == "" {
+		return "", "", fmt.Errorf("folder and image parameters must not be empty")
+	}
 
-    presignReq, err := presignClient.PresignPutObject(context.TODO(), &s3.PutObjectInput{
-        Bucket: aws.String(bucketName),
-        Key:    aws.String(imageKey),
-    }, s3.WithPresignExpires(5*time.Minute))
+	imageKey := fmt.Sprintf("farmec_images/%s/%s", folder, image)
+	imageUrl := fmt.Sprintf("%s/%s", cloudfrontDomain, imageKey)
 
-    if err != nil {
-        return "", "", err
-    }
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
 
-    return presignReq.URL, imageUrl, nil
+	presignClient := s3.NewPresignClient(client.Client)
+
+	presignReq, err := presignClient.PresignPutObject(ctx, &s3.PutObjectInput{
+		Bucket: aws.String(bucketName),
+		Key:    aws.String(imageKey),
+	}, s3.WithPresignExpires(5*time.Minute))
+
+	if err != nil {
+		var respErr *http.ResponseError
+		if errors.As(err, &respErr) {
+			return "", "", fmt.Errorf("AWS presign error: %s, StatusCode: %d", respErr.Error(), respErr.Response.StatusCode)
+		}
+		return "", "", fmt.Errorf("error generating presigned URL: %w", err)
+	}
+
+	return presignReq.URL, imageUrl, nil
 }
 
 func (client *S3ClientImpl) DeleteImageFromS3(imageUrl string) error {
-    const bucketName = "farmec-bucket"
+	var respErr *http.ResponseError
+	const bucketName = "farmec-bucket"
 
-    parsedUrl, err := url.Parse(imageUrl); if err != nil {
-        return fmt.Errorf("error parsing url: %w", err)
-    }
+	parsedUrl, err := url.Parse(imageUrl)
+	if err != nil {
+		return fmt.Errorf("error parsing URL: %w", err)
+	}
+	key := strings.TrimPrefix(parsedUrl.Path, "/")
 
-    key := path.Base(parsedUrl.Path)
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
 
-    _, err = client.Client.DeleteObject(context.TODO(), &s3.DeleteObjectInput{
-        Bucket: aws.String(bucketName),
-        Key:    aws.String(key),
-    })
+	_, err = client.Client.HeadObject(ctx, &s3.HeadObjectInput{
+		Bucket: aws.String(bucketName),
+		Key:    aws.String(key),
+	})
 
-    return err
+	if err != nil {
+		if errors.As(err, &respErr) {
+			log.Printf("Object does not exist in S3, continuing: %s", key)
+			return nil
+		}
+	}
+
+	_, err = client.Client.DeleteObject(ctx, &s3.DeleteObjectInput{
+		Bucket: aws.String(bucketName),
+		Key:    aws.String(key),
+	})
+
+	if err != nil {
+		if errors.As(err, &respErr) {
+			return fmt.Errorf("AWS error: %s, StatusCode: %d", respErr.Error(), respErr.HTTPStatusCode())
+		}
+		return fmt.Errorf("error deleting object from S3: %w", err)
+	}
+
+	return nil
 }

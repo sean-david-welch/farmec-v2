@@ -47,7 +47,7 @@ func main() {
 	config.AllowHeaders = []string{"Authorization", "Content-Type", "Accept", "Origin"}
 	config.AllowCredentials = true
 
-	gin.SetMode(gin.DebugMode)
+	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
 	router.Use(gin.Logger(), gin.Recovery(), cors.New(config))
 

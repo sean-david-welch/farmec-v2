@@ -5,10 +5,10 @@ import { useState } from 'react';
 import { Supplier } from '../types/supplierTypes';
 import { useCreateSupplier, useUpdateSupplier } from '../hooks/supplierHooks';
 import { getFormFields } from '../utils/supplierFormFields';
+import { uploadFileToS3 } from '../utils/aws';
 
 const SupplierForm: React.FC<{ id?: string }> = ({ id }) => {
     const formFields = getFormFields();
-
     const [showForm, setShowForm] = useState(false);
 
     const {
@@ -46,7 +46,24 @@ const SupplierForm: React.FC<{ id?: string }> = ({ id }) => {
         };
 
         try {
-            await submitSupplier(body);
+            const response = await submitSupplier(body);
+
+            console.log(response);
+
+            if (logoFile) {
+                const logoImageData = {
+                    imageFile: logoFile,
+                    presignedUrl: response.presignedLogoUrl,
+                };
+                await uploadFileToS3(logoImageData);
+            }
+            if (marketingFile) {
+                const marketingImageData = {
+                    imageFile: marketingFile,
+                    presignedUrl: response.presignedMarketingUrl,
+                };
+                await uploadFileToS3(marketingImageData);
+            }
         } catch (error) {
             console.error('Error creating supplier:', error);
         }

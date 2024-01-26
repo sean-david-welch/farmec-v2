@@ -3,8 +3,11 @@ import SupplierForm from '../forms/SupplierForm';
 
 import { useSuppliers } from '../hooks/supplierHooks';
 import { Link } from 'react-router-dom';
+import { useUserStore } from '../utils/context';
+import DeleteButton from '../components/DeleteButton';
 
 const Suppliers: React.FC = () => {
+    const { isAdmin } = useUserStore();
     const suppliers = useSuppliers();
 
     if (suppliers.isLoading) {
@@ -50,7 +53,12 @@ const Suppliers: React.FC = () => {
                                 </div>
                             </div>
 
-                            <SupplierForm id={supplier.id} />
+                            {isAdmin && supplier.id && (
+                                <div className="">
+                                    <SupplierForm id={supplier.id} />
+                                    <DeleteButton id={supplier.id} route="suppliers" queryKey="suppliers" />
+                                </div>
+                            )}
                         </>
                     ))}
                 </>

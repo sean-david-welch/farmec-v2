@@ -17,12 +17,14 @@ func NewAuthMiddleware(firebaseService *lib.Firebase) *AuthMiddleware {
 
 func (middleware *AuthMiddleware) Middleware() gin.HandlerFunc {
 	return func(context *gin.Context) {
-		token, err := context.Cookie("session"); if err != nil {
+		token, err := context.Cookie("session")
+		if err != nil {
 			context.AbortWithStatusJSON(401, gin.H{"error": "Unauthorized, No token provided"})
-            return
+			return
 		}
 
-		decodedToken, isAdmin, err := middleware.FirebaseService.VerifyToken(token); if err != nil {
+		decodedToken, isAdmin, err := middleware.FirebaseService.VerifyToken(token)
+		if err != nil {
 			context.AbortWithStatusJSON(401, gin.H{"error": "Unauthorized, Invalid Token"})
 			return
 		}

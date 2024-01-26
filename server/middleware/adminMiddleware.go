@@ -19,7 +19,6 @@ func NewAdminMiddleware(firebase *lib.Firebase) *AdminMiddleware {
 
 func (middleware *AdminMiddleware) Middleware() gin.HandlerFunc {
 	return func(context *gin.Context) {
-		log.Println("AdminMiddleware triggered")
 
 		cookie, err := context.Cookie("session")
 		if err != nil {
