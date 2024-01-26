@@ -142,7 +142,7 @@
 }
 
 .dialog {
-    @apply w-[85vw] max-h-[90vh];
+    @apply w-[80vw] max-h-[9-vh];
     @apply top-1/2 left-1/2 fixed z-50;
     @apply bg-zinc-900 text-gray-200 rounded-2xl shadow-lg;
     @apply border-4 border-zinc-600;
