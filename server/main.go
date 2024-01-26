@@ -42,9 +42,12 @@ func main() {
 	authMiddleware := middleware.NewAuthMiddleware(firebase)
 
 	config := cors.DefaultConfig()
-	config.AllowAllOrigins = true
-	config.AllowHeaders = append(config.AllowHeaders, "Authorization")
+	config.AllowOrigins = []string{"http://localhost:5173"}
+	config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE"}
+	config.AllowHeaders = []string{"Authorization", "Content-Type", "Accept", "Origin"}
+	config.AllowCredentials = true
 
+	gin.SetMode(gin.DebugMode)
 	router := gin.Default()
 	router.Use(gin.Logger(), gin.Recovery(), cors.New(config))
 

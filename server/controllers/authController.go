@@ -41,6 +41,8 @@ func (controller *AuthController) Login(context *gin.Context) {
 		return
 	}
 
+	context.SetSameSite(http.SameSiteNoneMode)
+
 	context.SetCookie("session", sessionCookie, 72*3600, "/", "", false, true)
 
 	context.JSON(http.StatusOK, gin.H{"message": "login successful"})

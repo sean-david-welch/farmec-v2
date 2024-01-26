@@ -31,7 +31,6 @@ func NewFirebase(secrets *config.Secrets) (*Firebase, error) {
 			"client_x509_cert_url": "` + secrets.ClientX509CertUrl + `"
 	}`
 
-	log.Printf("firebase credentials: %v", credentialsJSON)
 	opt := option.WithCredentialsJSON([]byte(credentialsJSON))
 
 	app, err := firebase.NewApp(context.Background(), nil, opt)

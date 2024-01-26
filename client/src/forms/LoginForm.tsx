@@ -16,26 +16,21 @@ const LoginForm = () => {
 
         try {
             const idToken = await signInUser(email, password);
-            console.log('IdToken', idToken);
 
             const response = await fetch(`${config.baseUrl}/api/auth/login`, {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${idToken}` },
-            }).then(response => response.json());
+                credentials: 'include',
+            });
 
             if (response.ok) {
                 setEmail('');
                 setPassword('');
                 window.location.href = '/';
             }
-        } catch (error: any) {
-            if (error.response && error.response.status === 401) {
-                setErrorMessage('Incorrect email or password.');
-            } else {
-                setErrorMessage('An unexpected error occurred. Please try again later.');
-            }
-
-            console.error('Error submitting form:', error.message || error);
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            setErrorMessage('An unexpected error occurred. Please try again later.');
         }
     };
 

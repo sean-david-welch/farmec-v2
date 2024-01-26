@@ -36,7 +36,7 @@ const AppRoutes = () => {
                     <Route path="/spareparts" element={<Spareparts />} />
                     <Route path="/blogs" element={<Blogs />} />
 
-                    <Route path="/account" element={<Login />} />
+                    <Route path="/login" element={<Login />} />
                     <Route path="/account" element={<Account />} />
                 </Routes>
             </Layout>
