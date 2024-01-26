@@ -26,7 +26,7 @@ const LoginForm = () => {
             if (response.ok) {
                 setEmail('');
                 setPassword('');
-                window.location.href = '/';
+                // window.location.href = '/';
             }
         } catch (error) {
             console.error('Error submitting form:', error);

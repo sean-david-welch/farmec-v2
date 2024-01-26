@@ -8,12 +8,12 @@ import (
 )
 
 type AdminMiddleware struct {
-	FirebaseService *lib.Firebase
+	firebase *lib.Firebase
 }
 
-func NewAdminMiddleware(firebaseService *lib.Firebase) *AdminMiddleware {
+func NewAdminMiddleware(firebase *lib.Firebase) *AdminMiddleware {
 	return &AdminMiddleware{
-		FirebaseService: firebaseService,
+		firebase: firebase,
 	}
 }
 
@@ -21,20 +21,25 @@ func (middleware *AdminMiddleware) Middleware() gin.HandlerFunc {
 	return func(context *gin.Context) {
 		log.Println("AdminMiddleware triggered")
 
-		token, err := context.Cookie("session"); if err != nil {
-			context.AbortWithStatusJSON(401, gin.H{"error": "Unauthorized, No token provided"})
-            return
+		cookie, err := context.Cookie("session")
+		if err != nil {
+			log.Printf("error occurred no cookie provided: %s", err)
+			context.AbortWithStatusJSON(401, gin.H{"error": "Unauthorized, No cookie provided"})
+			return
 		}
 
-		decodedToken, isAdmin, err := middleware.FirebaseService.VerifyToken(token); if err != nil {
+		decodedToken, isAdmin, err := middleware.firebase.VerifyToken(cookie)
+		if err != nil {
+			log.Printf("error occurred when verifying cookie: %s", err)
 			context.AbortWithStatusJSON(401, gin.H{"error": "Unauthorized, Invalid Token"})
 			return
 		}
 
-        if !isAdmin {
-            context.AbortWithStatusJSON(403, gin.H{"error": "Forbidden, requires admin privileges"})
-            return
-        }
+		if !isAdmin {
+			log.Printf("error user is not admin: %s", err)
+			context.AbortWithStatusJSON(403, gin.H{"error": "Forbidden, requires admin privileges"})
+			return
+		}
 
 		context.Set("decodedToken", decodedToken)
 

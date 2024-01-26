@@ -68,6 +68,7 @@ export const useCreateSupplier = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include',
                 body: JSON.stringify(supplier),
             });
 
@@ -75,10 +76,12 @@ export const useCreateSupplier = () => {
                 console.log('response:', response);
                 throw new Error('Network response was not ok');
             }
+            console.log('response:', response);
             return response.json();
         },
 
-        onSuccess: () => {
+        onSuccess: data => {
+            console.log('data:', data);
             queryClient.invalidateQueries({ queryKey: ['suppliers'] });
         },
     });
@@ -96,6 +99,7 @@ export const useUpdateSupplier = (id: string) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include',
                 body: JSON.stringify(supplier),
             });
 
@@ -120,6 +124,7 @@ export const useDeleteSupplier = (id: string) => {
         mutationFn: async () => {
             const response = await fetch(`${config.baseUrl}/api/suppliers/${id}`, {
                 method: 'DELETE',
+                credentials: 'include',
             });
 
             if (!response.ok) {

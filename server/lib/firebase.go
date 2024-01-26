@@ -42,23 +42,31 @@ func NewFirebase(secrets *config.Secrets) (*Firebase, error) {
 	return &Firebase{App: app}, nil
 }
 
-func (firebase *Firebase) VerifyToken(token string) (*auth.Token, bool, error) {
+func (firebase *Firebase) VerifyToken(cookie string) (*auth.Token, bool, error) {
 	context := context.Background()
 
 	authClient, err := firebase.App.Auth(context)
 	if err != nil {
+		log.Printf("Error initializing Firebase Auth client: %s", err)
 		return nil, false, err
 	}
 
-	decodedToken, err := authClient.VerifyIDToken(context, token)
+	decodedCookie, err := authClient.VerifySessionCookie(context, cookie)
 	if err != nil {
+		log.Printf("Error verifying ID cookie: %s", err)
 		return nil, false, err
 	}
 
 	isAdmin := false
-	if adminClaim, ok := decodedToken.Claims["admin"]; ok {
+	if adminClaim, ok := decodedCookie.Claims["admin"]; ok {
 		isAdmin, _ = adminClaim.(bool)
 	}
 
-	return decodedToken, isAdmin, nil
+	if isAdmin {
+		log.Println("User is admin")
+	} else {
+		log.Println("User is not admin")
+	}
+
+	return decodedCookie, isAdmin, nil
 }

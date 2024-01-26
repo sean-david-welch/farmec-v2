@@ -1,9 +1,10 @@
 import Layout from '../layouts/Layout';
 
-import { lazy, useEffect } from 'react';
+import { Suspense, lazy, useEffect } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 import { Route, Routes, useLocation } from 'react-router-dom';
+import Loading from '../layouts/Loading';
 
 const Home = lazy(() => import('../pages/Home'));
 const About = lazy(() => import('../pages/About'));
@@ -26,20 +27,22 @@ const AppRoutes = () => {
     };
     return (
         <Router>
-            <Layout>
-                <ScrollToTopPage />
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/suppliers" element={<Suppliers />} />
-                    <Route path="/suppliers/:id" element={<SupplierDetail />} />
-                    <Route path="/spareparts" element={<Spareparts />} />
-                    <Route path="/blogs" element={<Blogs />} />
+            <Suspense fallback={<Loading />}>
+                <Layout>
+                    <ScrollToTopPage />
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/about" element={<About />} />
+                        <Route path="/suppliers" element={<Suppliers />} />
+                        <Route path="/suppliers/:id" element={<SupplierDetail />} />
+                        <Route path="/spareparts" element={<Spareparts />} />
+                        <Route path="/blogs" element={<Blogs />} />
 
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/account" element={<Account />} />
-                </Routes>
-            </Layout>
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/account" element={<Account />} />
+                    </Routes>
+                </Layout>
+            </Suspense>
         </Router>
     );
 };
