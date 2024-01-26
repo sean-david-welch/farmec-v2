@@ -1,110 +1,110 @@
 .info {
-  @apply py-5;
+    @apply py-5;
 }
 
 .infoSection {
-  @apply flex flex-col items-center;
-  @apply bg-zinc-300 rounded-lg;
-  @apply mx-auto w-[20vw];
-  @apply md:w-[80vw];
+    @apply flex flex-col items-center;
+    @apply bg-zinc-300 rounded-lg;
+    @apply mx-auto w-[20vw];
+    @apply md:w-[80vw];
 }
 
 .infoSection > * {
-  @apply mx-auto;
+    @apply mx-auto;
 }
 
 .infoSection {
-  @apply mt-10 mb-5;
+    @apply mt-10 mb-5;
 }
 
 .infoSection .mainHeading {
-  @apply decoration-red-600;
+    @apply decoration-red-600;
 }
 
 .stats {
-  @apply grid grid-cols-4 mt-5;
-  @apply md:grid-cols-1;
+    @apply grid grid-cols-4 mt-5;
+    @apply md:grid-cols-1;
 }
 
 .statList {
-  @apply grid grid-cols-1;
-  @apply transition-all ease-in-out duration-700;
+    @apply grid grid-cols-1;
+    @apply transition-all ease-in-out duration-700;
 }
 
 .statList:hover {
-  @apply scale-105;
+    @apply scale-105;
 }
 
 .statList:hover svg path {
-  @apply fill-red-700;
+    @apply fill-red-700;
 }
 
 .statList:hover .statListItem {
-  @apply text-red-700;
+    @apply text-red-700;
 }
 
 .statList > * {
-  @apply mx-4;
+    @apply mx-4;
 }
 
 .statListItem {
-  @apply text-xl font-semibold text-zinc-800 mx-5;
+    @apply text-xl font-semibold text-zinc-800 mx-5;
 }
 
 .statListItem:nth-child(3) {
-  @apply text-lg font-normal;
+    @apply text-lg font-normal;
 }
 
 .statListItem svg {
-  @apply mx-auto;
+    @apply mx-auto;
 }
 
 .statListItem svg path {
-  @apply fill-zinc-900;
-  @apply transition-all ease-in-out duration-700;
+    @apply fill-zinc-900;
+    @apply transition-all ease-in-out duration-700;
 }
 
 /* Specails */
 
 .specials {
-  @apply grid grid-cols-4 mb-2;
-  @apply md:grid-cols-1;
+    @apply grid grid-cols-4 mb-2;
+    @apply md:grid-cols-1;
 }
 
 .specialList {
-  @apply grid grid-cols-1;
-  @apply transition-all ease-in-out duration-700;
+    @apply grid grid-cols-1;
+    @apply transition-all ease-in-out duration-700;
 }
 
 .specialList:hover {
-  @apply scale-105;
+    @apply scale-105;
 }
 
 .specialList:hover svg path {
-  @apply fill-red-700;
+    @apply fill-red-700;
 }
 
 .specialList:hover .specialListItem {
-  @apply text-red-700;
+    @apply text-red-700;
 }
 
 .specialList > * {
-  @apply mx-4;
+    @apply mx-4;
 }
 
 .specialListItem {
-  @apply text-sm font-semibold text-zinc-800;
+    @apply text-sm font-semibold text-zinc-800;
 }
 
 .specialListItem:nth-child(3) {
-  @apply text-base font-normal mx-10;
+    @apply text-base font-normal mx-10;
 }
 
 .specialListItem svg {
-  @apply mx-auto;
+    @apply mx-auto;
 }
 
 .specialListItem svg path {
-  @apply fill-zinc-900;
-  @apply transition-all ease-in-out duration-700;
+    @apply fill-zinc-900;
+    @apply transition-all ease-in-out duration-700;
 }

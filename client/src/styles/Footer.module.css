@@ -1,82 +1,82 @@
 .footer {
-  @apply bg-zinc-900 py-12 border-t-2 border-red-600;
-  @apply grid grid-cols-3;
-  @apply justify-center justify-items-center;
-  @apply md:grid-cols-1;
+    @apply bg-zinc-900 py-12 border-t-2 border-red-600;
+    @apply grid grid-cols-3;
+    @apply justify-center justify-items-center;
+    @apply md:grid-cols-1;
 }
 
 .footer img {
-  @apply mx-auto;
+    @apply mx-auto;
 }
 
 .footerInfo {
-  @apply flex flex-col mx-auto;
+    @apply flex flex-col mx-auto;
 }
 
 .footerInfo > * {
-  @apply my-2 mx-auto;
+    @apply my-2 mx-auto;
 }
 
 .companyInfo {
-  @apply flex flex-col mx-auto text-center items-center;
+    @apply flex flex-col mx-auto text-center items-center;
 }
 
 .companyInfo > * {
-  @apply my-1 text-lg font-semibold;
+    @apply my-1 text-lg font-semibold;
 }
 
 .footerLinks {
-  @apply grid grid-cols-1 items-center place-items-center justify-center mx-auto;
+    @apply grid grid-cols-1 items-center place-items-center justify-center mx-auto;
 }
 
 .accreditation {
-  @apply flex flex-col mx-auto items-center text-center justify-center;
+    @apply flex flex-col mx-auto items-center text-center justify-center;
 }
 
 .accreditation img {
-  @apply flex flex-col items-center text-center justify-center ml-4 mt-2;
+    @apply flex flex-col items-center text-center justify-center ml-4 mt-2;
 }
 
 .socialLinks {
-  @apply flex flex-row mx-auto my-2 items-center text-center justify-center;
+    @apply flex flex-row mx-auto my-2 items-center text-center justify-center;
 }
 
 .socialLinks svg {
-  @apply mx-5;
-  @apply border-4 rounded-lg;
-  @apply cursor-pointer p-1;
-  @apply transition-all ease-in-out duration-700;
+    @apply mx-5;
+    @apply border-4 rounded-lg;
+    @apply cursor-pointer p-1;
+    @apply transition-all ease-in-out duration-700;
 }
 
 .socialLinks path {
-  @apply transition-all ease-in-out duration-700;
+    @apply transition-all ease-in-out duration-700;
 }
 
 .socialLinks svg:hover {
-  @apply border-red-700;
+    @apply border-red-700;
 }
 
 .socialLinks svg:hover path {
-  @apply fill-red-700;
+    @apply fill-red-700;
 }
 
 .navLinks {
-  @apply flex flex-col;
+    @apply flex flex-col;
 }
 
 .navLinks > * {
-  @apply my-5;
+    @apply my-5;
 }
 
 .toTopButton {
-  @apply fixed bottom-5 right-5 cursor-pointer px-3 py-5 rounded-full bg-gray-800 border-2 border-zinc-800 transition-all duration-300 ease-in-out z-30;
+    @apply fixed bottom-5 right-5 cursor-pointer px-3 py-5 rounded-full bg-gray-800 border-2 border-zinc-800 transition-all duration-300 ease-in-out z-30;
 }
 
 .toTopButton:hover,
 .toTopButton:hover svg path {
-  @apply bg-zinc-700 fill-indigo-800 border-2 border-indigo-800;
+    @apply bg-zinc-700 fill-indigo-800 border-2 border-indigo-800;
 }
 
 .toTopButton svg path {
-  @apply fill-indigo-800;
+    @apply fill-indigo-800;
 }

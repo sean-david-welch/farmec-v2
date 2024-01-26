@@ -35,6 +35,7 @@ func (controller *AuthController) Login(context *gin.Context) {
 
 	sessionCookie, err := controller.service.Login(context.Request.Context(), idToken)
 	if err != nil {
+		log.Printf("error with validating token: %v", err)
 		context.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid Token"})
 		return
 	}

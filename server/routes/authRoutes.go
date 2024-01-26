@@ -19,7 +19,7 @@ func AuthRoutes(router *gin.Engine, controller *controllers.AuthController, admi
 	authGroup := router.Group("/api/auth")
 
 	authGroup.GET("/logout", controller.Logout)
-	authGroup.POST("login", controller.Login)
+	authGroup.GET("/login", controller.Login)
 
 	protected := authGroup.Group("").Use(adminMiddleware.Middleware())
 	{

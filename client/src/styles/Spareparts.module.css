@@ -1,44 +1,44 @@
 .supplierCard {
-  @apply bg-zinc-800 mx-52 border-4 rounded-2xl border-zinc-600;
-  @apply flex flex-col justify-center items-center;
-  @apply p-4 my-10;
-  @apply transition-all duration-700 ease-in-out;
-  @apply md:mx-5;
+    @apply bg-zinc-800 mx-52 border-4 rounded-2xl border-zinc-600;
+    @apply flex flex-col justify-center items-center;
+    @apply p-4 my-10;
+    @apply transition-all duration-700 ease-in-out;
+    @apply md:mx-5;
 }
 
 .supplierCard:hover {
-  @apply border-zinc-400;
-  @apply scale-[1.025];
+    @apply border-zinc-400;
+    @apply scale-[1.025];
 }
 
 .supplierCard > * {
-  @apply my-4;
+    @apply my-4;
 }
 
 .sparepartsCard {
-  @apply bg-zinc-800 mx-52 border-4 rounded-2xl border-zinc-600;
-  @apply flex flex-col justify-center items-center;
-  @apply my-10;
-  @apply transition-all duration-700 ease-in-out;
-  @apply md:mx-5;
+    @apply bg-zinc-800 mx-52 border-4 rounded-2xl border-zinc-600;
+    @apply flex flex-col justify-center items-center;
+    @apply my-10;
+    @apply transition-all duration-700 ease-in-out;
+    @apply md:mx-5;
 }
 
 .sparepartsCard:hover {
-  @apply border-zinc-400;
-  @apply scale-[1.025];
+    @apply border-zinc-400;
+    @apply scale-[1.025];
 }
 
 .sparepartsGrid {
-  @apply grid grid-cols-2;
-  @apply md:flex md:flex-col-reverse;
+    @apply grid grid-cols-2;
+    @apply md:flex md:flex-col-reverse;
 }
 
 .sparepartsInfo {
-  @apply flex flex-col justify-center mx-auto;
-  @apply p-4;
+    @apply flex flex-col justify-center mx-auto;
+    @apply p-4;
 }
 
 .sparepartsGrid img {
-  @apply rounded-r-2xl border-l-4 border-zinc-600;
-  @apply md:rounded-t-xl md:border-b-4 md:rounded-br-none md:border-l-0;
+    @apply rounded-r-2xl border-l-4 border-zinc-600;
+    @apply md:rounded-t-xl md:border-b-4 md:rounded-br-none md:border-l-0;
 }

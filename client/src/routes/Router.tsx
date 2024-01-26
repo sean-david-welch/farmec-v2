@@ -11,6 +11,8 @@ const Suppliers = lazy(() => import('../pages/Suppliers'));
 const SupplierDetail = lazy(() => import('../pages/SupplierDetail'));
 const Spareparts = lazy(() => import('../pages/Spareparts'));
 const Blogs = lazy(() => import('../pages/Blogs'));
+const Login = lazy(() => import('../pages/Login'));
+const Account = lazy(() => import('../pages/Account'));
 
 const AppRoutes = () => {
     const ScrollToTopPage = () => {
@@ -33,6 +35,9 @@ const AppRoutes = () => {
                     <Route path="/suppliers/:id" element={<SupplierDetail />} />
                     <Route path="/spareparts" element={<Spareparts />} />
                     <Route path="/blogs" element={<Blogs />} />
+
+                    <Route path="/account" element={<Login />} />
+                    <Route path="/account" element={<Account />} />
                 </Routes>
             </Layout>
         </Router>

@@ -41,8 +41,12 @@ func main() {
 	adminMiddleware := middleware.NewAdminMiddleware(firebase)
 	authMiddleware := middleware.NewAuthMiddleware(firebase)
 
+	config := cors.DefaultConfig()
+	config.AllowAllOrigins = true
+	config.AllowHeaders = append(config.AllowHeaders, "Authorization")
+
 	router := gin.Default()
-	router.Use(gin.Logger(), gin.Recovery(), cors.Default())
+	router.Use(gin.Logger(), gin.Recovery(), cors.New(config))
 
 	routes.InitRoutes(router, database, secrets, s3Client, adminMiddleware, authMiddleware, firebase)
 
