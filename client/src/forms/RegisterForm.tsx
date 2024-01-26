@@ -1,21 +1,12 @@
 import utils from '../../styles/Utils.module.css';
 import config from '../utils/env';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 const RegisterForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [role, setRole] = useState('user');
-
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            const storedUserData = localStorage.getItem('user');
-            if (storedUserData) {
-                // addUser(JSON.parse(storedUserData)); // Update this part based on your global state management strategy
-            }
-        }
-    }, []);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -23,6 +14,7 @@ const RegisterForm = () => {
         try {
             const response = await fetch(`${config.baseUrl}/api/auth/register`, {
                 method: 'POST',
+                credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password, role }),
             });

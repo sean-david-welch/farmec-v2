@@ -5,8 +5,11 @@ import config from '../utils/env';
 
 import { useState } from 'react';
 import { signInUser } from '../utils/auth';
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
+    const navigate = useNavigate();
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
@@ -26,7 +29,7 @@ const LoginForm = () => {
             if (response.ok) {
                 setEmail('');
                 setPassword('');
-                // window.location.href = '/';
+                navigate('/');
             }
         } catch (error) {
             console.error('Error submitting form:', error);

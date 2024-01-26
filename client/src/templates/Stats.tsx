@@ -42,7 +42,7 @@ const StatsComponent: React.FC = () => {
             <p className={utils.subHeading}>This is a Quick Look at what Separates us from our Competitors</p>
             <div className={styles.stats}>
                 {statsItems.map(item => (
-                    <a href={item.link}>
+                    <Link to={item.link}>
                         <ul className={styles.statList}>
                             <li className={styles.statListItem}>{item.title}</li>
                             <li className={styles.statListItem}>
@@ -50,7 +50,7 @@ const StatsComponent: React.FC = () => {
                             </li>
                             <li className={styles.statListItem}>{item.description}</li>
                         </ul>
-                    </a>
+                    </Link>
                 ))}
             </div>
         </div>

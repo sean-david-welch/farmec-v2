@@ -1,18 +1,20 @@
 import styles from '../styles/Footer.module.css';
 import utils from '../styles/Utils.module.css';
 
+import { Link } from 'react-router-dom';
+
 const Footer: React.FC = () => {
     return (
         <footer className={styles.footer}>
             <div className={styles.footerInfo}>
-                <a href="/" aria-label="logo button">
+                <Link to="/" aria-label="logo button">
                     <img
                         src="https://d3eerclezczw8.cloudfront.net/farmec_images/farmeclogo.webp"
                         alt="Logo"
                         width="250"
                         height="250"
                     />
-                </a>
+                </Link>
 
                 <ul className={styles.companyInfo}>
                     <li className={styles.infoItem}>Farmec Ireland Ltd.</li>
@@ -21,7 +23,7 @@ const Footer: React.FC = () => {
                     <li className={styles.infoItem}>Tel: 01 - 8259289</li>
                     <li className={styles.infoItem}>Email: info@farmec.ie</li>
                     <li className={styles.infoItem}>
-                        <a href={'/about/policy'}>Privacy Policy | Terms of Use</a>
+                        <Link to={'/about/policy'}>Privacy Policy | Terms of Use</Link>
                     </li>
                 </ul>
             </div>
@@ -29,51 +31,51 @@ const Footer: React.FC = () => {
             <div className={styles.footerLinks}>
                 <div className={styles.accreditation}>
                     <h1 className={utils.mainHeading}>Accreditation</h1>
-                    <a href={'https://ftmta.ie/'} target={'_blank'}>
+                    <Link to={'https://ftmta.ie/'} target={'_blank'}>
                         <img
                             src="https://d3eerclezczw8.cloudfront.net/farmec_images/ftmta-logo.webp"
                             alt="Logo"
                             width="250"
                             height="250"
                         />
-                    </a>
+                    </Link>
                 </div>
                 <div className={styles.socialLinks}>
-                    <a
+                    <Link
                         className={styles.socials}
-                        href={'https://www.facebook.com/FarmecIreland/'}
+                        to={'https://www.facebook.com/FarmecIreland/'}
                         target={'_blank'}
                         rel={'noopener noreferrer'}
                         aria-label="Visit our Facebook page">
                         <img src="/icons/facebook.svg" alt="facebook icon" />
-                    </a>
-                    <a
+                    </Link>
+                    <Link
                         className={styles.socials}
-                        href={'https://twitter.com/farmec1?lang=en'}
+                        to={'https://twitter.com/farmec1?lang=en'}
                         target={'_blank'}
                         rel={'noopener noreferrer'}
                         aria-label="Visit our Twiiter page">
                         <img src="/icons/twitter.svg" alt="facebook icon" />
-                    </a>
+                    </Link>
                 </div>
             </div>
 
             <div className={styles.footerNav}>
                 <ul className={styles.navLinks}>
                     <button className={utils.btnFooter}>
-                        <a href={'/about'}>Home</a>
+                        <Link to={'/about'}>Home</Link>
                     </button>
                     <button className={utils.btnFooter}>
-                        <a href={'/about'}>About</a>
+                        <Link to={'/about'}>About</Link>
                     </button>
                     <button className={utils.btnFooter}>
-                        <a href={'/suppliers'}>Suppliers</a>
+                        <Link to={'/suppliers'}>Suppliers</Link>
                     </button>
                     <button className={utils.btnFooter}>
-                        <a href={'/spareparts'}>Spare Parts</a>
+                        <Link to={'/spareparts'}>Spare Parts</Link>
                     </button>
                     <button className={utils.btnFooter}>
-                        <a href={'/blog'}>Blog</a>
+                        <Link to={'/blog'}>Blog</Link>
                     </button>
                 </ul>
             </div>

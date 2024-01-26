@@ -1,9 +1,7 @@
+import Slider from '../components/Slider';
+
 const Home: React.FC = () => {
-    return (
-        <>
-            <h1>hello home</h1>
-        </>
-    );
+    return <>{/* <Slider images={} /> */}</>;
 };
 
 export default Home;

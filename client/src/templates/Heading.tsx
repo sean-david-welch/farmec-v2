@@ -6,9 +6,9 @@ const Heading: React.FC = () => {
             <h1>Importers & Distributors of Quality Agricultural Machinery</h1>
 
             <button className={utils.btn}>
-                <a href="#Info">
+                <Link to="#Info">
                     Find Out More: <img src="/icons/chevron-down.svg" alt="down" />
-                </a>
+                </Link>
             </button>
         </div>
     );

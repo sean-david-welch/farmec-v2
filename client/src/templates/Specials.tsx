@@ -46,7 +46,7 @@ const SpecialsComponents: React.FC = () => {
             <p className={utils.subHeading}>This is a Quick Look at what Separates us from our Competitors</p>
             <div className={styles.specials}>
                 {specialsItems.map(item => (
-                    <a href={item.link}>
+                    <Link to={item.link}>
                         <ul className={styles.specialsList}>
                             <li className={styles.specialsListItem}>{item.title}</li>
                             <li className={styles.specialsListItem}>
@@ -54,7 +54,7 @@ const SpecialsComponents: React.FC = () => {
                             </li>
                             <li className={styles.specialsListItem}>{item.description}</li>
                         </ul>
-                    </a>
+                    </Link>
                 ))}
             </div>
         </div>

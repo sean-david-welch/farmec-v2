@@ -25,12 +25,12 @@ const Machines: React.FC<Props> = props => {
                             <h1 className={utils.mainHeading}>{machine.name}</h1>
                             <p className={utils.paragraph}>{machine.description}</p>
                             <button className={utils.btn}>
-                                <a href={`/machines/${machine.id}`}>
+                                <Link to={`/machines/${machine.id}`}>
                                     View Products
                                     <i aria-label="icon">
                                         <img src="/icons/right-bracket.svg" alt="bracket-right" />
                                     </i>
-                                </a>
+                                </Link>
                             </button>
                         </div>
                     </div>

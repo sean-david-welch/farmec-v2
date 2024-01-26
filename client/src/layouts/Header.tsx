@@ -5,50 +5,51 @@ import AccountButton from '../components/AccountButton';
 import { useLocation } from 'react-router-dom';
 import { useSuppliers } from '../hooks/supplierHooks';
 
+import { Link } from 'react-router-dom';
+
 const Header: React.FC = () => {
     const location = useLocation();
     const isHomepage = () => location.pathname === '/';
 
     const suppliers = useSuppliers();
-
     return (
         <nav className={isHomepage() ? styles.transparentNav : styles.navbar}>
-            <a href="/" aria-label="logo button">
+            <Link to="/" aria-label="logo button">
                 <img
                     src="https://d3eerclezczw8.cloudfront.net/farmec_images/farmeclogo.webp"
                     alt="Logo"
                     width="250"
                     height="250"
                 />
-            </a>
+            </Link>
 
             <ul className={styles.navList}>
                 <li className={styles.navItem}>
-                    <a href="/about" className={styles.navListItem}>
+                    <Link to="/about" className={styles.navListItem}>
                         About Us
-                    </a>
+                    </Link>
                     <ul className={styles.navDrop}>
                         <li className={styles.navDropItem}>
-                            <a href="/about">Staff & Management</a>
+                            <Link to="/about">Staff & Management</Link>
                         </li>
                         <li className={styles.navDropItem}>
-                            <a href="/about#timeline">Company History</a>
+                            <Link to="/about#timeline">Company History</Link>
                         </li>
                         <li className={styles.navDropItem}>
-                            <a href="/about/policies">Terms of Use</a>
+                            <Link to="/about/policies">Terms of Use</Link>
                         </li>
                     </ul>
                 </li>
 
                 <li className={styles.navItem}>
-                    <a href="/suppliers" className={styles.navListItem}>
+                    <Link to="/suppliers" className={styles.navListItem}>
                         Suppliers
-                    </a>
+                    </Link>
                     {suppliers.data && (
                         <ul className={styles.navDrop}>
                             {suppliers.data.map(supplier => (
                                 <li className={styles.navDropItem} key={supplier.id}>
-                                    <a href={`/suppliers/${supplier.id}`}>{supplier.name}</a>
+                                    <Link to={`/suppliers/${supplier.id}`}>{supplier.name}</Link>
                                 </li>
                             ))}
                         </ul>
@@ -56,15 +57,15 @@ const Header: React.FC = () => {
                 </li>
 
                 <li className={styles.navItem}>
-                    <a href="/spareparts" className={styles.navListItem}>
+                    <Link to="/spareparts" className={styles.navListItem}>
                         Spareparts
-                    </a>
+                    </Link>
 
                     {suppliers.data && (
                         <ul className={styles.navDrop}>
                             {suppliers.data.map(supplier => (
                                 <li className={styles.navDropItem} key={supplier.id}>
-                                    <a href={`/spareparts/${supplier.id}`}>{supplier.name}</a>
+                                    <Link to={`/spareparts/${supplier.id}`}>{supplier.name}</Link>
                                 </li>
                             ))}
                         </ul>
@@ -72,23 +73,23 @@ const Header: React.FC = () => {
                 </li>
 
                 <li className={styles.navItem}>
-                    <a href="/blogs" className={styles.navListItem}>
+                    <Link to="/blogs" className={styles.navListItem}>
                         Blog
-                    </a>
+                    </Link>
                     <ul className={styles.navDrop}>
                         <li className={styles.navDropItem}>
-                            <a href="/blog">Latest Posts</a>
+                            <Link to="/blog">Latest Posts</Link>
                         </li>
                         <li className={styles.navDropItem}>
-                            <a href="/blog/exhibitions">Exhibition Information</a>
+                            <Link to="/blog/exhibitions">Exhibition Information</Link>
                         </li>
                     </ul>
                 </li>
 
                 <li className={styles.navItem}>
-                    <a href="/#contact" className={styles.navListItem}>
+                    <Link to="/#contact" className={styles.navListItem}>
                         Contact
-                    </a>
+                    </Link>
                 </li>
 
                 <AccountButton />

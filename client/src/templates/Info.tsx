@@ -14,14 +14,14 @@ const Info: React.FC = () => {
                     Telephone:
                     <br />
                     <span className={utils.infoItemText}>
-                        <a href="tel:01 825 9289">01 825 9289</a>
+                        <Link to="tel:01 825 9289">01 825 9289</Link>
                     </span>
                 </div>
                 <div className={utils.infoItem}>
                     International:
                     <br />
                     <span className={utils.infoItemText}>
-                        <a href="tel:+353 1 825 9289">+353 1 825 9289</a>
+                        <Link to="tel:+353 1 825 9289">+353 1 825 9289</Link>
                     </span>
                 </div>
                 <div className={utils.infoItem}>

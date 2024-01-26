@@ -2,6 +2,7 @@ import styles from '../styles/Suppliers.module.css';
 import SupplierForm from '../forms/SupplierForm';
 
 import { useSuppliers } from '../hooks/supplierHooks';
+import { Link } from 'react-router-dom';
 
 const Suppliers: React.FC = () => {
     const suppliers = useSuppliers();
@@ -43,7 +44,7 @@ const Suppliers: React.FC = () => {
                             <div className={styles.supplierInfo}>
                                 <p className={styles.supplierDescription}>{supplier.description}</p>
                                 <button className={styles.btn}>
-                                    <a href={`/suppliers/${supplier.id}`}>Learn More</a>
+                                    <Link to={`/suppliers/${supplier.id}`}>Learn More</Link>
                                 </button>
                             </div>
                         </div>
