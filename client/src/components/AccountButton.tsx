@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
 import styles from '../styles/Header.module.css';
+import { useState, useEffect } from 'react';
 
 const AccountButton = () => {
     const [user, setUser] = useState(null);

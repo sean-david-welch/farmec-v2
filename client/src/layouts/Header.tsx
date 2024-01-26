@@ -9,7 +9,7 @@ const Header: React.FC = () => {
     const location = useLocation();
     const isHomepage = () => location.pathname === '/';
 
-    const { suppliers } = useSuppliers();
+    const suppliers = useSuppliers();
 
     return (
         <nav className={isHomepage() ? styles.transparentNav : styles.navbar}>

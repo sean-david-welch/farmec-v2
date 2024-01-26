@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
 import utils from '../../styles/Utils.module.css';
 import styles from '../../styles/Blogs.module.css';
 
+import { useState } from 'react';
 import { signInUser } from '../utils/auth';
 
 const LoginForm = () => {

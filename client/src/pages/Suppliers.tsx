@@ -1,8 +1,10 @@
-import { useSuppliers } from '../hooks/supplierHooks';
 import styles from '../styles/Suppliers.module.css';
+import SupplierForm from '../forms/SupplierForm';
+
+import { useSuppliers } from '../hooks/supplierHooks';
 
 const Suppliers: React.FC = () => {
-    const { suppliers } = useSuppliers();
+    const suppliers = useSuppliers();
 
     if (suppliers.isLoading) {
         return <div>Loading...</div>;
@@ -48,6 +50,8 @@ const Suppliers: React.FC = () => {
                     ))}
                 </>
             )}
+
+            <SupplierForm />
         </section>
     );
 };

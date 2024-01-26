@@ -1,9 +1,9 @@
 import utils from '../../styles/Utils.module.css';
 
-import { useState, useEffect } from 'react';
+import config from '../utils/env';
 
 import { signOutUser } from '../utils/auth';
-import config from '../utils/env';
+import { useState, useEffect } from 'react';
 
 const LogoutForm = () => {
     const [user, setUser] = useState(null);

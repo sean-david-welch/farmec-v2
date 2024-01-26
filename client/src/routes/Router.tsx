@@ -1,8 +1,9 @@
+import Layout from '../layouts/Layout';
+
 import { lazy, useEffect } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 import { Route, Routes, useLocation } from 'react-router-dom';
-import Layout from '../layouts/Layout';
 
 const Home = lazy(() => import('../pages/Home'));
 const About = lazy(() => import('../pages/About'));

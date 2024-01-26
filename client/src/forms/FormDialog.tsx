@@ -29,7 +29,7 @@ const FormDialog = ({ children, visible, onClose }: Props) => {
         <dialog ref={dialogRef} className={utils.dialog}>
             {children}
             <button className={utils.dialogBtn} formMethod="dialog" onClick={closeDialog}>
-                <img src="/icons/x.svg" alt="x-icon" />
+                <img src="/icons/x-mark.svg" alt="x-icon" />
             </button>
         </dialog>
     );

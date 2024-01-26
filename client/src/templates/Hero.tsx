@@ -1,8 +1,8 @@
-import Carousel from '../types/carousel';
-
+import config from '../utils/env';
 import Heading from './Heading';
 import Slider from '../components/Slider';
-import config from '../utils/env';
+
+import { Carousel } from '../types/miscTypes';
 
 const carousels: Carousel[] = await fetch(`${config.baseUrl}/api/carousels`).then(carousels => carousels.json());
 

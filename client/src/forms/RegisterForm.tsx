@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
 import utils from '../../styles/Utils.module.css';
 import config from '../utils/env';
+
+import { useState, useEffect } from 'react';
 
 const RegisterForm = () => {
     const [email, setEmail] = useState('');

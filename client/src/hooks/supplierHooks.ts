@@ -1,8 +1,7 @@
 import config from '../utils/env';
-import Machine from '../types/machine';
-import Supplier from '../types/supplier';
+import { Machine, Supplier } from '../types/supplierTypes';
 
-import { Video } from '../types/video';
+import { Video } from '../types/videoTypes';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 export const useSuppliers = () => {
@@ -18,7 +17,7 @@ export const useSuppliers = () => {
         },
     });
 
-    return { suppliers };
+    return suppliers;
 };
 
 export const useSupplierDetails = (id: string) => {
@@ -62,10 +61,38 @@ export const useSupplierDetails = (id: string) => {
 export const useCreateSupplier = () => {
     const queryClient = useQueryClient();
 
-    const mutationFn = useMutation({
+    const mutateSupplier = useMutation({
         mutationFn: async (supplier: Supplier) => {
-            const response = await fetch(`http://localhost:8080/api/suppliers`, {
+            const response = await fetch(`${config.baseUrl}/api/suppliers`, {
                 method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(supplier),
+            });
+
+            if (!response.ok) {
+                console.log('response:', response);
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        },
+
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['suppliers'] });
+        },
+    });
+
+    return mutateSupplier;
+};
+
+export const useUpdateSupplier = (id: string) => {
+    const queryClient = useQueryClient();
+
+    const mutateSupplier = useMutation({
+        mutationFn: async (supplier: Supplier) => {
+            const response = await fetch(`${config.baseUrl}/api/suppliers/${id}`, {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -83,5 +110,28 @@ export const useCreateSupplier = () => {
         },
     });
 
-    return mutationFn;
+    return mutateSupplier;
+};
+
+export const useDeleteSupplier = (id: string) => {
+    const queryClient = useQueryClient();
+
+    const mutateSupplier = useMutation({
+        mutationFn: async () => {
+            const response = await fetch(`${config.baseUrl}/api/suppliers/${id}`, {
+                method: 'DELETE',
+            });
+
+            if (!response.ok) {
+                throw new Error('network response was not ok');
+            }
+            return response.json();
+        },
+
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['suppliers'] });
+        },
+    });
+
+    return mutateSupplier;
 };

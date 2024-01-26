@@ -1,7 +1,7 @@
 import styles from '../styles/Suppliers.module.css';
 import utils from '../styles/Utils.module.css';
 
-import { Video } from '../types/video';
+import { Video } from '../types/videoTypes';
 
 interface VideoProps {
     videos: Video[];

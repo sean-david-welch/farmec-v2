@@ -1,6 +1,7 @@
-import { initializeApp } from 'firebase/app';
-import type { FirebaseApp } from 'firebase/app';
 import config from '../utils/env';
+
+import { FirebaseApp } from 'firebase/app';
+import { initializeApp } from 'firebase/app';
 
 const firebaseConfig = {
     apiKey: config.firebaseApiKey,

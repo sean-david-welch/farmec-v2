@@ -1,7 +1,9 @@
 import utils from '../../styles/Utils.module.css';
-import Info from './Info';
-import ContactForm from '../components/ContactForm';
+
 import config from '../utils/env';
+
+import Info from './Info';
+import ContactForm from '../forms/ContactForm';
 
 const Contact: React.FC = () => {
     const mapsKey = config.mapsKey;
