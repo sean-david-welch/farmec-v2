@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import styles from '../../styles/Carousel.module.css';
 
-interface Props {
+interface ImageProps {
     images: string[];
 }
 
-const Slider = (props: Props) => {
+const Slider = (props: ImageProps) => {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const nextStep = () => {

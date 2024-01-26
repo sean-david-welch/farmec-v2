@@ -116,27 +116,3 @@ export const useUpdateSupplier = (id: string) => {
 
     return mutateSupplier;
 };
-
-export const useDeleteSupplier = (id: string) => {
-    const queryClient = useQueryClient();
-
-    const mutateSupplier = useMutation({
-        mutationFn: async () => {
-            const response = await fetch(`${config.baseUrl}/api/suppliers/${id}`, {
-                method: 'DELETE',
-                credentials: 'include',
-            });
-
-            if (!response.ok) {
-                throw new Error('network response was not ok');
-            }
-            return response.json();
-        },
-
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['suppliers'] });
-        },
-    });
-
-    return mutateSupplier;
-};

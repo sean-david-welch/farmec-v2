@@ -3,15 +3,26 @@ import FormDialog from './FormDialog';
 
 import { useState } from 'react';
 import { Supplier } from '../types/supplierTypes';
-import { useCreateSupplier } from '../hooks/supplierHooks';
+import { useCreateSupplier, useUpdateSupplier } from '../hooks/supplierHooks';
 import { getFormFields } from '../utils/supplierFormFields';
 
-const SupplierForm = () => {
+const SupplierForm: React.FC<{ id?: string }> = ({ id }) => {
     const formFields = getFormFields();
 
     const [showForm, setShowForm] = useState(false);
 
-    const { mutateAsync: createSupplier, isError, error } = useCreateSupplier();
+    const {
+        mutateAsync: updateSupplier,
+        isError: isUpdateError,
+        error: updateError,
+    } = id ? useUpdateSupplier(id) : { mutateAsync: () => {}, isError: false, error: null };
+
+    const { mutateAsync: createSupplier, isError: isCreateError, error: createError } = useCreateSupplier();
+
+    const isError = id ? isUpdateError : isCreateError;
+    const error = id ? updateError : createError;
+
+    const submitSupplier = id ? updateSupplier : createSupplier;
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -35,7 +46,7 @@ const SupplierForm = () => {
         };
 
         try {
-            await createSupplier(body);
+            await submitSupplier(body);
         } catch (error) {
             console.error('Error creating supplier:', error);
         }
@@ -44,7 +55,7 @@ const SupplierForm = () => {
     return (
         <section id="form">
             <button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
-                Create Supplier
+                {id ? <img src="/icons/edit.svg" alt="edit button" /> : 'Create Supplier'}
             </button>
 
             <FormDialog visible={showForm} onClose={() => setShowForm(false)}>
@@ -66,7 +77,7 @@ const SupplierForm = () => {
                     </button>
                 </form>
 
-                {isError && <p>Error: {error.message}</p>}
+                {isError && <p>Error: {error?.message}</p>}
             </FormDialog>
         </section>
     );

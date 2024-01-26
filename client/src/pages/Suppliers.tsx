@@ -21,33 +21,37 @@ const Suppliers: React.FC = () => {
             {suppliers.data && (
                 <>
                     {suppliers.data.map(supplier => (
-                        <div className={styles.supplierCard} id={supplier.name} key={supplier.id}>
-                            <div className={styles.supplierGrid}>
-                                <div className={styles.supplierHead}>
-                                    <h1 className={styles.mainHeading}>{supplier.name}</h1>
+                        <>
+                            <div className={styles.supplierCard} id={supplier.name} key={supplier.id}>
+                                <div className={styles.supplierGrid}>
+                                    <div className={styles.supplierHead}>
+                                        <h1 className={styles.mainHeading}>{supplier.name}</h1>
+                                        <img
+                                            src={supplier.logo_image || '/default.jpg'}
+                                            alt={'/default.jpg'}
+                                            className={styles.supplierLogo}
+                                            width={200}
+                                            height={200}
+                                        />
+                                    </div>
                                     <img
-                                        src={supplier.logo_image || '/default.jpg'}
+                                        src={supplier.marketing_image || '/default.jpg'}
                                         alt={'/default.jpg'}
-                                        className={styles.supplierLogo}
-                                        width={200}
-                                        height={200}
+                                        className={styles.supplierImage}
+                                        width={550}
+                                        height={550}
                                     />
                                 </div>
-                                <img
-                                    src={supplier.marketing_image || '/default.jpg'}
-                                    alt={'/default.jpg'}
-                                    className={styles.supplierImage}
-                                    width={550}
-                                    height={550}
-                                />
+                                <div className={styles.supplierInfo}>
+                                    <p className={styles.supplierDescription}>{supplier.description}</p>
+                                    <button className={styles.btn}>
+                                        <Link to={`/suppliers/${supplier.id}`}>Learn More</Link>
+                                    </button>
+                                </div>
                             </div>
-                            <div className={styles.supplierInfo}>
-                                <p className={styles.supplierDescription}>{supplier.description}</p>
-                                <button className={styles.btn}>
-                                    <Link to={`/suppliers/${supplier.id}`}>Learn More</Link>
-                                </button>
-                            </div>
-                        </div>
+
+                            <SupplierForm id={supplier.id} />
+                        </>
                     ))}
                 </>
             )}
