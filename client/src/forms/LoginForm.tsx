@@ -1,9 +1,10 @@
 import utils from '../styles/Utils.module.css';
 import styles from '../styles/Blogs.module.css';
 
+import config from '../utils/env';
+
 import { useState } from 'react';
 import { signInUser } from '../utils/auth';
-import config from '../utils/env';
 
 const LoginForm = () => {
     const [email, setEmail] = useState('');
@@ -15,18 +16,16 @@ const LoginForm = () => {
 
         try {
             const idToken = await signInUser(email, password);
+            console.log('IdToken', idToken);
 
             const response = await fetch(`${config.baseUrl}/api/auth/login`, {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${idToken}` },
-            });
+            }).then(response => response.json());
 
-            const user = await response.json();
-
-            if (user) {
+            if (response.ok) {
                 setEmail('');
                 setPassword('');
-                localStorage.setItem('user', JSON.stringify(user));
                 window.location.href = '/';
             }
         } catch (error: any) {

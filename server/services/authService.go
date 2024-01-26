@@ -24,6 +24,7 @@ func NewAuthService(firebase *lib.Firebase) *AuthServiceImpl {
 }
 
 func (service *AuthServiceImpl) Login(context context.Context, idToken string) (string, error) {
+
 	authClient, err := service.firebase.App.Auth(context)
 	if err != nil {
 		return "", fmt.Errorf("firebase auth initilization failed: %w", err)

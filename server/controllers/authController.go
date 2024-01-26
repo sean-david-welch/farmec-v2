@@ -26,6 +26,7 @@ func (controller *AuthController) Logout(context *gin.Context) {
 
 func (controller *AuthController) Login(context *gin.Context) {
 	authHeader := context.GetHeader("Authorization")
+
 	if authHeader == "" {
 		context.JSON(http.StatusUnauthorized, gin.H{"error": "an error occurred, could not find auth header"})
 		return
