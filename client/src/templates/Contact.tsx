@@ -1,9 +1,10 @@
 import utils from '../../styles/Utils.module.css';
 import Info from './Info';
-import ContactForm from '../../../frontend/src/components/ContactForm';
+import ContactForm from '../components/ContactForm';
+import config from '../utils/env';
 
 const Contact: React.FC = () => {
-    const mapsKey = import.meta.env.NEXT_PUBLIC_MAPS_KEY;
+    const mapsKey = config.mapsKey;
 
     return (
         <section id="contact">

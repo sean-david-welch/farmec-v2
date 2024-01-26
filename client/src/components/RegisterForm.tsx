@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import utils from '../../styles/Utils.module.css';
+import config from '../utils/env';
 
 const RegisterForm = () => {
     const [email, setEmail] = useState('');
@@ -19,7 +20,7 @@ const RegisterForm = () => {
         event.preventDefault();
 
         try {
-            const response = await fetch('http://localhost:4321/api/auth/register', {
+            const response = await fetch(`${config.baseUrl}/api/auth/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password, role }),

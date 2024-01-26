@@ -1,9 +1,10 @@
-import type Carousel from '../../../frontend/src/types/carousel';
+import Carousel from '../types/carousel';
 
-import Slider from '../../../frontend/src/components/Slider';
 import Heading from './Heading';
+import Slider from '../components/Slider';
+import config from '../utils/env';
 
-const carousels: Carousel[] = await fetch('http://localhost:4321/api/carousels').then(carousels => carousels.json());
+const carousels: Carousel[] = await fetch(`${config.baseUrl}/api/carousels`).then(carousels => carousels.json());
 
 const images = carousels.map(carousels => carousels.image);
 

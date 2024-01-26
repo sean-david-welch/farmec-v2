@@ -1,10 +1,11 @@
 import { initializeApp } from 'firebase/app';
 import type { FirebaseApp } from 'firebase/app';
+import config from '../utils/env';
 
 const firebaseConfig = {
-    apiKey: 'AIzaSyDd4w_sHjO1X8oo6tafrx0XikIRr82jQtI',
-    authDomain: 'farmec-ireland-1675438662747.firebaseapp.com',
-    projectId: 'farmec-ireland-1675438662747',
+    apiKey: config.firebaseApiKey,
+    authDomain: config.firebaseAuthDomain,
+    projectId: config.firebaseProjectId,
 };
 
 if (!firebaseConfig.apiKey || !firebaseConfig.authDomain || !firebaseConfig.projectId) {

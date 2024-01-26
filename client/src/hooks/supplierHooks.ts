@@ -1,14 +1,15 @@
+import config from '../utils/env';
 import Machine from '../types/machine';
 import Supplier from '../types/supplier';
 
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Video } from '../types/video';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 export const useSuppliers = () => {
     const suppliers = useQuery<Supplier[], Error>({
         queryKey: ['suppliers'],
         queryFn: async () => {
-            const response = await fetch(`http://localhost:8080/api/suppliers`);
+            const response = await fetch(`${config.baseUrl}/api/suppliers`);
 
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -24,7 +25,7 @@ export const useSupplierDetails = (id: string) => {
     const supplier = useQuery<Supplier, Error>({
         queryKey: ['supplier', id],
         queryFn: async () => {
-            const response = await fetch(`http://localhost:8080/api/suppliers/${id}`);
+            const response = await fetch(`${config.baseUrl}/api/suppliers/${id}`);
 
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -36,7 +37,7 @@ export const useSupplierDetails = (id: string) => {
     const machines = useQuery<Machine[], Error>({
         queryKey: ['machines', id],
         queryFn: async () => {
-            const response = await fetch(`http://localhost:8080/api/machines/${id}`);
+            const response = await fetch(`${config.baseUrl}/api/machines/${id}`);
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -47,7 +48,7 @@ export const useSupplierDetails = (id: string) => {
     const videos = useQuery<Video[], Error>({
         queryKey: ['videos', id],
         queryFn: async () => {
-            const response = await fetch(`http://localhost:8080/api/videos/${id}`);
+            const response = await fetch(`${config.baseUrl}/api/videos/${id}`);
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }

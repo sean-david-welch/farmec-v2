@@ -1,7 +1,7 @@
 import styles from '../styles/Machines.module.css';
 import utils from '../styles/Utils.module.css';
 
-import Machine from '../../../frontend/src/types/machine';
+import Machine from '../types/machine';
 
 interface Props {
     machines: Machine[];

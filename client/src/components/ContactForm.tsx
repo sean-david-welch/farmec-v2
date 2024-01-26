@@ -1,4 +1,5 @@
 import utils from '../../styles/Utils.module.css';
+import config from '../utils/env';
 
 const ContactForm = () => {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -12,7 +13,7 @@ const ContactForm = () => {
         };
 
         // Add error handling for the fetch request as needed
-        const response = await fetch('http://localhost:4321/api/contact', {
+        const response = await fetch(`${config.baseUrl}/api/contact`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

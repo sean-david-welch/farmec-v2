@@ -3,6 +3,7 @@ import utils from '../../styles/Utils.module.css';
 import { useState, useEffect } from 'react';
 
 import { signOutUser } from '../utils/auth';
+import config from '../utils/env';
 
 const LogoutForm = () => {
     const [user, setUser] = useState(null);
@@ -22,7 +23,7 @@ const LogoutForm = () => {
         try {
             await signOutUser();
 
-            const response = await fetch('http://localhost:4321/api/auth/logout');
+            const response = await fetch(`${config.baseUrl}/api/auth/logout`);
 
             if (response.ok) {
                 setUser(null);
