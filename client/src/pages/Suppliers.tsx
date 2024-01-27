@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import { Supplier } from '../types/supplierTypes';
 import { useUserStore } from '../lib/context';
 import { useGetResource } from '../hooks/genericHooks';
+import { SocialLinks } from '../components/SocialLinks';
 
 const Suppliers: React.FC = () => {
     const { isAdmin } = useUserStore();
@@ -49,6 +50,15 @@ const Suppliers: React.FC = () => {
                                           className={styles.supplierLogo}
                                           width={200}
                                           height={200}
+                                      />
+
+                                      <SocialLinks
+                                          facebook={supplier.social_facebook}
+                                          twitter={supplier.social_twitter}
+                                          instagram={supplier.social_instagram}
+                                          linkedin={supplier.social_linkedin}
+                                          website={supplier.social_website}
+                                          youtube={supplier.social_youtube}
                                       />
                                   </div>
                                   <img
