@@ -48,8 +48,6 @@ const SupplierForm: React.FC<{ id?: string }> = ({ id }) => {
         try {
             const response = await submitSupplier(body);
 
-            console.log(response);
-
             if (logoFile) {
                 const logoImageData = {
                     imageFile: logoFile,

@@ -85,18 +85,6 @@ func (client *S3ClientImpl) DeleteImageFromS3(imageUrl string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
-	_, err = client.Client.HeadObject(ctx, &s3.HeadObjectInput{
-		Bucket: aws.String(bucketName),
-		Key:    aws.String(key),
-	})
-
-	if err != nil {
-		if errors.As(err, &respErr) {
-			log.Printf("Object does not exist in S3, continuing: %s", key)
-			return nil
-		}
-	}
-
 	_, err = client.Client.DeleteObject(ctx, &s3.DeleteObjectInput{
 		Bucket: aws.String(bucketName),
 		Key:    aws.String(key),
@@ -104,8 +92,10 @@ func (client *S3ClientImpl) DeleteImageFromS3(imageUrl string) error {
 
 	if err != nil {
 		if errors.As(err, &respErr) {
+			log.Printf("AWS error: %s, StatusCode: %d", respErr.Error(), respErr.HTTPStatusCode())
 			return fmt.Errorf("AWS error: %s, StatusCode: %d", respErr.Error(), respErr.HTTPStatusCode())
 		}
+		log.Printf("Error deleting object from S3: %s, Object Key: %s", err.Error(), key)
 		return fmt.Errorf("error deleting object from S3: %w", err)
 	}
 

@@ -15,12 +15,8 @@ export const uploadFileToS3 = async (imageData: ImageData) => {
             body: imageFile,
         });
 
-        console.log('aws response:', response);
-
         if (!response.ok) {
             throw new Error(`Failed to upload file: ${response.statusText}`);
-        } else {
-            console.log('response ok:', response);
         }
 
         return { success: true, status: response.status };

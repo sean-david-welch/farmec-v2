@@ -64,7 +64,7 @@ const Suppliers: React.FC = () => {
                 </>
             )}
 
-            <SupplierForm />
+            {isAdmin && <SupplierForm />}
         </section>
     );
 };

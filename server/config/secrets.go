@@ -50,7 +50,7 @@ func NewSecrets() (*Secrets, error) {
 		ClientX509CertUrl:       os.Getenv("FIREBASE_CLIENT_X509_CERT_URL"),
 		// AWS
 		AwsAccessKey: os.Getenv("AWS_ACCESS_KEY"),
-		AwsSecret:    os.Getenv("AWS_SECRET"),
+		AwsSecret:    os.Getenv("AWS_SECRET_KEY"),
 		// Youtube
 		YoutubeApiKey: os.Getenv("YOUTUBE_API_KEY"),
 		// Stripe
