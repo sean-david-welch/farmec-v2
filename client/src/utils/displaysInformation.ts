@@ -1,14 +1,16 @@
-import styles from '../../styles/Info.module.css';
-import utils from '../../styles/Utils.module.css';
-
 const icons = {
     faTractor: '../icons/tractor.svg',
     faToolbox: '../icons/toolbox.svg',
     faGears: '../icons/gears.svg',
     faUserPLus: '../icons/user-plus.svg',
+
+    faUsers: '../icons/users.svg',
+    faBusinessTime: '../icons/business-time.svg',
+    faHandshake: '../icons/handshake.svg',
+    faWrench: '../icons/wrench.svg',
 };
 
-const specialsItems = [
+export const specialsItems = [
     {
         title: 'Quality Stock',
         description:
@@ -39,26 +41,29 @@ const specialsItems = [
     },
 ];
 
-const SpecialsComponents: React.FC = () => {
-    return (
-        <div className={styles.infoSection}>
-            <h1 className={utils.sectionHeading}>Farmec At A Glance:</h1>
-            <p className={utils.subHeading}>This is a Quick Look at what Separates us from our Competitors</p>
-            <div className={styles.specials}>
-                {specialsItems.map(item => (
-                    <Link to={item.link}>
-                        <ul className={styles.specialsList}>
-                            <li className={styles.specialsListItem}>{item.title}</li>
-                            <li className={styles.specialsListItem}>
-                                <img src={item.icon} alt="icon" />
-                            </li>
-                            <li className={styles.specialsListItem}>{item.description}</li>
-                        </ul>
-                    </Link>
-                ))}
-            </div>
-        </div>
-    );
-};
-
-export default SpecialsComponents;
+export const statsItems = [
+    {
+        title: 'Large Network',
+        description: '50+ Dealers Nationwide',
+        icon: icons.faUsers,
+        link: '/about',
+    },
+    {
+        title: 'Experience',
+        description: '25+ Years in Business',
+        icon: icons.faBusinessTime,
+        link: '/about',
+    },
+    {
+        title: 'Diverse Range',
+        description: '10+ Quality Suppliers',
+        icon: icons.faHandshake,
+        link: '/about',
+    },
+    {
+        title: 'Committment',
+        description: 'Warranty Guarentee',
+        icon: icons.faWrench,
+        link: '/about',
+    },
+];

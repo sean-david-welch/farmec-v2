@@ -4,9 +4,12 @@ import styles from '../styles/Suppliers.module.css';
 import Videos from '../templates/Videos';
 import Machines from '../templates/Machines';
 
-import { useParams } from 'react-router-dom';
-import { useSupplierDetails } from '../hooks/supplierHooks';
 import { Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+
+import { useGetResourceById } from '../hooks/genericHooks';
+import { Machine, Supplier } from '../types/supplierTypes';
+import { Video } from '../types/videoTypes';
 
 const SuppliersDetails: React.FC = () => {
     const params = useParams<{ id: string }>();
@@ -15,7 +18,9 @@ const SuppliersDetails: React.FC = () => {
         return <div>Error: No supplier ID provided</div>;
     }
 
-    const { supplier, machines, videos } = useSupplierDetails(params.id);
+    const supplier = useGetResourceById<Supplier>('suppliers', params.id);
+    const machines = useGetResourceById<Machine[]>('machines', params.id);
+    const videos = useGetResourceById<Video[]>('videos', params.id);
 
     if (supplier.isLoading || machines.isLoading || videos.isLoading) {
         return <div>Loading...</div>;
