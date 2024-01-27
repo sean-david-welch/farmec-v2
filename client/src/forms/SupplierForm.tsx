@@ -3,21 +3,26 @@ import FormDialog from './FormDialog';
 
 import { useState } from 'react';
 import { Supplier } from '../types/supplierTypes';
-import { useCreateSupplier, useUpdateSupplier } from '../hooks/supplierHooks';
-import { getFormFields } from '../utils/supplierFormFields';
+
 import { uploadFileToS3 } from '../utils/aws';
+import { useMutateResource } from '../hooks/genericHooks';
+import { getFormFields } from '../utils/supplierFormFields';
 
 const SupplierForm: React.FC<{ id?: string }> = ({ id }) => {
     const formFields = getFormFields();
     const [showForm, setShowForm] = useState(false);
 
     const {
+        mutateAsync: createSupplier,
+        isError: isCreateError,
+        error: createError,
+    } = useMutateResource<Supplier>('supplier');
+
+    const {
         mutateAsync: updateSupplier,
         isError: isUpdateError,
         error: updateError,
-    } = id ? useUpdateSupplier(id) : { mutateAsync: () => {}, isError: false, error: null };
-
-    const { mutateAsync: createSupplier, isError: isCreateError, error: createError } = useCreateSupplier();
+    } = useMutateResource<Supplier>('supplier', id);
 
     const isError = id ? isUpdateError : isCreateError;
     const error = id ? updateError : createError;

@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
     const navigate = useNavigate();
+    const url = new URL('api/auth/login', config.baseUrl);
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -20,7 +21,7 @@ const LoginForm = () => {
         try {
             const idToken = await signInUser(email, password);
 
-            const response = await fetch(`${config.baseUrl}/api/auth/login`, {
+            const response = await fetch(url, {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${idToken}` },
                 credentials: 'include',

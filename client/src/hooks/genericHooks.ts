@@ -1,14 +1,33 @@
 import config from '../utils/env';
 
-import { ResourceData, Resources } from '../types/dataTypes';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { Resources } from '../types/dataTypes';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 const resources: Resources = {
     supplier: {
-        endpoint: new URL('/suppliers', config.baseUrl),
+        endpoint: new URL('api/suppliers', config.baseUrl),
         queryKey: 'suppliers',
     },
 };
+
+export const useGetResource = <T>(resourceKey: string) => {
+    const { endpoint, queryKey } = resources[resourceKey];
+
+    const resource = useQuery<T, Error>({
+        queryKey: [queryKey],
+        queryFn: async () => {
+            const response = await fetch(endpoint);
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        },
+    });
+
+    return resource;
+};
+
 export const useMutateResource = <T>(resourceKey: string, id?: string) => {
     const queryClient = useQueryClient();
     const { endpoint, queryKey } = resources[resourceKey];
@@ -44,11 +63,11 @@ export const useMutateResource = <T>(resourceKey: string, id?: string) => {
     return mutate;
 };
 
-export const useDeleteResource = (resourceData: ResourceData) => {
-    const { id, route, queryKey } = resourceData;
+export const useDeleteResource = (resourceKey: string, id: string) => {
+    const { endpoint, queryKey } = resources[resourceKey];
 
     const queryClient = useQueryClient();
-    const url = new URL(route + id, config.baseUrl).toString();
+    const url = new URL(endpoint + `/${id}`, config.baseUrl).toString();
 
     const mutateResouce = useMutation({
         mutationFn: async () => {

@@ -3,15 +3,16 @@ import styles from '../styles/Header.module.css';
 import AccountButton from '../components/AccountButton';
 
 import { useLocation } from 'react-router-dom';
-import { useSuppliers } from '../hooks/supplierHooks';
 
 import { Link } from 'react-router-dom';
+import { useGetResource } from '../hooks/genericHooks';
+import { Supplier } from '../types/supplierTypes';
 
 const Header: React.FC = () => {
     const location = useLocation();
     const isHomepage = () => location.pathname === '/';
 
-    const suppliers = useSuppliers();
+    const suppliers = useGetResource<Supplier[]>('supplier');
     return (
         <nav className={isHomepage() ? styles.transparentNav : styles.navbar}>
             <Link to="/" aria-label="logo button">

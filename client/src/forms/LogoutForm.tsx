@@ -8,13 +8,15 @@ import { useNavigate } from 'react-router-dom';
 const LogoutForm = () => {
     const navigate = useNavigate();
 
+    const url = new URL('api/auth/logout', config.baseUrl);
+
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         try {
             await signOutUser();
 
-            const response = await fetch(`${config.baseUrl}/api/auth/logout`, {
+            const response = await fetch(url, {
                 credentials: 'include',
             });
 

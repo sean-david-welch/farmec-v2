@@ -4,14 +4,11 @@ import { useDeleteResource } from '../hooks/genericHooks';
 
 interface ButtonProps {
     id: string;
-    route: string;
-    queryKey: string;
+    resourceKey: string;
 }
 
-const DeleteButton: React.FC<ButtonProps> = ({ id, route, queryKey }) => {
-    const resourceData = { id, route, queryKey };
-
-    const { mutateAsync: deleteResource, isError, error } = useDeleteResource(resourceData);
+const DeleteButton: React.FC<ButtonProps> = ({ id, resourceKey }) => {
+    const { mutateAsync: deleteResource, isError, error } = useDeleteResource(resourceKey, id);
 
     async function handleSubmit(event: React.MouseEvent<HTMLButtonElement>) {
         event.preventDefault();

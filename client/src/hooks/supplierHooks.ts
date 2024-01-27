@@ -1,14 +1,15 @@
 import config from '../utils/env';
+
 import { Machine, Supplier } from '../types/supplierTypes';
 
 import { Video } from '../types/videoTypes';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
 export const useSuppliers = () => {
     const suppliers = useQuery<Supplier[], Error>({
         queryKey: ['suppliers'],
         queryFn: async () => {
-            const response = await fetch(`${config.baseUrl}/api/suppliers`);
+            const response = await fetch(`${config.baseUrl}/suppliers`);
 
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -56,56 +57,4 @@ export const useSupplierDetails = (id: string) => {
     });
 
     return { supplier, machines, videos };
-};
-
-export const useCreateSupplier = () => {
-    const queryClient = useQueryClient();
-
-    const mutateSupplier = useMutation({
-        mutationFn: async (supplier: Supplier) => {
-            const response = await fetch(`${config.baseUrl}/api/suppliers`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include',
-                body: JSON.stringify(supplier),
-            });
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        },
-
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['suppliers'] });
-        },
-    });
-
-    return mutateSupplier;
-};
-
-export const useUpdateSupplier = (id: string) => {
-    const queryClient = useQueryClient();
-
-    const mutateSupplier = useMutation({
-        mutationFn: async (supplier: Supplier) => {
-            const response = await fetch(`${config.baseUrl}/api/suppliers/${id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include',
-                body: JSON.stringify(supplier),
-            });
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        },
-
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['suppliers'] });
-        },
-    });
-
-    return mutateSupplier;
 };
