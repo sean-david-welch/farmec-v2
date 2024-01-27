@@ -1,4 +1,4 @@
-import Supplier from '../types/supplier';
+import { Supplier } from '../types/supplierTypes';
 
 export const getFormFields = (supplier?: Supplier) => [
     {

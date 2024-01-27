@@ -23,7 +23,7 @@ export interface WarrantyClaim {
     repair_details: string;
     labour_hours: string;
     completed_by: string;
-    created: string;
+    created?: string;
 }
 
 export interface PartsRequired {
@@ -58,7 +58,7 @@ export interface MachineRegistration {
     operator_handbook: boolean;
     date: string;
     completed_by: string;
-    created: string;
+    created?: string;
 }
 
 export interface LineItem {

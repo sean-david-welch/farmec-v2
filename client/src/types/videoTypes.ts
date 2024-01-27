@@ -18,11 +18,12 @@ export interface YoutubeApiResponse {
 }
 
 export interface Video {
-    id: string;
+    id?: string;
     supplierId: string;
     web_url: string;
     title: string;
     description: string;
     video_id: string;
     thumbnail_url: string;
+    created?: string;
 }
