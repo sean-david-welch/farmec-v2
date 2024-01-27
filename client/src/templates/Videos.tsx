@@ -13,7 +13,7 @@ const Videos: React.FC<VideoProps> = props => {
             <h1 className={utils.sectionHeading}>Videos</h1>
             <div className={styles.videoGrid}>
                 {props.videos.map(video => (
-                    <div className={styles.videoCard} id={video.title || ''}>
+                    <div className={styles.videoCard} id={video.title || ''} key={video.id}>
                         <h1 className={utils.mainHeading}>{video.title}</h1>
                         <iframe
                             width="425"

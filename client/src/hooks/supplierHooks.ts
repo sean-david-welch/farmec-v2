@@ -4,7 +4,7 @@ import { Machine, Supplier } from '../types/supplierTypes';
 import { useGetResourceById } from './genericHooks';
 
 export const useSupplierDetails = (id: string) => {
-    const supplier = useGetResourceById<Supplier>('supplier', id);
+    const supplier = useGetResourceById<Supplier>('suppliers', id);
     const machines = useGetResourceById<Machine[]>('machines', id);
     const videos = useGetResourceById<Video[]>('videos', id);
 

@@ -24,10 +24,7 @@ export const useGetResource = <T>(resourceKey: string) => {
 export const useGetResourceById = <T>(resourceKey: string, id: string) => {
     const { endpoint, queryKey } = resources[resourceKey];
 
-    console.log('endpoint', endpoint);
-
-    const url = new URL(id, endpoint).toString();
-    console.log('url', url);
+    const url = `${endpoint}/${id}`;
 
     const resource = useQuery<T, Error>({
         queryKey: [queryKey],

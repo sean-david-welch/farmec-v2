@@ -1,6 +1,7 @@
 import styles from '../styles/Machines.module.css';
 import utils from '../styles/Utils.module.css';
 
+import { Link } from 'react-router-dom';
 import { Machine } from '../types/supplierTypes';
 
 interface Props {

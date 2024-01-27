@@ -1,6 +1,8 @@
 import React from 'react';
 
 import styles from '../styles/Suppliers.module.css';
+import utils from '../styles/Utils.module.css';
+
 import SupplierForm from '../forms/SupplierForm';
 import DeleteButton from '../components/DeleteButton';
 
@@ -23,7 +25,16 @@ const Suppliers: React.FC = () => {
 
     return (
         <section id="suppliers">
-            <h1>Suppliers</h1>
+            {suppliers.data && (
+                <div className={utils.index}>
+                    <h1 className={utils.indexHeading}>Suppliers</h1>
+                    {suppliers.data.map(link => (
+                        <Link key={link.name} to={`#${link.name}`}>
+                            <h1 className="indexItem">{link.name}</h1>
+                        </Link>
+                    ))}
+                </div>
+            )}
 
             {suppliers.data
                 ? suppliers.data.map(supplier => (
