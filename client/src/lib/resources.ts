@@ -14,6 +14,10 @@ const resources: Resources = {
         endpoint: new URL('api/videos', config.baseUrl).toString(),
         queryKey: 'videos',
     },
+    carousels: {
+        endpoint: new URL('api/carousels', config.baseUrl).toString(),
+        queryKey: 'carousels',
+    },
 };
 
 export default resources;

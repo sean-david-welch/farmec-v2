@@ -11,8 +11,8 @@ const Displays: React.FC = () => {
                 <h1 className={utils.sectionHeading}>Farmec At A Glance:</h1>
                 <p className={utils.subHeading}>This is a Quick Look at what Separates us from our Competitors</p>
                 <div className={styles.stats}>
-                    {statsItems.map(item => (
-                        <Link to={item.link}>
+                    {statsItems.map((item, index) => (
+                        <Link to={item.link} key={index}>
                             <ul className={styles.statList}>
                                 <li className={styles.statListItem}>{item.title}</li>
                                 <li className={styles.statListItem}>
@@ -28,8 +28,8 @@ const Displays: React.FC = () => {
                 <h1 className={utils.sectionHeading}>Farmec At A Glance:</h1>
                 <p className={utils.subHeading}>This is a Quick Look at what Separates us from our Competitors</p>
                 <div className={styles.specials}>
-                    {specialsItems.map(item => (
-                        <Link to={item.link}>
+                    {specialsItems.map((item, index) => (
+                        <Link to={item.link} key={index}>
                             <ul className={styles.specialsList}>
                                 <li className={styles.specialsListItem}>{item.title}</li>
                                 <li className={styles.specialsListItem}>

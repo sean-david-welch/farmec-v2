@@ -3,9 +3,10 @@ package types
 import "time"
 
 type Carousel struct {
-	ID    string `json:"id"`
-	Name  string `json:"name"`
-	Image string `json:"image"`
+	ID      string    `json:"id"`
+	Name    string    `json:"name"`
+	Image   string    `json:"image"`
+	Created time.Time `json:"created"`
 }
 
 type DealerOwnerInfo struct {

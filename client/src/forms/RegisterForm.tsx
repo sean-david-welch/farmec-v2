@@ -1,4 +1,4 @@
-import utils from '../../styles/Utils.module.css';
+import utils from '../styles/Utils.module.css';
 import config from '../lib/env';
 
 import { useState } from 'react';
