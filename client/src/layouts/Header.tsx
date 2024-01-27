@@ -2,17 +2,16 @@ import styles from '../styles/Header.module.css';
 
 import AccountButton from '../components/AccountButton';
 
-import { useLocation } from 'react-router-dom';
-
 import { Link } from 'react-router-dom';
-import { useGetResource } from '../hooks/genericHooks';
 import { Supplier } from '../types/supplierTypes';
+import { useLocation } from 'react-router-dom';
+import { useGetResource } from '../hooks/genericHooks';
 
 const Header: React.FC = () => {
     const location = useLocation();
     const isHomepage = () => location.pathname === '/';
 
-    const suppliers = useGetResource<Supplier[]>('supplier');
+    const suppliers = useGetResource<Supplier[]>('suppliers');
     return (
         <nav className={isHomepage() ? styles.transparentNav : styles.navbar}>
             <Link to="/" aria-label="logo button">

@@ -1,4 +1,4 @@
-import config from '../utils/env';
+import config from '../lib/env';
 
 import { Employee } from '../types/aboutTypes';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';

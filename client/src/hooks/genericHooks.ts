@@ -1,14 +1,7 @@
-import config from '../utils/env';
+import config from '../lib/env';
+import resources from '../lib/resources';
 
-import { Resources } from '../types/dataTypes';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-
-const resources: Resources = {
-    supplier: {
-        endpoint: new URL('api/suppliers', config.baseUrl),
-        queryKey: 'suppliers',
-    },
-};
 
 export const useGetResource = <T>(resourceKey: string) => {
     const { endpoint, queryKey } = resources[resourceKey];
@@ -21,6 +14,27 @@ export const useGetResource = <T>(resourceKey: string) => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
+            return response.json();
+        },
+    });
+
+    return resource;
+};
+
+export const useGetResourceById = <T>(resourceKey: string, id: string) => {
+    const { endpoint, queryKey } = resources[resourceKey];
+
+    console.log('endpoint', endpoint);
+
+    const url = new URL(id, endpoint).toString();
+    console.log('url', url);
+
+    const resource = useQuery<T, Error>({
+        queryKey: [queryKey],
+        queryFn: async () => {
+            const response = await fetch(url);
+
+            if (!response.ok) throw new Error('Network response was not ok');
             return response.json();
         },
     });

@@ -29,7 +29,7 @@ export interface ResourceData {
 }
 
 export interface ResourceConfig {
-    endpoint: URL;
+    endpoint: string;
     queryKey: string;
 }
 

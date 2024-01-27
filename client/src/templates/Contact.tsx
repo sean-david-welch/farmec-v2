@@ -1,6 +1,6 @@
 import utils from '../../styles/Utils.module.css';
 
-import config from '../utils/env';
+import config from '../lib/env';
 
 import Info from './Info';
 import ContactForm from '../forms/ContactForm';

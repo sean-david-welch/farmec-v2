@@ -1,6 +1,6 @@
-import config from '../utils/env';
+import config from '../lib/env';
 import Heading from './Heading';
-import Slider from '../components/Slider';
+import Slider from './Slider';
 
 import { Carousel } from '../types/miscTypes';
 

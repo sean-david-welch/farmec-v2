@@ -1,4 +1,4 @@
-import config from '../utils/env';
+import config from './env';
 
 import { FirebaseApp } from 'firebase/app';
 import { initializeApp } from 'firebase/app';

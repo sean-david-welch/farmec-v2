@@ -1,5 +1,5 @@
 import utils from '../../styles/Utils.module.css';
-import config from '../utils/env';
+import config from '../lib/env';
 
 const ContactForm = () => {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {

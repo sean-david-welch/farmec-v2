@@ -1,4 +1,4 @@
-import { app } from '../lib/firebase-client';
+import { app } from './firebase';
 import { getAuth, signOut, signInWithEmailAndPassword, browserSessionPersistence } from 'firebase/auth';
 import { useUserStore } from './context';
 

@@ -5,14 +5,13 @@ import SupplierForm from '../forms/SupplierForm';
 import DeleteButton from '../components/DeleteButton';
 
 import { Link } from 'react-router-dom';
-
-import { useUserStore } from '../utils/context';
-import { useGetResource } from '../hooks/genericHooks';
 import { Supplier } from '../types/supplierTypes';
+import { useUserStore } from '../lib/context';
+import { useGetResource } from '../hooks/genericHooks';
 
 const Suppliers: React.FC = () => {
     const { isAdmin } = useUserStore();
-    const suppliers = useGetResource<Supplier[]>('supplier');
+    const suppliers = useGetResource<Supplier[]>('suppliers');
 
     if (suppliers.isLoading) {
         return <div>Loading...</div>;

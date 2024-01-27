@@ -1,10 +1,10 @@
 import utils from '../styles/Utils.module.css';
 import styles from '../styles/Blogs.module.css';
 
-import config from '../utils/env';
+import config from '../lib/env';
 
 import { useState } from 'react';
-import { signInUser } from '../utils/auth';
+import { signInUser } from '../lib/auth';
 import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
