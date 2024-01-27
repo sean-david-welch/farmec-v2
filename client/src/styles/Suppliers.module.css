@@ -1,6 +1,6 @@
 /* Suppliers Page */
 .supplierCard {
-    @apply bg-zinc-800 mx-52 my-10 p-5 rounded-2xl;
+    @apply bg-zinc-800 mx-52 my-32 p-5 rounded-2xl;
     @apply border-4 border-zinc-600;
     @apply md:mx-5;
 }

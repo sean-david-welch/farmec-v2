@@ -65,18 +65,14 @@ export const useCreateSupplier = () => {
         mutationFn: async (supplier: Supplier) => {
             const response = await fetch(`${config.baseUrl}/api/suppliers`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
                 body: JSON.stringify(supplier),
             });
 
             if (!response.ok) {
-                console.log('response:', response);
                 throw new Error('Network response was not ok');
             }
-            console.log('response:', response);
             return response.json();
         },
 
@@ -95,9 +91,7 @@ export const useUpdateSupplier = (id: string) => {
         mutationFn: async (supplier: Supplier) => {
             const response = await fetch(`${config.baseUrl}/api/suppliers/${id}`, {
                 method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
                 body: JSON.stringify(supplier),
             });

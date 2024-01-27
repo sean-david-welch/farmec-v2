@@ -21,3 +21,18 @@ export interface UserData {
     password: string;
     role: string;
 }
+
+export interface ResourceData {
+    id: string;
+    route: string;
+    queryKey: string;
+}
+
+export interface ResourceConfig {
+    endpoint: URL;
+    queryKey: string;
+}
+
+export interface Resources {
+    [key: string]: ResourceConfig;
+}
