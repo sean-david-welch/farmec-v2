@@ -35,7 +35,7 @@ export interface PartsRequired {
     description: string;
 }
 
-export interface WarranrtyParts {
+export interface WarrantyParts {
     warranty: WarrantyClaim;
     parts: PartsRequired[];
 }

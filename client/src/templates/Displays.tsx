@@ -2,7 +2,7 @@ import styles from '../styles/Info.module.css';
 import utils from '../styles/Utils.module.css';
 
 import { Link } from 'react-router-dom';
-import { statsItems, specialsItems } from '../utils/displaysInformation';
+import { statsItems, specialsItems } from '../utils/displaysInfo';
 
 const Displays: React.FC = () => {
     return (

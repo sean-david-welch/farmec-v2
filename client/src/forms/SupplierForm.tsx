@@ -6,7 +6,7 @@ import { Supplier } from '../types/supplierTypes';
 
 import { uploadFileToS3 } from '../lib/aws';
 import { useMutateResource } from '../hooks/genericHooks';
-import { getFormFields } from '../utils/supplierFormFields';
+import { getFormFields } from '../utils/supplierFields';
 
 const SupplierForm: React.FC<{ id?: string }> = ({ id }) => {
     const formFields = getFormFields();
