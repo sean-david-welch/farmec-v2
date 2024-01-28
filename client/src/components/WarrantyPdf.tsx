@@ -1,4 +1,4 @@
-import utils from '~/styles/Utils.module.css';
+import utils from '../styles/Utils.module.css';
 
 import { PartsRequired, WarrantyClaim } from '../types/miscTypes';
 import { Page, Text, Document, StyleSheet } from '@react-pdf/renderer';

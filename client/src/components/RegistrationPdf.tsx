@@ -1,4 +1,4 @@
-import utils from '~/styles/Utils.module.css';
+import utils from '../styles/Utils.module.css';
 
 import { MachineRegistration } from '../types/miscTypes';
 import { Page, Text, Document, StyleSheet, PDFDownloadLink } from '@react-pdf/renderer';

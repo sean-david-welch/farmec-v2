@@ -9,7 +9,7 @@ import Loading from '../layouts/Loading';
 const Home = lazy(() => import('../pages/Home'));
 const About = lazy(() => import('../pages/About'));
 const Suppliers = lazy(() => import('../pages/Suppliers'));
-const SupplierDetail = lazy(() => import('../pages/[id]/SupplierDetail'));
+const SupplierDetail = lazy(() => import('../pages/details/SupplierDetail'));
 const Spareparts = lazy(() => import('../pages/Spareparts'));
 const Blogs = lazy(() => import('../pages/Blogs'));
 const Login = lazy(() => import('../pages/Login'));
