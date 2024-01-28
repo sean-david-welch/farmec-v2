@@ -80,7 +80,7 @@ const Suppliers: React.FC = () => {
                           {isAdmin && supplier.id && (
                               <div className="">
                                   <SupplierForm id={supplier.id} />
-                                  <DeleteButton id={supplier.id} resourceKey="supplier" />
+                                  <DeleteButton id={supplier.id} resourceKey="suppliers" />
                               </div>
                           )}
                       </React.Fragment>

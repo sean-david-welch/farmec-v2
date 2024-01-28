@@ -1,30 +1,27 @@
 import { useEffect } from 'react';
 
 import { auth } from '../lib/auth';
-import { useUserStore } from '../lib/store';
+import { updateIsAdmin, useUserStore } from '../lib/store';
 
 const useFirebaseAuthSync = () => {
     const { setIsAuthenticated, setIsAdmin } = useUserStore();
 
-    console.log('auth hook');
-
     useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged(user => {
+        const unsubscribe = auth.onAuthStateChanged(async user => {
             if (user) {
-                // User is signed in, update Zustand store
                 setIsAuthenticated(true);
-                console.log('user is authenticated', user);
-                // Optionally set isAdmin based on your criteria
-                // setIsAdmin(checkIfAdmin(user));
+
+                const customClaim = (await user.getIdTokenResult()).claims;
+                const isAdmin = typeof customClaim.admin === 'boolean' ? customClaim.admin : false;
+
+                console.log(isAdmin);
+                updateIsAdmin(isAdmin);
             } else {
-                // User is signed out, update Zustand store
-                console.log('user is signed out', user);
                 setIsAuthenticated(false);
                 setIsAdmin(false);
             }
         });
 
-        // Cleanup subscription on unmount
         return () => unsubscribe();
     }, [setIsAuthenticated, setIsAdmin]);
 };

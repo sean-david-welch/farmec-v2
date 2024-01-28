@@ -15,3 +15,8 @@ export const useUserStore = create<UserState>()(set => ({
     isAuthenticated: false,
     setIsAuthenticated: (isAuthenticated: boolean) => set({ isAuthenticated }),
 }));
+
+export const updateIsAdmin = (isAdmin: boolean) => {
+    const setUserStore = useUserStore.getState();
+    setUserStore.setIsAdmin(isAdmin);
+};

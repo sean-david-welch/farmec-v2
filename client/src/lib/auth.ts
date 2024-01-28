@@ -1,6 +1,6 @@
 import { app } from './firebase';
 import { getAuth, signOut, signInWithEmailAndPassword, browserSessionPersistence } from 'firebase/auth';
-import { useUserStore } from './store';
+import { updateIsAdmin, useUserStore } from './store';
 
 export const auth = getAuth(app);
 
@@ -21,7 +21,7 @@ export const signInUser = async (email: string, password: string): Promise<strin
 
         const setUserStore = useUserStore.getState();
 
-        setUserStore.setIsAdmin(isAdmin);
+        updateIsAdmin(isAdmin);
         setUserStore.setIsAuthenticated(true);
     } catch (error: any) {
         console.error('Error signing in:', error);
