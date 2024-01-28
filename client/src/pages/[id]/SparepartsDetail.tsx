@@ -26,9 +26,9 @@ const PartsDetail = async () => {
                 <div className={utils.index}>
                     <h1 className={utils.indexHeading}>spareparts</h1>
                     {spareparts.data.map(link => (
-                        <Link key={link.name} to={`#${link.name}`}>
+                        <a key={link.name} href={`#${link.name}`}>
                             <h1 className="indexItem">{link.name}</h1>
-                        </Link>
+                        </a>
                     ))}
                 </div>
             )}

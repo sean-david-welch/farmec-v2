@@ -4,7 +4,6 @@ import styles from '../styles/Suppliers.module.css';
 import Videos from '../../templates/Videos';
 import Machines from '../../templates/Machines';
 
-import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 
 import { useSupplierDetails } from '../../hooks/supplierHooks';
@@ -38,9 +37,9 @@ const SuppliersDetails: React.FC = () => {
                         <div className={utils.index}>
                             <h1 className={utils.indexHeading}>Suppliers</h1>
                             {machines.data.map(link => (
-                                <Link key={link.name} to={`#${link.name}`}>
+                                <a key={link.name} href={`#${link.name}`}>
                                     <h1 className="indexItem">{link.name}</h1>
-                                </Link>
+                                </a>
                             ))}
                         </div>
                     )}

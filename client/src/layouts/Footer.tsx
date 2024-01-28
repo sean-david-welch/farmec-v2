@@ -1,3 +1,4 @@
+import ToTopButton from '../components/ToTopButton';
 import styles from '../styles/Footer.module.css';
 import utils from '../styles/Utils.module.css';
 
@@ -79,6 +80,8 @@ const Footer: React.FC = () => {
                     </button>
                 </ul>
             </div>
+
+            <ToTopButton />
         </footer>
     );
 };

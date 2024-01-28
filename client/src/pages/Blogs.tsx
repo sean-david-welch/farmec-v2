@@ -20,9 +20,9 @@ const Blogs: React.FC = () => {
                 <div className={utils.index}>
                     <h1 className={utils.indexHeading}>Suppliers</h1>
                     {blogs.data.map(link => (
-                        <Link key={link.title} to={`#${link.title}`}>
+                        <a key={link.title} href={`#${link.title}`}>
                             <h1 className="indexItem">{link.title}</h1>
-                        </Link>
+                        </a>
                     ))}
                 </div>
             )}
