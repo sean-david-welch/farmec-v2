@@ -4,7 +4,7 @@ import styles from '../styles/Blogs.module.css';
 import Blog from '../types/blogTypes';
 
 import { Link } from 'react-router-dom';
-import { useUserStore } from '../lib/context';
+import { useUserStore } from '../lib/store';
 import { useGetResource } from '../hooks/genericHooks';
 
 const Blogs: React.FC = () => {

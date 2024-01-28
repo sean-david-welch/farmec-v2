@@ -3,7 +3,7 @@ import styles from '../styles/Suppliers.module.css';
 
 import { Link } from 'react-router-dom';
 import { Supplier } from '../types/supplierTypes';
-import { useUserStore } from '../lib/context';
+import { useUserStore } from '../lib/store';
 import { useGetResource } from '../hooks/genericHooks';
 
 const SpareParts: React.FC = () => {

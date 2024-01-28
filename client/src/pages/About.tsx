@@ -1,6 +1,6 @@
 import utils from '../styles/Utils.module.css';
 
-import { useUserStore } from '../lib/context';
+import { useUserStore } from '../lib/store';
 import { Employees } from '../templates/Employees';
 import { Timeline } from '../templates/Timeline';
 

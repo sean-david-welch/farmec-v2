@@ -1,5 +1,5 @@
 import styles from '../styles/Header.module.css';
-import { useUserStore } from '../lib/context';
+import { useUserStore } from '../lib/store';
 import { Link } from 'react-router-dom';
 
 const AccountButton = () => {

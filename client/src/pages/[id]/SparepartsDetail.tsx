@@ -4,7 +4,7 @@ import styles from '../../styles/Spareparts.module.css';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { Sparepart } from '../../types/supplierTypes';
-import { useUserStore } from '../../lib/context';
+import { useUserStore } from '../../lib/store';
 import { useGetResourceById } from '../../hooks/genericHooks';
 
 const PartsDetail = async () => {

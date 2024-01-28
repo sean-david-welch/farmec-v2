@@ -1,7 +1,8 @@
 import styles from '../styles/Carousel.module.css';
 import utils from '../styles/Utils.module.css';
 
-import { Link } from 'react-router-dom';
+import TypewriterComponent from 'typewriter-effect';
+
 import { useState } from 'react';
 
 interface ImageProps {
@@ -44,12 +45,26 @@ const Carousel = (props: ImageProps) => {
                 </div>
             </div>
             <div className={utils.typewriter}>
-                <h1>Importers & Distributors of Quality Agricultural Machinery</h1>
+                <h1>
+                    <TypewriterComponent
+                        options={{
+                            loop: false,
+                            cursor: '',
+                            delay: 50,
+                        }}
+                        onInit={typewriter => {
+                            typewriter
+                                .stop()
+                                .typeString('Importers & Distributors of Quality Agricultural Machinery')
+                                .start();
+                        }}
+                    />
+                </h1>
 
                 <button className={utils.btn}>
-                    <Link to="#Info">
+                    <a href="#Info">
                         Find Out More: <img src="/icons/chevron-down.svg" alt="down" />
-                    </Link>
+                    </a>
                 </button>
             </div>
         </section>

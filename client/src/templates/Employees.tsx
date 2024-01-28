@@ -3,7 +3,7 @@ import utils from '../styles/Utils.module.css';
 
 import { useGetResource } from '../hooks/genericHooks';
 import { Employee } from '../types/aboutTypes';
-import { useUserStore } from '../lib/context';
+import { useUserStore } from '../lib/store';
 
 export const Employees = () => {
     const { isAdmin } = useUserStore();

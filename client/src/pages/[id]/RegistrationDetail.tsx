@@ -2,7 +2,7 @@ import utils from '../styles/Utils.module.css';
 import styles from '../styles/Account.module.css';
 
 import { useParams } from 'react-router-dom';
-import { useUserStore } from '../../lib/context';
+import { useUserStore } from '../../lib/store';
 import { useGetResourceById } from '../../hooks/genericHooks';
 import { MachineRegistration } from '../../types/miscTypes';
 import { DownloadLink } from '../../components/RegistrationPdf';

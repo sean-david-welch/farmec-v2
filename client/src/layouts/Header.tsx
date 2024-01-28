@@ -87,9 +87,9 @@ const Header: React.FC = () => {
                 </li>
 
                 <li className={styles.navItem}>
-                    <Link to="/#contact" className={styles.navListItem}>
+                    <a href="/#contact" className={styles.navListItem}>
                         Contact
-                    </Link>
+                    </a>
                 </li>
 
                 <AccountButton />

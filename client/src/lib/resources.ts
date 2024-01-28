@@ -35,7 +35,7 @@ const resources: Resources = {
         queryKey: 'employees',
     },
     timelines: {
-        endpoint: new URL('api/timelines', config.baseUrl).toString(),
+        endpoint: new URL('api/timeline', config.baseUrl).toString(),
         queryKey: 'timelines',
     },
     terms: {

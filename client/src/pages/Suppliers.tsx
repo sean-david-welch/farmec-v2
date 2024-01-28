@@ -8,7 +8,7 @@ import DeleteButton from '../components/DeleteButton';
 
 import { Link } from 'react-router-dom';
 import { Supplier } from '../types/supplierTypes';
-import { useUserStore } from '../lib/context';
+import { useUserStore } from '../lib/store';
 import { useGetResource } from '../hooks/genericHooks';
 import { SocialLinks } from '../components/SocialLinks';
 

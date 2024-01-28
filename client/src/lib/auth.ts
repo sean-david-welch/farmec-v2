@@ -1,8 +1,8 @@
 import { app } from './firebase';
 import { getAuth, signOut, signInWithEmailAndPassword, browserSessionPersistence } from 'firebase/auth';
-import { useUserStore } from './context';
+import { useUserStore } from './store';
 
-const auth = getAuth(app);
+export const auth = getAuth(app);
 
 export const signInUser = async (email: string, password: string): Promise<string | undefined> => {
     let idToken: string | undefined;

@@ -3,7 +3,7 @@ import utils from '~/styles/Utils.module.css';
 
 import { useParams } from 'react-router-dom';
 import { DownloadLink } from '../../components/WarrantyPdf';
-import { useUserStore } from '../../lib/context';
+import { useUserStore } from '../../lib/store';
 import { WarrantyParts } from '../../types/miscTypes';
 import { useGetResourceById } from '../../hooks/genericHooks';
 
