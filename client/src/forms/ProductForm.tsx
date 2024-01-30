@@ -1,74 +1,75 @@
 import utils from '../styles/Utils.module.css';
+
 import FormDialog from './FormDialog';
 
 import { useState } from 'react';
+import { getFormFields } from '../utils/productFields';
 import { uploadFileToS3 } from '../lib/aws';
-import { getFormFields } from '../utils/machineFields';
-import { Machine, Supplier } from '../types/supplierTypes';
+import { Machine, Product } from '../types/supplierTypes';
 import { useMutateResource } from '../hooks/genericHooks';
 
 interface Props {
     id?: string;
-    machine?: Machine;
-    suppliers: Supplier[];
+    product?: Product;
+    machines: Machine[];
 }
 
-const MachineFrom: React.FC<Props> = ({ id, machine, suppliers }) => {
+const ProductForm: React.FC<Props> = ({ id, product, machines }) => {
     const [showForm, setShowForm] = useState(false);
 
-    const formFields = id ? getFormFields(suppliers, machine) : getFormFields(suppliers);
+    const formFields = id ? getFormFields(machines, product) : getFormFields(machines);
 
     const {
-        mutateAsync: createMachine,
+        mutateAsync: createProduct,
         isError: isCreateError,
         error: createError,
-    } = useMutateResource<Machine>('machines');
+    } = useMutateResource<Product>('products');
 
     const {
-        mutateAsync: updateMachine,
+        mutateAsync: updateProduct,
         isError: isUpdateError,
         error: updateError,
-    } = useMutateResource<Machine>('machines', id);
+    } = useMutateResource<Product>('products', id);
 
     const isError = id ? isUpdateError : isCreateError;
     const error = id ? updateError : createError;
 
-    const submitMachine = id ? updateMachine : createMachine;
+    const submitProduct = id ? updateProduct : createProduct;
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
         const formData = new FormData(event.currentTarget as HTMLFormElement);
 
-        const imageFile = formData.get('machine_image') as File;
+        const imageFile = formData.get('product_image') as File;
 
-        const body: Machine = {
-            supplierId: formData.get('supplierId') as string,
+        const body: Product = {
+            machineId: formData.get('machineId') as string,
             name: formData.get('name') as string,
-            machine_image: formData.get('machine_image') as string,
+            product_image: formData.get('product_image') as string,
             description: formData.get('description') as string,
-            machine_link: formData.get('machine_link') as string,
+            product_link: formData.get('product_link') as string,
         };
 
         try {
-            const response = await submitMachine(body);
+            const response = await submitProduct(body);
 
             if (imageFile) {
-                const machineImageData = {
+                const productImageData = {
                     imageFile: imageFile,
-                    presignedUrl: response.presginedUrl,
+                    presignedUrl: response.presignedUrl,
                 };
-                await uploadFileToS3(machineImageData);
+                await uploadFileToS3(productImageData);
             }
         } catch (error) {
-            console.error('Error creating machine', error);
+            console.error('error creating product', error);
         }
     }
 
     return (
         <section id="form">
             <button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
-                {id ? <img src="/icons/edit.svg" alt="edit button" /> : 'Create Machine'}
+                {id ? <img src="/icons/edit.svg" alt="edit button" /> : 'Create Product'}
             </button>
 
             <FormDialog visible={showForm} onClose={() => setShowForm(false)}>
@@ -106,4 +107,4 @@ const MachineFrom: React.FC<Props> = ({ id, machine, suppliers }) => {
     );
 };
 
-export default MachineFrom;
+export default ProductForm;
