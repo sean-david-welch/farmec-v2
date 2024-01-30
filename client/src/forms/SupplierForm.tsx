@@ -8,9 +8,15 @@ import { uploadFileToS3 } from '../lib/aws';
 import { useMutateResource } from '../hooks/genericHooks';
 import { getFormFields } from '../utils/supplierFields';
 
-const SupplierForm: React.FC<{ id?: string }> = ({ id }) => {
-    const formFields = getFormFields();
+interface Props {
+    id?: string;
+    supplier?: Supplier;
+}
+
+const SupplierForm: React.FC<Props> = ({ id, supplier }) => {
     const [showForm, setShowForm] = useState(false);
+
+    const formFields = supplier ? getFormFields(supplier) : getFormFields();
 
     const {
         mutateAsync: createSupplier,
@@ -89,6 +95,7 @@ const SupplierForm: React.FC<{ id?: string }> = ({ id }) => {
                                 name={field.name}
                                 id={field.name}
                                 placeholder={field.placeholder}
+                                defaultValue={field.defaultValue}
                             />
                         </div>
                     ))}

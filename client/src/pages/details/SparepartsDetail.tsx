@@ -8,7 +8,7 @@ import { useUserStore } from '../../lib/store';
 import { useGetResourceById } from '../../hooks/genericHooks';
 
 const PartsDetail = async () => {
-    const { isAdmin } = useUserStore();
+    const isAdmin = useUserStore();
 
     const params = useParams<{ id: string }>();
 

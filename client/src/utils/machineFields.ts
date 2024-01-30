@@ -1,13 +1,12 @@
-import { useGetResource } from '../hooks/genericHooks';
 import { Machine, Supplier } from '../types/supplierTypes';
 
-export const getFormFields = async (machine: Machine) => {
-    const suppliers = useGetResource<Supplier[]>('suppliers');
-
-    const supplierOptions = suppliers.data?.map(supplier => ({
-        label: supplier.name,
-        value: supplier.id,
-    }));
+export const getFormFields = (suppliers: Supplier[], machine?: Machine) => {
+    const supplierOptions = Array.isArray(suppliers)
+        ? suppliers.map(supplier => ({
+              label: supplier.name,
+              value: supplier.id,
+          }))
+        : [];
 
     return [
         {

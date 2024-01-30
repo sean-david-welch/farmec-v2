@@ -8,7 +8,7 @@ import { useUserStore } from '../lib/store';
 import { useGetResource } from '../hooks/genericHooks';
 
 const Blogs: React.FC = () => {
-    const { isAdmin } = useUserStore();
+    const isAdmin = useUserStore();
 
     const blogs = useGetResource<Blog[]>('blogs');
 

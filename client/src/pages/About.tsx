@@ -5,7 +5,7 @@ import { Employees } from '../templates/Employees';
 import { Timeline } from '../templates/Timeline';
 
 const About: React.FC = () => {
-    const { isAdmin } = useUserStore();
+    const isAdmin = useUserStore();
 
     return (
         <section id="about">

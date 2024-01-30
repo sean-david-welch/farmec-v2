@@ -36,3 +36,12 @@ export interface ResourceConfig {
 export interface Resources {
     [key: string]: ResourceConfig;
 }
+
+export interface FormField {
+    name: string;
+    label: string;
+    type: string;
+    options?: { label: string; value: string | undefined }[];
+    placeholder: string;
+    defaultValue?: string;
+}

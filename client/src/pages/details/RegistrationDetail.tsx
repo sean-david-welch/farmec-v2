@@ -8,7 +8,7 @@ import { MachineRegistration } from '../../types/miscTypes';
 import { DownloadLink } from '../../components/RegistrationPdf';
 
 const RegistrationDetail: React.FC = () => {
-    const { isAdmin } = useUserStore();
+    const isAdmin = useUserStore();
 
     const params = useParams<{ id: string }>();
 

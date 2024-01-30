@@ -44,7 +44,7 @@ export const useMutateResource = <T>(resourceKey: string, id?: string) => {
     const { endpoint, queryKey } = resources[resourceKey];
 
     const buildEndpointUrl = (id?: string) => {
-        return id ? new URL(`/${id}`, endpoint).toString() : endpoint;
+        return id ? `${endpoint}/${id}` : endpoint;
     };
 
     const mutate = useMutation({
@@ -99,4 +99,27 @@ export const useDeleteResource = (resourceKey: string, id: string) => {
     });
 
     return mutateResouce;
+};
+
+export const useCreateOrUpdateResource = <T>(resourceKey: string, id?: string) => {
+    const {
+        mutateAsync: createResource,
+        isError: isCreateError,
+        error: createError,
+    } = useMutateResource<T>(resourceKey);
+
+    const {
+        mutateAsync: updateResource,
+        isError: isUpdateError,
+        error: updateError,
+    } = useMutateResource<T>(resourceKey, id);
+
+    return {
+        createResource,
+        updateResource,
+        isCreateError,
+        isUpdateError,
+        createError,
+        updateError,
+    };
 };

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styles from '../styles/Suppliers.module.css';
 import utils from '../styles/Utils.module.css';
 
@@ -7,13 +5,14 @@ import SupplierForm from '../forms/SupplierForm';
 import DeleteButton from '../components/DeleteButton';
 
 import { Link } from 'react-router-dom';
+import { Fragment } from 'react';
 import { Supplier } from '../types/supplierTypes';
 import { useUserStore } from '../lib/store';
 import { useGetResource } from '../hooks/genericHooks';
 import { SocialLinks } from '../components/SocialLinks';
 
 const Suppliers: React.FC = () => {
-    const { isAdmin } = useUserStore();
+    const isAdmin = useUserStore();
     const suppliers = useGetResource<Supplier[]>('suppliers');
 
     if (suppliers.isLoading) {
@@ -39,7 +38,7 @@ const Suppliers: React.FC = () => {
 
             {suppliers.data
                 ? suppliers.data.map(supplier => (
-                      <React.Fragment key={supplier.id}>
+                      <Fragment key={supplier.id}>
                           <div className={styles.supplierCard} id={supplier.name}>
                               <div className={styles.supplierGrid}>
                                   <div className={styles.supplierHead}>
@@ -78,12 +77,12 @@ const Suppliers: React.FC = () => {
                           </div>
 
                           {isAdmin && supplier.id && (
-                              <div className="">
-                                  <SupplierForm id={supplier.id} />
+                              <div className={utils.optionsBtn}>
+                                  <SupplierForm id={supplier.id} supplier={supplier} />
                                   <DeleteButton id={supplier.id} resourceKey="suppliers" />
                               </div>
                           )}
-                      </React.Fragment>
+                      </Fragment>
                   ))
                 : null}
 

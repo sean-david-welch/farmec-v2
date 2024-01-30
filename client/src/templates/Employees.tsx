@@ -6,7 +6,7 @@ import { Employee } from '../types/aboutTypes';
 import { useUserStore } from '../lib/store';
 
 export const Employees = () => {
-    const { isAdmin } = useUserStore();
+    const isAdmin = useUserStore();
 
     const employees = useGetResource<Employee[]>('employees');
 

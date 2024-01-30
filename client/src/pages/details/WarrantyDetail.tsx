@@ -8,7 +8,7 @@ import { WarrantyParts } from '../../types/miscTypes';
 import { useGetResourceById } from '../../hooks/genericHooks';
 
 const WarrantyDetail = async () => {
-    const { isAdmin } = useUserStore();
+    const isAdmin = useUserStore();
 
     const params = useParams<{ id: string }>();
 

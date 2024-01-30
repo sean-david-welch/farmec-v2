@@ -9,7 +9,7 @@ interface Props {
 }
 
 const Products: React.FC<Props> = ({ products }: Props) => {
-    const { isAdmin } = useUserStore();
+    const isAdmin = useUserStore();
 
     if (!products) {
         return <div>loading...</div>;

@@ -7,7 +7,7 @@ import { useUserStore } from '../lib/store';
 import { useGetResource } from '../hooks/genericHooks';
 
 const SpareParts: React.FC = () => {
-    const { isAdmin } = useUserStore();
+    const isAdmin = useUserStore();
 
     const suppliers = useGetResource<Supplier[]>('suppliers');
 
