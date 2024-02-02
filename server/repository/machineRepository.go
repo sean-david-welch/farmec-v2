@@ -91,7 +91,7 @@ func (repository *MachineRepositoryImpl) CreateMachine(machine *types.Machine) e
 	machine.ID = uuid.NewString()
 	machine.Created = time.Now()
 
-	query := `INSERT INTO "Machine" (id, supplierId, name, machine_image, description, machine_link, created) 
+	query := `INSERT INTO "Machine" (id, supplierId, name, machine_image, description, machine_link, created)
 	VALUES ($1, $2, $3, $4, $5, $6, $7)`
 
 	_, err := repository.database.Exec(query, machine.ID, machine.SupplierID, machine.Name, machine.MachineImage, machine.Description, machine.MachineLink, machine.Created)
@@ -104,7 +104,7 @@ func (repository *MachineRepositoryImpl) CreateMachine(machine *types.Machine) e
 }
 
 func (repository *MachineRepositoryImpl) UpdateMachine(id string, machine *types.Machine) error {
-	query := `UPDATE "Machine" 
+	query := `UPDATE "Machine"
 	SET supplierId = $1, name = $2, machine_image = $3, description = $4, machine_link = $5
 	WHERE ID = $6`
 

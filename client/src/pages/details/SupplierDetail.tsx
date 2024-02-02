@@ -11,13 +11,14 @@ import { Resources } from '../../types/dataTypes';
 
 const SuppliersDetails: React.FC = () => {
     const params = useParams<{ id: string }>();
+    const id = params.id as string;
+
+    const resourceKeys: (keyof Resources)[] = ['suppliers', 'machines', 'videos'];
+    const { data, isLoading } = useMultipleResources(id, resourceKeys);
 
     if (!params.id) {
         return <div>Error: No supplier ID provided</div>;
     }
-
-    const resourceKeys: (keyof Resources)[] = ['suppliers', 'machines', 'videos'];
-    const { data, isLoading } = useMultipleResources(params.id, resourceKeys);
 
     if (isLoading) {
         return <div>Loading...</div>;

@@ -23,6 +23,7 @@ func MachineRoutes(router *gin.Engine, machineController *controllers.MachineCon
 	machineGroup := router.Group("/api/machines")
 
 	machineGroup.GET("/:id", machineController.GetMachines)
+	machineGroup.GET("/suppliers/:id", machineController.GetMachineById)
 
 	protected := machineGroup.Group("").Use(adminMiddleware.Middleware())
 	{

@@ -73,8 +73,8 @@ func (repository *CarouselRepositoryImpl) CreateCarousel(carousel *types.Carouse
 	carousel.Created = time.Now()
 
 	query := `INSERT INTO "Carousel"
-	(id, name, image)
-	VALUES ($1, $2, $3)`
+	(id, name, image, created)
+	VALUES ($1, $2, $3, $4)`
 
 	_, err := repository.database.Exec(query, carousel.ID, carousel.Name, carousel.Image, carousel.Created)
 	if err != nil {

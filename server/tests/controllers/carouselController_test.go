@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang/mock/gomock"
@@ -15,7 +16,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func CarouselControllerTest(test *testing.T) (*gin.Engine, *mocks.MockCarouselService, *controllers.CarouselController, *httptest.ResponseRecorder) {
+func CarouselControllerTest(test *testing.T) (*gin.Engine, *mocks.MockCarouselService, *controllers.CarouselController, *httptest.ResponseRecorder, time.Time) {
 	gin.SetMode(gin.TestMode)
 
 	ctrl := gomock.NewController(test)
@@ -27,22 +28,26 @@ func CarouselControllerTest(test *testing.T) (*gin.Engine, *mocks.MockCarouselSe
 	router := gin.Default()
 	recorder := httptest.NewRecorder()
 
-	return router, mockService, controller, recorder
+	time := time.Date(2024, time.January, 1, 12, 12, 12, 12, time.UTC)
+
+	return router, mockService, controller, recorder, time
 }
 
 func TestGetCarousel(test *testing.T) {
-	router, mockService, controller, recorder := CarouselControllerTest(test)
+	router, mockService, controller, recorder, time := CarouselControllerTest(test)
 
 	expectedCarousel := []types.Carousel{
 		{
-			ID:    "1",
-			Name:  "Carousel 1",
-			Image: "image1.jpg",
+			ID:      "1",
+			Name:    "Carousel 1",
+			Image:   "image1.jpg",
+			Created: time,
 		},
 		{
-			ID:    "2",
-			Name:  "Carousel 2",
-			Image: "01/01/24",
+			ID:      "2",
+			Name:    "Carousel 2",
+			Image:   "01/01/24",
+			Created: time,
 		},
 	}
 
@@ -61,12 +66,13 @@ func TestGetCarousel(test *testing.T) {
 }
 
 func TestCreateCarousel(test *testing.T) {
-	router, mockService, controller, recorder := CarouselControllerTest(test)
+	router, mockService, controller, recorder, time := CarouselControllerTest(test)
 
 	newCarousel := &types.Carousel{
-		ID:    "1",
-		Name:  "Carousel 1",
-		Image: "image1.jpg",
+		ID:      "1",
+		Name:    "Carousel 1",
+		Image:   "image1.jpg",
+		Created: time,
 	}
 	jsonCarousel, _ := json.Marshal(newCarousel)
 

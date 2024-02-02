@@ -28,7 +28,7 @@ const Suppliers: React.FC = () => {
             {suppliers.data && (
                 <div className={utils.index}>
                     <h1 className={utils.indexHeading}>Suppliers</h1>
-                    {suppliers.data.map(link => (
+                    {suppliers.data.map((link) => (
                         <a key={link.name} href={`#${link.name}`}>
                             <h1 className="indexItem">{link.name}</h1>
                         </a>
@@ -37,7 +37,7 @@ const Suppliers: React.FC = () => {
             )}
 
             {suppliers.data
-                ? suppliers.data.map(supplier => (
+                ? suppliers.data.map((supplier) => (
                       <Fragment key={supplier.id}>
                           <div className={styles.supplierCard} id={supplier.name}>
                               <div className={styles.supplierGrid}>

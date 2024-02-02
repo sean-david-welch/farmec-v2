@@ -11,12 +11,12 @@ const PartsDetail = async () => {
     const isAdmin = useUserStore();
 
     const params = useParams<{ id: string }>();
+    const id = params.id as string;
+    const spareparts = useGetResourceById<Sparepart[]>('spareparts', id);
 
     if (!params.id) {
         return <div>Error: No supplier ID provided</div>;
     }
-
-    const spareparts = useGetResourceById<Sparepart[]>('spareparts', params.id);
 
     return (
         <section id="partsDetail">
@@ -25,7 +25,7 @@ const PartsDetail = async () => {
             {spareparts.data && (
                 <div className={utils.index}>
                     <h1 className={utils.indexHeading}>spareparts</h1>
-                    {spareparts.data.map(link => (
+                    {spareparts.data.map((link) => (
                         <a key={link.name} href={`#${link.name}`}>
                             <h1 className="indexItem">{link.name}</h1>
                         </a>
@@ -33,7 +33,7 @@ const PartsDetail = async () => {
                 </div>
             )}
 
-            {spareparts.data?.map(sparepart => (
+            {spareparts.data?.map((sparepart) => (
                 <div className={styles.sparepartGrid} key={sparepart.id}>
                     <div className={styles.sparepartsCard} id={sparepart.name || ''}>
                         <div className={styles.sparepartsGrid}>

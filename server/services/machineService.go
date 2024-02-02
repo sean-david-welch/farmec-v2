@@ -10,6 +10,7 @@ import (
 
 type MachineService interface {
 	GetMachines(id string) ([]types.Machine, error)
+	GetMachineById(id string) (*types.Machine, error)
 	CreateMachine(machine *types.Machine) (*types.ModelResult, error)
 	UpdateMachine(id string, machine *types.Machine) (*types.ModelResult, error)
 	DeleteMachine(id string) error
@@ -30,7 +31,21 @@ func NewMachineService(repository repository.MachineRepository, s3Client utils.S
 }
 
 func (service *MachineServiceImpl) GetMachines(id string) ([]types.Machine, error) {
-	return service.repository.GetMachines(id)
+	machines, err := service.repository.GetMachines(id)
+	if err != nil {
+		return nil, errors.New("machines with supplierId not foud")
+	}
+
+	return machines, nil
+}
+
+func (service *MachineServiceImpl) GetMachineById(id string) (*types.Machine, error) {
+	machine, err := service.repository.GetMachineById(id)
+	if err != nil {
+		return nil, errors.New("machine with id not found")
+	}
+
+	return machine, nil
 }
 
 func (service *MachineServiceImpl) CreateMachine(machine *types.Machine) (*types.ModelResult, error) {

@@ -4,7 +4,7 @@ import resources from '../lib/resources';
 import { useMutation, useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Resources } from '../types/dataTypes';
 
-export const useGetResource = <T>(resourceKey: keyof Resources) => {
+export const useGetResource = <T,>(resourceKey: keyof Resources) => {
     const { endpoint, queryKey } = resources[resourceKey];
 
     const resource = useQuery<T, Error>({
@@ -22,7 +22,7 @@ export const useGetResource = <T>(resourceKey: keyof Resources) => {
     return resource;
 };
 
-export const useGetResourceById = <T>(resourceKey: keyof Resources, id: string) => {
+export const useGetResourceById = <T,>(resourceKey: keyof Resources, id: string) => {
     const { endpoint, queryKey } = resources[resourceKey];
 
     const url = `${endpoint}/${id}`;
@@ -42,7 +42,7 @@ export const useGetResourceById = <T>(resourceKey: keyof Resources, id: string) 
 
 export const useMultipleResources = (id: string, resourceKeys: (keyof Resources)[]) => {
     const queries = useQueries({
-        queries: resourceKeys.map(key => ({
+        queries: resourceKeys.map((key) => ({
             queryKey: [key, id],
             queryFn: async () => {
                 const resourceEntry = resources[key];
@@ -57,16 +57,16 @@ export const useMultipleResources = (id: string, resourceKeys: (keyof Resources)
         })),
     });
 
-    const isLoading = queries.some(query => query.isLoading);
-    const isError = queries.some(query => query.isError);
-    const errors = queries.filter(query => query.error).map(query => query.error);
+    const isLoading = queries.some((query) => query.isLoading);
+    const isError = queries.some((query) => query.isError);
+    const errors = queries.filter((query) => query.error).map((query) => query.error);
 
-    const data = queries.filter(query => query.status === 'success').map(query => query.data);
+    const data = queries.filter((query) => query.status === 'success').map((query) => query.data);
 
     return { data, isLoading, isError, errors };
 };
 
-export const useMutateResource = <T>(resourceKey: keyof Resources, id?: string) => {
+export const useMutateResource = <T,>(resourceKey: keyof Resources, id?: string) => {
     const queryClient = useQueryClient();
     const { endpoint, queryKey } = resources[resourceKey];
 
@@ -128,18 +128,10 @@ export const useDeleteResource = (resourceKey: keyof Resources, id: string) => {
     return mutateResouce;
 };
 
-export const useCreateOrUpdateResource = <T>(resourceKey: keyof Resources, id?: string) => {
-    const {
-        mutateAsync: createResource,
-        isError: isCreateError,
-        error: createError,
-    } = useMutateResource<T>(resourceKey);
+export const useCreateOrUpdateResource = <T,>(resourceKey: keyof Resources, id?: string) => {
+    const { mutateAsync: createResource, isError: isCreateError, error: createError } = useMutateResource<T>(resourceKey);
 
-    const {
-        mutateAsync: updateResource,
-        isError: isUpdateError,
-        error: updateError,
-    } = useMutateResource<T>(resourceKey, id);
+    const { mutateAsync: updateResource, isError: isUpdateError, error: updateError } = useMutateResource<T>(resourceKey, id);
 
     return {
         createResource,

@@ -2,6 +2,7 @@ package services_test
 
 import (
 	"testing"
+	"time"
 
 	"github.com/golang/mock/gomock"
 	"github.com/sean-david-welch/farmec-v2/server/services"
@@ -26,14 +27,16 @@ func TestGetCarousels(test *testing.T) {
 
 	expectedCarousels := []types.Carousel{
 		{
-			ID:    "1",
-			Name:  "Image 1",
-			Image: "image1.jpg",
+			ID:      "1",
+			Name:    "Image 1",
+			Image:   "image1.jpg",
+			Created: time.Now(),
 		},
 		{
-			ID:    "2",
-			Name:  "Image 2",
-			Image: "image2.jpg",
+			ID:      "2",
+			Name:    "Image 2",
+			Image:   "image2.jpg",
+			Created: time.Now(),
 		},
 	}
 
@@ -49,9 +52,10 @@ func TestCreateCarousel(test *testing.T) {
 	mockRepo, mockS3Client, service := CarouselTestService(test)
 
 	newCarousel := &types.Carousel{
-		ID:    "2",
-		Name:  "Image 2",
-		Image: "image3.jpg",
+		ID:      "2",
+		Name:    "Image 2",
+		Image:   "image3.jpg",
+		Created: time.Now(),
 	}
 
 	mockS3Client.EXPECT().GeneratePresignedUrl(gomock.Any(), gomock.All()).Return("presigned-url", "image-url", nil)

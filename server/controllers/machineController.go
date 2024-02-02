@@ -30,6 +30,19 @@ func (controller *MachineController) GetMachines(context *gin.Context) {
 	context.JSON(http.StatusOK, machines)
 }
 
+func (controller *MachineController) GetMachineById(context *gin.Context) {
+	id := context.Param("id")
+
+	machine, err := controller.machineService.GetMachineById(id)
+	if err != nil {
+		log.Printf("Error getting machine: %v", err)
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while getting machine"})
+		return
+	}
+
+	context.JSON(http.StatusOK, machine)
+}
+
 func (controller *MachineController) CreateMachine(context *gin.Context) {
 	var machine types.Machine
 

@@ -11,12 +11,13 @@ const WarrantyDetail = async () => {
     const isAdmin = useUserStore();
 
     const params = useParams<{ id: string }>();
+    const id = params.id as string;
+    const response = useGetResourceById<WarrantyParts>('warranty', id);
 
     if (!params.id) {
         return <div>Error: No supplier ID provided</div>;
     }
 
-    const response = useGetResourceById<WarrantyParts>('warranty', params.id);
     const parts = response.data?.parts;
     const warranty = response.data?.warranty;
 

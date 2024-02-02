@@ -3,15 +3,15 @@ import { useUserStore } from '../lib/store';
 import { Link } from 'react-router-dom';
 
 const AccountButton = () => {
-    const { isAuthenticated } = useUserStore();
+  const { isAuthenticated } = useUserStore();
 
-    return (
-        <li className={styles.navItem}>
-            <Link to={isAuthenticated ? '/account' : '/login'} className={styles.navListItem}>
-                {isAuthenticated ? 'Account' : 'Login'}
-            </Link>
-        </li>
-    );
+  return (
+    <li className={styles.navItem}>
+      <Link to={isAuthenticated ? '/account' : '/login'} className={styles.navListItem}>
+        {isAuthenticated ? 'Account' : 'Login'}
+      </Link>
+    </li>
+  );
 };
 
 export default AccountButton;
