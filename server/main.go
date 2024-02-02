@@ -22,7 +22,7 @@ func main() {
 		log.Fatal("Error loading configuration: ", err)
 	}
 
-	database, err := sql.Open("postgres", secrets.DatabaseURL)
+	database, err := sql.Open("postgres", secrets.DockerDatabase)
 	if err != nil {
 		log.Fatal(err)
 	}

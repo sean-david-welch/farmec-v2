@@ -9,6 +9,7 @@ import (
 type Secrets struct {
 	Domain                  string
 	DatabaseURL             string
+	DockerDatabase          string
 	ProjectId               string
 	PrivateKeyId            string
 	PrivateKey              string
@@ -38,6 +39,8 @@ func NewSecrets() (*Secrets, error) {
 		Domain: os.Getenv("DOMAIN"),
 		// Database
 		DatabaseURL: os.Getenv("DATABASE_URL"),
+		// Docker DB
+		DockerDatabase: os.Getenv("DOCKER_DATABASE"),
 		// Firebase
 		ProjectId:               os.Getenv("FIREBASE_PROJECT_ID"),
 		PrivateKeyId:            os.Getenv("FIREBASE_PRIVATE_KEY_ID"),

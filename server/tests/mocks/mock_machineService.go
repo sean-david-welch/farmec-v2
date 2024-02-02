@@ -63,6 +63,21 @@ func (mr *MockMachineServiceMockRecorder) DeleteMachine(id interface{}) *gomock.
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteMachine", reflect.TypeOf((*MockMachineService)(nil).DeleteMachine), id)
 }
 
+// GetMachineById mocks base method.
+func (m *MockMachineService) GetMachineById(id string) (*types.Machine, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetMachineById", id)
+	ret0, _ := ret[0].(*types.Machine)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetMachineById indicates an expected call of GetMachineById.
+func (mr *MockMachineServiceMockRecorder) GetMachineById(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMachineById", reflect.TypeOf((*MockMachineService)(nil).GetMachineById), id)
+}
+
 // GetMachines mocks base method.
 func (m *MockMachineService) GetMachines(id string) ([]types.Machine, error) {
 	m.ctrl.T.Helper()
