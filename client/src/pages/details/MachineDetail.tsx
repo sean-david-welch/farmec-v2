@@ -1,29 +1,34 @@
 import utils from '../../styles/Machines.module.css';
 
 import { useParams } from 'react-router-dom';
-import { useMachineDetails } from '../../hooks/supplierHooks';
-import Products from '../../templates/Products';
 
-const MachineDetail = async () => {
+import Products from '../../templates/Products';
+import { Resources } from '../../types/dataTypes';
+import { useMultipleResources } from '../../hooks/genericHooks';
+
+const MachineDetail: React.FC = () => {
     const params = useParams<{ id: string }>();
 
     if (!params.id) {
         return <div>Error: No supplier ID provided</div>;
     }
 
-    const { machine, products } = useMachineDetails(params.id);
+    const resourceKeys: (keyof Resources)[] = ['machines', 'products'];
+    const { data, isLoading } = useMultipleResources(params.id, resourceKeys);
 
-    if (!machine) {
+    if (isLoading) {
         return <div>loading...</div>;
     }
+
+    const [machine, products] = data;
 
     return (
         <section id="machineDetai">
             <h1 className={utils.sectionHeading}>Products</h1>
-            {products?.data && (
+            {products && (
                 <div className={utils.index}>
                     <h1 className={utils.indexHeading}>Suppliers</h1>
-                    {products.data?.map(link => (
+                    {products.data?.map((link: { name: string }) => (
                         <a key={link.name} href={`#${link.name}`}>
                             <h1 className="indexItem">{link.name}</h1>
                         </a>

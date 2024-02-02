@@ -10,6 +10,7 @@ const Home = lazy(() => import('../pages/Home'));
 const About = lazy(() => import('../pages/About'));
 const Suppliers = lazy(() => import('../pages/Suppliers'));
 const SupplierDetail = lazy(() => import('../pages/details/SupplierDetail'));
+const MachineDetail = lazy(() => import('../pages/details/MachineDetail'));
 const Spareparts = lazy(() => import('../pages/Spareparts'));
 const Blogs = lazy(() => import('../pages/Blogs'));
 const Login = lazy(() => import('../pages/Login'));
@@ -35,6 +36,7 @@ const AppRoutes = () => {
                         <Route path="/about" element={<About />} />
                         <Route path="/suppliers" element={<Suppliers />} />
                         <Route path="/suppliers/:id" element={<SupplierDetail />} />
+                        <Route path="/machines/:id" element={<MachineDetail />} />
                         <Route path="/spareparts" element={<Spareparts />} />
                         <Route path="/blogs" element={<Blogs />} />
 

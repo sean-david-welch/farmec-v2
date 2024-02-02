@@ -1,3 +1,9 @@
+import { Employee, Privacy, Terms, Timeline } from './aboutTypes';
+import Blog, { Exhibition } from './blogTypes';
+import { Carousel, LineItem, MachineRegistration, WarrantyClaim } from './miscTypes';
+import { Machine, Product, Sparepart, Supplier } from './supplierTypes';
+import { Video } from './videoTypes';
+
 export interface SupplierResult {
     presignedLogoUrl: string;
     logoUrl: string;
@@ -28,13 +34,28 @@ export interface ResourceData {
     queryKey: string;
 }
 
-export interface ResourceConfig {
+export interface ResourceEntry<T> {
     endpoint: string;
     queryKey: string;
+    type?: T;
 }
 
 export interface Resources {
-    [key: string]: ResourceConfig;
+    suppliers: ResourceEntry<Supplier>;
+    spareparts: ResourceEntry<Sparepart>;
+    machines: ResourceEntry<Machine>;
+    products: ResourceEntry<Product>;
+    videos: ResourceEntry<Video>;
+    blogs: ResourceEntry<Blog>;
+    exhibitions: ResourceEntry<Exhibition>;
+    employees: ResourceEntry<Employee>;
+    timelines: ResourceEntry<Timeline>;
+    terms: ResourceEntry<Terms>;
+    privacys: ResourceEntry<Privacy>;
+    lineitems: ResourceEntry<LineItem>;
+    carousels: ResourceEntry<Carousel>;
+    registrations: ResourceEntry<MachineRegistration>;
+    warranty: ResourceEntry<WarrantyClaim>;
 }
 
 export interface FormField {
