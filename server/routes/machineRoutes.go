@@ -22,8 +22,8 @@ func InitMachines(router *gin.Engine, database *sql.DB, s3Client utils.S3Client,
 func MachineRoutes(router *gin.Engine, machineController *controllers.MachineController, adminMiddleware *middleware.AdminMiddleware) {
 	machineGroup := router.Group("/api/machines")
 
-	machineGroup.GET("/:id", machineController.GetMachines)
-	machineGroup.GET("/suppliers/:id", machineController.GetMachineById)
+	machineGroup.GET("/:id", machineController.GetMachineById)
+	machineGroup.GET("/suppliers/:id", machineController.GetMachines)
 
 	protected := machineGroup.Group("").Use(adminMiddleware.Middleware())
 	{

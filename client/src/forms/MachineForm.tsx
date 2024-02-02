@@ -18,17 +18,9 @@ const MachineFrom: React.FC<Props> = ({ id, machine, suppliers }) => {
 
     const formFields = id ? getFormFields(suppliers, machine) : getFormFields(suppliers);
 
-    const {
-        mutateAsync: createMachine,
-        isError: isCreateError,
-        error: createError,
-    } = useMutateResource<Machine>('machines');
+    const { mutateAsync: createMachine, isError: isCreateError, error: createError } = useMutateResource<Machine>('machines');
 
-    const {
-        mutateAsync: updateMachine,
-        isError: isUpdateError,
-        error: updateError,
-    } = useMutateResource<Machine>('machines', id);
+    const { mutateAsync: updateMachine, isError: isUpdateError, error: updateError } = useMutateResource<Machine>('machines', id);
 
     const isError = id ? isUpdateError : isCreateError;
     const error = id ? updateError : createError;
@@ -74,24 +66,19 @@ const MachineFrom: React.FC<Props> = ({ id, machine, suppliers }) => {
             <FormDialog visible={showForm} onClose={() => setShowForm(false)}>
                 <form className={utils.form} onSubmit={handleSubmit} encType="multipart/form-data">
                     <h1 className={utils.mainHeading}>Supplier Form</h1>
-                    {formFields.map(field => (
+                    {formFields.map((field) => (
                         <div key={field.name}>
                             <label htmlFor={field.name}>{field.label}</label>
                             {field.type === 'select' ? (
                                 <select name={field.name} id={field.name}>
-                                    {field.options?.map(option => (
+                                    {field.options?.map((option) => (
                                         <option key={option.value} value={option.value}>
                                             {option.label}
                                         </option>
                                     ))}
                                 </select>
                             ) : (
-                                <input
-                                    type={field.type}
-                                    name={field.name}
-                                    id={field.name}
-                                    placeholder={field.placeholder}
-                                />
+                                <input type={field.type} name={field.name} id={field.name} placeholder={field.placeholder} />
                             )}
                         </div>
                     ))}

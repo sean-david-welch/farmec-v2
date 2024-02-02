@@ -13,7 +13,7 @@ const SuppliersDetails: React.FC = () => {
     const params = useParams<{ id: string }>();
     const id = params.id as string;
 
-    const resourceKeys: (keyof Resources)[] = ['suppliers', 'machines', 'videos'];
+    const resourceKeys: (keyof Resources)[] = ['suppliers', 'supplierMachine', 'videos'];
     const { data, isLoading } = useMultipleResources(id, resourceKeys);
 
     if (!params.id) {

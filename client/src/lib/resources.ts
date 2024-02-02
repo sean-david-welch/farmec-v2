@@ -62,6 +62,10 @@ const resources: Resources = {
         endpoint: new URL('api/warranty', config.baseUrl).toString(),
         queryKey: 'warranty',
     },
+    supplierMachine: {
+        endpoint: new URL('api/machines/suppliers', config.baseUrl).toString(),
+        queryKey: 'machines',
+    },
 };
 
 export default resources;

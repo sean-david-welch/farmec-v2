@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { Machine, Supplier } from '../types/supplierTypes';
 import { Fragment } from 'react';
 import { useUserStore } from '../lib/store';
-import MachineFrom from '../forms/MachineFrom';
+import MachineFrom from '../forms/MachineForm';
 import DeleteButton from '../components/DeleteButton';
 import { useGetResource } from '../hooks/genericHooks';
 
@@ -25,7 +25,7 @@ const Machines: React.FC<Props> = ({ machines }) => {
     return (
         <section id="machines">
             <h1 className={utils.sectionHeading}>Machinery</h1>
-            {machines.map(machine => (
+            {machines.map((machine) => (
                 <Fragment key={machine.id}>
                     <div className={styles.machineCard}>
                         <div className={styles.machineGrid}>

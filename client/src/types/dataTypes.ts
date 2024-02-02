@@ -56,6 +56,7 @@ export interface Resources {
     carousels: ResourceEntry<Carousel>;
     registrations: ResourceEntry<MachineRegistration>;
     warranty: ResourceEntry<WarrantyClaim>;
+    supplierMachine: ResourceEntry<Machine>;
 }
 
 export interface FormField {
