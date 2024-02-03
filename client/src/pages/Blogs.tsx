@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import { Blog } from '../types/blogTypes';
 import { useUserStore } from '../lib/store';
 import { useGetResource } from '../hooks/genericHooks';
+import BlogForm from '../forms/BlogForm';
+import DeleteButton from '../components/DeleteButton';
 
 const Blogs: React.FC = () => {
     const { isAdmin } = useUserStore();
@@ -47,10 +49,15 @@ const Blogs: React.FC = () => {
                             </button>
                         </div>
                     </div>
-                    {/* {isAdmin && <UpdateBlog modelName="blog" model={blog} />} */}
+                    {isAdmin && blog.id && (
+                        <div className={utils.optionsBtn}>
+                            <BlogForm id={blog.id} blog={blog} />
+                            <DeleteButton id={blog.id} resourceKey="blogs" />
+                        </div>
+                    )}
                 </div>
             ))}
-            {/* {isAdmin && <BlogForm modelName="blog" />} */}
+            {isAdmin && <BlogForm />}
         </section>
     );
 };

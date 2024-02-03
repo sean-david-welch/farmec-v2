@@ -6,12 +6,22 @@ import { Link } from 'react-router-dom';
 import { Supplier } from '../types/supplierTypes';
 import { useLocation } from 'react-router-dom';
 import { useGetResource } from '../hooks/genericHooks';
+import { useSupplierStore } from '../lib/store';
+import { useEffect } from 'react';
 
 const Header: React.FC = () => {
     const location = useLocation();
     const isHomepage = () => location.pathname === '/';
 
-    const suppliers = useGetResource<Supplier[]>('suppliers');
+    const { data: suppliers } = useGetResource<Supplier[]>('suppliers');
+    const setSuppliers = useSupplierStore((state) => state.setSuppliers);
+
+    useEffect(() => {
+        if (suppliers) {
+            setSuppliers(suppliers);
+        }
+    }, [suppliers, setSuppliers]);
+
     return (
         <nav className={isHomepage() ? styles.transparentNav : styles.navbar}>
             <Link to="/" aria-label="logo button">
@@ -45,9 +55,9 @@ const Header: React.FC = () => {
                     <Link to="/suppliers" className={styles.navListItem}>
                         Suppliers
                     </Link>
-                    {suppliers.data && (
+                    {suppliers && (
                         <ul className={styles.navDrop}>
-                            {suppliers.data.map(supplier => (
+                            {suppliers.map((supplier) => (
                                 <li className={styles.navDropItem} key={supplier.id}>
                                     <Link to={`/suppliers/${supplier.id}`}>{supplier.name}</Link>
                                 </li>
@@ -61,9 +71,9 @@ const Header: React.FC = () => {
                         Spareparts
                     </Link>
 
-                    {suppliers.data && (
+                    {suppliers && (
                         <ul className={styles.navDrop}>
-                            {suppliers.data.map(supplier => (
+                            {suppliers.map((supplier) => (
                                 <li className={styles.navDropItem} key={supplier.id}>
                                     <Link to={`/spareparts/${supplier.id}`}>{supplier.name}</Link>
                                 </li>

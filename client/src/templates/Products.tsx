@@ -4,15 +4,16 @@ import styles from '../styles/Suppliers.module.css';
 import { Machine, Product } from '../types/supplierTypes';
 import ProductForm from '../forms/ProductForm';
 import DeleteButton from '../components/DeleteButton';
-import { useGetResource } from '../hooks/genericHooks';
+import { useGetResourceById } from '../hooks/genericHooks';
 
 interface Props {
-    products: Product[];
+    id: string;
     isAdmin: boolean;
+    products: Product[];
 }
 
-const Products: React.FC<Props> = ({ products, isAdmin }: Props) => {
-    const machines = useGetResource<Machine[]>('machines');
+const Products: React.FC<Props> = ({ id, isAdmin, products }: Props) => {
+    const machines = useGetResourceById<Machine[]>('machines', id);
 
     if (!machines.data) {
         return <div>Loading...</div>;

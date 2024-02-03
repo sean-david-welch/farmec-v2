@@ -44,7 +44,7 @@ const MachineDetail: React.FC = () => {
                     </button>
                 </div>
             )}
-            {products && <Products products={products} isAdmin={isAdmin} />}
+            {products && <Products id={id} products={products} isAdmin={isAdmin} />}
         </section>
     );
 };

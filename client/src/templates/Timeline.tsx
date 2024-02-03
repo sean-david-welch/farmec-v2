@@ -4,7 +4,7 @@ import { useGetResource } from '../hooks/genericHooks';
 import { useUserStore } from '../lib/store';
 import { Timeline } from '../types/aboutTypes';
 
-import TimelineCard from '../components/TimlineCard';
+import TimelineCard from '../components/TimelineCard';
 
 const Timelines: React.FC = () => {
     const { isAdmin } = useUserStore();
@@ -20,7 +20,7 @@ const Timelines: React.FC = () => {
             <div className={styles.timeline}>
                 {timelines ? (
                     timelines.map((timeline: Timeline) => (
-                        <TimelineCard timeline={timeline} isAdmin={isAdmin} />
+                        <TimelineCard timeline={timeline} isAdmin={isAdmin} key={timeline.id} />
                     ))
                 ) : (
                     <div>error: {error?.message || 'Unknown error'}</div>

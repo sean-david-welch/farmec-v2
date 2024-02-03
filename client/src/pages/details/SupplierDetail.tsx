@@ -8,19 +8,16 @@ import { useParams } from 'react-router-dom';
 
 import { useMultipleResources } from '../../hooks/genericHooks';
 import { Resources } from '../../types/dataTypes';
-import { useUserStore } from '../../lib/store';
+import { useSupplierStore, useUserStore } from '../../lib/store';
 
 const SuppliersDetails: React.FC = () => {
     const { isAdmin } = useUserStore();
+    const { suppliers } = useSupplierStore();
 
     const id = useParams<{ id: string }>().id as string;
 
     const resourceKeys: (keyof Resources)[] = ['suppliers', 'supplierMachine', 'videos'];
     const { data, isLoading } = useMultipleResources(id, resourceKeys);
-
-    if (!id) {
-        return <div>Error: No supplier ID provided</div>;
-    }
 
     if (isLoading) {
         return <div>Loading...</div>;
@@ -62,7 +59,7 @@ const SuppliersDetails: React.FC = () => {
             )}
 
             {machines.length > 0 && <Machines machines={machines} isAdmin={isAdmin} />}
-            {videos.length > 0 && <Videos videos={videos} />}
+            {videos.length > 0 && <Videos suppliers={suppliers} videos={videos} isAdmin={isAdmin} />}
         </section>
     );
 };

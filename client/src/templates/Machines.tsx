@@ -2,12 +2,12 @@ import styles from '../styles/Machines.module.css';
 import utils from '../styles/Utils.module.css';
 
 import { Link } from 'react-router-dom';
-import { Machine, Supplier } from '../types/supplierTypes';
+import { Machine } from '../types/supplierTypes';
 import { Fragment } from 'react';
 
 import MachineFrom from '../forms/MachineForm';
 import DeleteButton from '../components/DeleteButton';
-import { useGetResource } from '../hooks/genericHooks';
+import { useSupplierStore } from '../lib/store';
 
 interface Props {
     machines: Machine[];
@@ -15,9 +15,9 @@ interface Props {
 }
 
 const Machines: React.FC<Props> = ({ machines, isAdmin }) => {
-    const suppliers = useGetResource<Supplier[]>('suppliers');
+    const { suppliers } = useSupplierStore();
 
-    if (!suppliers.data) {
+    if (!suppliers) {
         return <div>Loading...</div>;
     }
 
@@ -52,14 +52,14 @@ const Machines: React.FC<Props> = ({ machines, isAdmin }) => {
 
                     {isAdmin && machine.id && (
                         <div className={utils.optionsBtn}>
-                            <MachineFrom id={machine.id} machine={machine} suppliers={suppliers.data} />
+                            <MachineFrom id={machine.id} machine={machine} suppliers={suppliers} />
                             <DeleteButton id={machine.id} resourceKey="machines" />
                         </div>
                     )}
                 </Fragment>
             ))}
 
-            {isAdmin && <MachineFrom suppliers={suppliers.data} />}
+            {isAdmin && <MachineFrom suppliers={suppliers} />}
         </section>
     );
 };

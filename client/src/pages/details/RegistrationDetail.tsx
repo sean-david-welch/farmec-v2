@@ -6,12 +6,13 @@ import { useUserStore } from '../../lib/store';
 import { useGetResourceById } from '../../hooks/genericHooks';
 import { MachineRegistration } from '../../types/miscTypes';
 import { DownloadLink } from '../../components/RegistrationPdf';
+import RegistrationForm from '../../forms/RegistrationForm';
 
 const RegistrationDetail: React.FC = () => {
     const { isAdmin } = useUserStore();
 
     const id = useParams<{ id: string }>().id as string;
-    const registration = useGetResourceById<MachineRegistration>('registrations', id);
+    const { data: registration } = useGetResourceById<MachineRegistration>('registrations', id);
 
     if (!id) {
         return <div>Error: No supplier ID provided</div>;
@@ -26,10 +27,10 @@ const RegistrationDetail: React.FC = () => {
     }
 
     return (
-        registration.data && (
+        registration && (
             <section id="warranty-detail">
                 <h1 className={utils.sectionHeading}>
-                    Machine Registration: {registration.data?.dealer_name} - {registration.data?.owner_name}
+                    Machine Registration: {registration?.dealer_name} - {registration?.owner_name}
                 </h1>
 
                 <div className={styles.warrantyDetail}>
@@ -44,10 +45,10 @@ const RegistrationDetail: React.FC = () => {
                         }
                     })}
 
-                    {/* {isAdmin && <UpdateRegistration registration={registration} />} */}
+                    {isAdmin && <RegistrationForm id={registration.id} />}
                 </div>
 
-                <DownloadLink registration={registration.data} />
+                <DownloadLink registration={registration} />
             </section>
         )
     );
