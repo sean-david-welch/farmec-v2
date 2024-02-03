@@ -1,14 +1,13 @@
 import { Video } from '../types/videoTypes';
 import { Supplier } from '../types/supplierTypes';
-import { useGetResource } from '../hooks/genericHooks';
 
-export const getFormFields = async (video: Video) => {
-    const suppliers = useGetResource<Supplier[]>('suppliers');
-
-    const supplierOptions = suppliers.data?.map(supplier => ({
-        label: supplier.name,
-        value: supplier.id,
-    }));
+export const getFormFields = (suppliers: Supplier[], video?: Video) => {
+    const supplierOptions = Array.isArray(suppliers)
+        ? suppliers.map((supplier) => ({
+              label: supplier.name,
+              value: supplier.id,
+          }))
+        : [];
 
     return [
         {

@@ -1,8 +1,8 @@
 import { Employee, Privacy, Terms, Timeline } from './aboutTypes';
-import Blog, { Exhibition } from './blogTypes';
-import { Carousel, LineItem, MachineRegistration, WarrantyClaim } from './miscTypes';
+import { Blog, Exhibition } from './blogTypes';
+import { Carousel, LineItem, MachineRegistration, WarrantyClaim, WarrantyParts } from './miscTypes';
 import { Machine, Product, Sparepart, Supplier } from './supplierTypes';
-import { Video } from './videoTypes';
+import { Video, VideoWebUrl } from './videoTypes';
 
 export interface SupplierResult {
     presignedLogoUrl: string;
@@ -45,7 +45,7 @@ export interface Resources {
     spareparts: ResourceEntry<Sparepart>;
     machines: ResourceEntry<Machine>;
     products: ResourceEntry<Product>;
-    videos: ResourceEntry<Video>;
+    videos: ResourceEntry<Video | VideoWebUrl>;
     blogs: ResourceEntry<Blog>;
     exhibitions: ResourceEntry<Exhibition>;
     employees: ResourceEntry<Employee>;
@@ -55,7 +55,7 @@ export interface Resources {
     lineitems: ResourceEntry<LineItem>;
     carousels: ResourceEntry<Carousel>;
     registrations: ResourceEntry<MachineRegistration>;
-    warranty: ResourceEntry<WarrantyClaim>;
+    warranty: ResourceEntry<WarrantyClaim | WarrantyParts>;
     supplierMachine: ResourceEntry<Machine>;
 }
 

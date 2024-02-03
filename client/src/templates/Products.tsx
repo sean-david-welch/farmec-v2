@@ -1,7 +1,10 @@
 import utils from '../styles/Utils.module.css';
 import styles from '../styles/Suppliers.module.css';
 
-import { Product } from '../types/supplierTypes';
+import { Machine, Product } from '../types/supplierTypes';
+import ProductForm from '../forms/ProductForm';
+import DeleteButton from '../components/DeleteButton';
+import { useGetResource } from '../hooks/genericHooks';
 
 interface Props {
     products: Product[];
@@ -9,8 +12,10 @@ interface Props {
 }
 
 const Products: React.FC<Props> = ({ products, isAdmin }: Props) => {
-    if (!products) {
-        return <div>loading...</div>;
+    const machines = useGetResource<Machine[]>('machines');
+
+    if (!machines.data) {
+        return <div>Loading...</div>;
     }
 
     return (
@@ -29,11 +34,17 @@ const Products: React.FC<Props> = ({ products, isAdmin }: Props) => {
                             />
                         </a>
                         <p className={utils.paragraph}>{product.description}</p>
-                        {/* {isAdmin && <UpdateProduct product={product} />} */}
+
+                        {isAdmin && product.id && (
+                            <div className={utils.optionsBtn}>
+                                <ProductForm id={product.id} product={product} machines={machines.data} />
+                                <DeleteButton id={product.id} resourceKey="products" />
+                            </div>
+                        )}
                     </div>
                 ))}
             </div>
-            {/* {isAdmin && <ProductForm machines={} />} */}
+            {isAdmin && <ProductForm machines={machines.data} />}
         </section>
     );
 };

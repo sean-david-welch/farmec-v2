@@ -1,23 +1,33 @@
 import styles from '../styles/About.module.css';
 
 import { useGetResource } from '../hooks/genericHooks';
-import { Timeline as TimelineType } from '../types/aboutTypes';
+import { useUserStore } from '../lib/store';
+import { Timeline } from '../types/aboutTypes';
 
-export const Timeline = () => {
-    const timeline = useGetResource<TimelineType[]>('timelines');
+import TimelineCard from '../components/TimlineCard';
+
+const Timelines: React.FC = () => {
+    const { isAdmin } = useUserStore();
+
+    const { data: timelines, isLoading, error } = useGetResource<Timeline[]>('timelines');
+
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <section id="timeline">
             <div className={styles.timeline}>
-                {/* {timeline.map((event, index) => (
-                    <TimelineCard
-                        key={event.id}
-                        event={event}
-                        user={user}
-                        direction={index % 2 === 0 ? 'left' : 'right'}
-                    />
-                ))} */}
+                {timelines ? (
+                    timelines.map((timeline: Timeline) => (
+                        <TimelineCard timeline={timeline} isAdmin={isAdmin} />
+                    ))
+                ) : (
+                    <div>error: {error?.message || 'Unknown error'}</div>
+                )}
             </div>
         </section>
     );
 };
+
+export default Timelines;

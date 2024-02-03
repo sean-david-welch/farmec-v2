@@ -1,80 +1,78 @@
 import utils from '../styles/Utils.module.css';
+
 import FormDialog from './FormDialog';
 
 import { useState } from 'react';
-import { useMutateResource } from '../hooks/genericHooks';
+import { Sparepart, Supplier } from '../types/supplierTypes';
+
 import { uploadFileToS3 } from '../lib/aws';
-import { Machine, Supplier } from '../types/supplierTypes';
-import { getFormFields } from '../utils/machineFields';
+import { useMutateResource } from '../hooks/genericHooks';
+import { getFormFields } from '../utils/sparepartsFields';
 
 interface Props {
     id?: string;
-    machine?: Machine;
+    sparepart?: Sparepart;
     suppliers: Supplier[];
 }
 
-const MachineFrom: React.FC<Props> = ({ id, machine, suppliers }) => {
+const SparepartForm: React.FC<Props> = ({ id, sparepart, suppliers }) => {
     const [showForm, setShowForm] = useState(false);
-
-    const formFields = machine ? getFormFields(suppliers, machine) : getFormFields(suppliers);
+    const formFields = sparepart ? getFormFields(suppliers, sparepart) : getFormFields(suppliers);
 
     const {
-        mutateAsync: createMachine,
+        mutateAsync: createSparepart,
         isError: isCreateError,
         error: createError,
-    } = useMutateResource<Machine>('machines');
+    } = useMutateResource<Sparepart>('spareparts');
 
     const {
-        mutateAsync: updateMachine,
+        mutateAsync: updateSparepart,
         isError: isUpdateError,
         error: updateError,
-    } = useMutateResource<Machine>('machines', id);
+    } = useMutateResource<Sparepart>('spareparts', id);
 
-    const isError = id ? isUpdateError : isCreateError;
     const error = id ? updateError : createError;
-
-    const submitMachine = id ? updateMachine : createMachine;
+    const isError = id ? isUpdateError : isCreateError;
+    const submitSparepart = id ? updateSparepart : createSparepart;
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
         const formData = new FormData(event.currentTarget as HTMLFormElement);
+        const imageFile = formData.get('parts_image') as File;
 
-        const imageFile = formData.get('machine_image') as File;
-
-        const body: Machine = {
+        const body: Sparepart = {
             supplierId: formData.get('supplierId') as string,
             name: formData.get('name') as string,
-            machine_image: formData.get('machine_image') as string,
-            description: formData.get('description') as string,
-            machine_link: formData.get('machine_link') as string,
+            parts_image: formData.get('parts_image') as string,
+            spare_parts_link: formData.get('spare_parts_link') as string,
         };
 
         try {
-            const response = await submitMachine(body);
+            const response = await submitSparepart(body);
 
             if (imageFile) {
-                const machineImageData = {
+                const imageData = {
                     imageFile: imageFile,
-                    presignedUrl: response.presginedUrl,
+                    presignedUrl: response.presignedUrl,
                 };
-                await uploadFileToS3(machineImageData);
+                await uploadFileToS3(imageData);
             }
             response.ok ? setShowForm(false) : console.error('failed with response:', response);
         } catch (error) {
-            console.error('Error creating machine', error);
+            console.error('error creating sparepart', error);
         }
     }
 
     return (
         <section id="form">
             <button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
-                {id ? <img src="/icons/edit.svg" alt="edit button" /> : 'Create Machine'}
+                {id ? <img src="/icons/edit.svg" alt="edit button" /> : 'Create Sparepart'}
             </button>
 
             <FormDialog visible={showForm} onClose={() => setShowForm(false)}>
                 <form className={utils.form} onSubmit={handleSubmit} encType="multipart/form-data">
-                    <h1 className={utils.mainHeading}>Machine Form</h1>
+                    <h1 className={utils.mainHeading}>Sparepart Form</h1>
                     {formFields.map((field) => (
                         <div key={field.name}>
                             <label htmlFor={field.name}>{field.label}</label>
@@ -107,4 +105,4 @@ const MachineFrom: React.FC<Props> = ({ id, machine, suppliers }) => {
     );
 };
 
-export default MachineFrom;
+export default SparepartForm;

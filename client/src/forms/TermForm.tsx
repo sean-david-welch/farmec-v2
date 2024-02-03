@@ -59,7 +59,7 @@ const TermForm: React.FC<Props> = ({ id, term }) => {
 
             <FormDialog visible={showForm} onClose={() => setShowForm(false)}>
                 <form className={utils.form} onSubmit={handleSubmit} encType="multipart/form-data">
-                    <h1 className={utils.mainHeading}>Supplier Form</h1>
+                    <h1 className={utils.mainHeading}>Terms Form</h1>
                     {formFields.map((field) => (
                         <div key={field.name}>
                             <label htmlFor={field.name}>{field.label}</label>

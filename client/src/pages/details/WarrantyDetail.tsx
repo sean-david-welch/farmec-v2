@@ -6,6 +6,8 @@ import { DownloadLink } from '../../components/WarrantyPdf';
 import { useUserStore } from '../../lib/store';
 import { WarrantyParts } from '../../types/miscTypes';
 import { useGetResourceById } from '../../hooks/genericHooks';
+import WarrantyForm from '../../forms/WarrantyForm';
+import DeleteButton from '../../components/DeleteButton';
 
 const WarrantyDetail = async () => {
     const { isAdmin } = useUserStore();
@@ -58,7 +60,12 @@ const WarrantyDetail = async () => {
                     })
                 )}
 
-                {/* {isAdmin && <UpdateWarranty warrantyClaim={warranty} partsRequired={parts} />} */}
+                {isAdmin && warranty.id && (
+                    <div className={utils.optionsBtn}>
+                        <WarrantyForm id={warranty.id} warranty={warranty} />
+                        <DeleteButton id={warranty.id} resourceKey="warranty" />
+                    </div>
+                )}
             </div>
 
             <DownloadLink warranty={warranty} parts={parts} />

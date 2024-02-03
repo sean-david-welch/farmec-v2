@@ -3,15 +3,18 @@ import styles from '../../styles/Spareparts.module.css';
 
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
-import { Sparepart } from '../../types/supplierTypes';
+import { Sparepart, Supplier } from '../../types/supplierTypes';
 import { useUserStore } from '../../lib/store';
-import { useGetResourceById } from '../../hooks/genericHooks';
+import { useGetResource, useGetResourceById } from '../../hooks/genericHooks';
+import SparepartForm from '../../forms/SparePartsForm';
+import DeleteButton from '../../components/DeleteButton';
 
 const PartsDetail = async () => {
     const { isAdmin } = useUserStore();
 
     const id = useParams<{ id: string }>().id as string;
     const spareparts = useGetResourceById<Sparepart[]>('spareparts', id);
+    const suppliers = useGetResource<Supplier[]>('suppliers');
 
     if (!id) {
         return <div>Error: No supplier ID provided</div>;
@@ -54,10 +57,19 @@ const PartsDetail = async () => {
                             />
                         </div>
                     </div>
-                    {/* {isAdmin && <UpdatePartForm sparepart={sparepart} />} */}
+                    {isAdmin && suppliers.data && sparepart.id && (
+                        <div className={utils.optionsBtn}>
+                            <SparepartForm
+                                suppliers={suppliers.data}
+                                sparepart={sparepart}
+                                id={sparepart.id}
+                            />
+                            <DeleteButton id={sparepart.id} resourceKey="spareparts" />
+                        </div>
+                    )}
                 </div>
             ))}
-            {/* {isAdmin && <SparepartsForm />} */}
+            {isAdmin && suppliers.data && <SparepartForm suppliers={suppliers.data} />}
         </section>
     );
 };

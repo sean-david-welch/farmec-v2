@@ -1,80 +1,68 @@
 import utils from '../styles/Utils.module.css';
+
 import FormDialog from './FormDialog';
 
 import { useState } from 'react';
+import { Supplier } from '../types/supplierTypes';
+
 import { useMutateResource } from '../hooks/genericHooks';
-import { uploadFileToS3 } from '../lib/aws';
-import { Machine, Supplier } from '../types/supplierTypes';
-import { getFormFields } from '../utils/machineFields';
+import { Video, VideoWebUrl } from '../types/videoTypes';
+import { getFormFields } from '../utils/videoFields';
 
 interface Props {
     id?: string;
-    machine?: Machine;
+    video?: Video;
     suppliers: Supplier[];
 }
 
-const MachineFrom: React.FC<Props> = ({ id, machine, suppliers }) => {
+const VideoForm: React.FC<Props> = ({ id, video, suppliers }) => {
     const [showForm, setShowForm] = useState(false);
-
-    const formFields = machine ? getFormFields(suppliers, machine) : getFormFields(suppliers);
+    const formFields = video ? getFormFields(suppliers, video) : getFormFields(suppliers);
 
     const {
-        mutateAsync: createMachine,
+        mutateAsync: createVideo,
         isError: isCreateError,
         error: createError,
-    } = useMutateResource<Machine>('machines');
+    } = useMutateResource<VideoWebUrl>('videos');
 
     const {
-        mutateAsync: updateMachine,
+        mutateAsync: updateVideo,
         isError: isUpdateError,
         error: updateError,
-    } = useMutateResource<Machine>('machines', id);
+    } = useMutateResource<VideoWebUrl>('videos', id);
 
-    const isError = id ? isUpdateError : isCreateError;
     const error = id ? updateError : createError;
-
-    const submitMachine = id ? updateMachine : createMachine;
+    const isError = id ? isUpdateError : isCreateError;
+    const submitVideo = id ? updateVideo : createVideo;
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
         const formData = new FormData(event.currentTarget as HTMLFormElement);
 
-        const imageFile = formData.get('machine_image') as File;
-
-        const body: Machine = {
+        const body: VideoWebUrl = {
             supplierId: formData.get('supplierId') as string,
-            name: formData.get('name') as string,
-            machine_image: formData.get('machine_image') as string,
-            description: formData.get('description') as string,
-            machine_link: formData.get('machine_link') as string,
+            web_url: formData.get('web_url') as string,
         };
 
         try {
-            const response = await submitMachine(body);
-
-            if (imageFile) {
-                const machineImageData = {
-                    imageFile: imageFile,
-                    presignedUrl: response.presginedUrl,
-                };
-                await uploadFileToS3(machineImageData);
-            }
+            const response = await submitVideo(body);
             response.ok ? setShowForm(false) : console.error('failed with response:', response);
         } catch (error) {
-            console.error('Error creating machine', error);
+            console.error('error creating video', error);
         }
     }
 
     return (
         <section id="form">
             <button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
-                {id ? <img src="/icons/edit.svg" alt="edit button" /> : 'Create Machine'}
+                {id ? <img src="/icons/edit.svg" alt="edit button" /> : 'Create Videos'}
             </button>
 
             <FormDialog visible={showForm} onClose={() => setShowForm(false)}>
                 <form className={utils.form} onSubmit={handleSubmit} encType="multipart/form-data">
-                    <h1 className={utils.mainHeading}>Machine Form</h1>
+                    <h1 className={utils.mainHeading}>Videos Form</h1>
+
                     {formFields.map((field) => (
                         <div key={field.name}>
                             <label htmlFor={field.name}>{field.label}</label>
@@ -107,4 +95,4 @@ const MachineFrom: React.FC<Props> = ({ id, machine, suppliers }) => {
     );
 };
 
-export default MachineFrom;
+export default VideoForm;

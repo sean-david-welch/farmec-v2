@@ -1,10 +1,11 @@
 import utils from '../styles/Utils.module.css';
 
 import { useDeleteResource } from '../hooks/genericHooks';
+import { Resources } from '../types/dataTypes';
 
 interface ButtonProps {
     id: string;
-    resourceKey: string;
+    resourceKey: keyof Resources;
 }
 
 const DeleteButton: React.FC<ButtonProps> = ({ id, resourceKey }) => {

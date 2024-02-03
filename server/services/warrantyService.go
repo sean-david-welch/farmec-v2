@@ -6,11 +6,11 @@ import (
 )
 
 type WarrantyService interface {
-	GetWarranties() ([]types.DealerOwnerInfo, error) 
-	GetWarrantyById(id string) (*types.WarrantyClaim, []types.PartsRequired, error) 
-	CreateWarranty(warranty *types.WarrantyClaim, parts []types.PartsRequired) error 
-	UpdateWarranty(id string, warranty *types.WarrantyClaim, parts []types.PartsRequired) error 
-	DeleteWarranty(id string) error 	
+	GetWarranties() ([]types.DealerOwnerInfo, error)
+	GetWarrantyById(id string) (*types.WarrantyClaim, []types.PartsRequired, error)
+	CreateWarranty(warranty *types.WarrantyClaim, parts []types.PartsRequired) error
+	UpdateWarranty(id string, warranty *types.WarrantyClaim, parts []types.PartsRequired) error
+	DeleteWarranty(id string) error
 }
 
 type WarrantyServiceImpl struct {
@@ -21,23 +21,25 @@ func NewWarrantyService(repository repository.WarrantyRepository) *WarrantyServi
 	return &WarrantyServiceImpl{repository: repository}
 }
 
-func(service *WarrantyServiceImpl) GetWarranties() ([]types.DealerOwnerInfo, error) {
-	warranties, err := service.repository.GetWarranties(); if err != nil {
+func (service *WarrantyServiceImpl) GetWarranties() ([]types.DealerOwnerInfo, error) {
+	warranties, err := service.repository.GetWarranties()
+	if err != nil {
 		return nil, err
 	}
 
 	return warranties, nil
 }
 
-func(service *WarrantyServiceImpl) GetWarrantyById(id string) (*types.WarrantyClaim, []types.PartsRequired, error) {
-	warranty, partsRequired, err := service.repository.GetWarrantyById(id); if err != nil {
+func (service *WarrantyServiceImpl) GetWarrantyById(id string) (*types.WarrantyClaim, []types.PartsRequired, error) {
+	warranty, partsRequired, err := service.repository.GetWarrantyById(id)
+	if err != nil {
 		return nil, nil, err
 	}
 
 	return warranty, partsRequired, nil
 }
 
-func(service *WarrantyServiceImpl) CreateWarranty(warranty *types.WarrantyClaim, parts []types.PartsRequired) error {
+func (service *WarrantyServiceImpl) CreateWarranty(warranty *types.WarrantyClaim, parts []types.PartsRequired) error {
 	if err := service.repository.CreateWarranty(warranty, parts); err != nil {
 		return err
 	}
@@ -45,7 +47,7 @@ func(service *WarrantyServiceImpl) CreateWarranty(warranty *types.WarrantyClaim,
 	return nil
 }
 
-func(service *WarrantyServiceImpl) UpdateWarranty(id string, warranty *types.WarrantyClaim, parts []types.PartsRequired) error {
+func (service *WarrantyServiceImpl) UpdateWarranty(id string, warranty *types.WarrantyClaim, parts []types.PartsRequired) error {
 	if err := service.repository.UpdateWarranty(id, warranty, parts); err != nil {
 		return err
 	}

@@ -28,7 +28,7 @@ export interface WarrantyClaim {
 
 export interface PartsRequired {
     id?: string;
-    warrantyId: string;
+    warrantyId?: string;
     part_number: string;
     quantity_needed: string;
     invoice_number: string;

@@ -27,3 +27,8 @@ export interface Video {
     thumbnail_url: string;
     created?: string;
 }
+
+export interface VideoWebUrl {
+    supplierId: string;
+    web_url: string;
+}

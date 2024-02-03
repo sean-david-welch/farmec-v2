@@ -1,7 +1,7 @@
 import utils from '../styles/Utils.module.css';
 
 import FormDialog from './FormDialog';
-import { getRegFields } from '../utils/serviceFields';
+import { getRegFields } from '../utils/registrationFields';
 import { useState } from 'react';
 import { MachineRegistration } from '../types/miscTypes';
 import { useMutateResource } from '../hooks/genericHooks';

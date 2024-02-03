@@ -100,8 +100,8 @@ func (repository *WarrantyRepositoryImpl) CreateWarranty(warranty *types.Warrant
 		return err
 	}
 
-	warrantyQuery := `INSERT INTO "WarrantyClaim" 
-	(id, dealer, dealerContact, ownerName, machineModel, serialNumber, installDate, failureDate, repairDate, failureDetails, repairDetails, labourHours, completedBy, created) 
+	warrantyQuery := `INSERT INTO "WarrantyClaim"
+	(id, dealer, dealerContact, ownerName, machineModel, serialNumber, installDate, failureDate, repairDate, failureDetails, repairDetails, labourHours, completedBy, created)
 	VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)`
 
 	_, err = transaction.Exec(
@@ -114,7 +114,7 @@ func (repository *WarrantyRepositoryImpl) CreateWarranty(warranty *types.Warrant
 		return err
 	}
 
-	partsQuery := `INSERT INTO "PartsRequired" 
+	partsQuery := `INSERT INTO "PartsRequired"
 	(id, warrantyID, partNumber, quantityNeeded, invoiceNumber, description) VALUES ($1, $2, $3, $4, $5, $6)`
 
 	for _, part := range parts {
@@ -141,9 +141,9 @@ func (repository *WarrantyRepositoryImpl) UpdateWarranty(id string, warranty *ty
 		return err
 	}
 
-	warrantyQuery := `UPDATE "WarrantyClaim" SET 
-    dealer = $2, dealerContact = $3, ownerName = $4, machineModel = $5, serialNumber = $6, 
-    installDate = $7, failureDate = $8, repairDate = $9, failureDetails = $10, repairDetails = $11, 
+	warrantyQuery := `UPDATE "WarrantyClaim" SET
+    dealer = $2, dealerContact = $3, ownerName = $4, machineModel = $5, serialNumber = $6,
+    installDate = $7, failureDate = $8, repairDate = $9, failureDetails = $10, repairDetails = $11,
     labourHours = $12, completedBy = $13, created = $14 WHERE id = $1`
 
 	_, err = transaction.Exec(
@@ -163,7 +163,7 @@ func (repository *WarrantyRepositoryImpl) UpdateWarranty(id string, warranty *ty
 		return err
 	}
 
-	partsQuery := `INSERT INTO "PartsRequired" 
+	partsQuery := `INSERT INTO "PartsRequired"
 	(id, warrantyID, partNumber, quantityNeeded, invoiceNumber, description) VALUES ($1, $2, $3, $4, $5, $6)`
 
 	for _, part := range parts {

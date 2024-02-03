@@ -1,13 +1,12 @@
-import { useGetResource } from '../hooks/genericHooks';
 import { Sparepart, Supplier } from '../types/supplierTypes';
 
-export const getFormFields = async (sparepart: Sparepart) => {
-    const suppliers = useGetResource<Supplier[]>('suppliers');
-
-    const supplierOptions = suppliers.data?.map(supplier => ({
-        label: supplier.name,
-        value: supplier.id,
-    }));
+export const getFormFields = (suppliers: Supplier[], sparepart?: Sparepart) => {
+    const supplierOptions = Array.isArray(suppliers)
+        ? suppliers.map((supplier) => ({
+              label: supplier.name,
+              value: supplier.id,
+          }))
+        : [];
 
     return [
         {
@@ -27,13 +26,13 @@ export const getFormFields = async (sparepart: Sparepart) => {
         },
         {
             name: 'parts_image',
-            label: 'Parts Image (Max 10MB)',
+            label: 'Parts Image ',
             type: 'file',
             placeholder: 'Upload parts image',
         },
         {
             name: 'pdf_link',
-            label: 'PDF Link (Max 10MB)',
+            label: 'PDF Link ',
             type: 'file',
             placeholder: 'Enter pdf_link',
         },
