@@ -4,7 +4,7 @@ export interface Employee {
     email: string;
     role: string;
     profile_image: string;
-    created: string;
+    created?: string;
 }
 
 export interface Timeline {

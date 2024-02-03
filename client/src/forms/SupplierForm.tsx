@@ -87,7 +87,7 @@ const SupplierForm: React.FC<Props> = ({ id, supplier }) => {
             <FormDialog visible={showForm} onClose={() => setShowForm(false)}>
                 <form className={utils.form} onSubmit={handleSubmit} encType="multipart/form-data">
                     <h1 className={utils.mainHeading}>Supplier Form</h1>
-                    {formFields.map(field => (
+                    {formFields.map((field) => (
                         <div key={field.name}>
                             <label htmlFor={field.name}>{field.label}</label>
                             <input

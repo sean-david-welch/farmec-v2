@@ -1,4 +1,4 @@
-import Blog, { Exhibition } from '../types/blogTypes';
+import { Blog, Exhibition } from '../types/blogTypes';
 
 export const blogFormFields = (blog?: Blog) => [
     {
@@ -38,7 +38,7 @@ export const blogFormFields = (blog?: Blog) => [
     },
 ];
 
-export const exhibitionFormFields = (exhibiton: Exhibition) => [
+export const exhibitionFormFields = (exhibiton?: Exhibition) => [
     {
         name: 'title',
         label: 'Title',

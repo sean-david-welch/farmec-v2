@@ -1,9 +1,8 @@
 import utils from '../styles/Utils.module.css';
 import styles from '../styles/Blogs.module.css';
 
-import Blog from '../types/blogTypes';
-
 import { Link } from 'react-router-dom';
+import { Blog } from '../types/blogTypes';
 import { useUserStore } from '../lib/store';
 import { useGetResource } from '../hooks/genericHooks';
 
@@ -30,7 +29,12 @@ const Blogs: React.FC = () => {
             {blogs.data?.map((blog) => (
                 <div className={styles.blogGrid} key={blog.id} id={blog.title || ''}>
                     <div className={styles.blogCard}>
-                        <img src={blog.main_image || '/default.jpg'} alt={'/default.jpg'} width={400} height={400} />
+                        <img
+                            src={blog.main_image || '/default.jpg'}
+                            alt={'/default.jpg'}
+                            width={400}
+                            height={400}
+                        />
                         <div className={styles.blogLink}>
                             <h1 className={utils.mainHeading}>{blog.title}</h1>
                             <p className={utils.paragraph}>{blog.subheading}</p>

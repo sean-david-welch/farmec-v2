@@ -1,6 +1,6 @@
 import { Employee, Timeline, Terms, Privacy } from '../types/aboutTypes';
 
-export const employeeFormFields = (employee: Employee) => [
+export const employeeFormFields = (employee?: Employee) => [
     {
         name: 'name',
         label: 'Name',
@@ -31,7 +31,7 @@ export const employeeFormFields = (employee: Employee) => [
     },
 ];
 
-export const timelineFormFields = (timeline: Timeline) => [
+export const timelineFormFields = (timeline?: Timeline) => [
     {
         name: 'title',
         label: 'Title',
@@ -55,7 +55,7 @@ export const timelineFormFields = (timeline: Timeline) => [
     },
 ];
 
-export const termsFormFields = (term: Terms) => [
+export const termsFormFields = (term?: Terms) => [
     {
         name: 'title',
         label: 'Title',
@@ -72,7 +72,7 @@ export const termsFormFields = (term: Terms) => [
     },
 ];
 
-export const privacyFormFields = (privacy: Privacy) => [
+export const privacyFormFields = (privacy?: Privacy) => [
     {
         name: 'title',
         label: 'Title',
