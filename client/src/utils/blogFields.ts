@@ -20,7 +20,6 @@ export const blogFormFields = (blog?: Blog) => [
         label: 'Main Image',
         type: 'file',
         placeholder: 'Upload main image',
-        defaultValue: blog?.main_image,
     },
     {
         name: 'subheading',

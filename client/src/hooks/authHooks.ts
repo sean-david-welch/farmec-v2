@@ -14,8 +14,6 @@ const useFirebaseAuthSync = () => {
                 const customClaim = (await user.getIdTokenResult()).claims;
                 const isAdmin = typeof customClaim.admin === 'boolean' ? customClaim.admin : false;
 
-                console.log('isAdmin', isAdmin);
-
                 setIsAdmin(isAdmin);
             } else {
                 setIsAuthenticated(false);

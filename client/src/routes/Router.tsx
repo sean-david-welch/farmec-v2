@@ -12,7 +12,10 @@ const Suppliers = lazy(() => import('../pages/Suppliers'));
 const SupplierDetail = lazy(() => import('../pages/details/SupplierDetail'));
 const MachineDetail = lazy(() => import('../pages/details/MachineDetail'));
 const Spareparts = lazy(() => import('../pages/Spareparts'));
+const SparepartsDetail = lazy(() => import('../pages/details/SparepartsDetail'));
 const Blogs = lazy(() => import('../pages/Blogs'));
+const BlogDetail = lazy(() => import('../pages/details/BlogDetail'));
+
 const Login = lazy(() => import('../pages/Login'));
 const Account = lazy(() => import('../pages/Account'));
 
@@ -38,7 +41,10 @@ const AppRoutes = () => {
                         <Route path="/suppliers/:id" element={<SupplierDetail />} />
                         <Route path="/machines/:id" element={<MachineDetail />} />
                         <Route path="/spareparts" element={<Spareparts />} />
+                        <Route path="/spareparts/:id" element={<SparepartsDetail />} />
+
                         <Route path="/blogs" element={<Blogs />} />
+                        <Route path="/blogs/:id" element={<BlogDetail />} />
 
                         <Route path="/login" element={<Login />} />
                         <Route path="/account" element={<Account />} />
