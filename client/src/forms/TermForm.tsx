@@ -44,7 +44,8 @@ const TermForm: React.FC<Props> = ({ id, term }) => {
         };
 
         try {
-            await submitTerm(body);
+            const response = await submitTerm(body);
+            response.ok ? setShowForm(false) : console.error('failed with response:', response);
         } catch (error) {
             console.error('error creating term', error);
         }

@@ -15,7 +15,6 @@ interface Props {
 
 const SupplierForm: React.FC<Props> = ({ id, supplier }) => {
     const [showForm, setShowForm] = useState(false);
-
     const formFields = supplier ? getFormFields(supplier) : getFormFields();
 
     const {
@@ -30,14 +29,12 @@ const SupplierForm: React.FC<Props> = ({ id, supplier }) => {
         error: updateError,
     } = useMutateResource<Supplier>('suppliers', id);
 
-    const isError = id ? isUpdateError : isCreateError;
     const error = id ? updateError : createError;
-
+    const isError = id ? isUpdateError : isCreateError;
     const submitSupplier = id ? updateSupplier : createSupplier;
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
-
         const formData = new FormData(event.currentTarget as HTMLFormElement);
 
         const logoFile = formData.get('logo_image') as File;
@@ -73,6 +70,8 @@ const SupplierForm: React.FC<Props> = ({ id, supplier }) => {
                 };
                 await uploadFileToS3(marketingImageData);
             }
+
+            response.ok ? setShowForm(false) : console.error('failed with response:', response);
         } catch (error) {
             console.error('Error creating supplier:', error);
         }

@@ -61,6 +61,8 @@ const ProductForm: React.FC<Props> = ({ id, product, machines }) => {
                 };
                 await uploadFileToS3(productImageData);
             }
+
+            response.ok ? setShowForm(false) : console.error('failed with response:', response);
         } catch (error) {
             console.error('error creating product', error);
         }
@@ -75,12 +77,12 @@ const ProductForm: React.FC<Props> = ({ id, product, machines }) => {
             <FormDialog visible={showForm} onClose={() => setShowForm(false)}>
                 <form className={utils.form} onSubmit={handleSubmit} encType="multipart/form-data">
                     <h1 className={utils.mainHeading}>Supplier Form</h1>
-                    {formFields.map(field => (
+                    {formFields.map((field) => (
                         <div key={field.name}>
                             <label htmlFor={field.name}>{field.label}</label>
                             {field.type === 'select' ? (
                                 <select name={field.name} id={field.name}>
-                                    {field.options?.map(option => (
+                                    {field.options?.map((option) => (
                                         <option key={option.value} value={option.value}>
                                             {option.label}
                                         </option>

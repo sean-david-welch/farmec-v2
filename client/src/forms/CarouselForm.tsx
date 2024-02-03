@@ -3,60 +3,69 @@ import utils from '../styles/Utils.module.css';
 import FormDialog from './FormDialog';
 
 import { useState } from 'react';
-import { Exhibition } from '../types/blogTypes';
+import { Carousel } from '../types/miscTypes';
 
+import { uploadFileToS3 } from '../lib/aws';
 import { useMutateResource } from '../hooks/genericHooks';
-import { exhibitionFormFields } from '../utils/blogFields';
+import { getFormFields } from '../utils/carouselFields';
 
 interface Props {
     id?: string;
-    exhibition?: Exhibition;
+    carousel?: Carousel;
 }
 
-const ExhibitionForm: React.FC<Props> = ({ id, exhibition }) => {
+const CarouselForm: React.FC<Props> = ({ id, carousel }) => {
     const [showForm, setShowForm] = useState(false);
-    const formFields = exhibition ? exhibitionFormFields(exhibition) : exhibitionFormFields();
+    const formFields = carousel ? getFormFields(carousel) : getFormFields();
 
     const {
-        mutateAsync: createExhibition,
+        mutateAsync: createCarousel,
         isError: isCreateError,
         error: createError,
-    } = useMutateResource<Exhibition>('exhibitions');
+    } = useMutateResource<Carousel>('carousels');
 
     const {
-        mutateAsync: updateExhibition,
+        mutateAsync: updateCarousel,
         isError: isUpdateError,
         error: updateError,
-    } = useMutateResource<Exhibition>('exhibitions', id);
+    } = useMutateResource<Carousel>('carousels', id);
 
     const error = id ? updateError : createError;
     const isError = id ? isUpdateError : isCreateError;
-    const submitExhibition = id ? updateExhibition : createExhibition;
+    const submitCarousel = id ? updateCarousel : createCarousel;
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
         const formData = new FormData(event.currentTarget as HTMLFormElement);
+        const imageFile = formData.get('image') as File;
 
-        const body: Exhibition = {
-            title: formData.get('title') as string,
-            date: formData.get('date') as string,
-            location: formData.get('location') as string,
-            info: formData.get('info') as string,
+        const body: Carousel = {
+            name: formData.get('name') as string,
+            image: formData.get('image') as string,
         };
 
         try {
-            const response = await submitExhibition(body);
+            const response = await submitCarousel(body);
+
+            if (imageFile) {
+                const imageData = {
+                    imageFile: imageFile,
+                    presignedUrl: response.presignedUrl,
+                };
+                await uploadFileToS3(imageData);
+            }
+
             response.ok ? setShowForm(false) : console.error('failed with response:', response);
         } catch (error) {
-            console.error('error creating exhibition', error);
+            console.error('error creating carousel', error);
         }
     }
 
     return (
         <section id="form">
             <button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
-                {id ? <img src="/icons/edit.svg" alt="edit button" /> : 'Create Exhibition'}
+                {id ? <img src="/icons/edit.svg" alt="edit button" /> : 'Create Carousel'}
             </button>
 
             <FormDialog visible={showForm} onClose={() => setShowForm(false)}>
@@ -85,4 +94,4 @@ const ExhibitionForm: React.FC<Props> = ({ id, exhibition }) => {
     );
 };
 
-export default ExhibitionForm;
+export default CarouselForm;

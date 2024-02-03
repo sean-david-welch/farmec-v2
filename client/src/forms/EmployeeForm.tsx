@@ -57,6 +57,8 @@ const EmployeeForm: React.FC<Props> = ({ id, employee }) => {
                 };
                 await uploadFileToS3(imageData);
             }
+
+            response.ok ? setShowForm(false) : console.error('failed with response:', response);
         } catch (error) {
             console.error('error creating employee', error);
         }

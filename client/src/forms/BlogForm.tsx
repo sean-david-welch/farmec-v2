@@ -58,6 +58,7 @@ const BlogForm: React.FC<Props> = ({ id, blog }) => {
                 };
                 await uploadFileToS3(imageData);
             }
+            response.ok ? setShowForm(false) : console.error('failed with response:', response);
         } catch (error) {
             console.error('error creating blog', error);
         }

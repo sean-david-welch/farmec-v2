@@ -18,9 +18,17 @@ const MachineFrom: React.FC<Props> = ({ id, machine, suppliers }) => {
 
     const formFields = id ? getFormFields(suppliers, machine) : getFormFields(suppliers);
 
-    const { mutateAsync: createMachine, isError: isCreateError, error: createError } = useMutateResource<Machine>('machines');
+    const {
+        mutateAsync: createMachine,
+        isError: isCreateError,
+        error: createError,
+    } = useMutateResource<Machine>('machines');
 
-    const { mutateAsync: updateMachine, isError: isUpdateError, error: updateError } = useMutateResource<Machine>('machines', id);
+    const {
+        mutateAsync: updateMachine,
+        isError: isUpdateError,
+        error: updateError,
+    } = useMutateResource<Machine>('machines', id);
 
     const isError = id ? isUpdateError : isCreateError;
     const error = id ? updateError : createError;
@@ -52,6 +60,7 @@ const MachineFrom: React.FC<Props> = ({ id, machine, suppliers }) => {
                 };
                 await uploadFileToS3(machineImageData);
             }
+            response.ok ? setShowForm(false) : console.error('failed with response:', response);
         } catch (error) {
             console.error('Error creating machine', error);
         }
@@ -78,7 +87,12 @@ const MachineFrom: React.FC<Props> = ({ id, machine, suppliers }) => {
                                     ))}
                                 </select>
                             ) : (
-                                <input type={field.type} name={field.name} id={field.name} placeholder={field.placeholder} />
+                                <input
+                                    type={field.type}
+                                    name={field.name}
+                                    id={field.name}
+                                    placeholder={field.placeholder}
+                                />
                             )}
                         </div>
                     ))}

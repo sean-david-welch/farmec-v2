@@ -44,7 +44,8 @@ const PrivacyForm: React.FC<Props> = ({ id, privacy }) => {
         };
 
         try {
-            await submitPrivacy(body);
+            const response = await submitPrivacy(body);
+            response.ok ? setShowForm(false) : console.error('failed with response:', response);
         } catch (error) {
             console.error('error creating privacy', error);
         }
