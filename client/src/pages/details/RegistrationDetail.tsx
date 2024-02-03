@@ -8,13 +8,12 @@ import { MachineRegistration } from '../../types/miscTypes';
 import { DownloadLink } from '../../components/RegistrationPdf';
 
 const RegistrationDetail: React.FC = () => {
-    const isAdmin = useUserStore();
+    const { isAdmin } = useUserStore();
 
-    const params = useParams<{ id: string }>();
-    const id = params.id as string;
+    const id = useParams<{ id: string }>().id as string;
     const registration = useGetResourceById<MachineRegistration>('registrations', id);
 
-    if (!params.id) {
+    if (!id) {
         return <div>Error: No supplier ID provided</div>;
     }
 

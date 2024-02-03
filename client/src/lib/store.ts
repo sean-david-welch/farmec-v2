@@ -8,15 +8,10 @@ interface UserState {
     setIsAuthenticated: (isAuthenticated: boolean) => void;
 }
 
-export const useUserStore = create<UserState>()(set => ({
+export const useUserStore = create<UserState>()((set) => ({
     isAdmin: false,
     setIsAdmin: (isAdmin: boolean) => set({ isAdmin }),
 
     isAuthenticated: false,
     setIsAuthenticated: (isAuthenticated: boolean) => set({ isAuthenticated }),
 }));
-
-export const updateIsAdmin = (isAdmin: boolean) => {
-    const setUserStore = useUserStore.getState();
-    setUserStore.setIsAdmin(isAdmin);
-};

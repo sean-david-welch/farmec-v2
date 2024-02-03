@@ -8,7 +8,7 @@ import { useUserStore } from '../lib/store';
 import { useGetResource } from '../hooks/genericHooks';
 
 const Blogs: React.FC = () => {
-    const isAdmin = useUserStore();
+    const { isAdmin } = useUserStore();
 
     const blogs = useGetResource<Blog[]>('blogs');
 
@@ -19,7 +19,7 @@ const Blogs: React.FC = () => {
             {blogs.data && (
                 <div className={utils.index}>
                     <h1 className={utils.indexHeading}>Suppliers</h1>
-                    {blogs.data.map(link => (
+                    {blogs.data.map((link) => (
                         <a key={link.title} href={`#${link.title}`}>
                             <h1 className="indexItem">{link.title}</h1>
                         </a>
@@ -27,7 +27,7 @@ const Blogs: React.FC = () => {
                 </div>
             )}
 
-            {blogs.data?.map(blog => (
+            {blogs.data?.map((blog) => (
                 <div className={styles.blogGrid} key={blog.id} id={blog.title || ''}>
                     <div className={styles.blogCard}>
                         <img src={blog.main_image || '/default.jpg'} alt={'/default.jpg'} width={400} height={400} />

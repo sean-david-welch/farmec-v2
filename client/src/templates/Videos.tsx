@@ -7,12 +7,12 @@ interface VideoProps {
     videos: Video[];
 }
 
-const Videos: React.FC<VideoProps> = props => {
+const Videos: React.FC<VideoProps> = (props) => {
     return (
         <section id="videos">
             <h1 className={utils.sectionHeading}>Videos</h1>
             <div className={styles.videoGrid}>
-                {props.videos.map(video => (
+                {props.videos.map((video) => (
                     <div className={styles.videoCard} id={video.title || ''} key={video.id}>
                         <h1 className={utils.mainHeading}>{video.title}</h1>
                         <iframe

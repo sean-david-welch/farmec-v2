@@ -1,19 +1,21 @@
 import utils from '../../styles/Machines.module.css';
 
-import { useParams } from 'react-router-dom';
-
 import Products from '../../templates/Products';
+
+import { useParams } from 'react-router-dom';
 import { Resources } from '../../types/dataTypes';
+import { useUserStore } from '../../lib/store';
 import { useMultipleResources } from '../../hooks/genericHooks';
 
 const MachineDetail: React.FC = () => {
-    const params = useParams<{ id: string }>();
-    const id = params.id as string;
+    const { isAdmin } = useUserStore();
+
+    const id = useParams<{ id: string }>().id as string;
 
     const resourceKeys: (keyof Resources)[] = ['machines', 'products'];
     const { data, isLoading } = useMultipleResources(id, resourceKeys);
 
-    if (!params.id) {
+    if (!id) {
         return <div>Error: No supplier ID provided</div>;
     }
 
@@ -42,7 +44,7 @@ const MachineDetail: React.FC = () => {
                     </button>
                 </div>
             )}
-            {products && <Products products={products} />}
+            {products && <Products products={products} isAdmin={isAdmin} />}
         </section>
     );
 };

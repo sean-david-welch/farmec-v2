@@ -1,16 +1,14 @@
 import utils from '../styles/Utils.module.css';
 import styles from '../styles/Suppliers.module.css';
 
-import { useUserStore } from '../lib/store';
 import { Product } from '../types/supplierTypes';
 
 interface Props {
     products: Product[];
+    isAdmin: boolean;
 }
 
-const Products: React.FC<Props> = ({ products }: Props) => {
-    const isAdmin = useUserStore();
-
+const Products: React.FC<Props> = ({ products, isAdmin }: Props) => {
     if (!products) {
         return <div>loading...</div>;
     }
@@ -18,7 +16,7 @@ const Products: React.FC<Props> = ({ products }: Props) => {
     return (
         <section id="products">
             <div className={styles.productGrid}>
-                {products.map(product => (
+                {products.map((product) => (
                     <div className={styles.productCard} key={product.id} id={product.name || ''}>
                         <h1 className={utils.mainHeading}>{product.name}</h1>
                         <a href={product.product_link || '#'} target="_blank">
@@ -35,7 +33,7 @@ const Products: React.FC<Props> = ({ products }: Props) => {
                     </div>
                 ))}
             </div>
-            {/* {isAdmin && <ProductForm />} */}
+            {/* {isAdmin && <ProductForm machines={} />} */}
         </section>
     );
 };

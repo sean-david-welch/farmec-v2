@@ -4,18 +4,17 @@ import utils from '../styles/Utils.module.css';
 import { Link } from 'react-router-dom';
 import { Machine, Supplier } from '../types/supplierTypes';
 import { Fragment } from 'react';
-import { useUserStore } from '../lib/store';
+
 import MachineFrom from '../forms/MachineForm';
 import DeleteButton from '../components/DeleteButton';
 import { useGetResource } from '../hooks/genericHooks';
 
 interface Props {
     machines: Machine[];
+    isAdmin: boolean;
 }
 
-const Machines: React.FC<Props> = ({ machines }) => {
-    const isAdmin = useUserStore();
-
+const Machines: React.FC<Props> = ({ machines, isAdmin }) => {
     const suppliers = useGetResource<Supplier[]>('suppliers');
 
     if (!suppliers.data) {

@@ -6,21 +6,16 @@ import { Employee } from '../types/aboutTypes';
 import { useUserStore } from '../lib/store';
 
 export const Employees = () => {
-    const isAdmin = useUserStore();
+    const { isAdmin } = useUserStore();
 
     const employees = useGetResource<Employee[]>('employees');
 
     return (
         <section id="employees">
             <div className={styles.employees}>
-                {employees.data?.map(employee => (
+                {employees.data?.map((employee) => (
                     <div className={styles.employeeCard} key={employee.id}>
-                        <img
-                            src={employee.profile_image || '/default.jpg'}
-                            alt={'/default.jpg'}
-                            width={100}
-                            height={100}
-                        />
+                        <img src={employee.profile_image || '/default.jpg'} alt={'/default.jpg'} width={100} height={100} />
                         <div className={styles.employeeInfo}>
                             <h1 className={utils.mainHeading}>{employee.name}</h1>
                             <p className={utils.paragraph}>{employee.role}</p>

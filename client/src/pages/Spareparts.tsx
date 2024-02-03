@@ -7,7 +7,7 @@ import { useUserStore } from '../lib/store';
 import { useGetResource } from '../hooks/genericHooks';
 
 const SpareParts: React.FC = () => {
-    const isAdmin = useUserStore();
+    const { isAdmin } = useUserStore();
 
     const suppliers = useGetResource<Supplier[]>('suppliers');
 
@@ -18,14 +18,14 @@ const SpareParts: React.FC = () => {
             {suppliers.data && (
                 <div className={utils.index}>
                     <h1 className={utils.indexHeading}>Suppliers</h1>
-                    {suppliers.data.map(link => (
+                    {suppliers.data.map((link) => (
                         <a key={link.name} href={`#${link.name}`}>
                             <h1 className="indexItem">{link.name}</h1>
                         </a>
                     ))}
                 </div>
             )}
-            {suppliers.data?.map(supplier => (
+            {suppliers.data?.map((supplier) => (
                 <div className={styles.supplierCard} key={supplier.id}>
                     <h1 className={utils.mainHeading}>{supplier.name}</h1>
                     <img src={supplier.logo_image ?? '/default.jpg'} alt="Supplier logo" width={200} height={200} />

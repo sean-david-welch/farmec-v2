@@ -12,7 +12,7 @@ import { useGetResource } from '../hooks/genericHooks';
 import { SocialLinks } from '../components/SocialLinks';
 
 const Suppliers: React.FC = () => {
-    const isAdmin = useUserStore();
+    const { isAdmin } = useUserStore();
     const suppliers = useGetResource<Supplier[]>('suppliers');
 
     if (suppliers.isLoading) {

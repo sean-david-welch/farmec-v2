@@ -24,7 +24,7 @@ const useFirebaseAuthSync = () => {
         });
 
         return () => unsubscribe();
-    }, [setIsAuthenticated, setIsAdmin]);
+    }, [setIsAdmin, setIsAuthenticated]);
 };
 
 export default useFirebaseAuthSync;

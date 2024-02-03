@@ -8,13 +8,12 @@ import { WarrantyParts } from '../../types/miscTypes';
 import { useGetResourceById } from '../../hooks/genericHooks';
 
 const WarrantyDetail = async () => {
-    const isAdmin = useUserStore();
+    const { isAdmin } = useUserStore();
 
-    const params = useParams<{ id: string }>();
-    const id = params.id as string;
+    const id = useParams<{ id: string }>().id as string;
     const response = useGetResourceById<WarrantyParts>('warranty', id);
 
-    if (!params.id) {
+    if (!id) {
         return <div>Error: No supplier ID provided</div>;
     }
 

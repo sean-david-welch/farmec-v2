@@ -8,13 +8,12 @@ import { useUserStore } from '../../lib/store';
 import { useGetResourceById } from '../../hooks/genericHooks';
 
 const PartsDetail = async () => {
-    const isAdmin = useUserStore();
+    const { isAdmin } = useUserStore();
 
-    const params = useParams<{ id: string }>();
-    const id = params.id as string;
+    const id = useParams<{ id: string }>().id as string;
     const spareparts = useGetResourceById<Sparepart[]>('spareparts', id);
 
-    if (!params.id) {
+    if (!id) {
         return <div>Error: No supplier ID provided</div>;
     }
 
