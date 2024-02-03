@@ -23,7 +23,7 @@ export const signInUser = async (email: string, password: string): Promise<strin
 
         updateIsAdmin(isAdmin);
         setUserStore.setIsAuthenticated(true);
-    } catch (error: any) {
+    } catch (error) {
         console.error('Error signing in:', error);
     }
 
@@ -38,7 +38,7 @@ export const signOutUser = async (): Promise<void> => {
 
         setUserStore.setIsAdmin(false);
         setUserStore.setIsAuthenticated(false);
-    } catch (error: any) {
+    } catch (error) {
         console.error('Error signing out:', error);
     }
 };

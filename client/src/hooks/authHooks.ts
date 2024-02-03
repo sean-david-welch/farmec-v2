@@ -1,21 +1,22 @@
 import { useEffect } from 'react';
 
 import { auth } from '../lib/auth';
-import { updateIsAdmin, useUserStore } from '../lib/store';
+import { useUserStore } from '../lib/store';
 
 const useFirebaseAuthSync = () => {
     const { setIsAuthenticated, setIsAdmin } = useUserStore();
 
     useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged(async user => {
+        const unsubscribe = auth.onAuthStateChanged(async (user) => {
             if (user) {
                 setIsAuthenticated(true);
 
                 const customClaim = (await user.getIdTokenResult()).claims;
                 const isAdmin = typeof customClaim.admin === 'boolean' ? customClaim.admin : false;
 
-                console.log(isAdmin);
-                updateIsAdmin(isAdmin);
+                console.log('isAdmin', isAdmin);
+
+                setIsAdmin(isAdmin);
             } else {
                 setIsAuthenticated(false);
                 setIsAdmin(false);
