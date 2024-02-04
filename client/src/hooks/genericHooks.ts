@@ -66,6 +66,32 @@ export const useMultipleResources = (id: string, resourceKeys: (keyof Resources)
     return { data, isLoading, isError, errors };
 };
 
+export const useMultipleResourcesWithoutId = (resourceKeys: (keyof Resources)[]) => {
+    const queries = useQueries({
+        queries: resourceKeys.map((key) => ({
+            queryKey: [key],
+            queryFn: async () => {
+                const resourceEntry = resources[key];
+                const url = resourceEntry.endpoint;
+
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            },
+        })),
+    });
+
+    const isLoading = queries.some((query) => query.isLoading);
+    const isError = queries.some((query) => query.isError);
+    const errors = queries.filter((query) => query.error).map((query) => query.error);
+
+    const data = queries.filter((query) => query.status === 'success').map((query) => query.data);
+
+    return { data, isLoading, isError, errors };
+};
+
 export const useMutateResource = <T,>(resourceKey: keyof Resources, id?: string) => {
     const queryClient = useQueryClient();
     const { endpoint, queryKey } = resources[resourceKey];
@@ -126,19 +152,4 @@ export const useDeleteResource = (resourceKey: keyof Resources, id: string) => {
     });
 
     return mutateResouce;
-};
-
-export const useCreateOrUpdateResource = <T,>(resourceKey: keyof Resources, id?: string) => {
-    const { mutateAsync: createResource, isError: isCreateError, error: createError } = useMutateResource<T>(resourceKey);
-
-    const { mutateAsync: updateResource, isError: isUpdateError, error: updateError } = useMutateResource<T>(resourceKey, id);
-
-    return {
-        createResource,
-        updateResource,
-        isCreateError,
-        isUpdateError,
-        createError,
-        updateError,
-    };
 };

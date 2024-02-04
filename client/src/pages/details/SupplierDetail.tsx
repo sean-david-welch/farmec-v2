@@ -6,8 +6,8 @@ import Machines from '../../templates/Machines';
 
 import { useParams } from 'react-router-dom';
 
-import { useMultipleResources } from '../../hooks/genericHooks';
 import { Resources } from '../../types/dataTypes';
+import { useMultipleResources } from '../../hooks/genericHooks';
 import { useSupplierStore, useUserStore } from '../../lib/store';
 
 const SuppliersDetails: React.FC = () => {

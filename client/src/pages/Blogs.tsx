@@ -42,7 +42,7 @@ const Blogs: React.FC = () => {
                             <p className={utils.paragraph}>{blog.subheading}</p>
                             <p className={utils.paragraph}>{blog.body}</p>
                             <button className={utils.btnForm}>
-                                <Link to={`/blog/${blog.id}`}>
+                                <Link to={`/blogs/${blog.id}`}>
                                     Read More
                                     <img src="/icons/right-bracket.svg" alt="bracket-right" />
                                 </Link>
