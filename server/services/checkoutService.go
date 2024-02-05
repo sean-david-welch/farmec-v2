@@ -22,18 +22,22 @@ type CheckoutServiceImpl struct {
 func NewCheckoutService(secrets *config.Secrets, repository repository.LineItemRepository) *CheckoutServiceImpl {
 	return &CheckoutServiceImpl{secrets: secrets, repository: repository}
 }
-
 func (service *CheckoutServiceImpl) CreateCheckoutSession(id string) (*stripe.CheckoutSession, error) {
-	stripe.Key = service.secrets.StripeSecretKey
+	stripe.Key = service.secrets.StripeSecretKeyTest
+
+	log.Printf("Creating checkout session for product ID: %s", id)
 
 	product, err := service.repository.GetLineItemById(id)
 	if err != nil {
+		log.Printf("Error retrieving product by ID: %v", err)
 		return nil, err
 	}
 
+	log.Printf("Product retrieved: %+v", product)
+
 	params := &stripe.CheckoutSessionParams{
 		UIMode:             stripe.String("embedded"),
-		ReturnURL:          stripe.String(service.secrets.Domain + "/return?session_id={CHECKOUT_SESSION_ID}"),
+		ReturnURL:          stripe.String("http://localhost:5173/return?session_id={CHECKOUT_SESSION_ID}"),
 		PaymentMethodTypes: stripe.StringSlice([]string{"card"}),
 		LineItems: []*stripe.CheckoutSessionLineItemParams{
 			{
@@ -48,15 +52,15 @@ func (service *CheckoutServiceImpl) CreateCheckoutSession(id string) (*stripe.Ch
 			},
 		},
 		Mode: stripe.String(string(stripe.CheckoutSessionModePayment)),
-		// SuccessURL: stripe.String(service.secrets.Domain + "payments/success"),
-		// CancelURL: stripe.String(service.secrets.Domain + "payments/failure"),
-		AutomaticTax: &stripe.CheckoutSessionAutomaticTaxParams{Enabled: stripe.Bool(true)},
 	}
 
 	sess, err := session.New(params)
 	if err != nil {
-		log.Printf("session.Ne1: %v", err)
+		log.Printf("Error creating checkout session: %v", err)
+		return nil, err
 	}
+
+	log.Printf("Checkout session created successfully: %s", sess.ID)
 
 	return sess, nil
 }

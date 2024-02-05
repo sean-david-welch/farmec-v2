@@ -23,7 +23,7 @@ type Secrets struct {
 	AwsSecret               string
 	YoutubeApiKey           string
 	StripeSecretKey         string
-	StripePublicKey         string
+	StripeSecretKeyTest     string
 	EmailHost               string
 	EmailPass               string
 	EmailUser               string
@@ -57,8 +57,8 @@ func NewSecrets() (*Secrets, error) {
 		// Youtube
 		YoutubeApiKey: os.Getenv("YOUTUBE_API_KEY"),
 		// Stripe
-		StripeSecretKey: os.Getenv("STRIPE_SECRET_KEY"),
-		StripePublicKey: os.Getenv("STRIPE_PUBLIC_KEY"),
+		StripeSecretKey:     os.Getenv("STRIPE_SECRET_KEY"),
+		StripeSecretKeyTest: os.Getenv("TEST_SECRET_KEY"),
 		// Email
 		EmailHost: os.Getenv("EMAIL_HOST"),
 		EmailPass: os.Getenv("EMAIL_PASSWORD"),

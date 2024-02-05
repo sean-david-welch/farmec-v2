@@ -9,6 +9,7 @@ const config = {
     recaptchaKey: import.meta.env.VITE_RECAPTCHA_PUBLIC_KEY,
 
     stripePublicKey: import.meta.env.VITE_STRIPE_PUBLIC_KEY,
+    stripePublicKeyTest: import.meta.env.VITE_TEST_PUBLIC_KEY,
 };
 
 export default config;

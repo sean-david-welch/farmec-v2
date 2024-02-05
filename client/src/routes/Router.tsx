@@ -17,6 +17,10 @@ const SparepartsDetail = lazy(() => import('../pages/details/SparepartsDetail'))
 const Blogs = lazy(() => import('../pages/Blogs'));
 const BlogDetail = lazy(() => import('../pages/details/BlogDetail'));
 const Exhibitions = lazy(() => import('../pages/Exhibitions'));
+const WarrantyDetail = lazy(() => import('../pages/details/WarrantyDetail'));
+const RegistrationDetail = lazy(() => import('../pages/details/RegistrationDetail'));
+const Checkout = lazy(() => import('../pages/Checkout'));
+const Return = lazy(() => import('../pages/Return'));
 const Login = lazy(() => import('../pages/Login'));
 const Account = lazy(() => import('../pages/Account'));
 
@@ -50,6 +54,12 @@ const AppRoutes = () => {
                         <Route path="/blogs" element={<Blogs />} />
                         <Route path="/blogs/:id" element={<BlogDetail />} />
                         <Route path="/blog/exhibitions" element={<Exhibitions />} />
+
+                        <Route path="/warranty/:id" element={<WarrantyDetail />} />
+                        <Route path="/registration/:id" element={<RegistrationDetail />} />
+
+                        <Route path="/checkout/:id" element={<Checkout />} />
+                        <Route path="/return" element={<Return />} />
 
                         <Route path="/login" element={<Login />} />
                         <Route path="/account" element={<Account />} />

@@ -9,7 +9,7 @@ import { useGetResourceById } from '../../hooks/genericHooks';
 import WarrantyForm from '../../forms/WarrantyForm';
 import DeleteButton from '../../components/DeleteButton';
 
-const WarrantyDetail = async () => {
+const WarrantyDetail: React.FC = () => {
     const { isAdmin } = useUserStore();
 
     const id = useParams<{ id: string }>().id as string;
