@@ -66,11 +66,21 @@ func (service *CheckoutServiceImpl) CreateCheckoutSession(id string) (*stripe.Ch
 }
 
 func (service *CheckoutServiceImpl) RetrieveCheckoutSession(sessionId string) (*stripe.CheckoutSession, error) {
-	stripe.Key = service.secrets.StripeSecretKey
+	stripe.Key = service.secrets.StripeSecretKeyTest
 
 	sess, err := session.Get(sessionId, nil)
 	if err != nil {
 		return nil, err
+	}
+
+	if sess != nil {
+		log.Printf("Session ID: %s, Status: %s, Customer Email: %s, Amount Total: %d, v Currency: %s",
+			sess.ID,
+			sess.Status,
+			sess.CustomerDetails.Email,
+			sess.AmountTotal,
+
+			sess.Currency)
 	}
 
 	return sess, err

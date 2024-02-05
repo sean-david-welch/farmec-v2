@@ -34,6 +34,7 @@ func (controller *CheckoutController) CreateCheckoutSession(context *gin.Context
 
 func (controller *CheckoutController) RetrieveCheckoutSession(context *gin.Context) {
 	sessionId := context.Query("session_id")
+
 	if sessionId == "" {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "session_id is required"})
 		return

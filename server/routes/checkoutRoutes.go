@@ -22,5 +22,5 @@ func CheckoutRoutes(router *gin.Engine, controller *controllers.CheckoutControll
 	checkoutGroup := router.Group("/api/checkout")
 
 	checkoutGroup.POST("/create-checkout-session/:id", controller.CreateCheckoutSession)
-	checkoutGroup.POST("/session-status", controller.RetrieveCheckoutSession)
+	checkoutGroup.GET("/session-status", controller.RetrieveCheckoutSession)
 }

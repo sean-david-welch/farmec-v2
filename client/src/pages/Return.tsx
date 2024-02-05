@@ -17,6 +17,7 @@ const Return: React.FC = () => {
         fetch(`${baseUrl}/api/checkout/session-status?session_id=${sessionId}`)
             .then((res) => res.json())
             .then((data) => {
+                console.log('data', data);
                 setStatus(data.status);
                 setCustomerEmail(data.customer_email);
             });
