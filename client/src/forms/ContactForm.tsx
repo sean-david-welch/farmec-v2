@@ -1,4 +1,5 @@
 import utils from '../styles/Utils.module.css';
+import styles from '../styles/Home.module.css';
 import config from '../lib/env';
 
 const ContactForm = () => {
@@ -27,15 +28,21 @@ const ContactForm = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className={utils.contactForm}>
+        <form onSubmit={handleSubmit} className={styles.contactForm}>
             <label htmlFor="name">Name:</label>
             <input type="text" name="name" required={true} placeholder="name" />
             <label htmlFor="email">Email:</label>
             <input type="email" name="email" required={true} placeholder="email" />
             <label htmlFor="message">Message:</label>
-            <textarea name="message" placeholder="Enter your message here..." cols={30} rows={11} required={true} />
+            <textarea
+                name="message"
+                placeholder="Enter your message here..."
+                cols={30}
+                rows={11}
+                required={true}
+            />
 
-            <div className={utils.recaptcha}></div>
+            <div className={styles.recaptcha}></div>
 
             <button className={utils.btnForm} type="submit">
                 Submit

@@ -1,0 +1,48 @@
+/* Contact form */
+.contactSection {
+    @apply mx-10 mb-10 grid p-4;
+    @apply rounded-lg bg-zinc-800;
+    grid-template-columns: 1fr 2fr 1fr;
+    @apply md:grid-cols-1;
+}
+
+.contactSection > * {
+    @apply mx-8 my-2;
+    @apply md:mx-2;
+}
+
+.contactForm label {
+    @apply block text-2xl font-medium text-gray-900 dark:text-white;
+}
+
+.contactForm input,
+.contactForm select,
+.contactForm textarea {
+    @apply my-4 rounded-xl border border-gray-300 p-2.5 text-sm text-zinc-800;
+    @apply border-zinc-600 bg-zinc-100 placeholder-zinc-800 focus:border-red-700 focus:ring-red-700;
+}
+
+.contactForm {
+    @apply mx-2 flex w-[20vw] flex-col rounded-lg bg-zinc-800 py-2 text-center;
+    @apply md:mx-auto md:w-[80vw];
+}
+
+.recapcha {
+    @apply mx-auto;
+}
+
+.map {
+    @apply flex items-center justify-center;
+    @apply mx-auto rounded-xl;
+    @apply md:w-[80vw];
+}
+
+.infoItem {
+    @apply bottom-4 rounded-lg border-zinc-950 bg-zinc-800;
+    @apply text-lg font-medium text-zinc-100;
+    @apply my-4 w-4/5 p-1;
+}
+
+.infoItemText {
+    @apply text-lg font-medium text-zinc-100;
+}

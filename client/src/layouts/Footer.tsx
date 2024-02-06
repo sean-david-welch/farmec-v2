@@ -1,8 +1,13 @@
-import ToTopButton from '../components/ToTopButton';
-import styles from '../styles/Footer.module.css';
 import utils from '../styles/Utils.module.css';
+import styles from '../styles/Footer.module.css';
+
+import ToTopButton from '../components/ToTopButton';
 
 import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTwitter } from '@fortawesome/free-brands-svg-icons/faTwitter';
+import { faFacebook } from '@fortawesome/free-brands-svg-icons/faFacebook';
+import { faRightToBracket } from '@fortawesome/free-solid-svg-icons/faRightToBracket';
 
 const Footer: React.FC = () => {
     return (
@@ -47,16 +52,18 @@ const Footer: React.FC = () => {
                         to={'https://www.facebook.com/FarmecIreland/'}
                         target={'_blank'}
                         rel={'noopener noreferrer'}
-                        aria-label="Visit our Facebook page">
-                        <img src="/icons/facebook.svg" alt="facebook icon" />
+                        aria-label="Visit our Facebook page"
+                    >
+                        <FontAwesomeIcon icon={faFacebook} />
                     </Link>
                     <Link
                         className={styles.socials}
                         to={'https://twitter.com/farmec1?lang=en'}
                         target={'_blank'}
                         rel={'noopener noreferrer'}
-                        aria-label="Visit our Twiiter page">
-                        <img src="/icons/twitter.svg" alt="facebook icon" />
+                        aria-label="Visit our Twiiter page"
+                    >
+                        <FontAwesomeIcon icon={faTwitter} />
                     </Link>
                 </div>
             </div>
@@ -64,19 +71,29 @@ const Footer: React.FC = () => {
             <div className={styles.footerNav}>
                 <ul className={styles.navLinks}>
                     <button className={utils.btnFooter}>
-                        <Link to={'/about'}>Home</Link>
+                        <Link to={'/about'}>
+                            Home <FontAwesomeIcon icon={faRightToBracket} />{' '}
+                        </Link>
                     </button>
                     <button className={utils.btnFooter}>
-                        <Link to={'/about'}>About</Link>
+                        <Link to={'/about'}>
+                            About <FontAwesomeIcon icon={faRightToBracket} />{' '}
+                        </Link>
                     </button>
                     <button className={utils.btnFooter}>
-                        <Link to={'/suppliers'}>Suppliers</Link>
+                        <Link to={'/suppliers'}>
+                            Suppliers <FontAwesomeIcon icon={faRightToBracket} />{' '}
+                        </Link>
                     </button>
                     <button className={utils.btnFooter}>
-                        <Link to={'/spareparts'}>Spare Parts</Link>
+                        <Link to={'/spareparts'}>
+                            Spare Parts <FontAwesomeIcon icon={faRightToBracket} />{' '}
+                        </Link>
                     </button>
                     <button className={utils.btnFooter}>
-                        <Link to={'/blog'}>Blog</Link>
+                        <Link to={'/blog'}>
+                            Blog <FontAwesomeIcon icon={faRightToBracket} />{' '}
+                        </Link>
                     </button>
                 </ul>
             </div>

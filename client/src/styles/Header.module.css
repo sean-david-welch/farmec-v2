@@ -1,13 +1,13 @@
 .navbar {
-    @apply flex flex-row justify-center my-auto w-screen;
-    @apply py-5 bg-zinc-900;
+    @apply my-auto flex w-screen flex-row justify-center;
+    @apply bg-zinc-900 py-5 text-gray-200;
     @apply fixed top-0 z-50 w-screen;
     @apply md:hidden;
 }
 
 .transparentNav {
     @apply navbar;
-    @apply bg-transparent text-zinc-950;
+    @apply bg-transparent text-zinc-900;
     @apply md:hidden;
 }
 
@@ -16,7 +16,7 @@
 }
 
 .navList {
-    @apply flex flex-row justify-center my-auto;
+    @apply my-auto flex flex-row justify-center;
 }
 
 .navList > * {
@@ -24,8 +24,8 @@
 }
 
 .navItem {
-    @apply grid grid-cols-1 relative;
-    @apply font-bold text-lg z-10;
+    @apply relative grid grid-cols-1;
+    @apply z-10 text-lg font-bold;
 }
 
 .navListItem {
@@ -35,13 +35,13 @@
 
 .navItem:hover {
     @apply text-red-600;
-    @apply underline underline-offset-[10px] decoration-[3px] decoration-red-600 rounded-2xl;
+    @apply rounded-2xl underline decoration-red-600 decoration-[3px] underline-offset-[10px];
 }
 
 .navDrop {
     @apply bg-zinc-900;
-    @apply my-10 mx-auto w-[10rem];
-    @apply absolute flex flex-col text-center justify-center;
+    @apply mx-auto my-10 w-[10rem];
+    @apply absolute flex flex-col justify-center text-center;
     @apply opacity-0;
     @apply rounded-lg;
     @apply transition-all duration-500 ease-in-out;
@@ -57,7 +57,7 @@
 
 .navDropItem {
     @apply text-sm font-semibold;
-    @apply px-2 py-2 my-2;
+    @apply my-2 px-2 py-2;
     @apply mx-auto w-[10rem];
     @apply rounded-lg;
     @apply text-gray-200;

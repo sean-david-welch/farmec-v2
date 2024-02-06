@@ -1,29 +1,29 @@
 /* Misc */
 .container {
-    @apply mx-auto min-h-screen text-center max-w-full overflow-x-hidden my-28 p-20;
+    @apply mx-auto my-28 min-h-screen max-w-full overflow-x-hidden p-20 text-center;
 }
 
 .home {
-    @apply flex flex-col justify-center text-center items-center text-gray-800;
+    @apply flex flex-col items-center justify-center text-center text-gray-800;
 }
 
 .sectionHeading {
     @apply my-5;
-    @apply text-3xl font-semibold mx-auto;
+    @apply mx-auto text-3xl font-semibold;
     @apply text-zinc-900 underline decoration-red-600 decoration-4 underline-offset-8;
 }
 
 .mainHeading {
-    @apply text-2xl font-semibold underline mx-auto;
+    @apply mx-auto text-2xl font-semibold underline;
 }
 
 .subHeading {
-    @apply text-xl mx-40 font-medium text-zinc-800 text-center my-2;
+    @apply mx-40 my-2 text-center text-xl font-medium text-zinc-800;
     @apply md:mx-5;
 }
 
 .paragraph {
-    @apply text-xl mx-auto font-medium;
+    @apply mx-auto text-xl font-medium;
 }
 
 .aboutHeading {
@@ -33,15 +33,15 @@
 
 .typewriter {
     @apply absolute z-10;
-    @apply text-gray-300 font-bold text-4xl py-2;
+    @apply py-2 text-4xl font-bold text-gray-300;
     @apply h-[15vh] w-[70vw];
-    @apply left-1/2 bottom-5;
-    @apply transform translate-x-[-50%];
+    @apply bottom-5 left-1/2;
+    @apply translate-x-[-50%] transform;
     @apply md:text-xl;
 }
 /* Forms */
 .form {
-    @apply flex flex-col bg-zinc-800 text-center p-10;
+    @apply flex flex-col bg-zinc-800 p-10 text-center;
 }
 
 .form > * {
@@ -55,7 +55,7 @@
 .form textarea,
 .form input,
 .form select {
-    @apply block w-2/3 rounded-lg border border-gray-300 bg-zinc-600 p-2.5 text-sm text-gray-900 mx-auto;
+    @apply mx-auto block w-2/3 rounded-lg border border-gray-300 bg-zinc-600 p-2.5 text-sm text-gray-900;
     @apply border-zinc-600 bg-zinc-700 text-white placeholder-gray-400 focus:border-red-700 focus:ring-red-700;
 }
 
@@ -67,7 +67,7 @@
 .btn {
     @apply mx-auto my-2 bg-red-700 hover:bg-red-600;
     @apply flex flex-row items-center justify-center rounded-xl;
-    @apply px-8 py-2 text-center text-base font-semibold whitespace-nowrap;
+    @apply whitespace-nowrap px-8 py-2 text-center text-base font-semibold;
     @apply transition-all duration-700 ease-in-out;
 }
 
@@ -76,12 +76,15 @@
 }
 
 .boxshadow {
-    box-shadow: 0 0 0 2px rgba(200, 1, 1, 0.5), 0 0 0 3px rgba(200, 1, 1, 0.5), 0 0 0 4px rgba(200, 1, 1, 0.5),
+    box-shadow:
+        0 0 0 2px rgba(200, 1, 1, 0.5),
+        0 0 0 3px rgba(200, 1, 1, 0.5),
+        0 0 0 4px rgba(200, 1, 1, 0.5),
         0 0 0 5px rgba(200, 1, 1, 0.5);
 }
 
 .btn svg {
-    @apply w-4 h-4 mx-1 whitespace-nowrap;
+    @apply mx-1 h-4 w-4 whitespace-nowrap;
 }
 
 .btnForm {
@@ -93,7 +96,7 @@
 }
 
 .updateIcon {
-    @apply w-4 h-4 mx-2;
+    @apply mx-2 h-4 w-4;
 }
 
 .optionsBtn {
@@ -105,12 +108,12 @@
 }
 
 .signIn {
-    @apply flex flex-row text-base justify-center;
-    @apply md:my-5 md:mx-auto md:text-xl;
+    @apply flex flex-row justify-center text-base;
+    @apply md:mx-auto md:my-5 md:text-xl;
 }
 
 .profileImage {
-    @apply mx-2 my-2 rounded-lg h-[40px] w-[40px];
+    @apply mx-2 my-2 h-[40px] w-[40px] rounded-lg;
 }
 
 .imageBlank {
@@ -120,12 +123,12 @@
 
 .signInButton {
     @apply btn text-gray-200;
-    @apply md:my-5 md:mx-auto md:text-xl;
+    @apply md:mx-auto md:my-5 md:text-xl;
 }
 
 .signOutButton {
     @apply btn text-gray-200;
-    @apply md:my-5 md:mx-auto md:text-xl;
+    @apply md:mx-auto md:my-5 md:text-xl;
 }
 
 /* Mics */
@@ -134,19 +137,19 @@
 }
 
 .ftmta:hover {
-    @apply transform scale-[1.0125];
+    @apply scale-[1.0125] transform;
 }
 
 .login {
-    @apply flex flex-col items-center mx-auto;
+    @apply mx-auto flex flex-col items-center;
 }
 
 .dialog {
-    @apply w-[80vw] max-h-[9-vh];
-    @apply top-1/2 left-1/2 fixed z-50;
-    @apply bg-zinc-900 text-gray-200 rounded-2xl shadow-lg;
+    @apply max-h-[9-vh] w-[80vw];
+    @apply fixed left-1/2 top-1/2 z-50;
+    @apply rounded-2xl bg-zinc-900 text-gray-200 shadow-lg;
     @apply border-4 border-zinc-600;
-    @apply transform -translate-x-1/2 -translate-y-1/2;
+    @apply -translate-x-1/2 -translate-y-1/2 transform;
     @apply transition-all duration-700 ease-in-out;
     @apply opacity-0;
 }
@@ -156,9 +159,9 @@
 }
 
 .dialogBtn {
-    @apply fixed top-5 left-5 cursor-pointer px-3 py-2;
-    @apply rounded-full bg-zinc-800 border-2 border-zinc-800;
-    @apply transition-all duration-300 ease-in-out z-30;
+    @apply fixed left-5 top-5 cursor-pointer px-3 py-2;
+    @apply rounded-full border-2 border-zinc-800 bg-zinc-800;
+    @apply z-30 transition-all duration-300 ease-in-out;
 }
 
 .dialogBtn:hover {
@@ -166,7 +169,7 @@
 }
 
 .dialogBtn svg {
-    @apply w-4 h-4;
+    @apply h-4 w-4;
 }
 
 /* index */
@@ -174,7 +177,7 @@
     @apply flex flex-col items-start;
     @apply p-5;
     @apply bg-zinc-800 text-gray-200;
-    @apply mx-52 rounded-xl border-4 border-zinc-600 my-5;
+    @apply mx-52 my-5 rounded-xl border-4 border-zinc-600;
     @apply md:mx-5;
 }
 
@@ -200,17 +203,17 @@
 
 .toTopButton {
     @apply fixed bottom-5 right-5 cursor-pointer;
-    @apply px-3 py-2 rounded-full bg-zinc-800 border-2 border-zinc-800;
-    @apply transition-all duration-300 ease-in-out z-30;
+    @apply rounded-full border-2 border-zinc-800 bg-zinc-800 px-3 py-2;
+    @apply z-30 transition-all duration-300 ease-in-out;
 }
 
 .toTopButton svg {
-    @apply w-6 h-6;
+    @apply h-6 w-6;
 }
 
 .toTopButton:hover,
 .toTopButton:hover svg path {
-    @apply bg-zinc-800 fill-red-700 border-2 border-red-700;
+    @apply border-2 border-red-700 bg-zinc-800 fill-red-700;
 }
 
 .toTopButton svg path {
@@ -219,64 +222,15 @@
 }
 
 .mainIcon svg {
-    @apply w-20 h-20 mx-auto;
-}
-
-/* Contact form */
-.contactSection {
-    @apply grid p-4 mb-10 mx-10;
-    @apply bg-zinc-800 rounded-lg;
-    grid-template-columns: 1fr 2fr 1fr;
-    @apply md:grid-cols-1;
-}
-
-.contactSection > * {
-    @apply my-2 mx-8;
-    @apply md:mx-2;
-}
-
-.contactForm label {
-    @apply block text-2xl font-medium text-gray-900 dark:text-white;
-}
-
-.contactForm input,
-.contactForm select,
-.contactForm textarea {
-    @apply rounded-xl border border-gray-300 p-2.5 text-sm text-zinc-800 my-4;
-    @apply border-zinc-600 bg-zinc-100 placeholder-zinc-800 focus:border-red-700 focus:ring-red-700;
-}
-
-.contactForm {
-    @apply flex flex-col bg-zinc-800 text-center mx-2 rounded-lg py-2 w-[20vw];
-    @apply md:mx-auto md:w-[80vw];
-}
-
-.recapcha {
-    @apply mx-auto;
-}
-
-.map {
-    @apply flex justify-center items-center;
-    @apply rounded-xl mx-auto;
-    @apply md:w-[80vw];
-}
-
-.infoItem {
-    @apply bg-zinc-800 rounded-lg bottom-4 border-zinc-950;
-    @apply text-zinc-100 text-lg font-medium;
-    @apply my-4 w-4/5 p-1;
-}
-
-.infoItemText {
-    @apply text-zinc-100 text-lg font-medium;
+    @apply mx-auto h-20 w-20;
 }
 
 /* Loading */
 .loadingPage {
-    @apply w-screen h-screen;
+    @apply h-screen w-screen;
 }
 
 .spinner {
     @apply absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2;
-    @apply w-[75px] h-[75px] rounded-[50px] border-[5px] border-solid border-red-700 border-t-[5px]  border-t-white;
+    @apply h-[75px] w-[75px] rounded-[50px] border-[5px] border-t-[5px] border-solid border-red-700  border-t-white;
 }

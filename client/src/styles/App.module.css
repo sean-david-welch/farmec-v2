@@ -1,4 +1,4 @@
 .App {
     @apply bg-zinc-300 text-gray-200;
-    @apply max-w-full min-h-screen my-0 mx-auto text-center items-center;
+    @apply mx-auto my-0 min-h-screen max-w-full items-center text-center;
 }
