@@ -37,12 +37,42 @@
     @apply md:w-[80vw];
 }
 
+.infoSection {
+    @apply flex w-[250px] flex-col;
+}
+
+.subHeading {
+    @apply text-2xl text-gray-200 underline;
+}
+
 .infoItem {
     @apply bottom-4 rounded-lg border-zinc-950 bg-zinc-800;
     @apply text-lg font-medium text-zinc-100;
-    @apply my-4 w-4/5 p-1;
+    @apply my-2;
 }
 
 .infoItemText {
     @apply text-lg font-medium text-zinc-100;
+}
+
+.socialLinks {
+    @apply mx-auto flex flex-row items-center justify-center text-center;
+}
+
+.socialLinks svg {
+    @apply m-4 h-6 rounded-lg border-2;
+    @apply cursor-pointer p-3;
+    @apply transition-all duration-700 ease-in-out;
+}
+
+.socialLinks path {
+    @apply transition-all duration-700 ease-in-out;
+}
+
+.socialLinks svg:hover {
+    @apply border-red-700;
+}
+
+.socialLinks svg:hover path {
+    @apply fill-red-700;
 }

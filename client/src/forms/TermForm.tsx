@@ -7,6 +7,8 @@ import { Terms } from '../types/aboutTypes';
 
 import { useMutateResource } from '../hooks/genericHooks';
 import { termsFormFields } from '../utils/aboutFields';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons/faPenToSquare';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface Props {
     id?: string;
@@ -54,7 +56,7 @@ const TermForm: React.FC<Props> = ({ id, term }) => {
     return (
         <section id="form">
             <button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
-                {id ? <img src="/icons/edit.svg" alt="edit button" /> : 'Create Terms'}
+                {id ? <FontAwesomeIcon icon={faPenToSquare} /> : 'Create Terms'}
             </button>
 
             <FormDialog visible={showForm} onClose={() => setShowForm(false)}>

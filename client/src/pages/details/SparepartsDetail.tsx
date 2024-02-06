@@ -9,6 +9,8 @@ import { useSupplierStore, useUserStore } from '../../lib/store';
 
 import SparepartForm from '../../forms/SparePartsForm';
 import DeleteButton from '../../components/DeleteButton';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRightToBracket } from '@fortawesome/free-solid-svg-icons/faRightToBracket';
 
 const PartsDetail: React.FC = () => {
     const { isAdmin } = useUserStore();
@@ -32,16 +34,16 @@ const PartsDetail: React.FC = () => {
             {spareparts && (
                 <div className={utils.index}>
                     <h1 className={utils.indexHeading}>spareparts</h1>
-                    {spareparts.map((link) => (
+                    {spareparts.map(link => (
                         <a key={link.name} href={`#${link.name}`}>
-                            <h1 className="indexItem">{link.name}</h1>
+                            <h1 className={utils.indexItem}>{link.name}</h1>
                         </a>
                     ))}
                 </div>
             )}
 
             {spareparts ? (
-                spareparts.map((sparepart) => (
+                spareparts.map(sparepart => (
                     <div className={styles.sparepartGrid} key={sparepart.id}>
                         <div className={styles.sparepartsCard} id={sparepart.name || ''}>
                             <div className={styles.sparepartsGrid}>
@@ -49,8 +51,7 @@ const PartsDetail: React.FC = () => {
                                     <h1 className={utils.mainHeading}>{sparepart.name}</h1>
                                     <button className={utils.btn}>
                                         <Link to={sparepart.spare_parts_link || '#'} target="_blank">
-                                            Parts Catalogue
-                                            <img src="/icons/right-bracket.svg" alt="bracket-right" />
+                                            Parts Catalogue <FontAwesomeIcon icon={faRightToBracket} />
                                         </Link>
                                     </button>
                                 </div>
@@ -65,11 +66,7 @@ const PartsDetail: React.FC = () => {
                         </div>
                         {isAdmin && suppliers && sparepart.id && (
                             <div className={utils.optionsBtn}>
-                                <SparepartForm
-                                    suppliers={suppliers}
-                                    sparepart={sparepart}
-                                    id={sparepart.id}
-                                />
+                                <SparepartForm suppliers={suppliers} sparepart={sparepart} id={sparepart.id} />
                                 <DeleteButton id={sparepart.id} resourceKey="spareparts" />
                             </div>
                         )}

@@ -58,7 +58,7 @@
 }
 
 .statListItem svg {
-    @apply mx-auto h-20;
+    @apply mx-auto h-16;
 }
 
 .statListItem svg path {
@@ -102,7 +102,7 @@
 }
 
 .specialListItem svg {
-    @apply mx-auto h-20;
+    @apply mx-auto h-16;
 }
 
 .specialListItem svg path {

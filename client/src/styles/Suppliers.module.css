@@ -1,17 +1,21 @@
 /* Suppliers Page */
 .supplierCard {
-    @apply bg-zinc-800 mx-52 my-32 p-5 rounded-2xl;
+    @apply mx-52 my-10 rounded-2xl bg-zinc-800;
     @apply border-4 border-zinc-600;
     @apply md:mx-5;
 }
 
 .supplierGrid {
-    @apply grid grid-cols-2 my-4;
+    @apply my-4 grid grid-cols-2;
     @apply md:grid-cols-1;
 }
 
 .supplierImage {
-    @apply border-2 border-zinc-400 rounded-lg;
+    @apply rounded-lg border-2 border-zinc-400;
+}
+
+.partsImage {
+    @apply mx-auto my-10 rounded-lg;
 }
 
 .supplierDetail .supplierImage {
@@ -31,7 +35,7 @@
 }
 
 .supplierInfo {
-    @apply grid grid-cols-1 items-center justify-center my-4;
+    @apply my-4 grid grid-cols-1 items-center justify-center;
 }
 
 .supplierInfo > * {
@@ -39,7 +43,7 @@
 }
 
 .supplierDescription {
-    @apply text-center mx-20 text-lg;
+    @apply mx-20 text-center text-lg;
     @apply md:mx-5;
 }
 
@@ -54,7 +58,7 @@
 
 .supplierDetail {
     @apply grid grid-cols-1 items-center justify-center;
-    @apply bg-zinc-800 mx-52 my-10 p-5 rounded-2xl;
+    @apply mx-52 my-10 rounded-2xl bg-zinc-800 p-5;
     @apply border-4 border-zinc-600;
     @apply md:mx-5;
 }
@@ -65,17 +69,17 @@
 
 /* Social Links */
 .socialLinks {
-    @apply flex flex-row justify-center items-center;
+    @apply flex flex-row items-center justify-center;
 }
 
 .socialLinks > a {
-    @apply rounded-full h-11 w-11 flex items-center justify-center mx-4;
-    @apply transition-all ease-in-out duration-700;
-    @apply md:h-8 md:w-8 md:mx-2;
+    @apply mx-4 flex h-11 w-11 items-center justify-center rounded-full;
+    @apply transition-all duration-700 ease-in-out;
+    @apply md:mx-2 md:h-8 md:w-8;
 }
 
 .socialLinks > a:hover {
-    @apply transform scale-105;
+    @apply scale-105 transform;
 }
 
 .icon {
@@ -85,7 +89,7 @@
 
 .socialLinks path {
     @apply fill-gray-100;
-    @apply transition-all ease-in-out duration-700;
+    @apply transition-all duration-700 ease-in-out;
 }
 
 .twitterButton {
@@ -117,13 +121,13 @@
 }
 
 .videoGrid {
-    @apply grid grid-cols-2 my-4 mx-40;
-    @apply md:grid-cols-1 md:mx-2;
+    @apply mx-40 my-4 grid grid-cols-2;
+    @apply md:mx-2 md:grid-cols-1;
 }
 
 .videoCard {
     @apply flex flex-col items-center justify-center;
-    @apply bg-zinc-800 mx-12 my-10 p-2 rounded-2xl;
+    @apply mx-12 my-10 rounded-2xl bg-zinc-800 p-2;
     @apply border-4 border-zinc-600;
     @apply md:mx-2;
 }
@@ -139,13 +143,13 @@
 
 /* Products */
 .productGrid {
-    @apply grid grid-cols-1 mx-52 my-10;
+    @apply mx-52 my-10 grid grid-cols-1;
     @apply md:mx-5;
 }
 
 .productCard {
     @apply flex flex-col p-4;
-    @apply bg-zinc-800 border-4 border-zinc-600 rounded-2xl;
+    @apply rounded-2xl border-4 border-zinc-600 bg-zinc-800;
     @apply transition-all duration-500 ease-in-out;
 }
 
@@ -163,7 +167,7 @@
 }
 
 .productCard:hover img {
-    @apply transform scale-105;
+    @apply scale-105 transform;
 }
 
 .productCard p {

@@ -45,7 +45,7 @@ const LoginForm = () => {
                 <input
                     type="email"
                     value={email}
-                    onChange={e => {
+                    onChange={(e) => {
                         setEmail(e.target.value);
                         setErrorMessage('');
                     }}
@@ -55,7 +55,7 @@ const LoginForm = () => {
                 <input
                     type="password"
                     value={password}
-                    onChange={e => {
+                    onChange={(e) => {
                         setPassword(e.target.value);
                         setErrorMessage('');
                     }}

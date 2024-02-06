@@ -6,6 +6,8 @@ import { useMutateResource } from '../hooks/genericHooks';
 import { uploadFileToS3 } from '../lib/aws';
 import { Machine, Supplier } from '../types/supplierTypes';
 import { getFormFields } from '../utils/machineFields';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons/faPenToSquare';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface Props {
     id?: string;
@@ -69,7 +71,7 @@ const MachineFrom: React.FC<Props> = ({ id, machine, suppliers }) => {
     return (
         <section id="form">
             <button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
-                {id ? <img src="/icons/edit.svg" alt="edit button" /> : 'Create Machine'}
+                {id ? <FontAwesomeIcon icon={faPenToSquare} /> : 'Create Machine'}
             </button>
 
             <FormDialog visible={showForm} onClose={() => setShowForm(false)}>

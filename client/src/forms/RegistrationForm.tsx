@@ -1,10 +1,12 @@
 import utils from '../styles/Utils.module.css';
 
 import FormDialog from './FormDialog';
-import { getRegFields } from '../utils/registrationFields';
 import { useState } from 'react';
+import { getRegFields } from '../utils/registrationFields';
 import { MachineRegistration } from '../types/miscTypes';
 import { useMutateResource } from '../hooks/genericHooks';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons/faPenToSquare';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface Props {
     id?: string;
@@ -65,7 +67,7 @@ const RegistrationForm: React.FC<Props> = ({ id, registration }) => {
     return (
         <section id="form">
             <button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
-                {id ? <img src="/icons/edit.svg" alt="edit button" /> : 'Create Registration'}
+                {id ? <FontAwesomeIcon icon={faPenToSquare} /> : 'Create Registration'}
             </button>
             <FormDialog visible={showForm} onClose={() => setShowForm(false)}>
                 <form className={utils.form} onSubmit={handleSubmit}>

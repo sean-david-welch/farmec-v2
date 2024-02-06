@@ -1,4 +1,6 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import utils from '../styles/Utils.module.css';
+import { faArrowUp } from '@fortawesome/free-solid-svg-icons/faArrowUp';
 
 const ToTopButton: React.FC = () => {
     const scrollToTop = () => {
@@ -9,8 +11,13 @@ const ToTopButton: React.FC = () => {
     };
 
     return (
-        <button id="toTopButton" aria-label="scroll-to-top-button" className={utils.toTopButton} onClick={scrollToTop}>
-            <img src="/icons/arrow-up.svg" alt="arrow-up" />
+        <button
+            id="toTopButton"
+            aria-label="scroll-to-top-button"
+            className={utils.toTopButton}
+            onClick={scrollToTop}
+        >
+            <FontAwesomeIcon icon={faArrowUp} />
         </button>
     );
 };

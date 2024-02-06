@@ -7,6 +7,8 @@ import { Exhibition } from '../types/blogTypes';
 
 import { useMutateResource } from '../hooks/genericHooks';
 import { exhibitionFormFields } from '../utils/blogFields';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons/faPenToSquare';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface Props {
     id?: string;
@@ -56,7 +58,7 @@ const ExhibitionForm: React.FC<Props> = ({ id, exhibition }) => {
     return (
         <section id="form">
             <button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
-                {id ? <img src="/icons/edit.svg" alt="edit button" /> : 'Create Exhibition'}
+                {id ? <FontAwesomeIcon icon={faPenToSquare} /> : 'Create Exhibition'}
             </button>
 
             <FormDialog visible={showForm} onClose={() => setShowForm(false)}>

@@ -1,6 +1,13 @@
 import styles from '../styles/Suppliers.module.css';
 
 import { Link } from 'react-router-dom';
+import { faGlobe } from '@fortawesome/free-solid-svg-icons/faGlobe';
+import { faYoutube } from '@fortawesome/free-brands-svg-icons/faYoutube';
+import { faFacebook } from '@fortawesome/free-brands-svg-icons/faFacebook';
+import { faTwitter } from '@fortawesome/free-brands-svg-icons/faTwitter';
+import { faInstagram } from '@fortawesome/free-brands-svg-icons/faInstagram';
+import { faLinkedin } from '@fortawesome/free-brands-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface SocialLinksProps {
     facebook?: string | null;
@@ -11,44 +18,51 @@ interface SocialLinksProps {
     youtube?: string | null;
 }
 
-export const SocialLinks = ({ facebook, twitter, instagram, linkedin, website, youtube }: SocialLinksProps) => {
-    const facebookIcon = '/icons/facebook.svg';
-    const twitterIcon = '/icons/twitter.svg';
-    const instagramIcon = '/icons/instagram.svg';
-    const linkedinIcon = '/icons/linkedin.svg';
-    const websiteIcon = '/icons/website.svg';
-    const youtubeIcon = '/icons/youtube.svg';
+export const SocialLinks = ({
+    facebook,
+    twitter,
+    instagram,
+    linkedin,
+    website,
+    youtube,
+}: SocialLinksProps) => {
+    const facebookIcon = <FontAwesomeIcon icon={faFacebook} className={styles.icon} />;
+    const twitterIcon = <FontAwesomeIcon icon={faTwitter} className={styles.icon} />;
+    const instagramIcon = <FontAwesomeIcon icon={faInstagram} className={styles.icon} />;
+    const linkedinIcon = <FontAwesomeIcon icon={faLinkedin} className={styles.icon} />;
+    const websiteIcon = <FontAwesomeIcon icon={faGlobe} className={styles.icon} />;
+    const youtubeIcon = <FontAwesomeIcon icon={faYoutube} className={styles.icon} />;
 
     return (
         <div className={styles.socialLinks}>
             {facebook && (
                 <Link to={facebook} target="_blank" className={styles.facebookButton}>
-                    <img src={facebookIcon} className={styles.icon} alt="Facebook" />
+                    {facebookIcon}
                 </Link>
             )}
             {twitter && (
                 <Link to={twitter} target="_blank" className={styles.twitterButton}>
-                    <img src={twitterIcon} className={styles.icon} alt="Twitter" />
+                    {twitterIcon}
                 </Link>
             )}
             {instagram && (
                 <Link to={instagram} target="_blank" className={styles.instagramButton}>
-                    <img src={instagramIcon} className={styles.icon} alt="Instagram" />
+                    {instagramIcon}
                 </Link>
             )}
             {linkedin && (
                 <Link to={linkedin} target="_blank" className={styles.linkedinButton}>
-                    <img src={linkedinIcon} className={styles.icon} alt="LinkedIn" />
+                    {linkedinIcon}
                 </Link>
             )}
             {website && (
                 <Link to={website} target="_blank" className={styles.websiteButton}>
-                    <img src={websiteIcon} className={styles.icon} alt="Website" />
+                    {websiteIcon}
                 </Link>
             )}
             {youtube && (
                 <Link to={youtube} target="_blank" className={styles.youtubeButton}>
-                    <img src={youtubeIcon} className={styles.icon} alt="YouTube" />
+                    {youtubeIcon}
                 </Link>
             )}
         </div>

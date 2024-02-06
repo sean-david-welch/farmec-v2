@@ -2,6 +2,8 @@ import utils from '../styles/Utils.module.css';
 
 import { useDeleteResource } from '../hooks/genericHooks';
 import { Resources } from '../types/dataTypes';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash';
 
 interface ButtonProps {
     id: string;
@@ -23,7 +25,7 @@ const DeleteButton: React.FC<ButtonProps> = ({ id, resourceKey }) => {
 
     return (
         <button className={utils.btnForm} onClick={handleSubmit}>
-            <img src="/icons/trash.svg" alt="trash icon" />
+            <FontAwesomeIcon icon={faTrash} />
             {isError && <p>Error: {error.message}</p>}
         </button>
     );

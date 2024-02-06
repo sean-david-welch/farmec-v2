@@ -7,6 +7,8 @@ import { Supplier } from '../types/supplierTypes';
 import { uploadFileToS3 } from '../lib/aws';
 import { useMutateResource } from '../hooks/genericHooks';
 import { getFormFields } from '../utils/supplierFields';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons/faPenToSquare';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface Props {
     id?: string;
@@ -80,7 +82,7 @@ const SupplierForm: React.FC<Props> = ({ id, supplier }) => {
     return (
         <section id="form">
             <button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
-                {id ? <img src="/icons/edit.svg" alt="edit button" /> : 'Create Supplier'}
+                {id ? <FontAwesomeIcon icon={faPenToSquare} /> : 'Create Supplier'}
             </button>
 
             <FormDialog visible={showForm} onClose={() => setShowForm(false)}>

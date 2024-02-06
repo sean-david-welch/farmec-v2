@@ -1,8 +1,9 @@
 .footer {
-    @apply bg-zinc-900 py-12 border-t-2 border-red-600;
+    @apply border-t-2 border-zinc-900 bg-zinc-900 py-12;
     @apply grid grid-cols-3;
     @apply justify-center justify-items-center;
-    @apply md:grid-cols-1;
+    @apply hover:border-red-600 md:grid-cols-1;
+    @apply transition-all duration-700 ease-in-out;
 }
 
 .footer img {
@@ -10,15 +11,15 @@
 }
 
 .footerInfo {
-    @apply flex flex-col mx-auto;
+    @apply mx-auto flex flex-col;
 }
 
 .footerInfo > * {
-    @apply my-2 mx-auto;
+    @apply mx-auto;
 }
 
 .companyInfo {
-    @apply flex flex-col mx-auto text-center items-center;
+    @apply mx-auto flex flex-col items-center text-center;
 }
 
 .companyInfo > * {
@@ -26,30 +27,26 @@
 }
 
 .footerLinks {
-    @apply grid grid-cols-1 items-center place-items-center justify-center mx-auto;
+    @apply mx-auto flex flex-col items-center justify-center;
 }
 
-.accreditation {
-    @apply flex flex-col mx-auto items-center text-center justify-center;
-}
-
-.accreditation img {
-    @apply flex flex-col items-center text-center justify-center ml-4 mt-2;
+.footerLinks img {
+    @apply duration-700 ease-in-out hover:scale-105;
+    @apply mx-auto ml-4 flex flex-col items-center justify-center text-center;
 }
 
 .socialLinks {
-    @apply flex flex-row mx-auto my-2 items-center text-center justify-center;
+    @apply mx-auto flex flex-row items-center justify-center text-center;
 }
 
 .socialLinks svg {
-    @apply mx-5;
-    @apply border-4 rounded-lg;
-    @apply cursor-pointer p-1;
-    @apply transition-all ease-in-out duration-700;
+    @apply m-4 h-7 rounded-lg border-2;
+    @apply cursor-pointer p-3;
+    @apply transition-all duration-700 ease-in-out;
 }
 
 .socialLinks path {
-    @apply transition-all ease-in-out duration-700;
+    @apply transition-all duration-700 ease-in-out;
 }
 
 .socialLinks svg:hover {
@@ -65,16 +62,16 @@
 }
 
 .navLinks > * {
-    @apply my-5;
+    @apply my-2;
 }
 
 .toTopButton {
-    @apply fixed bottom-5 right-5 cursor-pointer px-3 py-5 rounded-full bg-gray-800 border-2 border-zinc-800 transition-all duration-300 ease-in-out z-30;
+    @apply fixed bottom-5 right-5 z-30 cursor-pointer rounded-full border-2 border-zinc-800 bg-gray-800 px-3 py-5 transition-all duration-300 ease-in-out;
 }
 
 .toTopButton:hover,
 .toTopButton:hover svg path {
-    @apply bg-zinc-700 fill-indigo-800 border-2 border-indigo-800;
+    @apply border-2 border-indigo-800 bg-zinc-700 fill-indigo-800;
 }
 
 .toTopButton svg path {

@@ -6,6 +6,8 @@ import { useState } from 'react';
 import { getWarrantyFields, getPartFields } from '../utils/warrantyFields';
 import { WarrantyParts, WarrantyClaim } from '../types/miscTypes';
 import { useMutateResource } from '../hooks/genericHooks';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons/faPenToSquare';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface Props {
     id?: string;
@@ -95,7 +97,7 @@ const WarrantyForm: React.FC<Props> = ({ id, warranty }) => {
     return (
         <section id="form">
             <button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
-                Create Warranty Claim
+                {id ? <FontAwesomeIcon icon={faPenToSquare} /> : 'Create Warranty'}
             </button>
             <FormDialog visible={showForm} onClose={() => setShowForm(false)}>
                 <form className={utils.form} onSubmit={handleSubmit}>

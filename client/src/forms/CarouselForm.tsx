@@ -8,6 +8,8 @@ import { Carousel } from '../types/miscTypes';
 import { uploadFileToS3 } from '../lib/aws';
 import { useMutateResource } from '../hooks/genericHooks';
 import { getFormFields } from '../utils/carouselFields';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons/faPenToSquare';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface Props {
     id?: string;
@@ -65,7 +67,7 @@ const CarouselForm: React.FC<Props> = ({ id, carousel }) => {
     return (
         <section id="form">
             <button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
-                {id ? <img src="/icons/edit.svg" alt="edit button" /> : 'Create Carousel'}
+                {id ? <FontAwesomeIcon icon={faPenToSquare} /> : 'Create Carousel'}
             </button>
 
             <FormDialog visible={showForm} onClose={() => setShowForm(false)}>

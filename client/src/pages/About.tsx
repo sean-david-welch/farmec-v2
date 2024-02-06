@@ -4,7 +4,7 @@ import Timelines from '../templates/Timeline';
 
 import { useUserStore } from '../lib/store';
 import { Employees } from '../templates/Employees';
-import EmployeeForm from '../forms/EmployeeForm';
+
 import TimelineForm from '../forms/TimelineForm';
 
 const About: React.FC = () => {
@@ -15,7 +15,7 @@ const About: React.FC = () => {
             <h1 className={utils.sectionHeading}>Our Team</h1>
             <p className={utils.subHeading}>Meet our staff and management team</p>
             <Employees />
-            {isAdmin && <EmployeeForm />}
+
             <div className={utils.aboutHeading}>
                 <h1 className={utils.sectionHeading}>Our Story</h1>
                 <p className={utils.subHeading}>

@@ -1,9 +1,9 @@
 .heroContainer {
-    @apply relative overflow-hidden h-screen w-screen;
+    @apply relative h-screen w-screen overflow-hidden;
 }
 
 .slideshow {
-    @apply h-screen w-full m-auto absolute top-0 left-0 z-0 overflow-hidden;
+    @apply absolute left-0 top-0 z-0 m-auto h-screen w-full overflow-hidden;
 }
 
 .slides {
@@ -25,13 +25,13 @@
 }
 
 .slideButton svg {
-    @apply h-8 w-8;
-    @apply bg-zinc-900 bg-opacity-80 z-10;
-    @apply py-2 px-1 rounded-md;
+    @apply h-6 w-6;
+    @apply z-10 bg-zinc-900 bg-opacity-80;
+    @apply rounded-md px-1 py-2;
 }
 
 .slideButton svg path {
-    @apply fill-gray-100 z-20;
+    @apply z-20 fill-gray-100;
 }
 
 .prevButton {

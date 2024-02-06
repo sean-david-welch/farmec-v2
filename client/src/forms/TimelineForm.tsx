@@ -7,6 +7,8 @@ import { Timeline } from '../types/aboutTypes';
 
 import { useMutateResource } from '../hooks/genericHooks';
 import { timelineFormFields } from '../utils/aboutFields';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons/faPenToSquare';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface Props {
     id?: string;
@@ -55,7 +57,7 @@ const TimelineForm: React.FC<Props> = ({ id, timeline }) => {
     return (
         <section id="form">
             <button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
-                {id ? <img src="/icons/edit.svg" alt="edit button" /> : 'Create Timeline'}
+                {id ? <FontAwesomeIcon icon={faPenToSquare} /> : 'Create Timeline'}
             </button>
 
             <FormDialog visible={showForm} onClose={() => setShowForm(false)}>

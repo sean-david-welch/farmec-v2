@@ -17,8 +17,8 @@ const Footer: React.FC = () => {
                     <img
                         src="https://d3eerclezczw8.cloudfront.net/farmec_images/farmeclogo.webp"
                         alt="Logo"
-                        width="250"
-                        height="250"
+                        width="180"
+                        height="180"
                     />
                 </Link>
 
@@ -35,17 +35,16 @@ const Footer: React.FC = () => {
             </div>
 
             <div className={styles.footerLinks}>
-                <div className={styles.accreditation}>
-                    <h1 className={utils.mainHeading}>Accreditation</h1>
-                    <Link to={'https://ftmta.ie/'} target={'_blank'}>
-                        <img
-                            src="https://d3eerclezczw8.cloudfront.net/farmec_images/ftmta-logo.webp"
-                            alt="Logo"
-                            width="250"
-                            height="250"
-                        />
-                    </Link>
-                </div>
+                <h1 className={utils.mainHeading}>Accreditation</h1>
+                <Link to={'https://ftmta.ie/'} target={'_blank'}>
+                    <img
+                        src="https://d3eerclezczw8.cloudfront.net/farmec_images/ftmta-logo.webp"
+                        alt="Logo"
+                        width="180"
+                        height="180"
+                    />
+                </Link>
+
                 <div className={styles.socialLinks}>
                     <Link
                         className={styles.socials}
@@ -72,27 +71,27 @@ const Footer: React.FC = () => {
                 <ul className={styles.navLinks}>
                     <button className={utils.btnFooter}>
                         <Link to={'/about'}>
-                            Home <FontAwesomeIcon icon={faRightToBracket} />{' '}
+                            Home <FontAwesomeIcon icon={faRightToBracket} />
                         </Link>
                     </button>
                     <button className={utils.btnFooter}>
                         <Link to={'/about'}>
-                            About <FontAwesomeIcon icon={faRightToBracket} />{' '}
+                            About <FontAwesomeIcon icon={faRightToBracket} />
                         </Link>
                     </button>
                     <button className={utils.btnFooter}>
                         <Link to={'/suppliers'}>
-                            Suppliers <FontAwesomeIcon icon={faRightToBracket} />{' '}
+                            Suppliers <FontAwesomeIcon icon={faRightToBracket} />
                         </Link>
                     </button>
                     <button className={utils.btnFooter}>
                         <Link to={'/spareparts'}>
-                            Spare Parts <FontAwesomeIcon icon={faRightToBracket} />{' '}
+                            Spare Parts <FontAwesomeIcon icon={faRightToBracket} />
                         </Link>
                     </button>
                     <button className={utils.btnFooter}>
                         <Link to={'/blog'}>
-                            Blog <FontAwesomeIcon icon={faRightToBracket} />{' '}
+                            Blog <FontAwesomeIcon icon={faRightToBracket} />
                         </Link>
                     </button>
                 </ul>

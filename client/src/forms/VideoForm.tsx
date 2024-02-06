@@ -8,6 +8,8 @@ import { Supplier } from '../types/supplierTypes';
 import { useMutateResource } from '../hooks/genericHooks';
 import { Video, VideoWebUrl } from '../types/videoTypes';
 import { getFormFields } from '../utils/videoFields';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons/faPenToSquare';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface Props {
     id?: string;
@@ -56,7 +58,7 @@ const VideoForm: React.FC<Props> = ({ id, video, suppliers }) => {
     return (
         <section id="form">
             <button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
-                {id ? <img src="/icons/edit.svg" alt="edit button" /> : 'Create Videos'}
+                {id ? <FontAwesomeIcon icon={faPenToSquare} /> : 'Create Videos'}
             </button>
 
             <FormDialog visible={showForm} onClose={() => setShowForm(false)}>

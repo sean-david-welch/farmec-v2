@@ -8,6 +8,8 @@ import { Blog } from '../types/blogTypes';
 import { uploadFileToS3 } from '../lib/aws';
 import { useMutateResource } from '../hooks/genericHooks';
 import { blogFormFields } from '../utils/blogFields';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons/faPenToSquare';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface Props {
     id?: string;
@@ -67,7 +69,7 @@ const BlogForm: React.FC<Props> = ({ id, blog }) => {
     return (
         <section id="form">
             <button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
-                {id ? <img src="/icons/edit.svg" alt="edit button" /> : 'Create Blog'}
+                {id ? <FontAwesomeIcon icon={faPenToSquare} /> : 'Create Blog'}
             </button>
 
             <FormDialog visible={showForm} onClose={() => setShowForm(false)}>

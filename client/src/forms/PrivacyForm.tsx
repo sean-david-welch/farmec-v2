@@ -7,6 +7,8 @@ import { Privacy } from '../types/aboutTypes';
 
 import { useMutateResource } from '../hooks/genericHooks';
 import { privacyFormFields } from '../utils/aboutFields';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons/faPenToSquare';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface Props {
     id?: string;
@@ -54,7 +56,7 @@ const PrivacyForm: React.FC<Props> = ({ id, privacy }) => {
     return (
         <section id="form">
             <button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
-                {id ? <img src="/icons/edit.svg" alt="edit button" /> : 'Create Privacy'}
+                {id ? <FontAwesomeIcon icon={faPenToSquare} /> : 'Create Privacy'}
             </button>
 
             <FormDialog visible={showForm} onClose={() => setShowForm(false)}>

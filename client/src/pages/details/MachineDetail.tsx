@@ -33,7 +33,7 @@ const MachineDetail: React.FC = () => {
                     <h1 className={utils.indexHeading}>Suppliers</h1>
                     {products.map((link: { name: string }) => (
                         <a key={link.name} href={`#${link.name}`}>
-                            <h1 className="indexItem">{link.name}</h1>
+                            <h1 className={utils.indexItem}>{link.name}</h1>
                         </a>
                     ))}
                     <button className={utils.btn}>

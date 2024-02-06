@@ -1,6 +1,8 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import utils from '../styles/Utils.module.css';
 
 import { useRef, useEffect } from 'react';
+import { faX } from '@fortawesome/free-solid-svg-icons/faX';
 
 interface Props {
     children: React.ReactNode;
@@ -29,7 +31,7 @@ const FormDialog = ({ children, visible, onClose }: Props) => {
         <dialog ref={dialogRef} className={utils.dialog}>
             {children}
             <button className={utils.dialogBtn} formMethod="dialog" onClick={closeDialog}>
-                <img src="/icons/x-mark.svg" alt="x-icon" />
+                <FontAwesomeIcon icon={faX} />
             </button>
         </dialog>
     );

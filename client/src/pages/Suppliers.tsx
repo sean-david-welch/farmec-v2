@@ -21,7 +21,7 @@ const Suppliers: React.FC = () => {
                     <h1 className={utils.indexHeading}>Suppliers</h1>
                     {suppliers.map((link) => (
                         <a key={link.name} href={`#${link.name}`}>
-                            <h1 className="indexItem">{link.name}</h1>
+                            <h1 className={utils.indexItem}>{link.name}</h1>
                         </a>
                     ))}
                 </div>
@@ -32,7 +32,7 @@ const Suppliers: React.FC = () => {
                     <div className={styles.supplierCard} id={supplier.name}>
                         <div className={styles.supplierGrid}>
                             <div className={styles.supplierHead}>
-                                <h1 className={styles.mainHeading}>{supplier.name}</h1>
+                                <h1 className={utils.mainHeading}>{supplier.name}</h1>
                                 <img
                                     src={supplier.logo_image || '/default.jpg'}
                                     alt={'/default.jpg'}
@@ -60,7 +60,7 @@ const Suppliers: React.FC = () => {
                         </div>
                         <div className={styles.supplierInfo}>
                             <p className={styles.supplierDescription}>{supplier.description}</p>
-                            <button className={styles.btn}>
+                            <button className={utils.btn}>
                                 <Link to={`/suppliers/${supplier.id}`}>Learn More</Link>
                             </button>
                         </div>

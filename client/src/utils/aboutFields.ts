@@ -27,7 +27,6 @@ export const employeeFormFields = (employee?: Employee) => [
         label: 'Profile Image',
         type: 'file',
         placeholder: 'Upload profile image',
-        defaultValue: employee?.profile_image,
     },
 ];
 

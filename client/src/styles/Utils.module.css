@@ -107,45 +107,9 @@
     @apply mx-2;
 }
 
-.signIn {
-    @apply flex flex-row justify-center text-base;
-    @apply md:mx-auto md:my-5 md:text-xl;
-}
-
-.profileImage {
-    @apply mx-2 my-2 h-[40px] w-[40px] rounded-lg;
-}
-
-.imageBlank {
-    @apply profileImage h-[48px] w-[32px];
-    @apply invisible;
-}
-
-.signInButton {
-    @apply btn text-gray-200;
-    @apply md:mx-auto md:my-5 md:text-xl;
-}
-
-.signOutButton {
-    @apply btn text-gray-200;
-    @apply md:mx-auto md:my-5 md:text-xl;
-}
-
 /* Mics */
-.ftmta {
-    @apply transition-all duration-700 ease-in-out;
-}
-
-.ftmta:hover {
-    @apply scale-[1.0125] transform;
-}
-
-.login {
-    @apply mx-auto flex flex-col items-center;
-}
-
 .dialog {
-    @apply max-h-[9-vh] w-[80vw];
+    @apply max-h-[90vh] w-[80vw];
     @apply fixed left-1/2 top-1/2 z-50;
     @apply rounded-2xl bg-zinc-900 text-gray-200 shadow-lg;
     @apply border-4 border-zinc-600;
@@ -193,14 +157,15 @@
 
 .indexHeading {
     @apply my-5;
-    @apply text-xl font-medium;
+    @apply text-xl;
     @apply text-gray-200 underline decoration-red-600 decoration-4 underline-offset-8;
 }
 
 .indexItem {
-    @apply text-lg font-medium underline;
+    @apply transition-all duration-700 ease-in-out hover:text-red-600;
 }
 
+/* To Top Button */
 .toTopButton {
     @apply fixed bottom-5 right-5 cursor-pointer;
     @apply rounded-full border-2 border-zinc-800 bg-zinc-800 px-3 py-2;

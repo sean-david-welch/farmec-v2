@@ -6,7 +6,7 @@ import TypewriterComponent from 'typewriter-effect';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons/faChevronRight';
-import { faChevronCircleRight } from '@fortawesome/free-solid-svg-icons/faChevronCircleRight';
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons/faChevronLeft';
 import { faChevronCircleDown } from '@fortawesome/free-solid-svg-icons/faChevronCircleDown';
 
 interface ImageProps {
@@ -37,14 +37,10 @@ const Carousel = (props: ImageProps) => {
                         />
                     ))}
                     <button className={styles.prevButton} onClick={prevStep} aria-label="last slide">
-                        <div>
-                            <img src="/icons/chevron-left.svg" alt="Previous Icon" />
-                        </div>
+                        <FontAwesomeIcon icon={faChevronLeft} />
                     </button>
                     <button className={styles.nextButton} onClick={nextStep} aria-label="next slide">
-                        <div>
-                            <img src="/icons/chevron-right.svg" alt="Next Icon" />
-                        </div>
+                        <FontAwesomeIcon icon={faChevronRight} />
                     </button>
                 </div>
             </div>

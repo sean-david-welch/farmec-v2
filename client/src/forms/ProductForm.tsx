@@ -7,6 +7,8 @@ import { getFormFields } from '../utils/productFields';
 import { uploadFileToS3 } from '../lib/aws';
 import { Machine, Product } from '../types/supplierTypes';
 import { useMutateResource } from '../hooks/genericHooks';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons/faPenToSquare';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface Props {
     id?: string;
@@ -71,7 +73,7 @@ const ProductForm: React.FC<Props> = ({ id, product, machines }) => {
     return (
         <section id="form">
             <button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
-                {id ? <img src="/icons/edit.svg" alt="edit button" /> : 'Create Product'}
+                {id ? <FontAwesomeIcon icon={faPenToSquare} /> : 'Create Product'}
             </button>
 
             <FormDialog visible={showForm} onClose={() => setShowForm(false)}>

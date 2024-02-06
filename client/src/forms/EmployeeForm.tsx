@@ -8,6 +8,8 @@ import { Employee } from '../types/aboutTypes';
 import { uploadFileToS3 } from '../lib/aws';
 import { useMutateResource } from '../hooks/genericHooks';
 import { employeeFormFields } from '../utils/aboutFields';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons/faPenToSquare';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface Props {
     id?: string;
@@ -67,7 +69,7 @@ const EmployeeForm: React.FC<Props> = ({ id, employee }) => {
     return (
         <section id="form">
             <button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
-                {id ? <img src="/icons/edit.svg" alt="edit button" /> : 'Create Employee'}
+                {id ? <FontAwesomeIcon icon={faPenToSquare} /> : 'Create Employee'}
             </button>
 
             <FormDialog visible={showForm} onClose={() => setShowForm(false)}>

@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 
 import { useSupplierStore, useUserStore } from '../lib/store';
 import SparepartForm from '../forms/SparePartsForm';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRightToBracket } from '@fortawesome/free-solid-svg-icons';
 
 const SpareParts: React.FC = () => {
     const { isAdmin } = useUserStore();
@@ -20,16 +22,17 @@ const SpareParts: React.FC = () => {
                     <h1 className={utils.indexHeading}>Suppliers</h1>
                     {suppliers.map((link) => (
                         <a key={link.name} href={`#${link.name}`}>
-                            <h1 className="indexItem">{link.name}</h1>
+                            <h1 className={utils.indexItem}>{link.name}</h1>
                         </a>
                     ))}
                 </div>
             )}
             {suppliers.map((supplier) => (
-                <div className={styles.supplierCard} key={supplier.id}>
+                <div className={styles.supplierCard} key={supplier.id} id={supplier.name}>
                     <h1 className={utils.mainHeading}>{supplier.name}</h1>
                     <img
                         src={supplier.logo_image ?? '/default.jpg'}
+                        className={styles.partsImage}
                         alt="Supplier logo"
                         width={200}
                         height={200}
@@ -37,7 +40,7 @@ const SpareParts: React.FC = () => {
                     <button className={utils.btn}>
                         <Link to={`/spareparts/${supplier.id}`}>
                             Spare-Parts
-                            <img src="/icons/right-bracket.svg" alt="bracket-right" />
+                            <FontAwesomeIcon icon={faRightToBracket} />
                         </Link>
                     </button>
                 </div>
