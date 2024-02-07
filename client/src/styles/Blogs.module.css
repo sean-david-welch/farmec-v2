@@ -5,7 +5,7 @@
 .blogCard {
     @apply flex flex-row;
     @apply mx-52 my-10;
-    @apply bg-zinc-800 border-4 rounded-xl border-zinc-600;
+    @apply rounded-xl border-4 border-zinc-600 bg-zinc-800;
     @apply transition-all duration-700 ease-in-out;
     @apply md:mx-5 md:flex-col-reverse;
 }
@@ -16,8 +16,8 @@
 }
 
 .blogCard img {
-    @apply rounded-l-lg object-cover border-r-4 border-r-zinc-600 w-full;
-    @apply md:rounded-b-lg md:rounded-tl-none md:border-t-4 md:border-t-zinc-600 md:border-r-0;
+    @apply w-full max-w-[500px] rounded-l-lg border-r-4 border-r-zinc-600 object-cover;
+    @apply md:rounded-b-lg md:rounded-tl-none md:border-r-0 md:border-t-4 md:border-t-zinc-600;
 }
 
 .blogLink {
@@ -29,9 +29,13 @@
 }
 
 .blogDetail {
-    @apply flex flex-col mx-auto;
+    @apply mx-auto flex flex-col;
     @apply mx-72 my-10;
     @apply md:mx-5 md:my-5;
+}
+
+.blogDetail img {
+    @apply w-[600px];
 }
 
 .blogDetail > * {
@@ -39,7 +43,7 @@
 }
 
 .blogBody {
-    @apply bg-zinc-800 border-4 rounded-xl border-zinc-600 py-8 px-24;
+    @apply rounded-xl border-4 border-zinc-600 bg-zinc-800 px-24 py-8;
     @apply transition-all duration-700 ease-in-out;
     @apply md:px-5;
 }
@@ -54,12 +58,12 @@
 }
 
 .exhibitions {
-    @apply grid grid-cols-1 mx-52;
+    @apply mx-52 grid grid-cols-1;
     @apply md:mx-5;
 }
 
 .exhibition {
-    @apply bg-zinc-800 border-4 rounded-xl border-zinc-600 p-4;
+    @apply my-5 rounded-xl border-4 border-zinc-600 bg-zinc-800 p-4;
     @apply transition-all duration-700 ease-in-out;
 }
 

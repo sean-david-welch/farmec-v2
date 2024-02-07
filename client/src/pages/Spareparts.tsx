@@ -7,15 +7,24 @@ import { useSupplierStore, useUserStore } from '../lib/store';
 import SparepartForm from '../forms/SparePartsForm';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightToBracket } from '@fortawesome/free-solid-svg-icons';
+import WarrantyForm from '../forms/WarrantyForm';
+import RegistrationForm from '../forms/RegistrationForm';
 
 const SpareParts: React.FC = () => {
-    const { isAdmin } = useUserStore();
+    const { isAdmin, isAuthenticated } = useUserStore();
 
     const { suppliers } = useSupplierStore();
 
     return (
         <section id="SpareParts">
             <h1 className={utils.sectionHeading}>Spare-Parts</h1>
+
+            {isAuthenticated && (
+                <div className={utils.optionsBtn}>
+                    <WarrantyForm />
+                    <RegistrationForm />
+                </div>
+            )}
 
             {suppliers && (
                 <div className={utils.index}>

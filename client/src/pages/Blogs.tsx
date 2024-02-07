@@ -7,6 +7,8 @@ import { useUserStore } from '../lib/store';
 import { useGetResource } from '../hooks/genericHooks';
 import BlogForm from '../forms/BlogForm';
 import DeleteButton from '../components/DeleteButton';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRightToBracket } from '@fortawesome/free-solid-svg-icons/faRightToBracket';
 
 const Blogs: React.FC = () => {
     const { isAdmin } = useUserStore();
@@ -20,7 +22,7 @@ const Blogs: React.FC = () => {
             {blogs.data && (
                 <div className={utils.index}>
                     <h1 className={utils.indexHeading}>Suppliers</h1>
-                    {blogs.data.map(link => (
+                    {blogs.data.map((link) => (
                         <a key={link.title} href={`#${link.title}`}>
                             <h1 className={utils.indexItem}>{link.title}</h1>
                         </a>
@@ -28,10 +30,16 @@ const Blogs: React.FC = () => {
                 </div>
             )}
 
-            {blogs.data?.map(blog => (
+            {blogs.data?.map((blog) => (
                 <div className={styles.blogGrid} key={blog.id} id={blog.title || ''}>
                     <div className={styles.blogCard}>
-                        <img src={blog.main_image || '/default.jpg'} alt={'/default.jpg'} width={400} height={400} />
+                        <img
+                            className={styles.blogImage}
+                            src={blog.main_image || '/default.jpg'}
+                            alt={'/default.jpg'}
+                            width={300}
+                            height={300}
+                        />
                         <div className={styles.blogLink}>
                             <h1 className={utils.mainHeading}>{blog.title}</h1>
                             <p className={utils.paragraph}>{blog.subheading}</p>
@@ -39,7 +47,7 @@ const Blogs: React.FC = () => {
                             <button className={utils.btnForm}>
                                 <Link to={`/blogs/${blog.id}`}>
                                     Read More
-                                    <img src="/icons/right-bracket.svg" alt="bracket-right" />
+                                    <FontAwesomeIcon icon={faRightToBracket} />
                                 </Link>
                             </button>
                         </div>

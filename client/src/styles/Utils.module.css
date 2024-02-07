@@ -14,7 +14,7 @@
 }
 
 .mainHeading {
-    @apply mx-auto text-2xl font-semibold underline;
+    @apply mx-auto my-2 text-2xl font-semibold underline;
 }
 
 .subHeading {
@@ -23,7 +23,7 @@
 }
 
 .paragraph {
-    @apply mx-auto text-xl font-medium;
+    @apply mx-auto text-lg font-normal;
 }
 
 .aboutHeading {

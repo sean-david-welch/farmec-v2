@@ -2,7 +2,7 @@ import { Machine, Supplier } from '../types/supplierTypes';
 
 export const getFormFields = (suppliers: Supplier[], machine?: Machine) => {
     const supplierOptions = Array.isArray(suppliers)
-        ? suppliers.map(supplier => ({
+        ? suppliers.map((supplier) => ({
               label: supplier.name,
               value: supplier.id,
           }))

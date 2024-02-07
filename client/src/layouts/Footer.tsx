@@ -29,7 +29,7 @@ const Footer: React.FC = () => {
                     <li className={styles.infoItem}>Tel: 01 - 8259289</li>
                     <li className={styles.infoItem}>Email: info@farmec.ie</li>
                     <li className={styles.infoItem}>
-                        <Link to={'/about/policy'}>Privacy Policy | Terms of Use</Link>
+                        <Link to={'/about/policies'}>Privacy Policy | Terms of Use</Link>
                     </li>
                 </ul>
             </div>

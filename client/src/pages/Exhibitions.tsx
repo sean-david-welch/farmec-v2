@@ -29,7 +29,7 @@ const Exhibitions: React.FC = () => {
                             <p className={utils.paragraph}>{exhibition.location}</p>
                             <p className={utils.paragraph}>{exhibition.info}</p>
                             {isAdmin && exhibition.id && (
-                                <div className={utils.optionsBtns}>
+                                <div className={utils.optionsBtn}>
                                     <ExhibitionForm id={exhibition.id} exhibition={exhibition} />
                                     <DeleteButton id={exhibition.id} resourceKey="exhibitions" />
                                 </div>

@@ -88,7 +88,7 @@ const Header: React.FC = () => {
                     </Link>
                     <ul className={styles.navDrop}>
                         <li className={styles.navDropItem}>
-                            <Link to="/blog">Latest Posts</Link>
+                            <Link to="/blogs">Latest Posts</Link>
                         </li>
                         <li className={styles.navDropItem}>
                             <Link to="/blog/exhibitions">Exhibition Information</Link>
