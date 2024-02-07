@@ -45,10 +45,14 @@
     @apply text-2xl text-gray-200 underline;
 }
 
+.info {
+    @apply mt-4;
+}
+
 .infoItem {
     @apply bottom-4 rounded-lg border-zinc-950 bg-zinc-800;
     @apply text-lg font-medium text-zinc-100;
-    @apply my-2;
+    @apply my-4;
 }
 
 .infoItemText {
@@ -56,7 +60,7 @@
 }
 
 .socialLinks {
-    @apply mx-auto flex flex-row items-center justify-center text-center;
+    @apply mx-auto mt-4 flex flex-row items-center justify-center text-center;
 }
 
 .socialLinks svg {

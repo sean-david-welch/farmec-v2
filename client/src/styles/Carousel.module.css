@@ -43,3 +43,12 @@
     @apply absolute right-1 top-[50%] -translate-y-2/4;
     @apply slideButton whitespace-nowrap;
 }
+
+.typewriter {
+    @apply absolute z-10;
+    @apply py-2 text-4xl font-bold text-gray-300;
+    @apply h-[12.5vh] w-[70vw];
+    @apply bottom-2 left-1/2;
+    @apply translate-x-[-50%] transform;
+    @apply md:text-xl;
+}

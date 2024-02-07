@@ -1,4 +1,4 @@
-import utils from '../../styles/Machines.module.css';
+import utils from '../../styles/Utils.module.css';
 
 import Products from '../../templates/Products';
 
@@ -6,6 +6,8 @@ import { useParams } from 'react-router-dom';
 import { Resources } from '../../types/dataTypes';
 import { useUserStore } from '../../lib/store';
 import { useMultipleResources } from '../../hooks/genericHooks';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRightToBracket } from '@fortawesome/free-solid-svg-icons/faRightToBracket';
 
 const MachineDetail: React.FC = () => {
     const { isAdmin } = useUserStore();
@@ -39,7 +41,7 @@ const MachineDetail: React.FC = () => {
                     <button className={utils.btn}>
                         <a href={machine.machine_link || '#'} target="_blank">
                             Supplier Website
-                            <img src="/icons/right-bracket.svg" alt="bracket-right" />
+                            <FontAwesomeIcon icon={faRightToBracket} />
                         </a>
                     </button>
                 </div>

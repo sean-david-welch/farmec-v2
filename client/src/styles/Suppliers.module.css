@@ -148,7 +148,7 @@
 }
 
 .productCard {
-    @apply flex flex-col p-4;
+    @apply my-10 flex flex-col p-4;
     @apply rounded-2xl border-4 border-zinc-600 bg-zinc-800;
     @apply transition-all duration-500 ease-in-out;
 }

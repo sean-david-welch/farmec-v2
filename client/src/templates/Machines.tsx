@@ -8,6 +8,8 @@ import { Fragment } from 'react';
 import MachineFrom from '../forms/MachineForm';
 import DeleteButton from '../components/DeleteButton';
 import { useSupplierStore } from '../lib/store';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRightToBracket } from '@fortawesome/free-solid-svg-icons/faRightToBracket';
 
 interface Props {
     machines: Machine[];
@@ -41,9 +43,7 @@ const Machines: React.FC<Props> = ({ machines, isAdmin }) => {
                                 <button className={utils.btn}>
                                     <Link to={`/machines/${machine.id}`}>
                                         View Products
-                                        <i aria-label="icon">
-                                            <img src="/icons/right-bracket.svg" alt="bracket-right" />
-                                        </i>
+                                        <FontAwesomeIcon icon={faRightToBracket} />
                                     </Link>
                                 </button>
                             </div>

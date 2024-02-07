@@ -43,7 +43,7 @@ const Header: React.FC = () => {
                             <Link to="/about">Staff & Management</Link>
                         </li>
                         <li className={styles.navDropItem}>
-                            <Link to="/about#timeline">Company History</Link>
+                            <a href="/about#timeline">Company History</a>
                         </li>
                         <li className={styles.navDropItem}>
                             <Link to="/about/policies">Terms of Use</Link>

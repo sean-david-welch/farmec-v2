@@ -13,13 +13,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 interface Props {
     id?: string;
     product?: Product;
-    machines: Machine[];
+    machine: Machine;
 }
 
-const ProductForm: React.FC<Props> = ({ id, product, machines }) => {
+const ProductForm: React.FC<Props> = ({ id, product, machine }) => {
     const [showForm, setShowForm] = useState(false);
 
-    const formFields = id ? getFormFields(machines, product) : getFormFields(machines);
+    const formFields = id ? getFormFields(machine, product) : getFormFields(machine);
 
     const {
         mutateAsync: createProduct,
@@ -80,7 +80,7 @@ const ProductForm: React.FC<Props> = ({ id, product, machines }) => {
                 <form className={utils.form} onSubmit={handleSubmit} encType="multipart/form-data">
                     <h1 className={utils.mainHeading}>Product Form</h1>
                     {formFields.map((field) => (
-                        <div key={field.name}>
+                        <div key={field.label}>
                             <label htmlFor={field.name}>{field.label}</label>
                             {field.type === 'select' ? (
                                 <select name={field.name} id={field.name}>
@@ -96,6 +96,7 @@ const ProductForm: React.FC<Props> = ({ id, product, machines }) => {
                                     name={field.name}
                                     id={field.name}
                                     placeholder={field.placeholder}
+                                    defaultValue={field.defaultValue}
                                 />
                             )}
                         </div>

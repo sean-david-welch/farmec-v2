@@ -44,7 +44,7 @@ const Carousel = (props: ImageProps) => {
                     </button>
                 </div>
             </div>
-            <div className={utils.typewriter}>
+            <div className={styles.typewriter}>
                 <h1>
                     <TypewriterComponent
                         options={{

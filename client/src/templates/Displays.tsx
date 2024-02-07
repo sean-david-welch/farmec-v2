@@ -25,9 +25,9 @@ const Displays: React.FC = () => {
                 </div>
             </div>
             <div className={styles.infoSection}>
-                <h1 className={utils.sectionHeading}>Farmec At A Glance:</h1>
+                <h1 className={utils.sectionHeading}>What Can We Offer:</h1>
                 <p className={utils.subHeading}>
-                    This is a Quick Look at what Separates us from our Competitors
+                    Farmec is committed to its customers and gaurentees the following
                 </p>
                 <div className={styles.specials}>
                     {specialsItems.map((item, index) => (

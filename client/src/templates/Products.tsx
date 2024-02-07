@@ -13,9 +13,9 @@ interface Props {
 }
 
 const Products: React.FC<Props> = ({ id, isAdmin, products }: Props) => {
-    const machines = useGetResourceById<Machine[]>('machines', id);
+    const { data: machine } = useGetResourceById<Machine>('machines', id);
 
-    if (!machines.data) {
+    if (!machine) {
         return <div>Loading...</div>;
     }
 
@@ -38,14 +38,14 @@ const Products: React.FC<Props> = ({ id, isAdmin, products }: Props) => {
 
                         {isAdmin && product.id && (
                             <div className={utils.optionsBtn}>
-                                <ProductForm id={product.id} product={product} machines={machines.data} />
+                                <ProductForm id={product.id} product={product} machine={machine} />
                                 <DeleteButton id={product.id} resourceKey="products" />
                             </div>
                         )}
                     </div>
                 ))}
             </div>
-            {isAdmin && <ProductForm machines={machines.data} />}
+            {isAdmin && <ProductForm machine={machine} />}
         </section>
     );
 };

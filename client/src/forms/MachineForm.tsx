@@ -83,7 +83,11 @@ const MachineFrom: React.FC<Props> = ({ id, machine, suppliers }) => {
                             {field.type === 'select' ? (
                                 <select name={field.name} id={field.name}>
                                     {field.options?.map((option) => (
-                                        <option key={option.value} value={option.value}>
+                                        <option
+                                            key={option.value}
+                                            value={option.value}
+                                            defaultValue={field.defaultValue}
+                                        >
                                             {option.label}
                                         </option>
                                     ))}
@@ -94,6 +98,7 @@ const MachineFrom: React.FC<Props> = ({ id, machine, suppliers }) => {
                                     name={field.name}
                                     id={field.name}
                                     placeholder={field.placeholder}
+                                    defaultValue={field.defaultValue}
                                 />
                             )}
                         </div>

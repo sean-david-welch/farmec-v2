@@ -27,28 +27,28 @@ export const specialsItems = [
         description:
             'Farmec is committed to the importation and distribution of only quality brands of unique farm machinery. We guarantee that all our suppliers are committed to providing farmers with durable and superior stock',
         icon: icons.faTractor,
-        link: '/about',
+        link: '/suppliers',
     },
     {
         title: 'Assemably',
         description:
             'Farmec have a team of qualified and experienced staff that ensure abundant care is taken during the assembly process; we make sure that a quality supply chain is maintained from manufacturer to customer',
         icon: icons.faToolbox,
-        link: '/about',
+        link: '/suppliers',
     },
     {
         title: 'Spare Parts',
         description:
             'Farmec offers a diverse and complete range of spare parts for all its machinery. Quality stock control and industry expertise ensures parts finds their way to you efficiently',
         icon: icons.faGears,
-        link: '/about',
+        link: '/spareparts',
     },
     {
         title: 'Customer Service',
         description:
             'Farmec is a family run company, we make sure we extend the ethos of a small community to our customers. We build established relationships with our dealers that provide them and the farmers with extensive guidance',
         icon: icons.faUserPlus,
-        link: '/about',
+        link: '/contact',
     },
 ];
 
@@ -57,7 +57,7 @@ export const statsItems = [
         title: 'Large Network',
         description: '50+ Dealers Nationwide',
         icon: icons.faUsers,
-        link: '/about',
+        link: '/suppliers',
     },
     {
         title: 'Experience',
@@ -69,12 +69,12 @@ export const statsItems = [
         title: 'Diverse Range',
         description: '10+ Quality Suppliers',
         icon: icons.faHandshake,
-        link: '/about',
+        link: '/suppliers',
     },
     {
         title: 'Committment',
         description: 'Warranty Guarentee',
         icon: icons.faWrench,
-        link: '/about',
+        link: '/spareparts',
     },
 ];

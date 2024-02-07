@@ -18,7 +18,7 @@
 }
 
 .subHeading {
-    @apply mx-40 my-2 text-center text-xl font-medium text-zinc-800;
+    @apply mx-40 mb-8 mt-2 text-center text-xl font-medium text-zinc-800;
     @apply md:mx-5;
 }
 
@@ -31,14 +31,6 @@
     @apply md:mx-2;
 }
 
-.typewriter {
-    @apply absolute z-10;
-    @apply py-2 text-4xl font-bold text-gray-300;
-    @apply h-[15vh] w-[70vw];
-    @apply bottom-5 left-1/2;
-    @apply translate-x-[-50%] transform;
-    @apply md:text-xl;
-}
 /* Forms */
 .form {
     @apply flex flex-col bg-zinc-800 p-10 text-center;
