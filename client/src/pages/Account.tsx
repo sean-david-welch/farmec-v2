@@ -1,10 +1,7 @@
-import LogoutForm from '../forms/LogoutForm';
-
 const Account: React.FC = () => {
     return (
         <>
-            <h1>hello home</h1>
-            <LogoutForm />
+            <h1>Account</h1>
         </>
     );
 };
