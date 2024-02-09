@@ -8,6 +8,6 @@ export default {
                 lg: { min: '896px' },
             },
         },
+        plugins: [],
     },
-    plugins: [],
 };

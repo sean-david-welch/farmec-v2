@@ -13,6 +13,5 @@ export const getFormFields = (carousel?: Carousel) => [
         label: 'Image',
         type: 'file',
         placeholder: 'Upload image',
-        defaultValue: carousel?.image,
     },
 ];

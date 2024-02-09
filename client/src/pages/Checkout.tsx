@@ -1,3 +1,5 @@
+import utils from '../styles/Utils.module.css';
+
 import config from '../lib/env';
 
 import { useEffect, useState } from 'react';
@@ -26,12 +28,15 @@ const CheckoutForm: React.FC = () => {
     }, [id, baseUrl]);
 
     return (
-        <div id="checkout">
-            {clientSecret && (
-                <EmbeddedCheckoutProvider stripe={stripePromise} options={{ clientSecret }}>
-                    <EmbeddedCheckout />
-                </EmbeddedCheckoutProvider>
-            )}
+        <div className={utils.checkout}>
+            <h1 className={utils.subHeading}>Checkout Form:</h1>
+            <div id="checkout">
+                {clientSecret && (
+                    <EmbeddedCheckoutProvider stripe={stripePromise} options={{ clientSecret }}>
+                        <EmbeddedCheckout />
+                    </EmbeddedCheckoutProvider>
+                )}
+            </div>
         </div>
     );
 };

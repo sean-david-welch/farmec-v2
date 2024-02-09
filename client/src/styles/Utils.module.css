@@ -23,7 +23,7 @@
 }
 
 .paragraph {
-    @apply mx-auto text-lg font-normal;
+    @apply mx-auto text-base font-normal;
 }
 
 .aboutHeading {
@@ -36,18 +36,27 @@
     @apply flex flex-col bg-zinc-800 p-10 text-center;
 }
 
-.form > * {
+.loginForm {
+    @apply flex flex-col rounded-2xl bg-zinc-800 p-10 text-center;
+}
+
+.form > *,
+.loginForm > * {
     @apply my-4;
 }
 
-.form label {
+.form label,
+.loginForm label {
     @apply my-2 block text-lg font-medium text-gray-900 dark:text-white;
 }
 
 .form textarea,
 .form input,
-.form select {
-    @apply mx-auto block w-2/3 rounded-lg border border-gray-300 bg-zinc-600 p-2.5 text-sm text-gray-900;
+.form select,
+.loginForm textarea,
+.loginForm input,
+.loginForm select {
+    @apply mx-auto block w-2/3 rounded-lg border-gray-300 bg-zinc-600 p-2.5 text-sm text-gray-900;
     @apply border-zinc-600 bg-zinc-700 text-white placeholder-gray-400 focus:border-red-700 focus:ring-red-700;
 }
 
@@ -57,10 +66,11 @@
 
 /* Buttons */
 .btn {
-    @apply mx-auto my-2 bg-red-700 hover:bg-red-600;
+    @apply z-10 mx-auto my-2 hover:bg-red-600;
     @apply flex flex-row items-center justify-center rounded-xl;
     @apply whitespace-nowrap px-8 py-2 text-center text-base font-semibold;
     @apply transition-all duration-700 ease-in-out;
+    @apply bg-red-700;
 }
 
 .btn:hover {
@@ -126,6 +136,10 @@
 
 .dialogBtn svg {
     @apply h-4 w-4;
+}
+
+.checkout {
+    @apply mx-72 my-10 rounded-2xl bg-white p-5;
 }
 
 /* index */

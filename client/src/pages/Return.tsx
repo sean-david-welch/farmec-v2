@@ -1,3 +1,6 @@
+import utils from '../styles/Utils.module.css';
+import styles from '../styles/Account.module.css';
+
 import config from '../lib/env';
 
 import { Navigate } from 'react-router-dom';
@@ -30,11 +33,16 @@ const Return: React.FC = () => {
     if (status === 'complete') {
         return (
             <section id="success">
-                <p>
-                    We appreciate your business! A confirmation email will be sent to {customerEmail}. If you
-                    have any questions, please email{' '}
-                    <a href="mailto:orders@example.com">orders@example.com</a>.
-                </p>
+                <div className={styles.loginSection}>
+                    <div className={utils.loginForm}>
+                        <h1 className={utils.mainHeading}>Payment Complete</h1>
+                        <p className={utils.paragraph}>
+                            We appreciate your business! A confirmation email will be sent to {customerEmail}.
+                            If you have any questions, please email{' '}
+                            <a href="mailto:orders@example.com">info@farmec.ie</a>.
+                        </p>
+                    </div>
+                </div>
             </section>
         );
     }
