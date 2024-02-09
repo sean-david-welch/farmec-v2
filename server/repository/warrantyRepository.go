@@ -28,7 +28,7 @@ func NewWarrantyRepository(database *sql.DB) *WarrantyRepositoryImpl {
 func (repository *WarrantyRepositoryImpl) GetWarranties() ([]types.DealerOwnerInfo, error) {
 	var warranties []types.DealerOwnerInfo
 
-	query := `SELECT "dealer", "ownerName" FROM "WarrantyClaim"`
+	query := `SELECT "id", "dealer", "owner_name" FROM "WarrantyClaim"`
 	rows, err := repository.database.Query(query)
 	if err != nil {
 		return nil, fmt.Errorf("error occurred while querying database: %w", err)
@@ -38,7 +38,7 @@ func (repository *WarrantyRepositoryImpl) GetWarranties() ([]types.DealerOwnerIn
 	for rows.Next() {
 		var warranty types.DealerOwnerInfo
 
-		if err := rows.Scan(); err != nil {
+		if err := rows.Scan(&warranty.ID, &warranty.Dealer, &warranty.OwnerName); err != nil {
 			return nil, fmt.Errorf("error occurred while interating over rows: %w", err)
 		}
 
@@ -67,7 +67,7 @@ func (repository *WarrantyRepositoryImpl) GetWarrantyById(id string) (*types.War
 		return nil, nil, fmt.Errorf("error while querying database: %w", err)
 	}
 
-	partsQuery := `SELECT * FROM "PartsRequired" WHERE warrantyId = $1`
+	partsQuery := `SELECT * FROM "PartsRequired" WHERE "warrantyId" = $1`
 	rows, err := repository.database.Query(partsQuery, id)
 	if err != nil {
 		return nil, nil, fmt.Errorf("error querying parts required from database: %w", err)
@@ -101,7 +101,7 @@ func (repository *WarrantyRepositoryImpl) CreateWarranty(warranty *types.Warrant
 	}
 
 	warrantyQuery := `INSERT INTO "WarrantyClaim"
-	(id, dealer, dealerContact, ownerName, machineModel, serialNumber, installDate, failureDate, repairDate, failureDetails, repairDetails, labourHours, completedBy, created)
+	(id, dealer, dealerContact, owner_name, machine_model, serial_number, install_date, failure_date, repair_date, failure_details, repair_details, labour_hours, completed_by, created)
 	VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)`
 
 	_, err = transaction.Exec(
@@ -115,7 +115,7 @@ func (repository *WarrantyRepositoryImpl) CreateWarranty(warranty *types.Warrant
 	}
 
 	partsQuery := `INSERT INTO "PartsRequired"
-	(id, warrantyID, partNumber, quantityNeeded, invoiceNumber, description) VALUES ($1, $2, $3, $4, $5, $6)`
+	(id, warrantyId, part_number, quantity_needed, invoice_number, description) VALUES ($1, $2, $3, $4, $5, $6)`
 
 	for _, part := range parts {
 		part.ID = uuid.NewString()
@@ -142,9 +142,9 @@ func (repository *WarrantyRepositoryImpl) UpdateWarranty(id string, warranty *ty
 	}
 
 	warrantyQuery := `UPDATE "WarrantyClaim" SET
-    dealer = $2, dealerContact = $3, ownerName = $4, machineModel = $5, serialNumber = $6,
-    installDate = $7, failureDate = $8, repairDate = $9, failureDetails = $10, repairDetails = $11,
-    labourHours = $12, completedBy = $13, created = $14 WHERE id = $1`
+    dealer = $2, dealer_contact = $3, owner_name = $4, machine_model = $5, serial_number = $6,
+    install_date = $7, failure_date = $8, repair_date = $9, failure_details = $10, repair_details = $11,
+    labour_hours = $12, completed_by = $13, created = $14 WHERE id = $1`
 
 	_, err = transaction.Exec(
 		warrantyQuery, id, warranty.Dealer, warranty.DealerContact, warranty.OwnerName,
@@ -164,7 +164,7 @@ func (repository *WarrantyRepositoryImpl) UpdateWarranty(id string, warranty *ty
 	}
 
 	partsQuery := `INSERT INTO "PartsRequired"
-	(id, warrantyID, partNumber, quantityNeeded, invoiceNumber, description) VALUES ($1, $2, $3, $4, $5, $6)`
+	(id, warrantyID, part_number, quantity_needed, invoice_number, description) VALUES ($1, $2, $3, $4, $5, $6)`
 
 	for _, part := range parts {
 		part.ID = uuid.NewString()

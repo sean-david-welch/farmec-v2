@@ -1,9 +1,11 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import utils from '../styles/Utils.module.css';
 
 import { PartsRequired, WarrantyClaim } from '../types/miscTypes';
 import { Page, Text, Document, StyleSheet } from '@react-pdf/renderer';
 
 import { PDFDownloadLink } from '@react-pdf/renderer';
+import { faDownload } from '@fortawesome/free-solid-svg-icons/faDownload';
 
 const styles = StyleSheet.create({
     title: {
@@ -28,11 +30,12 @@ interface Props {
 export const DownloadLink = ({ warranty, parts }: Props) => (
     <PDFDownloadLink
         document={<MyDocument warranty={warranty} parts={parts} />}
-        fileName={`${warranty.owner_name}.warranty.pdf`}>
+        fileName={`${warranty.owner_name}.warranty.pdf`}
+    >
         {() => (
             <button className={utils.btn}>
                 Download Form
-                <img src="/icons/download.svg" alt="download" />
+                <FontAwesomeIcon icon={faDownload} />
             </button>
         )}
     </PDFDownloadLink>

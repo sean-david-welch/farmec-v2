@@ -1,5 +1,7 @@
 import utils from '../styles/Utils.module.css';
 
+import { faDownload } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { MachineRegistration } from '../types/miscTypes';
 import { Page, Text, Document, StyleSheet, PDFDownloadLink } from '@react-pdf/renderer';
 
@@ -25,11 +27,12 @@ interface Props {
 export const DownloadLink = ({ registration }: Props) => (
     <PDFDownloadLink
         document={<MyDocument registration={registration} />}
-        fileName={`${registration.owner_name}.registration.pdf`}>
+        fileName={`${registration.owner_name}.registration.pdf`}
+    >
         {() => (
             <button className={utils.btn}>
                 Download Form
-                <img src="/icons/download.svg" alt="download" />
+                <FontAwesomeIcon icon={faDownload} />
             </button>
         )}
     </PDFDownloadLink>

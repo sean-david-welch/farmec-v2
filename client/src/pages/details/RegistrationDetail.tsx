@@ -7,6 +7,7 @@ import { useGetResourceById } from '../../hooks/genericHooks';
 import { MachineRegistration } from '../../types/miscTypes';
 import { DownloadLink } from '../../components/RegistrationPdf';
 import RegistrationForm from '../../forms/RegistrationForm';
+import DeleteButton from '../../components/DeleteButton';
 
 const RegistrationDetail: React.FC = () => {
     const { isAdmin } = useUserStore();
@@ -45,7 +46,12 @@ const RegistrationDetail: React.FC = () => {
                         }
                     })}
 
-                    {isAdmin && <RegistrationForm id={registration.id} />}
+                    {isAdmin && registration.id && (
+                        <div className={utils.optionsBtn}>
+                            <RegistrationForm id={registration.id} />
+                            <DeleteButton id={registration.id} resourceKey="registrations" />
+                        </div>
+                    )}
                 </div>
 
                 <DownloadLink registration={registration} />

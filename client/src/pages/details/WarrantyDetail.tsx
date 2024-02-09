@@ -1,4 +1,4 @@
-import styles from '../../styles/Services.module.css';
+import styles from '../../styles/Account.module.css';
 import utils from '../../styles/Utils.module.css';
 
 import { useParams } from 'react-router-dom';

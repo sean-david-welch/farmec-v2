@@ -23,6 +23,8 @@ const Checkout = lazy(() => import('../pages/Checkout'));
 const Return = lazy(() => import('../pages/Return'));
 const Login = lazy(() => import('../pages/Login'));
 const Account = lazy(() => import('../pages/Account'));
+const Warranties = lazy(() => import('../pages/Warranties'));
+const Registrations = lazy(() => import('../pages/Registrations'));
 
 const AppRoutes = () => {
     const ScrollToTopPage = () => {
@@ -63,6 +65,8 @@ const AppRoutes = () => {
 
                         <Route path="/login" element={<Login />} />
                         <Route path="/account" element={<Account />} />
+                        <Route path="/warranty" element={<Warranties />} />
+                        <Route path="/registrations" element={<Registrations />} />
                     </Routes>
                 </Layout>
             </Suspense>

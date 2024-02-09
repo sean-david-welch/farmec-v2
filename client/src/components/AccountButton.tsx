@@ -27,7 +27,10 @@ const AccountButton = () => {
                                 <Link to={'/carousels'}>Carousels</Link>
                             </li>
                             <li className={styles.navDropItem}>
-                                <Link to={'/warranty'}>Warranty Claims</Link>
+                                <Link to={'/line-items'}>Line Items</Link>
+                            </li>
+                            <li className={styles.navDropItem}>
+                                <Link to={'/warranty'}>Warranty </Link>
                             </li>
                             <li className={styles.navDropItem}>
                                 <Link to={'/registrations'}>Registrations</Link>

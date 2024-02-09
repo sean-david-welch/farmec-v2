@@ -10,30 +10,31 @@ type Carousel struct {
 }
 
 type DealerOwnerInfo struct {
-	Dealer    string
-	OwnerName string
+	ID        string `json:"id"`
+	Dealer    string `json:"dealer"`
+	OwnerName string `json:"owner_name"`
 }
 
 type WarrantyClaim struct {
 	ID             string    `json:"id"`
 	Dealer         string    `json:"dealer"`
-	DealerContact  string    `json:"dealer_contact"`
-	OwnerName      string    `json:"owner_name"`
-	MachineModel   string    `json:"machine_model"`
-	SerialNumber   string    `json:"serial_number"`
-	InstallDate    string    `json:"install_date"`
-	FailureDate    string    `json:"failure_date"`
-	RepairDate     string    `json:"repair_date"`
-	FailureDetails string    `json:"failure_details"`
-	RepairDetails  string    `json:"repair_details"`
-	LabourHours    string    `json:"labour_hours"`
-	CompletedBy    string    `json:"completed_by"`
+	DealerContact  *string   `json:"dealer_contact"`
+	OwnerName      *string   `json:"owner_name"`
+	MachineModel   *string   `json:"machine_model"`
+	SerialNumber   *string   `json:"serial_number"`
+	InstallDate    *string   `json:"install_date"`
+	FailureDate    *string   `json:"failure_date"`
+	RepairDate     *string   `json:"repair_date"`
+	FailureDetails *string   `json:"failure_details"`
+	RepairDetails  *string   `json:"repair_details"`
+	LabourHours    *string   `json:"labour_hours"`
+	CompletedBy    *string   `json:"completed_by"`
 	Created        time.Time `json:"created"`
 }
 
 type PartsRequired struct {
 	ID             string `json:"id"`
-	WarrantyID     string `json:"warranty_id"`
+	WarrantyID     string `json:"warrantyId"`
 	PartNumber     string `json:"part_number"`
 	QuantityNeeded string `json:"quantity_needed"`
 	InvoiceNumber  string `json:"invoice_number"`
