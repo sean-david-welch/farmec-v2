@@ -14,7 +14,7 @@ const AccountButton = () => {
     return (
         <li className={styles.navItem}>
             {isAuthenticated ? (
-                <li className={styles.navListItem}>Account</li>
+                <p className={styles.navListItem}>Account</p>
             ) : (
                 <Link to="/login" className={styles.navListItem}>
                     Login

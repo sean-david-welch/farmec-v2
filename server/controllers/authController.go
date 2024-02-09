@@ -46,6 +46,17 @@ func (controller *AuthController) Login(context *gin.Context) {
 	context.JSON(http.StatusOK, gin.H{"message": "login successful"})
 }
 
+func (controller *AuthController) GetUsers(context *gin.Context) {
+	users, err := controller.service.GetUsers(context)
+	if err != nil {
+		log.Printf("error fetching users from firebase: %v", err)
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while fetching users from firebase", "details": err.Error()})
+		return
+	}
+
+	context.JSON(http.StatusOK, users)
+}
+
 func (controller *AuthController) Register(context *gin.Context) {
 	var userData types.UserData
 
@@ -62,4 +73,35 @@ func (controller *AuthController) Register(context *gin.Context) {
 	}
 
 	context.JSON(http.StatusCreated, gin.H{"message": "user successfully created in firebase"})
+}
+
+func (controller *AuthController) UpdateUser(context *gin.Context) {
+	uid := context.Param("uid")
+	var userData types.UserData
+
+	if err := context.ShouldBindJSON(&userData); err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"error": "error occurred while updating user in firebase", "details": err.Error()})
+		return
+	}
+
+	if err := controller.service.UpdateUser(uid, &userData, context); err != nil {
+		log.Printf("error while updating user in firebase: %v", err)
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while updating user in firebase", "details": err.Error()})
+		return
+	}
+
+	context.JSON(http.StatusCreated, gin.H{"message": "user successfully updated in firebase"})
+}
+
+func (controller *AuthController) DeleteUser(context *gin.Context) {
+	uid := context.Param("uid")
+
+	err := controller.service.DeleteUser(uid, context)
+	if err != nil {
+		log.Printf("error with deleting user in firebase: %v", err)
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while deleting user in firebase", "details": err.Error()})
+		return
+	}
+
+	context.JSON(http.StatusAccepted, gin.H{"message": "user deleted successfully in firebase", "id": uid})
 }

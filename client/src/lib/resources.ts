@@ -66,6 +66,10 @@ const resources: Resources = {
         endpoint: new URL('api/machines/suppliers', config.baseUrl).toString(),
         queryKey: 'machines',
     },
+    users: {
+        endpoint: new URL('api/auth/users', config.baseUrl).toString(),
+        queryKey: 'users',
+    },
 };
 
 export default resources;

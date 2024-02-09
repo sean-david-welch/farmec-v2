@@ -10,7 +10,7 @@ export const useGetResource = <T,>(resourceKey: keyof Resources) => {
     const resource = useQuery<T, Error>({
         queryKey: [queryKey],
         queryFn: async () => {
-            const response = await fetch(endpoint);
+            const response = await fetch(endpoint, { credentials: 'include' });
 
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -30,7 +30,7 @@ export const useGetResourceById = <T,>(resourceKey: keyof Resources, id: string)
     const resource = useQuery<T, Error>({
         queryKey: [queryKey],
         queryFn: async () => {
-            const response = await fetch(url);
+            const response = await fetch(url, { credentials: 'include' });
 
             if (!response.ok) throw new Error('Network response was not ok');
             return response.json();

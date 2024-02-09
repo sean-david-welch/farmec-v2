@@ -28,6 +28,17 @@ export interface UserData {
     role: string;
 }
 
+export interface CustomClaims {
+    admin: boolean;
+}
+
+export interface User {
+    email: string;
+    rawId: string;
+    providerId: string;
+    CustomClaims: CustomClaims;
+}
+
 export interface ResourceData {
     id: string;
     route: string;
@@ -57,6 +68,7 @@ export interface Resources {
     registrations: ResourceEntry<MachineRegistration>;
     warranty: ResourceEntry<WarrantyClaim | WarrantyParts>;
     supplierMachine: ResourceEntry<Machine>;
+    users: ResourceEntry<User | UserData>;
 }
 
 export interface FormField {

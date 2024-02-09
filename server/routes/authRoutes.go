@@ -23,6 +23,9 @@ func AuthRoutes(router *gin.Engine, controller *controllers.AuthController, admi
 
 	protected := authGroup.Group("").Use(adminMiddleware.Middleware())
 	{
-		protected.POST("/register", controller.Register)
+		protected.GET("/users", controller.GetUsers)
+		protected.POST("/users", controller.Register)
+		protected.PUT("/users/:uid", controller.UpdateUser)
+		protected.DELETE("/users/:uid", controller.DeleteUser)
 	}
 }

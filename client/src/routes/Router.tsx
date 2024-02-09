@@ -26,6 +26,7 @@ const Warranties = lazy(() => import('../pages/Warranties'));
 const Registrations = lazy(() => import('../pages/Registrations'));
 const LineItems = lazy(() => import('../pages/LineItems'));
 const CarouselAdmin = lazy(() => import('../pages/CarouselAdmin'));
+const Users = lazy(() => import('../pages/Users'));
 
 const AppRoutes = () => {
     const ScrollToTopPage = () => {
@@ -69,6 +70,7 @@ const AppRoutes = () => {
                         <Route path="/registrations" element={<Registrations />} />
                         <Route path="/line-items" element={<LineItems />} />
                         <Route path="/carousels" element={<CarouselAdmin />} />
+                        <Route path="/users" element={<Users />} />
                     </Routes>
                 </Layout>
             </Suspense>
