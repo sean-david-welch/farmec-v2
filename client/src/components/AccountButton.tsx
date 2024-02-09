@@ -13,9 +13,14 @@ const AccountButton = () => {
 
     return (
         <li className={styles.navItem}>
-            <Link to={isAuthenticated ? '/account' : '/login'} className={styles.navListItem}>
-                {isAuthenticated ? 'Account' : 'Login'}
-            </Link>
+            {isAuthenticated ? (
+                <li className={styles.navListItem}>Account</li>
+            ) : (
+                <Link to="/login" className={styles.navListItem}>
+                    Login
+                </Link>
+            )}
+
             <ul className={styles.navDrop}>
                 <Fragment>
                     {isAdmin ? (

@@ -1,6 +1,6 @@
 .accountMap {
     @apply grid grid-cols-1;
-    @apply rounded-2xl border-4 border-zinc-800 bg-zinc-600;
+    @apply rounded-2xl border-4 border-zinc-800 bg-zinc-800;
     @apply mx-52 my-8 p-10;
     @apply md:mx-5 md:p-2;
 }
@@ -12,20 +12,13 @@
     @apply md:mx-5 md:grid-cols-1 md:p-2;
 }
 
-.userServices {
-    @apply grid grid-cols-1;
-    @apply rounded-2xl border-4 border-zinc-600 bg-zinc-800;
-    @apply mx-16 my-8 p-10;
-    @apply md:mx-5 md:p-2;
-}
-
 .accountSection > * {
     @apply flex flex-col;
     @apply my-10;
 }
 
 .productView {
-    @apply mx-12 flex flex-col p-4;
+    @apply mx-72 my-10 flex flex-col p-4;
     @apply justify-center rounded-2xl border-4 border-zinc-600 bg-zinc-800;
     @apply transition-all duration-500 ease-in-out;
     @apply md:mx-2;
@@ -46,9 +39,13 @@
 }
 
 .carouselAdmin {
-    @apply rounded-2xl border-4 border-zinc-600 bg-zinc-800;
-    @apply mx-12 my-3 p-2;
+    @apply mx-72 rounded-2xl border-4 border-zinc-600 bg-zinc-800;
+    @apply my-10 p-2;
     @apply md:mx-2;
+}
+
+.carouselAdmin > img {
+    @apply mx-auto my-4 rounded-2xl;
 }
 
 .warrantyDetail {
@@ -95,8 +92,4 @@
 
 .userCard > * {
     @apply my-4;
-}
-
-.loginSection {
-    @apply mx-72;
 }

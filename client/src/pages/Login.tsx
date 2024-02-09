@@ -1,13 +1,13 @@
-import styles from "../styles/Account.module.css";
+import styles from '../styles/Utils.module.css';
 
-import LoginForm from "../forms/LoginForm";
+import LoginForm from '../forms/LoginForm';
 
 const Login: React.FC = () => {
-  return (
-    <div className={styles.loginSection}>
-      <LoginForm />
-    </div>
-  );
+    return (
+        <div className={styles.loginSection}>
+            <LoginForm />
+        </div>
+    );
 };
 
 export default Login;

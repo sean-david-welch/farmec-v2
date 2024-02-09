@@ -20,6 +20,5 @@ export const getFormFields = (lineItem?: LineItem) => [
         label: 'Image',
         type: 'file',
         placeholder: 'Upload image',
-        defaultValue: lineItem?.image,
     },
 ];

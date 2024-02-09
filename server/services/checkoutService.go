@@ -44,7 +44,8 @@ func (service *CheckoutServiceImpl) CreateCheckoutSession(id string) (*stripe.Ch
 				PriceData: &stripe.CheckoutSessionLineItemPriceDataParams{
 					Currency: stripe.String("eur"),
 					ProductData: &stripe.CheckoutSessionLineItemPriceDataProductDataParams{
-						Name: stripe.String(product.Name),
+						Name:   stripe.String(product.Name),
+						Images: stripe.StringSlice([]string{product.Image}),
 					},
 					UnitAmount: stripe.Int64(int64(product.Price * 100)),
 				},

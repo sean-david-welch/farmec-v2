@@ -142,6 +142,9 @@
     @apply mx-72 my-10 rounded-2xl bg-white p-5;
 }
 
+.loginSection {
+    @apply mx-72;
+}
 /* index */
 .index {
     @apply flex flex-col items-start;

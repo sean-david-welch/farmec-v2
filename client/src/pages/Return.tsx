@@ -1,5 +1,4 @@
 import utils from '../styles/Utils.module.css';
-import styles from '../styles/Account.module.css';
 
 import config from '../lib/env';
 
@@ -33,7 +32,7 @@ const Return: React.FC = () => {
     if (status === 'complete') {
         return (
             <section id="success">
-                <div className={styles.loginSection}>
+                <div className={utils.loginSection}>
                     <div className={utils.loginForm}>
                         <h1 className={utils.mainHeading}>Payment Complete</h1>
                         <p className={utils.paragraph}>
