@@ -2,6 +2,7 @@ package services
 
 import (
 	"crypto/tls"
+	"fmt"
 	"log"
 	"net"
 	"net/smtp"
@@ -11,63 +12,83 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/utils"
 )
 
-type ContactService struct {
+type ContactService interface {
+	SendEmail(data *types.EmailData) error
+	SetupSMTPClient() (*smtp.Client, error)
+	SendMessage(client *smtp.Client, data *types.EmailData) error
+}
+
+type ContactServiceImpl struct {
 	secrets   *config.Secrets
 	loginAuth utils.LoginAuth
 }
 
-func NewContactService(secrets *config.Secrets, loginAuth utils.LoginAuth) *ContactService {
-	return &ContactService{
+func NewContactService(secrets *config.Secrets, loginAuth utils.LoginAuth) *ContactServiceImpl {
+	return &ContactServiceImpl{
 		secrets:   secrets,
 		loginAuth: loginAuth,
 	}
 }
 
-func (service *ContactService) SendEmail(data *types.EmailData) error {
+func (service *ContactServiceImpl) SendEmail(data *types.EmailData) error {
+	client, err := service.SetupSMTPClient()
+	if err != nil {
+		log.Println("SMTP setup error:", err)
+		return err
+	}
+	defer client.Close()
+
+	if err := service.SendMessage(client, data); err != nil {
+		log.Println("Error sending email:", err)
+		return err
+	}
+
+	return nil
+}
+
+func (service *ContactServiceImpl) SetupSMTPClient() (*smtp.Client, error) {
 	conn, err := net.Dial("tcp", "smtp.office365.com:587")
 	if err != nil {
-		log.Println("Dial error:", err)
-		return err
+		return nil, err
 	}
-	defer conn.Close()
 
-	c, err := smtp.NewClient(conn, "smtp.office365.com")
+	client, err := smtp.NewClient(conn, "smtp.office365.com")
 	if err != nil {
-		log.Println("SMTP client error:", err)
-		return err
+		conn.Close()
+		return nil, err
 	}
-	defer c.Close()
 
 	tlsConfig := &tls.Config{ServerName: "smtp.office365.com"}
-	if err = c.StartTLS(tlsConfig); err != nil {
+	if err = client.StartTLS(tlsConfig); err != nil {
+		client.Close()
+		return nil, err
+	}
+
+	if err = client.Auth(service.loginAuth); err != nil {
+		client.Close()
+		return nil, err
+	}
+
+	return client, nil
+}
+
+func (service *ContactServiceImpl) SendMessage(client *smtp.Client, data *types.EmailData) error {
+	msg := fmt.Sprintf("Subject: New Contact Form From %s--%s\r\n\r\n%s", data.Name, data.Email, data.Message)
+
+	if err := client.Mail(service.secrets.EmailUser); err != nil {
+		return err
+	}
+	if err := client.Rcpt(service.secrets.EmailUser); err != nil {
 		return err
 	}
 
-	if err = c.Auth(service.loginAuth); err != nil {
-		log.Println("SMTP auth error:", err)
-		return err
-	}
-
-	msg := "Subject: New Contact Form From " + data.Name + "--" + data.Email + "\r\n" +
-		"\r\n" + data.Message
-
-	if err = c.Mail(service.secrets.EmailUser); err != nil {
-		log.Println("SMTP Mail error:", err)
-		return err
-	}
-	if err = c.Rcpt(service.secrets.EmailUser); err != nil {
-		log.Println("SMTP Rcpt error:", err)
-		return err
-	}
-
-	wc, err := c.Data()
+	wc, err := client.Data()
 	if err != nil {
-		log.Println("SMTP data error:", err)
 		return err
 	}
 	defer wc.Close()
-	if _, err = wc.Write([]byte(msg)); err != nil {
-		log.Println("SMTP write error:", err)
+
+	if _, err := wc.Write([]byte(msg)); err != nil {
 		return err
 	}
 

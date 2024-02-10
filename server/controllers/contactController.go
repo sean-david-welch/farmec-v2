@@ -10,10 +10,10 @@ import (
 )
 
 type ContactController struct {
-	service *services.ContactService
+	service services.ContactService
 }
 
-func NewContactController(service *services.ContactService) *ContactController {
+func NewContactController(service services.ContactService) *ContactController {
 	return &ContactController{service: service}
 }
 
