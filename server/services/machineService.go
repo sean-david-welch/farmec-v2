@@ -2,6 +2,7 @@ package services
 
 import (
 	"errors"
+	"log"
 
 	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/types"
@@ -56,6 +57,7 @@ func (service *MachineServiceImpl) CreateMachine(machine *types.Machine) (*types
 
 	presignedUrl, imageUrl, err := service.s3Client.GeneratePresignedUrl(service.folder, machineImage)
 	if err != nil {
+		log.Printf("error occurred while generating presigned url: %v", err)
 		return nil, err
 	}
 
@@ -83,6 +85,7 @@ func (service *MachineServiceImpl) UpdateMachine(id string, machine *types.Machi
 	if machineImage != "" {
 		presignedUrl, imageUrl, err = service.s3Client.GeneratePresignedUrl(service.folder, machineImage)
 		if err != nil {
+			log.Printf("error occurred while generating presigned url: %v", err)
 			return nil, err
 		}
 		machine.MachineImage = imageUrl

@@ -2,6 +2,7 @@ package services
 
 import (
 	"errors"
+	"log"
 
 	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/types"
@@ -44,11 +45,13 @@ func (service *SupplierServiceImpl) CreateSupplier(supplier *types.Supplier) (*t
 
 	presignedLogo, logoUrl, err := service.s3Client.GeneratePresignedUrl(service.folder, logoImage)
 	if err != nil {
+		log.Printf("error occurred while generating presigned url: %v", err)
 		return nil, err
 	}
 
 	presignedMarketing, marketingUrl, err := service.s3Client.GeneratePresignedUrl(service.folder, marketingImage)
 	if err != nil {
+		log.Printf("error occurred while generating presigned url: %v", err)
 		return nil, err
 	}
 

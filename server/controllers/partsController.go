@@ -74,7 +74,7 @@ func (controller *PartsController) UpdateParts(context *gin.Context) {
 
 	response := gin.H{
 		"part":         part,
-		"PresignedUrl": result.PresignedUrl,
+		"presignedUrl": result.PresignedUrl,
 		"imageUrl":     result.ImageUrl,
 	}
 

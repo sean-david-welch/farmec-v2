@@ -76,7 +76,7 @@ func (repository *BlogRepositoryImpl) CreateBlog(blog *types.Blog) error {
 	blog.ID = uuid.NewString()
 	blog.Created = time.Now()
 
-	query := `INSERT INTO "Blog" (id, title, date, main_image, subheading, body, created) VALUES ($1, $2, $3, $4, $5, $6, $7)`
+	query := `INSERT INTO "Blog" (id, title, date, main_image, subheading, body, created) VALUES ($1, $2, $3, $4, $5, $6)`
 
 	_, err := repository.database.Exec(query, blog.ID, blog.Title, blog.Date, blog.MainImage, blog.Subheading, blog.Body, blog.Created)
 	if err != nil {
@@ -89,7 +89,7 @@ func (repository *BlogRepositoryImpl) CreateBlog(blog *types.Blog) error {
 func (repository *BlogRepositoryImpl) UpdateBlog(id string, blog *types.Blog) error {
 	query := `UPDATE "Blog" SET "title" = $1, "date" = $2, "main_image" = $3, "subheading" = $4, "body" = $5 WHERE "id" = $6`
 
-	_, err := repository.database.Exec(query, blog.Title, blog.Date, blog.MainImage, blog.Subheading, blog.Body, blog.Created, id)
+	_, err := repository.database.Exec(query, blog.Title, blog.Date, blog.MainImage, blog.Subheading, blog.Body, id)
 	if err != nil {
 		return fmt.Errorf("error occurred while updating blog: %w", err)
 	}

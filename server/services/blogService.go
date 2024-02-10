@@ -1,6 +1,8 @@
 package services
 
 import (
+	"log"
+
 	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"github.com/sean-david-welch/farmec-v2/server/utils"
@@ -47,6 +49,7 @@ func (service *BlogServiceImpl) CreateBlog(blog *types.Blog) (*types.ModelResult
 
 	presignedUrl, imageUrl, err := service.s3Client.GeneratePresignedUrl(service.folder, image)
 	if err != nil {
+		log.Printf("error occurred while generating presigned url: %v", err)
 		return nil, err
 	}
 
@@ -70,9 +73,10 @@ func (service *BlogServiceImpl) UpdateBlog(id string, blog *types.Blog) (*types.
 	var presignedUrl, imageUrl string
 	var err error
 
-	if image == "" {
+	if image != "" {
 		presignedUrl, imageUrl, err = service.s3Client.GeneratePresignedUrl(service.folder, image)
 		if err != nil {
+			log.Printf("error occurred while generating presigned url: %v", err)
 			return nil, err
 		}
 		blog.MainImage = imageUrl

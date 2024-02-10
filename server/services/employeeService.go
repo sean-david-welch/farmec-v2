@@ -1,6 +1,8 @@
 package services
 
 import (
+	"log"
+
 	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"github.com/sean-david-welch/farmec-v2/server/utils"
@@ -37,6 +39,7 @@ func (service *EmployeeServiceImpl) CreateEmployee(employee *types.Employee) (*t
 
 	PresignedUrl, imageUrl, err := service.s3Client.GeneratePresignedUrl(service.folder, image)
 	if err != nil {
+		log.Printf("error occurred while generating presigned url: %v", err)
 		return nil, err
 	}
 
@@ -63,6 +66,7 @@ func (service *EmployeeServiceImpl) UpdateEmployee(id string, employee *types.Em
 	if image == "" {
 		PresignedUrl, imageUrl, err = service.s3Client.GeneratePresignedUrl(service.folder, image)
 		if err != nil {
+			log.Printf("error occurred while generating presigned url: %v", err)
 			return nil, err
 		}
 		employee.ProfileImage = imageUrl

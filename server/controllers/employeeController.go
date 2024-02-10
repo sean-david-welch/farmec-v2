@@ -46,7 +46,7 @@ func (controller *EmployeeController) CreateEmployee(context *gin.Context) {
 
 	response := gin.H{
 		"employee":     employee,
-		"PresignedUrl": result.PresignedUrl,
+		"presignedUrl": result.PresignedUrl,
 		"imageUrl":     result.ImageUrl,
 	}
 
@@ -72,7 +72,7 @@ func (controller *EmployeeController) UpdateEmployee(context *gin.Context) {
 
 	response := gin.H{
 		"employee":     employee,
-		"PresignedUrl": result.PresignedUrl,
+		"presignedUrl": result.PresignedUrl,
 		"imageUrl":     result.ImageUrl,
 	}
 

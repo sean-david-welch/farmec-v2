@@ -56,7 +56,7 @@ func (controller *BlogController) CreateBlog(context *gin.Context) {
 		return
 	}
 
-	response := gin.H{"blog": blog, "PresignedUrl": result.PresignedUrl, "imageUrl": result.ImageUrl}
+	response := gin.H{"blog": blog, "presignedUrl": result.PresignedUrl, "imageUrl": result.ImageUrl}
 
 	context.JSON(http.StatusCreated, response)
 }
@@ -79,7 +79,7 @@ func (controller *BlogController) UpdateBlog(context *gin.Context) {
 		return
 	}
 
-	response := gin.H{"blog": blog, "PresignedUrl": result.PresignedUrl, "imageUrl": result.ImageUrl}
+	response := gin.H{"blog": blog, "presignedUrl": result.PresignedUrl, "imageUrl": result.ImageUrl}
 
 	context.JSON(http.StatusAccepted, response)
 }

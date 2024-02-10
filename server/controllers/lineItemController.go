@@ -45,7 +45,7 @@ func (controller *LineItemController) CreateLineItem(context *gin.Context) {
 
 	response := gin.H{
 		"lineItem":     lineItem,
-		"PresignedUrl": result.PresignedUrl,
+		"presignedUrl": result.PresignedUrl,
 		"imageUrl":     result.ImageUrl,
 	}
 
@@ -83,7 +83,7 @@ func (controller *LineItemController) UpdateLineItem(context *gin.Context) {
 
 	response := gin.H{
 		"lineItem":     lineItem,
-		"PresignedUrl": result.PresignedUrl,
+		"presignedUrl": result.PresignedUrl,
 		"imageUrl":     result.ImageUrl,
 	}
 

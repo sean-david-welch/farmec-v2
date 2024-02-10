@@ -60,7 +60,7 @@ func (controller *MachineController) CreateMachine(context *gin.Context) {
 
 	response := gin.H{
 		"machine":      machine,
-		"PresignedUrl": result.PresignedUrl,
+		"presignedUrl": result.PresignedUrl,
 		"imageUrl":     result.ImageUrl,
 	}
 

@@ -1,6 +1,8 @@
 package services
 
 import (
+	"log"
+
 	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"github.com/sean-david-welch/farmec-v2/server/utils"
@@ -47,6 +49,7 @@ func (service *LineItemServiceImpl) CreateLineItem(lineItem *types.LineItem) (*t
 
 	PresignedUrl, imageUrl, err := service.s3Client.GeneratePresignedUrl(service.folder, image)
 	if err != nil {
+		log.Printf("error occurred while generating presigned url: %v", err)
 		return nil, err
 	}
 
@@ -73,6 +76,7 @@ func (service *LineItemServiceImpl) UpdateLineItem(id string, lineItem *types.Li
 	if image == "" {
 		PresignedUrl, imageUrl, err = service.s3Client.GeneratePresignedUrl(service.folder, image)
 		if err != nil {
+			log.Printf("error occurred while generating presigned url: %v", err)
 			return nil, err
 		}
 		lineItem.Image = imageUrl
