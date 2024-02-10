@@ -63,6 +63,6 @@ func NewSecrets() (*Secrets, error) {
 		EmailHost: os.Getenv("EMAIL_HOST"),
 		EmailPass: os.Getenv("EMAIL_PASSWORD"),
 		EmailUser: os.Getenv("EMAIL_USER"),
-		EmailPort: os.Getenv("EMAIL_PASSWORD"),
+		EmailPort: os.Getenv("EMAIL_PORT"),
 	}, nil
 }

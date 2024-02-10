@@ -37,20 +37,32 @@ func WarrantyControllerTest(test *testing.T) (*gin.Engine, *mocks.MockWarrantySe
 func TestGetWarranties(test *testing.T) {
 	router, mockService, controller, recorder, time := WarrantyControllerTest(test)
 
+	DealerContact := "John Doe"
+	OwnerName := "Alice Johnson"
+	MachineModel := "Model ABC"
+	SerialNumber := "SN123456"
+	InstallDate := "2024-01-15"
+	FailureDate := "2024-02-10"
+	RepairDate := "2024-02-20"
+	FailureDetails := "Engine malfunction"
+	RepairDetails := "Replaced engine"
+	LabourHours := "5"
+	CompletedBy := "Technician A"
+
 	expectedWarranty := &types.WarrantyClaim{
 		ID:             "warranty123",
 		Dealer:         "Dealer XYZ",
-		DealerContact:  "John Doe",
-		OwnerName:      "Alice Johnson",
-		MachineModel:   "Model ABC",
-		SerialNumber:   "SN123456",
-		InstallDate:    "2024-01-15",
-		FailureDate:    "2024-02-10",
-		RepairDate:     "2024-02-20",
-		FailureDetails: "Engine malfunction",
-		RepairDetails:  "Replaced engine",
-		LabourHours:    "5",
-		CompletedBy:    "Technician A",
+		DealerContact:  &DealerContact,
+		OwnerName:      &OwnerName,
+		MachineModel:   &MachineModel,
+		SerialNumber:   &SerialNumber,
+		InstallDate:    &InstallDate,
+		FailureDate:    &FailureDate,
+		RepairDate:     &RepairDate,
+		FailureDetails: &FailureDetails,
+		RepairDetails:  &RepairDetails,
+		LabourHours:    &LabourHours,
+		CompletedBy:    &CompletedBy,
 		Created:        time,
 	}
 
@@ -88,20 +100,32 @@ func TestGetWarranties(test *testing.T) {
 func TestCreateWarranty(test *testing.T) {
 	router, mockService, controller, recorder, time := WarrantyControllerTest(test)
 
+	DealerContact := "John Doe"
+	OwnerName := "Alice Johnson"
+	MachineModel := "Model ABC"
+	SerialNumber := "SN123456"
+	InstallDate := "2024-01-15"
+	FailureDate := "2024-02-10"
+	RepairDate := "2024-02-20"
+	FailureDetails := "Engine malfunction"
+	RepairDetails := "Replaced engine"
+	LabourHours := "5"
+	CompletedBy := "Technician A"
+
 	newWarranty := &types.WarrantyClaim{
 		ID:             "warranty123",
 		Dealer:         "Dealer XYZ",
-		DealerContact:  "John Doe",
-		OwnerName:      "Alice Johnson",
-		MachineModel:   "Model ABC",
-		SerialNumber:   "SN123456",
-		InstallDate:    "2024-01-15",
-		FailureDate:    "2024-02-10",
-		RepairDate:     "2024-02-20",
-		FailureDetails: "Engine malfunction",
-		RepairDetails:  "Replaced engine",
-		LabourHours:    "5",
-		CompletedBy:    "Technician A",
+		DealerContact:  &DealerContact,
+		OwnerName:      &OwnerName,
+		MachineModel:   &MachineModel,
+		SerialNumber:   &SerialNumber,
+		InstallDate:    &InstallDate,
+		FailureDate:    &FailureDate,
+		RepairDate:     &RepairDate,
+		FailureDetails: &FailureDetails,
+		RepairDetails:  &RepairDetails,
+		LabourHours:    &LabourHours,
+		CompletedBy:    &CompletedBy,
 		Created:        time,
 	}
 

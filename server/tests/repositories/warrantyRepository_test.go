@@ -18,20 +18,32 @@ func TestGetWarrantyById(test *testing.T) {
 	}
 	defer db.Close()
 
+	DealerContact := "John Doe"
+	OwnerName := "Alice Johnson"
+	MachineModel := "Model ABC"
+	SerialNumber := "SN123456"
+	InstallDate := "2024-01-15"
+	FailureDate := "2024-02-10"
+	RepairDate := "2024-02-20"
+	FailureDetails := "Engine malfunction"
+	RepairDetails := "Replaced engine"
+	LabourHours := "5"
+	CompletedBy := "Technician A"
+
 	warranty := types.WarrantyClaim{
 		ID:             "warranty123",
 		Dealer:         "Dealer XYZ",
-		DealerContact:  "John Doe",
-		OwnerName:      "Alice Johnson",
-		MachineModel:   "Model ABC",
-		SerialNumber:   "SN123456",
-		InstallDate:    "2024-01-15",
-		FailureDate:    "2024-02-10",
-		RepairDate:     "2024-02-20",
-		FailureDetails: "Engine malfunction",
-		RepairDetails:  "Replaced engine",
-		LabourHours:    "5",
-		CompletedBy:    "Technician A",
+		DealerContact:  &DealerContact,
+		OwnerName:      &OwnerName,
+		MachineModel:   &MachineModel,
+		SerialNumber:   &SerialNumber,
+		InstallDate:    &InstallDate,
+		FailureDate:    &FailureDate,
+		RepairDate:     &RepairDate,
+		FailureDetails: &FailureDetails,
+		RepairDetails:  &RepairDetails,
+		LabourHours:    &LabourHours,
+		CompletedBy:    &CompletedBy,
 		Created:        time.Now(),
 	}
 
@@ -97,19 +109,31 @@ func TestCreateWarranty(test *testing.T) {
 	}
 	defer db.Close()
 
+	DealerContact := "John Doe"
+	OwnerName := "Alice Johnson"
+	MachineModel := "Model ABC"
+	SerialNumber := "SN123456"
+	InstallDate := "2024-01-15"
+	FailureDate := "2024-02-10"
+	RepairDate := "2024-02-20"
+	FailureDetails := "Engine malfunction"
+	RepairDetails := "Replaced engine"
+	LabourHours := "5"
+	CompletedBy := "Technician A"
+
 	warranty := &types.WarrantyClaim{
 		Dealer:         "Dealer XYZ",
-		DealerContact:  "John Smith",
-		OwnerName:      "Alice Brown",
-		MachineModel:   "Model 2000",
-		SerialNumber:   "SN2000XYZ",
-		InstallDate:    "2024-01-20",
-		FailureDate:    "2024-02-15",
-		RepairDate:     "2024-02-20",
-		FailureDetails: "Engine failure",
-		RepairDetails:  "Engine replaced",
-		LabourHours:    "8",
-		CompletedBy:    "Tech John",
+		DealerContact:  &DealerContact,
+		OwnerName:      &OwnerName,
+		MachineModel:   &MachineModel,
+		SerialNumber:   &SerialNumber,
+		InstallDate:    &InstallDate,
+		FailureDate:    &FailureDate,
+		RepairDate:     &RepairDate,
+		FailureDetails: &FailureDetails,
+		RepairDetails:  &RepairDetails,
+		LabourHours:    &LabourHours,
+		CompletedBy:    &CompletedBy,
 	}
 
 	parts := []types.PartsRequired{
