@@ -23,3 +23,8 @@ type UserData struct {
 	Password string
 	Role     string
 }
+
+type LoginAuth struct {
+	Username string
+	Password string
+}

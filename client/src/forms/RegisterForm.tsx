@@ -1,7 +1,7 @@
 import utils from '../styles/Utils.module.css';
+import FormDialog from './FormDialog';
 
 import { useState } from 'react';
-import FormDialog from './FormDialog';
 import { UserData } from '../types/dataTypes';
 import { useMutateResource } from '../hooks/genericHooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

@@ -2,47 +2,25 @@ package services
 
 import (
 	"crypto/tls"
-	"errors"
 	"log"
 	"net"
 	"net/smtp"
 
 	"github.com/sean-david-welch/farmec-v2/server/config"
 	"github.com/sean-david-welch/farmec-v2/server/types"
+	"github.com/sean-david-welch/farmec-v2/server/utils"
 )
 
 type ContactService struct {
-	secrets *config.Secrets
+	secrets   *config.Secrets
+	loginAuth utils.LoginAuth
 }
 
-func NewContactService(secrets *config.Secrets) *ContactService {
-	return &ContactService{secrets: secrets}
-}
-
-type loginAuth struct {
-	username, password string
-}
-
-func LoginAuth(username, password string) smtp.Auth {
-	return &loginAuth{username, password}
-}
-
-func (a *loginAuth) Start(server *smtp.ServerInfo) (string, []byte, error) {
-	return "LOGIN", []byte{}, nil
-}
-
-func (a *loginAuth) Next(fromServer []byte, more bool) ([]byte, error) {
-	if more {
-		switch string(fromServer) {
-		case "Username:":
-			return []byte(a.username), nil
-		case "Password:":
-			return []byte(a.password), nil
-		default:
-			return nil, errors.New("Unkown fromServer")
-		}
+func NewContactService(secrets *config.Secrets, loginAuth utils.LoginAuth) *ContactService {
+	return &ContactService{
+		secrets:   secrets,
+		loginAuth: loginAuth,
 	}
-	return nil, nil
 }
 
 func (service *ContactService) SendEmail(data *types.EmailData) error {
@@ -62,12 +40,10 @@ func (service *ContactService) SendEmail(data *types.EmailData) error {
 
 	tlsConfig := &tls.Config{ServerName: "smtp.office365.com"}
 	if err = c.StartTLS(tlsConfig); err != nil {
-		log.Println("StartTLS error:", err)
 		return err
 	}
 
-	auth := LoginAuth(service.secrets.EmailUser, service.secrets.EmailPass)
-	if err = c.Auth(auth); err != nil {
+	if err = c.Auth(service.loginAuth); err != nil {
 		log.Println("SMTP auth error:", err)
 		return err
 	}

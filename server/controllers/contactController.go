@@ -17,7 +17,7 @@ func NewContactController(service *services.ContactService) *ContactController {
 	return &ContactController{service: service}
 }
 
-func(controller *ContactController) SendEmail(context *gin.Context) {
+func (controller *ContactController) SendEmail(context *gin.Context) {
 	var data *types.EmailData
 
 	if err := context.ShouldBindJSON(&data); err != nil {
