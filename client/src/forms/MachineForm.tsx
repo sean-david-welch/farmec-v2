@@ -47,7 +47,7 @@ const MachineFrom: React.FC<Props> = ({ id, machine, suppliers }) => {
         const body: Machine = {
             supplierId: formData.get('supplierId') as string,
             name: formData.get('name') as string,
-            machine_image: formData.get('machine_image') as string,
+            machine_image: imageFile ? imageFile.name : 'null',
             description: formData.get('description') as string,
             machine_link: formData.get('machine_link') as string,
         };
@@ -62,7 +62,7 @@ const MachineFrom: React.FC<Props> = ({ id, machine, suppliers }) => {
                 };
                 await uploadFileToS3(machineImageData);
             }
-            response.ok ? setShowForm(false) : console.error('failed with response:', response);
+            response && !isError && setShowForm(false);
         } catch (error) {
             console.error('Error creating machine', error);
         }

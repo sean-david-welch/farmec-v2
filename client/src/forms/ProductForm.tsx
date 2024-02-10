@@ -48,7 +48,7 @@ const ProductForm: React.FC<Props> = ({ id, product, machine }) => {
         const body: Product = {
             machineId: formData.get('machineId') as string,
             name: formData.get('name') as string,
-            product_image: formData.get('product_image') as string,
+            product_image: imageFile ? imageFile.name : 'null',
             description: formData.get('description') as string,
             product_link: formData.get('product_link') as string,
         };
@@ -63,8 +63,7 @@ const ProductForm: React.FC<Props> = ({ id, product, machine }) => {
                 };
                 await uploadFileToS3(productImageData);
             }
-
-            response.ok ? setShowForm(false) : console.error('failed with response:', response);
+            response && !isError && setShowForm(false);
         } catch (error) {
             console.error('error creating product', error);
         }

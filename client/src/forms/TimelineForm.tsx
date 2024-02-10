@@ -48,7 +48,7 @@ const TimelineForm: React.FC<Props> = ({ id, timeline }) => {
 
         try {
             const response = await submitTimeline(body);
-            response.ok ? setShowForm(false) : console.error('failed with response:', response);
+            response && !isError && setShowForm(false);
         } catch (error) {
             console.error('error creating timeline', error);
         }

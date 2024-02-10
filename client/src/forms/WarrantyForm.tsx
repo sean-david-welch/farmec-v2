@@ -87,7 +87,7 @@ const WarrantyForm: React.FC<Props> = ({ id, warranty }) => {
 
         try {
             const response = await submitWarranty(body);
-            response.ok ? setShowForm(false) : console.error('failed with response:', response);
+            response && !isError && setShowForm(false);
         } catch (error) {
             console.error('Failed to create wwarranty claim', error);
         }

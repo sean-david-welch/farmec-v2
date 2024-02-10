@@ -49,7 +49,7 @@ const ExhibitionForm: React.FC<Props> = ({ id, exhibition }) => {
 
         try {
             const response = await submitExhibition(body);
-            response.ok ? setShowForm(false) : console.error('failed with response:', response);
+            response && !isError && setShowForm(false);
         } catch (error) {
             console.error('error creating exhibition', error);
         }

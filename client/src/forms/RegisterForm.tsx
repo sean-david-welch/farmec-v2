@@ -44,7 +44,7 @@ const RegisterForm: React.FC<Props> = ({ id }) => {
 
         try {
             const response = await submitUser(body);
-            response.ok ? setShowForm(false) : console.error('failed with response:', response);
+            response && !isError && setShowForm(false);
         } catch (error) {
             console.error('Error submitting form:', error);
         }

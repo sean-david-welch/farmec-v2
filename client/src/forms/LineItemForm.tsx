@@ -44,8 +44,8 @@ const LineItemForm: React.FC<Props> = ({ id, lineItem }) => {
 
         const body: LineItem = {
             name: formData.get('name') as string,
-            price: formData.get('price') as unknown as number,
-            image: formData.get('image') as string,
+            price: parseFloat(formData.get('price') as string),
+            image: imageFile ? imageFile.name : 'null',
         };
 
         try {
@@ -59,7 +59,7 @@ const LineItemForm: React.FC<Props> = ({ id, lineItem }) => {
                 await uploadFileToS3(imageData);
             }
 
-            response.ok ? setShowForm(false) : console.error('failed with response:', response);
+            response && !isError && setShowForm(false);
         } catch (error) {
             console.error('error creating lineItem', error);
         }

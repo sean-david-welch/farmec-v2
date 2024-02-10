@@ -49,7 +49,7 @@ const VideoForm: React.FC<Props> = ({ id, video, suppliers }) => {
 
         try {
             const response = await submitVideo(body);
-            response.ok ? setShowForm(false) : console.error('failed with response:', response);
+            response && !isError && setShowForm(false);
         } catch (error) {
             console.error('error creating video', error);
         }

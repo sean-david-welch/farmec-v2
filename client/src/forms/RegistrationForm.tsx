@@ -58,7 +58,7 @@ const RegistrationForm: React.FC<Props> = ({ id, registration }) => {
 
         try {
             const response = await submitRegistration(body);
-            response.ok ? setShowForm(false) : console.error('failed with response:', response);
+            response && !isError && setShowForm(false);
         } catch (error) {
             console.error('Failed to create warranty claim', error);
         }

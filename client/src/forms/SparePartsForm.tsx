@@ -46,7 +46,7 @@ const SparepartForm: React.FC<Props> = ({ id, sparepart, suppliers }) => {
         const body: Sparepart = {
             supplierId: formData.get('supplierId') as string,
             name: formData.get('name') as string,
-            parts_image: formData.get('parts_image') as string,
+            parts_image: imageFile ? imageFile.name : 'null',
             spare_parts_link: formData.get('spare_parts_link') as string,
         };
 
@@ -60,7 +60,7 @@ const SparepartForm: React.FC<Props> = ({ id, sparepart, suppliers }) => {
                 };
                 await uploadFileToS3(imageData);
             }
-            response.ok ? setShowForm(false) : console.error('failed with response:', response);
+            response && !isError && setShowForm(false);
         } catch (error) {
             console.error('error creating sparepart', error);
         }

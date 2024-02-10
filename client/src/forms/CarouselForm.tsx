@@ -44,7 +44,7 @@ const CarouselForm: React.FC<Props> = ({ id, carousel }) => {
 
         const body: Carousel = {
             name: formData.get('name') as string,
-            image: formData.get('image') as string,
+            image: imageFile ? imageFile.name : 'null',
         };
 
         try {
@@ -58,7 +58,7 @@ const CarouselForm: React.FC<Props> = ({ id, carousel }) => {
                 await uploadFileToS3(imageData);
             }
 
-            response.ok ? setShowForm(false) : console.error('failed with response:', response);
+            response && !isError && setShowForm(false);
         } catch (error) {
             console.error('error creating carousel', error);
         }
