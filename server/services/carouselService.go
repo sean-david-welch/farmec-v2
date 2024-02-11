@@ -36,7 +36,7 @@ func (service *CarouselServiceImpl) GetCarousels() ([]types.Carousel, error) {
 
 func (service *CarouselServiceImpl) CreateCarousel(carousel *types.Carousel) (*types.ModelResult, error) {
 	image := carousel.Image
-	if image == "" {
+	if image != "" && image != "null" {
 		return nil, errors.New("image is empty")
 	}
 
@@ -66,7 +66,7 @@ func (service *CarouselServiceImpl) UpdateCarousel(id string, carousel *types.Ca
 	var presignedUrl, imageUrl string
 	var err error
 
-	if image == "" {
+	if image != "" && image != "null" {
 		presignedUrl, imageUrl, err = service.s3Client.GeneratePresignedUrl(service.folder, image)
 		if err != nil {
 			log.Printf("error occurred while generating presigned url: %v", err)
