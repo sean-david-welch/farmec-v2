@@ -1,9 +1,11 @@
 import utils from '../styles/Utils.module.css';
 import styles from '../styles/Suppliers.module.css';
 
-import { Machine, Product } from '../types/supplierTypes';
+import Loading from '../layouts/Loading';
 import ProductForm from '../forms/ProductForm';
 import DeleteButton from '../components/DeleteButton';
+
+import { Machine, Product } from '../types/supplierTypes';
 import { useGetResourceById } from '../hooks/genericHooks';
 
 interface Props {

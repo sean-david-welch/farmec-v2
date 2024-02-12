@@ -7,7 +7,7 @@ import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 const Error: React.FC = () => {
     return (
         <div className={utils.error}>
-            <h1 className={utils.SectionHeading}>An Error Occurred:</h1>
+            <h1 className={utils.sectionHeading}>An Error Occurred:</h1>
             <Link to={'/'}>
                 <button className={utils.btn}>
                     Go Back <FontAwesomeIcon icon={faRightFromBracket} />

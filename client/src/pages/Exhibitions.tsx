@@ -5,12 +5,14 @@ import { Exhibition } from '../types/blogTypes';
 import { useUserStore } from '../lib/store';
 import { useGetResource } from '../hooks/genericHooks';
 
+import Error from '../layouts/Error';
+import Loading from '../layouts/Loading';
 import ExhibitionForm from '../forms/ExhibitionForm';
 import DeleteButton from '../components/DeleteButton';
 
 const Exhibitions: React.FC = () => {
     const { isAdmin } = useUserStore();
-    const { data: exhibitions, isLoading } = useGetResource<Exhibition[]>('exhibitions');
+    const { data: exhibitions, isLoading, isError } = useGetResource<Exhibition[]>('exhibitions');
 
     if (isError) return <Error />;
     if (isLoading) return <Loading />;

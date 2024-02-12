@@ -1,26 +1,32 @@
 import styles from '../../styles/Account.module.css';
 import utils from '../../styles/Utils.module.css';
 
+import Error from '../../layouts/Error';
+import Loading from '../../layouts/Loading';
+import WarrantyForm from '../../forms/WarrantyForm';
+import DeleteButton from '../../components/DeleteButton';
+
 import { useParams } from 'react-router-dom';
 import { DownloadLink } from '../../components/WarrantyPdf';
 import { useUserStore } from '../../lib/store';
 import { WarrantyParts } from '../../types/miscTypes';
 import { useGetResourceById } from '../../hooks/genericHooks';
-import WarrantyForm from '../../forms/WarrantyForm';
-import DeleteButton from '../../components/DeleteButton';
 
 const WarrantyDetail: React.FC = () => {
     const { isAdmin } = useUserStore();
 
     const id = useParams<{ id: string }>().id as string;
-    const response = useGetResourceById<WarrantyParts>('warranty', id);
+    const { data, isError, isLoading } = useGetResourceById<WarrantyParts>('warranty', id);
+
+    if (isError) return <Error />;
+    if (isLoading) return <Loading />;
 
     if (!id) {
         return <div>Error: No supplier ID provided</div>;
     }
 
-    const parts = response.data?.parts;
-    const warranty = response.data?.warranty;
+    const parts = data?.parts;
+    const warranty = data?.warranty;
 
     if (!warranty || !parts) {
         return (

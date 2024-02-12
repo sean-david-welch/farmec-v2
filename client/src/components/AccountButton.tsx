@@ -1,15 +1,21 @@
 import styles from '../styles/Header.module.css';
 
+import Error from '../layouts/Error';
+import Loading from '../layouts/Loading';
+import LogoutButton from '../forms/LogoutButton';
+
 import { Link } from 'react-router-dom';
 import { Fragment } from 'react';
-import { useUserStore } from '../lib/store';
-import LogoutButton from '../forms/LogoutButton';
-import { useGetResource } from '../hooks/genericHooks';
 import { LineItem } from '../types/miscTypes';
+import { useUserStore } from '../lib/store';
+import { useGetResource } from '../hooks/genericHooks';
 
 const AccountButton = () => {
     const { isAuthenticated, isAdmin } = useUserStore();
-    const { data: lineItem } = useGetResource<LineItem[]>('lineitems');
+    const { data: lineItem, isLoading, isError } = useGetResource<LineItem[]>('lineitems');
+
+    if (isError) return <Error />;
+    if (isLoading) return <Loading />;
 
     return (
         <li className={styles.navItem}>

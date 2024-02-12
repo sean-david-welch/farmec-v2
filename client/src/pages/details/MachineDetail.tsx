@@ -1,5 +1,7 @@
 import utils from '../../styles/Utils.module.css';
 
+import Error from '../../layouts/Error';
+import Loading from '../../layouts/Loading';
 import Products from '../../templates/Products';
 
 import { useParams } from 'react-router-dom';
@@ -11,11 +13,10 @@ import { faRightToBracket } from '@fortawesome/free-solid-svg-icons/faRightToBra
 
 const MachineDetail: React.FC = () => {
     const { isAdmin } = useUserStore();
-
     const id = useParams<{ id: string }>().id as string;
 
     const resourceKeys: (keyof Resources)[] = ['machines', 'products'];
-    const { data, isLoading } = useMultipleResources(id, resourceKeys);
+    const { data, isLoading, isError } = useMultipleResources(id, resourceKeys);
 
     if (!id) {
         return <div>Error: No supplier ID provided</div>;

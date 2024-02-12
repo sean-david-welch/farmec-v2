@@ -1,6 +1,8 @@
 import utils from '../styles/Utils.module.css';
 import styles from '../styles/Account.module.css';
 
+import Error from '../layouts/Error';
+import Loading from '../layouts/Loading';
 import LoginForm from '../forms/LoginForm';
 import RegistrationForm from '../forms/RegistrationForm';
 
@@ -9,11 +11,10 @@ import { Fragment } from 'react';
 import { useUserStore } from '../lib/store';
 import { useGetResource } from '../hooks/genericHooks';
 import { MachineRegistration } from '../types/miscTypes';
-import Loading from '../layouts/Loading';
 
 const Registrations: React.FC = () => {
     const { isAdmin, isAuthenticated } = useUserStore();
-    const { data: registrations, isLoading } = useGetResource<MachineRegistration[]>('registrations');
+    const { data: registrations, isLoading, isError } = useGetResource<MachineRegistration[]>('registrations');
 
     if (isError) return <Error />;
     if (isLoading) return <Loading />;

@@ -15,7 +15,6 @@ import { faRightToBracket } from '@fortawesome/free-solid-svg-icons/faRightToBra
 
 const Blogs: React.FC = () => {
     const { isAdmin } = useUserStore();
-
     const { data: blogs, isLoading, isError } = useGetResource<Blog[]>('blogs');
 
     if (isError) return <Error />;

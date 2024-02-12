@@ -11,13 +11,15 @@ import SparepartForm from '../../forms/SparePartsForm';
 import DeleteButton from '../../components/DeleteButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightToBracket } from '@fortawesome/free-solid-svg-icons/faRightToBracket';
+import Error from '../../layouts/Error';
+import Loading from '../../layouts/Loading';
 
 const PartsDetail: React.FC = () => {
     const { isAdmin } = useUserStore();
     const { suppliers } = useSupplierStore();
 
     const id = useParams<{ id: string }>().id as string;
-    const { data: spareparts, isLoading, error } = useGetResourceById<Sparepart[]>('spareparts', id);
+    const { data: spareparts, isLoading, isError, error } = useGetResourceById<Sparepart[]>('spareparts', id);
 
     if (!id) {
         return <div>Error: No supplier ID provided</div>;
@@ -72,7 +74,7 @@ const PartsDetail: React.FC = () => {
                     </div>
                 ))
             ) : (
-                <div>error: {error?.message || 'Unknown error'}</div>
+                <div>error: {error || 'Unknown error'}</div>
             )}
             {isAdmin && suppliers && <SparepartForm suppliers={suppliers} />}
         </section>

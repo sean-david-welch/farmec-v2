@@ -5,8 +5,10 @@ import { Link } from 'react-router-dom';
 import { Machine } from '../types/supplierTypes';
 import { Fragment } from 'react';
 
+import Loading from '../layouts/Loading';
 import MachineFrom from '../forms/MachineForm';
 import DeleteButton from '../components/DeleteButton';
+
 import { useSupplierStore } from '../lib/store';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightToBracket } from '@fortawesome/free-solid-svg-icons/faRightToBracket';

@@ -1,20 +1,22 @@
 import utils from '../../styles/Utils.module.css';
 import styles from '../../styles/Account.module.css';
 
+import Error from '../../layouts/Error';
+import Loading from '../../layouts/Loading';
+import RegistrationForm from '../../forms/RegistrationForm';
+import DeleteButton from '../../components/DeleteButton';
+
 import { useParams } from 'react-router-dom';
 import { useUserStore } from '../../lib/store';
 import { useGetResourceById } from '../../hooks/genericHooks';
 import { MachineRegistration } from '../../types/miscTypes';
 import { DownloadLink } from '../../components/RegistrationPdf';
-import RegistrationForm from '../../forms/RegistrationForm';
-import DeleteButton from '../../components/DeleteButton';
-import Loading from '../../layouts/Loading';
 
 const RegistrationDetail: React.FC = () => {
     const { isAdmin } = useUserStore();
 
     const id = useParams<{ id: string }>().id as string;
-    const { data: registration, isLoading } = useGetResourceById<MachineRegistration>('registrations', id);
+    const { data: registration, isLoading, isError } = useGetResourceById<MachineRegistration>('registrations', id);
 
     if (isError) return <Error />;
     if (isLoading) return <Loading />;

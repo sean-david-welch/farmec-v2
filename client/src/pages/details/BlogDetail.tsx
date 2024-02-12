@@ -1,18 +1,22 @@
 import styles from '../../styles/Blogs.module.css';
 import utils from '../../styles/Utils.module.css';
 
+import Error from '../../layouts/Error';
+import Loading from '../../layouts/Loading';
+import BlogForm from '../../forms/BlogForm';
+import DeleteButton from '../../components/DeleteButton';
+
 import { Blog } from '../../types/blogTypes';
 import { useParams } from 'react-router-dom';
 import { useGetResourceById } from '../../hooks/genericHooks';
 import { Fragment } from 'react';
 import { useUserStore } from '../../lib/store';
-import BlogForm from '../../forms/BlogForm';
-import DeleteButton from '../../components/DeleteButton';
 
 const BlogDetail: React.FC = () => {
-    const { isAdmin } = useUserStore();
     const id = useParams<{ id: string }>().id as string;
-    const { data: blog, isLoading } = useGetResourceById<Blog>('blogs', id);
+
+    const { isAdmin } = useUserStore();
+    const { data: blog, isLoading, isError } = useGetResourceById<Blog>('blogs', id);
 
     if (isError) return <Error />;
     if (isLoading) return <Loading />;

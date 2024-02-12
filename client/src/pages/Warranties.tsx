@@ -8,13 +8,17 @@ import { useUserStore } from '../lib/store';
 import { useGetResource } from '../hooks/genericHooks';
 import { WarrantyClaim } from '../types/miscTypes';
 import { Fragment } from 'react';
+
+import Error from '../layouts/Error';
+import Loading from '../layouts/Loading';
 import LoginForm from '../forms/LoginForm';
 
 const Warranties: React.FC = () => {
     const { isAdmin, isAuthenticated } = useUserStore();
-    const { data: warranties, isLoading } = useGetResource<WarrantyClaim[]>('warranty');
+    const { data: warranties, isLoading, isError } = useGetResource<WarrantyClaim[]>('warranty');
 
-    if (isLoading) return <div>Loeading...</div>;
+    if (isError) return <Error />;
+    if (isLoading) return <Loading />;
 
     return (
         <section id="warranty">
@@ -25,7 +29,7 @@ const Warranties: React.FC = () => {
 
                     {isAdmin &&
                         warranties &&
-                        warranties.map((warranty) => (
+                        warranties.map(warranty => (
                             <div className={styles.warrantyView} key={warranty.id}>
                                 <h1 className={utils.mainHeading}>
                                     {warranty.dealer} -- {warranty.owner_name}

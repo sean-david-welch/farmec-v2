@@ -3,18 +3,20 @@ import styles from '../styles/About.module.css';
 
 import { Resources } from '../types/dataTypes';
 import { useUserStore } from '../lib/store';
+import { Privacy, Terms } from '../types/aboutTypes';
 import { useMultipleResourcesWithoutId } from '../hooks/genericHooks';
 
+import Error from '../layouts/Error';
+import Loading from '../layouts/Loading';
 import TermForm from '../forms/TermForm';
 import PrivacyForm from '../forms/PrivacyForm';
 import DeleteButton from '../components/DeleteButton';
-import { Privacy, Terms } from '../types/aboutTypes';
 
 const Policies: React.FC = () => {
     const { isAdmin } = useUserStore();
 
     const resourceKeys: (keyof Resources)[] = ['terms', 'privacys'];
-    const { data, isLoading } = useMultipleResourcesWithoutId(resourceKeys);
+    const { data, isLoading, isError } = useMultipleResourcesWithoutId(resourceKeys);
 
     if (isError) return <Error />;
     if (isLoading) return <Loading />;

@@ -1,11 +1,12 @@
 import utils from '../../styles/Utils.module.css';
 import styles from '../../styles/Suppliers.module.css';
 
+import Error from '../../layouts/Error';
 import Videos from '../../templates/Videos';
+import Loading from '../../layouts/Loading';
 import Machines from '../../templates/Machines';
 
 import { useParams } from 'react-router-dom';
-
 import { Resources } from '../../types/dataTypes';
 import { useMultipleResources } from '../../hooks/genericHooks';
 import { useSupplierStore, useUserStore } from '../../lib/store';
@@ -17,7 +18,7 @@ const SuppliersDetails: React.FC = () => {
     const id = useParams<{ id: string }>().id as string;
 
     const resourceKeys: (keyof Resources)[] = ['suppliers', 'supplierMachine', 'videos'];
-    const { data, isLoading } = useMultipleResources(id, resourceKeys);
+    const { data, isLoading, isError } = useMultipleResources(id, resourceKeys);
 
     if (isError) return <Error />;
     if (isLoading) return <Loading />;
