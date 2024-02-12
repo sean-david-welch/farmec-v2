@@ -9,12 +9,14 @@ import { Fragment } from 'react';
 import { useUserStore } from '../lib/store';
 import { useGetResource } from '../hooks/genericHooks';
 import { MachineRegistration } from '../types/miscTypes';
+import Loading from '../layouts/Loading';
 
 const Registrations: React.FC = () => {
     const { isAdmin, isAuthenticated } = useUserStore();
     const { data: registrations, isLoading } = useGetResource<MachineRegistration[]>('registrations');
 
-    if (isLoading) return <div>Loeading...</div>;
+    if (isError) return <Error />;
+    if (isLoading) return <Loading />;
 
     return (
         <section id="registrations">
@@ -24,7 +26,7 @@ const Registrations: React.FC = () => {
                     <RegistrationForm />
                     {isAdmin &&
                         registrations &&
-                        registrations.map((registration) => (
+                        registrations.map(registration => (
                             <div className={styles.warrantyView} key={registration.id}>
                                 <h1 className={utils.mainHeading}>
                                     {registration.dealer_name} -- {registration.owner_name}

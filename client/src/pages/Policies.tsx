@@ -16,9 +16,8 @@ const Policies: React.FC = () => {
     const resourceKeys: (keyof Resources)[] = ['terms', 'privacys'];
     const { data, isLoading } = useMultipleResourcesWithoutId(resourceKeys);
 
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
+    if (isError) return <Error />;
+    if (isLoading) return <Loading />;
 
     const [terms, privacys] = data;
 

@@ -21,9 +21,8 @@ const MachineDetail: React.FC = () => {
         return <div>Error: No supplier ID provided</div>;
     }
 
-    if (isLoading) {
-        return <div>loading...</div>;
-    }
+    if (isError) return <Error />;
+    if (isLoading) return <Loading />;
 
     const [machine, products] = data;
 

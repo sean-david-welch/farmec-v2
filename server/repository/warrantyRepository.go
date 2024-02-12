@@ -3,6 +3,7 @@ package repository
 import (
 	"database/sql"
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/google/uuid"
@@ -28,7 +29,7 @@ func NewWarrantyRepository(database *sql.DB) *WarrantyRepositoryImpl {
 func (repository *WarrantyRepositoryImpl) GetWarranties() ([]types.DealerOwnerInfo, error) {
 	var warranties []types.DealerOwnerInfo
 
-	query := `SELECT "id", "dealer", "owner_name" FROM "WarrantyClaim"`
+	query := `SELECT "id", "dealer", "owner_name" FROM "WarrantyClaim" ORDER BY "created" DESC`
 	rows, err := repository.database.Query(query)
 	if err != nil {
 		return nil, fmt.Errorf("error occurred while querying database: %w", err)
@@ -101,7 +102,7 @@ func (repository *WarrantyRepositoryImpl) CreateWarranty(warranty *types.Warrant
 	}
 
 	warrantyQuery := `INSERT INTO "WarrantyClaim"
-	(id, dealer, dealerContact, owner_name, machine_model, serial_number, install_date, failure_date, repair_date, failure_details, repair_details, labour_hours, completed_by, created)
+	(id, dealer, dealer_contact, owner_name, machine_model, serial_number, install_date, failure_date, repair_date, failure_details, repair_details, labour_hours, completed_by, created)
 	VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)`
 
 	_, err = transaction.Exec(
@@ -115,7 +116,7 @@ func (repository *WarrantyRepositoryImpl) CreateWarranty(warranty *types.Warrant
 	}
 
 	partsQuery := `INSERT INTO "PartsRequired"
-	(id, warrantyId, part_number, quantity_needed, invoice_number, description) VALUES ($1, $2, $3, $4, $5, $6)`
+	(id, "warrantyId", part_number, quantity_needed, invoice_number, description) VALUES ($1, $2, $3, $4, $5, $6)`
 
 	for _, part := range parts {
 		part.ID = uuid.NewString()
@@ -193,6 +194,7 @@ func (repository *WarrantyRepositoryImpl) DeleteWarranty(id string) error {
 	_, err = transaction.Exec(deleteParts, id)
 	if err != nil {
 		transaction.Rollback()
+		log.Printf("error occurred while deleting parts from warranty: %v", err)
 		return err
 	}
 
@@ -200,6 +202,7 @@ func (repository *WarrantyRepositoryImpl) DeleteWarranty(id string) error {
 	_, err = transaction.Exec(deleteWarranty, id)
 	if err != nil {
 		transaction.Rollback()
+		log.Printf("error occurred while deleting warranty claim: %v", err)
 		return err
 	}
 

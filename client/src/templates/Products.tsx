@@ -16,13 +16,13 @@ const Products: React.FC<Props> = ({ id, isAdmin, products }: Props) => {
     const { data: machine } = useGetResourceById<Machine>('machines', id);
 
     if (!machine) {
-        return <div>Loading...</div>;
+        return <Loading />;
     }
 
     return (
         <section id="products">
             <div className={styles.productGrid}>
-                {products.map((product) => (
+                {products.map(product => (
                     <div className={styles.productCard} key={product.id} id={product.name || ''}>
                         <h1 className={utils.mainHeading}>{product.name}</h1>
                         <a href={product.product_link || '#'} target="_blank">

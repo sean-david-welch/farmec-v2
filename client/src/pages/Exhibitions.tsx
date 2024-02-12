@@ -12,9 +12,8 @@ const Exhibitions: React.FC = () => {
     const { isAdmin } = useUserStore();
     const { data: exhibitions, isLoading } = useGetResource<Exhibition[]>('exhibitions');
 
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
+    if (isError) return <Error />;
+    if (isLoading) return <Loading />;
 
     return (
         <section id="exhibitions">
@@ -22,7 +21,7 @@ const Exhibitions: React.FC = () => {
             <h1 className={utils.subHeading}>Check out upcoming events related to Farmec</h1>
             {exhibitions && (
                 <div className={styles.exhibitions}>
-                    {exhibitions.map((exhibition) => (
+                    {exhibitions.map(exhibition => (
                         <div className={styles.exhibition} key={exhibition.id}>
                             <h1 className={utils.mainHeading}>{exhibition.title}</h1>
                             <p className={utils.paragraph}>{exhibition.date}</p>

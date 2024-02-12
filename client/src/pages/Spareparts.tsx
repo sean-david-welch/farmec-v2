@@ -2,41 +2,38 @@ import utils from '../styles/Utils.module.css';
 import styles from '../styles/Suppliers.module.css';
 
 import { Link } from 'react-router-dom';
-
-import { useSupplierStore, useUserStore } from '../lib/store';
-import SparepartForm from '../forms/SparePartsForm';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightToBracket } from '@fortawesome/free-solid-svg-icons';
+import { useSupplierStore, useUserStore } from '../lib/store';
+
 import WarrantyForm from '../forms/WarrantyForm';
+import SparepartForm from '../forms/SparePartsForm';
 import RegistrationForm from '../forms/RegistrationForm';
 
 const SpareParts: React.FC = () => {
-    const { isAdmin, isAuthenticated } = useUserStore();
-
+    const { isAdmin } = useUserStore();
     const { suppliers } = useSupplierStore();
 
     return (
         <section id="SpareParts">
             <h1 className={utils.sectionHeading}>Spare-Parts</h1>
 
-            {isAuthenticated && (
-                <div className={utils.optionsBtn}>
-                    <WarrantyForm />
-                    <RegistrationForm />
-                </div>
-            )}
+            <div className={utils.optionsBtn}>
+                <WarrantyForm />
+                <RegistrationForm />
+            </div>
 
             {suppliers && (
                 <div className={utils.index}>
                     <h1 className={utils.indexHeading}>Suppliers</h1>
-                    {suppliers.map((link) => (
+                    {suppliers.map(link => (
                         <a key={link.name} href={`#${link.name}`}>
                             <h1 className={utils.indexItem}>{link.name}</h1>
                         </a>
                     ))}
                 </div>
             )}
-            {suppliers.map((supplier) => (
+            {suppliers.map(supplier => (
                 <div className={styles.supplierCard} key={supplier.id} id={supplier.name}>
                     <h1 className={utils.mainHeading}>{supplier.name}</h1>
                     <img

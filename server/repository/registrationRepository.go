@@ -28,7 +28,7 @@ func NewRegistrationRepository(database *sql.DB) *RegistrationRepositoryImpl {
 func (repository *RegistrationRepositoryImpl) GetRegistrations() ([]types.MachineRegistration, error) {
 	var registrations []types.MachineRegistration
 
-	query := `SELECT * FROM "MachineRegistration"`
+	query := `SELECT * FROM "MachineRegistration" ORDER BY "created" DESC`
 	rows, err := repository.database.Query(query)
 	if err != nil {
 		return nil, fmt.Errorf("error while querying database: %w", err)

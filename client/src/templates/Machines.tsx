@@ -20,13 +20,13 @@ const Machines: React.FC<Props> = ({ machines, isAdmin }) => {
     const { suppliers } = useSupplierStore();
 
     if (!suppliers) {
-        return <div>Loading...</div>;
+        return <Loading />;
     }
 
     return (
         <section id="machines">
             <h1 className={utils.sectionHeading}>Machinery</h1>
-            {machines.map((machine) => (
+            {machines.map(machine => (
                 <Fragment key={machine.id}>
                     <div className={styles.machineCard}>
                         <div className={styles.machineGrid}>

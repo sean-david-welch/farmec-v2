@@ -23,9 +23,8 @@ const PartsDetail: React.FC = () => {
         return <div>Error: No supplier ID provided</div>;
     }
 
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
+    if (isError) return <Error />;
+    if (isLoading) return <Loading />;
 
     return (
         <section id="partsDetail">

@@ -63,7 +63,7 @@ const WarrantyDetail: React.FC = () => {
                 {isAdmin && warranty.id && (
                     <div className={utils.optionsBtn}>
                         <WarrantyForm id={warranty.id} warranty={warranty} />
-                        <DeleteButton id={warranty.id} resourceKey="warranty" />
+                        <DeleteButton id={warranty.id} resourceKey="warranty" navigateBack={true} />
                     </div>
                 )}
             </div>

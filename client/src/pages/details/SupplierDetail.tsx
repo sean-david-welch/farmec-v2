@@ -19,9 +19,8 @@ const SuppliersDetails: React.FC = () => {
     const resourceKeys: (keyof Resources)[] = ['suppliers', 'supplierMachine', 'videos'];
     const { data, isLoading } = useMultipleResources(id, resourceKeys);
 
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
+    if (isError) return <Error />;
+    if (isLoading) return <Loading />;
 
     const [supplier, machines, videos] = data;
 

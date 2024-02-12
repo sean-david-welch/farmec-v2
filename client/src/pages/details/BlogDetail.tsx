@@ -14,9 +14,8 @@ const BlogDetail: React.FC = () => {
     const id = useParams<{ id: string }>().id as string;
     const { data: blog, isLoading } = useGetResourceById<Blog>('blogs', id);
 
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
+    if (isError) return <Error />;
+    if (isLoading) return <Loading />;
 
     return (
         <section id="blog">
@@ -25,21 +24,16 @@ const BlogDetail: React.FC = () => {
                     <div className={styles.blogDetail}>
                         <h1 className={utils.sectionHeading}>{blog.title}</h1>
                         <div className={styles.blogBody}>
-                            <img
-                                src={blog.main_image || '/default.jpg'}
-                                alt="Blog image"
-                                width={600}
-                                height={600}
-                            />
+                            <img src={blog.main_image || '/default.jpg'} alt="Blog image" width={600} height={600} />
                             <h1 className={utils.mainHeading}>{blog.subheading}</h1>
                             <p className={utils.paragraph}>{blog.body}</p>
                         </div>
                     </div>
                 )}
-                {isAdmin && blog.id && (
+                {isAdmin && blog?.id && (
                     <div className={utils.optionsBtn}>
-                        <BlogForm id={blog.id} blog={blog} />
-                        <DeleteButton id={blog.id} resourceKey="blogs" />
+                        <BlogForm id={blog?.id} blog={blog} />
+                        <DeleteButton id={blog?.id} resourceKey="blogs" navigateBack={true} />
                     </div>
                 )}
             </Fragment>

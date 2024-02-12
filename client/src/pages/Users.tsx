@@ -7,19 +7,21 @@ import { useUserStore } from '../lib/store';
 import { Fragment } from 'react';
 import RegisterForm from '../forms/RegisterForm';
 import DeleteButton from '../components/DeleteButton';
+import Loading from '../layouts/Loading';
 
 const Users: React.FC = () => {
     const { isAdmin } = useUserStore();
     const { data: users, isLoading } = useGetResource<User[]>('users');
 
-    if (isLoading) return <div>Loading...</div>;
+    if (isError) return <Error />;
+    if (isLoading) return <Loading />;
 
     return (
         <section id="users">
             <div className={styles.usersSection}>
                 <h1 className={utils.sectionHeading}>Users</h1>
                 {isAdmin &&
-                    users?.map((user) => (
+                    users?.map(user => (
                         <Fragment key={user.rawId}>
                             <div className={styles.productView}>
                                 <h1 className={utils.paragraph}>

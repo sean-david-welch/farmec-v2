@@ -8,12 +8,16 @@ import { MachineRegistration } from '../../types/miscTypes';
 import { DownloadLink } from '../../components/RegistrationPdf';
 import RegistrationForm from '../../forms/RegistrationForm';
 import DeleteButton from '../../components/DeleteButton';
+import Loading from '../../layouts/Loading';
 
 const RegistrationDetail: React.FC = () => {
     const { isAdmin } = useUserStore();
 
     const id = useParams<{ id: string }>().id as string;
-    const { data: registration } = useGetResourceById<MachineRegistration>('registrations', id);
+    const { data: registration, isLoading } = useGetResourceById<MachineRegistration>('registrations', id);
+
+    if (isError) return <Error />;
+    if (isLoading) return <Loading />;
 
     if (!id) {
         return <div>Error: No supplier ID provided</div>;
@@ -49,7 +53,7 @@ const RegistrationDetail: React.FC = () => {
                     {isAdmin && registration.id && (
                         <div className={utils.optionsBtn}>
                             <RegistrationForm id={registration.id} />
-                            <DeleteButton id={registration.id} resourceKey="registrations" />
+                            <DeleteButton id={registration.id} resourceKey="registrations" navigateBack={true} />
                         </div>
                     )}
                 </div>

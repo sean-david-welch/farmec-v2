@@ -73,7 +73,7 @@ func (service *BlogServiceImpl) UpdateBlog(id string, blog *types.Blog) (*types.
 	var presignedUrl, imageUrl string
 	var err error
 
-	if image != "" && image != "null" {
+	if image == "" || image == "null" {
 		presignedUrl, imageUrl, err = service.s3Client.GeneratePresignedUrl(service.folder, image)
 		if err != nil {
 			log.Printf("error occurred while generating presigned url: %v", err)

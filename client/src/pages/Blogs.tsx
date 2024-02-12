@@ -1,28 +1,34 @@
 import utils from '../styles/Utils.module.css';
 import styles from '../styles/Blogs.module.css';
 
+import Error from '../layouts/Error';
+import Loading from '../layouts/Loading';
+import BlogForm from '../forms/BlogForm';
+import DeleteButton from '../components/DeleteButton';
+
 import { Link } from 'react-router-dom';
 import { Blog } from '../types/blogTypes';
 import { useUserStore } from '../lib/store';
 import { useGetResource } from '../hooks/genericHooks';
-import BlogForm from '../forms/BlogForm';
-import DeleteButton from '../components/DeleteButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightToBracket } from '@fortawesome/free-solid-svg-icons/faRightToBracket';
 
 const Blogs: React.FC = () => {
     const { isAdmin } = useUserStore();
 
-    const blogs = useGetResource<Blog[]>('blogs');
+    const { data: blogs, isLoading, isError } = useGetResource<Blog[]>('blogs');
+
+    if (isError) return <Error />;
+    if (isLoading) return <Loading />;
 
     return (
         <section id="blog">
             <h1 className={utils.sectionHeading}>Check out our Latest Blog Posts</h1>
             <p className={utils.subHeading}> Read our latest news</p>
-            {blogs.data && (
+            {blogs && (
                 <div className={utils.index}>
                     <h1 className={utils.indexHeading}>Suppliers</h1>
-                    {blogs.data.map((link) => (
+                    {blogs.map(link => (
                         <a key={link.title} href={`#${link.title}`}>
                             <h1 className={utils.indexItem}>{link.title}</h1>
                         </a>
@@ -30,7 +36,7 @@ const Blogs: React.FC = () => {
                 </div>
             )}
 
-            {blogs.data?.map((blog) => (
+            {blogs?.map(blog => (
                 <div className={styles.blogGrid} key={blog.id} id={blog.title || ''}>
                     <div className={styles.blogCard}>
                         <img

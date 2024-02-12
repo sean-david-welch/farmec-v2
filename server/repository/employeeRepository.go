@@ -28,7 +28,7 @@ func NewEmployeeRepository(database *sql.DB) *EmployeeRepositoryImpl {
 func (repository *EmployeeRepositoryImpl) GetEmployees() ([]types.Employee, error) {
 	var employees []types.Employee
 
-	query := `SELECT * FROM "Employee"`
+	query := `SELECT * FROM "Employee" ORDER BY "created" ASC`
 	rows, err := repository.database.Query(query)
 	if err != nil {
 		return nil, err

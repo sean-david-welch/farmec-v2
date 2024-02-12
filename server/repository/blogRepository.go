@@ -28,7 +28,7 @@ func NewBlogRepository(database *sql.DB) *BlogRepositoryImpl {
 func (repository *BlogRepositoryImpl) GetBlogs() ([]types.Blog, error) {
 	var blogs []types.Blog
 
-	query := `SELECT * FROM "Blog"`
+	query := `SELECT * FROM "Blog" ORDER BY "created" DESC`
 	rows, err := repository.database.Query(query)
 	if err != nil {
 		return nil, fmt.Errorf("error occurred while querying databse: %w", err)

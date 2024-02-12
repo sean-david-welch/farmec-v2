@@ -72,17 +72,13 @@ const RegistrationForm: React.FC<Props> = ({ id, registration }) => {
             <FormDialog visible={showForm} onClose={() => setShowForm(false)}>
                 <form className={utils.form} onSubmit={handleSubmit}>
                     <h1 className={utils.mainHeading}>Machine Registration Form</h1>
-                    {formFields.map((field) => (
+                    {formFields.map(field => (
                         <div key={field.name}>
                             <label htmlFor={field.name}>{field.label}</label>
                             {field.type === 'select' ? (
-                                <select
-                                    name={field.name}
-                                    id={field.name}
-                                    defaultValue={field.defaultValue || ''}
-                                >
+                                <select name={field.name} id={field.name} defaultValue={field.defaultValue || ''}>
                                     {field.options &&
-                                        field.options.map((option) => (
+                                        field.options.map(option => (
                                             <option key={option} value={option}>
                                                 {option}
                                             </option>

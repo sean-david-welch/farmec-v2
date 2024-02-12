@@ -11,9 +11,8 @@ const Timelines: React.FC = () => {
 
     const { data: timelines, isLoading, error } = useGetResource<Timeline[]>('timelines');
 
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
+    if (isError) return <Error />;
+    if (isLoading) return <Loading />;
 
     return (
         <section id="timeline">

@@ -1,7 +1,9 @@
+import utils from '../styles/Utils.module.css';
+
 const Loading: React.FC = () => {
     return (
-        <div className="loading-spinner">
-            <div className="loading-page"></div>
+        <div className={utils.spinner}>
+            <div className={utils.loadingPage}></div>
         </div>
     );
 };
