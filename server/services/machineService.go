@@ -82,7 +82,7 @@ func (service *MachineServiceImpl) UpdateMachine(id string, machine *types.Machi
 	var presignedUrl, imageUrl string
 	var err error
 
-	if machineImage != "" {
+	if machineImage != "" && machineImage != "null" {
 		presignedUrl, imageUrl, err = service.s3Client.GeneratePresignedUrl(service.folder, machineImage)
 		if err != nil {
 			log.Printf("error occurred while generating presigned url: %v", err)

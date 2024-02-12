@@ -84,7 +84,7 @@ func (service *SupplierServiceImpl) UpdateSupplier(id string, supplier *types.Su
 	var presignedLogo, logoUrl, presignedMarketing, marketingUrl string
 	var err error
 
-	if logoImage != "" {
+	if logoImage != "" && logoImage != "null" {
 		presignedLogo, logoUrl, err = service.s3Client.GeneratePresignedUrl(service.folder, logoImage)
 		if err != nil {
 			return nil, err
@@ -92,7 +92,7 @@ func (service *SupplierServiceImpl) UpdateSupplier(id string, supplier *types.Su
 		supplier.LogoImage = logoUrl
 	}
 
-	if marketingImage != "" {
+	if marketingImage != "" && marketingImage != "null" {
 		presignedMarketing, marketingUrl, err = service.s3Client.GeneratePresignedUrl(service.folder, marketingImage)
 		if err != nil {
 			return nil, err

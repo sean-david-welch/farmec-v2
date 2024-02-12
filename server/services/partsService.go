@@ -67,7 +67,7 @@ func (service *PartsServiceImpl) UpdatePart(id string, part *types.Sparepart) (*
 	var presignedUrl, imageUrl string
 	var err error
 
-	if partsImage != "" {
+	if partsImage != "" && partsImage != "null" {
 		presignedUrl, imageUrl, err = service.s3Client.GeneratePresignedUrl(service.folder, partsImage)
 		if err != nil {
 			log.Printf("error occurred while generating presigned url: %v", err)

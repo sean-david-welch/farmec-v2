@@ -73,7 +73,7 @@ func (service *LineItemServiceImpl) UpdateLineItem(id string, lineItem *types.Li
 	var PresignedUrl, imageUrl string
 	var err error
 
-	if image == "" || image == "null" {
+	if image != "" && image != "null" {
 		PresignedUrl, imageUrl, err = service.s3Client.GeneratePresignedUrl(service.folder, image)
 		if err != nil {
 			log.Printf("error occurred while generating presigned url: %v", err)

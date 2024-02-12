@@ -67,7 +67,7 @@ func (service *ProductServiceImpl) UpdateProduct(id string, product *types.Produ
 	var presignedUrl, imageUrl string
 	var err error
 
-	if productImage != "" {
+	if productImage != "" && productImage != "null" {
 		presignedUrl, imageUrl, err = service.s3Client.GeneratePresignedUrl(service.folder, productImage)
 		if err != nil {
 			log.Printf("error occurred while generating presigned url: %v", err)
