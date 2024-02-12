@@ -104,11 +104,15 @@ func (repository *MachineRepositoryImpl) CreateMachine(machine *types.Machine) e
 }
 
 func (repository *MachineRepositoryImpl) UpdateMachine(id string, machine *types.Machine) error {
-	query := `UPDATE "Machine"
-	SET supplierId = $1, name = $2, machine_image = $3, description = $4, machine_link = $5
-	WHERE ID = $6`
+	query := `UPDATE "Machine" SET supplierId = $1, name = $2, description = $3, machine_link = $4 WHERE ID = $6`
+	args := []interface{}{machine.SupplierID, machine.Name, machine.Description, machine.MachineLink, id}
 
-	_, err := repository.database.Exec(query, machine.SupplierID, machine.Name, machine.MachineImage, machine.Description, machine.MachineLink, id)
+	if machine.MachineImage != "" && machine.MachineImage != "null" {
+		query = `UPDATE "Machine" SET supplierId = $1, name = $2, machine_image = $3, description = $4, machine_link = $5 WHERE ID = $6`
+		args = []interface{}{machine.SupplierID, machine.Name, machine.MachineImage, machine.Description, machine.MachineLink, id}
+	}
+
+	_, err := repository.database.Exec(query, args...)
 
 	if err != nil {
 		return fmt.Errorf("error updating machine: %w", err)

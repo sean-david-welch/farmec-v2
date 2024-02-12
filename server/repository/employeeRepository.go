@@ -86,9 +86,15 @@ func (repository *EmployeeRepositoryImpl) CreateEmployee(employee *types.Employe
 }
 
 func (repository *EmployeeRepositoryImpl) UpdateEmployee(id string, employee *types.Employee) error {
-	query := `UPDATE "Employee" SET name = $1, email = $2, role = $3, profile_image = $5 WHERE "id" = $1`
+	query := `UPDATE "Employee" SET name = $2, email = $3, role = $4, WHERE "id" = $1`
+	args := []interface{}{id, employee.Name, employee.Email, employee.Role}
 
-	_, err := repository.database.Exec(query, id, employee.Name, employee.Email, employee.Role, employee.ProfileImage)
+	if employee.ProfileImage != "" && employee.ProfileImage != "null" {
+		query = `UPDATE "Employee" SET name = $2, email = $3, role = $4, profile_image = $5 WHERE "id" = $1`
+		args = []interface{}{id, employee.Name, employee.Email, employee.Role, employee.ProfileImage}
+	}
+
+	_, err := repository.database.Exec(query, args...)
 	if err != nil {
 		return err
 	}

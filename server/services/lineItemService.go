@@ -1,6 +1,7 @@
 package services
 
 import (
+	"errors"
 	"log"
 
 	"github.com/sean-david-welch/farmec-v2/server/repository"
@@ -46,6 +47,10 @@ func (service *LineItemServiceImpl) GetLineItemById(id string) (*types.LineItem,
 
 func (service *LineItemServiceImpl) CreateLineItem(lineItem *types.LineItem) (*types.ModelResult, error) {
 	image := lineItem.Image
+
+	if image != "" && image != "null" {
+		return nil, errors.New("image is empty")
+	}
 
 	PresignedUrl, imageUrl, err := service.s3Client.GeneratePresignedUrl(service.folder, image)
 	if err != nil {

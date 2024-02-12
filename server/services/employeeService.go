@@ -1,6 +1,7 @@
 package services
 
 import (
+	"errors"
 	"log"
 
 	"github.com/sean-david-welch/farmec-v2/server/repository"
@@ -36,6 +37,10 @@ func (service *EmployeeServiceImpl) GetEmployees() ([]types.Employee, error) {
 
 func (service *EmployeeServiceImpl) CreateEmployee(employee *types.Employee) (*types.ModelResult, error) {
 	image := employee.ProfileImage
+
+	if image != "" && image != "null" {
+		return nil, errors.New("image is empty")
+	}
 
 	PresignedUrl, imageUrl, err := service.s3Client.GeneratePresignedUrl(service.folder, image)
 	if err != nil {

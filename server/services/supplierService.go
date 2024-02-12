@@ -39,6 +39,10 @@ func (service *SupplierServiceImpl) CreateSupplier(supplier *types.Supplier) (*t
 	logoImage := supplier.LogoImage
 	marketingImage := supplier.MarketingImage
 
+	if logoImage != "" && logoImage != "null" {
+		return nil, errors.New("image is empty")
+	}
+
 	if logoImage == "" || marketingImage == "" {
 		return nil, errors.New("logoImage or marketingImage is empty")
 	}

@@ -108,19 +108,34 @@ func (repository *SupplierRepositoryImpl) GetSupplierById(id string) (*types.Sup
 
 func (repository *SupplierRepositoryImpl) UpdateSupplier(id string, supplier *types.Supplier) error {
 	query := `UPDATE "Supplier" SET 
-                name = $1, 
-                logo_image = $2, 
-                marketing_image = $3, 
-                description = $4, 
-                social_facebook = $5, 
-                social_instagram = $6, 
-                social_linkedin = $7, 
-                social_twitter = $8, 
-                social_youtube = $9, 
-                social_website = $10 
-                WHERE id = $11`
+                name = $1,  
+                description = $2, 
+                social_facebook = $3, 
+                social_instagram = $4, 
+                social_linkedin = $5, 
+                social_twitter = $6, 
+                social_youtube = $7, 
+                social_website = $8 
+                WHERE id = $9`
+	args := []interface{}{supplier.Name, supplier.Description, supplier.SocialFacebook, supplier.SocialInstagram, supplier.SocialLinkedin, supplier.SocialTwitter, supplier.SocialYoutube, supplier.SocialWebsite, id}
 
-	_, err := repository.database.Exec(query, supplier.Name, supplier.LogoImage, supplier.MarketingImage, supplier.Description, supplier.SocialFacebook, supplier.SocialInstagram, supplier.SocialLinkedin, supplier.SocialTwitter, supplier.SocialYoutube, supplier.SocialWebsite, id)
+	if supplier.LogoImage != "" && supplier.LogoImage != "null" && supplier.MarketingImage != "" && supplier.MarketingImage != "null" {
+		query = `UPDATE "Supplier" SET 
+		name = $1, 
+		logo_image = $2, 
+		marketing_image = $3, 
+		description = $4, 
+		social_facebook = $5, 
+		social_instagram = $6, 
+		social_linkedin = $7, 
+		social_twitter = $8, 
+		social_youtube = $9, 
+		social_website = $10 
+		WHERE id = $11`
+		args = []interface{}{supplier.Name, supplier.LogoImage, supplier.MarketingImage, supplier.Description, supplier.SocialFacebook, supplier.SocialInstagram, supplier.SocialLinkedin, supplier.SocialTwitter, supplier.SocialYoutube, supplier.SocialWebsite, id}
+	}
+
+	_, err := repository.database.Exec(query, args...)
 
 	if err != nil {
 		return fmt.Errorf("error updating supplier: %w", err)

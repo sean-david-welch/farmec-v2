@@ -36,8 +36,8 @@ func (service *ProductServiceImpl) GetProducts(id string) ([]types.Product, erro
 
 func (service *ProductServiceImpl) CreateProduct(product *types.Product) (*types.ModelResult, error) {
 	productImage := product.ProductImage
-	if productImage == "" {
-		return nil, errors.New("machine image is empty")
+	if productImage != "" && productImage != "null" {
+		return nil, errors.New("image is empty")
 	}
 
 	presignedUrl, imageUrl, err := service.s3Client.GeneratePresignedUrl(service.folder, productImage)

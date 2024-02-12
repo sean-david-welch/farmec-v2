@@ -85,9 +85,15 @@ func (repository *CarouselRepositoryImpl) CreateCarousel(carousel *types.Carouse
 }
 
 func (repository *CarouselRepositoryImpl) UpdateCarousel(id string, carousel *types.Carousel) error {
-	query := `UPDATE "Carousel" SET name = $1, image = $2 WHERE id = $3`
+	query := `UPDATE "Carousel" SET name = $1 WHERE id = $3`
+	args := []interface{}{carousel.Name, id}
 
-	_, err := repository.database.Exec(query, carousel.Name, carousel.Image, id)
+	if carousel.Image != "" && carousel.Image != "null" {
+		query = `UPDATE "Carousel" SET name = $1, image = $2 WHERE id = $3`
+		args = []interface{}{carousel.Name, carousel.Image, id}
+	}
+
+	_, err := repository.database.Exec(query, args...)
 	if err != nil {
 		return fmt.Errorf("error updating carousel: %w", err)
 	}

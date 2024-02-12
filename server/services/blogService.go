@@ -1,6 +1,7 @@
 package services
 
 import (
+	"errors"
 	"log"
 
 	"github.com/sean-david-welch/farmec-v2/server/repository"
@@ -46,6 +47,10 @@ func (service *BlogServiceImpl) GetBlogsByID(id string) (*types.Blog, error) {
 
 func (service *BlogServiceImpl) CreateBlog(blog *types.Blog) (*types.ModelResult, error) {
 	image := blog.MainImage
+
+	if image != "" && image != "null" {
+		return nil, errors.New("image is empty")
+	}
 
 	presignedUrl, imageUrl, err := service.s3Client.GeneratePresignedUrl(service.folder, image)
 	if err != nil {

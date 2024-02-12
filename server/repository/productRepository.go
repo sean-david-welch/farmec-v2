@@ -102,11 +102,16 @@ func (repository *ProductRepositoryImpl) CreateProduct(product *types.Product) e
 }
 
 func (repository *ProductRepositoryImpl) UpdateMachine(id string, product *types.Product) error {
-	query := `UPDATE "Product"
-	SET machineId = $1, name = $2, product_image = $3, description = $4, product_link = $5
-	WHERE id = $6`
+	query := `UPDATE "Product" SET machineId = $1, name = $2, description = $3, product_link = $4 WHERE id = $6`
+	args := []interface{}{product.MachineID, product.Name, product.Description, product.ProductLink, id}
 
-	_, err := repository.database.Exec(query, product.MachineID, product.Name, product.ProductImage, product.Description, product.ProductLink, id)
+	if product.ProductImage != "" && product.ProductImage != "null" {
+		query = `UPDATE "Product" SET machineId = $1, name = $2, product_image = $3, description = $4, product_link = $5 WHERE id = $6`
+		args = []interface{}{product.MachineID, product.Name, product.ProductImage, product.Description, product.ProductLink, id}
+
+	}
+
+	_, err := repository.database.Exec(query, args...)
 
 	if err != nil {
 		return fmt.Errorf("error updating product: %w", err)

@@ -84,10 +84,15 @@ func (repository *LineItemRepositoryImpl) CreateLineItem(lineItem *types.LineIte
 }
 
 func (repository *LineItemRepositoryImpl) UpdateLineItem(id string, lineItem *types.LineItem) error {
-	query := `UPDATE "LineItems"
-	SET "name" = $2, "price" = $3, "image" = $4 WHERE "id" = $1`
+	query := `UPDATE "LineItems" SET "name" = $2, "price" = $3,  WHERE "id" = $1`
+	args := []interface{}{id, lineItem.Name, lineItem.Price}
 
-	_, err := repository.database.Exec(query, id, lineItem.Name, lineItem.Price, lineItem.Image)
+	if lineItem.Image != "" && lineItem.Image != "null" {
+		query = `UPDATE "LineItems" SET "name" = $2, "price" = $3, "image" = $4 WHERE "id" = $1`
+		args = []interface{}{id, lineItem.Name, lineItem.Price, lineItem.Image}
+	}
+
+	_, err := repository.database.Exec(query, args...)
 	if err != nil {
 		return fmt.Errorf("error occurred while updating line item: %w", err)
 	}

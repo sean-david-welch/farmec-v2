@@ -36,8 +36,8 @@ func (service *PartsServiceImpl) GetParts(id string) ([]types.Sparepart, error) 
 
 func (service *PartsServiceImpl) CreatePart(part *types.Sparepart) (*types.ModelResult, error) {
 	partsImage := part.PartsImage
-	if partsImage == "" {
-		return nil, errors.New("parts image is empty")
+	if partsImage != "" && partsImage != "null" {
+		return nil, errors.New("image is empty")
 	}
 
 	presignedUrl, imageUrl, err := service.s3Client.GeneratePresignedUrl(service.folder, partsImage)

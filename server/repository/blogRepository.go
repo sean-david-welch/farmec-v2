@@ -87,9 +87,15 @@ func (repository *BlogRepositoryImpl) CreateBlog(blog *types.Blog) error {
 }
 
 func (repository *BlogRepositoryImpl) UpdateBlog(id string, blog *types.Blog) error {
-	query := `UPDATE "Blog" SET "title" = $1, "date" = $2, "main_image" = $3, "subheading" = $4, "body" = $5 WHERE "id" = $6`
+	query := `UPDATE "Blog" SET "title" = $1, "date" = $2, "subheading" = $3, "body" = $4 WHERE "id" = $5`
+	args := []interface{}{blog.Title, blog.Date, blog.Subheading, blog.Body, id}
 
-	_, err := repository.database.Exec(query, blog.Title, blog.Date, blog.MainImage, blog.Subheading, blog.Body, id)
+	if blog.MainImage != "" && blog.MainImage != "null" {
+		query = `UPDATE "Blog" SET "title" = $1, "date" = $2, "main_image" = $3, "subheading" = $4, "body" = $5 WHERE "id" = $6`
+		args = []interface{}{blog.Title, blog.Date, blog.MainImage, blog.Subheading, blog.Body, id}
+	}
+
+	_, err := repository.database.Exec(query, args...)
 	if err != nil {
 		return fmt.Errorf("error occurred while updating blog: %w", err)
 	}

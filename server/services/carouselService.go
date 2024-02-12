@@ -36,6 +36,7 @@ func (service *CarouselServiceImpl) GetCarousels() ([]types.Carousel, error) {
 
 func (service *CarouselServiceImpl) CreateCarousel(carousel *types.Carousel) (*types.ModelResult, error) {
 	image := carousel.Image
+
 	if image != "" && image != "null" {
 		return nil, errors.New("image is empty")
 	}

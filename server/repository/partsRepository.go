@@ -101,11 +101,15 @@ func (repository *PartsRepositoryImpl) CreatePart(part *types.Sparepart) error {
 }
 
 func (repository *PartsRepositoryImpl) UpdatePart(id string, part *types.Sparepart) error {
-	query := `UPDATE "SpareParts"
-	SET supplierID = $2, name = $3, parts_image = $4, spare_parts_link  = $5
-	WHERE ID = $1`
+	query := `UPDATE "SpareParts" SET supplierID = $2, name = $3, spare_parts_link  = $4 WHERE ID = $1`
+	args := []interface{}{id, part.SupplierID, part.Name, part.SparePartsLink}
 
-	_, err := repository.database.Exec(query, id, part.SupplierID, part.Name, part.PartsImage, part.SparePartsLink)
+	if part.PartsImage != "" && part.PartsImage != "null" {
+		query = `UPDATE "SpareParts" SET supplierID = $2, name = $3, parts_image = $4, spare_parts_link  = $5 WHERE ID = $1`
+		args = []interface{}{id, part.SupplierID, part.Name, part.PartsImage, part.SparePartsLink}
+	}
+
+	_, err := repository.database.Exec(query, args...)
 
 	if err != nil {
 		return fmt.Errorf("error updating part: %w", err)
