@@ -38,7 +38,7 @@ func (service *EmployeeServiceImpl) GetEmployees() ([]types.Employee, error) {
 func (service *EmployeeServiceImpl) CreateEmployee(employee *types.Employee) (*types.ModelResult, error) {
 	image := employee.ProfileImage
 
-	if image != "" && image != "null" {
+	if image == "" || image == "null" {
 		return nil, errors.New("image is empty")
 	}
 

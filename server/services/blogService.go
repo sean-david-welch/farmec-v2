@@ -48,7 +48,7 @@ func (service *BlogServiceImpl) GetBlogsByID(id string) (*types.Blog, error) {
 func (service *BlogServiceImpl) CreateBlog(blog *types.Blog) (*types.ModelResult, error) {
 	image := blog.MainImage
 
-	if image != "" && image != "null" {
+	if image == "" || image == "null" {
 		return nil, errors.New("image is empty")
 	}
 

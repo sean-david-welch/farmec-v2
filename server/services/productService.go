@@ -36,7 +36,7 @@ func (service *ProductServiceImpl) GetProducts(id string) ([]types.Product, erro
 
 func (service *ProductServiceImpl) CreateProduct(product *types.Product) (*types.ModelResult, error) {
 	productImage := product.ProductImage
-	if productImage != "" && productImage != "null" {
+	if productImage == "" || productImage == "null" {
 		return nil, errors.New("image is empty")
 	}
 

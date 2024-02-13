@@ -56,7 +56,6 @@ func (repository *SupplierRepositoryImpl) GetSuppliers() ([]types.Supplier, erro
 	for rows.Next() {
 		var supplier types.Supplier
 
-		// scans rows and copys them to supplier struct
 		if err := scanSupplier(rows, &supplier); err != nil {
 			return nil, fmt.Errorf("error scanning row: %w", err)
 		}

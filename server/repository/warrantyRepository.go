@@ -57,7 +57,7 @@ func (repository *WarrantyRepositoryImpl) GetWarrantyById(id string) (*types.War
 	var warranty types.WarrantyClaim
 	var parts []types.PartsRequired
 
-	warrantyQuery := `SELECT * FROM "WarrantyClaim" WHERE id = $1`
+	warrantyQuery := `SELECT * FROM "WarrantyClaim" WHERE "id" = $1`
 
 	row := repository.database.QueryRow(warrantyQuery, id)
 

@@ -79,7 +79,7 @@ func (service *MachineServiceImpl) CreateMachine(machine *types.Machine) (*types
 func (service *MachineServiceImpl) UpdateMachine(id string, machine *types.Machine) (*types.ModelResult, error) {
 	machineImage := machine.MachineImage
 
-	if machineImage != "" && machineImage != "null" {
+	if machineImage == "" || machineImage == "null" {
 		return nil, errors.New("image is empty")
 	}
 

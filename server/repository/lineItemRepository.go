@@ -72,8 +72,7 @@ func (repository *LineItemRepositoryImpl) GetLineItemById(id string) (*types.Lin
 func (repository *LineItemRepositoryImpl) CreateLineItem(lineItem *types.LineItem) error {
 	lineItem.ID = uuid.NewString()
 
-	query := `INSERT INTO "LineItems"
-	(id, name, price, image) VALUES ($1, $2, $3, $4)`
+	query := `INSERT INTO "LineItems" (id, name, price, image) VALUES ($1, $2, $3, $4)`
 
 	_, err := repository.database.Exec(query, lineItem.ID, lineItem.Name, lineItem.Price, lineItem.Image)
 	if err != nil {

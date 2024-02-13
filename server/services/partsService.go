@@ -36,7 +36,7 @@ func (service *PartsServiceImpl) GetParts(id string) ([]types.Sparepart, error) 
 
 func (service *PartsServiceImpl) CreatePart(part *types.Sparepart) (*types.ModelResult, error) {
 	partsImage := part.PartsImage
-	if partsImage != "" && partsImage != "null" {
+	if partsImage == "" || partsImage == "null" {
 		return nil, errors.New("image is empty")
 	}
 

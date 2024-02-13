@@ -52,7 +52,7 @@ func TestCreateLineItem(test *testing.T) {
 
 	lineItem := &types.LineItem{Name: "Item 1", Price: 10.99, Image: "image1.jpg"}
 
-	mock.ExpectExec(`INSERT INTO "Lineitems" \(id, name, price, image\) VALUES \(\$1, \$2, \$3, \$4\)`).
+	mock.ExpectExec(`INSERT INTO "LineItems" \(id, name, price, image\) VALUES \(\$1, \$2, \$3, \$4\)`).
 		WithArgs(sqlmock.AnyArg(), lineItem.Name, lineItem.Price, lineItem.Image).
 		WillReturnResult(sqlmock.NewResult(1, 1))
 

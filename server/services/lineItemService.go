@@ -48,7 +48,7 @@ func (service *LineItemServiceImpl) GetLineItemById(id string) (*types.LineItem,
 func (service *LineItemServiceImpl) CreateLineItem(lineItem *types.LineItem) (*types.ModelResult, error) {
 	image := lineItem.Image
 
-	if image != "" && image != "null" {
+	if image == "" || image == "null" {
 		return nil, errors.New("image is empty")
 	}
 
