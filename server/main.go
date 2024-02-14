@@ -43,7 +43,7 @@ func main() {
 
 	config := cors.DefaultConfig()
 	config.AllowOrigins = []string{"http://localhost:5173"}
-	config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE"}
+	config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
 	config.AllowHeaders = []string{"Authorization", "Content-Type", "Accept", "Origin"}
 	config.AllowCredentials = true
 
@@ -53,6 +53,6 @@ func main() {
 
 	routes.InitRoutes(router, database, secrets, s3Client, adminMiddleware, authMiddleware, firebase)
 
-	fmt.Println("server running on http://localhost:8080")
-	router.Run("localhost:8080")
+	fmt.Println("server running on http://0.0.0.0:80")
+	router.Run("0.0.0.0:80")
 }

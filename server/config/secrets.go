@@ -31,7 +31,7 @@ type Secrets struct {
 }
 
 func NewSecrets() (*Secrets, error) {
-	if err := godotenv.Load("./.env"); err != nil {
+	if err := godotenv.Load("./bin/.env"); err != nil {
 		return nil, err
 	}
 
