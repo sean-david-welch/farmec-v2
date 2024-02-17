@@ -35,7 +35,6 @@ USER appuser
 
 # Copy the executable.
 COPY --from=build /bin/server /bin/
-COPY .env /bin/
 
 # Expose the port.
 EXPOSE 80
