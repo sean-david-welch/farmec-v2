@@ -62,3 +62,13 @@ resource "aws_route_table_association" "a" {
   route_table_id = aws_route_table.farmec_route_table.id
 }
 
+resource "aws_route_table_association" "b" {
+  subnet_id      = aws_subnet.farmec_subnet_2.id
+  route_table_id = aws_route_table.farmec_route_table.id
+}
+
+resource "aws_route_table_association" "c" {
+  subnet_id      = aws_subnet.farmec_subnet_3.id
+  route_table_id = aws_route_table.farmec_route_table.id
+}
+
