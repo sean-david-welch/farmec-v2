@@ -2,39 +2,26 @@
 
 # Create a stage for building the application.
 ARG GO_VERSION=1.22.0
-FROM --platform=$BUILDPLATFORM golang:${GO_VERSION} AS build
+FROM golang:${GO_VERSION} AS build
 WORKDIR /src
 
-# Download dependencies as a separate step to take advantage of Docker's caching.
-# Note: Adjusted `id` to include a 'cache_' prefix.
-RUN --mount=type=cache,id=projectname_gomod_cache,target=/go/pkg/mod/ \
-    --mount=type=bind,source=go.sum,target=go.sum \
-    --mount=type=bind,source=go.mod,target=go.mod \
-    go mod download -x
+# Copy go.mod and go.sum files first to leverage Docker cache
+COPY go.mod go.sum ./
+RUN go mod download
 
-# This is the architecture you’re building for, which is passed in by the builder.
-ARG TARGETARCH
+# Copy the rest of the source code
+COPY . .
 
 # Build the application.
-# Leverage a cache mount to /go/pkg/mod/ to speed up subsequent builds.
-# Adjusted `id` to include a 'cache_' prefix.
-RUN --mount=type=cache,id=cache_gomod_cache,target=/go/pkg/mod/ \
-    --mount=type=bind,target=. \
-    CGO_ENABLED=0 GOARCH=$TARGETARCH go build -o /bin/server .
+ARG TARGETARCH
+RUN CGO_ENABLED=0 GOARCH=$TARGETARCH go build -o /bin/server .
 
 FROM alpine:latest AS final
 
-# Install any runtime dependencies that are needed to run your application.
-# Leverage a cache mount to /var/cache/apk/ to speed up subsequent builds.
-# Note: Adjusted `id` to include a 'cache_' prefix.
-RUN --mount=type=cache,id=projectname_apk_cache,target=/var/cache/apk \
-    apk --update add \
-        ca-certificates \
-        tzdata \
-        && \
-        update-ca-certificates
+# Install runtime dependencies.
+RUN apk --no-cache add ca-certificates tzdata
 
-# Create a non-privileged user that the app will run under.
+# Create a non-privileged user.
 ARG UID=10001
 RUN adduser \
     --disabled-password \
@@ -46,12 +33,12 @@ RUN adduser \
     appuser
 USER appuser
 
-# Copy the executable from the "build" stage.
-COPY .env /bin/
+# Copy the executable.
 COPY --from=build /bin/server /bin/
+COPY .env /bin/
 
-# Expose the port that the application listens on.
+# Expose the port.
 EXPOSE 80
 
-# What the container should run when it is started.
-ENTRYPOINT [ "/bin/server" ]
+# Run the application.
+ENTRYPOINT ["/bin/server"]
