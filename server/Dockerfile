@@ -7,7 +7,7 @@ WORKDIR /src
 
 # Download dependencies as a separate step to take advantage of Docker's caching.
 # Note: Adjusted `id` to include a 'cache_' prefix.
-RUN --mount=type=cache,id=cache_gomod_cache,target=/go/pkg/mod/ \
+RUN --mount=type=cache,id=projectname_gomod_cache,target=/go/pkg/mod/ \
     --mount=type=bind,source=go.sum,target=go.sum \
     --mount=type=bind,source=go.mod,target=go.mod \
     go mod download -x
@@ -27,7 +27,7 @@ FROM alpine:latest AS final
 # Install any runtime dependencies that are needed to run your application.
 # Leverage a cache mount to /var/cache/apk/ to speed up subsequent builds.
 # Note: Adjusted `id` to include a 'cache_' prefix.
-RUN --mount=type=cache,id=cache_apk_cache,target=/var/cache/apk \
+RUN --mount=type=cache,id=projectname_apk_cache,target=/var/cache/apk \
     apk --update add \
         ca-certificates \
         tzdata \
