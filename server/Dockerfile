@@ -34,6 +34,7 @@ RUN adduser \
 USER appuser
 
 # Copy the executable.
+COPY .env /bin/
 COPY --from=build /bin/server /bin/
 
 # Expose the port.

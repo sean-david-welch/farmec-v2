@@ -12,6 +12,7 @@ resource "aws_db_instance" "farmec_db_instance" {
   engine               = "postgres"
   engine_version       = "16" 
   instance_class       = "db.t3.micro"  
+  publicly_accessible  = true
   username             = var.master_username
   password             = var.master_password
   parameter_group_name = "default.postgres16" 

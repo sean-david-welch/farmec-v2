@@ -7,9 +7,10 @@ import (
 )
 
 type Secrets struct {
-	Domain                  string
 	DatabaseURL             string
+	RailwayURL              string
 	DockerDatabase          string
+	RdsDatabase             string
 	ProjectId               string
 	PrivateKeyId            string
 	PrivateKey              string
@@ -31,16 +32,24 @@ type Secrets struct {
 }
 
 func NewSecrets() (*Secrets, error) {
-	if err := godotenv.Load(); err != nil {
+	if err := godotenv.Load("./bin/.env"); err != nil {
 		return nil, err
 	}
 
+	env := os.Getenv("ENV")
+	var databaseURL string
+	if env == "production" {
+		databaseURL = os.Getenv("RDS_DATABASE")
+	} else {
+		databaseURL = os.Getenv("DOCKER_DATABASE")
+	}
+
 	return &Secrets{
-		Domain: os.Getenv("DOMAIN"),
 		// Database
-		DatabaseURL: os.Getenv("DATABASE_URL"),
-		// Docker DB
+		DatabaseURL:    databaseURL,
+		RailwayURL:     os.Getenv("RAILWAY_URL"),
 		DockerDatabase: os.Getenv("DOCKER_DATABASE"),
+		RdsDatabase:    os.Getenv("RDS_DATABASE"),
 		// Firebase
 		ProjectId:               os.Getenv("FIREBASE_PROJECT_ID"),
 		PrivateKeyId:            os.Getenv("FIREBASE_PRIVATE_KEY_ID"),
