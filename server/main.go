@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 	"os"
 
@@ -54,10 +53,9 @@ func main() {
 
 	routes.InitRoutes(router, database, secrets, s3Client, adminMiddleware, authMiddleware, firebase)
 
-	port := os.Getenv("$PORT")
+	port := os.Getenv("PORT")
 	if port == "" {
 		port = "80"
 	}
-	fmt.Println("server running on http://0.0.0.0:80")
 	router.Run("0.0.0.0:" + port)
 }
