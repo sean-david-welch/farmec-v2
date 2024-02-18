@@ -6,11 +6,11 @@ FROM golang:${GO_VERSION} AS build
 WORKDIR /src
 
 # Copy go.mod and go.sum files first to leverage Docker cache
-COPY go.mod go.sum ./
+COPY server/go.mod server/go.sum ./
 RUN go mod download
 
 # Copy the rest of the source code
-COPY . .
+COPY server/ .
 
 # Build the application.
 ARG TARGETARCH
