@@ -2,8 +2,6 @@ package config
 
 import (
 	"os"
-
-	"github.com/joho/godotenv"
 )
 
 type Secrets struct {
@@ -32,10 +30,6 @@ type Secrets struct {
 }
 
 func NewSecrets() (*Secrets, error) {
-	if err := godotenv.Load("./bin/.env"); err != nil {
-		return nil, err
-	}
-
 	env := os.Getenv("ENV")
 	var databaseURL string
 	if env == "production" {
