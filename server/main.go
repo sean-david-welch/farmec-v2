@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -53,6 +54,10 @@ func main() {
 
 	routes.InitRoutes(router, database, secrets, s3Client, adminMiddleware, authMiddleware, firebase)
 
+	port := os.Getenv("$PORT")
+	if port == "" {
+		port = "80"
+	}
 	fmt.Println("server running on http://0.0.0.0:80")
-	router.Run("0.0.0.0:80")
+	router.Run("0.0.0.0:" + port)
 }
