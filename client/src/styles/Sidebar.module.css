@@ -1,6 +1,6 @@
 .sideNav {
-    @apply absolute left-0 top-0 z-20 min-h-screen w-full border-r-2;
-    @apply bg-zinc-900 text-gray-200 border-red-700;
+    @apply fixed left-0 top-0 z-20 min-h-screen w-full border-r-2;
+    @apply bg-zinc-900 text-gray-200 border-red-700 h-screen;
     @apply transform transition-all duration-700 ease-in-out;
     @apply lg:hidden;
 }
