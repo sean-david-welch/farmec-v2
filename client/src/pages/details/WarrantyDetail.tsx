@@ -11,6 +11,7 @@ import { DownloadLink } from '../../components/WarrantyPdf';
 import { useUserStore } from '../../lib/store';
 import { WarrantyParts } from '../../types/miscTypes';
 import { useGetResourceById } from '../../hooks/genericHooks';
+import { useEffect } from 'react';
 
 const WarrantyDetail: React.FC = () => {
     const { isAdmin } = useUserStore();
@@ -24,6 +25,8 @@ const WarrantyDetail: React.FC = () => {
     if (!id) {
         return <div>Error: No supplier ID provided</div>;
     }
+
+    useEffect(() => {}, [id]);
 
     const parts = data?.parts;
     const warranty = data?.warranty;

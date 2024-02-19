@@ -11,6 +11,7 @@ import { useUserStore } from '../../lib/store';
 import { useGetResourceById } from '../../hooks/genericHooks';
 import { MachineRegistration } from '../../types/miscTypes';
 import { DownloadLink } from '../../components/RegistrationPdf';
+import { useEffect } from 'react';
 
 const RegistrationDetail: React.FC = () => {
     const { isAdmin } = useUserStore();
@@ -24,6 +25,8 @@ const RegistrationDetail: React.FC = () => {
     if (!id) {
         return <div>Error: No supplier ID provided</div>;
     }
+
+    useEffect(() => {}, [id]);
 
     if (!registration) {
         return (

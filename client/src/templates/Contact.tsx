@@ -8,25 +8,38 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook } from '@fortawesome/free-brands-svg-icons/faFacebook';
 import { faTwitter } from '@fortawesome/free-brands-svg-icons/faTwitter';
+import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 
 const Contact: React.FC = () => {
     const mapsKey = config.mapsKey;
+
+    const containerStyle = {
+        width: '600px',
+        height: '600px',
+    };
+
+    const location = {
+        lat: 53.49200990196934,
+        lng: -6.5423895598058435,
+    };
+
+    const center = {
+        lat: 53.49200990196934,
+        lng: -6.5423895598058435,
+    };
 
     return (
         <section id="contact">
             <h1 className={utils.sectionHeading}>Contact Us:</h1>
             <div className={styles.contactSection}>
                 <ContactForm />
-                <iframe
-                    width="600"
-                    height="600"
-                    title="Farmec Ireland Ltd Location"
-                    className={styles.map}
-                    loading="lazy"
-                    allowFullScreen
-                    src={`https://www.google.com/maps/embed/v1/place?q=Farmec%20Ireland%20ltd&key=${mapsKey}`}
-                />
-
+                <div className={styles.map}>
+                    <LoadScript googleMapsApiKey={mapsKey}>
+                        <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={10}>
+                            <Marker position={location} />
+                        </GoogleMap>
+                    </LoadScript>
+                </div>
                 <div className={styles.infoSection}>
                     <h1 className={styles.subHeading}>Business Information:</h1>
                     <div className={styles.info}>
@@ -67,8 +80,7 @@ const Contact: React.FC = () => {
                                     to={'https://www.facebook.com/FarmecIreland/'}
                                     target={'_blank'}
                                     rel={'noopener noreferrer'}
-                                    aria-label="Visit our Facebook page"
-                                >
+                                    aria-label="Visit our Facebook page">
                                     <FontAwesomeIcon icon={faFacebook} />
                                 </Link>
                                 <Link
@@ -76,8 +88,7 @@ const Contact: React.FC = () => {
                                     to={'https://twitter.com/farmec1?lang=en'}
                                     target={'_blank'}
                                     rel={'noopener noreferrer'}
-                                    aria-label="Visit our Twiiter page"
-                                >
+                                    aria-label="Visit our Twiiter page">
                                     <FontAwesomeIcon icon={faTwitter} />
                                 </Link>
                             </div>

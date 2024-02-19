@@ -10,6 +10,7 @@ import { useParams } from 'react-router-dom';
 import { Resources } from '../../types/dataTypes';
 import { useMultipleResources } from '../../hooks/genericHooks';
 import { useSupplierStore, useUserStore } from '../../lib/store';
+import { useEffect } from 'react';
 
 const SuppliersDetails: React.FC = () => {
     const { isAdmin } = useUserStore();
@@ -22,6 +23,8 @@ const SuppliersDetails: React.FC = () => {
 
     if (isError) return <Error />;
     if (isLoading) return <Loading />;
+
+    useEffect(() => {}, [id]);
 
     const [supplier, machines, videos] = data;
 

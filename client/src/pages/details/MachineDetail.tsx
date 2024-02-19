@@ -10,6 +10,7 @@ import { useUserStore } from '../../lib/store';
 import { useMultipleResources } from '../../hooks/genericHooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightToBracket } from '@fortawesome/free-solid-svg-icons/faRightToBracket';
+import { useEffect } from 'react';
 
 const MachineDetail: React.FC = () => {
     const { isAdmin } = useUserStore();
@@ -21,6 +22,8 @@ const MachineDetail: React.FC = () => {
     if (!id) {
         return <div>Error: No supplier ID provided</div>;
     }
+
+    useEffect(() => {}, [id]);
 
     if (isError) return <Error />;
     if (isLoading) return <Loading />;

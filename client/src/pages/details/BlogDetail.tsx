@@ -9,7 +9,7 @@ import DeleteButton from '../../components/DeleteButton';
 import { Blog } from '../../types/blogTypes';
 import { useParams } from 'react-router-dom';
 import { useGetResourceById } from '../../hooks/genericHooks';
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import { useUserStore } from '../../lib/store';
 
 const BlogDetail: React.FC = () => {
@@ -17,6 +17,8 @@ const BlogDetail: React.FC = () => {
 
     const { isAdmin } = useUserStore();
     const { data: blog, isLoading, isError } = useGetResourceById<Blog>('blogs', id);
+
+    useEffect(() => {}, [id]);
 
     if (isError) return <Error />;
     if (isLoading) return <Loading />;

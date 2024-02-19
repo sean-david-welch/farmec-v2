@@ -13,6 +13,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightToBracket } from '@fortawesome/free-solid-svg-icons/faRightToBracket';
 import Error from '../../layouts/Error';
 import Loading from '../../layouts/Loading';
+import { useEffect } from 'react';
 
 const PartsDetail: React.FC = () => {
     const { isAdmin } = useUserStore();
@@ -24,6 +25,8 @@ const PartsDetail: React.FC = () => {
     if (!id) {
         return <div>Error: No supplier ID provided</div>;
     }
+
+    useEffect(() => {}, [id]);
 
     if (isError) return <Error />;
     if (isLoading) return <Loading />;
