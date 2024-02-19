@@ -1,7 +1,10 @@
 package config
 
 import (
+	"fmt"
 	"os"
+
+	"github.com/joho/godotenv"
 )
 
 type Secrets struct {
@@ -35,6 +38,9 @@ func NewSecrets() (*Secrets, error) {
 	if env == "production" {
 		databaseURL = os.Getenv("RDS_DATABASE")
 	} else {
+		if err := godotenv.Load("./bin/.env"); err != nil {
+			return nil, fmt.Errorf("failed to load configurations file: %w", err)
+		}
 		databaseURL = os.Getenv("DOCKER_DATABASE")
 	}
 
