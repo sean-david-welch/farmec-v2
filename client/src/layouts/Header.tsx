@@ -14,7 +14,7 @@ const Header: React.FC = () => {
     const isHomepage = () => location.pathname === '/';
 
     const { data: suppliers } = useGetResource<Supplier[]>('suppliers');
-    const setSuppliers = useSupplierStore((state) => state.setSuppliers);
+    const setSuppliers = useSupplierStore(state => state.setSuppliers);
 
     useEffect(() => {
         if (suppliers) {
@@ -25,12 +25,7 @@ const Header: React.FC = () => {
     return (
         <nav className={isHomepage() ? styles.transparentNav : styles.navbar}>
             <Link to="/" aria-label="logo button">
-                <img
-                    src="https://d3eerclezczw8.cloudfront.net/farmec_images/farmeclogo.webp"
-                    alt="Logo"
-                    width="250"
-                    height="250"
-                />
+                <img src="https://farmec.ie/farmec_images/farmeclogo.webp" alt="Logo" width="250" height="250" />
             </Link>
 
             <ul className={styles.navList}>
@@ -57,7 +52,7 @@ const Header: React.FC = () => {
                     </Link>
                     {suppliers && (
                         <ul className={styles.navDrop}>
-                            {suppliers.map((supplier) => (
+                            {suppliers.map(supplier => (
                                 <li className={styles.navDropItem} key={supplier.id}>
                                     <Link to={`/suppliers/${supplier.id}`}>{supplier.name}</Link>
                                 </li>
@@ -73,7 +68,7 @@ const Header: React.FC = () => {
 
                     {suppliers && (
                         <ul className={styles.navDrop}>
-                            {suppliers.map((supplier) => (
+                            {suppliers.map(supplier => (
                                 <li className={styles.navDropItem} key={supplier.id}>
                                     <Link to={`/spareparts/${supplier.id}`}>{supplier.name}</Link>
                                 </li>
