@@ -20,7 +20,7 @@ func NewAdminMiddleware(firebase *lib.Firebase) *AdminMiddleware {
 func (middleware *AdminMiddleware) Middleware() gin.HandlerFunc {
 	return func(context *gin.Context) {
 
-		cookie, err := context.Cookie("session")
+		cookie, err := context.Cookie("access_token")
 		if err != nil {
 			log.Printf("error occurred no cookie provided: %s", err)
 			context.AbortWithStatusJSON(401, gin.H{"error": "Unauthorized, No cookie provided"})

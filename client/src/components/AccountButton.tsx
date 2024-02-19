@@ -1,7 +1,5 @@
 import styles from '../styles/Header.module.css';
 
-import Error from '../layouts/Error';
-import Loading from '../layouts/Loading';
 import LogoutButton from '../forms/LogoutButton';
 
 import { Link } from 'react-router-dom';
@@ -12,10 +10,7 @@ import { useGetResource } from '../hooks/genericHooks';
 
 const AccountButton = () => {
     const { isAuthenticated, isAdmin } = useUserStore();
-    const { data: lineItem, isLoading, isError } = useGetResource<LineItem[]>('lineitems');
-
-    if (isError) return <Error />;
-    if (isLoading) return <Loading />;
+    const { data: lineItem } = useGetResource<LineItem[]>('lineitems');
 
     return (
         <li className={styles.navItem}>

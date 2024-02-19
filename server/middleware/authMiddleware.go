@@ -17,7 +17,7 @@ func NewAuthMiddleware(firebaseService *lib.Firebase) *AuthMiddleware {
 
 func (middleware *AuthMiddleware) Middleware() gin.HandlerFunc {
 	return func(context *gin.Context) {
-		token, err := context.Cookie("session")
+		token, err := context.Cookie("access_token")
 		if err != nil {
 			context.AbortWithStatusJSON(401, gin.H{"error": "Unauthorized, No token provided"})
 			return

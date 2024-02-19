@@ -19,7 +19,7 @@ func NewAuthController(service services.AuthService) *AuthController {
 }
 
 func (controller *AuthController) Logout(context *gin.Context) {
-	context.SetCookie("session", "", -1, "/", "", false, true)
+	context.SetCookie("access_token", "", -1, "/", "", false, true)
 
 	context.JSON(http.StatusOK, gin.H{"message": "Logged out successfully"})
 }
@@ -43,11 +43,11 @@ func (controller *AuthController) Login(context *gin.Context) {
 	}
 
 	context.SetSameSite(http.SameSiteLaxMode)
-	context.SetCookie("session", sessionCookie, 72*3600, "/", "www.farmec.ie", true, true)
+	context.SetCookie("access_token", sessionCookie, 72*3600, "/", "", true, true)
 
 	log.Printf("Cookie set for session: %s", sessionCookie)
 	log.Printf("Setting cookie: Name=%s; Value=%s; MaxAge=%d; Path=%s; Domain=%s; Secure=%t; HttpOnly=%t; SameSite=None",
-		"session", sessionCookie, 72*3600, "/", "www.farmec.ie", true, true)
+		"access_token", sessionCookie, 72*3600, "/", "", true, true)
 
 	context.JSON(http.StatusOK, gin.H{"message": "login successful"})
 }
