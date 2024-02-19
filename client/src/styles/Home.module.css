@@ -24,7 +24,7 @@
 
 .contactForm {
     @apply mx-2 flex w-[20vw] flex-col rounded-lg bg-zinc-800 py-2 text-center;
-    @apply md:mx-auto md:w-[80vw];
+    @apply md:mx-2 md:w-[70vw];
 }
 
 .recapcha {
@@ -34,11 +34,12 @@
 .map {
     @apply flex items-center justify-center;
     @apply mx-auto rounded-xl;
-    @apply md:w-[80vw];
+    @apply md:w-[70vw];
 }
 
 .infoSection {
     @apply flex w-[250px] flex-col;
+    @apply md:w-[70vw];
 }
 
 .subHeading {

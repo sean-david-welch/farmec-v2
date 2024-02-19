@@ -53,6 +53,7 @@
     @apply mx-52 my-10 p-4;
     @apply rounded-2xl border-4 border-zinc-600 bg-zinc-800;
     @apply transition-all duration-500 ease-in-out;
+    @apply md:mx-5;
 }
 
 .warrantyDetail:hover {
@@ -72,6 +73,7 @@
     @apply transition-all duration-700 ease-in-out;
     @apply rounded-2xl border-4 border-zinc-800 bg-zinc-800;
     @apply mx-56 my-4 p-2;
+    @apply md:mx-5;
 }
 
 .userGrid {

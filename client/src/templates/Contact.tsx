@@ -1,45 +1,21 @@
 import utils from '../styles/Utils.module.css';
 import styles from '../styles/Home.module.css';
 
-import config from '../lib/env';
 import ContactForm from '../forms/ContactForm';
 
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook } from '@fortawesome/free-brands-svg-icons/faFacebook';
 import { faTwitter } from '@fortawesome/free-brands-svg-icons/faTwitter';
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import { Map } from '../components/Map';
 
 const Contact: React.FC = () => {
-    const mapsKey = config.mapsKey;
-
-    const containerStyle = {
-        width: '600px',
-        height: '600px',
-    };
-
-    const location = {
-        lat: 53.49200990196934,
-        lng: -6.5423895598058435,
-    };
-
-    const center = {
-        lat: 53.49200990196934,
-        lng: -6.5423895598058435,
-    };
-
     return (
         <section id="contact">
             <h1 className={utils.sectionHeading}>Contact Us:</h1>
             <div className={styles.contactSection}>
                 <ContactForm />
-                <div className={styles.map}>
-                    <LoadScript googleMapsApiKey={mapsKey}>
-                        <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={10}>
-                            <Marker position={location} />
-                        </GoogleMap>
-                    </LoadScript>
-                </div>
+                <Map />
                 <div className={styles.infoSection}>
                     <h1 className={styles.subHeading}>Business Information:</h1>
                     <div className={styles.info}>
@@ -94,6 +70,7 @@ const Contact: React.FC = () => {
                             </div>
                         </div>
                     </div>
+                    M
                 </div>
             </div>
         </section>
