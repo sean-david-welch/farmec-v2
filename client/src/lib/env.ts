@@ -1,5 +1,8 @@
 const config = {
-    baseUrl: import.meta.env.VITE_BASE_URL,
+    baseUrl:
+        import.meta.env.VITE_ENVIRONMENT === 'production'
+            ? 'https://farmec-v2-production.up.railway.app/'
+            : 'http://0.0.0.0:80/',
 
     firebaseApiKey: import.meta.env.VITE_FB_WEB_API_KEY,
     firebaseAuthDomain: import.meta.env.VITE_FB_AUTH_URL,

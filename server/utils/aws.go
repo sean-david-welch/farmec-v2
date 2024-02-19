@@ -41,7 +41,7 @@ func NewS3Client(region, accessKey, secretKey string) (*S3ClientImpl, error) {
 }
 
 func (client *S3ClientImpl) GeneratePresignedUrl(folder string, image string) (string, string, error) {
-	const bucketName = "farmec-bucket"
+	const bucketName = "farmec.ie"
 	const cloudfrontDomain = "https://d3eerclezczw8.cloudfront.net"
 
 	if folder == "" || image == "" {
@@ -74,7 +74,7 @@ func (client *S3ClientImpl) GeneratePresignedUrl(folder string, image string) (s
 
 func (client *S3ClientImpl) DeleteImageFromS3(imageUrl string) error {
 	var respErr *http.ResponseError
-	const bucketName = "farmec-bucket"
+	const bucketName = "farmec.ie"
 
 	parsedUrl, err := url.Parse(imageUrl)
 	if err != nil {
