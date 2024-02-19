@@ -21,10 +21,10 @@ const SuppliersDetails: React.FC = () => {
     const resourceKeys: (keyof Resources)[] = ['suppliers', 'supplierMachine', 'videos'];
     const { data, isLoading, isError } = useMultipleResources(id, resourceKeys);
 
+    useEffect(() => {}, [id]);
+
     if (isError) return <Error />;
     if (isLoading) return <Loading />;
-
-    useEffect(() => {}, [id]);
 
     const [supplier, machines, videos] = data;
 
@@ -61,8 +61,8 @@ const SuppliersDetails: React.FC = () => {
                 </>
             )}
 
-            {machines.length > 0 && <Machines machines={machines} isAdmin={isAdmin} />}
-            {videos.length > 0 && <Videos suppliers={suppliers} videos={videos} isAdmin={isAdmin} />}
+            {machines && <Machines machines={machines} isAdmin={isAdmin} />}
+            {videos && <Videos suppliers={suppliers} videos={videos} isAdmin={isAdmin} />}
         </section>
     );
 };

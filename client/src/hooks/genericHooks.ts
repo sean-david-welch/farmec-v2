@@ -28,7 +28,7 @@ export const useGetResourceById = <T>(resourceKey: keyof Resources, id: string) 
     const url = `${endpoint}/${id}`;
 
     const resource = useQuery<T, Error>({
-        queryKey: [queryKey],
+        queryKey: [queryKey, id],
         queryFn: async () => {
             const response = await fetch(url, { credentials: 'include' });
 
@@ -149,7 +149,7 @@ export const useDeleteResource = (resourceKey: keyof Resources, id: string) => {
 
         onSuccess: () => {
             console.log('success');
-            queryClient.invalidateQueries({ queryKey: [queryKey] });
+            queryClient.invalidateQueries({ queryKey: [queryKey, id] });
         },
     });
 

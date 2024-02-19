@@ -19,14 +19,10 @@ const RegistrationDetail: React.FC = () => {
     const id = useParams<{ id: string }>().id as string;
     const { data: registration, isLoading, isError } = useGetResourceById<MachineRegistration>('registrations', id);
 
+    useEffect(() => {}, [id]);
+
     if (isError) return <Error />;
     if (isLoading) return <Loading />;
-
-    if (!id) {
-        return <div>Error: No supplier ID provided</div>;
-    }
-
-    useEffect(() => {}, [id]);
 
     if (!registration) {
         return (

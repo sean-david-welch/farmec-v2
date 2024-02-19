@@ -14,11 +14,11 @@ const Header: React.FC = () => {
     const isHomepage = () => location.pathname === '/';
 
     const { data: suppliers } = useGetResource<Supplier[]>('suppliers');
-    const setSuppliers = useSupplierStore(state => state.setSuppliers);
+    const setSuppliers = useSupplierStore.getState();
 
     useEffect(() => {
         if (suppliers) {
-            setSuppliers(suppliers);
+            setSuppliers.setSuppliers(suppliers);
         }
     }, [suppliers, setSuppliers]);
 
@@ -65,7 +65,6 @@ const Header: React.FC = () => {
                     <Link to="/spareparts" className={styles.navListItem}>
                         Spareparts
                     </Link>
-
                     {suppliers && (
                         <ul className={styles.navDrop}>
                             {suppliers.map(supplier => (

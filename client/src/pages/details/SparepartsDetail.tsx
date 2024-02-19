@@ -7,12 +7,13 @@ import { Sparepart } from '../../types/supplierTypes';
 import { useGetResourceById } from '../../hooks/genericHooks';
 import { useSupplierStore, useUserStore } from '../../lib/store';
 
-import SparepartForm from '../../forms/SparePartsForm';
-import DeleteButton from '../../components/DeleteButton';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRightToBracket } from '@fortawesome/free-solid-svg-icons/faRightToBracket';
 import Error from '../../layouts/Error';
 import Loading from '../../layouts/Loading';
+import SparepartForm from '../../forms/SparePartsForm';
+import DeleteButton from '../../components/DeleteButton';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRightToBracket } from '@fortawesome/free-solid-svg-icons/faRightToBracket';
 import { useEffect } from 'react';
 
 const PartsDetail: React.FC = () => {
@@ -21,10 +22,6 @@ const PartsDetail: React.FC = () => {
 
     const id = useParams<{ id: string }>().id as string;
     const { data: spareparts, isLoading, isError, error } = useGetResourceById<Sparepart[]>('spareparts', id);
-
-    if (!id) {
-        return <div>Error: No supplier ID provided</div>;
-    }
 
     useEffect(() => {}, [id]);
 

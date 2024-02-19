@@ -19,10 +19,6 @@ const MachineDetail: React.FC = () => {
     const resourceKeys: (keyof Resources)[] = ['machines', 'products'];
     const { data, isLoading, isError } = useMultipleResources(id, resourceKeys);
 
-    if (!id) {
-        return <div>Error: No supplier ID provided</div>;
-    }
-
     useEffect(() => {}, [id]);
 
     if (isError) return <Error />;
