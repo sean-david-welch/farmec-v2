@@ -41,7 +41,7 @@ func (controller *AuthController) Login(context *gin.Context) {
 		return
 	}
 
-	context.SetCookie("session", sessionCookie, 72*3600, "/", "", false, true)
+	context.SetCookie("session", sessionCookie, 72*3600, "/", "farmec.ie", true, true)
 
 	context.JSON(http.StatusOK, gin.H{"message": "login successful"})
 }

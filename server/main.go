@@ -42,7 +42,11 @@ func main() {
 	authMiddleware := middleware.NewAuthMiddleware(firebase)
 
 	config := cors.DefaultConfig()
-	config.AllowOrigins = []string{"http://localhost:5173", "http://farmec.ie.s3-website-eu-west-1.amazonaws.com", "https://d2hp5uofb6qy9a.cloudfront.net", "http://farmec.ie", "http://www.farmec.ie", "https://farmec.ie", "https://www.farmec.ie"}
+	config.AllowOrigins = []string{
+		"http://localhost:5173", "http://farmec.ie.s3-website-eu-west-1.amazonaws.com",
+		"https://d2hp5uofb6qy9a.cloudfront.net", "http://farmec.ie",
+		"http://www.farmec.ie", "https://farmec.ie", "https://www.farmec.ie",
+	}
 	config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
 	config.AllowHeaders = []string{"Authorization", "Content-Type", "Accept", "Origin"}
 	config.AllowCredentials = true

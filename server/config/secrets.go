@@ -33,6 +33,7 @@ type Secrets struct {
 }
 
 func NewSecrets() (*Secrets, error) {
+
 	env := os.Getenv("ENV")
 	var databaseURL string
 	if env == "production" {
