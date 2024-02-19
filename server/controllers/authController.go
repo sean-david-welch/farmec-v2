@@ -42,7 +42,7 @@ func (controller *AuthController) Login(context *gin.Context) {
 	}
 
 	context.SetSameSite(http.SameSiteNoneMode)
-	context.SetCookie("session", sessionCookie, 72*3600, "/", "farmec.ie", true, true)
+	context.SetCookie("session", sessionCookie, 72*3600, "/", "www.farmec.ie", true, true)
 
 	log.Printf("Cookie set for session: %s", sessionCookie)
 
