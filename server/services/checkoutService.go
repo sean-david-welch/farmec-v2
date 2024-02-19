@@ -23,7 +23,7 @@ func NewCheckoutService(secrets *config.Secrets, repository repository.LineItemR
 	return &CheckoutServiceImpl{secrets: secrets, repository: repository}
 }
 func (service *CheckoutServiceImpl) CreateCheckoutSession(id string) (*stripe.CheckoutSession, error) {
-	stripe.Key = service.secrets.StripeSecretKeyTest
+	stripe.Key = service.secrets.StripeSecretKey
 
 	log.Printf("Creating checkout session for product ID: %s", id)
 
@@ -37,7 +37,7 @@ func (service *CheckoutServiceImpl) CreateCheckoutSession(id string) (*stripe.Ch
 
 	params := &stripe.CheckoutSessionParams{
 		UIMode:             stripe.String("embedded"),
-		ReturnURL:          stripe.String("http://localhost:5173/return?session_id={CHECKOUT_SESSION_ID}"),
+		ReturnURL:          stripe.String("https://www.farmec.ie/return?session_id={CHECKOUT_SESSION_ID}"),
 		PaymentMethodTypes: stripe.StringSlice([]string{"card"}),
 		LineItems: []*stripe.CheckoutSessionLineItemParams{
 			{
