@@ -42,7 +42,7 @@ func NewS3Client(region, accessKey, secretKey string) (*S3ClientImpl, error) {
 
 func (client *S3ClientImpl) GeneratePresignedUrl(folder string, image string) (string, string, error) {
 	const bucketName = "farmec.ie"
-	const cloudfrontDomain = "https://d3eerclezczw8.cloudfront.net"
+	const cloudfrontDomain = "https://farmec.ie"
 
 	if folder == "" || image == "" {
 		return "", "", fmt.Errorf("folder and image parameters must not be empty")

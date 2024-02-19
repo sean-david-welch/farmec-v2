@@ -1,5 +1,9 @@
+import styles from '../styles/Header.module.css';
+
 import Header from './Header';
 import Footer from './Footer';
+import Sidebar from './Sidebar';
+
 import { useLocation } from 'react-router-dom';
 
 interface LayoutProps {
@@ -13,7 +17,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
     return (
         <div className="flex max-w-full flex-col overflow-x-hidden">
-            <Header />
+            <header className={styles.header}>
+                <Header />
+                <Sidebar />
+            </header>
             <main className={mainClass}>{children}</main>
             <Footer />
         </div>

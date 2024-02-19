@@ -34,6 +34,7 @@ func (controller *AuthController) Login(context *gin.Context) {
 	}
 
 	idToken := strings.TrimPrefix(authHeader, "Bearer ")
+	log.Printf("ID Token after trimming: %s", idToken)
 
 	sessionCookie, err := controller.service.Login(context.Request.Context(), idToken)
 	if err != nil {

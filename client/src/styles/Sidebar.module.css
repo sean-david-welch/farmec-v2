@@ -1,0 +1,58 @@
+.sideNav {
+    @apply absolute left-0 top-0 z-20 min-h-screen w-full border-r-2;
+    @apply bg-zinc-900 text-gray-200 border-red-700;
+    @apply transform transition-all duration-700 ease-in-out;
+    @apply lg:hidden;
+}
+
+.sideNavOpen {
+    @apply sideNav;
+    @apply translate-x-0 opacity-100 overflow-y-hidden;
+    @apply transform transition-all duration-700 ease-in-out;
+}
+
+.sideNavClosed {
+    @apply -translate-x-full opacity-0;
+    @apply transform transition-all duration-700 ease-in-out;
+}
+
+.backdrop {
+    @apply fixed bg-zinc-900 z-10 top-0 h-24 w-full border-b-4 border-zinc-900;
+    @apply transition-all duration-700 ease-out;
+    @apply hover:border-red-700;
+}
+
+/* Navigtion */
+.navList {
+    @apply my-20 flex flex-col;
+    @apply w-full items-start;
+}
+
+.navItem {
+    @apply flex flex-row items-start;
+    @apply my-3 mx-2 text-xl;
+    @apply transition-all duration-500 ease-in-out;
+    @apply hover:text-red-700;
+}
+
+.navItem svg {
+    @apply h-4 mx-5 my-2;
+}
+
+/* buttons */
+.navIcon {
+    @apply grid grid-cols-2 gap-2;
+    @apply justify-center items-center;
+    @apply fixed bg-zinc-900;
+    @apply cursor-pointer hover:pointer-events-auto z-40;
+    @apply lg:hidden;
+}
+
+.navIcon img {
+    @apply fixed left-5 top-5 z-50;
+}
+
+.navigation {
+    @apply h-7 fixed right-5 top-8;
+    @apply cursor-pointer hover:pointer-events-auto z-50;
+}

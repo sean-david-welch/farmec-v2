@@ -8,7 +8,7 @@ import { LineItem } from '../types/miscTypes';
 import { useUserStore } from '../lib/store';
 import { useGetResource } from '../hooks/genericHooks';
 
-const AccountButton = () => {
+const AccountButton: React.FC = () => {
     const { isAuthenticated, isAdmin } = useUserStore();
     const { data: lineItem } = useGetResource<LineItem[]>('lineitems');
 

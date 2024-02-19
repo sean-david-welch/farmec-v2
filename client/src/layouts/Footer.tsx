@@ -15,7 +15,7 @@ const Footer: React.FC = () => {
             <div className={styles.footerInfo}>
                 <Link to="/" aria-label="logo button">
                     <img
-                        src="https://d3eerclezczw8.cloudfront.net/farmec_images/farmeclogo.webp"
+                        src="https://www.farmec.ie/farmec_images/farmeclogo.webp"
                         alt="Logo"
                         width="180"
                         height="180"
@@ -38,7 +38,7 @@ const Footer: React.FC = () => {
                 <h1 className={utils.mainHeading}>Accreditation</h1>
                 <Link to={'https://ftmta.ie/'} target={'_blank'}>
                     <img
-                        src="https://d3eerclezczw8.cloudfront.net/farmec_images/ftmta-logo.webp"
+                        src="https://www.farmec.ie/farmec_images/ftmta-logo.webp"
                         alt="Logo"
                         width="180"
                         height="180"
@@ -51,8 +51,7 @@ const Footer: React.FC = () => {
                         to={'https://www.facebook.com/FarmecIreland/'}
                         target={'_blank'}
                         rel={'noopener noreferrer'}
-                        aria-label="Visit our Facebook page"
-                    >
+                        aria-label="Visit our Facebook page">
                         <FontAwesomeIcon icon={faFacebook} />
                     </Link>
                     <Link
@@ -60,8 +59,7 @@ const Footer: React.FC = () => {
                         to={'https://twitter.com/farmec1?lang=en'}
                         target={'_blank'}
                         rel={'noopener noreferrer'}
-                        aria-label="Visit our Twiiter page"
-                    >
+                        aria-label="Visit our Twiiter page">
                         <FontAwesomeIcon icon={faTwitter} />
                     </Link>
                 </div>

@@ -38,6 +38,7 @@
 
 .loginForm {
     @apply flex flex-col rounded-2xl bg-zinc-800 p-10 text-center;
+    @apply md:mx-5;
 }
 
 .form > *,
@@ -141,6 +142,7 @@
 
 .loginSection {
     @apply mx-72;
+    @apply md:mx-5;
 }
 /* index */
 .index {
