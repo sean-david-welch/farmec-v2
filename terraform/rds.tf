@@ -1,6 +1,6 @@
 resource "aws_db_subnet_group" "farmec_db_subnet_group" {
   name       = "farmec_db_subnet_group"
-  subnet_ids = [aws_subnet.farmec_subnet.id, aws_subnet.farmec_subnet_2.id, aws_subnet.farmec_subnet_3.id]
+  subnet_ids = tolist(data.aws_subnet_ids.default.ids)
 
   tags = {
     Name = "My DB Subnet Group"

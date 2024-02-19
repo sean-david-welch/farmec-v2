@@ -2,19 +2,19 @@ provider "aws" {
   region = var.aws_region != "" ? var.aws_region : "${var.aws_region}"
 }
 
-resource "aws_key_pair" "deployer" {
+resource "aws_key_pair" "farmec" {
   key_name   = "deployer-key"
-  public_key = file("~/.ssh/id_rsa.pub")
+  public_key = file("~/.ssh/farmec.pub")
 
   tags = {
-    Name = "deployer"
+    Name = "farmec"
   }
 }
 
 resource "aws_security_group" "my_sg" {
   name        = "my_sg"
   description = "Security Group for RDS cluster"
-  vpc_id      = aws_vpc.farmec_vpc.id
+  vpc_id      = data.aws_vpc.default.id
 
   ingress {
     from_port   = 5432
@@ -38,7 +38,7 @@ resource "aws_security_group" "my_sg" {
 resource "aws_security_group" "my_alb_sg" {
   name        = "my_alb_sg"
   description = "Security Group for ALB"
-  vpc_id      = aws_vpc.farmec_vpc.id
+  vpc_id      = data.aws_vpc.default.id
 
   ingress {
     from_port   = 80
