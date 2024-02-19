@@ -25,8 +25,9 @@ func (controller *AuthController) Logout(context *gin.Context) {
 }
 
 func (controller *AuthController) Login(context *gin.Context) {
-	authHeader := context.GetHeader("Authorization")
+	log.Printf("Incoming login request from IP: %s, Path: %s", context.ClientIP(), context.Request.URL.Path)
 
+	authHeader := context.GetHeader("Authorization")
 	if authHeader == "" {
 		context.JSON(http.StatusUnauthorized, gin.H{"error": "an error occurred, could not find auth header"})
 		return
@@ -42,7 +43,7 @@ func (controller *AuthController) Login(context *gin.Context) {
 	}
 
 	context.SetSameSite(http.SameSiteLaxMode)
-	context.SetCookie("session", sessionCookie, 72*3600, "/", "www.farmec.ie", true, true)
+	context.SetCookie("session", sessionCookie, 72*3600, "/", "", true, true)
 
 	log.Printf("Cookie set for session: %s", sessionCookie)
 	log.Printf("Setting cookie: Name=%s; Value=%s; MaxAge=%d; Path=%s; Domain=%s; Secure=%t; HttpOnly=%t; SameSite=None",
