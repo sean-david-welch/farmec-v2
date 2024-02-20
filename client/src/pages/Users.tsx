@@ -6,7 +6,7 @@ import { useGetResource } from '../hooks/genericHooks';
 import { useUserStore } from '../lib/store';
 import { Fragment } from 'react';
 
-import Error from '../layouts/Error';
+import ErrorPage from '../layouts/Error';
 import RegisterForm from '../forms/RegisterForm';
 import DeleteButton from '../components/DeleteButton';
 import Loading from '../layouts/Loading';
@@ -15,7 +15,7 @@ const Users: React.FC = () => {
     const { isAdmin } = useUserStore();
     const { data: users, isLoading, isError } = useGetResource<User[]>('users');
 
-    if (isError) return <Error />;
+    if (isError) return <ErrorPage />;
     if (isLoading) return <Loading />;
 
     return (

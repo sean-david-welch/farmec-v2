@@ -1,6 +1,6 @@
 import utils from '../styles/Utils.module.css';
 
-import Error from '../layouts/Error';
+import ErrorPage from '../layouts/Error';
 import Loading from '../layouts/Loading';
 import Contact from '../templates/Contact';
 import Displays from '../templates/Displays';
@@ -14,7 +14,7 @@ const Home: React.FC = () => {
 
     const images = carousels?.map(carousel => carousel.image) || [];
 
-    if (isError) return <Error />;
+    if (isError) return <ErrorPage />;
     if (isLoading) return <Loading />;
 
     return (

@@ -6,13 +6,13 @@ import { useGetResource } from '../hooks/genericHooks';
 import { Fragment } from 'react';
 import LineItemForm from '../forms/LineItemForm';
 import DeleteButton from '../components/DeleteButton';
-import Error from '../layouts/Error';
+import ErrorPage from '../layouts/Error';
 import Loading from '../layouts/Loading';
 
 const LineItems: React.FC = () => {
     const { data: lineItems, isLoading, isError } = useGetResource<LineItem[]>('lineitems');
 
-    if (isError) return <Error />;
+    if (isError) return <ErrorPage />;
     if (isLoading) return <Loading />;
 
     return (

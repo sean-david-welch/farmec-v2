@@ -1,7 +1,7 @@
 import utils from '../styles/Utils.module.css';
 import styles from '../styles/Blogs.module.css';
 
-import Error from '../layouts/Error';
+import ErrorPage from '../layouts/Error';
 import Loading from '../layouts/Loading';
 import BlogForm from '../forms/BlogForm';
 import DeleteButton from '../components/DeleteButton';
@@ -17,7 +17,7 @@ const Blogs: React.FC = () => {
     const { isAdmin } = useUserStore();
     const { data: blogs, isLoading, isError } = useGetResource<Blog[]>('blogs');
 
-    if (isError) return <Error />;
+    if (isError) return <ErrorPage />;
     if (isLoading) return <Loading />;
 
     return (

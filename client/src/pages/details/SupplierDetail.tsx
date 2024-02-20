@@ -1,7 +1,7 @@
 import utils from '../../styles/Utils.module.css';
 import styles from '../../styles/Suppliers.module.css';
 
-import Error from '../../layouts/Error';
+import ErrorPage from '../../layouts/Error';
 import Videos from '../../templates/Videos';
 import Loading from '../../layouts/Loading';
 import Machines from '../../templates/Machines';
@@ -23,7 +23,7 @@ const SuppliersDetails: React.FC = () => {
 
     useEffect(() => {}, [id]);
 
-    if (isError) return <Error />;
+    if (isError) return <ErrorPage />;
     if (isLoading) return <Loading />;
 
     const [supplier, machines, videos] = data;

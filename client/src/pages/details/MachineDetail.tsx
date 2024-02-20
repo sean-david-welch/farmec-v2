@@ -1,6 +1,6 @@
 import utils from '../../styles/Utils.module.css';
 
-import Error from '../../layouts/Error';
+import ErrorPage from '../../layouts/Error';
 import Loading from '../../layouts/Loading';
 import Products from '../../templates/Products';
 
@@ -21,7 +21,7 @@ const MachineDetail: React.FC = () => {
 
     useEffect(() => {}, [id]);
 
-    if (isError) return <Error />;
+    if (isError) return <ErrorPage />;
     if (isLoading) return <Loading />;
 
     const [machine, products] = data;

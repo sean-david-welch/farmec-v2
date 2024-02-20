@@ -9,7 +9,7 @@ import { useGetResource } from '../hooks/genericHooks';
 import { WarrantyClaim } from '../types/miscTypes';
 import { Fragment } from 'react';
 
-import Error from '../layouts/Error';
+import ErrorPage from '../layouts/Error';
 import Loading from '../layouts/Loading';
 import LoginForm from '../forms/LoginForm';
 
@@ -17,7 +17,7 @@ const Warranties: React.FC = () => {
     const { isAdmin, isAuthenticated } = useUserStore();
     const { data: warranties, isLoading, isError } = useGetResource<WarrantyClaim[]>('warranty');
 
-    if (isError) return <Error />;
+    if (isError) return <ErrorPage />;
     if (isLoading) return <Loading />;
 
     return (

@@ -7,7 +7,7 @@ import { Sparepart } from '../../types/supplierTypes';
 import { useGetResourceById } from '../../hooks/genericHooks';
 import { useSupplierStore, useUserStore } from '../../lib/store';
 
-import Error from '../../layouts/Error';
+import ErrorPage from '../../layouts/Error';
 import Loading from '../../layouts/Loading';
 import SparepartForm from '../../forms/SparePartsForm';
 import DeleteButton from '../../components/DeleteButton';
@@ -25,7 +25,20 @@ const PartsDetail: React.FC = () => {
 
     useEffect(() => {}, [id]);
 
-    if (isError) return <Error />;
+    if (!spareparts) {
+        return (
+            <div>
+                <h1 className={utils.sectionHeading}>No spare parts available for this supplier</h1>
+                <button className={utils.btn}>
+                    <Link to={'/spareparts'}>
+                        Spare Parts <FontAwesomeIcon icon={faRightToBracket} />
+                    </Link>
+                </button>
+            </div>
+        );
+    }
+
+    if (isError) return <ErrorPage />;
     if (isLoading) return <Loading />;
 
     return (

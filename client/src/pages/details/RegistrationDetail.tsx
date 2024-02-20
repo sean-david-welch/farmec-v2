@@ -1,7 +1,7 @@
 import utils from '../../styles/Utils.module.css';
 import styles from '../../styles/Account.module.css';
 
-import Error from '../../layouts/Error';
+import ErrorPage from '../../layouts/Error';
 import Loading from '../../layouts/Loading';
 import RegistrationForm from '../../forms/RegistrationForm';
 import DeleteButton from '../../components/DeleteButton';
@@ -21,7 +21,7 @@ const RegistrationDetail: React.FC = () => {
 
     useEffect(() => {}, [id]);
 
-    if (isError) return <Error />;
+    if (isError) return <ErrorPage />;
     if (isLoading) return <Loading />;
 
     if (!registration) {

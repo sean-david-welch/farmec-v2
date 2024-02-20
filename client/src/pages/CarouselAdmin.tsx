@@ -1,7 +1,7 @@
 import utils from '../styles/Utils.module.css';
 import styles from '../styles/Account.module.css';
 
-import Error from '../layouts/Error';
+import ErrorPage from '../layouts/Error';
 import Loading from '../layouts/Loading';
 import CarouselForm from '../forms/CarouselForm';
 import DeleteButton from '../components/DeleteButton';
@@ -15,7 +15,7 @@ const CarouselAdmin: React.FC = () => {
     const { isAdmin } = useUserStore();
     const { data: carousels, isError, isLoading } = useGetResource<Carousel[]>('carousels');
 
-    if (isError) return <Error />;
+    if (isError) return <ErrorPage />;
     if (isLoading) return <Loading />;
 
     if (!carousels) {

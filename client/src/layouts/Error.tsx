@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 
-const Error: React.FC = () => {
+const ErrorPage: React.FC = () => {
     return (
         <div className={utils.error}>
             <h1 className={utils.sectionHeading}>An Error Occurred:</h1>
@@ -17,4 +17,4 @@ const Error: React.FC = () => {
     );
 };
 
-export default Error;
+export default ErrorPage;

@@ -6,7 +6,7 @@ import { useUserStore } from '../lib/store';
 import { Privacy, Terms } from '../types/aboutTypes';
 import { useMultipleResourcesWithoutId } from '../hooks/genericHooks';
 
-import Error from '../layouts/Error';
+import ErrorPage from '../layouts/Error';
 import Loading from '../layouts/Loading';
 import TermForm from '../forms/TermForm';
 import PrivacyForm from '../forms/PrivacyForm';
@@ -18,7 +18,7 @@ const Policies: React.FC = () => {
     const resourceKeys: (keyof Resources)[] = ['terms', 'privacys'];
     const { data, isLoading, isError } = useMultipleResourcesWithoutId(resourceKeys);
 
-    if (isError) return <Error />;
+    if (isError) return <ErrorPage />;
     if (isLoading) return <Loading />;
 
     const [terms, privacys] = data;

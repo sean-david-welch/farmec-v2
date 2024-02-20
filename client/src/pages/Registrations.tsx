@@ -1,7 +1,7 @@
 import utils from '../styles/Utils.module.css';
 import styles from '../styles/Account.module.css';
 
-import Error from '../layouts/Error';
+import ErrorPage from '../layouts/Error';
 import Loading from '../layouts/Loading';
 import LoginForm from '../forms/LoginForm';
 import RegistrationForm from '../forms/RegistrationForm';
@@ -16,7 +16,7 @@ const Registrations: React.FC = () => {
     const { isAdmin, isAuthenticated } = useUserStore();
     const { data: registrations, isLoading, isError } = useGetResource<MachineRegistration[]>('registrations');
 
-    if (isError) return <Error />;
+    if (isError) return <ErrorPage />;
     if (isLoading) return <Loading />;
 
     return (
