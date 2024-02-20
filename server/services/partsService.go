@@ -50,6 +50,7 @@ func (service *PartsServiceImpl) CreatePart(part *types.Sparepart) (*types.Model
 
 	service.repository.CreatePart(part)
 	if err != nil {
+		log.Printf("Failed to create part: %v", err)
 		return nil, err
 	}
 
@@ -78,6 +79,7 @@ func (service *PartsServiceImpl) UpdatePart(id string, part *types.Sparepart) (*
 
 	service.repository.UpdatePart(id, part)
 	if err != nil {
+		log.Printf("Failed to update part: %v", err)
 		return nil, err
 	}
 

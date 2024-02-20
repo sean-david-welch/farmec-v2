@@ -110,7 +110,6 @@ func (repository *PartsRepositoryImpl) UpdatePart(id string, part *types.Sparepa
 	}
 
 	_, err := repository.database.Exec(query, args...)
-
 	if err != nil {
 		return fmt.Errorf("error updating part: %w", err)
 	}
