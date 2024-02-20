@@ -2,7 +2,7 @@ import { Sparepart, Supplier } from '../types/supplierTypes';
 
 export const getFormFields = (suppliers: Supplier[], sparepart?: Sparepart) => {
     const supplierOptions = Array.isArray(suppliers)
-        ? suppliers.map((supplier) => ({
+        ? suppliers.map(supplier => ({
               label: supplier.name,
               value: supplier.id,
           }))
@@ -29,12 +29,6 @@ export const getFormFields = (suppliers: Supplier[], sparepart?: Sparepart) => {
             label: 'Parts Image ',
             type: 'file',
             placeholder: 'Upload parts image',
-        },
-        {
-            name: 'pdf_link',
-            label: 'PDF Link ',
-            type: 'file',
-            placeholder: 'Enter pdf_link',
         },
         {
             name: 'spare_parts_link',
