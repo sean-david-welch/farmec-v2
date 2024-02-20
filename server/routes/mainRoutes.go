@@ -2,6 +2,7 @@ package routes
 
 import (
 	"database/sql"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sean-david-welch/farmec-v2/server/config"
@@ -13,8 +14,12 @@ import (
 func InitRoutes(router *gin.Engine, database *sql.DB, secrets *config.Secrets, s3Client utils.S3Client, adminMiddleware *middleware.AdminMiddleware, authMiddleware *middleware.AuthMiddleware, firebase *lib.Firebase) {
 	router.GET("/", func(c *gin.Context) {
 		c.JSON(200, gin.H{
-			"message": "Welcome to our API",
+			"message": "Welcome to Farmec Irelands API Service.",
 		})
+	})
+
+	router.GET("/api", func(c *gin.Context) {
+		c.Redirect(http.StatusMovedPermanently, "/")
 	})
 
 	// Supplier Module Resouces
@@ -43,5 +48,12 @@ func InitRoutes(router *gin.Engine, database *sql.DB, secrets *config.Secrets, s
 	// Util Resources
 	InitContact(router, secrets)
 	InitCheckout(router, database, secrets)
+	InitPdfRenderer(router, adminMiddleware)
 	InitAuth(router, firebase, adminMiddleware)
+
+	router.NoRoute(func(c *gin.Context) {
+		c.JSON(http.StatusNotFound, gin.H{
+			"message": "Page not found",
+		})
+	})
 }

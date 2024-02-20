@@ -1,10 +1,9 @@
 import Layout from '../layouts/Layout';
+import Loading from '../layouts/Loading';
 
 import { Suspense, lazy, useEffect } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-
-import { Route, Routes, useLocation } from 'react-router-dom';
-import Loading from '../layouts/Loading';
+import { Route, Routes, useLocation, Navigate } from 'react-router-dom';
 
 const Home = lazy(() => import('../pages/Home'));
 const About = lazy(() => import('../pages/About'));
@@ -47,16 +46,20 @@ const AppRoutes = () => {
                     <Routes>
                         <Route path="/" element={<Home />} />
                         <Route path="/about" element={<About />} />
+                        <Route path="/about/about" element={<Navigate replace to="/about" />} />
                         <Route path="/about/policies" element={<Policies />} />
 
                         <Route path="/suppliers" element={<Suppliers />} />
+                        <Route path="/suppliers/suppliers" element={<Navigate replace to="/suppliers" />} />
                         <Route path="/suppliers/:id" element={<SupplierDetail />} />
                         <Route path="/machines/:id" element={<MachineDetail />} />
 
                         <Route path="/spareparts" element={<Spareparts />} />
                         <Route path="/spareparts/:id" element={<SparepartsDetail />} />
+                        <Route path="/spareparts/spare-parts" element={<Navigate replace to="/spareparts" />} />
 
                         <Route path="/blogs" element={<Blogs />} />
+                        <Route path="/blogs/blogs" element={<Navigate replace to="/blogs" />} />
                         <Route path="/blogs/:id" element={<BlogDetail />} />
                         <Route path="/blog/exhibitions" element={<Exhibitions />} />
 
