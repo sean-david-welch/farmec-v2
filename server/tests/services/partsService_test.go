@@ -41,11 +41,11 @@ func TestGetParts(test *testing.T) {
 		},
 	}
 
-	supplierId := expectedParts[0].SupplierID
+	supplier_id := expectedParts[0].SupplierID
 
-	mockRepo.EXPECT().GetParts(supplierId).Return(expectedParts, nil)
+	mockRepo.EXPECT().GetParts(supplier_id).Return(expectedParts, nil)
 
-	parts, err := service.GetParts(supplierId)
+	parts, err := service.GetParts(supplier_id)
 
 	assert.NoError(test, err)
 	assert.Equal(test, parts, expectedParts)

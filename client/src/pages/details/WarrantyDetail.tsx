@@ -54,7 +54,7 @@ const WarrantyDetail: React.FC = () => {
                 })}
                 {parts.map((part, index) =>
                     Object.entries(part).map(([key, value]) => {
-                        if (key !== 'id' && key !== 'warrantyId') {
+                        if (key !== 'id' && key !== 'warranty_id') {
                             return (
                                 <div className={styles.warrantyGrid} key={key + index}>
                                     <div className={styles.label}>{key}</div>

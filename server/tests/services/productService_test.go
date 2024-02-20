@@ -43,11 +43,11 @@ func TestGetProducts(test *testing.T) {
 		},
 	}
 
-	machineId := expectedProducts[0].MachineID
+	machine_id := expectedProducts[0].MachineID
 
-	mockRepo.EXPECT().GetProducts(machineId).Return(expectedProducts, nil)
+	mockRepo.EXPECT().GetProducts(machine_id).Return(expectedProducts, nil)
 
-	products, err := service.GetProducts(machineId)
+	products, err := service.GetProducts(machine_id)
 
 	assert.NoError(test, err)
 	assert.Equal(test, products, expectedProducts)

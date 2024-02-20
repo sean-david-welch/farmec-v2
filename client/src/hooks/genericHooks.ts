@@ -120,9 +120,7 @@ export const useMutateResource = <T>(resourceKey: keyof Resources, id?: string) 
         },
 
         onSuccess: () => {
-            id
-                ? queryClient.invalidateQueries({ queryKey: [queryKey, id] })
-                : queryClient.invalidateQueries({ queryKey: [queryKey] });
+            queryClient.invalidateQueries({ queryKey: [queryKey] });
         },
     });
 
@@ -150,7 +148,7 @@ export const useDeleteResource = (resourceKey: keyof Resources, id: string) => {
 
         onSuccess: () => {
             console.log('success');
-            queryClient.invalidateQueries({ queryKey: [queryKey, id] });
+            queryClient.invalidateQueries({ queryKey: [queryKey] });
         },
     });
 

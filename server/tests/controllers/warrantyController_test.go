@@ -85,13 +85,13 @@ func TestGetWarranties(test *testing.T) {
 		},
 	}
 
-	warrantyId := expectedWarranty.ID
+	warranty_id := expectedWarranty.ID
 
-	mockService.EXPECT().GetWarrantyById(warrantyId).Return(expectedWarranty, expectedParts, nil)
+	mockService.EXPECT().GetWarrantyById(warranty_id).Return(expectedWarranty, expectedParts, nil)
 
 	router.GET("/api/warranties/:id", controller.GetWarrantyById)
 
-	url := fmt.Sprintf("/api/warranties/%s", warrantyId)
+	url := fmt.Sprintf("/api/warranties/%s", warranty_id)
 	mocks.PerformRequest(test, router, "GET", url, nil, recorder)
 
 	assert.Equal(test, http.StatusOK, recorder.Code)

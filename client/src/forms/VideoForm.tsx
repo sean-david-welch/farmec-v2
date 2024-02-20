@@ -43,7 +43,7 @@ const VideoForm: React.FC<Props> = ({ id, video, suppliers }) => {
         const formData = new FormData(event.currentTarget as HTMLFormElement);
 
         const body: VideoWebUrl = {
-            supplierId: formData.get('supplierId') as string,
+            supplier_id: formData.get('supplier_id') as string,
             web_url: formData.get('web_url') as string,
         };
 
@@ -65,12 +65,12 @@ const VideoForm: React.FC<Props> = ({ id, video, suppliers }) => {
                 <form className={utils.form} onSubmit={handleSubmit} encType="multipart/form-data">
                     <h1 className={utils.mainHeading}>Videos Form</h1>
 
-                    {formFields.map((field) => (
+                    {formFields.map(field => (
                         <div key={field.name}>
                             <label htmlFor={field.name}>{field.label}</label>
                             {field.type === 'select' ? (
                                 <select name={field.name} id={field.name}>
-                                    {field.options?.map((option) => (
+                                    {field.options?.map(option => (
                                         <option key={option.value} value={option.value}>
                                             {option.label}
                                         </option>

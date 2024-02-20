@@ -51,13 +51,13 @@ func TestGetParts(test *testing.T) {
 		},
 	}
 
-	supplierId := expectedParts[0].SupplierID
+	supplier_id := expectedParts[0].SupplierID
 
-	mockService.EXPECT().GetParts(supplierId).Return(expectedParts, nil)
+	mockService.EXPECT().GetParts(supplier_id).Return(expectedParts, nil)
 
 	router.GET("/api/spareparts/:id", controller.GetParts)
 
-	url := fmt.Sprintf("/api/spareparts/%s", supplierId)
+	url := fmt.Sprintf("/api/spareparts/%s", supplier_id)
 	mocks.PerformRequest(test, router, "GET", url, nil, recorder)
 
 	assert.Equal(test, http.StatusOK, recorder.Code)

@@ -51,6 +51,11 @@ func (controller *MachineController) CreateMachine(context *gin.Context) {
 		return
 	}
 
+	if machine.SupplierID == "" || machine.SupplierID == "null" {
+		context.JSON(http.StatusBadRequest, gin.H{"error": "SupplierID cannot be empty"})
+		return
+	}
+
 	result, err := controller.machineService.CreateMachine(&machine)
 	if err != nil {
 		log.Printf("Error creating machine: %v", err)
@@ -74,6 +79,11 @@ func (controller *MachineController) UpdateMachine(context *gin.Context) {
 
 	if err := context.ShouldBindJSON(&machine); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body", "details": err.Error()})
+		return
+	}
+
+	if machine.SupplierID == "" || machine.SupplierID == "null" {
+		context.JSON(http.StatusBadRequest, gin.H{"error": "SupplierID cannot be empty"})
 		return
 	}
 

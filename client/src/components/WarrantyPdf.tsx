@@ -30,8 +30,7 @@ interface Props {
 export const DownloadLink = ({ warranty, parts }: Props) => (
     <PDFDownloadLink
         document={<MyDocument warranty={warranty} parts={parts} />}
-        fileName={`${warranty.owner_name}.warranty.pdf`}
-    >
+        fileName={`${warranty.owner_name}.warranty.pdf`}>
         {() => (
             <button className={utils.btn}>
                 Download Form
@@ -58,7 +57,7 @@ export const MyDocument = ({ warranty, parts }: Props) => (
             })}
             {parts.map((part, index) =>
                 Object.entries(part).map(([key, value]) => {
-                    if (key !== 'id' && key !== 'warrantyId') {
+                    if (key !== 'id' && key !== 'warranty_id') {
                         return (
                             <Text style={styles.content} key={key + index}>
                                 {key}: {String(value)}

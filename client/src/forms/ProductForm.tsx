@@ -46,7 +46,7 @@ const ProductForm: React.FC<Props> = ({ id, product, machine }) => {
         const imageFile = formData.get('product_image') as File;
 
         const body: Product = {
-            machineId: formData.get('machineId') as string,
+            machine_id: formData.get('machine_id') as string,
             name: formData.get('name') as string,
             product_image: imageFile ? imageFile.name : 'null',
             description: formData.get('description') as string,
@@ -78,12 +78,12 @@ const ProductForm: React.FC<Props> = ({ id, product, machine }) => {
             <FormDialog visible={showForm} onClose={() => setShowForm(false)}>
                 <form className={utils.form} onSubmit={handleSubmit} encType="multipart/form-data">
                     <h1 className={utils.mainHeading}>Product Form</h1>
-                    {formFields.map((field) => (
+                    {formFields.map(field => (
                         <div key={field.label}>
                             <label htmlFor={field.name}>{field.label}</label>
                             {field.type === 'select' ? (
                                 <select name={field.name} id={field.name}>
-                                    {field.options?.map((option) => (
+                                    {field.options?.map(option => (
                                         <option key={option.value} value={option.value}>
                                             {option.label}
                                         </option>

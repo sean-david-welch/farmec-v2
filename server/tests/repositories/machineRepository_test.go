@@ -44,17 +44,17 @@ func TestGetMachine(test *testing.T) {
 		},
 	}
 
-	supplierId := machines[0].SupplierID
+	supplier_id := machines[0].SupplierID
 
-	rows := sqlmock.NewRows([]string{"id", "supplierId", "name", "machine_image", "description", "machine_link", "created"})
+	rows := sqlmock.NewRows([]string{"id", "supplier_id", "name", "machine_image", "description", "machine_link", "created"})
 	for _, machine := range machines {
 		rows.AddRow(machine.ID, machine.SupplierID, machine.Name, machine.MachineImage, machine.Description, machine.MachineLink, machine.Created)
 	}
 
-	mock.ExpectQuery(`SELECT \* FROM "Machine" WHERE "supplierId" = \$1`).WillReturnRows(rows)
+	mock.ExpectQuery(`SELECT \* FROM "Machine" WHERE "supplier_id" = \$1`).WillReturnRows(rows)
 
 	repo := repository.NewMachineRepository(db)
-	retrieved, err := repo.GetMachines(supplierId)
+	retrieved, err := repo.GetMachines(supplier_id)
 	if err != nil {
 		test.Fatalf("error occurred while getting items: %s", err)
 	}
@@ -90,7 +90,7 @@ func TestCreateMachine(test *testing.T) {
 		Created:      time.Now(),
 	}
 
-	mock.ExpectExec(`INSERT INTO "Machine" \(id, supplierId, name, machine_image, description, machine_link, created\) 
+	mock.ExpectExec(`INSERT INTO "Machine" \(id, supplier_id, name, machine_image, description, machine_link, created\) 
 	VALUES \(\$1, \$2, \$3, \$4, \$5, \$6, \$7\)`).
 		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), machine.Name, machine.MachineImage, machine.Description, machine.MachineLink, sqlmock.AnyArg()).
 		WillReturnResult(sqlmock.NewResult(1, 1))

@@ -10,12 +10,12 @@ export const getFormFields = (machine: Machine, product?: Product) => {
 
     return [
         {
-            name: 'machine',
+            name: 'machine_id',
             label: 'Machine',
             type: 'select',
             options: machineOptions,
             placeholder: 'Select machine',
-            defaultValue: product?.machineId,
+            defaultValue: product?.machine_id,
         },
         {
             name: 'name',

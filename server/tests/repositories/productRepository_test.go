@@ -36,17 +36,17 @@ func TestGetProduct(test *testing.T) {
 		},
 	}
 
-	machineId := products[0].ID
+	machine_id := products[0].ID
 
-	rows := sqlmock.NewRows([]string{"id", "machineId", "name", "product_image", "description", "product_link"})
+	rows := sqlmock.NewRows([]string{"id", "machine_id", "name", "product_image", "description", "product_link"})
 	for _, product := range products {
 		rows.AddRow(product.ID, product.MachineID, product.Name, product.ProductImage, product.Description, product.ProductLink)
 	}
 
-	mock.ExpectQuery(`SELECT \* FROM "Product" WHERE "machineId" = \$1`).WillReturnRows(rows)
+	mock.ExpectQuery(`SELECT \* FROM "Product" WHERE "machine_id" = \$1`).WillReturnRows(rows)
 
 	repo := repository.NewProductRepository(db)
-	retrieved, err := repo.GetProducts(machineId)
+	retrieved, err := repo.GetProducts(machine_id)
 	if err != nil {
 		test.Fatalf("error occurred while getting items: %s", err)
 	}
@@ -78,7 +78,7 @@ func TestCreateProduct(test *testing.T) {
 		ProductLink:  "machine1Link",
 	}
 
-	mock.ExpectExec(`INSERT INTO "Product" \(id, machineId, name, product_image, description, product_link\)
+	mock.ExpectExec(`INSERT INTO "Product" \(id, machine_id, name, product_image, description, product_link\)
 		VALUES \(\$1, \$2, \$3, \$4, \$5, \$6\)`).
 		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), product.Name, product.ProductImage, product.Description, product.ProductLink).
 		WillReturnResult(sqlmock.NewResult(1, 1))

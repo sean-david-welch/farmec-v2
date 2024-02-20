@@ -38,6 +38,11 @@ func (controller *ProductController) CreateProduct(context *gin.Context) {
 		return
 	}
 
+	if product.MachineID == "" || product.MachineID == "null" {
+		context.JSON(http.StatusBadRequest, gin.H{"error": "SupplierID cannot be empty"})
+		return
+	}
+
 	result, err := controller.productService.CreateProduct(&product)
 	if err != nil {
 		log.Printf("Error creating product: %v", err)
@@ -61,6 +66,11 @@ func (controller *ProductController) UpdateProduct(context *gin.Context) {
 
 	if err := context.ShouldBindJSON(&product); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Request Body", "details": err.Error()})
+		return
+	}
+
+	if product.MachineID == "" || product.MachineID == "null" {
+		context.JSON(http.StatusBadRequest, gin.H{"error": "SupplierID cannot be empty"})
 		return
 	}
 

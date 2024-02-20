@@ -19,7 +19,7 @@ export interface YoutubeApiResponse {
 
 export interface Video {
     id?: string;
-    supplierId: string;
+    supplier_id: string;
     web_url: string;
     title: string;
     description: string;
@@ -29,6 +29,6 @@ export interface Video {
 }
 
 export interface VideoWebUrl {
-    supplierId: string;
+    supplier_id: string;
     web_url: string;
 }

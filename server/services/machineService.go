@@ -34,7 +34,7 @@ func NewMachineService(repository repository.MachineRepository, s3Client utils.S
 func (service *MachineServiceImpl) GetMachines(id string) ([]types.Machine, error) {
 	machines, err := service.repository.GetMachines(id)
 	if err != nil {
-		return nil, errors.New("machines with supplierId not foud")
+		return nil, errors.New("machines with supplier_id not foud")
 	}
 
 	return machines, nil

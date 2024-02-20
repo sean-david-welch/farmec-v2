@@ -45,7 +45,7 @@ const MachineFrom: React.FC<Props> = ({ id, machine, suppliers }) => {
         const imageFile = formData.get('machine_image') as File;
 
         const body: Machine = {
-            supplierId: formData.get('supplierId') as string,
+            supplier_id: formData.get('supplier_id') as string,
             name: formData.get('name') as string,
             machine_image: imageFile ? imageFile.name : 'null',
             description: formData.get('description') as string,
@@ -77,17 +77,16 @@ const MachineFrom: React.FC<Props> = ({ id, machine, suppliers }) => {
             <FormDialog visible={showForm} onClose={() => setShowForm(false)}>
                 <form className={utils.form} onSubmit={handleSubmit} encType="multipart/form-data">
                     <h1 className={utils.mainHeading}>Machine Form</h1>
-                    {formFields.map((field) => (
+                    {formFields.map(field => (
                         <div key={field.name}>
                             <label htmlFor={field.name}>{field.label}</label>
                             {field.type === 'select' ? (
                                 <select name={field.name} id={field.name}>
-                                    {field.options?.map((option) => (
+                                    {field.options?.map(option => (
                                         <option
                                             key={option.value}
                                             value={option.value}
-                                            defaultValue={field.defaultValue}
-                                        >
+                                            defaultValue={field.defaultValue}>
                                             {option.label}
                                         </option>
                                     ))}

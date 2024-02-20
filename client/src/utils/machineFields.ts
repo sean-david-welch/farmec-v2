@@ -2,7 +2,7 @@ import { Machine, Supplier } from '../types/supplierTypes';
 
 export const getFormFields = (suppliers: Supplier[], machine?: Machine) => {
     const supplierOptions = Array.isArray(suppliers)
-        ? suppliers.map((supplier) => ({
+        ? suppliers.map(supplier => ({
               label: supplier.name,
               value: supplier.id,
           }))
@@ -10,12 +10,12 @@ export const getFormFields = (suppliers: Supplier[], machine?: Machine) => {
 
     return [
         {
-            name: 'supplier',
+            name: 'supplier_id',
             label: 'Supplier',
             type: 'select',
             options: supplierOptions,
             placeholder: 'Select supplier',
-            defaultValue: machine?.supplierId,
+            defaultValue: machine?.supplier_id,
         },
         {
             name: 'name',

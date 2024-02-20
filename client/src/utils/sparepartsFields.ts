@@ -10,12 +10,12 @@ export const getFormFields = (suppliers: Supplier[], sparepart?: Sparepart) => {
 
     return [
         {
-            name: 'supplier',
+            name: 'supplier_id',
             label: 'Supplier',
             type: 'select',
             options: supplierOptions,
             placeholder: 'Select supplier',
-            defaultValue: sparepart?.supplierId,
+            defaultValue: sparepart?.supplier_id,
         },
         {
             name: 'name',

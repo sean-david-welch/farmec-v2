@@ -72,11 +72,11 @@ func TestGetWarrantyById(test *testing.T) {
 		},
 	}
 
-	warrantyId := expectedWarranty.ID
+	warranty_id := expectedWarranty.ID
 
-	mockRepo.EXPECT().GetWarrantyById(warrantyId).Return(expectedWarranty, expectedParts, nil)
+	mockRepo.EXPECT().GetWarrantyById(warranty_id).Return(expectedWarranty, expectedParts, nil)
 
-	warranties, parts, err := service.GetWarrantyById(warrantyId)
+	warranties, parts, err := service.GetWarrantyById(warranty_id)
 
 	assert.NoError(test, err)
 	assert.Equal(test, warranties, expectedWarranty)

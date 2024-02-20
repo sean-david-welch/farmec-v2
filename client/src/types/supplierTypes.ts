@@ -1,6 +1,6 @@
 export interface Machine {
     id?: string;
-    supplierId: string;
+    supplier_id: string;
     name: string;
     machine_image: string;
     description: string;
@@ -10,7 +10,7 @@ export interface Machine {
 
 export interface Product {
     id?: string;
-    machineId: string;
+    machine_id: string;
     name: string;
     product_image: string;
     description: string;
@@ -19,7 +19,7 @@ export interface Product {
 
 export interface Sparepart {
     id?: string;
-    supplierId: string;
+    supplier_id: string;
     name: string;
     parts_image: string;
     spare_parts_link: string;

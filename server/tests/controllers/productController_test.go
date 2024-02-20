@@ -54,13 +54,13 @@ func TestGetProducts(test *testing.T) {
 		},
 	}
 
-	machineId := expectedProducts[0].MachineID
+	machine_id := expectedProducts[0].MachineID
 
-	mockService.EXPECT().GetProducts(machineId).Return(expectedProducts, nil)
+	mockService.EXPECT().GetProducts(machine_id).Return(expectedProducts, nil)
 
 	router.GET("/api/products/:id", controller.GetProducts)
 
-	url := fmt.Sprintf("/api/products/%s", machineId)
+	url := fmt.Sprintf("/api/products/%s", machine_id)
 
 	mocks.PerformRequest(test, router, "GET", url, nil, recorder)
 

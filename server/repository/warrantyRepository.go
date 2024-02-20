@@ -68,7 +68,7 @@ func (repository *WarrantyRepositoryImpl) GetWarrantyById(id string) (*types.War
 		return nil, nil, fmt.Errorf("error while querying database: %w", err)
 	}
 
-	partsQuery := `SELECT * FROM "PartsRequired" WHERE "warrantyId" = $1`
+	partsQuery := `SELECT * FROM "PartsRequired" WHERE "warranty_id" = $1`
 	rows, err := repository.database.Query(partsQuery, id)
 	if err != nil {
 		return nil, nil, fmt.Errorf("error querying parts required from database: %w", err)
@@ -116,7 +116,7 @@ func (repository *WarrantyRepositoryImpl) CreateWarranty(warranty *types.Warrant
 	}
 
 	partsQuery := `INSERT INTO "PartsRequired"
-	(id, "warrantyId", part_number, quantity_needed, invoice_number, description) VALUES ($1, $2, $3, $4, $5, $6)`
+	(id, "warranty_id", part_number, quantity_needed, invoice_number, description) VALUES ($1, $2, $3, $4, $5, $6)`
 
 	for _, part := range parts {
 		part.ID = uuid.NewString()
@@ -157,7 +157,7 @@ func (repository *WarrantyRepositoryImpl) UpdateWarranty(id string, warranty *ty
 		return err
 	}
 
-	deleteQuery := `DELETE FROM "PartsRequired" WHERE warrantyId = $1`
+	deleteQuery := `DELETE FROM "PartsRequired" WHERE warranty_id = $1`
 	_, err = transaction.Exec(deleteQuery, id)
 	if err != nil {
 		transaction.Rollback()
@@ -165,7 +165,7 @@ func (repository *WarrantyRepositoryImpl) UpdateWarranty(id string, warranty *ty
 	}
 
 	partsQuery := `INSERT INTO "PartsRequired"
-	(id, warrantyID, part_number, quantity_needed, invoice_number, description) VALUES ($1, $2, $3, $4, $5, $6)`
+	(id, warranty_id, part_number, quantity_needed, invoice_number, description) VALUES ($1, $2, $3, $4, $5, $6)`
 
 	for _, part := range parts {
 		part.ID = uuid.NewString()
@@ -190,7 +190,7 @@ func (repository *WarrantyRepositoryImpl) DeleteWarranty(id string) error {
 		return err
 	}
 
-	deleteParts := `DELETE FROM "PartsRequired" WHERE "warrantyId" = $1`
+	deleteParts := `DELETE FROM "PartsRequired" WHERE "warranty_id" = $1`
 	_, err = transaction.Exec(deleteParts, id)
 	if err != nil {
 		transaction.Rollback()

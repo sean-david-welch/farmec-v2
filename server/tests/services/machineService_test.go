@@ -49,11 +49,11 @@ func TestGetMachine(test *testing.T) {
 		},
 	}
 
-	supplierId := expectedMachines[0].SupplierID
+	supplier_id := expectedMachines[0].SupplierID
 
-	mockRepo.EXPECT().GetMachines(supplierId).Return(expectedMachines, nil)
+	mockRepo.EXPECT().GetMachines(supplier_id).Return(expectedMachines, nil)
 
-	machines, err := service.GetMachines(supplierId)
+	machines, err := service.GetMachines(supplier_id)
 
 	assert.NoError(test, err)
 	assert.Equal(test, machines, expectedMachines)

@@ -51,17 +51,17 @@ func TestGetVideos(test *testing.T) {
 		},
 	}
 
-	supplierId := videos[0].SupplierID
+	supplier_id := videos[0].SupplierID
 
-	rows := sqlmock.NewRows([]string{"id", "supplierId", "web_url", "title", "description", "video_id", "thumbnail_url", "created"})
+	rows := sqlmock.NewRows([]string{"id", "supplier_id", "web_url", "title", "description", "video_id", "thumbnail_url", "created"})
 	for _, video := range videos {
 		rows.AddRow(video.ID, video.SupplierID, video.WebURL, video.Title, video.Description, video.VideoID, video.ThumbnailURL, video.Created)
 	}
 
-	mock.ExpectQuery(`SELECT \* FROM "Video" WHERE "supplierId" = \$1 `).WillReturnRows(rows)
+	mock.ExpectQuery(`SELECT \* FROM "Video" WHERE "supplier_id" = \$1 `).WillReturnRows(rows)
 
 	repo := repository.NewVideoRepository(db)
-	retrieved, err := repo.GetVideos(supplierId)
+	retrieved, err := repo.GetVideos(supplier_id)
 	if err != nil {
 		test.Fatalf("error occurred while getting items: %s", err)
 	}
@@ -100,7 +100,7 @@ func TestCreateVideo(test *testing.T) {
 		Created:      time.Now(),
 	}
 
-	mock.ExpectExec(`INSERT INTO "Video" \("id", "supplierId", "web_url", "title", "description", "video_id", "thumbnail_url", "created"\) VALUES \(\$1, \$2, \$3, \$4, \$5, \$6, \$7, \$8\)`).
+	mock.ExpectExec(`INSERT INTO "Video" \("id", "supplier_id", "web_url", "title", "description", "video_id", "thumbnail_url", "created"\) VALUES \(\$1, \$2, \$3, \$4, \$5, \$6, \$7, \$8\)`).
 		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), video.WebURL, video.Title, video.Description, video.VideoID, video.ThumbnailURL, sqlmock.AnyArg()).
 		WillReturnResult(sqlmock.NewResult(1, 1))
 

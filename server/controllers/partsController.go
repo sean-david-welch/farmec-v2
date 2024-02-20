@@ -38,6 +38,11 @@ func (controller *PartsController) CreateParts(context *gin.Context) {
 		return
 	}
 
+	if part.SupplierID == "" || part.SupplierID == "null" {
+		context.JSON(http.StatusBadRequest, gin.H{"error": "SupplierID cannot be empty"})
+		return
+	}
+
 	result, err := controller.partsService.CreatePart(&part)
 	if err != nil {
 		log.Printf("Error creating part: %v", err)
@@ -62,6 +67,11 @@ func (controller *PartsController) UpdateParts(context *gin.Context) {
 
 	if err := context.ShouldBindJSON(&part); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Request Body", "details": err.Error()})
+		return
+	}
+
+	if part.SupplierID == "" || part.SupplierID == "null" {
+		context.JSON(http.StatusBadRequest, gin.H{"error": "SupplierID cannot be empty"})
 		return
 	}
 

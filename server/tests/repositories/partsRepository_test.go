@@ -34,17 +34,17 @@ func TestGetParts(test *testing.T) {
 		},
 	}
 
-	supplierId := parts[0].SupplierID
+	supplier_id := parts[0].SupplierID
 
-	rows := sqlmock.NewRows([]string{"id", "supplierId", "name", "parts_image", "spare_parts_links"})
+	rows := sqlmock.NewRows([]string{"id", "supplier_id", "name", "parts_image", "spare_parts_links"})
 	for _, part := range parts {
 		rows.AddRow(part.ID, part.SupplierID, part.Name, part.PartsImage, part.SparePartsLink)
 	}
 
-	mock.ExpectQuery(`SELECT \* FROM "SpareParts" WHERE "supplierId" = \$1`).WillReturnRows(rows)
+	mock.ExpectQuery(`SELECT \* FROM "SpareParts" WHERE "supplier_id" = \$1`).WillReturnRows(rows)
 
 	repo := repository.NewPartsRepository(db)
-	retrieved, err := repo.GetParts(supplierId)
+	retrieved, err := repo.GetParts(supplier_id)
 	if err != nil {
 		test.Fatalf("error occurred while getting items: %s", err)
 	}
@@ -75,7 +75,7 @@ func TestCreatePart(test *testing.T) {
 		SparePartsLink: "www.google.com",
 	}
 
-	mock.ExpectExec(`INSERT INTO "SpareParts" \(id, supplierId, name, parts_image, spare_parts_link\)
+	mock.ExpectExec(`INSERT INTO "SpareParts" \(id, supplier_id, name, parts_image, spare_parts_link\)
 		VALUES \(\$1, \$2, \$3, \$4, \$5\)`).
 		WithArgs(sqlmock.AnyArg(), part.SupplierID, part.Name, part.PartsImage, part.SparePartsLink).
 		WillReturnResult(sqlmock.NewResult(1, 1))

@@ -34,7 +34,7 @@ type WarrantyClaim struct {
 
 type PartsRequired struct {
 	ID             string `json:"id"`
-	WarrantyID     string `json:"warrantyId"`
+	WarrantyID     string `json:"warranty_id"`
 	PartNumber     string `json:"part_number"`
 	QuantityNeeded string `json:"quantity_needed"`
 	InvoiceNumber  string `json:"invoice_number"`

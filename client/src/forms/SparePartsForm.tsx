@@ -44,7 +44,7 @@ const SparepartForm: React.FC<Props> = ({ id, sparepart, suppliers }) => {
         const imageFile = formData.get('parts_image') as File;
 
         const body: Sparepart = {
-            supplierId: formData.get('supplierId') as string,
+            supplier_id: formData.get('supplier_id') as string,
             name: formData.get('name') as string,
             parts_image: imageFile ? imageFile.name : 'null',
             spare_parts_link: formData.get('spare_parts_link') as string,
@@ -75,17 +75,16 @@ const SparepartForm: React.FC<Props> = ({ id, sparepart, suppliers }) => {
             <FormDialog visible={showForm} onClose={() => setShowForm(false)}>
                 <form className={utils.form} onSubmit={handleSubmit} encType="multipart/form-data">
                     <h1 className={utils.mainHeading}>Sparepart Form</h1>
-                    {formFields.map((field) => (
+                    {formFields.map(field => (
                         <div key={field.name}>
                             <label htmlFor={field.name}>{field.label}</label>
                             {field.type === 'select' ? (
                                 <select name={field.name} id={field.name}>
-                                    {field.options?.map((option) => (
+                                    {field.options?.map(option => (
                                         <option
                                             key={option.value}
                                             value={option.value}
-                                            defaultValue={field.defaultValue}
-                                        >
+                                            defaultValue={field.defaultValue}>
                                             {option.label}
                                         </option>
                                     ))}

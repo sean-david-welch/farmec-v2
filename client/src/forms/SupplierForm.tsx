@@ -73,7 +73,7 @@ const SupplierForm: React.FC<Props> = ({ id, supplier }) => {
                 await uploadFileToS3(marketingImageData);
             }
 
-            response.ok ? setShowForm(false) : console.error('failed with response:', response);
+            response && !isError && setShowForm(false);
         } catch (error) {
             console.error('Error creating supplier:', error);
         }
@@ -88,7 +88,7 @@ const SupplierForm: React.FC<Props> = ({ id, supplier }) => {
             <FormDialog visible={showForm} onClose={() => setShowForm(false)}>
                 <form className={utils.form} onSubmit={handleSubmit} encType="multipart/form-data">
                     <h1 className={utils.mainHeading}>Supplier Form</h1>
-                    {formFields.map((field) => (
+                    {formFields.map(field => (
                         <div key={field.name}>
                             <label htmlFor={field.name}>{field.label}</label>
                             <input

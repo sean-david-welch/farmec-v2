@@ -44,7 +44,7 @@ func ScanProduct(row interface{}, product *types.Product) error {
 func (repository *ProductRepositoryImpl) GetProducts(id string) ([]types.Product, error) {
 	var products []types.Product
 
-	query := `SELECT * FROM "Product" WHERE "machineId" = $1`
+	query := `SELECT * FROM "Product" WHERE "machine_id" = $1`
 	rows, err := repository.database.Query(query, id)
 	if err != nil {
 		return nil, fmt.Errorf("error executing query: %w", err)
@@ -89,7 +89,7 @@ func (repository *ProductRepositoryImpl) GetProductById(id string) (*types.Produ
 func (repository *ProductRepositoryImpl) CreateProduct(product *types.Product) error {
 	product.ID = uuid.NewString()
 
-	query := `INSERT INTO "Product" (id, machineId, name, product_image, description, product_link)
+	query := `INSERT INTO "Product" (id, machine_id, name, product_image, description, product_link)
 	VALUES ($1, $2, $3, $4, $5, $6)`
 
 	_, err := repository.database.Exec(query, product.ID, product.MachineID, product.Name, product.ProductImage, product.Description, product.ProductLink)
@@ -102,11 +102,11 @@ func (repository *ProductRepositoryImpl) CreateProduct(product *types.Product) e
 }
 
 func (repository *ProductRepositoryImpl) UpdateMachine(id string, product *types.Product) error {
-	query := `UPDATE "Product" SET machineId = $1, name = $2, description = $3, product_link = $4 WHERE id = $6`
+	query := `UPDATE "Product" SET machine_id = $1, name = $2, description = $3, product_link = $4 WHERE id = $6`
 	args := []interface{}{product.MachineID, product.Name, product.Description, product.ProductLink, id}
 
 	if product.ProductImage != "" && product.ProductImage != "null" {
-		query = `UPDATE "Product" SET machineId = $1, name = $2, product_image = $3, description = $4, product_link = $5 WHERE id = $6`
+		query = `UPDATE "Product" SET machine_id = $1, name = $2, product_image = $3, description = $4, product_link = $5 WHERE id = $6`
 		args = []interface{}{product.MachineID, product.Name, product.ProductImage, product.Description, product.ProductLink, id}
 
 	}

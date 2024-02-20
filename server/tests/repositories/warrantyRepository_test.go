@@ -79,14 +79,14 @@ func TestGetWarrantyById(test *testing.T) {
 		))
 
 	rows := sqlmock.NewRows([]string{
-		"id", "warrantyId", "part_number", "quantity_needed", "invoice_number", "description",
+		"id", "warranty_id", "part_number", "quantity_needed", "invoice_number", "description",
 	})
 	for _, p := range parts {
 		rows.AddRow(
 			p.ID, p.WarrantyID, p.PartNumber, p.QuantityNeeded, p.InvoiceNumber, p.Description,
 		)
 	}
-	mock.ExpectQuery(`SELECT \* FROM "PartsRequired" WHERE "warrantyId" = \$1`).
+	mock.ExpectQuery(`SELECT \* FROM "PartsRequired" WHERE "warranty_id" = \$1`).
 		WithArgs(warranty.ID).
 		WillReturnRows(rows)
 

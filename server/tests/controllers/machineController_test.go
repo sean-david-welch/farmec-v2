@@ -61,13 +61,13 @@ func TestGetMachines(test *testing.T) {
 		},
 	}
 
-	supplierId := expectedMachines[0].SupplierID
+	supplier_id := expectedMachines[0].SupplierID
 
-	mockService.EXPECT().GetMachines(supplierId).Return(expectedMachines, nil)
+	mockService.EXPECT().GetMachines(supplier_id).Return(expectedMachines, nil)
 
 	router.GET("/api/machines/:id", controller.GetMachines)
 
-	url := fmt.Sprintf("/api/machines/%s", supplierId)
+	url := fmt.Sprintf("/api/machines/%s", supplier_id)
 	mocks.PerformRequest(test, router, "GET", url, nil, recorder)
 
 	assert.Equal(test, http.StatusOK, recorder.Code)

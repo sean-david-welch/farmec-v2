@@ -45,7 +45,7 @@ func ScanMachine(row interface{}, machine *types.Machine) error {
 func (repository *MachineRepositoryImpl) GetMachines(id string) ([]types.Machine, error) {
 	var machines []types.Machine
 
-	query := `SELECT * FROM "Machine" WHERE "supplierId" = $1`
+	query := `SELECT * FROM "Machine" WHERE "supplier_id" = $1`
 	rows, err := repository.database.Query(query, id)
 	if err != nil {
 		return nil, fmt.Errorf("error executing query: %w", err)
@@ -91,7 +91,7 @@ func (repository *MachineRepositoryImpl) CreateMachine(machine *types.Machine) e
 	machine.ID = uuid.NewString()
 	machine.Created = time.Now()
 
-	query := `INSERT INTO "Machine" (id, supplierId, name, machine_image, description, machine_link, created)
+	query := `INSERT INTO "Machine" (id, supplier_id, name, machine_image, description, machine_link, created)
 	VALUES ($1, $2, $3, $4, $5, $6, $7)`
 
 	_, err := repository.database.Exec(query, machine.ID, machine.SupplierID, machine.Name, machine.MachineImage, machine.Description, machine.MachineLink, machine.Created)
@@ -104,11 +104,11 @@ func (repository *MachineRepositoryImpl) CreateMachine(machine *types.Machine) e
 }
 
 func (repository *MachineRepositoryImpl) UpdateMachine(id string, machine *types.Machine) error {
-	query := `UPDATE "Machine" SET supplierId = $1, name = $2, description = $3, machine_link = $4 WHERE ID = $6`
+	query := `UPDATE "Machine" SET supplier_id = $1, name = $2, description = $3, machine_link = $4 WHERE ID = $6`
 	args := []interface{}{machine.SupplierID, machine.Name, machine.Description, machine.MachineLink, id}
 
 	if machine.MachineImage != "" && machine.MachineImage != "null" {
-		query = `UPDATE "Machine" SET supplierId = $1, name = $2, machine_image = $3, description = $4, machine_link = $5 WHERE ID = $6`
+		query = `UPDATE "Machine" SET supplier_id = $1, name = $2, machine_image = $3, description = $4, machine_link = $5 WHERE ID = $6`
 		args = []interface{}{machine.SupplierID, machine.Name, machine.MachineImage, machine.Description, machine.MachineLink, id}
 	}
 
