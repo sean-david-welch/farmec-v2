@@ -1,5 +1,6 @@
 import utils from '../styles/Utils.module.css';
 import FormDialog from './FormDialog';
+import Loading from '../layouts/Loading';
 
 import { useState } from 'react';
 import { Supplier } from '../types/supplierTypes';
@@ -23,12 +24,14 @@ const SupplierForm: React.FC<Props> = ({ id, supplier }) => {
         mutateAsync: createSupplier,
         isError: isCreateError,
         error: createError,
+        isPending: createPending,
     } = useMutateResource<Supplier>('suppliers');
 
     const {
         mutateAsync: updateSupplier,
         isError: isUpdateError,
         error: updateError,
+        isPending: updatingPending,
     } = useMutateResource<Supplier>('suppliers', id);
 
     const error = id ? updateError : createError;
@@ -79,6 +82,7 @@ const SupplierForm: React.FC<Props> = ({ id, supplier }) => {
         }
     }
 
+    if (createPending || updatingPending) return <Loading />;
     return (
         <section id="form">
             <button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>

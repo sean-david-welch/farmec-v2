@@ -1,6 +1,7 @@
 import utils from '../styles/Utils.module.css';
 
 import FormDialog from './FormDialog';
+import Loading from '../layouts/Loading';
 
 import { useState } from 'react';
 import { LineItem } from '../types/miscTypes';
@@ -24,12 +25,14 @@ const LineItemForm: React.FC<Props> = ({ id, lineItem }) => {
         mutateAsync: createLineItem,
         isError: isCreateError,
         error: createError,
+        isPending: createPending,
     } = useMutateResource<LineItem>('lineitems');
 
     const {
         mutateAsync: updateLineItem,
         isError: isUpdateError,
         error: updateError,
+        isPending: updatingPending,
     } = useMutateResource<LineItem>('lineitems', id);
 
     const error = id ? updateError : createError;
@@ -65,6 +68,7 @@ const LineItemForm: React.FC<Props> = ({ id, lineItem }) => {
         }
     }
 
+    if (createPending || updatingPending) return <Loading />;
     return (
         <section id="form">
             <button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
@@ -74,7 +78,7 @@ const LineItemForm: React.FC<Props> = ({ id, lineItem }) => {
             <FormDialog visible={showForm} onClose={() => setShowForm(false)}>
                 <form className={utils.form} onSubmit={handleSubmit} encType="multipart/form-data">
                     <h1 className={utils.mainHeading}>LineItem Form</h1>
-                    {formFields.map((field) => (
+                    {formFields.map(field => (
                         <div key={field.name}>
                             <label htmlFor={field.name}>{field.label}</label>
                             <input

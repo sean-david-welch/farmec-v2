@@ -1,6 +1,7 @@
 import utils from '../styles/Utils.module.css';
 
 import FormDialog from './FormDialog';
+import Loading from '../layouts/Loading';
 
 import { useState } from 'react';
 import { Supplier } from '../types/supplierTypes';
@@ -25,12 +26,14 @@ const VideoForm: React.FC<Props> = ({ id, video, suppliers }) => {
         mutateAsync: createVideo,
         isError: isCreateError,
         error: createError,
+        isPending: createPending,
     } = useMutateResource<VideoWebUrl>('videos');
 
     const {
         mutateAsync: updateVideo,
         isError: isUpdateError,
         error: updateError,
+        isPending: updatingPending,
     } = useMutateResource<VideoWebUrl>('videos', id);
 
     const error = id ? updateError : createError;
@@ -55,6 +58,7 @@ const VideoForm: React.FC<Props> = ({ id, video, suppliers }) => {
         }
     }
 
+    if (createPending || updatingPending) return <Loading />;
     return (
         <section id="form">
             <button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>

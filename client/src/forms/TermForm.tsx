@@ -1,6 +1,7 @@
 import utils from '../styles/Utils.module.css';
 
 import FormDialog from './FormDialog';
+import Loading from '../layouts/Loading';
 
 import { useState } from 'react';
 import { Terms } from '../types/aboutTypes';
@@ -23,12 +24,14 @@ const TermForm: React.FC<Props> = ({ id, term }) => {
         mutateAsync: createTerm,
         isError: isCreateError,
         error: createError,
+        isPending: createPending,
     } = useMutateResource<Terms>('terms');
 
     const {
         mutateAsync: updateTerm,
         isError: isUpdateError,
         error: updateError,
+        isPending: updatingPending,
     } = useMutateResource<Terms>('terms', id);
 
     const error = id ? updateError : createError;
@@ -53,6 +56,7 @@ const TermForm: React.FC<Props> = ({ id, term }) => {
         }
     }
 
+    if (createPending || updatingPending) return <Loading />;
     return (
         <section id="form">
             <button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
@@ -62,7 +66,7 @@ const TermForm: React.FC<Props> = ({ id, term }) => {
             <FormDialog visible={showForm} onClose={() => setShowForm(false)}>
                 <form className={utils.form} onSubmit={handleSubmit} encType="multipart/form-data">
                     <h1 className={utils.mainHeading}>Terms Form</h1>
-                    {formFields.map((field) => (
+                    {formFields.map(field => (
                         <div key={field.name}>
                             <label htmlFor={field.name}>{field.label}</label>
                             <input

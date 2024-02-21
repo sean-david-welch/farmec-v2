@@ -1,6 +1,7 @@
 import utils from '../styles/Utils.module.css';
 
 import FormDialog from './FormDialog';
+import Loading from '../layouts/Loading';
 
 import { useState } from 'react';
 import { getWarrantyFields, getPartFields } from '../utils/warrantyFields';
@@ -42,12 +43,14 @@ const WarrantyForm: React.FC<Props> = ({ id, warranty }) => {
         mutateAsync: createWarranty,
         isError: isCreateError,
         error: createError,
+        isPending: createPending,
     } = useMutateResource<WarrantyParts>('warranty');
 
     const {
         mutateAsync: updateWarranty,
         isError: isUpdateError,
         error: updateError,
+        isPending: updatingPending,
     } = useMutateResource<WarrantyParts>('warranty', id);
 
     const error = id ? updateError : createError;
@@ -94,6 +97,7 @@ const WarrantyForm: React.FC<Props> = ({ id, warranty }) => {
         setShowForm(false);
     }
 
+    if (createPending || updatingPending) return <Loading />;
     return (
         <section id="form">
             <button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
@@ -102,7 +106,7 @@ const WarrantyForm: React.FC<Props> = ({ id, warranty }) => {
             <FormDialog visible={showForm} onClose={() => setShowForm(false)}>
                 <form className={utils.form} onSubmit={handleSubmit}>
                     <h1 className={utils.mainHeading}>Warranty Claim Form</h1>
-                    {formFields.map((field) => (
+                    {formFields.map(field => (
                         <div key={field.name}>
                             <label htmlFor={field.name}>{field.label}</label>
                             <input
@@ -117,7 +121,7 @@ const WarrantyForm: React.FC<Props> = ({ id, warranty }) => {
                         const partFields = getPartFields(part, index);
                         return (
                             <div key={index}>
-                                {partFields.map((field) => (
+                                {partFields.map(field => (
                                     <div key={field.name}>
                                         <label htmlFor={field.name}>{field.label}</label>
                                         <input

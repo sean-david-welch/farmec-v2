@@ -1,5 +1,6 @@
 import utils from '../styles/Utils.module.css';
 import FormDialog from './FormDialog';
+import Loading from '../layouts/Loading';
 
 import { useState } from 'react';
 import { UserData } from '../types/dataTypes';
@@ -21,12 +22,14 @@ const RegisterForm: React.FC<Props> = ({ id }) => {
         mutateAsync: createUser,
         isError: isCreateError,
         error: createError,
+        isPending: createPending,
     } = useMutateResource<UserData>('users');
 
     const {
         mutateAsync: updateUser,
         isError: isUpdateError,
         error: updateError,
+        isPending: updatingPending,
     } = useMutateResource<UserData>('users', id);
 
     const error = id ? updateError : createError;
@@ -50,6 +53,7 @@ const RegisterForm: React.FC<Props> = ({ id }) => {
         }
     };
 
+    if (createPending || updatingPending) return <Loading />;
     return (
         <section id="form">
             <button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
@@ -59,18 +63,13 @@ const RegisterForm: React.FC<Props> = ({ id }) => {
             <FormDialog visible={showForm} onClose={() => setShowForm(false)}>
                 <form onSubmit={handleSubmit} className={utils.form}>
                     <label>Email:</label>
-                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                    <input type="email" value={email} onChange={e => setEmail(e.target.value)} required />
 
                     <label>Password:</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
+                    <input type="password" value={password} onChange={e => setPassword(e.target.value)} required />
 
                     <label>Role:</label>
-                    <select value={role} onChange={(e) => setRole(e.target.value)} required>
+                    <select value={role} onChange={e => setRole(e.target.value)} required>
                         <option value="user">User</option>
                         <option value="admin">Admin</option>
                     </select>

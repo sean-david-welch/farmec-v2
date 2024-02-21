@@ -1,6 +1,7 @@
 import utils from '../styles/Utils.module.css';
 
 import FormDialog from './FormDialog';
+import Loading from '../layouts/Loading';
 
 import { useState } from 'react';
 import { Employee } from '../types/aboutTypes';
@@ -24,12 +25,14 @@ const EmployeeForm: React.FC<Props> = ({ id, employee }) => {
         mutateAsync: createEmployee,
         isError: isCreateError,
         error: createError,
+        isPending: createPending,
     } = useMutateResource<Employee>('employees');
 
     const {
         mutateAsync: updateEmployee,
         isError: isUpdateError,
         error: updateError,
+        isPending: updatingPending,
     } = useMutateResource<Employee>('employees', id);
 
     const error = id ? updateError : createError;
@@ -66,6 +69,7 @@ const EmployeeForm: React.FC<Props> = ({ id, employee }) => {
         }
     }
 
+    if (createPending || updatingPending) return <Loading />;
     return (
         <section id="form">
             <button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
@@ -75,7 +79,7 @@ const EmployeeForm: React.FC<Props> = ({ id, employee }) => {
             <FormDialog visible={showForm} onClose={() => setShowForm(false)}>
                 <form className={utils.form} onSubmit={handleSubmit} encType="multipart/form-data">
                     <h1 className={utils.mainHeading}>Employee Form</h1>
-                    {formFields.map((field) => (
+                    {formFields.map(field => (
                         <div key={field.name}>
                             <label htmlFor={field.name}>{field.label}</label>
                             <input

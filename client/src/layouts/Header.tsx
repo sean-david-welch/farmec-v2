@@ -63,7 +63,7 @@ const Header: React.FC = () => {
 
                 <li className={styles.navItem}>
                     <Link to="/spareparts" className={styles.navListItem}>
-                        Spareparts
+                        Spare Parts
                     </Link>
                     {suppliers && (
                         <ul className={styles.navDrop}>

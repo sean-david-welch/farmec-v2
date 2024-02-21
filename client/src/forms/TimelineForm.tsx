@@ -1,6 +1,7 @@
 import utils from '../styles/Utils.module.css';
 
 import FormDialog from './FormDialog';
+import Loading from '../layouts/Loading';
 
 import { useState } from 'react';
 import { Timeline } from '../types/aboutTypes';
@@ -23,12 +24,14 @@ const TimelineForm: React.FC<Props> = ({ id, timeline }) => {
         mutateAsync: createTimeline,
         isError: isCreateError,
         error: createError,
+        isPending: createPending,
     } = useMutateResource<Timeline>('timelines');
 
     const {
         mutateAsync: updateTimeline,
         isError: isUpdateError,
         error: updateError,
+        isPending: updatingPending,
     } = useMutateResource<Timeline>('timelines', id);
 
     const error = id ? updateError : createError;
@@ -54,6 +57,7 @@ const TimelineForm: React.FC<Props> = ({ id, timeline }) => {
         }
     }
 
+    if (createPending || updatingPending) return <Loading />;
     return (
         <section id="form">
             <button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
@@ -63,7 +67,7 @@ const TimelineForm: React.FC<Props> = ({ id, timeline }) => {
             <FormDialog visible={showForm} onClose={() => setShowForm(false)}>
                 <form className={utils.form} onSubmit={handleSubmit} encType="multipart/form-data">
                     <h1 className={utils.mainHeading}>Timeline Form</h1>
-                    {formFields.map((field) => (
+                    {formFields.map(field => (
                         <div key={field.name}>
                             <label htmlFor={field.name}>{field.label}</label>
                             <input

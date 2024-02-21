@@ -1,6 +1,7 @@
 import utils from '../styles/Utils.module.css';
 
 import FormDialog from './FormDialog';
+import Loading from '../layouts/Loading';
 import { useState } from 'react';
 import { getRegFields } from '../utils/registrationFields';
 import { MachineRegistration } from '../types/miscTypes';
@@ -21,12 +22,14 @@ const RegistrationForm: React.FC<Props> = ({ id, registration }) => {
         mutateAsync: createRegistration,
         isError: isCreateError,
         error: createError,
+        isPending: createPending,
     } = useMutateResource<MachineRegistration>('registrations');
 
     const {
         mutateAsync: updateRegistration,
         isError: isUpdateError,
         error: updateError,
+        isPending: updatingPending,
     } = useMutateResource<MachineRegistration>('registrations', id);
 
     const error = id ? updateError : createError;
@@ -64,6 +67,7 @@ const RegistrationForm: React.FC<Props> = ({ id, registration }) => {
         }
     }
 
+    if (createPending || updatingPending) return <Loading />;
     return (
         <section id="form">
             <button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>

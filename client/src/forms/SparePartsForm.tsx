@@ -1,6 +1,7 @@
 import utils from '../styles/Utils.module.css';
 
 import FormDialog from './FormDialog';
+import Loading from '../layouts/Loading';
 
 import { useState } from 'react';
 import { Sparepart, Supplier } from '../types/supplierTypes';
@@ -25,12 +26,14 @@ const SparepartForm: React.FC<Props> = ({ id, sparepart, suppliers }) => {
         mutateAsync: createSparepart,
         isError: isCreateError,
         error: createError,
+        isPending: createPending,
     } = useMutateResource<Sparepart>('spareparts');
 
     const {
         mutateAsync: updateSparepart,
         isError: isUpdateError,
         error: updateError,
+        isPending: updatingPending,
     } = useMutateResource<Sparepart>('spareparts', id);
 
     const error = id ? updateError : createError;
@@ -66,6 +69,7 @@ const SparepartForm: React.FC<Props> = ({ id, sparepart, suppliers }) => {
         }
     }
 
+    if (createPending || updatingPending) return <Loading />;
     return (
         <section id="form">
             <button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
@@ -95,6 +99,7 @@ const SparepartForm: React.FC<Props> = ({ id, sparepart, suppliers }) => {
                                     name={field.name}
                                     id={field.name}
                                     placeholder={field.placeholder}
+                                    defaultValue={field.defaultValue}
                                 />
                             )}
                         </div>

@@ -1,6 +1,7 @@
 import utils from '../styles/Utils.module.css';
 
 import FormDialog from './FormDialog';
+import Loading from '../layouts/Loading';
 
 import { useState } from 'react';
 import { Blog } from '../types/blogTypes';
@@ -24,12 +25,14 @@ const BlogForm: React.FC<Props> = ({ id, blog }) => {
         mutateAsync: createBlog,
         isError: isCreateError,
         error: createError,
+        isPending: createPending,
     } = useMutateResource<Blog>('blogs');
 
     const {
         mutateAsync: updateBlog,
         isError: isUpdateError,
         error: updateError,
+        isPending: updatingPending,
     } = useMutateResource<Blog>('blogs', id);
 
     const error = id ? updateError : createError;
@@ -66,6 +69,8 @@ const BlogForm: React.FC<Props> = ({ id, blog }) => {
         }
     }
 
+    if (createPending || updatingPending) return <Loading />;
+
     return (
         <section id="form">
             <button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
@@ -75,7 +80,7 @@ const BlogForm: React.FC<Props> = ({ id, blog }) => {
             <FormDialog visible={showForm} onClose={() => setShowForm(false)}>
                 <form className={utils.form} onSubmit={handleSubmit} encType="multipart/form-data">
                     <h1 className={utils.mainHeading}>Blog Form</h1>
-                    {formFields.map((field) => (
+                    {formFields.map(field => (
                         <div key={field.name}>
                             <label htmlFor={field.name}>{field.label}</label>
                             <input

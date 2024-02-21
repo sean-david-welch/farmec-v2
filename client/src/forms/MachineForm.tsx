@@ -1,5 +1,6 @@
 import utils from '../styles/Utils.module.css';
 import FormDialog from './FormDialog';
+import Loading from '../layouts/Loading';
 
 import { useState } from 'react';
 import { useMutateResource } from '../hooks/genericHooks';
@@ -24,12 +25,14 @@ const MachineFrom: React.FC<Props> = ({ id, machine, suppliers }) => {
         mutateAsync: createMachine,
         isError: isCreateError,
         error: createError,
+        isPending: createPending,
     } = useMutateResource<Machine>('machines');
 
     const {
         mutateAsync: updateMachine,
         isError: isUpdateError,
         error: updateError,
+        isPending: updatingPending,
     } = useMutateResource<Machine>('machines', id);
 
     const isError = id ? isUpdateError : isCreateError;
@@ -58,7 +61,7 @@ const MachineFrom: React.FC<Props> = ({ id, machine, suppliers }) => {
             if (imageFile) {
                 const machineImageData = {
                     imageFile: imageFile,
-                    presignedUrl: response.presginedUrl,
+                    presignedUrl: response.presignedUrl,
                 };
                 await uploadFileToS3(machineImageData);
             }
@@ -68,6 +71,7 @@ const MachineFrom: React.FC<Props> = ({ id, machine, suppliers }) => {
         }
     }
 
+    if (createPending || updatingPending) return <Loading />;
     return (
         <section id="form">
             <button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>

@@ -1,6 +1,7 @@
 import utils from '../styles/Utils.module.css';
 
 import FormDialog from './FormDialog';
+import Loading from '../layouts/Loading';
 
 import { useState } from 'react';
 import { Carousel } from '../types/miscTypes';
@@ -24,12 +25,14 @@ const CarouselForm: React.FC<Props> = ({ id, carousel }) => {
         mutateAsync: createCarousel,
         isError: isCreateError,
         error: createError,
+        isPending: createPending,
     } = useMutateResource<Carousel>('carousels');
 
     const {
         mutateAsync: updateCarousel,
         isError: isUpdateError,
         error: updateError,
+        isPending: updatingPending,
     } = useMutateResource<Carousel>('carousels', id);
 
     const error = id ? updateError : createError;
@@ -64,6 +67,8 @@ const CarouselForm: React.FC<Props> = ({ id, carousel }) => {
         }
     }
 
+    if (createPending || updatingPending) return <Loading />;
+
     return (
         <section id="form">
             <button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
@@ -73,7 +78,7 @@ const CarouselForm: React.FC<Props> = ({ id, carousel }) => {
             <FormDialog visible={showForm} onClose={() => setShowForm(false)}>
                 <form className={utils.form} onSubmit={handleSubmit} encType="multipart/form-data">
                     <h1 className={utils.mainHeading}>Carousel Form</h1>
-                    {formFields.map((field) => (
+                    {formFields.map(field => (
                         <div key={field.name}>
                             <label htmlFor={field.name}>{field.label}</label>
                             <input

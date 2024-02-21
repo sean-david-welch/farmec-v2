@@ -1,6 +1,7 @@
 import utils from '../styles/Utils.module.css';
 
 import FormDialog from './FormDialog';
+import Loading from '../layouts/Loading';
 
 import { useState } from 'react';
 import { Exhibition } from '../types/blogTypes';
@@ -23,12 +24,14 @@ const ExhibitionForm: React.FC<Props> = ({ id, exhibition }) => {
         mutateAsync: createExhibition,
         isError: isCreateError,
         error: createError,
+        isPending: createPending,
     } = useMutateResource<Exhibition>('exhibitions');
 
     const {
         mutateAsync: updateExhibition,
         isError: isUpdateError,
         error: updateError,
+        isPending: updatingPending,
     } = useMutateResource<Exhibition>('exhibitions', id);
 
     const error = id ? updateError : createError;
@@ -55,6 +58,7 @@ const ExhibitionForm: React.FC<Props> = ({ id, exhibition }) => {
         }
     }
 
+    if (createPending || updatingPending) return <Loading />;
     return (
         <section id="form">
             <button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
@@ -64,7 +68,7 @@ const ExhibitionForm: React.FC<Props> = ({ id, exhibition }) => {
             <FormDialog visible={showForm} onClose={() => setShowForm(false)}>
                 <form className={utils.form} onSubmit={handleSubmit} encType="multipart/form-data">
                     <h1 className={utils.mainHeading}>Exhibition Form</h1>
-                    {formFields.map((field) => (
+                    {formFields.map(field => (
                         <div key={field.name}>
                             <label htmlFor={field.name}>{field.label}</label>
                             <input

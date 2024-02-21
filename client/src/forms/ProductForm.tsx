@@ -1,6 +1,7 @@
 import utils from '../styles/Utils.module.css';
 
 import FormDialog from './FormDialog';
+import Loading from '../layouts/Loading';
 
 import { useState } from 'react';
 import { getFormFields } from '../utils/productFields';
@@ -25,12 +26,14 @@ const ProductForm: React.FC<Props> = ({ id, product, machine }) => {
         mutateAsync: createProduct,
         isError: isCreateError,
         error: createError,
+        isPending: createPending,
     } = useMutateResource<Product>('products');
 
     const {
         mutateAsync: updateProduct,
         isError: isUpdateError,
         error: updateError,
+        isPending: updatingPending,
     } = useMutateResource<Product>('products', id);
 
     const isError = id ? isUpdateError : isCreateError;
@@ -69,6 +72,7 @@ const ProductForm: React.FC<Props> = ({ id, product, machine }) => {
         }
     }
 
+    if (createPending || updatingPending) return <Loading />;
     return (
         <section id="form">
             <button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>

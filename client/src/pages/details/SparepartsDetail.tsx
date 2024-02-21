@@ -81,7 +81,7 @@ const PartsDetail: React.FC = () => {
                         {isAdmin && suppliers && sparepart.id && (
                             <div className={utils.optionsBtn}>
                                 <SparepartForm suppliers={suppliers} sparepart={sparepart} id={sparepart.id} />
-                                <DeleteButton id={sparepart.id} resourceKey="spareparts" />
+                                <DeleteButton id={sparepart.id} resourceKey={'spareparts'} />
                             </div>
                         )}
                     </div>
