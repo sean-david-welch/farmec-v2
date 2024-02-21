@@ -12,6 +12,7 @@ import { useGetResourceById } from '../../hooks/genericHooks';
 import { MachineRegistration } from '../../types/miscTypes';
 import { DownloadLink } from '../../components/RegistrationPdf';
 import { useEffect } from 'react';
+import DownloadPdfButton from '../../components/DownloadPdf';
 
 const RegistrationDetail: React.FC = () => {
     const { isAdmin } = useUserStore();
@@ -59,6 +60,7 @@ const RegistrationDetail: React.FC = () => {
                     )}
                 </div>
 
+                <DownloadPdfButton registration={registration} />
                 <DownloadLink registration={registration} />
             </section>
         )

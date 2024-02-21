@@ -88,6 +88,7 @@ const DownloadPdfButton: React.FC<Props> = ({ warrantyClaim, registration }) => 
         try {
             const response = await fetch(url.toString(), {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                 },

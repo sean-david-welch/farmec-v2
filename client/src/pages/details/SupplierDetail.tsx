@@ -10,7 +10,7 @@ import { useParams } from 'react-router-dom';
 import { Resources } from '../../types/dataTypes';
 import { useMultipleResources } from '../../hooks/genericHooks';
 import { useSupplierStore, useUserStore } from '../../lib/store';
-import { useEffect } from 'react';
+import { useEffect, Fragment } from 'react';
 
 const SuppliersDetails: React.FC = () => {
     const { isAdmin } = useUserStore();
@@ -30,8 +30,8 @@ const SuppliersDetails: React.FC = () => {
 
     return (
         <section id="supplierDetail">
-            {supplier && (
-                <>
+            {supplier ? (
+                <Fragment>
                     <div className={styles.supplierHeading}>
                         <h1 className={utils.sectionHeading}>{supplier.name}</h1>
                     </div>
@@ -58,8 +58,8 @@ const SuppliersDetails: React.FC = () => {
 
                         <p className={styles.supplierDescription}>{supplier.description}</p>
                     </div>
-                </>
-            )}
+                </Fragment>
+            ) : null}
 
             {machines ? <Machines machines={machines} isAdmin={isAdmin} /> : null}
             {videos ? <Videos suppliers={suppliers} videos={videos} isAdmin={isAdmin} /> : null}

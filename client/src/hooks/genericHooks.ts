@@ -28,7 +28,7 @@ export const useGetResourceById = <T>(resourceKey: keyof Resources, id: string) 
     const url = `${endpoint}/${id}`;
 
     const resource = useQuery<T, Error>({
-        queryKey: [queryKey],
+        queryKey: [queryKey, id],
         queryFn: async () => {
             const response = await fetch(url, { credentials: 'include' });
 
@@ -43,7 +43,7 @@ export const useGetResourceById = <T>(resourceKey: keyof Resources, id: string) 
 export const useMultipleResources = (id: string, resourceKeys: (keyof Resources)[]) => {
     const queries = useQueries({
         queries: resourceKeys.map(key => ({
-            queryKey: [key],
+            queryKey: [key, id],
             queryFn: async () => {
                 const resourceEntry = resources[key];
                 const url = `${resourceEntry.endpoint}/${id}`;
