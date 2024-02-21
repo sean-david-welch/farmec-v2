@@ -74,12 +74,15 @@ const DownloadPdfButton: React.FC<Props> = ({ warrantyClaim, registration }) => 
         const triggerDownload = (blob: Blob, filename: string) => {
             const downloadUrl = window.URL.createObjectURL(blob);
             const link = document.createElement('a');
+
             link.href = downloadUrl;
-            link.download = filename; // Directly setting the 'download' property
-            document.body.appendChild(link); // Append to initiate download
-            link.click(); // Programmatically click the link to start download
-            document.body.removeChild(link); // Clean up
-            window.URL.revokeObjectURL(downloadUrl); // Free up memory by revoking the blob URL
+            link.download = filename;
+            document.body.appendChild(link);
+
+            link.click();
+
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(downloadUrl);
         };
 
         try {

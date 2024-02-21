@@ -36,7 +36,7 @@ const SuppliersDetails: React.FC = () => {
                         <h1 className={utils.sectionHeading}>{supplier.name}</h1>
                     </div>
 
-                    {machines.length > 0 && (
+                    {machines && (
                         <div className={utils.index}>
                             <h1 className={utils.indexHeading}>Suppliers</h1>
                             {machines.map((link: { name: string }) => (
@@ -61,8 +61,8 @@ const SuppliersDetails: React.FC = () => {
                 </>
             )}
 
-            {machines && <Machines machines={machines} isAdmin={isAdmin} />}
-            {videos && <Videos suppliers={suppliers} videos={videos} isAdmin={isAdmin} />}
+            {machines ? <Machines machines={machines} isAdmin={isAdmin} /> : null}
+            {videos ? <Videos suppliers={suppliers} videos={videos} isAdmin={isAdmin} /> : null}
         </section>
     );
 };
