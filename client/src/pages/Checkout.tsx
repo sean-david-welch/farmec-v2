@@ -7,7 +7,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import { EmbeddedCheckoutProvider, EmbeddedCheckout } from '@stripe/react-stripe-js';
 import { useParams } from 'react-router-dom';
 
-const stripePromise = loadStripe(config.stripePublicKeyTest);
+const stripePromise = loadStripe(config.stripePublicKey);
 
 const CheckoutForm: React.FC = () => {
     const [clientSecret, setClientSecret] = useState('');

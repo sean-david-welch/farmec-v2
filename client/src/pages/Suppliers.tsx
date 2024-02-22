@@ -33,6 +33,7 @@ const Suppliers: React.FC = () => {
                     ))}
                 </div>
             ) : null}
+
             {Array.isArray(suppliers) &&
                 suppliers.map(supplier => (
                     <Fragment key={supplier.id}>

@@ -27,7 +27,7 @@ func (controller *CheckoutController) CreateCheckoutSession(context *gin.Context
 	}
 
 	context.JSON(http.StatusOK, gin.H{
-		"access_token":  sess,
+		"session":       sess,
 		"clientSecret:": sess.ClientSecret,
 	})
 }
