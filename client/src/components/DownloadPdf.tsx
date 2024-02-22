@@ -1,26 +1,26 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import utils from '../styles/Utils.module.css';
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
-import { MachineRegistration, WarrantyParts } from '../types/miscTypes';
+import { MachineRegistration, PartsRequired, WarrantyClaim } from '../types/miscTypes';
 import config from '../lib/env';
 
 interface Props {
-    warrantyClaim?: WarrantyParts;
+    warrantyClaim?: WarrantyClaim;
+    partsRequired?: PartsRequired[];
     registration?: MachineRegistration;
 }
 
-const DownloadPdfButton: React.FC<Props> = ({ warrantyClaim, registration }) => {
+const DownloadPdfButton: React.FC<Props> = ({ warrantyClaim, partsRequired, registration }) => {
     async function handleSubmit(event: React.MouseEvent<HTMLButtonElement>) {
         event.preventDefault();
 
         let endpoint = '';
         let body = {};
 
-        if (warrantyClaim) {
+        if (warrantyClaim && partsRequired) {
             endpoint = 'warranty';
-            const { warranty, parts } = warrantyClaim;
 
-            const partsRequired = parts.map(part => {
+            partsRequired.map(part => {
                 return {
                     part_number: part.part_number,
                     quantity_needed: part.quantity_needed,
@@ -31,18 +31,18 @@ const DownloadPdfButton: React.FC<Props> = ({ warrantyClaim, registration }) => 
 
             body = {
                 warranty: {
-                    dealer: warranty.dealer,
-                    dealer_contact: warranty.dealer_contact,
-                    owner_name: warranty.owner_name,
-                    machine_model: warranty.machine_model,
-                    serial_number: warranty.serial_number,
-                    install_date: warranty.install_date,
-                    failure_date: warranty.failure_date,
-                    repair_date: warranty.repair_date,
-                    failure_details: warranty.failure_details,
-                    repair_details: warranty.repair_details,
-                    labour_hours: warranty.labour_hours,
-                    completed_by: warranty.completed_by,
+                    dealer: warrantyClaim.dealer,
+                    dealer_contact: warrantyClaim.dealer_contact,
+                    owner_name: warrantyClaim.owner_name,
+                    machine_model: warrantyClaim.machine_model,
+                    serial_number: warrantyClaim.serial_number,
+                    install_date: warrantyClaim.install_date,
+                    failure_date: warrantyClaim.failure_date,
+                    repair_date: warrantyClaim.repair_date,
+                    failure_details: warrantyClaim.failure_details,
+                    repair_details: warrantyClaim.repair_details,
+                    labour_hours: warrantyClaim.labour_hours,
+                    completed_by: warrantyClaim.completed_by,
                 },
                 parts: partsRequired,
             };
@@ -72,6 +72,7 @@ const DownloadPdfButton: React.FC<Props> = ({ warrantyClaim, registration }) => 
         const url = new URL(`api/pdf/${endpoint}`, config.baseUrl);
 
         const triggerDownload = (blob: Blob, filename: string) => {
+            console.log(blob, filename);
             const downloadUrl = window.URL.createObjectURL(blob);
             const link = document.createElement('a');
 
@@ -97,7 +98,17 @@ const DownloadPdfButton: React.FC<Props> = ({ warrantyClaim, registration }) => 
             if (!response.ok) throw new Error('Network response was not ok');
 
             const blob = await response.blob();
-            triggerDownload(blob, `${endpoint}.pdf`);
+            const filename = () => {
+                if (warrantyClaim) {
+                    return `${warrantyClaim.owner_name}.pdf`;
+                } else if (registration) {
+                    return `${registration.owner_name}.pdf`;
+                } else {
+                    return 'defaultFilename.pdf'; // Fallback filename
+                }
+            };
+
+            triggerDownload(blob, filename());
         } catch (error) {
             console.error('Error downloading the file:', error);
         }

@@ -5,13 +5,14 @@ import ErrorPage from '../../layouts/Error';
 import Loading from '../../layouts/Loading';
 import WarrantyForm from '../../forms/WarrantyForm';
 import DeleteButton from '../../components/DeleteButton';
+import DownloadPdfButton from '../../components/DownloadPdf';
 
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { DownloadLink } from '../../components/WarrantyPdf';
 import { useUserStore } from '../../lib/store';
 import { WarrantyParts } from '../../types/miscTypes';
 import { useGetResourceById } from '../../hooks/genericHooks';
-import { useEffect } from 'react';
 
 const WarrantyDetail: React.FC = () => {
     const { isAdmin } = useUserStore();
@@ -73,6 +74,7 @@ const WarrantyDetail: React.FC = () => {
                 )}
             </div>
 
+            <DownloadPdfButton warrantyClaim={warranty} partsRequired={parts} />
             <DownloadLink warranty={warranty} parts={parts} />
         </section>
     );

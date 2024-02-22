@@ -38,7 +38,7 @@ const SuppliersDetails: React.FC = () => {
 
                     {machines && (
                         <div className={utils.index}>
-                            <h1 className={utils.indexHeading}>Suppliers</h1>
+                            <h1 className={utils.indexHeading}>Machines</h1>
                             {machines.map((link: { name: string }) => (
                                 <a key={link.name} href={`#${link.name}`}>
                                     <h1 className={utils.indexItem}>{link.name}</h1>

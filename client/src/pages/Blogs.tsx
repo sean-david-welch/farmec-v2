@@ -26,7 +26,7 @@ const Blogs: React.FC = () => {
             <p className={utils.subHeading}> Read our latest news</p>
             {blogs && (
                 <div className={utils.index}>
-                    <h1 className={utils.indexHeading}>Suppliers</h1>
+                    <h1 className={utils.indexHeading}>Blogs</h1>
                     {blogs.map(link => (
                         <a key={link.title} href={`#${link.title}`}>
                             <h1 className={utils.indexItem}>{link.title}</h1>

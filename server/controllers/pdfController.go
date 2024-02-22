@@ -35,13 +35,18 @@ func (controller *PdfController) RenderRegistrationPdf(context *gin.Context) {
 		return
 	}
 
-	fileName := fmt.Sprintf("%s -- %s - registration.pdf", strings.ReplaceAll(registration.DealerName, " ", "_"), strings.ReplaceAll(registration.OwnerName, " ", "_"))
+	fileName := fmt.Sprintf("%s-%s.registration.pdf",
+		strings.ReplaceAll(registration.DealerName, " ", ""),
+		strings.ReplaceAll(registration.OwnerName, " ", ""))
+
+	contentDisposition := fmt.Sprintf("attachment; filename=\"%s\"", fileName)
 
 	context.Header("Content-Type", "application/pdf")
-	context.Header("Content-Disposition", fmt.Sprintf("attachment; filename=%s", fileName))
+	context.Header("Content-Disposition", contentDisposition)
 	context.Header("Content-Length", fmt.Sprintf("%d", len(pdfBytes)))
 
 	context.Data(http.StatusOK, "application/pdf", pdfBytes)
+	context.JSON(http.StatusOK, gin.H{"filename": fileName})
 }
 
 func (controller *PdfController) RenderWarrantyClaimPdf(context *gin.Context) {
@@ -52,5 +57,23 @@ func (controller *PdfController) RenderWarrantyClaimPdf(context *gin.Context) {
 		return
 	}
 
-	context.JSON(http.StatusOK, gin.H{"message": "pdf rendered successfully"})
+	pdfBytes, err := controller.service.RenderWarrantyClaimPdf(&warranty)
+	if err != nil {
+		log.Printf("error when rendering pdf: %v", err)
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "failed to render PDF", "details": err.Error()})
+		return
+	}
+
+	fileName := fmt.Sprintf("%s-%s.warranty.pdf",
+		strings.ReplaceAll(warranty.Warranty.Dealer, " ", ""),
+		strings.ReplaceAll(*warranty.Warranty.OwnerName, " ", ""))
+
+	contentDisposition := fmt.Sprintf("attachment; filename=\"%s\"", fileName)
+
+	context.Header("Content-Type", "application/pdf")
+	context.Header("Content-Disposition", contentDisposition)
+	context.Header("Content-Length", fmt.Sprintf("%d", len(pdfBytes)))
+
+	context.Data(http.StatusOK, "application/pdf", pdfBytes)
+	context.JSON(http.StatusOK, gin.H{"filename": fileName})
 }

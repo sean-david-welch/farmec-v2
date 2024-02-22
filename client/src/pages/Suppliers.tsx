@@ -25,7 +25,7 @@ const Suppliers: React.FC = () => {
         <section id="suppliers">
             {suppliers ? (
                 <div className={utils.index}>
-                    <h1 className={utils.indexHeading}>Suppliers</h1>
+                    <h1 className={utils.indexHeading}>Suppliers:</h1>
                     {suppliers.map(link => (
                         <a key={link.name} href={`#${link.name}`}>
                             <h1 className={utils.indexItem}>{link.name}</h1>
