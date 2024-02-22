@@ -3,6 +3,7 @@ package services
 import (
 	"bytes"
 	"fmt"
+	"log"
 
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"github.com/signintech/gopdf"
@@ -25,7 +26,8 @@ func (service *PdfServiceImpl) RenderRegistrationPdf(registration *types.Machine
 	pdf := gopdf.GoPdf{}
 	pdf.Start(gopdf.Config{PageSize: *gopdf.PageSizeA4})
 	pdf.AddPage()
-	if err := pdf.SetFont("Times-Roman", "", 12); err != nil {
+	if err := pdf.SetFont("Helvetica", "", 12); err != nil {
+		log.Printf("error with font %v", err)
 		return nil, err
 	}
 
@@ -49,7 +51,8 @@ func (service *PdfServiceImpl) RenderWarrantyClaimPdf(warranty *types.WarranrtyP
 	pdf := gopdf.GoPdf{}
 	pdf.Start(gopdf.Config{PageSize: *gopdf.PageSizeA4})
 	pdf.AddPage()
-	if err := pdf.SetFont("Times-Roman", "", 12); err != nil {
+	if err := pdf.SetFont("Helvetica", "", 12); err != nil {
+		log.Printf("error with font %v", err)
 		return nil, err
 	}
 
