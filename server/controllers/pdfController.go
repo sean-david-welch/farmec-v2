@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"strings"
 
@@ -22,12 +23,14 @@ func (controller *PdfController) RenderRegistrationPdf(context *gin.Context) {
 	var registration types.MachineRegistration
 
 	if err := context.ShouldBindJSON(&registration); err != nil {
+		log.Printf("error with request body: %v", err)
 		context.JSON(http.StatusBadRequest, gin.H{"error": "invalid request body", "details": err.Error()})
 		return
 	}
 
 	pdfBytes, err := controller.service.RenderRegistrationPdf(&registration)
 	if err != nil {
+		log.Printf("error when rendering pdf: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "failed to render PDF", "details": err.Error()})
 		return
 	}

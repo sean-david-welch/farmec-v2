@@ -29,7 +29,7 @@
 }
 
 .navListItem {
-    @apply relative z-20;
+    @apply relative z-20 cursor-pointer;
     @apply transition-all duration-500 ease-in-out;
 }
 

@@ -1,30 +1,30 @@
 package types
 
 type SupplierResult struct {
-	PresignedLogoUrl      string
-	LogoUrl               string
-	PresignedMarketingUrl string
-	MarketingUrl          string
+	PresignedLogoUrl      string `json:"presignedLogoUrl"`
+	LogoUrl               string `json:"logoUrl"`
+	PresignedMarketingUrl string `json:"presignedMarketingUrl"`
+	MarketingUrl          string `json:"marketingUrl"`
 }
 
 type ModelResult struct {
-	PresignedUrl string
-	ImageUrl     string
+	PresignedUrl string `json:"presignedUrl"`
+	ImageUrl     string `json:"imageUrl"`
 }
 
 type EmailData struct {
-	Name    string
-	Email   string
-	Message string
+	Name    string `json:"name"`
+	Email   string `json:"email"`
+	Message string `json:"message"`
 }
 
 type UserData struct {
-	Email    string
-	Password string
-	Role     string
+	Email    string `json:"email"`
+	Password string `json:"password"`
+	Role     string `json:"role"`
 }
 
 type LoginAuth struct {
-	Username string
-	Password string
+	Username string `json:"username"`
+	Password string `json:"password"`
 }

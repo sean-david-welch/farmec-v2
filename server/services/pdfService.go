@@ -25,7 +25,7 @@ func (service *PdfServiceImpl) RenderRegistrationPdf(registration *types.Machine
 	pdf := gopdf.GoPdf{}
 	pdf.Start(gopdf.Config{PageSize: *gopdf.PageSizeA4})
 	pdf.AddPage()
-	if err := pdf.SetFont("Arial", "", 12); err != nil {
+	if err := pdf.SetFont("Times-Roman", "", 12); err != nil {
 		return nil, err
 	}
 
@@ -49,7 +49,7 @@ func (service *PdfServiceImpl) RenderWarrantyClaimPdf(warranty *types.WarranrtyP
 	pdf := gopdf.GoPdf{}
 	pdf.Start(gopdf.Config{PageSize: *gopdf.PageSizeA4})
 	pdf.AddPage()
-	if err := pdf.SetFont("Arial", "", 12); err != nil {
+	if err := pdf.SetFont("Times-Roman", "", 12); err != nil {
 		return nil, err
 	}
 
