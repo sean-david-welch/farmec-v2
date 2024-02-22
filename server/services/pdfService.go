@@ -51,7 +51,7 @@ func (service *PdfServiceImpl) RenderRegistrationPdf(registration *types.Machine
 		CompletedBy:      registration.CompletedBy,
 	}
 
-	err = service.RenderStruct(pdf, &registrationCopy, 60, 50)
+	err = service.RenderStruct(pdf, &registrationCopy, 50, 50)
 	if err != nil {
 		return nil, err
 	}
@@ -87,7 +87,7 @@ func (service *PdfServiceImpl) RenderWarrantyClaimPdf(warranty *types.WarranrtyP
 			CompletedBy:    warranty.Warranty.CompletedBy,
 		}
 
-		if err = service.RenderStruct(pdf, warrantyCopy, 60, 50); err != nil {
+		if err = service.RenderStruct(pdf, warrantyCopy, 50, 50); err != nil {
 			return nil, err
 		}
 	}
@@ -103,7 +103,7 @@ func (service *PdfServiceImpl) RenderWarrantyClaimPdf(warranty *types.WarranrtyP
 			})
 		}
 
-		if err = service.RenderSlice(pdf, partsCopy, 345, 50); err != nil {
+		if err = service.RenderSlice(pdf, partsCopy, 300, 50); err != nil {
 			return nil, err
 		}
 	}
@@ -127,7 +127,7 @@ func (service *PdfServiceImpl) InitPdf(model string) (*gopdf.GoPdf, error) {
 		return nil, err
 	}
 
-	if err := pdf.SetFont("OpenSans", "", 18); err != nil {
+	if err := pdf.SetFont("OpenSans", "", 14); err != nil {
 		return nil, err
 	}
 
@@ -143,7 +143,7 @@ func (service *PdfServiceImpl) InitPdf(model string) (*gopdf.GoPdf, error) {
 	}
 
 	pdf.SetY(pdf.GetY() + 100)
-	if err := pdf.SetFont("OpenSans", "", 11); err != nil {
+	if err := pdf.SetFont("OpenSans", "", 9); err != nil {
 		log.Printf("error with font %v", err)
 		return nil, err
 	}
@@ -179,14 +179,15 @@ func (service *PdfServiceImpl) RenderStruct(pdf *gopdf.GoPdf, data interface{}, 
 			return err
 		}
 
-		startY += 22.5
+		startY += 20.0
 	}
 
 	return nil
 }
 
 func (service *PdfServiceImpl) RenderSlice(pdf *gopdf.GoPdf, data interface{}, startY float64, startX float64) error {
-	if err := pdf.SetFont("OpenSans", "", 9); err != nil {
+
+	if err := pdf.SetFont("OpenSans", "", 8); err != nil {
 		log.Printf("error with font %v", err)
 		return err
 	}
@@ -204,7 +205,7 @@ func (service *PdfServiceImpl) RenderSlice(pdf *gopdf.GoPdf, data interface{}, s
 				return err
 			}
 
-			startY += 102.0
+			startY += 90.0
 		}
 	}
 
