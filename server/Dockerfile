@@ -10,7 +10,8 @@ COPY server/go.mod server/go.sum ./
 RUN go mod download
 
 # Copy the rest of the source code
-COPY server/ .
+COPY . .
+
 
 # Build the application.
 ARG TARGETARCH
