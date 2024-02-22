@@ -9,7 +9,7 @@ import DownloadPdfButton from '../../components/DownloadPdf';
 
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { DownloadLink } from '../../components/WarrantyPdf';
+
 import { useUserStore } from '../../lib/store';
 import { WarrantyParts } from '../../types/miscTypes';
 import { useGetResourceById } from '../../hooks/genericHooks';
@@ -75,7 +75,6 @@ const WarrantyDetail: React.FC = () => {
             </div>
 
             <DownloadPdfButton warrantyClaim={warranty} partsRequired={parts} />
-            <DownloadLink warranty={warranty} parts={parts} />
         </section>
     );
 };
