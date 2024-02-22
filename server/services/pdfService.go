@@ -122,7 +122,7 @@ func (service *PdfServiceImpl) InitPdf(model string) (*gopdf.GoPdf, error) {
 	pdf.Start(gopdf.Config{PageSize: *gopdf.PageSizeA4})
 	pdf.AddPage()
 
-	if err := pdf.AddTTFFont("OpenSans", "./fonts/opensans.ttf"); err != nil {
+	if err := pdf.AddTTFFont("OpenSans", "./out/fonts/opensans.ttf"); err != nil {
 		log.Printf("error adding font %v", err)
 		return nil, err
 	}

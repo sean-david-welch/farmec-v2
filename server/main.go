@@ -18,6 +18,13 @@ import (
 )
 
 func main() {
+	wd, err := os.Getwd()
+	if err != nil {
+		log.Printf("error getting working directory: %v", err)
+	} else {
+		log.Printf("Current working directory: %s", wd)
+	}
+
 	secrets, err := config.NewSecrets()
 	if err != nil {
 		log.Fatal("Error loading configuration: ", err)
