@@ -35,19 +35,15 @@ type Secrets struct {
 func NewSecrets() (*Secrets, error) {
 
 	env := os.Getenv("ENV")
-	var databaseURL string
-	if env == "production" {
-		databaseURL = os.Getenv("RDS_DATABASE")
-	} else {
-		if err := godotenv.Load("./bin/.env"); err != nil {
+	if env != "production" {
+		if err := godotenv.Load(".env"); err != nil {
 			return nil, fmt.Errorf("failed to load configurations file: %w", err)
 		}
-		databaseURL = os.Getenv("DOCKER_DATABASE")
 	}
 
 	return &Secrets{
 		// Database
-		DatabaseURL:    databaseURL,
+		DatabaseURL:    os.Getenv("RDS_DATABASE"),
 		RailwayURL:     os.Getenv("RAILWAY_URL"),
 		DockerDatabase: os.Getenv("DOCKER_DATABASE"),
 		RdsDatabase:    os.Getenv("RDS_DATABASE"),

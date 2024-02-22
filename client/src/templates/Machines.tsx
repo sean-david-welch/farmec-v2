@@ -30,7 +30,7 @@ const Machines: React.FC<Props> = ({ machines, isAdmin }) => {
             <h1 className={utils.sectionHeading}>Machinery</h1>
             {machines.map(machine => (
                 <Fragment key={machine.id}>
-                    <div className={styles.machineCard}>
+                    <div className={styles.machineCard} id={machine.name}>
                         <div className={styles.machineGrid}>
                             <img
                                 src={machine.machine_image || '/default.jpg'}

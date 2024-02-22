@@ -25,6 +25,9 @@ const PartsDetail: React.FC = () => {
 
     useEffect(() => {}, [id]);
 
+    if (isError) return <ErrorPage />;
+    if (isLoading) return <Loading />;
+
     if (!spareparts) {
         return (
             <div>
@@ -37,9 +40,6 @@ const PartsDetail: React.FC = () => {
             </div>
         );
     }
-
-    if (isError) return <ErrorPage />;
-    if (isLoading) return <Loading />;
 
     return (
         <section id="partsDetail">

@@ -71,7 +71,14 @@ const RegistrationForm: React.FC<Props> = ({ id, registration }) => {
     return (
         <section id="form">
             <button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
-                {id ? <FontAwesomeIcon icon={faPenToSquare} /> : 'Create Registration'}
+                {id ? (
+                    <FontAwesomeIcon icon={faPenToSquare} />
+                ) : (
+                    <div>
+                        Machine Registration
+                        <FontAwesomeIcon icon={faPenToSquare} />
+                    </div>
+                )}
             </button>
             <FormDialog visible={showForm} onClose={() => setShowForm(false)}>
                 <form className={utils.form} onSubmit={handleSubmit}>

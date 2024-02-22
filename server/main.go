@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 	"os"
 
@@ -57,6 +58,13 @@ func main() {
 
 	routes.InitRoutes(router, database, secrets, s3Client, adminMiddleware, authMiddleware, firebase)
 
+	env := os.Getenv("ENV")
 	port := os.Getenv("PORT")
-	router.Run("0.0.0.0:" + port)
+	fmt.Printf("Sevrer running on: http://0.0.0.0:80")
+
+	if env == "production" {
+		router.Run("0.0.0.0:" + port)
+	} else {
+		router.Run("0.0.0.0:80")
+	}
 }

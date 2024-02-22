@@ -23,10 +23,10 @@ func RegistrationRoutes(router *gin.Engine, controller *controllers.Registration
 
 	registrationGroup.GET("", controller.GetRegistrations)
 	registrationGroup.GET("/:id", controller.GetRegistrationById)
+	registrationGroup.POST("", controller.CreateRegistration)
 
 	protecteed := registrationGroup.Group("").Use(authMiddleware.Middleware())
 	{
-		protecteed.POST("", controller.CreateRegistration)
 		protecteed.PUT("/:id", controller.UpdateRegistration)
 		protecteed.DELETE("/:id", controller.DeleteRegistration)
 	}

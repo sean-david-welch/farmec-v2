@@ -1,7 +1,0 @@
-services:
-    server:
-        build:
-            context: .
-            target: final
-        ports:
-            - 80:80

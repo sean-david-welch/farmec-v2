@@ -101,7 +101,14 @@ const WarrantyForm: React.FC<Props> = ({ id, warranty }) => {
     return (
         <section id="form">
             <button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
-                {id ? <FontAwesomeIcon icon={faPenToSquare} /> : 'Create Warranty'}
+                {id ? (
+                    <FontAwesomeIcon icon={faPenToSquare} />
+                ) : (
+                    <div>
+                        Warranty Claim
+                        <FontAwesomeIcon icon={faPenToSquare} />
+                    </div>
+                )}
             </button>
             <FormDialog visible={showForm} onClose={() => setShowForm(false)}>
                 <form className={utils.form} onSubmit={handleSubmit}>
