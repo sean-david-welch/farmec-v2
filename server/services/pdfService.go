@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"reflect"
+	"strings"
 
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"github.com/signintech/gopdf"
@@ -14,6 +15,7 @@ type PdfService interface {
 	RenderRegistrationPdf(registration *types.MachineRegistration) ([]byte, error)
 	RenderWarrantyClaimPdf(warranty *types.WarranrtyParts) ([]byte, error)
 	InitPdf(model string) (*gopdf.GoPdf, error)
+	WrapText(text string) []string
 	RenderStruct(pdf *gopdf.GoPdf, data interface{}, startY float64, startX float64) error
 	RenderSlice(pdf *gopdf.GoPdf, data interface{}, startY float64, startX float64) error
 }
@@ -103,7 +105,7 @@ func (service *PdfServiceImpl) RenderWarrantyClaimPdf(warranty *types.WarranrtyP
 			})
 		}
 
-		if err = service.RenderSlice(pdf, partsCopy, 300, 50); err != nil {
+		if err = service.RenderSlice(pdf, partsCopy, 285, 50); err != nil {
 			return nil, err
 		}
 	}
@@ -127,7 +129,7 @@ func (service *PdfServiceImpl) InitPdf(model string) (*gopdf.GoPdf, error) {
 		return nil, err
 	}
 
-	if err := pdf.SetFont("OpenSans", "", 14); err != nil {
+	if err := pdf.SetFont("OpenSans", "", 16); err != nil {
 		return nil, err
 	}
 
@@ -142,8 +144,8 @@ func (service *PdfServiceImpl) InitPdf(model string) (*gopdf.GoPdf, error) {
 		return nil, err
 	}
 
-	pdf.SetY(pdf.GetY() + 100)
-	if err := pdf.SetFont("OpenSans", "", 9); err != nil {
+	pdf.SetY(pdf.GetY() + 110)
+	if err := pdf.SetFont("OpenSans", "", 12); err != nil {
 		log.Printf("error with font %v", err)
 		return nil, err
 	}
@@ -151,7 +153,28 @@ func (service *PdfServiceImpl) InitPdf(model string) (*gopdf.GoPdf, error) {
 	return pdf, nil
 }
 
+func (service *PdfServiceImpl) WrapText(text string) []string {
+	maxCharsPerLine := 100
+
+	var wrapped []string
+	for len(text) > 0 {
+		if len(text) <= maxCharsPerLine {
+			wrapped = append(wrapped, text)
+			break
+		}
+
+		spaceIndex := strings.LastIndex(text[:maxCharsPerLine], " ")
+		if spaceIndex == -1 {
+			spaceIndex = maxCharsPerLine
+		}
+		wrapped = append(wrapped, text[:spaceIndex])
+		text = text[spaceIndex+1:]
+	}
+	return wrapped
+}
+
 func (service *PdfServiceImpl) RenderStruct(pdf *gopdf.GoPdf, data interface{}, startY float64, startX float64) error {
+
 	v := reflect.ValueOf(data)
 	if v.Kind() == reflect.Ptr {
 		v = v.Elem()
@@ -172,22 +195,27 @@ func (service *PdfServiceImpl) RenderStruct(pdf *gopdf.GoPdf, data interface{}, 
 
 		fieldValue := fmt.Sprintf("%v", field.Interface())
 
-		pdf.SetY(startY)
-		pdf.SetX(startX)
-		if err := pdf.Text(fieldName + ": " + fieldValue); err != nil {
-			log.Printf("error when rendering struct field to text: %s", err)
-			return err
-		}
+		text := fieldName + ": " + fieldValue
+		wrappedText := service.WrapText(text)
 
-		startY += 20.0
+		for _, line := range wrappedText {
+			pdf.SetY(startY)
+			pdf.SetX(startX)
+			if err := pdf.Text(line); err != nil {
+				log.Printf("error when rendering struct field to text: %s", err)
+				return err
+			}
+			startY += 20
+		}
 	}
 
 	return nil
 }
 
 func (service *PdfServiceImpl) RenderSlice(pdf *gopdf.GoPdf, data interface{}, startY float64, startX float64) error {
+	startY += 40
 
-	if err := pdf.SetFont("OpenSans", "", 8); err != nil {
+	if err := pdf.SetFont("OpenSans", "", 10); err != nil {
 		log.Printf("error with font %v", err)
 		return err
 	}
@@ -205,7 +233,7 @@ func (service *PdfServiceImpl) RenderSlice(pdf *gopdf.GoPdf, data interface{}, s
 				return err
 			}
 
-			startY += 90.0
+			startY += 85
 		}
 	}
 
