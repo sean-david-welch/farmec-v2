@@ -2,12 +2,12 @@ provider "aws" {
   region = var.aws_region != "" ? var.aws_region : "${var.aws_region}"
 }
 
-resource "aws_key_pair" "farmec" {
-  key_name   = "farmec"
+resource "aws_key_pair" "farmec-ec2" {
+  key_name   = "farmec-ec2"
   public_key = file("~/.ssh/farmec.pub")
 
   tags = {
-    Name = "farmec"
+    Name = "farmec-ec2"
   }
 }
 
