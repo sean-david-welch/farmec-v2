@@ -1,0 +1,171 @@
+# Deploy Go to ubuntu snippets
+
+## Login to Ubuntu VPS
+```
+ssh root@123.123.123.123
+```
+
+## Update packages
+```
+apt-get update
+apt-get upgrade
+```
+
+## Create a new user
+```
+adduser robby
+adduser robby sudo
+```
+
+## Enable firewall
+```
+ufw app list
+ufw allow OpenSSH
+ufw enable
+ufw status
+```
+
+## Add authorized ssh key
+```
+cd /home/robby
+mkdir .ssh
+nano .ssh/authorized_keys
+```
+
+Then past in your public ssh key.
+
+## Login as new user
+
+```
+ssh robby@123.123.123.123
+```
+
+## Install go
+```
+cd /tmp
+wget https://go.dev/dl/go1.19.linux-amd64.tar.gz
+tar -xvf go1.11.linux-amd64.tar.gz
+sudo mv go /usr/local
+```
+
+## Add go to path
+```
+nano ~/.profile
+```
+
+Then add the following line.
+
+```
+export PATH=$PATH:/usr/local/go/bin
+```
+
+# install postgres
+```
+sudo apt-get install postgresql postgresql-contrib
+```
+
+# Create a postgres user and database
+```
+sudo -i -u postgres
+createdb notes
+createuser --interactive
+psql
+```
+
+```
+ALTER USER robby WITH PASSWORD 'rk';
+GRANT ALL PRIVILEGES ON DATABASE notes TO robby;
+\q
+```
+
+## Copying local code to remote
+
+```
+rsync -a ./notes robby@123.123.123.123:/home/robby/go/src --exclude .env
+```
+
+## Build Go app on remote
+```
+cd /go/src/notes
+go build
+```
+
+## Setup system.d service
+```
+sudo nano /lib/systemd/system/notes.service
+```
+
+Add the service code below.
+
+```
+[Unit]
+Description=notes
+
+[Service]
+Environment=PORT=3000
+Environment=GO_ENV=production
+Environment=GIN_MODE=release
+Environment=DB_URL=postgresql://robby:rk@123.123.123.123:5432/notes
+Type=simple
+Restart=always
+RestartSec=5s
+ExecStart=/home/robby/go/src/notes/notes
+
+[Install]
+WantedBy=multi-user.target
+```
+
+## Start the service and check status
+```
+sudo service notes start
+sudo service notes statusy
+```
+
+## Installing nginx
+```
+sudo apt install nginx
+```
+
+## Enabling nginx on firewall
+```
+sudo ufw app list
+sudo ufw allow "Nginx Full"
+sudo ufw reload
+sudo ufw status
+```
+
+# Setup nginx
+```
+cd /etc/nginx/sites-available
+sudo nano notes
+```
+
+Add a server block like below.
+
+```
+server {
+    server_name your_domain www.your_domain;
+
+    location / {
+        proxy_pass http://localhost:3000;
+    }
+}
+```
+
+```
+server {
+   listen 80;
+   listen [::]:80;
+
+   location / {
+     proxy_pass http://localhost:3000;
+   }
+}
+```
+
+## Restart nginx
+
+```
+sudo ln -s /etc/nginx/sites-available/notes.com /etc/nginx/sites-enabled/notes.com
+sudo nginx -s reload
+```

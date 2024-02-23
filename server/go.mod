@@ -6,9 +6,9 @@ require (
 	firebase.google.com/go v3.13.0+incompatible
 	github.com/DATA-DOG/go-sqlmock v1.5.2
 	github.com/aws/aws-sdk-go-v2 v1.25.1
-	github.com/aws/aws-sdk-go-v2/config v1.27.2
-	github.com/aws/aws-sdk-go-v2/credentials v1.17.2
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.50.3
+	github.com/aws/aws-sdk-go-v2/config v1.27.3
+	github.com/aws/aws-sdk-go-v2/credentials v1.17.3
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.51.0
 	github.com/aws/smithy-go v1.20.1
 	github.com/gin-contrib/cors v1.5.0
 	github.com/gin-gonic/gin v1.9.1
@@ -18,7 +18,7 @@ require (
 	github.com/lib/pq v1.10.9
 	github.com/signintech/gopdf v0.22.0
 	github.com/stretchr/testify v1.8.4
-	github.com/stripe/stripe-go/v76 v76.17.0
+	github.com/stripe/stripe-go/v76 v76.18.0
 	google.golang.org/api v0.166.0
 )
 
@@ -40,9 +40,9 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.3.1 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.11.1 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.17.1 // indirect
-	github.com/aws/aws-sdk-go-v2/service/sso v1.19.2 // indirect
-	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.22.2 // indirect
-	github.com/aws/aws-sdk-go-v2/service/sts v1.27.2 // indirect
+	github.com/aws/aws-sdk-go-v2/service/sso v1.20.0 // indirect
+	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.23.0 // indirect
+	github.com/aws/aws-sdk-go-v2/service/sts v1.28.0 // indirect
 	github.com/bytedance/sonic v1.11.0 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/chenzhuoyu/iasm v0.9.1 // indirect
