@@ -1,5 +1,7 @@
 # Deploy Go to ubuntu snippets
 
+df -h #space
+
 ## Login to Ubuntu VPS
 ```
 ssh root@123.123.123.123
