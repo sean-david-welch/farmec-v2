@@ -1,3 +1,12 @@
+terraform {
+  required_providers {
+    aws = {
+        source = "hashicorp/aws"
+        version = "5.37.0"
+    }
+  }
+}
+
 provider "aws" {
   region = var.aws_region != "" ? var.aws_region : "${var.aws_region}"
 }
@@ -11,56 +20,17 @@ resource "aws_key_pair" "farmec-ec2" {
   }
 }
 
-resource "aws_security_group" "my_sg" {
-  name        = "my_sg"
-  description = "Security Group for RDS cluster"
-  vpc_id      = aws_vpc.farmec_vpc.id  
+variable "aws_region" {
+    description = "AWS region for all resources."
 
-  ingress {
-    from_port   = 5432
-    to_port     = 5432
-    protocol    = "tcp"
-    cidr_blocks = [
-      "10.0.1.0/24",
-      "10.0.2.0/24",
-      "0.0.0.0/0"   
-    ]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "my_sg"
-  }
+    type = string
+    default = "eu-west-1"
 }
 
-resource "aws_security_group" "my_ec2_sg" {
-  name        = "my_ec2_sg"
-  description = "Security Group for EC2 instances"
-  vpc_id      = aws_vpc.farmec_vpc.id
-
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]  
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "SSH Access SG"
-  }
+variable "master_username" {
+  default = ""
 }
 
-
+variable "master_password" {
+  default = ""
+}
