@@ -1,6 +1,7 @@
 # Deploy Go to ubuntu snippets
 
 df -h #space
+sudo systemctl restart nginx
 
 ## Login to Ubuntu VPS
 ```
