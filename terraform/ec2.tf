@@ -9,3 +9,11 @@ resource "aws_instance" "FarmecAPI" {
     Name = "FarmecAPI"
   }
 }
+
+resource "aws_eip" "farmec_eip" {
+  instance = aws_instance.FarmecAPI.id
+
+  tags = {
+    Name = "FarmecAPI EIP"
+  }
+}
