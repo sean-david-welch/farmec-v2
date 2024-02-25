@@ -1,5 +1,5 @@
 const config = {
-    baseUrl: import.meta.env.VITE_ENVIRONMENT === 'production' ? 'https://api.farmec.ie/' : 'http://0.0.0.0:80/',
+    baseUrl: import.meta.env.VITE_ENVIRONMENT === 'production' ? 'https://server.farmec.ie/' : 'http://0.0.0.0:80/',
 
     firebaseApiKey: import.meta.env.VITE_FB_WEB_API_KEY,
     firebaseAuthDomain: import.meta.env.VITE_FB_AUTH_URL,

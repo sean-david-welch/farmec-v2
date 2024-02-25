@@ -1,0 +1,20 @@
+sudo df -h
+
+sudo journalctl -u farmec.service -f
+sudo systemctl status farmec.service
+
+apt-get update
+apt-get upgrade
+
+adduser seanwelch
+adduser seanwelch sudo
+
+ufw app list
+ufw allow OpenSSH
+ufw enable
+ufw status
+
+sudo systemctl restart nginx
+sudo cat /etc/nginx/sites-available/farmec
+
+sudo cat /var/log/nginx/error.log
