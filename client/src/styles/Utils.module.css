@@ -138,6 +138,7 @@
 
 .checkout {
     @apply mx-72 my-10 rounded-2xl bg-white p-5;
+    @apply md:mx-5;
 }
 
 .loginSection {
