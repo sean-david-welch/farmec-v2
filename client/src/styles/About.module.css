@@ -16,7 +16,7 @@
 }
 
 .employeeCard > * {
-    @apply mb-8;
+    @apply mb-10;
 }
 
 .employeeCard img {
