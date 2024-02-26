@@ -17,7 +17,7 @@ jobs:
                   username: ${{ secrets.EC2_USER }}
                   key: ${{ secrets.SSH_PRIVATE_KEY }}
                   port: ${{ secrets.SSH_PORT }}
-                  source: server/,other-configs/
+                  source: server/,other-con figs/
                   target: /home/seanwelch/
                   script: |
                       echo "Listing files in /home/seanwelch/"
@@ -35,6 +35,6 @@ jobs:
                       cd ./server
                       source ~/.profile
                       go build -o bin/main
-                      sudo systemctl stop farmec.service
-                      sudo systemctl start farmec.service
-                      sudo systemctl restart nginx
+                      echo ${{ secrets.SUDO_PASSWORD }} | sudo -S systemctl stop farmec.service
+                      echo ${{ secrets.SUDO_PASSWORD }} | sudo -S systemctl start farmec.service
+                      echo ${{ secrets.SUDO_PASSWORD }} | sudo -S systemctl restart nginx
