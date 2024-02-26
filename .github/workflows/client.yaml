@@ -19,6 +19,7 @@ jobs:
 
             - name: Install dependencies
               run: npm install
+              working-directory: ./client
 
             - name: Configure AWS CLI
               run: |
@@ -32,3 +33,4 @@ jobs:
 
             - name: Deploy application
               run: npm run deploy
+              working-directory: ./client

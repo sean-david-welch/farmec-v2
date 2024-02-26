@@ -26,7 +26,7 @@ const Users: React.FC = () => {
                     users?.map(user => (
                         <Fragment key={user.rawId}>
                             <div className={styles.productView}>
-                                <h1 className={utils.paragraph}>
+                                <h1 className={utils.mainHeading}>
                                     {user.email} -- {user.CustomClaims?.admin ? 'Admin' : 'Not Admin'}
                                 </h1>
                                 <div className={utils.optionsBtn}>
