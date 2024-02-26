@@ -17,6 +17,18 @@ jobs:
               with:
                   node-version: '20.9.0'
 
+            - name: Create .env file
+              run: |
+                  echo "VITE_ENVIRONMENT=production" >> client/.env
+                  echo "VITE_PUBLIC_MAPS_KEY=${{ secrets.VITE_PUBLIC_MAPS_KEY }}" >> client/.env
+                  echo "VITE_RECAPTCHA_PUBLIC_KEY=${{ secrets.VITE_RECAPTCHA_PUBLIC_KEY }}" >> client/.env
+                  echo "VITE_STRIPE_PUBLIC_KEY=${{ secrets.VITE_STRIPE_PUBLIC_KEY }}" >> client/.env
+                  echo "VITE_TEST_PUBLIC_KEY=${{ secrets.VITE_TEST_PUBLIC_KEY }}" >> client/.env
+                  echo "VITE_FB_WEB_API_KEY=${{ secrets.VITE_FB_WEB_API_KEY }}" >> client/.env
+                  echo "VITE_FB_PROJECT_ID=${{ secrets.VITE_FB_PROJECT_ID }}" >> client/.env
+                  echo "VITE_FB_AUTH_URL=${{ secrets.VITE_FB_AUTH_URL }}" >> client/.env
+              working-directory: ./client
+
             - name: Install dependencies
               run: npm install
               working-directory: ./client
