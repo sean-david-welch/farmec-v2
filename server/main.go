@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 	"os"
 
@@ -18,13 +17,6 @@ import (
 )
 
 func main() {
-	wd, err := os.Getwd()
-	if err != nil {
-		log.Printf("error getting working directory: %v", err)
-	} else {
-		log.Printf("Current working directory: %s", wd)
-	}
-
 	secrets, err := config.NewSecrets()
 	if err != nil {
 		log.Fatal("Error loading configuration: ", err)
@@ -67,7 +59,6 @@ func main() {
 
 	env := os.Getenv("ENV")
 	port := os.Getenv("PORT")
-	fmt.Printf("Sevrer running on: http://0.0.0.0:80")
 
 	if env == "production" {
 		router.Run("0.0.0.0:" + port)
