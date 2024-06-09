@@ -27,7 +27,11 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer database.Close()
+	defer func() {
+		if err := database.Close(); err != nil {
+			log.Fatal("Failed to close database: ", err)
+		}
+	}()
 
 	s3Client, err := utils.NewS3Client("eu-west-1", secrets.AwsAccessKey, secrets.AwsSecret)
 	if err != nil {
