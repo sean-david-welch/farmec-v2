@@ -76,7 +76,7 @@ func (repository *CarouselRepositoryImpl) GetCarouselById(id string) (*types.Car
 
 func (repository *CarouselRepositoryImpl) CreateCarousel(carousel *types.Carousel) error {
 	carousel.ID = uuid.NewString()
-	carousel.Created = time.Now().String().String()
+	carousel.Created = time.Now().String()
 
 	query := `INSERT INTO "Carousel"
 	(id, name, image, created)
