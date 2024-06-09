@@ -95,7 +95,7 @@ func (repository *MachineRepositoryImpl) GetMachineById(id string) (*types.Machi
 
 func (repository *MachineRepositoryImpl) CreateMachine(machine *types.Machine) error {
 	machine.ID = uuid.NewString()
-	machine.Created = time.Now()
+	machine.Created = time.Now().String()
 
 	query := `INSERT INTO "Machine" (id, supplier_id, name, machine_image, description, machine_link, created)
 	VALUES ($1, $2, $3, $4, $5, $6, $7)`

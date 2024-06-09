@@ -78,7 +78,7 @@ func (repository *EmployeeRepositoryImpl) GetEmployeeById(id string) (*types.Emp
 
 func (repository *EmployeeRepositoryImpl) CreateEmployee(employee *types.Employee) error {
 	employee.ID = uuid.NewString()
-	employee.Created = time.Now()
+	employee.Created = time.Now().String()
 
 	query := `INSERT INTO "Employee" (id, name, email, role, profile_image, created)
 				VALUES ($1, $2, $3, $4, $5, $6)`

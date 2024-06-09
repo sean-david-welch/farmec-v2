@@ -55,7 +55,7 @@ func (repository *ExhibitionRepositoryImpl) GetExhibitions() ([]types.Exhibition
 
 func (repository *ExhibitionRepositoryImpl) CreateExhibition(exhibition *types.Exhibition) error {
 	exhibition.ID = uuid.NewString()
-	exhibition.Created = time.Now()
+	exhibition.Created = time.Now().String()
 
 	query := `INSERT INTO "Exhibition" (id, title, date, location, info, created) VALUES ($1, $2, $3, $4, $5, $6)`
 	_, err := repository.database.Exec(query, exhibition.ID, exhibition.Title, exhibition.Date, exhibition.Location, exhibition.Info, exhibition.Created)

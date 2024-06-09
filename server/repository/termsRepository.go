@@ -58,7 +58,7 @@ func (repository *TermsRepositoryImpl) GetTerms() ([]types.Terms, error) {
 
 func (repository *TermsRepositoryImpl) CreateTerm(term *types.Terms) error {
 	term.ID = uuid.NewString()
-	term.Created = time.Now()
+	term.Created = time.Now().String()
 
 	query := `INSERT INTO "Terms" (id, title, body, created) VALUES ($1, $2, $3, $4)`
 

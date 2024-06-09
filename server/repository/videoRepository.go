@@ -60,7 +60,7 @@ func (repository *VideoRepositoryImpl) GetVideos(id string) ([]types.Video, erro
 func (repository *VideoRepositoryImpl) CreateVideo(video *types.Video) error {
 
 	video.ID = uuid.NewString()
-	video.Created = time.Now()
+	video.Created = time.Now().String()
 
 	query := `INSERT INTO "Video" ("id", "supplier_id", "web_url", "title", "description", "video_id", "thumbnail_url", "created") VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`
 	_, err := repository.database.Exec(query, video.ID, video.SupplierID, video.WebURL, video.Title, video.Description, video.VideoID, video.ThumbnailURL, video.Created)

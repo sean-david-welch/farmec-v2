@@ -57,7 +57,7 @@ func (repository *TimelineRepositoryImpl) GetTimelines() ([]types.Timeline, erro
 
 func (repository *TimelineRepositoryImpl) CreateTimeline(timeline *types.Timeline) error {
 	timeline.ID = uuid.NewString()
-	timeline.Created = time.Now()
+	timeline.Created = time.Now().String()
 
 	query := `INSERT INTO "Timeline" (id, title, date, body, created) VALUES ($1, $2, $3, $4, $5)`
 

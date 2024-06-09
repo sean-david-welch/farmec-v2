@@ -41,7 +41,12 @@ func scanSupplier(row interface{}, supplier *types.Supplier) error {
 		return fmt.Errorf("unsupported type: %T", value)
 	}
 
-	return scanner.Scan(&supplier.ID, &supplier.Name, &supplier.LogoImage, &supplier.MarketingImage, &supplier.Description, &supplier.SocialFacebook, &supplier.SocialInstagram, &supplier.SocialLinkedin, &supplier.SocialTwitter, &supplier.SocialYoutube, &supplier.SocialWebsite, &supplier.Created)
+	return scanner.Scan(
+		&supplier.ID, &supplier.Name, &supplier.LogoImage,
+		&supplier.MarketingImage, &supplier.Description,
+		&supplier.SocialFacebook, &supplier.SocialInstagram, &supplier.SocialLinkedin,
+		&supplier.SocialTwitter, &supplier.SocialYoutube, &supplier.SocialWebsite, &supplier.Created,
+	)
 }
 
 func (repository *SupplierRepositoryImpl) GetSuppliers() ([]types.Supplier, error) {
@@ -78,7 +83,7 @@ func (repository *SupplierRepositoryImpl) GetSuppliers() ([]types.Supplier, erro
 func (repository *SupplierRepositoryImpl) CreateSupplier(supplier *types.Supplier) error {
 
 	supplier.ID = uuid.NewString()
-	supplier.Created = time.Now()
+	supplier.Created = time.Now().String()
 
 	query := `INSERT INTO "Supplier" 
 	(id, name, logo_image, marketing_image, description, social_facebook, social_instagram, social_linkedin, social_twitter, social_youtube, social_website, created) 

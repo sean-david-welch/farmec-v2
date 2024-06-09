@@ -87,7 +87,7 @@ func (repository *RegistrationRepositoryImpl) GetRegistrationById(id string) (*t
 
 func (repository *RegistrationRepositoryImpl) CreateRegistration(registration *types.MachineRegistration) error {
 	registration.ID = uuid.NewString()
-	registration.Created = time.Now()
+	registration.Created = time.Now().String()
 
 	query := `INSERT INTO "MachineRegistration" (
         "id", "dealer_name", "dealer_address", "owner_name", "owner_address", "machine_model", 

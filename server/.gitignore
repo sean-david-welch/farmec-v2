@@ -9,3 +9,4 @@ service-account.json
 /tmp/main
 /tmp
 /.env.production
+/.env

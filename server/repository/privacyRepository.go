@@ -58,7 +58,7 @@ func (repository *PrivacyRepositoryImpl) GetPrivacy() ([]types.Privacy, error) {
 
 func (repository *PrivacyRepositoryImpl) CreatePrivacy(privacy *types.Privacy) error {
 	privacy.ID = uuid.NewString()
-	privacy.Created = time.Now()
+	privacy.Created = time.Now().String()
 
 	query := `INSERT INTO "Privacy" (id, title, body, created) VALUES ($1, $2, $3, $4)`
 

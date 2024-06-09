@@ -102,7 +102,7 @@ func (repository *WarrantyRepositoryImpl) GetWarrantyById(id string) (*types.War
 
 func (repository *WarrantyRepositoryImpl) CreateWarranty(warranty *types.WarrantyClaim, parts []types.PartsRequired) error {
 	warranty.ID = uuid.NewString()
-	warranty.Created = time.Now()
+	warranty.Created = time.Now().String()
 
 	transaction, err := repository.database.Begin()
 	if err != nil {

@@ -80,7 +80,7 @@ func (repository *BlogRepositoryImpl) GetBlogById(id string) (*types.Blog, error
 
 func (repository *BlogRepositoryImpl) CreateBlog(blog *types.Blog) error {
 	blog.ID = uuid.NewString()
-	blog.Created = time.Now()
+	blog.Created = time.Now().String().String()
 
 	query := `INSERT INTO "Blog" (id, title, date, main_image, subheading, body, created) VALUES ($1, $2, $3, $4, $5, $6, $7)`
 
