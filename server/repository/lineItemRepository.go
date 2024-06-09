@@ -2,6 +2,7 @@ package repository
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"log"
 
@@ -64,7 +65,7 @@ func (repository *LineItemRepositoryImpl) GetLineItemById(id string) (*types.Lin
 
 	if err := row.Scan(&lineItem.ID, &lineItem.Name, &lineItem.Price, &lineItem.Image); err != nil {
 
-		if err == sql.ErrNoRows {
+		if errors.Is(err, sql.ErrNoRows) {
 			return nil, fmt.Errorf("error item found with the given id: %w", err)
 		}
 

@@ -20,23 +20,24 @@ func NewTermsService(repository repository.TermsRepository) *TermsServiceImpl {
 	return &TermsServiceImpl{repository: repository}
 }
 
-func(service *TermsServiceImpl) GetTerms() ([]types.Terms, error) {
-	terms, err := service.repository.GetTerms(); if err != nil {
+func (service *TermsServiceImpl) GetTerms() ([]types.Terms, error) {
+	terms, err := service.repository.GetTerms()
+	if err != nil {
 		return nil, err
 	}
-	
+
 	return terms, nil
 }
 
-func(service *TermsServiceImpl) CreateTerm(term *types.Terms) error {
+func (service *TermsServiceImpl) CreateTerm(term *types.Terms) error {
 	if err := service.repository.CreateTerm(term); err != nil {
 		return err
 	}
-	
+
 	return nil
 }
 
-func(service *TermsServiceImpl) UpdateTerm(id string, term *types.Terms) error {
+func (service *TermsServiceImpl) UpdateTerm(id string, term *types.Terms) error {
 	if err := service.repository.UpdateTerm(id, term); err != nil {
 		return err
 	}
@@ -44,7 +45,7 @@ func(service *TermsServiceImpl) UpdateTerm(id string, term *types.Terms) error {
 	return nil
 }
 
-func(service *TermsServiceImpl) DeleteTerm(id string) error {
+func (service *TermsServiceImpl) DeleteTerm(id string) error {
 	if err := service.repository.DeleteTerm(id); err != nil {
 		return err
 	}

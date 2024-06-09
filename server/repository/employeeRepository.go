@@ -2,7 +2,9 @@ package repository
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/google/uuid"
@@ -64,7 +66,7 @@ func (repository *EmployeeRepositoryImpl) GetEmployeeById(id string) (*types.Emp
 
 	err := row.Scan(&employee.ID, &employee.Name, &employee.Email, &employee.Role, &employee.ProfileImage, &employee.Created)
 	if err != nil {
-		if err == sql.ErrNoRows {
+		if errors.Is(err, sql.ErrNoRows) {
 			return nil, fmt.Errorf("error item found with the given id: %w", err)
 		}
 

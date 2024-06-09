@@ -2,7 +2,9 @@ package repository
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/google/uuid"
@@ -81,7 +83,7 @@ func (repository *MachineRepositoryImpl) GetMachineById(id string) (*types.Machi
 
 	if err := ScanMachine(row, &machine); err != nil {
 
-		if err == sql.ErrNoRows {
+		if errors.Is(err, sql.ErrNoRows) {
 			return nil, fmt.Errorf("error item found with the given id: %w", err)
 		}
 

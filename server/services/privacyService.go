@@ -6,10 +6,10 @@ import (
 )
 
 type PrivacyService interface {
-	GetPrivacys() ([]types.Privacy, error) 
-	CreatePrivacy(privacy *types.Privacy) error 
-	UpdatePrivacy(id string, privacy *types.Privacy) error 
-	DeletePrivacy(id string) error 
+	GetPrivacys() ([]types.Privacy, error)
+	CreatePrivacy(privacy *types.Privacy) error
+	UpdatePrivacy(id string, privacy *types.Privacy) error
+	DeletePrivacy(id string) error
 }
 
 type PrivacyServiceImpl struct {
@@ -20,23 +20,24 @@ func NewPrivacyService(repository repository.PrivacyRepository) *PrivacyServiceI
 	return &PrivacyServiceImpl{repository: repository}
 }
 
-func(service *PrivacyServiceImpl) GetPrivacys() ([]types.Privacy, error) {
-	privacys, err := service.repository.GetPrivacy(); if err != nil {
+func (service *PrivacyServiceImpl) GetPrivacys() ([]types.Privacy, error) {
+	privacys, err := service.repository.GetPrivacy()
+	if err != nil {
 		return nil, err
 	}
-	
+
 	return privacys, nil
 }
 
-func(service *PrivacyServiceImpl) CreatePrivacy(privacy *types.Privacy) error {
+func (service *PrivacyServiceImpl) CreatePrivacy(privacy *types.Privacy) error {
 	if err := service.repository.CreatePrivacy(privacy); err != nil {
 		return err
 	}
-	
+
 	return nil
 }
 
-func(service *PrivacyServiceImpl) UpdatePrivacy(id string, privacy *types.Privacy) error {
+func (service *PrivacyServiceImpl) UpdatePrivacy(id string, privacy *types.Privacy) error {
 	if err := service.repository.UpdatePrivacy(id, privacy); err != nil {
 		return err
 	}
@@ -44,7 +45,7 @@ func(service *PrivacyServiceImpl) UpdatePrivacy(id string, privacy *types.Privac
 	return nil
 }
 
-func(service *PrivacyServiceImpl) DeletePrivacy(id string) error {
+func (service *PrivacyServiceImpl) DeletePrivacy(id string) error {
 	if err := service.repository.DeletePrivacy(id); err != nil {
 		return err
 	}

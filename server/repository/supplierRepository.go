@@ -2,6 +2,7 @@ package repository
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"log"
 	"time"
@@ -100,7 +101,7 @@ func (repository *SupplierRepositoryImpl) GetSupplierById(id string) (*types.Sup
 
 	if err := scanSupplier(row, &supplier); err != nil {
 
-		if err == sql.ErrNoRows {
+		if errors.Is(err, sql.ErrNoRows) {
 			return nil, fmt.Errorf("error item found with the given id: %w", err)
 		}
 

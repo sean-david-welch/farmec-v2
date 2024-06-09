@@ -3,6 +3,7 @@ package repository
 import (
 	"database/sql"
 	"fmt"
+	"log"
 
 	"github.com/google/uuid"
 	"github.com/sean-david-welch/farmec-v2/server/types"

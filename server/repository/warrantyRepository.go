@@ -119,7 +119,10 @@ func (repository *WarrantyRepositoryImpl) CreateWarranty(warranty *types.Warrant
 		warranty.FailureDetails, warranty.RepairDetails, warranty.LabourHours, warranty.CompletedBy, warranty.Created,
 	)
 	if err != nil {
-		transaction.Rollback()
+		err := transaction.Rollback()
+		if err != nil {
+			return err
+		}
 		return err
 	}
 
@@ -131,7 +134,10 @@ func (repository *WarrantyRepositoryImpl) CreateWarranty(warranty *types.Warrant
 
 		_, err := transaction.Exec(partsQuery, part.ID, warranty.ID, part.PartNumber, part.QuantityNeeded, part.InvoiceNumber, part.Description)
 		if err != nil {
-			transaction.Rollback()
+			err := transaction.Rollback()
+			if err != nil {
+				return err
+			}
 			return err
 		}
 
@@ -161,14 +167,20 @@ func (repository *WarrantyRepositoryImpl) UpdateWarranty(id string, warranty *ty
 		warranty.FailureDetails, warranty.RepairDetails, warranty.LabourHours, warranty.CompletedBy, warranty.Created,
 	)
 	if err != nil {
-		transaction.Rollback()
+		err := transaction.Rollback()
+		if err != nil {
+			return err
+		}
 		return err
 	}
 
 	deleteQuery := `DELETE FROM "PartsRequired" WHERE warranty_id = $1`
 	_, err = transaction.Exec(deleteQuery, id)
 	if err != nil {
-		transaction.Rollback()
+		err := transaction.Rollback()
+		if err != nil {
+			return err
+		}
 		return err
 	}
 
@@ -180,7 +192,10 @@ func (repository *WarrantyRepositoryImpl) UpdateWarranty(id string, warranty *ty
 
 		_, err := transaction.Exec(partsQuery, part.ID, warranty.ID, part.PartNumber, part.QuantityNeeded, part.InvoiceNumber, part.Description)
 		if err != nil {
-			transaction.Rollback()
+			err := transaction.Rollback()
+			if err != nil {
+				return err
+			}
 			return err
 		}
 	}
@@ -201,7 +216,10 @@ func (repository *WarrantyRepositoryImpl) DeleteWarranty(id string) error {
 	deleteParts := `DELETE FROM "PartsRequired" WHERE "warranty_id" = $1`
 	_, err = transaction.Exec(deleteParts, id)
 	if err != nil {
-		transaction.Rollback()
+		err := transaction.Rollback()
+		if err != nil {
+			return err
+		}
 		log.Printf("error occurred while deleting parts from warranty: %v", err)
 		return err
 	}
@@ -209,7 +227,10 @@ func (repository *WarrantyRepositoryImpl) DeleteWarranty(id string) error {
 	deleteWarranty := `DELETE FROM "WarrantyClaim" WHERE "id" = $1`
 	_, err = transaction.Exec(deleteWarranty, id)
 	if err != nil {
-		transaction.Rollback()
+		err := transaction.Rollback()
+		if err != nil {
+			return err
+		}
 		log.Printf("error occurred while deleting warranty claim: %v", err)
 		return err
 	}

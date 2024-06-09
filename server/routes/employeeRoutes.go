@@ -16,7 +16,6 @@ func InitilizeEmployee(router *gin.Engine, database *sql.DB, s3Client utils.S3Cl
 	service := services.NewEmployeeService(repository, s3Client, "Employees")
 	cotroller := controllers.NewEmployeeController(service)
 
-
 	EmployeeRoutes(router, cotroller, adminMiddleware)
 }
 
@@ -25,7 +24,8 @@ func EmployeeRoutes(router *gin.Engine, controller *controllers.EmployeeControll
 
 	employeeGroup.GET("", controller.GetEmployees)
 
-	protected := employeeGroup.Group("").Use(middleware.Middleware()); {
+	protected := employeeGroup.Group("").Use(middleware.Middleware())
+	{
 		protected.POST("", controller.CreateEmployee)
 		protected.PUT("/:id", controller.UpdateEmployee)
 		protected.DELETE("/:id", controller.DeleteEmployee)

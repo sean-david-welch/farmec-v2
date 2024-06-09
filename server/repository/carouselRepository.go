@@ -2,6 +2,7 @@ package repository
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"log"
 	"time"
@@ -63,7 +64,7 @@ func (repository *CarouselRepositoryImpl) GetCarouselById(id string) (*types.Car
 	var carousel types.Carousel
 
 	if err := row.Scan(&carousel.ID, &carousel.Name, &carousel.Image, &carousel.Created); err != nil {
-		if err == sql.ErrNoRows {
+		if errors.Is(err, sql.ErrNoRows) {
 			return nil, fmt.Errorf("error item found with the given id: %w", err)
 		}
 

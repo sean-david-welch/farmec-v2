@@ -17,8 +17,9 @@ func NewExhibitionController(service services.ExhibitionService) *ExhibitionCont
 	return &ExhibitionController{service: service}
 }
 
-func(controller *ExhibitionController) GetExhibitions(context *gin.Context) {
-	exhibitions, err := controller.service.GetExhibitions(); if err != nil {
+func (controller *ExhibitionController) GetExhibitions(context *gin.Context) {
+	exhibitions, err := controller.service.GetExhibitions()
+	if err != nil {
 		log.Printf("error getting exhibitions: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while getting exhibitions"})
 		return
@@ -27,7 +28,7 @@ func(controller *ExhibitionController) GetExhibitions(context *gin.Context) {
 	context.JSON(http.StatusOK, exhibitions)
 }
 
-func(controller *ExhibitionController) CreateExhibition(context *gin.Context) {
+func (controller *ExhibitionController) CreateExhibition(context *gin.Context) {
 	var exhibition *types.Exhibition
 
 	if err := context.ShouldBindJSON(&exhibition); err != nil {
@@ -44,9 +45,9 @@ func(controller *ExhibitionController) CreateExhibition(context *gin.Context) {
 	context.JSON(http.StatusCreated, exhibition)
 }
 
-func(controller *ExhibitionController) UpdateExhibition(context *gin.Context) {
+func (controller *ExhibitionController) UpdateExhibition(context *gin.Context) {
 	id := context.Param("id")
-	
+
 	var exhibition *types.Exhibition
 
 	if err := context.ShouldBindJSON(&exhibition); err != nil {
@@ -63,7 +64,7 @@ func(controller *ExhibitionController) UpdateExhibition(context *gin.Context) {
 	context.JSON(http.StatusAccepted, exhibition)
 }
 
-func(controller *ExhibitionController) DeleteExhibition(context *gin.Context) {
+func (controller *ExhibitionController) DeleteExhibition(context *gin.Context) {
 	id := context.Param("id")
 
 	if err := controller.service.DeleteExhibition(id); err != nil {
@@ -74,4 +75,3 @@ func(controller *ExhibitionController) DeleteExhibition(context *gin.Context) {
 
 	context.JSON(http.StatusAccepted, gin.H{"message": "exhibition deleted successfully", "id": id})
 }
-

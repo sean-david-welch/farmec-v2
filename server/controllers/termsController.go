@@ -17,17 +17,18 @@ func NewTermsController(service services.TermsService) *TermsController {
 	return &TermsController{service: service}
 }
 
-func(controller *TermsController) GetTerms(context *gin.Context) {
-	terms, err := controller.service.GetTerms(); if err != nil {
+func (controller *TermsController) GetTerms(context *gin.Context) {
+	terms, err := controller.service.GetTerms()
+	if err != nil {
 		log.Printf("error getting terms: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while getting term"})
 		return
 	}
 
 	context.JSON(http.StatusOK, terms)
-} 
+}
 
-func(controller *TermsController) CreateTerm(context *gin.Context) {
+func (controller *TermsController) CreateTerm(context *gin.Context) {
 	var term types.Terms
 
 	if err := context.ShouldBindJSON(&term); err != nil {
@@ -44,7 +45,7 @@ func(controller *TermsController) CreateTerm(context *gin.Context) {
 	context.JSON(http.StatusCreated, term)
 }
 
-func(controller *TermsController) UpdateTerm(context *gin.Context) {
+func (controller *TermsController) UpdateTerm(context *gin.Context) {
 	id := context.Param("id")
 	var term types.Terms
 
@@ -62,13 +63,13 @@ func(controller *TermsController) UpdateTerm(context *gin.Context) {
 	context.JSON(http.StatusAccepted, term)
 }
 
-func(controller *TermsController) DeleteTerm(context *gin.Context) {
+func (controller *TermsController) DeleteTerm(context *gin.Context) {
 	id := context.Param("id")
 
 	if err := controller.service.DeleteTerm(id); err != nil {
 		log.Printf("Error deleting term: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while deleting term", "details": err.Error()})
-		return 
+		return
 	}
 
 	context.JSON(http.StatusOK, gin.H{"message": "term deleted successfully", "id": id})

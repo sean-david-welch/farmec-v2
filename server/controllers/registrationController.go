@@ -17,20 +17,22 @@ func NewRegistrationController(service services.RegistrationService) *Registrati
 	return &RegistrationController{service: service}
 }
 
-func(controller *RegistrationController) GetRegistrations(context *gin.Context) {
-	registrations, err := controller.service.GetRegistrations(); if err != nil {
+func (controller *RegistrationController) GetRegistrations(context *gin.Context) {
+	registrations, err := controller.service.GetRegistrations()
+	if err != nil {
 		log.Printf("error occurred while getting registrations: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while getting registration"})
 		return
 	}
 
 	context.JSON(http.StatusOK, registrations)
-} 
+}
 
-func(controller *RegistrationController) GetRegistrationById(context *gin.Context) {
+func (controller *RegistrationController) GetRegistrationById(context *gin.Context) {
 	id := context.Param("id")
 
-	registration, err := controller.service.GetRegistrationById(id); if err != nil {
+	registration, err := controller.service.GetRegistrationById(id)
+	if err != nil {
 		log.Printf("error occurred while getting registration: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while getting registration"})
 		return
@@ -39,7 +41,7 @@ func(controller *RegistrationController) GetRegistrationById(context *gin.Contex
 	context.JSON(http.StatusOK, registration)
 }
 
-func(controller *RegistrationController) CreateRegistration(context *gin.Context) {
+func (controller *RegistrationController) CreateRegistration(context *gin.Context) {
 	var registration *types.MachineRegistration
 
 	if err := context.ShouldBindJSON(&registration); err != nil {
@@ -56,7 +58,7 @@ func(controller *RegistrationController) CreateRegistration(context *gin.Context
 	context.JSON(http.StatusCreated, registration)
 }
 
-func(controller *RegistrationController) UpdateRegistration(context *gin.Context) {
+func (controller *RegistrationController) UpdateRegistration(context *gin.Context) {
 	id := context.Param("id")
 	var registration *types.MachineRegistration
 
@@ -74,7 +76,7 @@ func(controller *RegistrationController) UpdateRegistration(context *gin.Context
 	context.JSON(http.StatusAccepted, registration)
 }
 
-func(controller *RegistrationController) DeleteRegistration(context *gin.Context) {
+func (controller *RegistrationController) DeleteRegistration(context *gin.Context) {
 	id := context.Param("id")
 
 	if err := controller.service.DeleteRegistration(id); err != nil {
@@ -84,4 +86,3 @@ func(controller *RegistrationController) DeleteRegistration(context *gin.Context
 
 	context.JSON(http.StatusAccepted, gin.H{"message": "registration deleted successfully", "id": id})
 }
-

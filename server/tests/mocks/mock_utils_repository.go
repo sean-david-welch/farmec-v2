@@ -8,10 +8,10 @@ import (
 )
 
 func InitMockDatabase(test *testing.T) (*sql.DB, sqlmock.Sqlmock, error) {
-    db, mock, err := sqlmock.New()
-    if err != nil {
-        test.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
-    }
+	db, mock, err := sqlmock.New()
+	if err != nil {
+		test.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
+	}
 
-    return db, mock, err
+	return db, mock, err
 }
