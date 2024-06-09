@@ -1,6 +1,8 @@
 name: Deploy Go Application
 'on':
     push:
+        branches:
+            - main
         paths:
             - server/**
 jobs:
