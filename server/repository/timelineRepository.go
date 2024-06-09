@@ -10,10 +10,10 @@ import (
 )
 
 type TimelineRepository interface {
-	GetTimelines() ([]types.Timeline, error) 
-	CreateTimeline(timeline *types.Timeline) error 
-	UpdateTimeline(id string, timeline *types.Timeline) error 
-	DeleteTimeline(id string) error 	
+	GetTimelines() ([]types.Timeline, error)
+	CreateTimeline(timeline *types.Timeline) error
+	UpdateTimeline(id string, timeline *types.Timeline) error
+	DeleteTimeline(id string) error
 }
 
 type TimelineRepositoryImpl struct {
@@ -24,14 +24,19 @@ func NewTimelineRepository(database *sql.DB) *TimelineRepositoryImpl {
 	return &TimelineRepositoryImpl{database: database}
 }
 
-func(repository *TimelineRepositoryImpl) GetTimelines() ([]types.Timeline, error) {
+func (repository *TimelineRepositoryImpl) GetTimelines() ([]types.Timeline, error) {
 	var timelines []types.Timeline
 
 	query := `SELECT * FROM "Timeline"`
-	rows, err := repository.database.Query(query); if err != nil {
+	rows, err := repository.database.Query(query)
+	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
+	defer func() {
+		if err := rows.Close(); err != nil {
+			log.Fatal("Failed to close database: ", err)
+		}
+	}()
 
 	for rows.Next() {
 		var timeline types.Timeline
@@ -49,33 +54,36 @@ func(repository *TimelineRepositoryImpl) GetTimelines() ([]types.Timeline, error
 	return timelines, nil
 }
 
-func(repository *TimelineRepositoryImpl) CreateTimeline(timeline *types.Timeline) error {
+func (repository *TimelineRepositoryImpl) CreateTimeline(timeline *types.Timeline) error {
 	timeline.ID = uuid.NewString()
 	timeline.Created = time.Now()
 
 	query := `INSERT INTO "Timeline" (id, title, date, body, created) VALUES ($1, $2, $3, $4, $5)`
 
-	_, err := repository.database.Exec(query, timeline.ID, timeline.Title, timeline.Date, timeline.Body, timeline.Created); if err != nil {
+	_, err := repository.database.Exec(query, timeline.ID, timeline.Title, timeline.Date, timeline.Body, timeline.Created)
+	if err != nil {
 		return fmt.Errorf("error occurred while creating timeline: %w", err)
 	}
-	
+
 	return nil
 }
 
-func(repository *TimelineRepositoryImpl) UpdateTimeline(id string, timeline *types.Timeline) error {
+func (repository *TimelineRepositoryImpl) UpdateTimeline(id string, timeline *types.Timeline) error {
 	query := `UPDATE "Timeline" SET title = $1, data = %2, body = $3 WHERE "id" = $4`
 
-	_, err := repository.database.Exec(query,  timeline.Title, timeline.Date, timeline.Body, id); if err != nil {
+	_, err := repository.database.Exec(query, timeline.Title, timeline.Date, timeline.Body, id)
+	if err != nil {
 		return fmt.Errorf("error occurred while updating timeline: %w", err)
 	}
-	
+
 	return nil
 }
 
-func(repository *TimelineRepositoryImpl) DeleteTimeline(id string) error {
+func (repository *TimelineRepositoryImpl) DeleteTimeline(id string) error {
 	query := `DELETE FROM "Timeline" WHERE "id" = $1`
 
-	_, err := repository.database.Exec(query, id); if err != nil {
+	_, err := repository.database.Exec(query, id)
+	if err != nil {
 		return fmt.Errorf("error occurred while deleting timeline: %w", err)
 	}
 

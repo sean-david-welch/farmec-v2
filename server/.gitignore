@@ -3,7 +3,6 @@
 .env-development
 .env-production
 service-account.json
-./database
 /database/database.db
 /database/database.db-shm
 /database/database.db-wal

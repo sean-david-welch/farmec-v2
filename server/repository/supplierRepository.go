@@ -3,6 +3,7 @@ package repository
 import (
 	"database/sql"
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/google/uuid"
@@ -51,7 +52,11 @@ func (repository *SupplierRepositoryImpl) GetSuppliers() ([]types.Supplier, erro
 	if err != nil {
 		return nil, fmt.Errorf("error executing query: %w", err)
 	}
-	defer rows.Close()
+	defer func() {
+		if err := rows.Close(); err != nil {
+			log.Fatal("Failed to close database: ", err)
+		}
+	}()
 
 	for rows.Next() {
 		var supplier types.Supplier

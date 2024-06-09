@@ -34,7 +34,11 @@ func (repository *WarrantyRepositoryImpl) GetWarranties() ([]types.DealerOwnerIn
 	if err != nil {
 		return nil, fmt.Errorf("error occurred while querying database: %w", err)
 	}
-	defer rows.Close()
+	defer func() {
+		if err := rows.Close(); err != nil {
+			log.Fatal("Failed to close database: ", err)
+		}
+	}()
 
 	for rows.Next() {
 		var warranty types.DealerOwnerInfo
@@ -73,7 +77,11 @@ func (repository *WarrantyRepositoryImpl) GetWarrantyById(id string) (*types.War
 	if err != nil {
 		return nil, nil, fmt.Errorf("error querying parts required from database: %w", err)
 	}
-	defer rows.Close()
+	defer func() {
+		if err := rows.Close(); err != nil {
+			log.Fatal("Failed to close database: ", err)
+		}
+	}()
 
 	for rows.Next() {
 		var part types.PartsRequired

@@ -32,7 +32,11 @@ func (repository *ExhibitionRepositoryImpl) GetExhibitions() ([]types.Exhibition
 	if err != nil {
 		return nil, fmt.Errorf("error occurred while querying database: %w", err)
 	}
-	defer rows.Close()
+	defer func() {
+		if err := rows.Close(); err != nil {
+			log.Fatal("Failed to close database: ", err)
+		}
+	}()
 
 	for rows.Next() {
 		var exhibition types.Exhibition

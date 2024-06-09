@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/google/uuid"
@@ -34,7 +35,11 @@ func (repository *BlogRepositoryImpl) GetBlogs() ([]types.Blog, error) {
 	if err != nil {
 		return nil, fmt.Errorf("error occurred while querying databse: %w", err)
 	}
-	defer rows.Close()
+	defer func() {
+		if err := rows.Close(); err != nil {
+			log.Fatal("Failed to close database: ", err)
+		}
+	}()
 
 	for rows.Next() {
 		var blog types.Blog

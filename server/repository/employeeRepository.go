@@ -33,7 +33,11 @@ func (repository *EmployeeRepositoryImpl) GetEmployees() ([]types.Employee, erro
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
+	defer func() {
+		if err := rows.Close(); err != nil {
+			log.Fatal("Failed to close database: ", err)
+		}
+	}()
 
 	for rows.Next() {
 		var employee types.Employee
