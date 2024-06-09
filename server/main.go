@@ -7,7 +7,8 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	_ "github.com/lib/pq"
+
+	_ "github.com/mattn/go-sqlite3"
 
 	"github.com/sean-david-welch/farmec-v2/server/config"
 	"github.com/sean-david-welch/farmec-v2/server/lib"
@@ -22,7 +23,7 @@ func main() {
 		log.Fatal("Error loading configuration: ", err)
 	}
 
-	database, err := sql.Open("postgres", secrets.DatabaseURL)
+	database, err := sql.Open("sqlite3", "./database/database.db")
 	if err != nil {
 		log.Fatal(err)
 	}
