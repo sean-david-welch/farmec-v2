@@ -33,7 +33,7 @@ func InitRoutes(router *gin.Engine, database *sql.DB, secrets *config.Secrets, s
 	InitTerms(router, database, adminMiddleware)
 	InitPrivacy(router, database, adminMiddleware)
 	InitTimelines(router, database, adminMiddleware)
-	InitilizeEmployee(router, database, s3Client, adminMiddleware)
+	InitializeEmployee(router, database, s3Client, adminMiddleware)
 
 	// Blog Modeule Resources
 	InitExhibitions(router, database, adminMiddleware)

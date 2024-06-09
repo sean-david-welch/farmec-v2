@@ -77,7 +77,7 @@ func (service *VideoServiceImpl) CreateVideo(video *types.Video) error {
 		return err
 	}
 
-	service.repository.CreateVideo(videoData)
+	err = service.repository.CreateVideo(videoData)
 	if err != nil {
 		return err
 	}
@@ -91,7 +91,7 @@ func (service *VideoServiceImpl) UpdateVideo(id string, video *types.Video) erro
 		return err
 	}
 
-	service.repository.UpdateVideo(id, videoData)
+	err = service.repository.UpdateVideo(id, videoData)
 	if err != nil {
 		return err
 	}

@@ -69,7 +69,7 @@ func (repository *ExhibitionRepositoryImpl) CreateExhibition(exhibition *types.E
 func (repository *ExhibitionRepositoryImpl) UpdateExhibition(id string, exhibition *types.Exhibition) error {
 	query := `UPDATE "Exhibiton" SET "title" = $1, "date" = $2, "location" = $3, "info" = $4 WHERE "id" = $1`
 
-	_, err := repository.database.Exec(query, exhibition.Title, exhibition.Date, exhibition.Location, exhibition.Info)
+	_, err := repository.database.Exec(query, id, exhibition.Title, exhibition.Date, exhibition.Location, exhibition.Info)
 	if err != nil {
 		return fmt.Errorf("error updating exhibition: %w", err)
 	}
