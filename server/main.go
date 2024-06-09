@@ -41,19 +41,19 @@ func main() {
 	adminMiddleware := middleware.NewAdminMiddleware(firebase)
 	authMiddleware := middleware.NewAuthMiddleware(firebase)
 
-	config := cors.DefaultConfig()
-	config.AllowOrigins = []string{
+	corsConfig := cors.DefaultConfig()
+	corsConfig.AllowOrigins = []string{
 		"http://localhost:5173", "http://farmec.ie.s3-website-eu-west-1.amazonaws.com",
 		"https://d2hp5uofb6qy9a.cloudfront.net", "http://farmec.ie",
 		"http://www.farmec.ie", "https://farmec.ie", "https://www.farmec.ie",
 	}
-	config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
-	config.AllowHeaders = []string{"Authorization", "Content-Type", "Accept", "Origin"}
-	config.AllowCredentials = true
+	corsConfig.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
+	corsConfig.AllowHeaders = []string{"Authorization", "Content-Type", "Accept", "Origin"}
+	corsConfig.AllowCredentials = true
 
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
-	router.Use(gin.Logger(), gin.Recovery(), cors.New(config))
+	router.Use(gin.Logger(), gin.Recovery(), cors.New(corsConfig))
 
 	routes.InitRoutes(router, database, secrets, s3Client, adminMiddleware, authMiddleware, firebase)
 
@@ -61,8 +61,14 @@ func main() {
 	port := os.Getenv("PORT")
 
 	if env == "production" {
-		router.Run("0.0.0.0:" + port)
+		err := router.Run("0.0.0.0:" + port)
+		if err != nil {
+			return
+		}
 	} else {
-		router.Run("0.0.0.0:80")
+		err := router.Run("0.0.0.0:80")
+		if err != nil {
+			return
+		}
 	}
 }
