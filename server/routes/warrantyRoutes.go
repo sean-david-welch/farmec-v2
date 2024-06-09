@@ -11,8 +11,8 @@ import (
 )
 
 func InitWarranty(router *gin.Engine, database *sql.DB, authMiddleware *middleware.AuthMiddleware) {
-	repository := repository.NewWarrantyRepository(database)
-	service := services.NewWarrantyService(repository)
+	warrantyRepository := repository.NewWarrantyRepository(database)
+	service := services.NewWarrantyService(warrantyRepository)
 	controller := controllers.NewWarrantyController(service)
 
 	WarrantyRoutes(router, controller, authMiddleware)

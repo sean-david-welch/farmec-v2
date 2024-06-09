@@ -11,8 +11,8 @@ import (
 )
 
 func InitCheckout(router *gin.Engine, database *sql.DB, secrets *config.Secrets) {
-	repository := repository.NewLineItemRepository(database)
-	service := services.NewCheckoutService(secrets, repository)
+	itemRepository := repository.NewLineItemRepository(database)
+	service := services.NewCheckoutService(secrets, itemRepository)
 	controller := controllers.NewCheckoutController(service)
 
 	CheckoutRoutes(router, controller)

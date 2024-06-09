@@ -11,8 +11,8 @@ import (
 )
 
 func InitTimelines(router *gin.Engine, database *sql.DB, adminMiddleware *middleware.AdminMiddleware) {
-	repository := repository.NewTimelineRepository(database)
-	service := services.NewTimelineService(repository)
+	timelineRepository := repository.NewTimelineRepository(database)
+	service := services.NewTimelineService(timelineRepository)
 	controller := controllers.NewTimelineController(service)
 
 	TimelineRoutes(router, controller, adminMiddleware)

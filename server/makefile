@@ -8,4 +8,4 @@ test:
 	@go test -v ./tests/...
 
 dev:
-	ENV=development PORT=80 air
+	ENV=development PORT=8000 air
