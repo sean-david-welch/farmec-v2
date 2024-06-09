@@ -33,7 +33,7 @@ func (auth *LoginAuthImpl) Next(fromServer []byte, more bool) ([]byte, error) {
 		case "Password:":
 			return []byte(auth.password), nil
 		default:
-			return nil, errors.New("unkown from server")
+			return nil, errors.New("unknown from server")
 		}
 	}
 	return nil, nil
