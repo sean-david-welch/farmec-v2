@@ -71,7 +71,7 @@ func main() {
 			return
 		}
 	} else {
-		err := router.Run("0.0.0.0:80")
+		err := router.Run("0.0.0.0:8000")
 		if err != nil {
 			return
 		}

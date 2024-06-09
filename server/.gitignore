@@ -1,4 +1,4 @@
-.env
+.env.production
 .tmp
 .env-development
 .env-production
@@ -6,3 +6,6 @@ service-account.json
 /database/database.db
 /database/database.db-shm
 /database/database.db-wal
+/tmp/main
+/tmp
+/.env.production
