@@ -10,20 +10,20 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang/mock/gomock"
-	"github.com/sean-david-welch/farmec-v2/server/controllers"
+	"github.com/sean-david-welch/farmec-v2/server/handlers"
 	"github.com/sean-david-welch/farmec-v2/server/tests/mocks"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"github.com/stretchr/testify/assert"
 )
 
-func TimelineControllerTest(test *testing.T) (*gin.Engine, *mocks.MockTimelineService, *controllers.TimelineController, *httptest.ResponseRecorder, time.Time) {
+func TimelineControllerTest(test *testing.T) (*gin.Engine, *mocks.MockTimelineService, *handlers.TimelineController, *httptest.ResponseRecorder, time.Time) {
 	gin.SetMode(gin.TestMode)
 
 	ctrl := gomock.NewController(test)
 	defer ctrl.Finish()
 
 	mockService := mocks.NewMockTimelineService(ctrl)
-	controller := controllers.NewTimelineController(mockService)
+	controller := handlers.NewTimelineController(mockService)
 
 	router := gin.Default()
 	recorder := httptest.NewRecorder()

@@ -11,20 +11,20 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/golang/mock/gomock"
-	"github.com/sean-david-welch/farmec-v2/server/controllers"
+	"github.com/sean-david-welch/farmec-v2/server/handlers"
 	"github.com/sean-david-welch/farmec-v2/server/tests/mocks"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"github.com/stretchr/testify/assert"
 )
 
-func RegistrationControllerTest(test *testing.T) (*gin.Engine, *mocks.MockRegistrationService, *controllers.RegistrationController, *httptest.ResponseRecorder, time.Time) {
+func RegistrationControllerTest(test *testing.T) (*gin.Engine, *mocks.MockRegistrationService, *handlers.RegistrationController, *httptest.ResponseRecorder, time.Time) {
 	gin.SetMode(gin.TestMode)
 
 	ctrl := gomock.NewController(test)
 	defer ctrl.Finish()
 
 	mockService := mocks.NewMockRegistrationService(ctrl)
-	controller := controllers.NewRegistrationController(mockService)
+	controller := handlers.NewRegistrationController(mockService)
 
 	router := gin.Default()
 	recorder := httptest.NewRecorder()

@@ -4,7 +4,7 @@ import (
 	"database/sql"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sean-david-welch/farmec-v2/server/controllers"
+	"github.com/sean-david-welch/farmec-v2/server/handlers"
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
 	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/services"
@@ -13,12 +13,12 @@ import (
 func InitTimelines(router *gin.Engine, database *sql.DB, adminMiddleware *middleware.AdminMiddleware) {
 	timelineRepository := repository.NewTimelineRepository(database)
 	service := services.NewTimelineService(timelineRepository)
-	controller := controllers.NewTimelineController(service)
+	controller := handlers.NewTimelineController(service)
 
 	TimelineRoutes(router, controller, adminMiddleware)
 }
 
-func TimelineRoutes(router *gin.Engine, controller *controllers.TimelineController, adminMiddleware *middleware.AdminMiddleware) {
+func TimelineRoutes(router *gin.Engine, controller *handlers.TimelineController, adminMiddleware *middleware.AdminMiddleware) {
 	timelineGroup := router.Group("/api/timeline")
 
 	timelineGroup.GET("", controller.GetTimelines)

@@ -4,7 +4,7 @@ import (
 	"database/sql"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sean-david-welch/farmec-v2/server/controllers"
+	"github.com/sean-david-welch/farmec-v2/server/handlers"
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
 	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/services"
@@ -13,12 +13,12 @@ import (
 func InitExhibitions(router *gin.Engine, database *sql.DB, adminMiddleware *middleware.AdminMiddleware) {
 	exhibitionRepository := repository.NewExhibitionRepository(database)
 	service := services.NewExhibitionService(exhibitionRepository)
-	controller := controllers.NewExhibitionController(service)
+	controller := handlers.NewExhibitionController(service)
 
 	ExhibitionRoutes(router, controller, adminMiddleware)
 }
 
-func ExhibitionRoutes(router *gin.Engine, controller *controllers.ExhibitionController, adminMiddleware *middleware.AdminMiddleware) {
+func ExhibitionRoutes(router *gin.Engine, controller *handlers.ExhibitionController, adminMiddleware *middleware.AdminMiddleware) {
 	exhibitionGroup := router.Group("/api/exhibitions")
 
 	exhibitionGroup.GET("", controller.GetExhibitions)

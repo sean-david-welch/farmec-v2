@@ -10,20 +10,20 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang/mock/gomock"
-	"github.com/sean-david-welch/farmec-v2/server/controllers"
+	"github.com/sean-david-welch/farmec-v2/server/handlers"
 	"github.com/sean-david-welch/farmec-v2/server/tests/mocks"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"github.com/stretchr/testify/assert"
 )
 
-func PartsControllerTest(test *testing.T) (*gin.Engine, *mocks.MockPartsService, *controllers.PartsController, *httptest.ResponseRecorder) {
+func PartsControllerTest(test *testing.T) (*gin.Engine, *mocks.MockPartsService, *handlers.PartsController, *httptest.ResponseRecorder) {
 	gin.SetMode(gin.TestMode)
 
 	ctrl := gomock.NewController(test)
 	defer ctrl.Finish()
 
 	mockService := mocks.NewMockPartsService(ctrl)
-	controller := controllers.NewPartsController(mockService)
+	controller := handlers.NewPartsController(mockService)
 
 	router := gin.Default()
 	recorder := httptest.NewRecorder()

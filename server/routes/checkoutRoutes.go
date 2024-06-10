@@ -5,7 +5,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/lib"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sean-david-welch/farmec-v2/server/controllers"
+	"github.com/sean-david-welch/farmec-v2/server/handlers"
 	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/services"
 )
@@ -13,12 +13,12 @@ import (
 func InitCheckout(router *gin.Engine, database *sql.DB, secrets *lib.Secrets) {
 	itemRepository := repository.NewLineItemRepository(database)
 	service := services.NewCheckoutService(secrets, itemRepository)
-	controller := controllers.NewCheckoutController(service)
+	controller := handlers.NewCheckoutController(service)
 
 	CheckoutRoutes(router, controller)
 }
 
-func CheckoutRoutes(router *gin.Engine, controller *controllers.CheckoutController) {
+func CheckoutRoutes(router *gin.Engine, controller *handlers.CheckoutController) {
 	checkoutGroup := router.Group("/api/checkout")
 
 	checkoutGroup.POST("/create-checkout-session/:id", controller.CreateCheckoutSession)

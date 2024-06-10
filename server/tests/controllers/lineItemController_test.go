@@ -9,20 +9,20 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang/mock/gomock"
-	"github.com/sean-david-welch/farmec-v2/server/controllers"
+	"github.com/sean-david-welch/farmec-v2/server/handlers"
 	"github.com/sean-david-welch/farmec-v2/server/tests/mocks"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"github.com/stretchr/testify/assert"
 )
 
-func LineItemControllerTesr(t *testing.T) (*gin.Engine, *mocks.MockLineItemService, *controllers.LineItemController, *httptest.ResponseRecorder) {
+func LineItemControllerTesr(t *testing.T) (*gin.Engine, *mocks.MockLineItemService, *handlers.LineItemController, *httptest.ResponseRecorder) {
 	gin.SetMode(gin.TestMode)
 
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
 	mockService := mocks.NewMockLineItemService(ctrl)
-	controller := controllers.NewLineItemController(mockService)
+	controller := handlers.NewLineItemController(mockService)
 
 	router := gin.Default()
 	recorder := httptest.NewRecorder()

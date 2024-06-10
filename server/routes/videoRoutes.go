@@ -7,7 +7,7 @@ import (
 	"log"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sean-david-welch/farmec-v2/server/controllers"
+	"github.com/sean-david-welch/farmec-v2/server/handlers"
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
 	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/services"
@@ -23,12 +23,12 @@ func InitVideos(router *gin.Engine, database *sql.DB, secrets *lib.Secrets, admi
 
 	videoRepository := repository.NewVideoRepository(database)
 	videoService := services.NewVideoService(videoRepository, youtubeService)
-	videoController := controllers.NewVideoController(videoService)
+	videoController := handlers.NewVideoController(videoService)
 
 	VideoRoutes(router, videoController, adminMiddleware)
 }
 
-func VideoRoutes(router *gin.Engine, videoController *controllers.VideoController, adminMiddleware *middleware.AdminMiddleware) {
+func VideoRoutes(router *gin.Engine, videoController *handlers.VideoController, adminMiddleware *middleware.AdminMiddleware) {
 	videoGroup := router.Group("/api/videos")
 
 	videoGroup.GET("/:id", videoController.GetVideos)
