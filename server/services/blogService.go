@@ -5,7 +5,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"log"
 
-	"github.com/sean-david-welch/farmec-v2/server/store"
+	"github.com/sean-david-welch/farmec-v2/server/stores"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
@@ -18,12 +18,12 @@ type BlogService interface {
 }
 
 type BlogServiceImpl struct {
-	store    store.BlogStore
+	store    stores.BlogStore
 	s3Client lib.S3Client
 	folder   string
 }
 
-func NewBlogService(store store.BlogStore, s3Client lib.S3Client, folder string) *BlogServiceImpl {
+func NewBlogService(store stores.BlogStore, s3Client lib.S3Client, folder string) *BlogServiceImpl {
 	return &BlogServiceImpl{store: store, s3Client: s3Client, folder: folder}
 }
 

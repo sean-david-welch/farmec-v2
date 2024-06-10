@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/sean-david-welch/farmec-v2/server/store"
+	"github.com/sean-david-welch/farmec-v2/server/stores"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"google.golang.org/api/youtube/v3"
 )
@@ -18,11 +18,11 @@ type VideoService interface {
 }
 
 type VideoServiceImpl struct {
-	store          store.VideoStore
+	store          stores.VideoStore
 	youtubeService *youtube.Service
 }
 
-func NewVideoService(store store.VideoStore, youtubeService *youtube.Service) *VideoServiceImpl {
+func NewVideoService(store stores.VideoStore, youtubeService *youtube.Service) *VideoServiceImpl {
 	return &VideoServiceImpl{
 		store:          store,
 		youtubeService: youtubeService,

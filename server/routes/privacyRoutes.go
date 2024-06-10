@@ -7,11 +7,11 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/handlers"
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
 	"github.com/sean-david-welch/farmec-v2/server/services"
-	"github.com/sean-david-welch/farmec-v2/server/store"
+	"github.com/sean-david-welch/farmec-v2/server/stores"
 )
 
 func InitPrivacy(router *gin.Engine, database *sql.DB, adminMiddleware *middleware.AdminMiddleware) {
-	privacyStore := store.NewPrivacyStore(database)
+	privacyStore := stores.NewPrivacyStore(database)
 	service := services.NewPrivacyService(privacyStore)
 	handler := handlers.NewPrivacyHandler(service)
 

@@ -7,11 +7,11 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/handlers"
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
 	"github.com/sean-david-welch/farmec-v2/server/services"
-	"github.com/sean-david-welch/farmec-v2/server/store"
+	"github.com/sean-david-welch/farmec-v2/server/stores"
 )
 
 func InitRegistrations(router *gin.Engine, database *sql.DB, authMiddleware *middleware.AuthMiddleware) {
-	store := store.NewRegistrationStore(database)
+	store := stores.NewRegistrationStore(database)
 	service := services.NewRegistrationService(store)
 	handler := handlers.NewRegistrationHandler(service)
 

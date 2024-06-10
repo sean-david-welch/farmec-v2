@@ -9,11 +9,11 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/handlers"
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
 	"github.com/sean-david-welch/farmec-v2/server/services"
-	"github.com/sean-david-welch/farmec-v2/server/store"
+	"github.com/sean-david-welch/farmec-v2/server/stores"
 )
 
 func InitSuppliers(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, adminMiddleware *middleware.AdminMiddleware) {
-	supplierStore := store.NewSupplierStore(database)
+	supplierStore := stores.NewSupplierStore(database)
 	supplierService := services.NewSupplierService(supplierStore, s3Client, "Suppliers")
 	supplierHandler := handlers.NewSupplierContoller(supplierService)
 

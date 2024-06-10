@@ -1,7 +1,7 @@
 package services
 
 import (
-	"github.com/sean-david-welch/farmec-v2/server/store"
+	"github.com/sean-david-welch/farmec-v2/server/stores"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
@@ -14,10 +14,10 @@ type RegistrationService interface {
 }
 
 type RegistrationServiceImpl struct {
-	store store.RegistrationStore
+	store stores.RegistrationStore
 }
 
-func NewRegistrationService(store store.RegistrationStore) *RegistrationServiceImpl {
+func NewRegistrationService(store stores.RegistrationStore) *RegistrationServiceImpl {
 	return &RegistrationServiceImpl{store: store}
 }
 
