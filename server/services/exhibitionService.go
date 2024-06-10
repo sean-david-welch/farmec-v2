@@ -13,15 +13,15 @@ type ExhibitionService interface {
 }
 
 type ExhibitionServiceImpl struct {
-	repository store.ExhibitionRepository
+	store store.ExhibitionStore
 }
 
-func NewExhibitionService(repository store.ExhibitionRepository) *ExhibitionServiceImpl {
-	return &ExhibitionServiceImpl{repository: repository}
+func NewExhibitionService(store store.ExhibitionStore) *ExhibitionServiceImpl {
+	return &ExhibitionServiceImpl{store: store}
 }
 
 func (service *ExhibitionServiceImpl) GetExhibitions() ([]types.Exhibition, error) {
-	exhibitions, err := service.repository.GetExhibitions()
+	exhibitions, err := service.store.GetExhibitions()
 	if err != nil {
 		return nil, err
 	}
@@ -30,7 +30,7 @@ func (service *ExhibitionServiceImpl) GetExhibitions() ([]types.Exhibition, erro
 }
 
 func (service *ExhibitionServiceImpl) CreateExhibition(exhibition *types.Exhibition) error {
-	if err := service.repository.CreateExhibition(exhibition); err != nil {
+	if err := service.store.CreateExhibition(exhibition); err != nil {
 		return err
 	}
 
@@ -38,7 +38,7 @@ func (service *ExhibitionServiceImpl) CreateExhibition(exhibition *types.Exhibit
 }
 
 func (service *ExhibitionServiceImpl) UpdateExhibition(id string, exhibition *types.Exhibition) error {
-	if err := service.repository.UpdateExhibition(id, exhibition); err != nil {
+	if err := service.store.UpdateExhibition(id, exhibition); err != nil {
 		return err
 	}
 
@@ -46,7 +46,7 @@ func (service *ExhibitionServiceImpl) UpdateExhibition(id string, exhibition *ty
 }
 
 func (service *ExhibitionServiceImpl) DeleteExhibition(id string) error {
-	if err := service.repository.DeleteExhibition(id); err != nil {
+	if err := service.store.DeleteExhibition(id); err != nil {
 		return err
 	}
 

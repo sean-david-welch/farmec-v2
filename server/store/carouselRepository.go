@@ -11,7 +11,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
-type CarouselRepository interface {
+type CarouselStore interface {
 	GetCarousels() ([]types.Carousel, error)
 	GetCarouselById(id string) (*types.Carousel, error)
 	CreateCarousel(carousel *types.Carousel) error
@@ -19,19 +19,19 @@ type CarouselRepository interface {
 	DeleteCarousel(id string) error
 }
 
-type CarouselRepositoryImpl struct {
+type CarouselStoreImpl struct {
 	database *sql.DB
 }
 
-func NewCarouselRepository(database *sql.DB) *CarouselRepositoryImpl {
-	return &CarouselRepositoryImpl{database: database}
+func NewCarouselStore(database *sql.DB) *CarouselStoreImpl {
+	return &CarouselStoreImpl{database: database}
 }
 
-func (repository *CarouselRepositoryImpl) GetCarousels() ([]types.Carousel, error) {
+func (store *CarouselStoreImpl) GetCarousels() ([]types.Carousel, error) {
 	var carousels []types.Carousel
 
 	query := `SELECT * FROM "Carousel"`
-	rows, err := repository.database.Query(query)
+	rows, err := store.database.Query(query)
 	if err != nil {
 		return nil, fmt.Errorf("error executing query: %w", err)
 	}
@@ -57,9 +57,9 @@ func (repository *CarouselRepositoryImpl) GetCarousels() ([]types.Carousel, erro
 	return carousels, nil
 }
 
-func (repository *CarouselRepositoryImpl) GetCarouselById(id string) (*types.Carousel, error) {
+func (store *CarouselStoreImpl) GetCarouselById(id string) (*types.Carousel, error) {
 	query := `SELECT * FROM "Carousel" WHERE id = $1`
-	row := repository.database.QueryRow(query, id)
+	row := store.database.QueryRow(query, id)
 
 	var carousel types.Carousel
 
@@ -74,7 +74,7 @@ func (repository *CarouselRepositoryImpl) GetCarouselById(id string) (*types.Car
 	return &carousel, nil
 }
 
-func (repository *CarouselRepositoryImpl) CreateCarousel(carousel *types.Carousel) error {
+func (store *CarouselStoreImpl) CreateCarousel(carousel *types.Carousel) error {
 	carousel.ID = uuid.NewString()
 	carousel.Created = time.Now().String()
 
@@ -82,7 +82,7 @@ func (repository *CarouselRepositoryImpl) CreateCarousel(carousel *types.Carouse
 	(id, name, image, created)
 	VALUES ($1, $2, $3, $4)`
 
-	_, err := repository.database.Exec(query, carousel.ID, carousel.Name, carousel.Image, carousel.Created)
+	_, err := store.database.Exec(query, carousel.ID, carousel.Name, carousel.Image, carousel.Created)
 	if err != nil {
 		return fmt.Errorf("error creating carousel: %w", err)
 	}
@@ -90,7 +90,7 @@ func (repository *CarouselRepositoryImpl) CreateCarousel(carousel *types.Carouse
 	return nil
 }
 
-func (repository *CarouselRepositoryImpl) UpdateCarousel(id string, carousel *types.Carousel) error {
+func (store *CarouselStoreImpl) UpdateCarousel(id string, carousel *types.Carousel) error {
 	query := `UPDATE "Carousel" SET name = $1 WHERE id = $3`
 	args := []interface{}{carousel.Name, id}
 
@@ -99,7 +99,7 @@ func (repository *CarouselRepositoryImpl) UpdateCarousel(id string, carousel *ty
 		args = []interface{}{carousel.Name, carousel.Image, id}
 	}
 
-	_, err := repository.database.Exec(query, args...)
+	_, err := store.database.Exec(query, args...)
 	if err != nil {
 		return fmt.Errorf("error updating carousel: %w", err)
 	}
@@ -107,10 +107,10 @@ func (repository *CarouselRepositoryImpl) UpdateCarousel(id string, carousel *ty
 	return nil
 }
 
-func (repository *CarouselRepositoryImpl) DeleteCarousel(id string) error {
+func (store *CarouselStoreImpl) DeleteCarousel(id string) error {
 	query := `DELETE FROM "Carousel" WHERE id = $1`
 
-	_, err := repository.database.Exec(query, id)
+	_, err := store.database.Exec(query, id)
 	if err != nil {
 		return fmt.Errorf("error deleting supplier: %w", err)
 	}

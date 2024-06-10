@@ -10,26 +10,26 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
-type ExhibitionRepository interface {
+type ExhibitionStore interface {
 	GetExhibitions() ([]types.Exhibition, error)
 	CreateExhibition(exhibition *types.Exhibition) error
 	UpdateExhibition(id string, exhibition *types.Exhibition) error
 	DeleteExhibition(id string) error
 }
 
-type ExhibitionRepositoryImpl struct {
+type ExhibitionStoreImpl struct {
 	database *sql.DB
 }
 
-func NewExhibitionRepository(database *sql.DB) *ExhibitionRepositoryImpl {
-	return &ExhibitionRepositoryImpl{database: database}
+func NewExhibitionStore(database *sql.DB) *ExhibitionStoreImpl {
+	return &ExhibitionStoreImpl{database: database}
 }
 
-func (repository *ExhibitionRepositoryImpl) GetExhibitions() ([]types.Exhibition, error) {
+func (store *ExhibitionStoreImpl) GetExhibitions() ([]types.Exhibition, error) {
 	var exhibitions []types.Exhibition
 
 	query := `SELECT * FROM "Exhibition" ORDER BY "created" ASC`
-	rows, err := repository.database.Query(query)
+	rows, err := store.database.Query(query)
 	if err != nil {
 		return nil, fmt.Errorf("error occurred while querying database: %w", err)
 	}
@@ -53,12 +53,12 @@ func (repository *ExhibitionRepositoryImpl) GetExhibitions() ([]types.Exhibition
 	return exhibitions, nil
 }
 
-func (repository *ExhibitionRepositoryImpl) CreateExhibition(exhibition *types.Exhibition) error {
+func (store *ExhibitionStoreImpl) CreateExhibition(exhibition *types.Exhibition) error {
 	exhibition.ID = uuid.NewString()
 	exhibition.Created = time.Now().String()
 
 	query := `INSERT INTO "Exhibition" (id, title, date, location, info, created) VALUES ($1, $2, $3, $4, $5, $6)`
-	_, err := repository.database.Exec(query, exhibition.ID, exhibition.Title, exhibition.Date, exhibition.Location, exhibition.Info, exhibition.Created)
+	_, err := store.database.Exec(query, exhibition.ID, exhibition.Title, exhibition.Date, exhibition.Location, exhibition.Info, exhibition.Created)
 	if err != nil {
 		return fmt.Errorf("error creating exhibition: %w", err)
 	}
@@ -66,10 +66,10 @@ func (repository *ExhibitionRepositoryImpl) CreateExhibition(exhibition *types.E
 	return nil
 }
 
-func (repository *ExhibitionRepositoryImpl) UpdateExhibition(id string, exhibition *types.Exhibition) error {
+func (store *ExhibitionStoreImpl) UpdateExhibition(id string, exhibition *types.Exhibition) error {
 	query := `UPDATE "Exhibiton" SET "title" = $1, "date" = $2, "location" = $3, "info" = $4 WHERE "id" = $1`
 
-	_, err := repository.database.Exec(query, id, exhibition.Title, exhibition.Date, exhibition.Location, exhibition.Info)
+	_, err := store.database.Exec(query, id, exhibition.Title, exhibition.Date, exhibition.Location, exhibition.Info)
 	if err != nil {
 		return fmt.Errorf("error updating exhibition: %w", err)
 	}
@@ -77,10 +77,10 @@ func (repository *ExhibitionRepositoryImpl) UpdateExhibition(id string, exhibiti
 	return nil
 }
 
-func (repository *ExhibitionRepositoryImpl) DeleteExhibition(id string) error {
+func (store *ExhibitionStoreImpl) DeleteExhibition(id string) error {
 	query := `DELETE FROM "Exhibition" WHERE "id" = $1`
 
-	_, err := repository.database.Exec(query, id)
+	_, err := store.database.Exec(query, id)
 	if err != nil {
 		return fmt.Errorf("error deleting exhibiton: %w", err)
 	}

@@ -10,7 +10,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
-type LineItemRepository interface {
+type LineItemStore interface {
 	GetLineItems() ([]types.LineItem, error)
 	GetLineItemById(id string) (*types.LineItem, error)
 	CreateLineItem(lineItem *types.LineItem) error
@@ -18,19 +18,19 @@ type LineItemRepository interface {
 	DeleteLineItem(id string) error
 }
 
-type LineItemRepositoryImpl struct {
+type LineItemStoreImpl struct {
 	database *sql.DB
 }
 
-func NewLineItemRepository(database *sql.DB) *LineItemRepositoryImpl {
-	return &LineItemRepositoryImpl{database: database}
+func NewLineItemStore(database *sql.DB) *LineItemStoreImpl {
+	return &LineItemStoreImpl{database: database}
 }
 
-func (repository *LineItemRepositoryImpl) GetLineItems() ([]types.LineItem, error) {
+func (store *LineItemStoreImpl) GetLineItems() ([]types.LineItem, error) {
 	var lineItems []types.LineItem
 
 	query := `SELECT * FROM "LineItems"`
-	rows, err := repository.database.Query(query)
+	rows, err := store.database.Query(query)
 	if err != nil {
 		return nil, fmt.Errorf("error occurred while querying database: %w", err)
 	}
@@ -57,11 +57,11 @@ func (repository *LineItemRepositoryImpl) GetLineItems() ([]types.LineItem, erro
 	return lineItems, nil
 }
 
-func (repository *LineItemRepositoryImpl) GetLineItemById(id string) (*types.LineItem, error) {
+func (store *LineItemStoreImpl) GetLineItemById(id string) (*types.LineItem, error) {
 	var lineItem types.LineItem
 
 	query := `SELECT * FROM "LineItems" WHERE "id" = $1`
-	row := repository.database.QueryRow(query, id)
+	row := store.database.QueryRow(query, id)
 
 	if err := row.Scan(&lineItem.ID, &lineItem.Name, &lineItem.Price, &lineItem.Image); err != nil {
 
@@ -75,12 +75,12 @@ func (repository *LineItemRepositoryImpl) GetLineItemById(id string) (*types.Lin
 	return &lineItem, nil
 }
 
-func (repository *LineItemRepositoryImpl) CreateLineItem(lineItem *types.LineItem) error {
+func (store *LineItemStoreImpl) CreateLineItem(lineItem *types.LineItem) error {
 	lineItem.ID = uuid.NewString()
 
 	query := `INSERT INTO "LineItems" (id, name, price, image) VALUES ($1, $2, $3, $4)`
 
-	_, err := repository.database.Exec(query, lineItem.ID, lineItem.Name, lineItem.Price, lineItem.Image)
+	_, err := store.database.Exec(query, lineItem.ID, lineItem.Name, lineItem.Price, lineItem.Image)
 	if err != nil {
 		return fmt.Errorf("error occurred while creating line item: %w", err)
 	}
@@ -88,7 +88,7 @@ func (repository *LineItemRepositoryImpl) CreateLineItem(lineItem *types.LineIte
 	return nil
 }
 
-func (repository *LineItemRepositoryImpl) UpdateLineItem(id string, lineItem *types.LineItem) error {
+func (store *LineItemStoreImpl) UpdateLineItem(id string, lineItem *types.LineItem) error {
 	query := `UPDATE "LineItems" SET "name" = $2, "price" = $3,  WHERE "id" = $1`
 	args := []interface{}{id, lineItem.Name, lineItem.Price}
 
@@ -97,7 +97,7 @@ func (repository *LineItemRepositoryImpl) UpdateLineItem(id string, lineItem *ty
 		args = []interface{}{id, lineItem.Name, lineItem.Price, lineItem.Image}
 	}
 
-	_, err := repository.database.Exec(query, args...)
+	_, err := store.database.Exec(query, args...)
 	if err != nil {
 		return fmt.Errorf("error occurred while updating line item: %w", err)
 	}
@@ -105,10 +105,10 @@ func (repository *LineItemRepositoryImpl) UpdateLineItem(id string, lineItem *ty
 	return nil
 }
 
-func (repository *LineItemRepositoryImpl) DeleteLineItem(id string) error {
+func (store *LineItemStoreImpl) DeleteLineItem(id string) error {
 	query := `DELETE FROM "LineItems" WHERE "id" = $1`
 
-	_, err := repository.database.Exec(query, id)
+	_, err := store.database.Exec(query, id)
 	if err != nil {
 		return fmt.Errorf("error occurred while deleting line items: %w", err)
 	}

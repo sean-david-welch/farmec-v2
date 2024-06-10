@@ -13,15 +13,15 @@ type PrivacyService interface {
 }
 
 type PrivacyServiceImpl struct {
-	repository store.PrivacyRepository
+	store store.PrivacyStore
 }
 
-func NewPrivacyService(repository store.PrivacyRepository) *PrivacyServiceImpl {
-	return &PrivacyServiceImpl{repository: repository}
+func NewPrivacyService(store store.PrivacyStore) *PrivacyServiceImpl {
+	return &PrivacyServiceImpl{store: store}
 }
 
 func (service *PrivacyServiceImpl) GetPrivacys() ([]types.Privacy, error) {
-	privacys, err := service.repository.GetPrivacy()
+	privacys, err := service.store.GetPrivacy()
 	if err != nil {
 		return nil, err
 	}
@@ -30,7 +30,7 @@ func (service *PrivacyServiceImpl) GetPrivacys() ([]types.Privacy, error) {
 }
 
 func (service *PrivacyServiceImpl) CreatePrivacy(privacy *types.Privacy) error {
-	if err := service.repository.CreatePrivacy(privacy); err != nil {
+	if err := service.store.CreatePrivacy(privacy); err != nil {
 		return err
 	}
 
@@ -38,7 +38,7 @@ func (service *PrivacyServiceImpl) CreatePrivacy(privacy *types.Privacy) error {
 }
 
 func (service *PrivacyServiceImpl) UpdatePrivacy(id string, privacy *types.Privacy) error {
-	if err := service.repository.UpdatePrivacy(id, privacy); err != nil {
+	if err := service.store.UpdatePrivacy(id, privacy); err != nil {
 		return err
 	}
 
@@ -46,7 +46,7 @@ func (service *PrivacyServiceImpl) UpdatePrivacy(id string, privacy *types.Priva
 }
 
 func (service *PrivacyServiceImpl) DeletePrivacy(id string) error {
-	if err := service.repository.DeletePrivacy(id); err != nil {
+	if err := service.store.DeletePrivacy(id); err != nil {
 		return err
 	}
 

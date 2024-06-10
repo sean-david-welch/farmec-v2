@@ -9,7 +9,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
-type PartsRepository interface {
+type PartsStore interface {
 	GetParts(id string) ([]types.Sparepart, error)
 	GetPartById(id string) (*types.Sparepart, error)
 	CreatePart(part *types.Sparepart) error
@@ -17,12 +17,12 @@ type PartsRepository interface {
 	DeletePart(id string) error
 }
 
-type PartsRepositoryImpl struct {
+type PartsStoreImpl struct {
 	database *sql.DB
 }
 
-func NewPartsRepository(database *sql.DB) *PartsRepositoryImpl {
-	return &PartsRepositoryImpl{database: database}
+func NewPartsStore(database *sql.DB) *PartsStoreImpl {
+	return &PartsStoreImpl{database: database}
 }
 
 func ScanParts(row interface{}, part *types.Sparepart) error {
@@ -42,11 +42,11 @@ func ScanParts(row interface{}, part *types.Sparepart) error {
 	return scanner.Scan(&part.ID, &part.SupplierID, &part.Name, &part.PartsImage, &part.SparePartsLink)
 }
 
-func (repository *PartsRepositoryImpl) GetParts(id string) ([]types.Sparepart, error) {
+func (store *PartsStoreImpl) GetParts(id string) ([]types.Sparepart, error) {
 	var parts []types.Sparepart
 
 	query := `SELECT * FROM "SpareParts" WHERE "supplier_id" = $1`
-	rows, err := repository.database.Query(query, id)
+	rows, err := store.database.Query(query, id)
 	if err != nil {
 		return nil, fmt.Errorf("error executing query: %w", err)
 	}
@@ -72,9 +72,9 @@ func (repository *PartsRepositoryImpl) GetParts(id string) ([]types.Sparepart, e
 	return parts, nil
 }
 
-func (repository *PartsRepositoryImpl) GetPartById(id string) (*types.Sparepart, error) {
+func (store *PartsStoreImpl) GetPartById(id string) (*types.Sparepart, error) {
 	query := `SELECT * FROM "SpareParts" WHERE id = $1`
-	row := repository.database.QueryRow(query, id)
+	row := store.database.QueryRow(query, id)
 
 	var part types.Sparepart
 
@@ -90,13 +90,13 @@ func (repository *PartsRepositoryImpl) GetPartById(id string) (*types.Sparepart,
 	return &part, nil
 }
 
-func (repository *PartsRepositoryImpl) CreatePart(part *types.Sparepart) error {
+func (store *PartsStoreImpl) CreatePart(part *types.Sparepart) error {
 	part.ID = uuid.NewString()
 
 	query := `INSERT INTO "SpareParts" (id, supplier_id, name, parts_image, spare_parts_link)
 	VALUES ($1, $2, $3, $4, $5)`
 
-	_, err := repository.database.Exec(query, part.ID, part.SupplierID, part.Name, part.PartsImage, part.SparePartsLink)
+	_, err := store.database.Exec(query, part.ID, part.SupplierID, part.Name, part.PartsImage, part.SparePartsLink)
 
 	if err != nil {
 		return fmt.Errorf("error creating spare part: %w", err)
@@ -105,7 +105,7 @@ func (repository *PartsRepositoryImpl) CreatePart(part *types.Sparepart) error {
 	return nil
 }
 
-func (repository *PartsRepositoryImpl) UpdatePart(id string, part *types.Sparepart) error {
+func (store *PartsStoreImpl) UpdatePart(id string, part *types.Sparepart) error {
 	query := `UPDATE "SpareParts" SET supplier_id = $2, name = $3, spare_parts_link  = $4 WHERE ID = $1`
 	args := []interface{}{id, part.SupplierID, part.Name, part.SparePartsLink}
 
@@ -114,7 +114,7 @@ func (repository *PartsRepositoryImpl) UpdatePart(id string, part *types.Sparepa
 		args = []interface{}{id, part.SupplierID, part.Name, part.PartsImage, part.SparePartsLink}
 	}
 
-	_, err := repository.database.Exec(query, args...)
+	_, err := store.database.Exec(query, args...)
 	if err != nil {
 		return fmt.Errorf("error updating part: %w", err)
 	}
@@ -122,10 +122,10 @@ func (repository *PartsRepositoryImpl) UpdatePart(id string, part *types.Sparepa
 	return nil
 }
 
-func (repository *PartsRepositoryImpl) DeletePart(id string) error {
+func (store *PartsStoreImpl) DeletePart(id string) error {
 	query := `DELETE FROM "SpareParts" WHERE id = $1`
 
-	_, err := repository.database.Exec(query, id)
+	_, err := store.database.Exec(query, id)
 	if err != nil {
 		return fmt.Errorf("error deleting part: %w", err)
 	}

@@ -14,15 +14,15 @@ type WarrantyService interface {
 }
 
 type WarrantyServiceImpl struct {
-	repository store.WarrantyRepository
+	store store.WarrantyStore
 }
 
-func NewWarrantyService(repository store.WarrantyRepository) *WarrantyServiceImpl {
-	return &WarrantyServiceImpl{repository: repository}
+func NewWarrantyService(store store.WarrantyStore) *WarrantyServiceImpl {
+	return &WarrantyServiceImpl{store: store}
 }
 
 func (service *WarrantyServiceImpl) GetWarranties() ([]types.DealerOwnerInfo, error) {
-	warranties, err := service.repository.GetWarranties()
+	warranties, err := service.store.GetWarranties()
 	if err != nil {
 		return nil, err
 	}
@@ -31,7 +31,7 @@ func (service *WarrantyServiceImpl) GetWarranties() ([]types.DealerOwnerInfo, er
 }
 
 func (service *WarrantyServiceImpl) GetWarrantyById(id string) (*types.WarrantyClaim, []types.PartsRequired, error) {
-	warranty, partsRequired, err := service.repository.GetWarrantyById(id)
+	warranty, partsRequired, err := service.store.GetWarrantyById(id)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -40,7 +40,7 @@ func (service *WarrantyServiceImpl) GetWarrantyById(id string) (*types.WarrantyC
 }
 
 func (service *WarrantyServiceImpl) CreateWarranty(warranty *types.WarrantyClaim, parts []types.PartsRequired) error {
-	if err := service.repository.CreateWarranty(warranty, parts); err != nil {
+	if err := service.store.CreateWarranty(warranty, parts); err != nil {
 		return err
 	}
 
@@ -48,7 +48,7 @@ func (service *WarrantyServiceImpl) CreateWarranty(warranty *types.WarrantyClaim
 }
 
 func (service *WarrantyServiceImpl) UpdateWarranty(id string, warranty *types.WarrantyClaim, parts []types.PartsRequired) error {
-	if err := service.repository.UpdateWarranty(id, warranty, parts); err != nil {
+	if err := service.store.UpdateWarranty(id, warranty, parts); err != nil {
 		return err
 	}
 
@@ -56,7 +56,7 @@ func (service *WarrantyServiceImpl) UpdateWarranty(id string, warranty *types.Wa
 }
 
 func (service *WarrantyServiceImpl) DeleteWarranty(id string) error {
-	if err := service.repository.DeleteWarranty(id); err != nil {
+	if err := service.store.DeleteWarranty(id); err != nil {
 		return err
 	}
 

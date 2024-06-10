@@ -10,26 +10,26 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
-type PrivacyRepository interface {
+type PrivacyStore interface {
 	GetPrivacy() ([]types.Privacy, error)
 	CreatePrivacy(privacy *types.Privacy) error
 	UpdatePrivacy(id string, privacy *types.Privacy) error
 	DeletePrivacy(id string) error
 }
 
-type PrivacyRepositoryImpl struct {
+type PrivacyStoreImpl struct {
 	database *sql.DB
 }
 
-func NewPrivacyRepository(database *sql.DB) *PrivacyRepositoryImpl {
-	return &PrivacyRepositoryImpl{database: database}
+func NewPrivacyStore(database *sql.DB) *PrivacyStoreImpl {
+	return &PrivacyStoreImpl{database: database}
 }
 
-func (repository *PrivacyRepositoryImpl) GetPrivacy() ([]types.Privacy, error) {
+func (store *PrivacyStoreImpl) GetPrivacy() ([]types.Privacy, error) {
 	var privacyTerms []types.Privacy
 
 	query := `SELECT * FROM "Privacy"`
-	rows, err := repository.database.Query(query)
+	rows, err := store.database.Query(query)
 	if err != nil {
 		return nil, err
 	}
@@ -56,13 +56,13 @@ func (repository *PrivacyRepositoryImpl) GetPrivacy() ([]types.Privacy, error) {
 	return privacyTerms, err
 }
 
-func (repository *PrivacyRepositoryImpl) CreatePrivacy(privacy *types.Privacy) error {
+func (store *PrivacyStoreImpl) CreatePrivacy(privacy *types.Privacy) error {
 	privacy.ID = uuid.NewString()
 	privacy.Created = time.Now().String()
 
 	query := `INSERT INTO "Privacy" (id, title, body, created) VALUES ($1, $2, $3, $4)`
 
-	_, err := repository.database.Exec(query, privacy.ID, privacy.Title, privacy.Body, privacy.Created)
+	_, err := store.database.Exec(query, privacy.ID, privacy.Title, privacy.Body, privacy.Created)
 	if err != nil {
 		return fmt.Errorf("error occurred while creating privacy term: %w", err)
 	}
@@ -70,10 +70,10 @@ func (repository *PrivacyRepositoryImpl) CreatePrivacy(privacy *types.Privacy) e
 	return nil
 }
 
-func (repository *PrivacyRepositoryImpl) UpdatePrivacy(id string, privacy *types.Privacy) error {
+func (store *PrivacyStoreImpl) UpdatePrivacy(id string, privacy *types.Privacy) error {
 	query := `UPDATE "Privacy" SET title = $1, body = $2 where id = $3`
 
-	_, err := repository.database.Exec(query, privacy.Title, privacy.Body, id)
+	_, err := store.database.Exec(query, privacy.Title, privacy.Body, id)
 	if err != nil {
 		return fmt.Errorf("error occurred while updating privacy term: %w", err)
 	}
@@ -81,10 +81,10 @@ func (repository *PrivacyRepositoryImpl) UpdatePrivacy(id string, privacy *types
 	return nil
 }
 
-func (repository *PrivacyRepositoryImpl) DeletePrivacy(id string) error {
+func (store *PrivacyStoreImpl) DeletePrivacy(id string) error {
 	query := `DELETE FROM "Privacy" WHERE "id" = $1`
 
-	_, err := repository.database.Exec(query, id)
+	_, err := store.database.Exec(query, id)
 	if err != nil {
 		return fmt.Errorf("error occurred while deleting privacy term: %w", err)
 	}

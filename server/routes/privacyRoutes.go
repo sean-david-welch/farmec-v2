@@ -11,8 +11,8 @@ import (
 )
 
 func InitPrivacy(router *gin.Engine, database *sql.DB, adminMiddleware *middleware.AdminMiddleware) {
-	privacyRepository := store.NewPrivacyRepository(database)
-	service := services.NewPrivacyService(privacyRepository)
+	privacyStore := store.NewPrivacyStore(database)
+	service := services.NewPrivacyService(privacyStore)
 	handler := handlers.NewPrivacyHandler(service)
 
 	PrivacyRoutes(router, handler, adminMiddleware)

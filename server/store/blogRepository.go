@@ -11,7 +11,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
-type BlogRepository interface {
+type BlogStore interface {
 	GetBlogs() ([]types.Blog, error)
 	GetBlogById(id string) (*types.Blog, error)
 	CreateBlog(blog *types.Blog) error
@@ -19,19 +19,19 @@ type BlogRepository interface {
 	DeleteBlog(id string) error
 }
 
-type BlogRepositoryImpl struct {
+type BlogStoreImpl struct {
 	database *sql.DB
 }
 
-func NewBlogRepository(database *sql.DB) *BlogRepositoryImpl {
-	return &BlogRepositoryImpl{database: database}
+func NewBlogStore(database *sql.DB) *BlogStoreImpl {
+	return &BlogStoreImpl{database: database}
 }
 
-func (repository *BlogRepositoryImpl) GetBlogs() ([]types.Blog, error) {
+func (store *BlogStoreImpl) GetBlogs() ([]types.Blog, error) {
 	var blogs []types.Blog
 
 	query := `SELECT * FROM "Blog" ORDER BY "created" DESC`
-	rows, err := repository.database.Query(query)
+	rows, err := store.database.Query(query)
 	if err != nil {
 		return nil, fmt.Errorf("error occurred while querying databse: %w", err)
 	}
@@ -59,9 +59,9 @@ func (repository *BlogRepositoryImpl) GetBlogs() ([]types.Blog, error) {
 	return blogs, nil
 }
 
-func (repository *BlogRepositoryImpl) GetBlogById(id string) (*types.Blog, error) {
+func (store *BlogStoreImpl) GetBlogById(id string) (*types.Blog, error) {
 	query := `SELECT * FROM "Blog" WHERE "id" = $1`
-	row := repository.database.QueryRow(query, id)
+	row := store.database.QueryRow(query, id)
 
 	var blog types.Blog
 
@@ -78,13 +78,13 @@ func (repository *BlogRepositoryImpl) GetBlogById(id string) (*types.Blog, error
 	return &blog, nil
 }
 
-func (repository *BlogRepositoryImpl) CreateBlog(blog *types.Blog) error {
+func (store *BlogStoreImpl) CreateBlog(blog *types.Blog) error {
 	blog.ID = uuid.NewString()
 	blog.Created = time.Now().String()
 
 	query := `INSERT INTO "Blog" (id, title, date, main_image, subheading, body, created) VALUES ($1, $2, $3, $4, $5, $6, $7)`
 
-	_, err := repository.database.Exec(query, blog.ID, blog.Title, blog.Date, blog.MainImage, blog.Subheading, blog.Body, blog.Created)
+	_, err := store.database.Exec(query, blog.ID, blog.Title, blog.Date, blog.MainImage, blog.Subheading, blog.Body, blog.Created)
 	if err != nil {
 		return fmt.Errorf("error occurred while creating blog: %w", err)
 	}
@@ -92,7 +92,7 @@ func (repository *BlogRepositoryImpl) CreateBlog(blog *types.Blog) error {
 	return nil
 }
 
-func (repository *BlogRepositoryImpl) UpdateBlog(id string, blog *types.Blog) error {
+func (store *BlogStoreImpl) UpdateBlog(id string, blog *types.Blog) error {
 	query := `UPDATE "Blog" SET "title" = $1, "date" = $2, "subheading" = $3, "body" = $4 WHERE "id" = $5`
 	args := []interface{}{blog.Title, blog.Date, blog.Subheading, blog.Body, id}
 
@@ -101,7 +101,7 @@ func (repository *BlogRepositoryImpl) UpdateBlog(id string, blog *types.Blog) er
 		args = []interface{}{blog.Title, blog.Date, blog.MainImage, blog.Subheading, blog.Body, id}
 	}
 
-	_, err := repository.database.Exec(query, args...)
+	_, err := store.database.Exec(query, args...)
 	if err != nil {
 		return fmt.Errorf("error occurred while updating blog: %w", err)
 	}
@@ -109,10 +109,10 @@ func (repository *BlogRepositoryImpl) UpdateBlog(id string, blog *types.Blog) er
 	return nil
 }
 
-func (repository *BlogRepositoryImpl) DeleteBlog(id string) error {
+func (store *BlogStoreImpl) DeleteBlog(id string) error {
 	query := `DELETE FROM "Blog" WHERE "id" = $1`
 
-	_, err := repository.database.Exec(query, id)
+	_, err := store.database.Exec(query, id)
 	if err != nil {
 		return fmt.Errorf("error occurred while deleting blog: %w", err)
 	}

@@ -10,26 +10,26 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
-type TermsRepository interface {
+type TermsStore interface {
 	GetTerms() ([]types.Terms, error)
 	CreateTerm(term *types.Terms) error
 	UpdateTerm(id string, term *types.Terms) error
 	DeleteTerm(id string) error
 }
 
-type TermsRepositoryImpl struct {
+type TermsStoreImpl struct {
 	database *sql.DB
 }
 
-func NewTermsRepository(database *sql.DB) *TermsRepositoryImpl {
-	return &TermsRepositoryImpl{database: database}
+func NewTermsStore(database *sql.DB) *TermsStoreImpl {
+	return &TermsStoreImpl{database: database}
 }
 
-func (repository *TermsRepositoryImpl) GetTerms() ([]types.Terms, error) {
+func (store *TermsStoreImpl) GetTerms() ([]types.Terms, error) {
 	var terms []types.Terms
 
 	query := `SELECT * FROM "Terms"`
-	rows, err := repository.database.Query(query)
+	rows, err := store.database.Query(query)
 	if err != nil {
 		return nil, err
 	}
@@ -56,13 +56,13 @@ func (repository *TermsRepositoryImpl) GetTerms() ([]types.Terms, error) {
 	return terms, err
 }
 
-func (repository *TermsRepositoryImpl) CreateTerm(term *types.Terms) error {
+func (store *TermsStoreImpl) CreateTerm(term *types.Terms) error {
 	term.ID = uuid.NewString()
 	term.Created = time.Now().String()
 
 	query := `INSERT INTO "Terms" (id, title, body, created) VALUES ($1, $2, $3, $4)`
 
-	_, err := repository.database.Exec(query, term.ID, term.Title, term.Body, term.Created)
+	_, err := store.database.Exec(query, term.ID, term.Title, term.Body, term.Created)
 	if err != nil {
 		return fmt.Errorf("error occurred while creating term term: %w", err)
 	}
@@ -70,10 +70,10 @@ func (repository *TermsRepositoryImpl) CreateTerm(term *types.Terms) error {
 	return nil
 }
 
-func (repository *TermsRepositoryImpl) UpdateTerm(id string, term *types.Terms) error {
+func (store *TermsStoreImpl) UpdateTerm(id string, term *types.Terms) error {
 	query := `UPDATE "Terms" SET title = $1, body = $2 where id = $3`
 
-	_, err := repository.database.Exec(query, term.Title, term.Body, id)
+	_, err := store.database.Exec(query, term.Title, term.Body, id)
 	if err != nil {
 		return fmt.Errorf("error occurred while updating term term: %w", err)
 	}
@@ -81,10 +81,10 @@ func (repository *TermsRepositoryImpl) UpdateTerm(id string, term *types.Terms) 
 	return nil
 }
 
-func (repository *TermsRepositoryImpl) DeleteTerm(id string) error {
+func (store *TermsStoreImpl) DeleteTerm(id string) error {
 	query := `DELETE FROM "Terms" WHERE "id" = $1`
 
-	_, err := repository.database.Exec(query, id)
+	_, err := store.database.Exec(query, id)
 	if err != nil {
 		return fmt.Errorf("error occurred while deleting term term: %w", err)
 	}

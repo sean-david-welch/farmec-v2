@@ -18,17 +18,17 @@ type LineItemService interface {
 }
 
 type LineItemServiceImpl struct {
-	repository store.LineItemRepository
-	s3Client   lib.S3Client
-	folder     string
+	store    store.LineItemStore
+	s3Client lib.S3Client
+	folder   string
 }
 
-func NewLineItemService(repository store.LineItemRepository, s3Client lib.S3Client, folder string) *LineItemServiceImpl {
-	return &LineItemServiceImpl{repository: repository, s3Client: s3Client, folder: folder}
+func NewLineItemService(store store.LineItemStore, s3Client lib.S3Client, folder string) *LineItemServiceImpl {
+	return &LineItemServiceImpl{store: store, s3Client: s3Client, folder: folder}
 }
 
 func (service *LineItemServiceImpl) GetLineItems() ([]types.LineItem, error) {
-	lineItems, err := service.repository.GetLineItems()
+	lineItems, err := service.store.GetLineItems()
 	if err != nil {
 		return nil, err
 	}
@@ -37,7 +37,7 @@ func (service *LineItemServiceImpl) GetLineItems() ([]types.LineItem, error) {
 }
 
 func (service *LineItemServiceImpl) GetLineItemById(id string) (*types.LineItem, error) {
-	lineItem, err := service.repository.GetLineItemById(id)
+	lineItem, err := service.store.GetLineItemById(id)
 	if err != nil {
 		return nil, err
 	}
@@ -60,7 +60,7 @@ func (service *LineItemServiceImpl) CreateLineItem(lineItem *types.LineItem) (*t
 
 	lineItem.Image = imageUrl
 
-	if err := service.repository.CreateLineItem(lineItem); err != nil {
+	if err := service.store.CreateLineItem(lineItem); err != nil {
 		return nil, err
 	}
 
@@ -87,7 +87,7 @@ func (service *LineItemServiceImpl) UpdateLineItem(id string, lineItem *types.Li
 		lineItem.Image = imageUrl
 	}
 
-	if err := service.repository.UpdateLineItem(id, lineItem); err != nil {
+	if err := service.store.UpdateLineItem(id, lineItem); err != nil {
 		return nil, err
 	}
 
@@ -100,7 +100,7 @@ func (service *LineItemServiceImpl) UpdateLineItem(id string, lineItem *types.Li
 }
 
 func (service *LineItemServiceImpl) DeleteLineItem(id string) error {
-	lineItem, err := service.repository.GetLineItemById(id)
+	lineItem, err := service.store.GetLineItemById(id)
 	if err != nil {
 		return err
 	}
@@ -109,7 +109,7 @@ func (service *LineItemServiceImpl) DeleteLineItem(id string) error {
 		return err
 	}
 
-	if err := service.repository.DeleteLineItem(id); err != nil {
+	if err := service.store.DeleteLineItem(id); err != nil {
 		return err
 	}
 

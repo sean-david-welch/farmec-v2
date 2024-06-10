@@ -18,21 +18,21 @@ type MachineService interface {
 }
 
 type MachineServiceImpl struct {
-	folder     string
-	s3Client   lib.S3Client
-	repository store.MachineRepository
+	folder   string
+	s3Client lib.S3Client
+	store    store.MachineStore
 }
 
-func NewMachineService(repository store.MachineRepository, s3Client lib.S3Client, folder string) *MachineServiceImpl {
+func NewMachineService(store store.MachineStore, s3Client lib.S3Client, folder string) *MachineServiceImpl {
 	return &MachineServiceImpl{
-		repository: repository,
-		s3Client:   s3Client,
-		folder:     folder,
+		store:    store,
+		s3Client: s3Client,
+		folder:   folder,
 	}
 }
 
 func (service *MachineServiceImpl) GetMachines(id string) ([]types.Machine, error) {
-	machines, err := service.repository.GetMachines(id)
+	machines, err := service.store.GetMachines(id)
 	if err != nil {
 		return nil, errors.New("machines with supplier_id not foud")
 	}
@@ -41,7 +41,7 @@ func (service *MachineServiceImpl) GetMachines(id string) ([]types.Machine, erro
 }
 
 func (service *MachineServiceImpl) GetMachineById(id string) (*types.Machine, error) {
-	machine, err := service.repository.GetMachineById(id)
+	machine, err := service.store.GetMachineById(id)
 	if err != nil {
 		return nil, errors.New("machine with id not found")
 	}
@@ -63,7 +63,7 @@ func (service *MachineServiceImpl) CreateMachine(machine *types.Machine) (*types
 
 	machine.MachineImage = imageUrl
 
-	err = service.repository.CreateMachine(machine)
+	err = service.store.CreateMachine(machine)
 	if err != nil {
 		return nil, err
 	}
@@ -95,7 +95,7 @@ func (service *MachineServiceImpl) UpdateMachine(id string, machine *types.Machi
 		machine.MachineImage = imageUrl
 	}
 
-	err = service.repository.UpdateMachine(id, machine)
+	err = service.store.UpdateMachine(id, machine)
 	if err != nil {
 		return nil, err
 	}
@@ -109,7 +109,7 @@ func (service *MachineServiceImpl) UpdateMachine(id string, machine *types.Machi
 }
 
 func (service *MachineServiceImpl) DeleteMachine(id string) error {
-	machine, err := service.repository.GetMachineById(id)
+	machine, err := service.store.GetMachineById(id)
 	if err != nil {
 		return err
 	}
@@ -118,7 +118,7 @@ func (service *MachineServiceImpl) DeleteMachine(id string) error {
 		return err
 	}
 
-	if err := service.repository.DeleteMachine(id); err != nil {
+	if err := service.store.DeleteMachine(id); err != nil {
 		return err
 	}
 

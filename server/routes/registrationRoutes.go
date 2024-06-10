@@ -11,8 +11,8 @@ import (
 )
 
 func InitRegistrations(router *gin.Engine, database *sql.DB, authMiddleware *middleware.AuthMiddleware) {
-	repository := store.NewRegistrationRepository(database)
-	service := services.NewRegistrationService(repository)
+	store := store.NewRegistrationStore(database)
+	service := services.NewRegistrationService(store)
 	handler := handlers.NewRegistrationHandler(service)
 
 	RegistrationRoutes(router, handler, authMiddleware)

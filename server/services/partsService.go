@@ -17,21 +17,21 @@ type PartsService interface {
 }
 
 type PartsServiceImpl struct {
-	folder     string
-	s3Client   lib.S3Client
-	repository store.PartsRepository
+	folder   string
+	s3Client lib.S3Client
+	store    store.PartsStore
 }
 
-func NewPartsService(repository store.PartsRepository, s3Client lib.S3Client, folder string) *PartsServiceImpl {
+func NewPartsService(store store.PartsStore, s3Client lib.S3Client, folder string) *PartsServiceImpl {
 	return &PartsServiceImpl{
-		repository: repository,
-		s3Client:   s3Client,
-		folder:     folder,
+		store:    store,
+		s3Client: s3Client,
+		folder:   folder,
 	}
 }
 
 func (service *PartsServiceImpl) GetParts(id string) ([]types.Sparepart, error) {
-	return service.repository.GetParts(id)
+	return service.store.GetParts(id)
 }
 
 func (service *PartsServiceImpl) CreatePart(part *types.Sparepart) (*types.ModelResult, error) {
@@ -48,7 +48,7 @@ func (service *PartsServiceImpl) CreatePart(part *types.Sparepart) (*types.Model
 
 	part.PartsImage = imageUrl
 
-	err = service.repository.CreatePart(part)
+	err = service.store.CreatePart(part)
 	if err != nil {
 		log.Printf("Failed to create part: %v", err)
 		return nil, err
@@ -77,7 +77,7 @@ func (service *PartsServiceImpl) UpdatePart(id string, part *types.Sparepart) (*
 		part.PartsImage = imageUrl
 	}
 
-	err = service.repository.UpdatePart(id, part)
+	err = service.store.UpdatePart(id, part)
 	if err != nil {
 		log.Printf("Failed to update part: %v", err)
 		return nil, err
@@ -92,7 +92,7 @@ func (service *PartsServiceImpl) UpdatePart(id string, part *types.Sparepart) (*
 }
 
 func (service *PartsServiceImpl) DeletePart(id string) error {
-	part, err := service.repository.GetPartById(id)
+	part, err := service.store.GetPartById(id)
 	if err != nil {
 		return err
 	}
@@ -101,7 +101,7 @@ func (service *PartsServiceImpl) DeletePart(id string) error {
 		return err
 	}
 
-	if err := service.repository.DeletePart(id); err != nil {
+	if err := service.store.DeletePart(id); err != nil {
 		return err
 	}
 

@@ -10,7 +10,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
-type RegistrationRepository interface {
+type RegistrationStore interface {
 	GetRegistrations() ([]types.MachineRegistration, error)
 	GetRegistrationById(id string) (*types.MachineRegistration, error)
 	CreateRegistration(registration *types.MachineRegistration) error
@@ -18,19 +18,19 @@ type RegistrationRepository interface {
 	DeleteRegistration(id string) error
 }
 
-type RegistrationRepositoryImpl struct {
+type RegistrationStoreImpl struct {
 	database *sql.DB
 }
 
-func NewRegistrationRepository(database *sql.DB) *RegistrationRepositoryImpl {
-	return &RegistrationRepositoryImpl{database: database}
+func NewRegistrationStore(database *sql.DB) *RegistrationStoreImpl {
+	return &RegistrationStoreImpl{database: database}
 }
 
-func (repository *RegistrationRepositoryImpl) GetRegistrations() ([]types.MachineRegistration, error) {
+func (store *RegistrationStoreImpl) GetRegistrations() ([]types.MachineRegistration, error) {
 	var registrations []types.MachineRegistration
 
 	query := `SELECT * FROM "MachineRegistration" ORDER BY "created" DESC`
-	rows, err := repository.database.Query(query)
+	rows, err := store.database.Query(query)
 	if err != nil {
 		return nil, fmt.Errorf("error while querying database: %w", err)
 	}
@@ -65,11 +65,11 @@ func (repository *RegistrationRepositoryImpl) GetRegistrations() ([]types.Machin
 	return registrations, nil
 }
 
-func (repository *RegistrationRepositoryImpl) GetRegistrationById(id string) (*types.MachineRegistration, error) {
+func (store *RegistrationStoreImpl) GetRegistrationById(id string) (*types.MachineRegistration, error) {
 	var registration types.MachineRegistration
 
 	query := `SELECT * FROM "MachineRegistration" WHERE "id" = $1`
-	row := repository.database.QueryRow(query, id)
+	row := store.database.QueryRow(query, id)
 
 	if err := row.Scan(
 		&registration.ID, &registration.DealerName, &registration.DealerAddress,
@@ -85,7 +85,7 @@ func (repository *RegistrationRepositoryImpl) GetRegistrationById(id string) (*t
 	return &registration, nil
 }
 
-func (repository *RegistrationRepositoryImpl) CreateRegistration(registration *types.MachineRegistration) error {
+func (store *RegistrationStoreImpl) CreateRegistration(registration *types.MachineRegistration) error {
 	registration.ID = uuid.NewString()
 	registration.Created = time.Now().String()
 
@@ -96,7 +96,7 @@ func (repository *RegistrationRepositoryImpl) CreateRegistration(registration *t
         "completed_by", "created"
     ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)`
 
-	_, err := repository.database.Exec(
+	_, err := store.database.Exec(
 		query,
 		registration.ID, registration.DealerName, registration.DealerAddress, registration.OwnerName,
 		registration.OwnerAddress, registration.MachineModel, registration.SerialNumber,
@@ -112,7 +112,7 @@ func (repository *RegistrationRepositoryImpl) CreateRegistration(registration *t
 	return nil
 }
 
-func (repository *RegistrationRepositoryImpl) UpdateRegistration(id string, registration *types.MachineRegistration) error {
+func (store *RegistrationStoreImpl) UpdateRegistration(id string, registration *types.MachineRegistration) error {
 	query := `UPDATE "MachineRegistration" SET 
 	"dealer_name" = $2, "dealer_address" = $3, "owner_name" = $4, "owner_address" = $5, 
 	"machine_model" = $6, "serial_number" = $7, "install_date" = $8, "invoice_number" = $9, 
@@ -120,7 +120,7 @@ func (repository *RegistrationRepositoryImpl) UpdateRegistration(id string, regi
 	"safety_induction" = $14, "operator_handbook" = $15, "date" = $16, "completed_by" = $17, 
 	WHERE "id" = $1`
 
-	_, err := repository.database.Exec(
+	_, err := store.database.Exec(
 		query,
 		id, registration.DealerName, registration.DealerAddress, registration.OwnerName,
 		registration.OwnerAddress, registration.MachineModel, registration.SerialNumber,
@@ -136,10 +136,10 @@ func (repository *RegistrationRepositoryImpl) UpdateRegistration(id string, regi
 	return nil
 }
 
-func (repository *RegistrationRepositoryImpl) DeleteRegistration(id string) error {
+func (store *RegistrationStoreImpl) DeleteRegistration(id string) error {
 	query := `DELETE FROM "MachineRegistration" WHERE "id" = $1`
 
-	_, err := repository.database.Exec(query, id)
+	_, err := store.database.Exec(query, id)
 	if err != nil {
 		return fmt.Errorf("error occurred while deleting registration")
 	}

@@ -18,17 +18,17 @@ type BlogService interface {
 }
 
 type BlogServiceImpl struct {
-	repository store.BlogRepository
-	s3Client   lib.S3Client
-	folder     string
+	store    store.BlogStore
+	s3Client lib.S3Client
+	folder   string
 }
 
-func NewBlogService(repository store.BlogRepository, s3Client lib.S3Client, folder string) *BlogServiceImpl {
-	return &BlogServiceImpl{repository: repository, s3Client: s3Client, folder: folder}
+func NewBlogService(store store.BlogStore, s3Client lib.S3Client, folder string) *BlogServiceImpl {
+	return &BlogServiceImpl{store: store, s3Client: s3Client, folder: folder}
 }
 
 func (service *BlogServiceImpl) GetBlogs() ([]types.Blog, error) {
-	blogs, err := service.repository.GetBlogs()
+	blogs, err := service.store.GetBlogs()
 	if err != nil {
 		return nil, err
 	}
@@ -37,7 +37,7 @@ func (service *BlogServiceImpl) GetBlogs() ([]types.Blog, error) {
 }
 
 func (service *BlogServiceImpl) GetBlogsByID(id string) (*types.Blog, error) {
-	blog, err := service.repository.GetBlogById(id)
+	blog, err := service.store.GetBlogById(id)
 	if err != nil {
 		return nil, err
 	}
@@ -60,7 +60,7 @@ func (service *BlogServiceImpl) CreateBlog(blog *types.Blog) (*types.ModelResult
 
 	blog.MainImage = imageUrl
 
-	if err := service.repository.CreateBlog(blog); err != nil {
+	if err := service.store.CreateBlog(blog); err != nil {
 		return nil, err
 	}
 
@@ -87,7 +87,7 @@ func (service *BlogServiceImpl) UpdateBlog(id string, blog *types.Blog) (*types.
 		blog.MainImage = imageUrl
 	}
 
-	if err := service.repository.UpdateBlog(id, blog); err != nil {
+	if err := service.store.UpdateBlog(id, blog); err != nil {
 		return nil, err
 	}
 
@@ -100,7 +100,7 @@ func (service *BlogServiceImpl) UpdateBlog(id string, blog *types.Blog) (*types.
 }
 
 func (service *BlogServiceImpl) DeleteBlog(id string) error {
-	blog, err := service.repository.GetBlogById(id)
+	blog, err := service.store.GetBlogById(id)
 	if err != nil {
 		return err
 	}
@@ -109,7 +109,7 @@ func (service *BlogServiceImpl) DeleteBlog(id string) error {
 		return err
 	}
 
-	if err := service.repository.DeleteBlog(id); err != nil {
+	if err := service.store.DeleteBlog(id); err != nil {
 		return err
 	}
 

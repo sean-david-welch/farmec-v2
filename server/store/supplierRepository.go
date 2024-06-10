@@ -11,7 +11,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
-type SupplierRepository interface {
+type SupplierStore interface {
 	GetSuppliers() ([]types.Supplier, error)
 	CreateSupplier(supplier *types.Supplier) error
 	GetSupplierById(id string) (*types.Supplier, error)
@@ -19,12 +19,12 @@ type SupplierRepository interface {
 	DeleteSupplier(id string) error
 }
 
-type SupplierRepositoryImpl struct {
+type SupplierStoreImpl struct {
 	database *sql.DB
 }
 
-func NewSupplierRepository(database *sql.DB) *SupplierRepositoryImpl {
-	return &SupplierRepositoryImpl{database: database}
+func NewSupplierStore(database *sql.DB) *SupplierStoreImpl {
+	return &SupplierStoreImpl{database: database}
 }
 
 func scanSupplier(row interface{}, supplier *types.Supplier) error {
@@ -49,11 +49,11 @@ func scanSupplier(row interface{}, supplier *types.Supplier) error {
 	)
 }
 
-func (repository *SupplierRepositoryImpl) GetSuppliers() ([]types.Supplier, error) {
+func (store *SupplierStoreImpl) GetSuppliers() ([]types.Supplier, error) {
 	var suppliers []types.Supplier
 
 	query := `SELECT * FROM "Supplier" ORDER BY created DESC`
-	rows, err := repository.database.Query(query)
+	rows, err := store.database.Query(query)
 
 	if err != nil {
 		return nil, fmt.Errorf("error executing query: %w", err)
@@ -80,7 +80,7 @@ func (repository *SupplierRepositoryImpl) GetSuppliers() ([]types.Supplier, erro
 	return suppliers, nil
 }
 
-func (repository *SupplierRepositoryImpl) CreateSupplier(supplier *types.Supplier) error {
+func (store *SupplierStoreImpl) CreateSupplier(supplier *types.Supplier) error {
 
 	supplier.ID = uuid.NewString()
 	supplier.Created = time.Now().String()
@@ -89,7 +89,7 @@ func (repository *SupplierRepositoryImpl) CreateSupplier(supplier *types.Supplie
 	(id, name, logo_image, marketing_image, description, social_facebook, social_instagram, social_linkedin, social_twitter, social_youtube, social_website, created) 
 	VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`
 
-	_, err := repository.database.Exec(query, supplier.ID, supplier.Name, supplier.LogoImage, supplier.MarketingImage, supplier.Description, supplier.SocialFacebook, supplier.SocialInstagram, supplier.SocialLinkedin, supplier.SocialTwitter, supplier.SocialYoutube, supplier.SocialWebsite, supplier.Created)
+	_, err := store.database.Exec(query, supplier.ID, supplier.Name, supplier.LogoImage, supplier.MarketingImage, supplier.Description, supplier.SocialFacebook, supplier.SocialInstagram, supplier.SocialLinkedin, supplier.SocialTwitter, supplier.SocialYoutube, supplier.SocialWebsite, supplier.Created)
 
 	if err != nil {
 		return fmt.Errorf("error creating supplier: %w", err)
@@ -98,9 +98,9 @@ func (repository *SupplierRepositoryImpl) CreateSupplier(supplier *types.Supplie
 	return nil
 }
 
-func (repository *SupplierRepositoryImpl) GetSupplierById(id string) (*types.Supplier, error) {
+func (store *SupplierStoreImpl) GetSupplierById(id string) (*types.Supplier, error) {
 	query := `SELECT * FROM "Supplier" WHERE id = $1`
-	row := repository.database.QueryRow(query, id)
+	row := store.database.QueryRow(query, id)
 
 	var supplier types.Supplier
 
@@ -116,7 +116,7 @@ func (repository *SupplierRepositoryImpl) GetSupplierById(id string) (*types.Sup
 	return &supplier, nil
 }
 
-func (repository *SupplierRepositoryImpl) UpdateSupplier(id string, supplier *types.Supplier) error {
+func (store *SupplierStoreImpl) UpdateSupplier(id string, supplier *types.Supplier) error {
 	query := `UPDATE "Supplier" SET 
                 name = $1,  
                 description = $2, 
@@ -145,7 +145,7 @@ func (repository *SupplierRepositoryImpl) UpdateSupplier(id string, supplier *ty
 		args = []interface{}{supplier.Name, supplier.LogoImage, supplier.MarketingImage, supplier.Description, supplier.SocialFacebook, supplier.SocialInstagram, supplier.SocialLinkedin, supplier.SocialTwitter, supplier.SocialYoutube, supplier.SocialWebsite, id}
 	}
 
-	_, err := repository.database.Exec(query, args...)
+	_, err := store.database.Exec(query, args...)
 
 	if err != nil {
 		return fmt.Errorf("error updating supplier: %w", err)
@@ -154,10 +154,10 @@ func (repository *SupplierRepositoryImpl) UpdateSupplier(id string, supplier *ty
 	return nil
 }
 
-func (repository *SupplierRepositoryImpl) DeleteSupplier(id string) error {
+func (store *SupplierStoreImpl) DeleteSupplier(id string) error {
 	query := `DELETE FROM "Supplier" WHERE id = $1`
 
-	_, err := repository.database.Exec(query, id)
+	_, err := store.database.Exec(query, id)
 
 	if err != nil {
 		return fmt.Errorf("error deleting supplier: %w", err)

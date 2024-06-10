@@ -17,17 +17,17 @@ type EmployeeService interface {
 }
 
 type EmployeeServiceImpl struct {
-	repository store.EmployeeRepository
-	s3Client   lib.S3Client
-	folder     string
+	store    store.EmployeeStore
+	s3Client lib.S3Client
+	folder   string
 }
 
-func NewEmployeeService(repository store.EmployeeRepository, s3Client lib.S3Client, folder string) *EmployeeServiceImpl {
-	return &EmployeeServiceImpl{repository: repository, s3Client: s3Client, folder: folder}
+func NewEmployeeService(store store.EmployeeStore, s3Client lib.S3Client, folder string) *EmployeeServiceImpl {
+	return &EmployeeServiceImpl{store: store, s3Client: s3Client, folder: folder}
 }
 
 func (service *EmployeeServiceImpl) GetEmployees() ([]types.Employee, error) {
-	employees, err := service.repository.GetEmployees()
+	employees, err := service.store.GetEmployees()
 	if err != nil {
 		return nil, err
 	}
@@ -50,7 +50,7 @@ func (service *EmployeeServiceImpl) CreateEmployee(employee *types.Employee) (*t
 
 	employee.ProfileImage = imageUrl
 
-	if err := service.repository.CreateEmployee(employee); err != nil {
+	if err := service.store.CreateEmployee(employee); err != nil {
 		return nil, err
 	}
 
@@ -77,7 +77,7 @@ func (service *EmployeeServiceImpl) UpdateEmployee(id string, employee *types.Em
 		employee.ProfileImage = imageUrl
 	}
 
-	if err := service.repository.UpdateEmployee(id, employee); err != nil {
+	if err := service.store.UpdateEmployee(id, employee); err != nil {
 		return nil, err
 	}
 
@@ -90,7 +90,7 @@ func (service *EmployeeServiceImpl) UpdateEmployee(id string, employee *types.Em
 }
 
 func (service *EmployeeServiceImpl) DeleteEmployee(id string) error {
-	employee, err := service.repository.GetEmployeeById(id)
+	employee, err := service.store.GetEmployeeById(id)
 	if err != nil {
 		return err
 	}
@@ -99,7 +99,7 @@ func (service *EmployeeServiceImpl) DeleteEmployee(id string) error {
 		return err
 	}
 
-	if err := service.repository.DeleteEmployee(id); err != nil {
+	if err := service.store.DeleteEmployee(id); err != nil {
 		return err
 	}
 

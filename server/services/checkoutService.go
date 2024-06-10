@@ -15,19 +15,19 @@ type CheckoutService interface {
 }
 
 type CheckoutServiceImpl struct {
-	secrets    *lib.Secrets
-	repository store.LineItemRepository
+	secrets *lib.Secrets
+	store   store.LineItemStore
 }
 
-func NewCheckoutService(secrets *lib.Secrets, repository store.LineItemRepository) *CheckoutServiceImpl {
-	return &CheckoutServiceImpl{secrets: secrets, repository: repository}
+func NewCheckoutService(secrets *lib.Secrets, store store.LineItemStore) *CheckoutServiceImpl {
+	return &CheckoutServiceImpl{secrets: secrets, store: store}
 }
 func (service *CheckoutServiceImpl) CreateCheckoutSession(id string) (*stripe.CheckoutSession, error) {
 	stripe.Key = service.secrets.StripeSecretKey
 
 	log.Printf("Creating checkout session for product ID: %s", id)
 
-	product, err := service.repository.GetLineItemById(id)
+	product, err := service.store.GetLineItemById(id)
 	if err != nil {
 		log.Printf("Error retrieving product by ID: %v", err)
 		return nil, err

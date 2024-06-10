@@ -18,21 +18,21 @@ type SupplierService interface {
 }
 
 type SupplierServiceImpl struct {
-	folder     string
-	s3Client   lib.S3Client
-	repository store.SupplierRepository
+	folder   string
+	s3Client lib.S3Client
+	store    store.SupplierStore
 }
 
-func NewSupplierService(repository store.SupplierRepository, s3Client lib.S3Client, folder string) *SupplierServiceImpl {
+func NewSupplierService(store store.SupplierStore, s3Client lib.S3Client, folder string) *SupplierServiceImpl {
 	return &SupplierServiceImpl{
-		repository: repository,
-		s3Client:   s3Client,
-		folder:     folder,
+		store:    store,
+		s3Client: s3Client,
+		folder:   folder,
 	}
 }
 
 func (service *SupplierServiceImpl) GetSuppliers() ([]types.Supplier, error) {
-	return service.repository.GetSuppliers()
+	return service.store.GetSuppliers()
 }
 
 func (service *SupplierServiceImpl) CreateSupplier(supplier *types.Supplier) (*types.SupplierResult, error) {
@@ -62,7 +62,7 @@ func (service *SupplierServiceImpl) CreateSupplier(supplier *types.Supplier) (*t
 	supplier.LogoImage = logoUrl
 	supplier.MarketingImage = marketingUrl
 
-	err = service.repository.CreateSupplier(supplier)
+	err = service.store.CreateSupplier(supplier)
 	if err != nil {
 		return nil, err
 	}
@@ -78,7 +78,7 @@ func (service *SupplierServiceImpl) CreateSupplier(supplier *types.Supplier) (*t
 }
 
 func (service *SupplierServiceImpl) GetSupplierById(id string) (*types.Supplier, error) {
-	return service.repository.GetSupplierById(id)
+	return service.store.GetSupplierById(id)
 }
 
 func (service *SupplierServiceImpl) UpdateSupplier(id string, supplier *types.Supplier) (*types.SupplierResult, error) {
@@ -104,7 +104,7 @@ func (service *SupplierServiceImpl) UpdateSupplier(id string, supplier *types.Su
 		supplier.MarketingImage = marketingUrl
 	}
 
-	err = service.repository.UpdateSupplier(id, supplier)
+	err = service.store.UpdateSupplier(id, supplier)
 	if err != nil {
 		return nil, err
 	}
@@ -120,7 +120,7 @@ func (service *SupplierServiceImpl) UpdateSupplier(id string, supplier *types.Su
 }
 
 func (service *SupplierServiceImpl) DeleteSupplier(id string) error {
-	supplier, err := service.repository.GetSupplierById(id)
+	supplier, err := service.store.GetSupplierById(id)
 	if err != nil {
 		return err
 	}
@@ -133,7 +133,7 @@ func (service *SupplierServiceImpl) DeleteSupplier(id string) error {
 		return err
 	}
 
-	if err := service.repository.DeleteSupplier(id); err != nil {
+	if err := service.store.DeleteSupplier(id); err != nil {
 		return err
 	}
 

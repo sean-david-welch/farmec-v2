@@ -17,21 +17,21 @@ type ProductService interface {
 }
 
 type ProductServiceImpl struct {
-	folder     string
-	s3Client   lib.S3Client
-	repository store.ProductRepository
+	folder   string
+	s3Client lib.S3Client
+	store    store.ProductStore
 }
 
-func NewProductService(repository store.ProductRepository, s3Client lib.S3Client, folder string) *ProductServiceImpl {
+func NewProductService(store store.ProductStore, s3Client lib.S3Client, folder string) *ProductServiceImpl {
 	return &ProductServiceImpl{
-		repository: repository,
-		s3Client:   s3Client,
-		folder:     folder,
+		store:    store,
+		s3Client: s3Client,
+		folder:   folder,
 	}
 }
 
 func (service *ProductServiceImpl) GetProducts(id string) ([]types.Product, error) {
-	return service.repository.GetProducts(id)
+	return service.store.GetProducts(id)
 }
 
 func (service *ProductServiceImpl) CreateProduct(product *types.Product) (*types.ModelResult, error) {
@@ -48,7 +48,7 @@ func (service *ProductServiceImpl) CreateProduct(product *types.Product) (*types
 
 	product.ProductImage = imageUrl
 
-	err = service.repository.CreateProduct(product)
+	err = service.store.CreateProduct(product)
 	if err != nil {
 		return nil, err
 	}
@@ -76,7 +76,7 @@ func (service *ProductServiceImpl) UpdateProduct(id string, product *types.Produ
 		product.ProductImage = imageUrl
 	}
 
-	err = service.repository.UpdateMachine(id, product)
+	err = service.store.UpdateMachine(id, product)
 	if err != nil {
 		return nil, err
 	}
@@ -90,7 +90,7 @@ func (service *ProductServiceImpl) UpdateProduct(id string, product *types.Produ
 }
 
 func (service *ProductServiceImpl) DeleteProduct(id string) error {
-	product, err := service.repository.GetProductById(id)
+	product, err := service.store.GetProductById(id)
 	if err != nil {
 		return nil
 	}
@@ -99,7 +99,7 @@ func (service *ProductServiceImpl) DeleteProduct(id string) error {
 		return err
 	}
 
-	if err := service.repository.DeleteProduct(id); err != nil {
+	if err := service.store.DeleteProduct(id); err != nil {
 		return err
 	}
 

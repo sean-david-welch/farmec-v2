@@ -12,8 +12,8 @@ import (
 )
 
 func InitCarousel(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, adminMiddleare *middleware.AdminMiddleware) {
-	carouselRepository := store.NewCarouselRepository(database)
-	carouselService := services.NewCarouselService(carouselRepository, s3Client, "Carousels")
+	carouselStore := store.NewCarouselStore(database)
+	carouselService := services.NewCarouselService(carouselStore, s3Client, "Carousels")
 	carouselHandler := handlers.NewCarouselHandler(carouselService)
 
 	CarouselRoutes(router, carouselHandler, adminMiddleare)

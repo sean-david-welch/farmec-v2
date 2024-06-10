@@ -9,7 +9,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
-type ProductRepository interface {
+type ProductStore interface {
 	GetProducts(id string) ([]types.Product, error)
 	GetProductById(id string) (*types.Product, error)
 	CreateProduct(product *types.Product) error
@@ -17,12 +17,12 @@ type ProductRepository interface {
 	DeleteProduct(id string) error
 }
 
-type ProductRepositoryImpl struct {
+type ProductStoreImpl struct {
 	database *sql.DB
 }
 
-func NewProductRepository(database *sql.DB) *ProductRepositoryImpl {
-	return &ProductRepositoryImpl{database: database}
+func NewProductStore(database *sql.DB) *ProductStoreImpl {
+	return &ProductStoreImpl{database: database}
 }
 
 func ScanProduct(row interface{}, product *types.Product) error {
@@ -42,11 +42,11 @@ func ScanProduct(row interface{}, product *types.Product) error {
 	return scanner.Scan(&product.ID, &product.MachineID, &product.Name, &product.ProductImage, &product.Description, &product.ProductLink)
 }
 
-func (repository *ProductRepositoryImpl) GetProducts(id string) ([]types.Product, error) {
+func (store *ProductStoreImpl) GetProducts(id string) ([]types.Product, error) {
 	var products []types.Product
 
 	query := `SELECT * FROM "Product" WHERE "machine_id" = $1`
-	rows, err := repository.database.Query(query, id)
+	rows, err := store.database.Query(query, id)
 	if err != nil {
 		return nil, fmt.Errorf("error executing query: %w", err)
 	}
@@ -74,9 +74,9 @@ func (repository *ProductRepositoryImpl) GetProducts(id string) ([]types.Product
 	return products, nil
 }
 
-func (repository *ProductRepositoryImpl) GetProductById(id string) (*types.Product, error) {
+func (store *ProductStoreImpl) GetProductById(id string) (*types.Product, error) {
 	query := `SELECT * FROM "Product" WHERE "id" = $1`
-	row := repository.database.QueryRow(query, id)
+	row := store.database.QueryRow(query, id)
 
 	var product types.Product
 
@@ -91,13 +91,13 @@ func (repository *ProductRepositoryImpl) GetProductById(id string) (*types.Produ
 	return &product, nil
 }
 
-func (repository *ProductRepositoryImpl) CreateProduct(product *types.Product) error {
+func (store *ProductStoreImpl) CreateProduct(product *types.Product) error {
 	product.ID = uuid.NewString()
 
 	query := `INSERT INTO "Product" (id, machine_id, name, product_image, description, product_link)
 	VALUES ($1, $2, $3, $4, $5, $6)`
 
-	_, err := repository.database.Exec(query, product.ID, product.MachineID, product.Name, product.ProductImage, product.Description, product.ProductLink)
+	_, err := store.database.Exec(query, product.ID, product.MachineID, product.Name, product.ProductImage, product.Description, product.ProductLink)
 
 	if err != nil {
 		return fmt.Errorf("error creating product: %w", err)
@@ -106,7 +106,7 @@ func (repository *ProductRepositoryImpl) CreateProduct(product *types.Product) e
 	return nil
 }
 
-func (repository *ProductRepositoryImpl) UpdateMachine(id string, product *types.Product) error {
+func (store *ProductStoreImpl) UpdateMachine(id string, product *types.Product) error {
 	query := `UPDATE "Product" SET machine_id = $1, name = $2, description = $3, product_link = $4 WHERE id = $6`
 	args := []interface{}{product.MachineID, product.Name, product.Description, product.ProductLink, id}
 
@@ -116,7 +116,7 @@ func (repository *ProductRepositoryImpl) UpdateMachine(id string, product *types
 
 	}
 
-	_, err := repository.database.Exec(query, args...)
+	_, err := store.database.Exec(query, args...)
 
 	if err != nil {
 		return fmt.Errorf("error updating product: %w", err)
@@ -125,10 +125,10 @@ func (repository *ProductRepositoryImpl) UpdateMachine(id string, product *types
 	return nil
 }
 
-func (repository *ProductRepositoryImpl) DeleteProduct(id string) error {
+func (store *ProductStoreImpl) DeleteProduct(id string) error {
 	query := `DELETE FROM "Product" WHERE id = $1`
 
-	_, err := repository.database.Exec(query, id)
+	_, err := store.database.Exec(query, id)
 	if err != nil {
 		return fmt.Errorf("error deleting product: %w", err)
 	}

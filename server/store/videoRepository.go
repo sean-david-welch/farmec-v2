@@ -10,26 +10,26 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
-type VideoRepository interface {
+type VideoStore interface {
 	GetVideos(id string) ([]types.Video, error)
 	CreateVideo(video *types.Video) error
 	UpdateVideo(id string, video *types.Video) error
 	DeleteVideo(id string) error
 }
 
-type VideoRepositoryImpl struct {
+type VideoStoreImpl struct {
 	database *sql.DB
 }
 
-func NewVideoRepository(database *sql.DB) *VideoRepositoryImpl {
-	return &VideoRepositoryImpl{database: database}
+func NewVideoStore(database *sql.DB) *VideoStoreImpl {
+	return &VideoStoreImpl{database: database}
 }
 
-func (repository *VideoRepositoryImpl) GetVideos(id string) ([]types.Video, error) {
+func (store *VideoStoreImpl) GetVideos(id string) ([]types.Video, error) {
 	var videos []types.Video
 
 	query := `SELECT * FROM "Video" WHERE "supplier_id" = $1`
-	rows, err := repository.database.Query(query, id)
+	rows, err := store.database.Query(query, id)
 	if err != nil {
 		return nil, fmt.Errorf("error executing query: %w", err)
 	}
@@ -57,13 +57,13 @@ func (repository *VideoRepositoryImpl) GetVideos(id string) ([]types.Video, erro
 	return videos, nil
 }
 
-func (repository *VideoRepositoryImpl) CreateVideo(video *types.Video) error {
+func (store *VideoStoreImpl) CreateVideo(video *types.Video) error {
 
 	video.ID = uuid.NewString()
 	video.Created = time.Now().String()
 
 	query := `INSERT INTO "Video" ("id", "supplier_id", "web_url", "title", "description", "video_id", "thumbnail_url", "created") VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`
-	_, err := repository.database.Exec(query, video.ID, video.SupplierID, video.WebURL, video.Title, video.Description, video.VideoID, video.ThumbnailURL, video.Created)
+	_, err := store.database.Exec(query, video.ID, video.SupplierID, video.WebURL, video.Title, video.Description, video.VideoID, video.ThumbnailURL, video.Created)
 
 	if err != nil {
 		return fmt.Errorf("error creating video: %w", err)
@@ -72,10 +72,10 @@ func (repository *VideoRepositoryImpl) CreateVideo(video *types.Video) error {
 	return nil
 }
 
-func (repository *VideoRepositoryImpl) UpdateVideo(id string, video *types.Video) error {
+func (store *VideoStoreImpl) UpdateVideo(id string, video *types.Video) error {
 	query := `UPDATE "Video" SET "supplier_id" = $1, "web_url" = $2, "title" = $3, "description" = $4, "video_id" = $5, "thumbnail_url" = $6 WHERE "id" = $7`
 
-	_, err := repository.database.Exec(query, video.SupplierID, video.WebURL, video.Title, video.Description, video.VideoID, video.ThumbnailURL, id)
+	_, err := store.database.Exec(query, video.SupplierID, video.WebURL, video.Title, video.Description, video.VideoID, video.ThumbnailURL, id)
 
 	if err != nil {
 		return fmt.Errorf("error updating video: %w", err)
@@ -84,10 +84,10 @@ func (repository *VideoRepositoryImpl) UpdateVideo(id string, video *types.Video
 	return nil
 }
 
-func (repository *VideoRepositoryImpl) DeleteVideo(id string) error {
+func (store *VideoStoreImpl) DeleteVideo(id string) error {
 	query := `DELETE FROM "Video" WHERE "id" = $1`
 
-	_, err := repository.database.Exec(query, id)
+	_, err := store.database.Exec(query, id)
 	if err != nil {
 		return fmt.Errorf("error deleting video: %w", err)
 	}

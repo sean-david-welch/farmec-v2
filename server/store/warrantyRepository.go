@@ -10,7 +10,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
-type WarrantyRepository interface {
+type WarrantyStore interface {
 	GetWarranties() ([]types.DealerOwnerInfo, error)
 	GetWarrantyById(id string) (*types.WarrantyClaim, []types.PartsRequired, error)
 	CreateWarranty(warranty *types.WarrantyClaim, parts []types.PartsRequired) error
@@ -18,19 +18,19 @@ type WarrantyRepository interface {
 	DeleteWarranty(id string) error
 }
 
-type WarrantyRepositoryImpl struct {
+type WarrantyStoreImpl struct {
 	database *sql.DB
 }
 
-func NewWarrantyRepository(database *sql.DB) *WarrantyRepositoryImpl {
-	return &WarrantyRepositoryImpl{database: database}
+func NewWarrantyStore(database *sql.DB) *WarrantyStoreImpl {
+	return &WarrantyStoreImpl{database: database}
 }
 
-func (repository *WarrantyRepositoryImpl) GetWarranties() ([]types.DealerOwnerInfo, error) {
+func (store *WarrantyStoreImpl) GetWarranties() ([]types.DealerOwnerInfo, error) {
 	var warranties []types.DealerOwnerInfo
 
 	query := `SELECT "id", "dealer", "owner_name" FROM "WarrantyClaim" ORDER BY "created" DESC`
-	rows, err := repository.database.Query(query)
+	rows, err := store.database.Query(query)
 	if err != nil {
 		return nil, fmt.Errorf("error occurred while querying database: %w", err)
 	}
@@ -57,13 +57,13 @@ func (repository *WarrantyRepositoryImpl) GetWarranties() ([]types.DealerOwnerIn
 	return warranties, nil
 }
 
-func (repository *WarrantyRepositoryImpl) GetWarrantyById(id string) (*types.WarrantyClaim, []types.PartsRequired, error) {
+func (store *WarrantyStoreImpl) GetWarrantyById(id string) (*types.WarrantyClaim, []types.PartsRequired, error) {
 	var warranty types.WarrantyClaim
 	var parts []types.PartsRequired
 
 	warrantyQuery := `SELECT * FROM "WarrantyClaim" WHERE "id" = $1`
 
-	row := repository.database.QueryRow(warrantyQuery, id)
+	row := store.database.QueryRow(warrantyQuery, id)
 
 	if err := row.Scan(&warranty.ID, &warranty.Dealer, &warranty.DealerContact, &warranty.OwnerName,
 		&warranty.MachineModel, &warranty.SerialNumber, &warranty.InstallDate, &warranty.FailureDate, &warranty.RepairDate,
@@ -73,7 +73,7 @@ func (repository *WarrantyRepositoryImpl) GetWarrantyById(id string) (*types.War
 	}
 
 	partsQuery := `SELECT * FROM "PartsRequired" WHERE "warranty_id" = $1`
-	rows, err := repository.database.Query(partsQuery, id)
+	rows, err := store.database.Query(partsQuery, id)
 	if err != nil {
 		return nil, nil, fmt.Errorf("error querying parts required from database: %w", err)
 	}
@@ -100,11 +100,11 @@ func (repository *WarrantyRepositoryImpl) GetWarrantyById(id string) (*types.War
 	return &warranty, parts, nil
 }
 
-func (repository *WarrantyRepositoryImpl) CreateWarranty(warranty *types.WarrantyClaim, parts []types.PartsRequired) error {
+func (store *WarrantyStoreImpl) CreateWarranty(warranty *types.WarrantyClaim, parts []types.PartsRequired) error {
 	warranty.ID = uuid.NewString()
 	warranty.Created = time.Now().String()
 
-	transaction, err := repository.database.Begin()
+	transaction, err := store.database.Begin()
 	if err != nil {
 		return err
 	}
@@ -150,8 +150,8 @@ func (repository *WarrantyRepositoryImpl) CreateWarranty(warranty *types.Warrant
 	return nil
 }
 
-func (repository *WarrantyRepositoryImpl) UpdateWarranty(id string, warranty *types.WarrantyClaim, parts []types.PartsRequired) error {
-	transaction, err := repository.database.Begin()
+func (store *WarrantyStoreImpl) UpdateWarranty(id string, warranty *types.WarrantyClaim, parts []types.PartsRequired) error {
+	transaction, err := store.database.Begin()
 	if err != nil {
 		return err
 	}
@@ -207,8 +207,8 @@ func (repository *WarrantyRepositoryImpl) UpdateWarranty(id string, warranty *ty
 	return nil
 }
 
-func (repository *WarrantyRepositoryImpl) DeleteWarranty(id string) error {
-	transaction, err := repository.database.Begin()
+func (store *WarrantyStoreImpl) DeleteWarranty(id string) error {
+	transaction, err := store.database.Begin()
 	if err != nil {
 		return err
 	}

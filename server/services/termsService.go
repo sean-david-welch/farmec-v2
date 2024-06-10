@@ -13,15 +13,15 @@ type TermsService interface {
 }
 
 type TermsServiceImpl struct {
-	repository store.TermsRepository
+	store store.TermsStore
 }
 
-func NewTermsService(repository store.TermsRepository) *TermsServiceImpl {
-	return &TermsServiceImpl{repository: repository}
+func NewTermsService(store store.TermsStore) *TermsServiceImpl {
+	return &TermsServiceImpl{store: store}
 }
 
 func (service *TermsServiceImpl) GetTerms() ([]types.Terms, error) {
-	terms, err := service.repository.GetTerms()
+	terms, err := service.store.GetTerms()
 	if err != nil {
 		return nil, err
 	}
@@ -30,7 +30,7 @@ func (service *TermsServiceImpl) GetTerms() ([]types.Terms, error) {
 }
 
 func (service *TermsServiceImpl) CreateTerm(term *types.Terms) error {
-	if err := service.repository.CreateTerm(term); err != nil {
+	if err := service.store.CreateTerm(term); err != nil {
 		return err
 	}
 
@@ -38,7 +38,7 @@ func (service *TermsServiceImpl) CreateTerm(term *types.Terms) error {
 }
 
 func (service *TermsServiceImpl) UpdateTerm(id string, term *types.Terms) error {
-	if err := service.repository.UpdateTerm(id, term); err != nil {
+	if err := service.store.UpdateTerm(id, term); err != nil {
 		return err
 	}
 
@@ -46,7 +46,7 @@ func (service *TermsServiceImpl) UpdateTerm(id string, term *types.Terms) error 
 }
 
 func (service *TermsServiceImpl) DeleteTerm(id string) error {
-	if err := service.repository.DeleteTerm(id); err != nil {
+	if err := service.store.DeleteTerm(id); err != nil {
 		return err
 	}
 

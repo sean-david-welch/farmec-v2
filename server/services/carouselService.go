@@ -17,21 +17,21 @@ type CarouselService interface {
 }
 
 type CarouselServiceImpl struct {
-	repository store.CarouselRepository
-	s3Client   lib.S3Client
-	folder     string
+	store    store.CarouselStore
+	s3Client lib.S3Client
+	folder   string
 }
 
-func NewCarouselService(repository store.CarouselRepository, s3Client lib.S3Client, folder string) *CarouselServiceImpl {
+func NewCarouselService(store store.CarouselStore, s3Client lib.S3Client, folder string) *CarouselServiceImpl {
 	return &CarouselServiceImpl{
-		repository: repository,
-		s3Client:   s3Client,
-		folder:     folder,
+		store:    store,
+		s3Client: s3Client,
+		folder:   folder,
 	}
 }
 
 func (service *CarouselServiceImpl) GetCarousels() ([]types.Carousel, error) {
-	return service.repository.GetCarousels()
+	return service.store.GetCarousels()
 }
 
 func (service *CarouselServiceImpl) CreateCarousel(carousel *types.Carousel) (*types.ModelResult, error) {
@@ -49,7 +49,7 @@ func (service *CarouselServiceImpl) CreateCarousel(carousel *types.Carousel) (*t
 
 	carousel.Image = imageUrl
 
-	if err := service.repository.CreateCarousel(carousel); err != nil {
+	if err := service.store.CreateCarousel(carousel); err != nil {
 		return nil, err
 	}
 
@@ -76,7 +76,7 @@ func (service *CarouselServiceImpl) UpdateCarousel(id string, carousel *types.Ca
 		carousel.Image = imageUrl
 	}
 
-	if err := service.repository.UpdateCarousel(id, carousel); err != nil {
+	if err := service.store.UpdateCarousel(id, carousel); err != nil {
 		return nil, err
 	}
 
@@ -89,7 +89,7 @@ func (service *CarouselServiceImpl) UpdateCarousel(id string, carousel *types.Ca
 }
 
 func (service *CarouselServiceImpl) DeleteCarousel(id string) error {
-	carousel, err := service.repository.GetCarouselById(id)
+	carousel, err := service.store.GetCarouselById(id)
 	if err != nil {
 		return err
 	}
@@ -98,7 +98,7 @@ func (service *CarouselServiceImpl) DeleteCarousel(id string) error {
 		return err
 	}
 
-	if err := service.repository.DeleteCarousel(id); err != nil {
+	if err := service.store.DeleteCarousel(id); err != nil {
 		return err
 	}
 
