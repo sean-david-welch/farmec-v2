@@ -32,11 +32,11 @@ func (repository *RegistrationRepositoryImpl) GetRegistrations() ([]types.Machin
 	query := `SELECT * FROM "MachineRegistration" ORDER BY "created" DESC`
 	rows, err := repository.database.Query(query)
 	if err != nil {
-		return nil, fmt.Errorf("error while querying database: %w", err)
+		return nil, fmt.Errorf("error while querying store: %w", err)
 	}
 	defer func() {
 		if err := rows.Close(); err != nil {
-			log.Fatal("Failed to close database: ", err)
+			log.Fatal("Failed to close store: ", err)
 		}
 	}()
 

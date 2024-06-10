@@ -32,11 +32,11 @@ func (repository *LineItemRepositoryImpl) GetLineItems() ([]types.LineItem, erro
 	query := `SELECT * FROM "LineItems"`
 	rows, err := repository.database.Query(query)
 	if err != nil {
-		return nil, fmt.Errorf("error occurred while querying database: %w", err)
+		return nil, fmt.Errorf("error occurred while querying store: %w", err)
 	}
 	defer func() {
 		if err := rows.Close(); err != nil {
-			log.Fatal("Failed to close database: ", err)
+			log.Fatal("Failed to close store: ", err)
 		}
 	}()
 

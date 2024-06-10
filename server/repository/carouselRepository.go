@@ -37,7 +37,7 @@ func (repository *CarouselRepositoryImpl) GetCarousels() ([]types.Carousel, erro
 	}
 	defer func() {
 		if err := rows.Close(); err != nil {
-			log.Fatal("Failed to close database: ", err)
+			log.Fatal("Failed to close store: ", err)
 		}
 	}()
 

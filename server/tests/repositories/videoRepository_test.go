@@ -14,7 +14,7 @@ import (
 func TestGetVideos(test *testing.T) {
 	db, mock, err := mocks.InitMockDatabase(test)
 	if err != nil {
-		test.Fatalf("failed to init mock database")
+		test.Fatalf("failed to init mock store")
 	}
 	defer db.Close()
 
@@ -80,7 +80,7 @@ func TestGetVideos(test *testing.T) {
 func TestCreateVideo(test *testing.T) {
 	db, mock, err := mocks.InitMockDatabase(test)
 	if err != nil {
-		test.Fatalf("failed to init mock database")
+		test.Fatalf("failed to init mock store")
 	}
 	defer db.Close()
 

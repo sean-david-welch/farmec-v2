@@ -14,7 +14,7 @@ import (
 func TestGetSupplier(test *testing.T) {
 	db, mock, err := mocks.InitMockDatabase(test)
 	if err != nil {
-		test.Fatalf("Failed to init mock database: %s", err)
+		test.Fatalf("Failed to init mock store: %s", err)
 	}
 	defer db.Close()
 
@@ -83,7 +83,7 @@ func TestGetSupplier(test *testing.T) {
 func TestCreateSupplier(test *testing.T) {
 	db, mock, err := mocks.InitMockDatabase(test)
 	if err != nil {
-		test.Fatalf("failed to init mock database: %s", err)
+		test.Fatalf("failed to init mock store: %s", err)
 	}
 	defer db.Close()
 

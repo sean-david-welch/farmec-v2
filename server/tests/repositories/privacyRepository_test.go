@@ -14,7 +14,7 @@ import (
 func TestGetPrivacy(test *testing.T) {
 	db, mock, err := mocks.InitMockDatabase(test)
 	if err != nil {
-		test.Fatalf("Failed to init mock database: %s", err)
+		test.Fatalf("Failed to init mock store: %s", err)
 	}
 	defer db.Close()
 
@@ -60,7 +60,7 @@ func TestGetPrivacy(test *testing.T) {
 func TestCreatePrivacy(test *testing.T) {
 	db, mock, err := mocks.InitMockDatabase(test)
 	if err != nil {
-		test.Fatalf("Failed to init mock database: %s", err)
+		test.Fatalf("Failed to init mock store: %s", err)
 	}
 	defer db.Close()
 

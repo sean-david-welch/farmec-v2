@@ -13,7 +13,7 @@ import (
 func TestGetParts(test *testing.T) {
 	db, mock, err := mocks.InitMockDatabase(test)
 	if err != nil {
-		test.Fatalf("failed to init mock database")
+		test.Fatalf("failed to init mock store")
 	}
 	defer db.Close()
 
@@ -63,7 +63,7 @@ func TestGetParts(test *testing.T) {
 func TestCreatePart(test *testing.T) {
 	db, mock, err := mocks.InitMockDatabase(test)
 	if err != nil {
-		test.Fatalf("failed to init mock database")
+		test.Fatalf("failed to init mock store")
 	}
 	defer db.Close()
 

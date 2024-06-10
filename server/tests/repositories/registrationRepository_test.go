@@ -14,7 +14,7 @@ import (
 func TestGetRegistration(test *testing.T) {
 	db, mock, err := mocks.InitMockDatabase(test)
 	if err != nil {
-		test.Fatalf("Failed to init mock database: %s", err)
+		test.Fatalf("Failed to init mock store: %s", err)
 	}
 	defer db.Close()
 
@@ -98,7 +98,7 @@ func TestGetRegistration(test *testing.T) {
 func TestCreateRegistration(test *testing.T) {
 	db, mock, err := mocks.InitMockDatabase(test)
 	if err != nil {
-		test.Fatalf("failed to init mock database: %s", err)
+		test.Fatalf("failed to init mock store: %s", err)
 	}
 	defer db.Close()
 

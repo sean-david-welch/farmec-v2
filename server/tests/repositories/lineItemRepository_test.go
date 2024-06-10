@@ -13,7 +13,7 @@ import (
 func TestGetLineItems(test *testing.T) {
 	db, mock, err := mocks.InitMockDatabase(test)
 	if err != nil {
-		test.Fatalf("Failed to initialize mock database: %s", err)
+		test.Fatalf("Failed to initialize mock store: %s", err)
 	}
 	defer db.Close()
 
@@ -46,7 +46,7 @@ func TestGetLineItems(test *testing.T) {
 func TestCreateLineItem(test *testing.T) {
 	db, mock, err := mocks.InitMockDatabase(test)
 	if err != nil {
-		test.Fatalf("Failed to initialize mock database: %s", err)
+		test.Fatalf("Failed to initialize mock store: %s", err)
 	}
 	defer db.Close()
 

@@ -14,7 +14,7 @@ import (
 func TestGetBlogs(test *testing.T) {
 	db, mock, err := mocks.InitMockDatabase(test)
 	if err != nil {
-		test.Fatalf("Failed to initialize mock database: %s", err)
+		test.Fatalf("Failed to initialize mock store: %s", err)
 	}
 	defer db.Close()
 
@@ -50,7 +50,7 @@ func TestGetBlogs(test *testing.T) {
 func TestCreateBlog(test *testing.T) {
 	db, mock, err := mocks.InitMockDatabase(test)
 	if err != nil {
-		test.Fatalf("failed to init mock database: %s", err)
+		test.Fatalf("failed to init mock store: %s", err)
 	}
 	defer db.Close()
 

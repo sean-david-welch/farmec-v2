@@ -21,13 +21,13 @@ func main() {
 		log.Fatal("Error loading configuration: ", err)
 	}
 
-	database, err := sql.Open("sqlite3", "./database/database.db")
+	database, err := sql.Open("sqlite3", "./store/store.db")
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer func() {
 		if err := database.Close(); err != nil {
-			log.Fatal("Failed to close database: ", err)
+			log.Fatal("Failed to close store: ", err)
 		}
 	}()
 

@@ -14,7 +14,7 @@ import (
 func TestGetCarousels(test *testing.T) {
 	db, mock, err := mocks.InitMockDatabase(test)
 	if err != nil {
-		test.Fatalf("failed to initialise mock database")
+		test.Fatalf("failed to initialise mock store")
 	}
 	defer db.Close()
 
@@ -50,7 +50,7 @@ func TestGetCarousels(test *testing.T) {
 func TestCreateCarousel(test *testing.T) {
 	db, mock, err := mocks.InitMockDatabase(test)
 	if err != nil {
-		test.Fatalf("failed to init mock database")
+		test.Fatalf("failed to init mock store")
 	}
 	defer db.Close()
 
