@@ -63,7 +63,7 @@ func (service *MachineServiceImpl) CreateMachine(machine *types.Machine) (*types
 
 	machine.MachineImage = imageUrl
 
-	service.repository.CreateMachine(machine)
+	err = service.repository.CreateMachine(machine)
 	if err != nil {
 		return nil, err
 	}
@@ -95,7 +95,7 @@ func (service *MachineServiceImpl) UpdateMachine(id string, machine *types.Machi
 		machine.MachineImage = imageUrl
 	}
 
-	service.repository.UpdateMachine(id, machine)
+	err = service.repository.UpdateMachine(id, machine)
 	if err != nil {
 		return nil, err
 	}

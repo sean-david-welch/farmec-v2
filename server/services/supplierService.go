@@ -62,7 +62,7 @@ func (service *SupplierServiceImpl) CreateSupplier(supplier *types.Supplier) (*t
 	supplier.LogoImage = logoUrl
 	supplier.MarketingImage = marketingUrl
 
-	service.repository.CreateSupplier(supplier)
+	err = service.repository.CreateSupplier(supplier)
 	if err != nil {
 		return nil, err
 	}
@@ -104,7 +104,7 @@ func (service *SupplierServiceImpl) UpdateSupplier(id string, supplier *types.Su
 		supplier.MarketingImage = marketingUrl
 	}
 
-	service.repository.UpdateSupplier(id, supplier)
+	err = service.repository.UpdateSupplier(id, supplier)
 	if err != nil {
 		return nil, err
 	}

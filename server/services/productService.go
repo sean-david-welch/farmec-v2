@@ -48,7 +48,7 @@ func (service *ProductServiceImpl) CreateProduct(product *types.Product) (*types
 
 	product.ProductImage = imageUrl
 
-	service.repository.CreateProduct(product)
+	err = service.repository.CreateProduct(product)
 	if err != nil {
 		return nil, err
 	}
@@ -76,7 +76,7 @@ func (service *ProductServiceImpl) UpdateProduct(id string, product *types.Produ
 		product.ProductImage = imageUrl
 	}
 
-	service.repository.UpdateMachine(id, product)
+	err = service.repository.UpdateMachine(id, product)
 	if err != nil {
 		return nil, err
 	}

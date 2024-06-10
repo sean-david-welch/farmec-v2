@@ -4,6 +4,7 @@ import (
 	"crypto/tls"
 	"fmt"
 	"github.com/sean-david-welch/farmec-v2/server/lib"
+	"io"
 	"log"
 	"net"
 	"net/smtp"
@@ -35,7 +36,12 @@ func (service *ContactServiceImpl) SendEmail(data *types.EmailData) error {
 		log.Println("SMTP setup error:", err)
 		return err
 	}
-	defer client.Close()
+	defer func(client *smtp.Client) {
+		err := client.Close()
+		if err != nil {
+			return
+		}
+	}(client)
 
 	if err := service.SendMessage(client, data); err != nil {
 		log.Println("Error sending email:", err)
@@ -53,18 +59,27 @@ func (service *ContactServiceImpl) SetupSMTPClient() (*smtp.Client, error) {
 
 	client, err := smtp.NewClient(conn, "smtp.office365.com")
 	if err != nil {
-		conn.Close()
+		err := conn.Close()
+		if err != nil {
+			return nil, err
+		}
 		return nil, err
 	}
 
 	tlsConfig := &tls.Config{ServerName: "smtp.office365.com"}
 	if err = client.StartTLS(tlsConfig); err != nil {
-		client.Close()
+		err := client.Close()
+		if err != nil {
+			return nil, err
+		}
 		return nil, err
 	}
 
 	if err = client.Auth(service.loginAuth); err != nil {
-		client.Close()
+		err := client.Close()
+		if err != nil {
+			return nil, err
+		}
 		return nil, err
 	}
 
@@ -85,7 +100,12 @@ func (service *ContactServiceImpl) SendMessage(client *smtp.Client, data *types.
 	if err != nil {
 		return err
 	}
-	defer wc.Close()
+	defer func(wc io.WriteCloser) {
+		err := wc.Close()
+		if err != nil {
+			return
+		}
+	}(wc)
 
 	if _, err := wc.Write([]byte(msg)); err != nil {
 		return err

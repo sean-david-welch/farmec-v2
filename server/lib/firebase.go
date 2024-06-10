@@ -42,15 +42,15 @@ func NewFirebase(secrets *Secrets) (*Firebase, error) {
 }
 
 func (firebase *Firebase) VerifyToken(cookie string) (*auth.Token, bool, error) {
-	context := context.Background()
+	ctx := context.Background()
 
-	authClient, err := firebase.App.Auth(context)
+	authClient, err := firebase.App.Auth(ctx)
 	if err != nil {
 		log.Printf("Error initializing Firebase EmailAuth client: %s", err)
 		return nil, false, err
 	}
 
-	decodedCookie, err := authClient.VerifySessionCookie(context, cookie)
+	decodedCookie, err := authClient.VerifySessionCookie(ctx, cookie)
 	if err != nil {
 		log.Printf("Error verifying ID cookie: %s", err)
 		return nil, false, err
