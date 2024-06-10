@@ -54,7 +54,6 @@ func main() {
 	corsConfig.AllowHeaders = []string{"Authorization", "Content-Type", "Accept", "Origin"}
 	corsConfig.AllowCredentials = true
 
-	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
 	router.Use(gin.Logger(), gin.Recovery(), cors.New(corsConfig))
 
@@ -64,6 +63,7 @@ func main() {
 	port := os.Getenv("PORT")
 
 	if env == "production" {
+		gin.SetMode(gin.ReleaseMode)
 		err := router.Run("0.0.0.0:" + port)
 		if err != nil {
 			return
