@@ -5,27 +5,27 @@ import (
 	"net/smtp"
 )
 
-type LoginAuth interface {
+type Auth interface {
 	Start(server *smtp.ServerInfo) (string, []byte, error)
 	Next(fromServer []byte, more bool) ([]byte, error)
 }
 
-type LoginAuthImpl struct {
+type AuthImpl struct {
 	username, password string
 }
 
-func NewLoginAuth(username, password string) LoginAuth {
-	return &LoginAuthImpl{
+func NewLoginAuth(username, password string) Auth {
+	return &AuthImpl{
 		username: username,
 		password: password,
 	}
 }
 
-func (auth *LoginAuthImpl) Start(server *smtp.ServerInfo) (string, []byte, error) {
+func (auth *AuthImpl) Start(server *smtp.ServerInfo) (string, []byte, error) {
 	return "LOGIN", []byte{}, nil
 }
 
-func (auth *LoginAuthImpl) Next(fromServer []byte, more bool) ([]byte, error) {
+func (auth *AuthImpl) Next(fromServer []byte, more bool) ([]byte, error) {
 	if more {
 		switch string(fromServer) {
 		case "Username:":

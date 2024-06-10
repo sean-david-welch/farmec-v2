@@ -20,10 +20,10 @@ type ContactService interface {
 
 type ContactServiceImpl struct {
 	secrets   *config.Secrets
-	loginAuth utils.LoginAuth
+	loginAuth utils.Auth
 }
 
-func NewContactService(secrets *config.Secrets, loginAuth utils.LoginAuth) *ContactServiceImpl {
+func NewContactService(secrets *config.Secrets, loginAuth utils.Auth) *ContactServiceImpl {
 	return &ContactServiceImpl{
 		secrets:   secrets,
 		loginAuth: loginAuth,
