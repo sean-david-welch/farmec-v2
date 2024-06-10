@@ -1,7 +1,7 @@
 package services
 
 import (
-	"github.com/sean-david-welch/farmec-v2/server/repository"
+	"github.com/sean-david-welch/farmec-v2/server/store"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
@@ -13,10 +13,10 @@ type PrivacyService interface {
 }
 
 type PrivacyServiceImpl struct {
-	repository repository.PrivacyRepository
+	repository store.PrivacyRepository
 }
 
-func NewPrivacyService(repository repository.PrivacyRepository) *PrivacyServiceImpl {
+func NewPrivacyService(repository store.PrivacyRepository) *PrivacyServiceImpl {
 	return &PrivacyServiceImpl{repository: repository}
 }
 

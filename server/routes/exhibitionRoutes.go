@@ -6,12 +6,12 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sean-david-welch/farmec-v2/server/handlers"
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
-	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/services"
+	"github.com/sean-david-welch/farmec-v2/server/store"
 )
 
 func InitExhibitions(router *gin.Engine, database *sql.DB, adminMiddleware *middleware.AdminMiddleware) {
-	exhibitionRepository := repository.NewExhibitionRepository(database)
+	exhibitionRepository := store.NewExhibitionRepository(database)
 	service := services.NewExhibitionService(exhibitionRepository)
 	handler := handlers.NewExhibitionHandler(service)
 

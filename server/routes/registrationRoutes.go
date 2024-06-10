@@ -6,12 +6,12 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sean-david-welch/farmec-v2/server/handlers"
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
-	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/services"
+	"github.com/sean-david-welch/farmec-v2/server/store"
 )
 
 func InitRegistrations(router *gin.Engine, database *sql.DB, authMiddleware *middleware.AuthMiddleware) {
-	repository := repository.NewRegistrationRepository(database)
+	repository := store.NewRegistrationRepository(database)
 	service := services.NewRegistrationService(repository)
 	handler := handlers.NewRegistrationHandler(service)
 

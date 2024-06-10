@@ -3,9 +3,9 @@
 .env-development
 .env-production
 service-account.json
-/store/database.db
-/store/database.db-shm
-/store/database.db-wal
+/database/database.db
+/database/database.db-shm
+/database/database.db-wal
 /tmp/main
 /tmp
 /.env.production

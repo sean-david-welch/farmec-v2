@@ -5,7 +5,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"log"
 
-	"github.com/sean-david-welch/farmec-v2/server/repository"
+	"github.com/sean-david-welch/farmec-v2/server/store"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
@@ -19,10 +19,10 @@ type PartsService interface {
 type PartsServiceImpl struct {
 	folder     string
 	s3Client   lib.S3Client
-	repository repository.PartsRepository
+	repository store.PartsRepository
 }
 
-func NewPartsService(repository repository.PartsRepository, s3Client lib.S3Client, folder string) *PartsServiceImpl {
+func NewPartsService(repository store.PartsRepository, s3Client lib.S3Client, folder string) *PartsServiceImpl {
 	return &PartsServiceImpl{
 		repository: repository,
 		s3Client:   s3Client,

@@ -6,12 +6,12 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sean-david-welch/farmec-v2/server/handlers"
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
-	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/services"
+	"github.com/sean-david-welch/farmec-v2/server/store"
 )
 
 func InitPrivacy(router *gin.Engine, database *sql.DB, adminMiddleware *middleware.AdminMiddleware) {
-	privacyRepository := repository.NewPrivacyRepository(database)
+	privacyRepository := store.NewPrivacyRepository(database)
 	service := services.NewPrivacyService(privacyRepository)
 	handler := handlers.NewPrivacyHandler(service)
 

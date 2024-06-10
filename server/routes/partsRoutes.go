@@ -7,12 +7,12 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sean-david-welch/farmec-v2/server/handlers"
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
-	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/services"
+	"github.com/sean-david-welch/farmec-v2/server/store"
 )
 
 func InitParts(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, adminMiddleware *middleware.AdminMiddleware) {
-	partsRepository := repository.NewPartsRepository(database)
+	partsRepository := store.NewPartsRepository(database)
 	partsService := services.NewPartsService(partsRepository, s3Client, "Spareparts")
 	partsHandler := handlers.NewPartsHandler(partsService)
 

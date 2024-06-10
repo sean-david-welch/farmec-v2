@@ -1,4 +1,4 @@
-package repository
+package store
 
 import (
 	"database/sql"
@@ -32,11 +32,11 @@ func (repository *WarrantyRepositoryImpl) GetWarranties() ([]types.DealerOwnerIn
 	query := `SELECT "id", "dealer", "owner_name" FROM "WarrantyClaim" ORDER BY "created" DESC`
 	rows, err := repository.database.Query(query)
 	if err != nil {
-		return nil, fmt.Errorf("error occurred while querying store: %w", err)
+		return nil, fmt.Errorf("error occurred while querying database: %w", err)
 	}
 	defer func() {
 		if err := rows.Close(); err != nil {
-			log.Fatal("Failed to close store: ", err)
+			log.Fatal("Failed to close database: ", err)
 		}
 	}()
 
@@ -69,17 +69,17 @@ func (repository *WarrantyRepositoryImpl) GetWarrantyById(id string) (*types.War
 		&warranty.MachineModel, &warranty.SerialNumber, &warranty.InstallDate, &warranty.FailureDate, &warranty.RepairDate,
 		&warranty.FailureDetails, &warranty.RepairDetails, &warranty.LabourHours, &warranty.CompletedBy, &warranty.Created,
 	); err != nil {
-		return nil, nil, fmt.Errorf("error while querying store: %w", err)
+		return nil, nil, fmt.Errorf("error while querying database: %w", err)
 	}
 
 	partsQuery := `SELECT * FROM "PartsRequired" WHERE "warranty_id" = $1`
 	rows, err := repository.database.Query(partsQuery, id)
 	if err != nil {
-		return nil, nil, fmt.Errorf("error querying parts required from store: %w", err)
+		return nil, nil, fmt.Errorf("error querying parts required from database: %w", err)
 	}
 	defer func() {
 		if err := rows.Close(); err != nil {
-			log.Fatal("Failed to close store: ", err)
+			log.Fatal("Failed to close database: ", err)
 		}
 	}()
 

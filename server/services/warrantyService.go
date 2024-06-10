@@ -1,7 +1,7 @@
 package services
 
 import (
-	"github.com/sean-david-welch/farmec-v2/server/repository"
+	"github.com/sean-david-welch/farmec-v2/server/store"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
@@ -14,10 +14,10 @@ type WarrantyService interface {
 }
 
 type WarrantyServiceImpl struct {
-	repository repository.WarrantyRepository
+	repository store.WarrantyRepository
 }
 
-func NewWarrantyService(repository repository.WarrantyRepository) *WarrantyServiceImpl {
+func NewWarrantyService(repository store.WarrantyRepository) *WarrantyServiceImpl {
 	return &WarrantyServiceImpl{repository: repository}
 }
 

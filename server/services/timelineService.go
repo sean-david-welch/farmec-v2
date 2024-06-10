@@ -1,7 +1,7 @@
 package services
 
 import (
-	"github.com/sean-david-welch/farmec-v2/server/repository"
+	"github.com/sean-david-welch/farmec-v2/server/store"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
@@ -13,10 +13,10 @@ type TimelineService interface {
 }
 
 type TimelineServiceImpl struct {
-	repository repository.TimelineRepository
+	repository store.TimelineRepository
 }
 
-func NewTimelineService(repository repository.TimelineRepository) *TimelineServiceImpl {
+func NewTimelineService(repository store.TimelineRepository) *TimelineServiceImpl {
 	return &TimelineServiceImpl{repository: repository}
 }
 

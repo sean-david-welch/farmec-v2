@@ -1,4 +1,4 @@
-package repository
+package store
 
 import (
 	"database/sql"
@@ -31,11 +31,11 @@ func (repository *ExhibitionRepositoryImpl) GetExhibitions() ([]types.Exhibition
 	query := `SELECT * FROM "Exhibition" ORDER BY "created" ASC`
 	rows, err := repository.database.Query(query)
 	if err != nil {
-		return nil, fmt.Errorf("error occurred while querying store: %w", err)
+		return nil, fmt.Errorf("error occurred while querying database: %w", err)
 	}
 	defer func() {
 		if err := rows.Close(); err != nil {
-			log.Fatal("Failed to close store: ", err)
+			log.Fatal("Failed to close database: ", err)
 		}
 	}()
 

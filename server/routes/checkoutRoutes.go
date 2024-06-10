@@ -6,12 +6,12 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/sean-david-welch/farmec-v2/server/handlers"
-	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/services"
+	"github.com/sean-david-welch/farmec-v2/server/store"
 )
 
 func InitCheckout(router *gin.Engine, database *sql.DB, secrets *lib.Secrets) {
-	itemRepository := repository.NewLineItemRepository(database)
+	itemRepository := store.NewLineItemRepository(database)
 	service := services.NewCheckoutService(secrets, itemRepository)
 	handler := handlers.NewCheckoutHandler(service)
 
