@@ -4,7 +4,6 @@ go 1.22.0
 
 require (
 	firebase.google.com/go v3.13.0+incompatible
-	github.com/DATA-DOG/go-sqlmock v1.5.2
 	github.com/aws/aws-sdk-go-v2 v1.25.1
 	github.com/aws/aws-sdk-go-v2/config v1.27.3
 	github.com/aws/aws-sdk-go-v2/credentials v1.17.3
@@ -12,7 +11,6 @@ require (
 	github.com/aws/smithy-go v1.20.1
 	github.com/gin-contrib/cors v1.5.0
 	github.com/gin-gonic/gin v1.9.1
-	github.com/golang/mock v1.6.0
 	github.com/google/uuid v1.6.0
 	github.com/joho/godotenv v1.5.1
 	github.com/mattn/go-sqlite3 v1.14.22
