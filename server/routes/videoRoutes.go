@@ -3,10 +3,10 @@ package routes
 import (
 	"context"
 	"database/sql"
+	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"log"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sean-david-welch/farmec-v2/server/config"
 	"github.com/sean-david-welch/farmec-v2/server/controllers"
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
 	"github.com/sean-david-welch/farmec-v2/server/repository"
@@ -15,7 +15,7 @@ import (
 	"google.golang.org/api/youtube/v3"
 )
 
-func InitVideos(router *gin.Engine, database *sql.DB, secrets *config.Secrets, adminMiddleware *middleware.AdminMiddleware) {
+func InitVideos(router *gin.Engine, database *sql.DB, secrets *lib.Secrets, adminMiddleware *middleware.AdminMiddleware) {
 	youtubeService, err := youtube.NewService(context.Background(), option.WithAPIKey(secrets.YoutubeApiKey))
 	if err != nil {
 		log.Fatal("error calling YouTube API: ", err)

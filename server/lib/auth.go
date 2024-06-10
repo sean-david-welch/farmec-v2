@@ -1,4 +1,4 @@
-package utils
+package lib
 
 import (
 	"errors"
@@ -21,7 +21,7 @@ func NewLoginAuth(username, password string) Auth {
 	}
 }
 
-func (auth *AuthImpl) Start(server *smtp.ServerInfo) (string, []byte, error) {
+func (auth *AuthImpl) Start(_ *smtp.ServerInfo) (string, []byte, error) {
 	return "LOGIN", []byte{}, nil
 }
 

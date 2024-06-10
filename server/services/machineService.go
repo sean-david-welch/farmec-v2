@@ -2,11 +2,11 @@ package services
 
 import (
 	"errors"
+	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"log"
 
 	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/types"
-	"github.com/sean-david-welch/farmec-v2/server/utils"
 )
 
 type MachineService interface {
@@ -19,11 +19,11 @@ type MachineService interface {
 
 type MachineServiceImpl struct {
 	folder     string
-	s3Client   utils.S3Client
+	s3Client   lib.S3Client
 	repository repository.MachineRepository
 }
 
-func NewMachineService(repository repository.MachineRepository, s3Client utils.S3Client, folder string) *MachineServiceImpl {
+func NewMachineService(repository repository.MachineRepository, s3Client lib.S3Client, folder string) *MachineServiceImpl {
 	return &MachineServiceImpl{
 		repository: repository,
 		s3Client:   s3Client,

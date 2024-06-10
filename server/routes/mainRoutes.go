@@ -5,13 +5,11 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sean-david-welch/farmec-v2/server/config"
 	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
-	"github.com/sean-david-welch/farmec-v2/server/utils"
 )
 
-func InitRoutes(router *gin.Engine, database *sql.DB, secrets *config.Secrets, s3Client utils.S3Client, adminMiddleware *middleware.AdminMiddleware, authMiddleware *middleware.AuthMiddleware, firebase *lib.Firebase) {
+func InitRoutes(router *gin.Engine, database *sql.DB, secrets *lib.Secrets, s3Client lib.S3Client, adminMiddleware *middleware.AdminMiddleware, authMiddleware *middleware.AuthMiddleware, firebase *lib.Firebase) {
 	router.GET("/", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "Welcome to Farmec Irelands API Service.",

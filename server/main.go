@@ -10,15 +10,13 @@ import (
 
 	_ "github.com/mattn/go-sqlite3"
 
-	"github.com/sean-david-welch/farmec-v2/server/config"
 	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
 	"github.com/sean-david-welch/farmec-v2/server/routes"
-	"github.com/sean-david-welch/farmec-v2/server/utils"
 )
 
 func main() {
-	secrets, err := config.NewSecrets()
+	secrets, err := lib.NewSecrets()
 	if err != nil {
 		log.Fatal("Error loading configuration: ", err)
 	}
@@ -33,7 +31,7 @@ func main() {
 		}
 	}()
 
-	s3Client, err := utils.NewS3Client("eu-west-1", secrets.AwsAccessKey, secrets.AwsSecret)
+	s3Client, err := lib.NewS3Client("eu-west-1", secrets.AwsAccessKey, secrets.AwsSecret)
 	if err != nil {
 		log.Fatal("Failed to create S3 client: ", err)
 	}

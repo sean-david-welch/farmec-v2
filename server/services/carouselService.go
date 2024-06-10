@@ -2,11 +2,11 @@ package services
 
 import (
 	"errors"
+	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"log"
 
 	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/types"
-	"github.com/sean-david-welch/farmec-v2/server/utils"
 )
 
 type CarouselService interface {
@@ -18,11 +18,11 @@ type CarouselService interface {
 
 type CarouselServiceImpl struct {
 	repository repository.CarouselRepository
-	s3Client   utils.S3Client
+	s3Client   lib.S3Client
 	folder     string
 }
 
-func NewCarouselService(repository repository.CarouselRepository, s3Client utils.S3Client, folder string) *CarouselServiceImpl {
+func NewCarouselService(repository repository.CarouselRepository, s3Client lib.S3Client, folder string) *CarouselServiceImpl {
 	return &CarouselServiceImpl{
 		repository: repository,
 		s3Client:   s3Client,

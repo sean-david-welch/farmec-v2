@@ -2,11 +2,11 @@ package services
 
 import (
 	"errors"
+	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"log"
 
 	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/types"
-	"github.com/sean-david-welch/farmec-v2/server/utils"
 )
 
 type SupplierService interface {
@@ -19,11 +19,11 @@ type SupplierService interface {
 
 type SupplierServiceImpl struct {
 	folder     string
-	s3Client   utils.S3Client
+	s3Client   lib.S3Client
 	repository repository.SupplierRepository
 }
 
-func NewSupplierService(repository repository.SupplierRepository, s3Client utils.S3Client, folder string) *SupplierServiceImpl {
+func NewSupplierService(repository repository.SupplierRepository, s3Client lib.S3Client, folder string) *SupplierServiceImpl {
 	return &SupplierServiceImpl{
 		repository: repository,
 		s3Client:   s3Client,

@@ -2,11 +2,11 @@ package services
 
 import (
 	"errors"
+	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"log"
 
 	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/types"
-	"github.com/sean-david-welch/farmec-v2/server/utils"
 )
 
 type LineItemService interface {
@@ -19,11 +19,11 @@ type LineItemService interface {
 
 type LineItemServiceImpl struct {
 	repository repository.LineItemRepository
-	s3Client   utils.S3Client
+	s3Client   lib.S3Client
 	folder     string
 }
 
-func NewLineItemService(repository repository.LineItemRepository, s3Client utils.S3Client, folder string) *LineItemServiceImpl {
+func NewLineItemService(repository repository.LineItemRepository, s3Client lib.S3Client, folder string) *LineItemServiceImpl {
 	return &LineItemServiceImpl{repository: repository, s3Client: s3Client, folder: folder}
 }
 

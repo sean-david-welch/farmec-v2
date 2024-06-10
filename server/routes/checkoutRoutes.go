@@ -2,15 +2,15 @@ package routes
 
 import (
 	"database/sql"
+	"github.com/sean-david-welch/farmec-v2/server/lib"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sean-david-welch/farmec-v2/server/config"
 	"github.com/sean-david-welch/farmec-v2/server/controllers"
 	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/services"
 )
 
-func InitCheckout(router *gin.Engine, database *sql.DB, secrets *config.Secrets) {
+func InitCheckout(router *gin.Engine, database *sql.DB, secrets *lib.Secrets) {
 	itemRepository := repository.NewLineItemRepository(database)
 	service := services.NewCheckoutService(secrets, itemRepository)
 	controller := controllers.NewCheckoutController(service)

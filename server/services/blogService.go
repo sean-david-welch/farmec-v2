@@ -2,11 +2,11 @@ package services
 
 import (
 	"errors"
+	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"log"
 
 	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/types"
-	"github.com/sean-david-welch/farmec-v2/server/utils"
 )
 
 type BlogService interface {
@@ -19,11 +19,11 @@ type BlogService interface {
 
 type BlogServiceImpl struct {
 	repository repository.BlogRepository
-	s3Client   utils.S3Client
+	s3Client   lib.S3Client
 	folder     string
 }
 
-func NewBlogService(repository repository.BlogRepository, s3Client utils.S3Client, folder string) *BlogServiceImpl {
+func NewBlogService(repository repository.BlogRepository, s3Client lib.S3Client, folder string) *BlogServiceImpl {
 	return &BlogServiceImpl{repository: repository, s3Client: s3Client, folder: folder}
 }
 

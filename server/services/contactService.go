@@ -3,13 +3,12 @@ package services
 import (
 	"crypto/tls"
 	"fmt"
+	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"log"
 	"net"
 	"net/smtp"
 
-	"github.com/sean-david-welch/farmec-v2/server/config"
 	"github.com/sean-david-welch/farmec-v2/server/types"
-	"github.com/sean-david-welch/farmec-v2/server/utils"
 )
 
 type ContactService interface {
@@ -19,11 +18,11 @@ type ContactService interface {
 }
 
 type ContactServiceImpl struct {
-	secrets   *config.Secrets
-	loginAuth utils.Auth
+	secrets   *lib.Secrets
+	loginAuth lib.Auth
 }
 
-func NewContactService(secrets *config.Secrets, loginAuth utils.Auth) *ContactServiceImpl {
+func NewContactService(secrets *lib.Secrets, loginAuth lib.Auth) *ContactServiceImpl {
 	return &ContactServiceImpl{
 		secrets:   secrets,
 		loginAuth: loginAuth,

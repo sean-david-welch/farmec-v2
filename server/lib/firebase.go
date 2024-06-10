@@ -7,7 +7,6 @@ import (
 
 	firebase "firebase.google.com/go"
 	"firebase.google.com/go/auth"
-	"github.com/sean-david-welch/farmec-v2/server/config"
 	"google.golang.org/api/option"
 )
 
@@ -15,7 +14,7 @@ type Firebase struct {
 	App *firebase.App
 }
 
-func NewFirebase(secrets *config.Secrets) (*Firebase, error) {
+func NewFirebase(secrets *Secrets) (*Firebase, error) {
 	privateKey := strings.ReplaceAll(secrets.PrivateKey, "\n", "\\n")
 
 	credentialsJSON := `{
