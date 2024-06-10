@@ -16,7 +16,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func CarouselControllerTest(test *testing.T) (*gin.Engine, *mocks.MockCarouselService, *handlers.CarouselController, *httptest.ResponseRecorder, time.Time) {
+func CarouselControllerTest(test *testing.T) (*gin.Engine, *mocks.MockCarouselService, *handlers.CarouselHandler, *httptest.ResponseRecorder, time.Time) {
 	gin.SetMode(gin.TestMode)
 
 	ctrl := gomock.NewController(test)

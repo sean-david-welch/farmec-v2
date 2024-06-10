@@ -8,15 +8,15 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/services"
 )
 
-type CheckoutController struct {
+type CheckoutHandler struct {
 	service services.CheckoutService
 }
 
-func NewCheckoutController(service services.CheckoutService) *CheckoutController {
-	return &CheckoutController{service: service}
+func NewCheckoutController(service services.CheckoutService) *CheckoutHandler {
+	return &CheckoutHandler{service: service}
 }
 
-func (controller *CheckoutController) CreateCheckoutSession(context *gin.Context) {
+func (controller *CheckoutHandler) CreateCheckoutSession(context *gin.Context) {
 	id := context.Param("id")
 
 	sess, err := controller.service.CreateCheckoutSession(id)
@@ -32,7 +32,7 @@ func (controller *CheckoutController) CreateCheckoutSession(context *gin.Context
 	})
 }
 
-func (controller *CheckoutController) RetrieveCheckoutSession(context *gin.Context) {
+func (controller *CheckoutHandler) RetrieveCheckoutSession(context *gin.Context) {
 	sessionId := context.Query("session_id")
 
 	if sessionId == "" {

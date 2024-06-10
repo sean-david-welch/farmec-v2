@@ -10,21 +10,21 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
-type AuthController struct {
+type AuthHandler struct {
 	service services.AuthService
 }
 
-func NewAuthController(service services.AuthService) *AuthController {
-	return &AuthController{service: service}
+func NewAuthController(service services.AuthService) *AuthHandler {
+	return &AuthHandler{service: service}
 }
 
-func (controller *AuthController) Logout(context *gin.Context) {
+func (controller *AuthHandler) Logout(context *gin.Context) {
 	context.SetCookie("access_token", "", -1, "/", "", false, true)
 
 	context.JSON(http.StatusOK, gin.H{"message": "Logged out successfully"})
 }
 
-func (controller *AuthController) Login(context *gin.Context) {
+func (controller *AuthHandler) Login(context *gin.Context) {
 	log.Printf("Incoming login request from IP: %s, Path: %s", context.ClientIP(), context.Request.URL.Path)
 
 	authHeader := context.GetHeader("Authorization")
@@ -52,7 +52,7 @@ func (controller *AuthController) Login(context *gin.Context) {
 	context.JSON(http.StatusOK, gin.H{"message": "login successful"})
 }
 
-func (controller *AuthController) GetUsers(context *gin.Context) {
+func (controller *AuthHandler) GetUsers(context *gin.Context) {
 	users, err := controller.service.GetUsers(context)
 	if err != nil {
 		log.Printf("error fetching users from firebase: %v", err)
@@ -63,7 +63,7 @@ func (controller *AuthController) GetUsers(context *gin.Context) {
 	context.JSON(http.StatusOK, users)
 }
 
-func (controller *AuthController) Register(context *gin.Context) {
+func (controller *AuthHandler) Register(context *gin.Context) {
 	var userData types.UserData
 
 	if err := context.ShouldBindJSON(&userData); err != nil {
@@ -81,7 +81,7 @@ func (controller *AuthController) Register(context *gin.Context) {
 	context.JSON(http.StatusCreated, gin.H{"message": "user successfully created in firebase"})
 }
 
-func (controller *AuthController) UpdateUser(context *gin.Context) {
+func (controller *AuthHandler) UpdateUser(context *gin.Context) {
 	uid := context.Param("uid")
 	var userData types.UserData
 
@@ -99,7 +99,7 @@ func (controller *AuthController) UpdateUser(context *gin.Context) {
 	context.JSON(http.StatusCreated, gin.H{"message": "user successfully updated in firebase"})
 }
 
-func (controller *AuthController) DeleteUser(context *gin.Context) {
+func (controller *AuthHandler) DeleteUser(context *gin.Context) {
 	uid := context.Param("uid")
 
 	err := controller.service.DeleteUser(uid, context)

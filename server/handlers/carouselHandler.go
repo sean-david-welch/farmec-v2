@@ -9,15 +9,15 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
-type CarouselController struct {
+type CarouselHandler struct {
 	carouselService services.CarouselService
 }
 
-func NewCarouselController(carouselService services.CarouselService) *CarouselController {
-	return &CarouselController{carouselService: carouselService}
+func NewCarouselController(carouselService services.CarouselService) *CarouselHandler {
+	return &CarouselHandler{carouselService: carouselService}
 }
 
-func (controller *CarouselController) GetCarousels(context *gin.Context) {
+func (controller *CarouselHandler) GetCarousels(context *gin.Context) {
 	carousels, err := controller.carouselService.GetCarousels()
 	if err != nil {
 		log.Printf("error getting carousels: %v", err)
@@ -28,7 +28,7 @@ func (controller *CarouselController) GetCarousels(context *gin.Context) {
 	context.JSON(http.StatusOK, carousels)
 }
 
-func (controller *CarouselController) CreateCarousel(context *gin.Context) {
+func (controller *CarouselHandler) CreateCarousel(context *gin.Context) {
 	var carousel types.Carousel
 
 	if err := context.ShouldBindJSON(&carousel); err != nil {
@@ -52,7 +52,7 @@ func (controller *CarouselController) CreateCarousel(context *gin.Context) {
 	context.JSON(http.StatusCreated, response)
 }
 
-func (controller *CarouselController) UpdateCarousel(context *gin.Context) {
+func (controller *CarouselHandler) UpdateCarousel(context *gin.Context) {
 	id := context.Param("id")
 
 	var carousel types.Carousel
@@ -78,7 +78,7 @@ func (controller *CarouselController) UpdateCarousel(context *gin.Context) {
 	context.JSON(http.StatusAccepted, response)
 }
 
-func (controller *CarouselController) DeleteCarousel(context *gin.Context) {
+func (controller *CarouselHandler) DeleteCarousel(context *gin.Context) {
 	id := context.Param("id")
 
 	if err := controller.carouselService.DeleteCarousel(id); err != nil {

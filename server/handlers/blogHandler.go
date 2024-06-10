@@ -9,15 +9,15 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
-type BlogController struct {
+type BlogHandler struct {
 	service services.BlogService
 }
 
-func NewBlogController(service services.BlogService) *BlogController {
-	return &BlogController{service: service}
+func NewBlogController(service services.BlogService) *BlogHandler {
+	return &BlogHandler{service: service}
 }
 
-func (controller *BlogController) GetBlogs(context *gin.Context) {
+func (controller *BlogHandler) GetBlogs(context *gin.Context) {
 	blogs, err := controller.service.GetBlogs()
 	if err != nil {
 		log.Printf("error getting blogs: %v", err)
@@ -28,7 +28,7 @@ func (controller *BlogController) GetBlogs(context *gin.Context) {
 	context.JSON(http.StatusOK, blogs)
 }
 
-func (controller *BlogController) GetBlogByID(context *gin.Context) {
+func (controller *BlogHandler) GetBlogByID(context *gin.Context) {
 	id := context.Param("id")
 	blog, err := controller.service.GetBlogsByID(id)
 	if err != nil {
@@ -40,7 +40,7 @@ func (controller *BlogController) GetBlogByID(context *gin.Context) {
 	context.JSON(http.StatusOK, blog)
 }
 
-func (controller *BlogController) CreateBlog(context *gin.Context) {
+func (controller *BlogHandler) CreateBlog(context *gin.Context) {
 	var blog types.Blog
 
 	if err := context.ShouldBindJSON(&blog); err != nil {
@@ -61,7 +61,7 @@ func (controller *BlogController) CreateBlog(context *gin.Context) {
 	context.JSON(http.StatusCreated, response)
 }
 
-func (controller *BlogController) UpdateBlog(context *gin.Context) {
+func (controller *BlogHandler) UpdateBlog(context *gin.Context) {
 	id := context.Param("id")
 
 	var blog types.Blog
@@ -84,7 +84,7 @@ func (controller *BlogController) UpdateBlog(context *gin.Context) {
 	context.JSON(http.StatusAccepted, response)
 }
 
-func (controller *BlogController) DeleteBlog(context *gin.Context) {
+func (controller *BlogHandler) DeleteBlog(context *gin.Context) {
 	id := context.Param("id")
 
 	if err := controller.service.DeleteBlog(id); err != nil {

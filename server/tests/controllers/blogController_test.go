@@ -16,7 +16,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func BlogControllerTest(test *testing.T) (*gin.Engine, *mocks.MockBlogService, *handlers.BlogController, *httptest.ResponseRecorder, time.Time) {
+func BlogControllerTest(test *testing.T) (*gin.Engine, *mocks.MockBlogService, *handlers.BlogHandler, *httptest.ResponseRecorder, time.Time) {
 	gin.SetMode(gin.TestMode)
 
 	ctrl := gomock.NewController(test)

@@ -19,7 +19,7 @@ func InitBlogs(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, admi
 	BlogRoutes(router, controller, adminMiddleware)
 }
 
-func BlogRoutes(router *gin.Engine, controller *handlers.BlogController, adminMiddleware *middleware.AdminMiddleware) {
+func BlogRoutes(router *gin.Engine, controller *handlers.BlogHandler, adminMiddleware *middleware.AdminMiddleware) {
 	blogGroup := router.Group("/api/blogs")
 
 	blogGroup.GET("", controller.GetBlogs)

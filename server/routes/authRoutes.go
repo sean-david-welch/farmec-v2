@@ -15,7 +15,7 @@ func InitAuth(router *gin.Engine, firebase *lib.Firebase, adminMiddleware *middl
 	AuthRoutes(router, controller, adminMiddleware)
 }
 
-func AuthRoutes(router *gin.Engine, controller *handlers.AuthController, adminMiddleware *middleware.AdminMiddleware) {
+func AuthRoutes(router *gin.Engine, controller *handlers.AuthHandler, adminMiddleware *middleware.AdminMiddleware) {
 	authGroup := router.Group("/api/auth")
 
 	authGroup.GET("/logout", controller.Logout)
