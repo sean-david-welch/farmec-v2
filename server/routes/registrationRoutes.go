@@ -13,21 +13,21 @@ import (
 func InitRegistrations(router *gin.Engine, database *sql.DB, authMiddleware *middleware.AuthMiddleware) {
 	repository := repository.NewRegistrationRepository(database)
 	service := services.NewRegistrationService(repository)
-	controller := handlers.NewRegistrationController(service)
+	handler := handlers.NewRegistrationHandler(service)
 
-	RegistrationRoutes(router, controller, authMiddleware)
+	RegistrationRoutes(router, handler, authMiddleware)
 }
 
-func RegistrationRoutes(router *gin.Engine, controller *handlers.RegistrationController, authMiddleware *middleware.AuthMiddleware) {
+func RegistrationRoutes(router *gin.Engine, handler *handlers.RegistrationHandler, authMiddleware *middleware.AuthMiddleware) {
 	registrationGroup := router.Group("/api/registrations")
 
-	registrationGroup.GET("", controller.GetRegistrations)
-	registrationGroup.GET("/:id", controller.GetRegistrationById)
-	registrationGroup.POST("", controller.CreateRegistration)
+	registrationGroup.GET("", handler.GetRegistrations)
+	registrationGroup.GET("/:id", handler.GetRegistrationById)
+	registrationGroup.POST("", handler.CreateRegistration)
 
 	protecteed := registrationGroup.Group("").Use(authMiddleware.Middleware())
 	{
-		protecteed.PUT("/:id", controller.UpdateRegistration)
-		protecteed.DELETE("/:id", controller.DeleteRegistration)
+		protecteed.PUT("/:id", handler.UpdateRegistration)
+		protecteed.DELETE("/:id", handler.DeleteRegistration)
 	}
 }

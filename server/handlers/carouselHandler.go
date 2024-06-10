@@ -13,12 +13,12 @@ type CarouselHandler struct {
 	carouselService services.CarouselService
 }
 
-func NewCarouselController(carouselService services.CarouselService) *CarouselHandler {
+func NewCarouselHandler(carouselService services.CarouselService) *CarouselHandler {
 	return &CarouselHandler{carouselService: carouselService}
 }
 
-func (controller *CarouselHandler) GetCarousels(context *gin.Context) {
-	carousels, err := controller.carouselService.GetCarousels()
+func (handler *CarouselHandler) GetCarousels(context *gin.Context) {
+	carousels, err := handler.carouselService.GetCarousels()
 	if err != nil {
 		log.Printf("error getting carousels: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while getting carousel images"})
@@ -28,7 +28,7 @@ func (controller *CarouselHandler) GetCarousels(context *gin.Context) {
 	context.JSON(http.StatusOK, carousels)
 }
 
-func (controller *CarouselHandler) CreateCarousel(context *gin.Context) {
+func (handler *CarouselHandler) CreateCarousel(context *gin.Context) {
 	var carousel types.Carousel
 
 	if err := context.ShouldBindJSON(&carousel); err != nil {
@@ -36,7 +36,7 @@ func (controller *CarouselHandler) CreateCarousel(context *gin.Context) {
 		return
 	}
 
-	result, err := controller.carouselService.CreateCarousel(&carousel)
+	result, err := handler.carouselService.CreateCarousel(&carousel)
 	if err != nil {
 		log.Printf("Error creating carousel: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while creating carousel", "details": err.Error()})
@@ -52,7 +52,7 @@ func (controller *CarouselHandler) CreateCarousel(context *gin.Context) {
 	context.JSON(http.StatusCreated, response)
 }
 
-func (controller *CarouselHandler) UpdateCarousel(context *gin.Context) {
+func (handler *CarouselHandler) UpdateCarousel(context *gin.Context) {
 	id := context.Param("id")
 
 	var carousel types.Carousel
@@ -62,7 +62,7 @@ func (controller *CarouselHandler) UpdateCarousel(context *gin.Context) {
 		return
 	}
 
-	result, err := controller.carouselService.UpdateCarousel(id, &carousel)
+	result, err := handler.carouselService.UpdateCarousel(id, &carousel)
 	if err != nil {
 		log.Printf("Error updating carousel: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while updating carousel", "details": err.Error()})
@@ -78,10 +78,10 @@ func (controller *CarouselHandler) UpdateCarousel(context *gin.Context) {
 	context.JSON(http.StatusAccepted, response)
 }
 
-func (controller *CarouselHandler) DeleteCarousel(context *gin.Context) {
+func (handler *CarouselHandler) DeleteCarousel(context *gin.Context) {
 	id := context.Param("id")
 
-	if err := controller.carouselService.DeleteCarousel(id); err != nil {
+	if err := handler.carouselService.DeleteCarousel(id); err != nil {
 		log.Printf("Error deleting carousel: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while deleting machine", "details": err.Error()})
 		return

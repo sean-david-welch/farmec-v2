@@ -14,21 +14,21 @@ import (
 func InitLineItems(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, adminMiddleware *middleware.AdminMiddleware) {
 	itemRepository := repository.NewLineItemRepository(database)
 	service := services.NewLineItemService(itemRepository, s3Client, "Lineitems")
-	controller := handlers.NewLineItemController(service)
+	handler := handlers.NewLineItemHandler(service)
 
-	LineItemRoutes(router, controller, adminMiddleware)
+	LineItemRoutes(router, handler, adminMiddleware)
 }
 
-func LineItemRoutes(router *gin.Engine, controller *handlers.LineItemController, adminMiddleware *middleware.AdminMiddleware) {
+func LineItemRoutes(router *gin.Engine, handler *handlers.LineItemHandler, adminMiddleware *middleware.AdminMiddleware) {
 	lineItemGroup := router.Group("/api/lineitems")
 
-	lineItemGroup.GET("", controller.GetLineItems)
-	lineItemGroup.GET("/:id", controller.GetLineItemById)
+	lineItemGroup.GET("", handler.GetLineItems)
+	lineItemGroup.GET("/:id", handler.GetLineItemById)
 
 	protecteed := lineItemGroup.Group("").Use(adminMiddleware.Middleware())
 	{
-		protecteed.POST("", controller.CreateLineItem)
-		protecteed.PUT("/:id", controller.UpdateLineItem)
-		protecteed.DELETE("/:id", controller.DeleteLineItem)
+		protecteed.POST("", handler.CreateLineItem)
+		protecteed.PUT("/:id", handler.UpdateLineItem)
+		protecteed.DELETE("/:id", handler.DeleteLineItem)
 	}
 }

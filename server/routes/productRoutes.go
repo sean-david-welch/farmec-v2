@@ -14,20 +14,20 @@ import (
 func InitProduct(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, adminMiddleware *middleware.AdminMiddleware) {
 	productRepository := repository.NewProductRepository(database)
 	productService := services.NewProductService(productRepository, s3Client, "Products")
-	productController := handlers.NewProductController(productService)
+	productHandler := handlers.NewProductHandler(productService)
 
-	ProductRoutes(router, productController, adminMiddleware)
+	ProductRoutes(router, productHandler, adminMiddleware)
 }
 
-func ProductRoutes(router *gin.Engine, productController *handlers.ProductController, adminMiddleware *middleware.AdminMiddleware) {
+func ProductRoutes(router *gin.Engine, productHandler *handlers.ProductHandler, adminMiddleware *middleware.AdminMiddleware) {
 	productGroup := router.Group("/api/products")
 
-	productGroup.GET("/:id", productController.GetProducts)
+	productGroup.GET("/:id", productHandler.GetProducts)
 
 	protected := productGroup.Group("").Use(adminMiddleware.Middleware())
 	{
-		protected.POST("", productController.CreateProduct)
-		protected.PUT("/:id", productController.UpdateProduct)
-		protected.DELETE("/:id", productController.DeleteProduct)
+		protected.POST("", productHandler.CreateProduct)
+		protected.PUT("/:id", productHandler.UpdateProduct)
+		protected.DELETE("/:id", productHandler.DeleteProduct)
 	}
 }

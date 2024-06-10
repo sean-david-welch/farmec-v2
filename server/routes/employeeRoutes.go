@@ -14,20 +14,20 @@ import (
 func InitializeEmployee(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, adminMiddleware *middleware.AdminMiddleware) {
 	employeeRepository := repository.NewEmployeeRepository(database)
 	service := services.NewEmployeeService(employeeRepository, s3Client, "Employees")
-	controller := handlers.NewEmployeeController(service)
+	handler := handlers.NewEmployeeHandler(service)
 
-	EmployeeRoutes(router, controller, adminMiddleware)
+	EmployeeRoutes(router, handler, adminMiddleware)
 }
 
-func EmployeeRoutes(router *gin.Engine, controller *handlers.EmployeeController, middleware *middleware.AdminMiddleware) {
+func EmployeeRoutes(router *gin.Engine, handler *handlers.EmployeeHandler, middleware *middleware.AdminMiddleware) {
 	employeeGroup := router.Group("/api/employees")
 
-	employeeGroup.GET("", controller.GetEmployees)
+	employeeGroup.GET("", handler.GetEmployees)
 
 	protected := employeeGroup.Group("").Use(middleware.Middleware())
 	{
-		protected.POST("", controller.CreateEmployee)
-		protected.PUT("/:id", controller.UpdateEmployee)
-		protected.DELETE("/:id", controller.DeleteEmployee)
+		protected.POST("", handler.CreateEmployee)
+		protected.PUT("/:id", handler.UpdateEmployee)
+		protected.DELETE("/:id", handler.DeleteEmployee)
 	}
 }

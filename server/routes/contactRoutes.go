@@ -10,13 +10,13 @@ import (
 func InitContact(router *gin.Engine, secrets *lib.Secrets) {
 	loginAuth := lib.NewLoginAuth(secrets.EmailUser, secrets.EmailPass)
 	service := services.NewContactService(secrets, loginAuth)
-	controller := handlers.NewContactController(service)
+	handler := handlers.NewContactHandler(service)
 
-	ContactRoutes(router, controller)
+	ContactRoutes(router, handler)
 }
 
-func ContactRoutes(router *gin.Engine, controller *handlers.ContactController) {
+func ContactRoutes(router *gin.Engine, handler *handlers.ContactHandler) {
 	contactGroup := router.Group("/api/contact")
 
-	contactGroup.POST("", controller.SendEmail)
+	contactGroup.POST("", handler.SendEmail)
 }

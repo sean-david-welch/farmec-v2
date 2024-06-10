@@ -9,18 +9,18 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
-type MachineController struct {
+type MachineHandler struct {
 	machineService services.MachineService
 }
 
-func NewMachineController(machineService services.MachineService) *MachineController {
-	return &MachineController{machineService: machineService}
+func NewMachineHandler(machineService services.MachineService) *MachineHandler {
+	return &MachineHandler{machineService: machineService}
 }
 
-func (controller *MachineController) GetMachines(context *gin.Context) {
+func (handler *MachineHandler) GetMachines(context *gin.Context) {
 	id := context.Param("id")
 
-	machines, err := controller.machineService.GetMachines(id)
+	machines, err := handler.machineService.GetMachines(id)
 	if err != nil {
 		log.Printf("Error getting machines: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while getting machines"})
@@ -30,10 +30,10 @@ func (controller *MachineController) GetMachines(context *gin.Context) {
 	context.JSON(http.StatusOK, machines)
 }
 
-func (controller *MachineController) GetMachineById(context *gin.Context) {
+func (handler *MachineHandler) GetMachineById(context *gin.Context) {
 	id := context.Param("id")
 
-	machine, err := controller.machineService.GetMachineById(id)
+	machine, err := handler.machineService.GetMachineById(id)
 	if err != nil {
 		log.Printf("Error getting machine: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while getting machine"})
@@ -43,7 +43,7 @@ func (controller *MachineController) GetMachineById(context *gin.Context) {
 	context.JSON(http.StatusOK, machine)
 }
 
-func (controller *MachineController) CreateMachine(context *gin.Context) {
+func (handler *MachineHandler) CreateMachine(context *gin.Context) {
 	var machine types.Machine
 
 	if err := context.ShouldBindJSON(&machine); err != nil {
@@ -56,7 +56,7 @@ func (controller *MachineController) CreateMachine(context *gin.Context) {
 		return
 	}
 
-	result, err := controller.machineService.CreateMachine(&machine)
+	result, err := handler.machineService.CreateMachine(&machine)
 	if err != nil {
 		log.Printf("Error creating machine: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while creating machine", "details": err.Error()})
@@ -72,7 +72,7 @@ func (controller *MachineController) CreateMachine(context *gin.Context) {
 	context.JSON(http.StatusCreated, response)
 }
 
-func (controller *MachineController) UpdateMachine(context *gin.Context) {
+func (handler *MachineHandler) UpdateMachine(context *gin.Context) {
 	id := context.Param("id")
 
 	var machine types.Machine
@@ -87,7 +87,7 @@ func (controller *MachineController) UpdateMachine(context *gin.Context) {
 		return
 	}
 
-	result, err := controller.machineService.UpdateMachine(id, &machine)
+	result, err := handler.machineService.UpdateMachine(id, &machine)
 	if err != nil {
 		log.Printf("Error updating machine: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while updating machine", "details": err.Error()})
@@ -103,10 +103,10 @@ func (controller *MachineController) UpdateMachine(context *gin.Context) {
 	context.JSON(http.StatusAccepted, response)
 }
 
-func (controller *MachineController) DeleteMachine(context *gin.Context) {
+func (handler *MachineHandler) DeleteMachine(context *gin.Context) {
 	id := context.Param("id")
 
-	if err := controller.machineService.DeleteMachine(id); err != nil {
+	if err := handler.machineService.DeleteMachine(id); err != nil {
 		log.Printf("Error deleting machine: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while deleting machine", "details": err.Error()})
 		return

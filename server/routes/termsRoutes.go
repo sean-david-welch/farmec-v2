@@ -13,20 +13,20 @@ import (
 func InitTerms(router *gin.Engine, database *sql.DB, adminMiddleware *middleware.AdminMiddleware) {
 	termsRepository := repository.NewTermsRepository(database)
 	service := services.NewTermsService(termsRepository)
-	controller := handlers.NewTermsController(service)
+	handler := handlers.NewTermsHandler(service)
 
-	TermsRoutes(router, controller, adminMiddleware)
+	TermsRoutes(router, handler, adminMiddleware)
 }
 
-func TermsRoutes(router *gin.Engine, controller *handlers.TermsController, adminMiddleware *middleware.AdminMiddleware) {
+func TermsRoutes(router *gin.Engine, handler *handlers.TermsHandler, adminMiddleware *middleware.AdminMiddleware) {
 	termsGroup := router.Group("/api/terms")
 
-	termsGroup.GET("", controller.GetTerms)
+	termsGroup.GET("", handler.GetTerms)
 
 	protected := termsGroup.Group("").Use(adminMiddleware.Middleware())
 	{
-		protected.POST("", controller.CreateTerm)
-		protected.PUT("/:id", controller.UpdateTerm)
-		protected.DELETE("/:id", controller.DeleteTerm)
+		protected.POST("", handler.CreateTerm)
+		protected.PUT("/:id", handler.UpdateTerm)
+		protected.DELETE("/:id", handler.DeleteTerm)
 	}
 }

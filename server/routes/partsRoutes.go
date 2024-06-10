@@ -14,20 +14,20 @@ import (
 func InitParts(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, adminMiddleware *middleware.AdminMiddleware) {
 	partsRepository := repository.NewPartsRepository(database)
 	partsService := services.NewPartsService(partsRepository, s3Client, "Spareparts")
-	partsController := handlers.NewPartsController(partsService)
+	partsHandler := handlers.NewPartsHandler(partsService)
 
-	PartsRoutes(router, partsController, adminMiddleware)
+	PartsRoutes(router, partsHandler, adminMiddleware)
 }
 
-func PartsRoutes(router *gin.Engine, partsController *handlers.PartsController, adminMiddleware *middleware.AdminMiddleware) {
+func PartsRoutes(router *gin.Engine, partsHandler *handlers.PartsHandler, adminMiddleware *middleware.AdminMiddleware) {
 	partsGroup := router.Group("/api/spareparts")
 
-	partsGroup.GET("/:id", partsController.GetParts)
+	partsGroup.GET("/:id", partsHandler.GetParts)
 
 	protected := partsGroup.Group("").Use(adminMiddleware.Middleware())
 	{
-		protected.POST("", partsController.CreateParts)
-		protected.PUT("/:id", partsController.UpdateParts)
-		protected.DELETE("/:id", partsController.DeletePart)
+		protected.POST("", partsHandler.CreateParts)
+		protected.PUT("/:id", partsHandler.UpdateParts)
+		protected.DELETE("/:id", partsHandler.DeletePart)
 	}
 }

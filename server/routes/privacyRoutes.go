@@ -13,20 +13,20 @@ import (
 func InitPrivacy(router *gin.Engine, database *sql.DB, adminMiddleware *middleware.AdminMiddleware) {
 	privacyRepository := repository.NewPrivacyRepository(database)
 	service := services.NewPrivacyService(privacyRepository)
-	controller := handlers.NewPrivacyController(service)
+	handler := handlers.NewPrivacyHandler(service)
 
-	PrivacyRoutes(router, controller, adminMiddleware)
+	PrivacyRoutes(router, handler, adminMiddleware)
 }
 
-func PrivacyRoutes(router *gin.Engine, controller *handlers.PrivacyController, adminMiddleware *middleware.AdminMiddleware) {
+func PrivacyRoutes(router *gin.Engine, handler *handlers.PrivacyHandler, adminMiddleware *middleware.AdminMiddleware) {
 	privacyGroup := router.Group("/api/privacy")
 
-	privacyGroup.GET("", controller.GetPrivacys)
+	privacyGroup.GET("", handler.GetPrivacys)
 
 	protected := privacyGroup.Group("").Use(adminMiddleware.Middleware())
 	{
-		protected.POST("", controller.CreatePrivacy)
-		protected.PUT("/:id", controller.UpdatePrivacy)
-		protected.DELETE("/:id", controller.DeletePrivacy)
+		protected.POST("", handler.CreatePrivacy)
+		protected.PUT("/:id", handler.UpdatePrivacy)
+		protected.DELETE("/:id", handler.DeletePrivacy)
 	}
 }

@@ -9,16 +9,16 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
-type EmployeeController struct {
+type EmployeeHandler struct {
 	service services.EmployeeService
 }
 
-func NewEmployeeController(service services.EmployeeService) *EmployeeController {
-	return &EmployeeController{service: service}
+func NewEmployeeHandler(service services.EmployeeService) *EmployeeHandler {
+	return &EmployeeHandler{service: service}
 }
 
-func (controller *EmployeeController) GetEmployees(context *gin.Context) {
-	employees, err := controller.service.GetEmployees()
+func (handler *EmployeeHandler) GetEmployees(context *gin.Context) {
+	employees, err := handler.service.GetEmployees()
 	if err != nil {
 		log.Printf("error getting employees: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while getting employees"})
@@ -28,7 +28,7 @@ func (controller *EmployeeController) GetEmployees(context *gin.Context) {
 	context.JSON(http.StatusOK, employees)
 }
 
-func (controller *EmployeeController) CreateEmployee(context *gin.Context) {
+func (handler *EmployeeHandler) CreateEmployee(context *gin.Context) {
 	var employee types.Employee
 
 	if err := context.ShouldBindJSON(&employee); err != nil {
@@ -37,7 +37,7 @@ func (controller *EmployeeController) CreateEmployee(context *gin.Context) {
 		return
 	}
 
-	result, err := controller.service.CreateEmployee(&employee)
+	result, err := handler.service.CreateEmployee(&employee)
 	if err != nil {
 		log.Printf("Error creating employee: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while creating employee", "details": err.Error()})
@@ -53,7 +53,7 @@ func (controller *EmployeeController) CreateEmployee(context *gin.Context) {
 	context.JSON(http.StatusCreated, response)
 }
 
-func (controller *EmployeeController) UpdateEmployee(context *gin.Context) {
+func (handler *EmployeeHandler) UpdateEmployee(context *gin.Context) {
 	id := context.Param("id")
 	var employee types.Employee
 
@@ -63,7 +63,7 @@ func (controller *EmployeeController) UpdateEmployee(context *gin.Context) {
 		return
 	}
 
-	result, err := controller.service.UpdateEmployee(id, &employee)
+	result, err := handler.service.UpdateEmployee(id, &employee)
 	if err != nil {
 		log.Printf("Error creating employee: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while creating employee", "details": err.Error()})
@@ -79,10 +79,10 @@ func (controller *EmployeeController) UpdateEmployee(context *gin.Context) {
 	context.JSON(http.StatusAccepted, response)
 }
 
-func (controller *EmployeeController) DeleteEmployee(context *gin.Context) {
+func (handler *EmployeeHandler) DeleteEmployee(context *gin.Context) {
 	id := context.Param("id")
 
-	if err := controller.service.DeleteEmployee(id); err != nil {
+	if err := handler.service.DeleteEmployee(id); err != nil {
 		log.Printf("Error deleting employee: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while deleting employee", "details": err.Error()})
 		return

@@ -9,16 +9,16 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
-type RegistrationController struct {
+type RegistrationHandler struct {
 	service services.RegistrationService
 }
 
-func NewRegistrationController(service services.RegistrationService) *RegistrationController {
-	return &RegistrationController{service: service}
+func NewRegistrationHandler(service services.RegistrationService) *RegistrationHandler {
+	return &RegistrationHandler{service: service}
 }
 
-func (controller *RegistrationController) GetRegistrations(context *gin.Context) {
-	registrations, err := controller.service.GetRegistrations()
+func (handler *RegistrationHandler) GetRegistrations(context *gin.Context) {
+	registrations, err := handler.service.GetRegistrations()
 	if err != nil {
 		log.Printf("error occurred while getting registrations: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while getting registration"})
@@ -28,10 +28,10 @@ func (controller *RegistrationController) GetRegistrations(context *gin.Context)
 	context.JSON(http.StatusOK, registrations)
 }
 
-func (controller *RegistrationController) GetRegistrationById(context *gin.Context) {
+func (handler *RegistrationHandler) GetRegistrationById(context *gin.Context) {
 	id := context.Param("id")
 
-	registration, err := controller.service.GetRegistrationById(id)
+	registration, err := handler.service.GetRegistrationById(id)
 	if err != nil {
 		log.Printf("error occurred while getting registration: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while getting registration"})
@@ -41,7 +41,7 @@ func (controller *RegistrationController) GetRegistrationById(context *gin.Conte
 	context.JSON(http.StatusOK, registration)
 }
 
-func (controller *RegistrationController) CreateRegistration(context *gin.Context) {
+func (handler *RegistrationHandler) CreateRegistration(context *gin.Context) {
 	var registration *types.MachineRegistration
 
 	if err := context.ShouldBindJSON(&registration); err != nil {
@@ -50,7 +50,7 @@ func (controller *RegistrationController) CreateRegistration(context *gin.Contex
 		return
 	}
 
-	if err := controller.service.CreateRegistration(registration); err != nil {
+	if err := handler.service.CreateRegistration(registration); err != nil {
 		log.Printf("error when creating registration: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error when creating registration"})
 	}
@@ -58,7 +58,7 @@ func (controller *RegistrationController) CreateRegistration(context *gin.Contex
 	context.JSON(http.StatusCreated, registration)
 }
 
-func (controller *RegistrationController) UpdateRegistration(context *gin.Context) {
+func (handler *RegistrationHandler) UpdateRegistration(context *gin.Context) {
 	id := context.Param("id")
 	var registration *types.MachineRegistration
 
@@ -68,7 +68,7 @@ func (controller *RegistrationController) UpdateRegistration(context *gin.Contex
 		return
 	}
 
-	if err := controller.service.UpdateRegistration(id, registration); err != nil {
+	if err := handler.service.UpdateRegistration(id, registration); err != nil {
 		log.Printf("error when updating registration: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error when updating registration"})
 	}
@@ -76,10 +76,10 @@ func (controller *RegistrationController) UpdateRegistration(context *gin.Contex
 	context.JSON(http.StatusAccepted, registration)
 }
 
-func (controller *RegistrationController) DeleteRegistration(context *gin.Context) {
+func (handler *RegistrationHandler) DeleteRegistration(context *gin.Context) {
 	id := context.Param("id")
 
-	if err := controller.service.DeleteRegistration(id); err != nil {
+	if err := handler.service.DeleteRegistration(id); err != nil {
 		log.Printf("error occurred while deleting registration: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error while deleting registration"})
 	}

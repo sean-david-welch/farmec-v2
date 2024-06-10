@@ -9,16 +9,16 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
-type ExhibitionController struct {
+type ExhibitionHandler struct {
 	service services.ExhibitionService
 }
 
-func NewExhibitionController(service services.ExhibitionService) *ExhibitionController {
-	return &ExhibitionController{service: service}
+func NewExhibitionHandler(service services.ExhibitionService) *ExhibitionHandler {
+	return &ExhibitionHandler{service: service}
 }
 
-func (controller *ExhibitionController) GetExhibitions(context *gin.Context) {
-	exhibitions, err := controller.service.GetExhibitions()
+func (handler *ExhibitionHandler) GetExhibitions(context *gin.Context) {
+	exhibitions, err := handler.service.GetExhibitions()
 	if err != nil {
 		log.Printf("error getting exhibitions: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while getting exhibitions"})
@@ -28,7 +28,7 @@ func (controller *ExhibitionController) GetExhibitions(context *gin.Context) {
 	context.JSON(http.StatusOK, exhibitions)
 }
 
-func (controller *ExhibitionController) CreateExhibition(context *gin.Context) {
+func (handler *ExhibitionHandler) CreateExhibition(context *gin.Context) {
 	var exhibition *types.Exhibition
 
 	if err := context.ShouldBindJSON(&exhibition); err != nil {
@@ -36,7 +36,7 @@ func (controller *ExhibitionController) CreateExhibition(context *gin.Context) {
 		return
 	}
 
-	if err := controller.service.CreateExhibition(exhibition); err != nil {
+	if err := handler.service.CreateExhibition(exhibition); err != nil {
 		log.Printf("error occurred while creating exhibition: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while creating exhibition", "details": err.Error()})
 		return
@@ -45,7 +45,7 @@ func (controller *ExhibitionController) CreateExhibition(context *gin.Context) {
 	context.JSON(http.StatusCreated, exhibition)
 }
 
-func (controller *ExhibitionController) UpdateExhibition(context *gin.Context) {
+func (handler *ExhibitionHandler) UpdateExhibition(context *gin.Context) {
 	id := context.Param("id")
 
 	var exhibition *types.Exhibition
@@ -55,7 +55,7 @@ func (controller *ExhibitionController) UpdateExhibition(context *gin.Context) {
 		return
 	}
 
-	if err := controller.service.UpdateExhibition(id, exhibition); err != nil {
+	if err := handler.service.UpdateExhibition(id, exhibition); err != nil {
 		log.Printf("error occurred while updating exhibition: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while updating exhibition", "details": err.Error()})
 		return
@@ -64,10 +64,10 @@ func (controller *ExhibitionController) UpdateExhibition(context *gin.Context) {
 	context.JSON(http.StatusAccepted, exhibition)
 }
 
-func (controller *ExhibitionController) DeleteExhibition(context *gin.Context) {
+func (handler *ExhibitionHandler) DeleteExhibition(context *gin.Context) {
 	id := context.Param("id")
 
-	if err := controller.service.DeleteExhibition(id); err != nil {
+	if err := handler.service.DeleteExhibition(id); err != nil {
 		log.Printf("error occurred while deleting exhibition: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while deleting exhibition"})
 		return

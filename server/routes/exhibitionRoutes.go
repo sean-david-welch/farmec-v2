@@ -13,20 +13,20 @@ import (
 func InitExhibitions(router *gin.Engine, database *sql.DB, adminMiddleware *middleware.AdminMiddleware) {
 	exhibitionRepository := repository.NewExhibitionRepository(database)
 	service := services.NewExhibitionService(exhibitionRepository)
-	controller := handlers.NewExhibitionController(service)
+	handler := handlers.NewExhibitionHandler(service)
 
-	ExhibitionRoutes(router, controller, adminMiddleware)
+	ExhibitionRoutes(router, handler, adminMiddleware)
 }
 
-func ExhibitionRoutes(router *gin.Engine, controller *handlers.ExhibitionController, adminMiddleware *middleware.AdminMiddleware) {
+func ExhibitionRoutes(router *gin.Engine, handler *handlers.ExhibitionHandler, adminMiddleware *middleware.AdminMiddleware) {
 	exhibitionGroup := router.Group("/api/exhibitions")
 
-	exhibitionGroup.GET("", controller.GetExhibitions)
+	exhibitionGroup.GET("", handler.GetExhibitions)
 
 	protected := exhibitionGroup.Group("").Use(adminMiddleware.Middleware())
 	{
-		protected.POST("", controller.CreateExhibition)
-		protected.PUT("/:id", controller.UpdateExhibition)
-		protected.DELETE("/:id", controller.DeleteExhibition)
+		protected.POST("", handler.CreateExhibition)
+		protected.PUT("/:id", handler.UpdateExhibition)
+		protected.DELETE("/:id", handler.DeleteExhibition)
 	}
 }

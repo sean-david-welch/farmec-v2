@@ -14,21 +14,21 @@ import (
 func InitBlogs(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, adminMiddleware *middleware.AdminMiddleware) {
 	blogRepository := repository.NewBlogRepository(database)
 	service := services.NewBlogService(blogRepository, s3Client, "Blogs")
-	controller := handlers.NewBlogController(service)
+	handler := handlers.NewBlogHandler(service)
 
-	BlogRoutes(router, controller, adminMiddleware)
+	BlogRoutes(router, handler, adminMiddleware)
 }
 
-func BlogRoutes(router *gin.Engine, controller *handlers.BlogHandler, adminMiddleware *middleware.AdminMiddleware) {
+func BlogRoutes(router *gin.Engine, handler *handlers.BlogHandler, adminMiddleware *middleware.AdminMiddleware) {
 	blogGroup := router.Group("/api/blogs")
 
-	blogGroup.GET("", controller.GetBlogs)
-	blogGroup.GET("/:id", controller.GetBlogByID)
+	blogGroup.GET("", handler.GetBlogs)
+	blogGroup.GET("/:id", handler.GetBlogByID)
 
 	protected := blogGroup.Group("").Use(adminMiddleware.Middleware())
 	{
-		protected.POST("", controller.CreateBlog)
-		protected.PUT("/:id", controller.UpdateBlog)
-		protected.DELETE("/:id", controller.DeleteBlog)
+		protected.POST("", handler.CreateBlog)
+		protected.PUT("/:id", handler.UpdateBlog)
+		protected.DELETE("/:id", handler.DeleteBlog)
 	}
 }

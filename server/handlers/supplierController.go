@@ -9,16 +9,16 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
-type SupplierController struct {
+type SupplierHandler struct {
 	supplierService services.SupplierService
 }
 
-func NewSupplierContoller(supplierService services.SupplierService) *SupplierController {
-	return &SupplierController{supplierService: supplierService}
+func NewSupplierContoller(supplierService services.SupplierService) *SupplierHandler {
+	return &SupplierHandler{supplierService: supplierService}
 }
 
-func (controller *SupplierController) GetSuppliers(context *gin.Context) {
-	suppliers, err := controller.supplierService.GetSuppliers()
+func (handler *SupplierHandler) GetSuppliers(context *gin.Context) {
+	suppliers, err := handler.supplierService.GetSuppliers()
 
 	if err != nil {
 		log.Printf("Error getting suppliers: %v", err)
@@ -28,7 +28,7 @@ func (controller *SupplierController) GetSuppliers(context *gin.Context) {
 	context.JSON(http.StatusOK, suppliers)
 }
 
-func (controller *SupplierController) CreateSupplier(context *gin.Context) {
+func (handler *SupplierHandler) CreateSupplier(context *gin.Context) {
 	var supplier types.Supplier
 
 	if err := context.ShouldBindJSON(&supplier); err != nil {
@@ -36,7 +36,7 @@ func (controller *SupplierController) CreateSupplier(context *gin.Context) {
 		return
 	}
 
-	result, err := controller.supplierService.CreateSupplier(&supplier)
+	result, err := handler.supplierService.CreateSupplier(&supplier)
 	if err != nil {
 		log.Printf("Error creating supplier: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while creating supplier", "details": err.Error()})
@@ -54,9 +54,9 @@ func (controller *SupplierController) CreateSupplier(context *gin.Context) {
 	context.JSON(http.StatusCreated, response)
 }
 
-func (controller *SupplierController) GetSupplierByID(context *gin.Context) {
+func (handler *SupplierHandler) GetSupplierByID(context *gin.Context) {
 	id := context.Param("id")
-	supplier, err := controller.supplierService.GetSupplierById(id)
+	supplier, err := handler.supplierService.GetSupplierById(id)
 
 	if err != nil {
 		log.Printf("Error getting suppliers: %v", err)
@@ -67,7 +67,7 @@ func (controller *SupplierController) GetSupplierByID(context *gin.Context) {
 	context.JSON(http.StatusOK, supplier)
 }
 
-func (controller *SupplierController) UpdateSupplier(context *gin.Context) {
+func (handler *SupplierHandler) UpdateSupplier(context *gin.Context) {
 	id := context.Param("id")
 
 	var supplier types.Supplier
@@ -77,7 +77,7 @@ func (controller *SupplierController) UpdateSupplier(context *gin.Context) {
 		return
 	}
 
-	result, err := controller.supplierService.UpdateSupplier(id, &supplier)
+	result, err := handler.supplierService.UpdateSupplier(id, &supplier)
 	if err != nil {
 		log.Printf("Error updating supplier: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while updating supplier", "details": err.Error()})
@@ -95,10 +95,10 @@ func (controller *SupplierController) UpdateSupplier(context *gin.Context) {
 	context.JSON(http.StatusAccepted, response)
 }
 
-func (controller *SupplierController) DeleteSupplier(context *gin.Context) {
+func (handler *SupplierHandler) DeleteSupplier(context *gin.Context) {
 	id := context.Param("id")
 
-	err := controller.supplierService.DeleteSupplier(id)
+	err := handler.supplierService.DeleteSupplier(id)
 
 	if err != nil {
 		log.Printf("Error deleting supplier: %v", err)

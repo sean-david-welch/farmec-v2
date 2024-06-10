@@ -9,18 +9,18 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
-type VideoController struct {
+type VideoHandler struct {
 	videoService services.VideoService
 }
 
-func NewVideoController(videoService services.VideoService) *VideoController {
-	return &VideoController{videoService: videoService}
+func NewVideoHandler(videoService services.VideoService) *VideoHandler {
+	return &VideoHandler{videoService: videoService}
 }
 
-func (controller *VideoController) GetVideos(context *gin.Context) {
+func (handler *VideoHandler) GetVideos(context *gin.Context) {
 	id := context.Param("id")
 
-	videos, err := controller.videoService.GetVideos(id)
+	videos, err := handler.videoService.GetVideos(id)
 	if err != nil {
 		log.Printf("Error getting suppliers: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while getting suppliers"})
@@ -30,7 +30,7 @@ func (controller *VideoController) GetVideos(context *gin.Context) {
 	context.JSON(http.StatusOK, videos)
 }
 
-func (controller *VideoController) CreateVideo(context *gin.Context) {
+func (handler *VideoHandler) CreateVideo(context *gin.Context) {
 	var video types.Video
 
 	if err := context.ShouldBindJSON(&video); err != nil {
@@ -38,7 +38,7 @@ func (controller *VideoController) CreateVideo(context *gin.Context) {
 		return
 	}
 
-	if err := controller.videoService.CreateVideo(&video); err != nil {
+	if err := handler.videoService.CreateVideo(&video); err != nil {
 		log.Printf("Error creating video: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while creating video", "details": err.Error()})
 		return
@@ -47,7 +47,7 @@ func (controller *VideoController) CreateVideo(context *gin.Context) {
 	context.JSON(http.StatusCreated, video)
 }
 
-func (controller *VideoController) UpdateVideo(context *gin.Context) {
+func (handler *VideoHandler) UpdateVideo(context *gin.Context) {
 	id := context.Param("id")
 
 	var video types.Video
@@ -57,7 +57,7 @@ func (controller *VideoController) UpdateVideo(context *gin.Context) {
 		return
 	}
 
-	if err := controller.videoService.UpdateVideo(id, &video); err != nil {
+	if err := handler.videoService.UpdateVideo(id, &video); err != nil {
 		log.Printf("Error updating video: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while updating video", "details": err.Error()})
 		return
@@ -66,10 +66,10 @@ func (controller *VideoController) UpdateVideo(context *gin.Context) {
 	context.JSON(http.StatusOK, video)
 }
 
-func (controller *VideoController) DeleteVideo(context *gin.Context) {
+func (handler *VideoHandler) DeleteVideo(context *gin.Context) {
 	id := context.Param("id")
 
-	if err := controller.videoService.DeleteVideo(id); err != nil {
+	if err := handler.videoService.DeleteVideo(id); err != nil {
 		log.Printf("Error deleting video: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Erropr occurred while deleting supplier", "details": err.Error()})
 		return

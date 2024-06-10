@@ -10,22 +10,22 @@ import (
 
 func InitAuth(router *gin.Engine, firebase *lib.Firebase, adminMiddleware *middleware.AdminMiddleware) {
 	service := services.NewAuthService(firebase)
-	controller := handlers.NewAuthController(service)
+	handler := handlers.NewAuthHandler(service)
 
-	AuthRoutes(router, controller, adminMiddleware)
+	AuthRoutes(router, handler, adminMiddleware)
 }
 
-func AuthRoutes(router *gin.Engine, controller *handlers.AuthHandler, adminMiddleware *middleware.AdminMiddleware) {
+func AuthRoutes(router *gin.Engine, handler *handlers.AuthHandler, adminMiddleware *middleware.AdminMiddleware) {
 	authGroup := router.Group("/api/auth")
 
-	authGroup.GET("/logout", controller.Logout)
-	authGroup.GET("/login", controller.Login)
+	authGroup.GET("/logout", handler.Logout)
+	authGroup.GET("/login", handler.Login)
 
 	protected := authGroup.Group("").Use(adminMiddleware.Middleware())
 	{
-		protected.GET("/users", controller.GetUsers)
-		protected.POST("/users", controller.Register)
-		protected.PUT("/users/:uid", controller.UpdateUser)
-		protected.DELETE("/users/:uid", controller.DeleteUser)
+		protected.GET("/users", handler.GetUsers)
+		protected.POST("/users", handler.Register)
+		protected.PUT("/users/:uid", handler.UpdateUser)
+		protected.DELETE("/users/:uid", handler.DeleteUser)
 	}
 }

@@ -13,20 +13,20 @@ import (
 func InitTimelines(router *gin.Engine, database *sql.DB, adminMiddleware *middleware.AdminMiddleware) {
 	timelineRepository := repository.NewTimelineRepository(database)
 	service := services.NewTimelineService(timelineRepository)
-	controller := handlers.NewTimelineController(service)
+	handler := handlers.NewTimelineHandler(service)
 
-	TimelineRoutes(router, controller, adminMiddleware)
+	TimelineRoutes(router, handler, adminMiddleware)
 }
 
-func TimelineRoutes(router *gin.Engine, controller *handlers.TimelineController, adminMiddleware *middleware.AdminMiddleware) {
+func TimelineRoutes(router *gin.Engine, handler *handlers.TimelineHandler, adminMiddleware *middleware.AdminMiddleware) {
 	timelineGroup := router.Group("/api/timeline")
 
-	timelineGroup.GET("", controller.GetTimelines)
+	timelineGroup.GET("", handler.GetTimelines)
 
 	protected := timelineGroup.Group("").Use(adminMiddleware.Middleware())
 	{
-		protected.POST("", controller.CreateTimeline)
-		protected.PUT("/:id", controller.UpdateTimeline)
-		protected.DELETE("/:id", controller.DeleteTimeline)
+		protected.POST("", handler.CreateTimeline)
+		protected.PUT("/:id", handler.UpdateTimeline)
+		protected.DELETE("/:id", handler.DeleteTimeline)
 	}
 }

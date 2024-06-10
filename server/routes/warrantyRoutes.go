@@ -13,21 +13,21 @@ import (
 func InitWarranty(router *gin.Engine, database *sql.DB, authMiddleware *middleware.AuthMiddleware) {
 	warrantyRepository := repository.NewWarrantyRepository(database)
 	service := services.NewWarrantyService(warrantyRepository)
-	controller := handlers.NewWarrantyController(service)
+	handler := handlers.NewWarrantyHandler(service)
 
-	WarrantyRoutes(router, controller, authMiddleware)
+	WarrantyRoutes(router, handler, authMiddleware)
 }
 
-func WarrantyRoutes(router *gin.Engine, controller *handlers.WarrantyController, authMiddleware *middleware.AuthMiddleware) {
+func WarrantyRoutes(router *gin.Engine, handler *handlers.WarrantyHandler, authMiddleware *middleware.AuthMiddleware) {
 	warrantyGroup := router.Group("/api/warranty")
 
-	warrantyGroup.GET("", controller.GetWarranties)
-	warrantyGroup.GET("/:id", controller.GetWarrantyById)
-	warrantyGroup.POST("", controller.CreateWarranty)
+	warrantyGroup.GET("", handler.GetWarranties)
+	warrantyGroup.GET("/:id", handler.GetWarrantyById)
+	warrantyGroup.POST("", handler.CreateWarranty)
 
 	protected := warrantyGroup.Group("").Use(authMiddleware.Middleware())
 	{
-		protected.PUT("/:id", controller.UpdateWarranty)
-		protected.DELETE("/:id", controller.DeleteWarranty)
+		protected.PUT("/:id", handler.UpdateWarranty)
+		protected.DELETE("/:id", handler.DeleteWarranty)
 	}
 }

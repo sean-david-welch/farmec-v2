@@ -15,21 +15,21 @@ import (
 func InitSuppliers(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, adminMiddleware *middleware.AdminMiddleware) {
 	supplierRepository := repository.NewSupplierRepository(database)
 	supplierService := services.NewSupplierService(supplierRepository, s3Client, "Suppliers")
-	supplierController := handlers.NewSupplierContoller(supplierService)
+	supplierHandler := handlers.NewSupplierContoller(supplierService)
 
-	SupplierRoutes(router, supplierController, adminMiddleware)
+	SupplierRoutes(router, supplierHandler, adminMiddleware)
 }
 
-func SupplierRoutes(router *gin.Engine, supplierController *handlers.SupplierController, adminMiddleware *middleware.AdminMiddleware) {
+func SupplierRoutes(router *gin.Engine, supplierHandler *handlers.SupplierHandler, adminMiddleware *middleware.AdminMiddleware) {
 	supplierGroup := router.Group("/api/suppliers")
 
-	supplierGroup.GET("", supplierController.GetSuppliers)
-	supplierGroup.GET("/:id", supplierController.GetSupplierByID)
+	supplierGroup.GET("", supplierHandler.GetSuppliers)
+	supplierGroup.GET("/:id", supplierHandler.GetSupplierByID)
 
 	protected := supplierGroup.Group("").Use(adminMiddleware.Middleware())
 	{
-		protected.POST("", supplierController.CreateSupplier)
-		protected.PUT("/:id", supplierController.UpdateSupplier)
-		protected.DELETE("/:id", supplierController.DeleteSupplier)
+		protected.POST("", supplierHandler.CreateSupplier)
+		protected.PUT("/:id", supplierHandler.UpdateSupplier)
+		protected.DELETE("/:id", supplierHandler.DeleteSupplier)
 	}
 }

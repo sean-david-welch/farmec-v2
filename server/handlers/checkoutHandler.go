@@ -12,14 +12,14 @@ type CheckoutHandler struct {
 	service services.CheckoutService
 }
 
-func NewCheckoutController(service services.CheckoutService) *CheckoutHandler {
+func NewCheckoutHandler(service services.CheckoutService) *CheckoutHandler {
 	return &CheckoutHandler{service: service}
 }
 
-func (controller *CheckoutHandler) CreateCheckoutSession(context *gin.Context) {
+func (handler *CheckoutHandler) CreateCheckoutSession(context *gin.Context) {
 	id := context.Param("id")
 
-	sess, err := controller.service.CreateCheckoutSession(id)
+	sess, err := handler.service.CreateCheckoutSession(id)
 	if err != nil {
 		log.Printf("error occurred in checkout service: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred when trying to create checkout session"})
@@ -32,7 +32,7 @@ func (controller *CheckoutHandler) CreateCheckoutSession(context *gin.Context) {
 	})
 }
 
-func (controller *CheckoutHandler) RetrieveCheckoutSession(context *gin.Context) {
+func (handler *CheckoutHandler) RetrieveCheckoutSession(context *gin.Context) {
 	sessionId := context.Query("session_id")
 
 	if sessionId == "" {
@@ -40,7 +40,7 @@ func (controller *CheckoutHandler) RetrieveCheckoutSession(context *gin.Context)
 		return
 	}
 
-	sess, err := controller.service.RetrieveCheckoutSession(sessionId)
+	sess, err := handler.service.RetrieveCheckoutSession(sessionId)
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

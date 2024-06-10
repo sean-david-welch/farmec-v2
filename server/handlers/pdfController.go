@@ -11,15 +11,15 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
-type PdfController struct {
+type PdfHandler struct {
 	service services.PdfService
 }
 
-func NewPdfController(service services.PdfService) *PdfController {
-	return &PdfController{service: service}
+func NewPdfHandler(service services.PdfService) *PdfHandler {
+	return &PdfHandler{service: service}
 }
 
-func (controller *PdfController) RenderRegistrationPdf(context *gin.Context) {
+func (handler *PdfHandler) RenderRegistrationPdf(context *gin.Context) {
 	var registration types.MachineRegistration
 
 	if err := context.ShouldBindJSON(&registration); err != nil {
@@ -28,7 +28,7 @@ func (controller *PdfController) RenderRegistrationPdf(context *gin.Context) {
 		return
 	}
 
-	pdfBytes, err := controller.service.RenderRegistrationPdf(&registration)
+	pdfBytes, err := handler.service.RenderRegistrationPdf(&registration)
 	if err != nil {
 		log.Printf("error when rendering pdf: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "failed to render PDF", "details": err.Error()})
@@ -49,7 +49,7 @@ func (controller *PdfController) RenderRegistrationPdf(context *gin.Context) {
 	context.JSON(http.StatusOK, gin.H{"filename": fileName})
 }
 
-func (controller *PdfController) RenderWarrantyClaimPdf(context *gin.Context) {
+func (handler *PdfHandler) RenderWarrantyClaimPdf(context *gin.Context) {
 	var warranty types.WarranrtyParts
 
 	if err := context.ShouldBindJSON(&warranty); err != nil {
@@ -57,7 +57,7 @@ func (controller *PdfController) RenderWarrantyClaimPdf(context *gin.Context) {
 		return
 	}
 
-	pdfBytes, err := controller.service.RenderWarrantyClaimPdf(&warranty)
+	pdfBytes, err := handler.service.RenderWarrantyClaimPdf(&warranty)
 	if err != nil {
 		log.Printf("error when rendering pdf: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "failed to render PDF", "details": err.Error()})

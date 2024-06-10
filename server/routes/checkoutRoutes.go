@@ -13,14 +13,14 @@ import (
 func InitCheckout(router *gin.Engine, database *sql.DB, secrets *lib.Secrets) {
 	itemRepository := repository.NewLineItemRepository(database)
 	service := services.NewCheckoutService(secrets, itemRepository)
-	controller := handlers.NewCheckoutController(service)
+	handler := handlers.NewCheckoutHandler(service)
 
-	CheckoutRoutes(router, controller)
+	CheckoutRoutes(router, handler)
 }
 
-func CheckoutRoutes(router *gin.Engine, controller *handlers.CheckoutHandler) {
+func CheckoutRoutes(router *gin.Engine, handler *handlers.CheckoutHandler) {
 	checkoutGroup := router.Group("/api/checkout")
 
-	checkoutGroup.POST("/create-checkout-session/:id", controller.CreateCheckoutSession)
-	checkoutGroup.GET("/session-status", controller.RetrieveCheckoutSession)
+	checkoutGroup.POST("/create-checkout-session/:id", handler.CreateCheckoutSession)
+	checkoutGroup.GET("/session-status", handler.RetrieveCheckoutSession)
 }

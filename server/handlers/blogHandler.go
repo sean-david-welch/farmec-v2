@@ -13,12 +13,12 @@ type BlogHandler struct {
 	service services.BlogService
 }
 
-func NewBlogController(service services.BlogService) *BlogHandler {
+func NewBlogHandler(service services.BlogService) *BlogHandler {
 	return &BlogHandler{service: service}
 }
 
-func (controller *BlogHandler) GetBlogs(context *gin.Context) {
-	blogs, err := controller.service.GetBlogs()
+func (handler *BlogHandler) GetBlogs(context *gin.Context) {
+	blogs, err := handler.service.GetBlogs()
 	if err != nil {
 		log.Printf("error getting blogs: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while getting blogs"})
@@ -28,9 +28,9 @@ func (controller *BlogHandler) GetBlogs(context *gin.Context) {
 	context.JSON(http.StatusOK, blogs)
 }
 
-func (controller *BlogHandler) GetBlogByID(context *gin.Context) {
+func (handler *BlogHandler) GetBlogByID(context *gin.Context) {
 	id := context.Param("id")
-	blog, err := controller.service.GetBlogsByID(id)
+	blog, err := handler.service.GetBlogsByID(id)
 	if err != nil {
 		log.Printf("error getting blog: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while getting blog"})
@@ -40,7 +40,7 @@ func (controller *BlogHandler) GetBlogByID(context *gin.Context) {
 	context.JSON(http.StatusOK, blog)
 }
 
-func (controller *BlogHandler) CreateBlog(context *gin.Context) {
+func (handler *BlogHandler) CreateBlog(context *gin.Context) {
 	var blog types.Blog
 
 	if err := context.ShouldBindJSON(&blog); err != nil {
@@ -49,7 +49,7 @@ func (controller *BlogHandler) CreateBlog(context *gin.Context) {
 		return
 	}
 
-	result, err := controller.service.CreateBlog(&blog)
+	result, err := handler.service.CreateBlog(&blog)
 	if err != nil {
 		log.Printf("error while creating blog: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while creating blog"})
@@ -61,7 +61,7 @@ func (controller *BlogHandler) CreateBlog(context *gin.Context) {
 	context.JSON(http.StatusCreated, response)
 }
 
-func (controller *BlogHandler) UpdateBlog(context *gin.Context) {
+func (handler *BlogHandler) UpdateBlog(context *gin.Context) {
 	id := context.Param("id")
 
 	var blog types.Blog
@@ -72,7 +72,7 @@ func (controller *BlogHandler) UpdateBlog(context *gin.Context) {
 		return
 	}
 
-	result, err := controller.service.UpdateBlog(id, &blog)
+	result, err := handler.service.UpdateBlog(id, &blog)
 	if err != nil {
 		log.Printf("error while updating blog: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while updating blog"})
@@ -84,10 +84,10 @@ func (controller *BlogHandler) UpdateBlog(context *gin.Context) {
 	context.JSON(http.StatusAccepted, response)
 }
 
-func (controller *BlogHandler) DeleteBlog(context *gin.Context) {
+func (handler *BlogHandler) DeleteBlog(context *gin.Context) {
 	id := context.Param("id")
 
-	if err := controller.service.DeleteBlog(id); err != nil {
+	if err := handler.service.DeleteBlog(id); err != nil {
 		log.Printf("error while deleting blog: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while deleting blog"})
 		return

@@ -14,17 +14,17 @@ type AuthHandler struct {
 	service services.AuthService
 }
 
-func NewAuthController(service services.AuthService) *AuthHandler {
+func NewAuthHandler(service services.AuthService) *AuthHandler {
 	return &AuthHandler{service: service}
 }
 
-func (controller *AuthHandler) Logout(context *gin.Context) {
+func (handler *AuthHandler) Logout(context *gin.Context) {
 	context.SetCookie("access_token", "", -1, "/", "", false, true)
 
 	context.JSON(http.StatusOK, gin.H{"message": "Logged out successfully"})
 }
 
-func (controller *AuthHandler) Login(context *gin.Context) {
+func (handler *AuthHandler) Login(context *gin.Context) {
 	log.Printf("Incoming login request from IP: %s, Path: %s", context.ClientIP(), context.Request.URL.Path)
 
 	authHeader := context.GetHeader("Authorization")
@@ -36,7 +36,7 @@ func (controller *AuthHandler) Login(context *gin.Context) {
 	idToken := strings.TrimPrefix(authHeader, "Bearer ")
 	log.Printf("ID Token after trimming: %s", idToken)
 
-	sessionCookie, err := controller.service.Login(context.Request.Context(), idToken)
+	sessionCookie, err := handler.service.Login(context.Request.Context(), idToken)
 	if err != nil {
 		log.Printf("error with validating token: %v", err)
 		context.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid Token"})
@@ -52,8 +52,8 @@ func (controller *AuthHandler) Login(context *gin.Context) {
 	context.JSON(http.StatusOK, gin.H{"message": "login successful"})
 }
 
-func (controller *AuthHandler) GetUsers(context *gin.Context) {
-	users, err := controller.service.GetUsers(context)
+func (handler *AuthHandler) GetUsers(context *gin.Context) {
+	users, err := handler.service.GetUsers(context)
 	if err != nil {
 		log.Printf("error fetching users from firebase: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while fetching users from firebase", "details": err.Error()})
@@ -63,7 +63,7 @@ func (controller *AuthHandler) GetUsers(context *gin.Context) {
 	context.JSON(http.StatusOK, users)
 }
 
-func (controller *AuthHandler) Register(context *gin.Context) {
+func (handler *AuthHandler) Register(context *gin.Context) {
 	var userData types.UserData
 
 	if err := context.ShouldBindJSON(&userData); err != nil {
@@ -71,7 +71,7 @@ func (controller *AuthHandler) Register(context *gin.Context) {
 		return
 	}
 
-	err := controller.service.Register(context, &userData)
+	err := handler.service.Register(context, &userData)
 	if err != nil {
 		log.Printf("error with creating user in firebase: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while creating user in firebase", "details": err.Error()})
@@ -81,7 +81,7 @@ func (controller *AuthHandler) Register(context *gin.Context) {
 	context.JSON(http.StatusCreated, gin.H{"message": "user successfully created in firebase"})
 }
 
-func (controller *AuthHandler) UpdateUser(context *gin.Context) {
+func (handler *AuthHandler) UpdateUser(context *gin.Context) {
 	uid := context.Param("uid")
 	var userData types.UserData
 
@@ -90,7 +90,7 @@ func (controller *AuthHandler) UpdateUser(context *gin.Context) {
 		return
 	}
 
-	if err := controller.service.UpdateUser(uid, &userData, context); err != nil {
+	if err := handler.service.UpdateUser(uid, &userData, context); err != nil {
 		log.Printf("error while updating user in firebase: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while updating user in firebase", "details": err.Error()})
 		return
@@ -99,10 +99,10 @@ func (controller *AuthHandler) UpdateUser(context *gin.Context) {
 	context.JSON(http.StatusCreated, gin.H{"message": "user successfully updated in firebase"})
 }
 
-func (controller *AuthHandler) DeleteUser(context *gin.Context) {
+func (handler *AuthHandler) DeleteUser(context *gin.Context) {
 	uid := context.Param("uid")
 
-	err := controller.service.DeleteUser(uid, context)
+	err := handler.service.DeleteUser(uid, context)
 	if err != nil {
 		log.Printf("error with deleting user in firebase: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while deleting user in firebase", "details": err.Error()})
