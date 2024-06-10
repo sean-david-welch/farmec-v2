@@ -43,10 +43,6 @@ func (service *SupplierServiceImpl) CreateSupplier(supplier *types.Supplier) (*t
 		return nil, errors.New("image is empty")
 	}
 
-	if logoImage == "" || marketingImage == "" {
-		return nil, errors.New("logoImage or marketingImage is empty")
-	}
-
 	presignedLogo, logoUrl, err := service.s3Client.GeneratePresignedUrl(service.folder, logoImage)
 	if err != nil {
 		log.Printf("error occurred while generating presigned url: %v", err)
