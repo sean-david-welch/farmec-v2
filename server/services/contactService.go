@@ -19,10 +19,10 @@ type ContactService interface {
 
 type ContactServiceImpl struct {
 	secrets   *lib.Secrets
-	loginAuth lib.Auth
+	loginAuth lib.EmailAuth
 }
 
-func NewContactService(secrets *lib.Secrets, loginAuth lib.Auth) *ContactServiceImpl {
+func NewContactService(secrets *lib.Secrets, loginAuth lib.EmailAuth) *ContactServiceImpl {
 	return &ContactServiceImpl{
 		secrets:   secrets,
 		loginAuth: loginAuth,

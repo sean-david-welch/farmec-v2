@@ -46,7 +46,7 @@ func (firebase *Firebase) VerifyToken(cookie string) (*auth.Token, bool, error) 
 
 	authClient, err := firebase.App.Auth(context)
 	if err != nil {
-		log.Printf("Error initializing Firebase Auth client: %s", err)
+		log.Printf("Error initializing Firebase EmailAuth client: %s", err)
 		return nil, false, err
 	}
 
