@@ -46,7 +46,7 @@ func (handler *AuthHandler) Login(context *gin.Context) {
 	if env == "production" {
 		context.SetCookie("access_token", sessionCookie, 72*3600, "/", "farmec.ie", true, true)
 	} else {
-		context.SetCookie("access_token", sessionCookie, 72*3600, "/", "127.0.0.1", false, true)
+		context.SetCookie("access_token", sessionCookie, 72*3600, "/", "localhost", false, true)
 	}
 	context.JSON(http.StatusOK, gin.H{"message": "login successful"})
 }

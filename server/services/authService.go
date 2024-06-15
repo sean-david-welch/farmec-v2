@@ -84,13 +84,11 @@ func (service *AuthServiceImpl) Register(context context.Context, userData *type
 	if err != nil {
 		return fmt.Errorf("firebase auth initilization failed: %w", err)
 	}
-
 	userRecord, err := authClient.CreateUser(context, (&auth.UserToCreate{}).
 		Email(userData.Email).Password(userData.Password))
 	if err != nil {
 		return fmt.Errorf("failed to create user in firebase: %w", err)
 	}
-
 	if userData.Role == "admin" {
 		err := authClient.SetCustomUserClaims(context, userRecord.UID, map[string]interface{}{"admin": true})
 		if err != nil {
@@ -111,12 +109,10 @@ func (service *AuthServiceImpl) UpdateUser(uid string, userData *types.UserData,
 	if err != nil {
 		return fmt.Errorf("firebase auth initilization failed: %w", err)
 	}
-
 	userRecord, err := authClient.UpdateUser(context, uid, (&auth.UserToUpdate{}).Email(userData.Email).Password(userData.Password))
 	if err != nil {
 		return fmt.Errorf("failed to update user record in firebase: %w", err)
 	}
-
 	if userData.Role == "admin" {
 		err := authClient.SetCustomUserClaims(context, userRecord.UID, map[string]interface{}{"admin": true})
 		if err != nil {
@@ -128,7 +124,6 @@ func (service *AuthServiceImpl) UpdateUser(uid string, userData *types.UserData,
 			return fmt.Errorf("failed to set custom user claims: %w", err)
 		}
 	}
-
 	return nil
 }
 
@@ -137,11 +132,9 @@ func (service *AuthServiceImpl) DeleteUser(uid string, context context.Context) 
 	if err != nil {
 		return fmt.Errorf("firebase auth initilization failed: %w", err)
 	}
-
 	err = authClient.DeleteUser(context, uid)
 	if err != nil {
 		return fmt.Errorf("failed to delete user in firebase: %w", err)
 	}
-
 	return nil
 }
