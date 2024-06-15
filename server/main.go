@@ -16,6 +16,9 @@ import (
 )
 
 func main() {
+	env := os.Getenv("ENV")
+	port := os.Getenv("PORT")
+
 	secrets, err := lib.NewSecrets()
 	if err != nil {
 		log.Fatal("Error loading configuration: ", err)
@@ -45,10 +48,17 @@ func main() {
 	authMiddleware := middleware.NewAuthMiddleware(firebase)
 
 	corsConfig := cors.DefaultConfig()
-	corsConfig.AllowOrigins = []string{
-		"http://localhost:5173", "http://farmec.ie.s3-website-eu-west-1.amazonaws.com",
-		"https://d2hp5uofb6qy9a.cloudfront.net", "http://farmec.ie",
-		"http://www.farmec.ie", "https://farmec.ie", "https://www.farmec.ie",
+	if env == "production" {
+		corsConfig.AllowOrigins = []string{
+			"https://farmec.ie",
+			"https://www.farmec.ie",
+			"https://d2hp5uofb6qy9a.cloudfront.net",
+			"https://farmec.ie.s3-website-eu-west-1.amazonaws.com",
+		}
+	} else {
+		corsConfig.AllowOrigins = []string{
+			"http://localhost:5173",
+		}
 	}
 	corsConfig.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
 	corsConfig.AllowHeaders = []string{"Authorization", "Content-Type", "Accept", "Origin"}
@@ -59,9 +69,6 @@ func main() {
 
 	routes.InitRoutes(router, database, secrets, s3Client, adminMiddleware, authMiddleware, firebase)
 
-	env := os.Getenv("ENV")
-	port := os.Getenv("PORT")
-
 	if env == "production" {
 		gin.SetMode(gin.ReleaseMode)
 		err := router.Run("0.0.0.0:" + port)
@@ -69,7 +76,8 @@ func main() {
 			return
 		}
 	} else {
-		err := router.Run("0.0.0.0:8000")
+		gin.SetMode(gin.DebugMode)
+		err := router.Run("127.0.0.1:8000")
 		if err != nil {
 			return
 		}
