@@ -3,6 +3,7 @@ package handlers
 import (
 	"log"
 	"net/http"
+	"os"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -25,7 +26,7 @@ func (handler *AuthHandler) Logout(context *gin.Context) {
 }
 
 func (handler *AuthHandler) Login(context *gin.Context) {
-	log.Printf("Incoming login request from IP: %s, Path: %s", context.ClientIP(), context.Request.URL.Path)
+	env := os.Getenv("ENV")
 
 	authHeader := context.GetHeader("Authorization")
 	if authHeader == "" {
@@ -34,7 +35,6 @@ func (handler *AuthHandler) Login(context *gin.Context) {
 	}
 
 	idToken := strings.TrimPrefix(authHeader, "Bearer ")
-	log.Printf("ID Token after trimming: %s", idToken)
 
 	sessionCookie, err := handler.service.Login(context.Request.Context(), idToken)
 	if err != nil {
@@ -43,12 +43,11 @@ func (handler *AuthHandler) Login(context *gin.Context) {
 		return
 	}
 
-	context.SetCookie("access_token", sessionCookie, 72*3600, "/", "farmec.ie", true, true)
-
-	log.Printf("Cookie set for session: %s", sessionCookie)
-	log.Printf("Setting cookie: Name=%s; Value=%s; MaxAge=%d; Path=%s; Domain=%s; Secure=%t; HttpOnly=%t; SameSite=None",
-		"access_token", sessionCookie, 72*3600, "/", "", true, true)
-
+	if env == "production" {
+		context.SetCookie("access_token", sessionCookie, 72*3600, "/", "farmec.ie", true, true)
+	} else {
+		context.SetCookie("access_token", sessionCookie, 72*3600, "/", "127.0.0.1", false, true)
+	}
 	context.JSON(http.StatusOK, gin.H{"message": "login successful"})
 }
 
