@@ -48,7 +48,7 @@ jobs:
                   username: ${{ secrets.EC2_USER }}
                   key: ${{ secrets.SSH_PRIVATE_KEY }}
                   port: ${{ secrets.SSH_PORT }}
-                  source: extracted/main
+                  source: main
                   target: /home/seanwelch/bin/main
 
             - name: Deploy and restart service
