@@ -47,7 +47,7 @@ func ScanMachine(row interface{}, machine *types.Machine) error {
 func (store *MachineStoreImpl) GetMachines(id string) ([]types.Machine, error) {
 	var machines []types.Machine
 
-	query := `SELECT * FROM "Machine" WHERE "supplier_id" = $1`
+	query := `SELECT * FROM "Machine" WHERE "supplier_id" = ?`
 	rows, err := store.database.Query(query, id)
 	if err != nil {
 		return nil, fmt.Errorf("error executing query: %w", err)
@@ -76,7 +76,7 @@ func (store *MachineStoreImpl) GetMachines(id string) ([]types.Machine, error) {
 }
 
 func (store *MachineStoreImpl) GetMachineById(id string) (*types.Machine, error) {
-	query := `SELECT * FROM "Machine" WHERE id = $1`
+	query := `SELECT * FROM "Machine" WHERE id = ?`
 	row := store.database.QueryRow(query, id)
 
 	var machine types.Machine
@@ -98,7 +98,7 @@ func (store *MachineStoreImpl) CreateMachine(machine *types.Machine) error {
 	machine.Created = time.Now().String()
 
 	query := `INSERT INTO "Machine" (id, supplier_id, name, machine_image, description, machine_link, created)
-	VALUES ($1, $2, $3, $4, $5, $6, $7)`
+	VALUES (?, ?, ?, ?, ?, ?, ?)`
 
 	_, err := store.database.Exec(query, machine.ID, machine.SupplierID, machine.Name, machine.MachineImage, machine.Description, machine.MachineLink, machine.Created)
 
@@ -110,11 +110,11 @@ func (store *MachineStoreImpl) CreateMachine(machine *types.Machine) error {
 }
 
 func (store *MachineStoreImpl) UpdateMachine(id string, machine *types.Machine) error {
-	query := `UPDATE "Machine" SET supplier_id = $1, name = $2, description = $3, machine_link = $4 WHERE ID = $6`
+	query := `UPDATE "Machine" SET supplier_id = ?, name = ?, description = ?, machine_link = ? WHERE ID = ?`
 	args := []interface{}{machine.SupplierID, machine.Name, machine.Description, machine.MachineLink, id}
 
 	if machine.MachineImage != "" && machine.MachineImage != "null" {
-		query = `UPDATE "Machine" SET supplier_id = $1, name = $2, machine_image = $3, description = $4, machine_link = $5 WHERE ID = $6`
+		query = `UPDATE "Machine" SET supplier_id = ?, name = ?, machine_image = ?, description = ?, machine_link = ? WHERE ID = ?`
 		args = []interface{}{machine.SupplierID, machine.Name, machine.MachineImage, machine.Description, machine.MachineLink, id}
 	}
 
@@ -128,7 +128,7 @@ func (store *MachineStoreImpl) UpdateMachine(id string, machine *types.Machine) 
 }
 
 func (store *MachineStoreImpl) DeleteMachine(id string) error {
-	query := `DELETE FROM "Machine" WHERE id = $1`
+	query := `DELETE FROM "Machine" WHERE id = ?`
 
 	_, err := store.database.Exec(query, id)
 	if err != nil {
