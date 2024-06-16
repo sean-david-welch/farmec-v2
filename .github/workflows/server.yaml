@@ -59,5 +59,6 @@ jobs:
                   key: ${{ secrets.SSH_PRIVATE_KEY }}
                   port: ${{ secrets.SSH_PORT }}
                   script: |
-                      echo ${{ secrets.SUDO_PASSWORD }} | sudo -S systemctl restart farmec.service
+                      echo ${{ secrets.SUDO_PASSWORD }} | sudo -S systemctl stop farmec.service
+                      echo ${{ secrets.SUDO_PASSWORD }} | sudo -S systemctl start farmec.service
                       echo ${{ secrets.SUDO_PASSWORD }} | sudo -S systemctl restart nginx
