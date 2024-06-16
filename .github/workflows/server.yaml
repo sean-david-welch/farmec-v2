@@ -41,11 +41,6 @@ jobs:
               with:
                   name: go-binary
 
-            - name: Extract binary
-              run: |
-                  mkdir -p extracted
-                  tar -xzf main -C extracted
-
             - name: Copy files to EC2
               uses: appleboy/scp-action@master
               with:
@@ -54,7 +49,7 @@ jobs:
                   key: ${{ secrets.SSH_PRIVATE_KEY }}
                   port: ${{ secrets.SSH_PORT }}
                   source: extracted/main
-                  target: /home/seanwelch/server/bin/main
+                  target: /home/seanwelch/bin/main
 
             - name: Deploy and restart service
               uses: appleboy/ssh-action@master
@@ -65,5 +60,6 @@ jobs:
                   port: ${{ secrets.SSH_PORT }}
                   script: |
                       echo ${{ secrets.SUDO_PASSWORD }} | sudo -S systemctl stop farmec.service
+                      sudo cp /home/seanwelch/bin/main /home/seanwelch/server/bin/main
                       echo ${{ secrets.SUDO_PASSWORD }} | sudo -S systemctl start farmec.service
                       echo ${{ secrets.SUDO_PASSWORD }} | sudo -S systemctl restart nginx
