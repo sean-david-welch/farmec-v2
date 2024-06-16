@@ -34,7 +34,8 @@ func setupTestDB() (*sql.DB, error) {
 		MainImage TEXT,
 		Subheading TEXT,
 		Body TEXT,
-		Created DATETIME);`
+		Created DATETIME
+	);`
 	_, err = db.Exec(schema)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create schema: %w", err)
