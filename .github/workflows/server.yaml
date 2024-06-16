@@ -25,10 +25,16 @@ jobs:
                   sudo apt-get update
                   sudo apt-get install -y gcc libc6-dev
 
-            - name: Build Go binary
+            - name: Build Go binary with verbose output
               run: |
                   cd server
-                  CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -o main
+                  CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -v -o main -ldflags '-extldflags "-static"'
+              env:
+                  CGO_ENABLED: '1'
+
+            - name: Inspect binary with ldd
+              run: |
+                  ldd server/main
 
             - name: Upload artifact
               uses: actions/upload-artifact@v2
