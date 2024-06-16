@@ -126,7 +126,6 @@ func TestCreateBlog(t *testing.T) {
 		Body:       "New Body",
 		Created:    "2024-01-01 12:00:00",
 	}
-
 	payload, _ := json.Marshal(blog)
 
 	resp, err := http.Post(fmt.Sprintf("%s/blogs", server.URL), "application/json", bytes.NewBuffer(payload))
