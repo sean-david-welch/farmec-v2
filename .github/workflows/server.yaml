@@ -36,7 +36,7 @@ jobs:
                   script: |
                       cd ./server
                       source ~/.profile
-                      go build -o bin/main
+                      CGO_ENABLED=1 go build -o bin/main
                       echo ${{ secrets.SUDO_PASSWORD }} | sudo -S systemctl stop farmec.service
                       echo ${{ secrets.SUDO_PASSWORD }} | sudo -S systemctl start farmec.service
                       echo ${{ secrets.SUDO_PASSWORD }} | sudo -S systemctl restart nginx
