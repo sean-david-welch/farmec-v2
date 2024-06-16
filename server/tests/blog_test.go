@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"net/http/httptest"
@@ -73,7 +74,12 @@ func initializeHandler() (*gin.Engine, *sql.DB) {
 
 func TestGetBlogs(t *testing.T) {
 	router, db := initializeHandler()
-	defer db.Close()
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
+			return
+		}
+	}(db)
 
 	server := httptest.NewServer(router)
 	defer server.Close()
@@ -82,7 +88,12 @@ func TestGetBlogs(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Request failed: %v", err)
 	}
-	defer resp.Body.Close()
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+			return
+		}
+	}(resp.Body)
 
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
 
