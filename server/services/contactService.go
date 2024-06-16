@@ -1,12 +1,10 @@
 package services
 
 import (
-	"crypto/tls"
 	"fmt"
 	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"io"
 	"log"
-	"net"
 	"net/smtp"
 
 	"github.com/sean-david-welch/farmec-v2/server/types"
@@ -14,24 +12,23 @@ import (
 
 type ContactService interface {
 	SendContactEmail(data *types.EmailData) error
-	SetupSMTPClient() (*smtp.Client, error)
 	ContactFormNotification(client *smtp.Client, data *types.EmailData) error
 }
 
 type ContactServiceImpl struct {
-	secrets   *lib.Secrets
-	emailAuth lib.EmailAuth
+	secrets    *lib.Secrets
+	smtpClient lib.SMTPClient
 }
 
-func NewContactService(secrets *lib.Secrets, emailAuth lib.EmailAuth) *ContactServiceImpl {
+func NewContactService(secrets *lib.Secrets, smtpClient lib.SMTPClient) *ContactServiceImpl {
 	return &ContactServiceImpl{
-		secrets:   secrets,
-		emailAuth: emailAuth,
+		secrets:    secrets,
+		smtpClient: smtpClient,
 	}
 }
 
 func (service *ContactServiceImpl) SendContactEmail(data *types.EmailData) error {
-	client, err := service.SetupSMTPClient()
+	client, err := service.smtpClient.SetupSMTPClient()
 	if err != nil {
 		log.Println("SMTP setup error:", err)
 		return err
@@ -49,41 +46,6 @@ func (service *ContactServiceImpl) SendContactEmail(data *types.EmailData) error
 	}
 
 	return nil
-}
-
-func (service *ContactServiceImpl) SetupSMTPClient() (*smtp.Client, error) {
-	conn, err := net.Dial("tcp", "smtp.office365.com:587")
-	if err != nil {
-		return nil, err
-	}
-
-	client, err := smtp.NewClient(conn, "smtp.office365.com")
-	if err != nil {
-		err := conn.Close()
-		if err != nil {
-			return nil, err
-		}
-		return nil, err
-	}
-
-	tlsConfig := &tls.Config{ServerName: "smtp.office365.com"}
-	if err = client.StartTLS(tlsConfig); err != nil {
-		err := client.Close()
-		if err != nil {
-			return nil, err
-		}
-		return nil, err
-	}
-
-	if err = client.Auth(service.emailAuth); err != nil {
-		err := client.Close()
-		if err != nil {
-			return nil, err
-		}
-		return nil, err
-	}
-
-	return client, nil
 }
 
 func (service *ContactServiceImpl) ContactFormNotification(client *smtp.Client, data *types.EmailData) error {
