@@ -1,12 +1,10 @@
 name: Deploy Client Application
-
-'on':
+on:
     push:
         branches:
-          - main
+            - main
         paths:
             - client/**
-
 jobs:
     deploy:
         runs-on: ubuntu-latest

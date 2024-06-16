@@ -1,5 +1,5 @@
 name: Deploy Go Application
-'on':
+on:
     push:
         branches:
             - main
@@ -34,9 +34,9 @@ jobs:
                   key: ${{ secrets.SSH_PRIVATE_KEY }}
                   port: ${{ secrets.SSH_PORT }}
                   script: |
-                      cd ./server
+                      cd /home/seanwelch/server
                       source ~/.profile
-                      CGO_ENABLED=1 go build -o bin/main
+                      CGO_ENABLED=1 go build -o /home/seanwelch/bin/main
                       echo ${{ secrets.SUDO_PASSWORD }} | sudo -S systemctl stop farmec.service
                       echo ${{ secrets.SUDO_PASSWORD }} | sudo -S systemctl start farmec.service
                       echo ${{ secrets.SUDO_PASSWORD }} | sudo -S systemctl restart nginx
