@@ -60,7 +60,7 @@ func (store *LineItemStoreImpl) GetLineItems() ([]types.LineItem, error) {
 func (store *LineItemStoreImpl) GetLineItemById(id string) (*types.LineItem, error) {
 	var lineItem types.LineItem
 
-	query := `SELECT * FROM "LineItems" WHERE "id" = $1`
+	query := `SELECT * FROM "LineItems" WHERE "id" = ?`
 	row := store.database.QueryRow(query, id)
 
 	if err := row.Scan(&lineItem.ID, &lineItem.Name, &lineItem.Price, &lineItem.Image); err != nil {
@@ -78,7 +78,7 @@ func (store *LineItemStoreImpl) GetLineItemById(id string) (*types.LineItem, err
 func (store *LineItemStoreImpl) CreateLineItem(lineItem *types.LineItem) error {
 	lineItem.ID = uuid.NewString()
 
-	query := `INSERT INTO "LineItems" (id, name, price, image) VALUES ($1, $2, $3, $4)`
+	query := `INSERT INTO "LineItems" (id, name, price, image) VALUES (?, ?, ?, ?)`
 
 	_, err := store.database.Exec(query, lineItem.ID, lineItem.Name, lineItem.Price, lineItem.Image)
 	if err != nil {
@@ -89,11 +89,11 @@ func (store *LineItemStoreImpl) CreateLineItem(lineItem *types.LineItem) error {
 }
 
 func (store *LineItemStoreImpl) UpdateLineItem(id string, lineItem *types.LineItem) error {
-	query := `UPDATE "LineItems" SET "name" = $2, "price" = $3,  WHERE "id" = $1`
+	query := `UPDATE "LineItems" SET "name" = ?, "price" = ?,  WHERE "id" = ?`
 	args := []interface{}{id, lineItem.Name, lineItem.Price}
 
 	if lineItem.Image != "" && lineItem.Image != "null" {
-		query = `UPDATE "LineItems" SET "name" = $2, "price" = $3, "image" = $4 WHERE "id" = $1`
+		query = `UPDATE "LineItems" SET "name" = ?, "price" = ?, "image" = ? WHERE "id" = ?`
 		args = []interface{}{id, lineItem.Name, lineItem.Price, lineItem.Image}
 	}
 
@@ -106,7 +106,7 @@ func (store *LineItemStoreImpl) UpdateLineItem(id string, lineItem *types.LineIt
 }
 
 func (store *LineItemStoreImpl) DeleteLineItem(id string) error {
-	query := `DELETE FROM "LineItems" WHERE "id" = $1`
+	query := `DELETE FROM "LineItems" WHERE "id" = ?`
 
 	_, err := store.database.Exec(query, id)
 	if err != nil {
