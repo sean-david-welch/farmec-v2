@@ -60,7 +60,7 @@ func (store *BlogStoreImpl) GetBlogs() ([]types.Blog, error) {
 }
 
 func (store *BlogStoreImpl) GetBlogById(id string) (*types.Blog, error) {
-	query := `SELECT * FROM "Blog" WHERE "id" = $1`
+	query := `SELECT * FROM "Blog" WHERE "id" = ?`
 	row := store.database.QueryRow(query, id)
 
 	var blog types.Blog
@@ -82,7 +82,7 @@ func (store *BlogStoreImpl) CreateBlog(blog *types.Blog) error {
 	blog.ID = uuid.NewString()
 	blog.Created = time.Now().String()
 
-	query := `INSERT INTO "Blog" (id, title, date, main_image, subheading, body, created) VALUES ($1, $2, $3, $4, $5, $6, $7)`
+	query := `INSERT INTO "Blog" (id, title, date, main_image, subheading, body, created) VALUES (?, ?, ?, ?, ?, ?, ?)`
 
 	_, err := store.database.Exec(query, blog.ID, blog.Title, blog.Date, blog.MainImage, blog.Subheading, blog.Body, blog.Created)
 	if err != nil {
@@ -93,11 +93,11 @@ func (store *BlogStoreImpl) CreateBlog(blog *types.Blog) error {
 }
 
 func (store *BlogStoreImpl) UpdateBlog(id string, blog *types.Blog) error {
-	query := `UPDATE "Blog" SET "title" = $1, "date" = $2, "subheading" = $3, "body" = $4 WHERE "id" = $5`
+	query := `UPDATE "Blog" SET "title" = ?, "date" = ?, "subheading" = ?, "body" = ? WHERE "id" = ?`
 	args := []interface{}{blog.Title, blog.Date, blog.Subheading, blog.Body, id}
 
 	if blog.MainImage != "" && blog.MainImage != "null" {
-		query = `UPDATE "Blog" SET "title" = $1, "date" = $2, "main_image" = $3, "subheading" = $4, "body" = $5 WHERE "id" = $6`
+		query = `UPDATE "Blog" SET "title" = ?, "date" = ?, "main_image" = ?, "subheading" = ?, "body" = ? WHERE "id" = ?`
 		args = []interface{}{blog.Title, blog.Date, blog.MainImage, blog.Subheading, blog.Body, id}
 	}
 
@@ -110,7 +110,7 @@ func (store *BlogStoreImpl) UpdateBlog(id string, blog *types.Blog) error {
 }
 
 func (store *BlogStoreImpl) DeleteBlog(id string) error {
-	query := `DELETE FROM "Blog" WHERE "id" = $1`
+	query := `DELETE FROM "Blog" WHERE "id" = ?`
 
 	_, err := store.database.Exec(query, id)
 	if err != nil {
