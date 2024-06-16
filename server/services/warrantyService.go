@@ -1,6 +1,7 @@
 package services
 
 import (
+	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"github.com/sean-david-welch/farmec-v2/server/stores"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
@@ -14,7 +15,9 @@ type WarrantyService interface {
 }
 
 type WarrantyServiceImpl struct {
-	store stores.WarrantyStore
+	secrets   *lib.Secrets
+	emailAuth lib.EmailAuth
+	store     stores.WarrantyStore
 }
 
 func NewWarrantyService(store stores.WarrantyStore) *WarrantyServiceImpl {

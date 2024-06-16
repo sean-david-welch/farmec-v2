@@ -8,8 +8,8 @@ import (
 )
 
 func InitContact(router *gin.Engine, secrets *lib.Secrets) {
-	loginAuth := lib.NewLoginAuth(secrets.EmailUser, secrets.EmailPass)
-	service := services.NewContactService(secrets, loginAuth)
+	emailAuth := lib.NewLoginAuth(secrets.EmailUser, secrets.EmailPass)
+	service := services.NewContactService(secrets, emailAuth)
 	handler := handlers.NewContactHandler(service)
 
 	ContactRoutes(router, handler)

@@ -13,24 +13,24 @@ import (
 )
 
 type ContactService interface {
-	SendEmail(data *types.EmailData) error
+	SendContactEmail(data *types.EmailData) error
 	SetupSMTPClient() (*smtp.Client, error)
-	SendMessage(client *smtp.Client, data *types.EmailData) error
+	ContactFormNotification(client *smtp.Client, data *types.EmailData) error
 }
 
 type ContactServiceImpl struct {
 	secrets   *lib.Secrets
-	loginAuth lib.EmailAuth
+	emailAuth lib.EmailAuth
 }
 
-func NewContactService(secrets *lib.Secrets, loginAuth lib.EmailAuth) *ContactServiceImpl {
+func NewContactService(secrets *lib.Secrets, emailAuth lib.EmailAuth) *ContactServiceImpl {
 	return &ContactServiceImpl{
 		secrets:   secrets,
-		loginAuth: loginAuth,
+		emailAuth: emailAuth,
 	}
 }
 
-func (service *ContactServiceImpl) SendEmail(data *types.EmailData) error {
+func (service *ContactServiceImpl) SendContactEmail(data *types.EmailData) error {
 	client, err := service.SetupSMTPClient()
 	if err != nil {
 		log.Println("SMTP setup error:", err)
@@ -43,7 +43,7 @@ func (service *ContactServiceImpl) SendEmail(data *types.EmailData) error {
 		}
 	}(client)
 
-	if err := service.SendMessage(client, data); err != nil {
+	if err := service.ContactFormNotification(client, data); err != nil {
 		log.Println("Error sending email:", err)
 		return err
 	}
@@ -75,7 +75,7 @@ func (service *ContactServiceImpl) SetupSMTPClient() (*smtp.Client, error) {
 		return nil, err
 	}
 
-	if err = client.Auth(service.loginAuth); err != nil {
+	if err = client.Auth(service.emailAuth); err != nil {
 		err := client.Close()
 		if err != nil {
 			return nil, err
@@ -86,7 +86,7 @@ func (service *ContactServiceImpl) SetupSMTPClient() (*smtp.Client, error) {
 	return client, nil
 }
 
-func (service *ContactServiceImpl) SendMessage(client *smtp.Client, data *types.EmailData) error {
+func (service *ContactServiceImpl) ContactFormNotification(client *smtp.Client, data *types.EmailData) error {
 	msg := fmt.Sprintf("Subject: New Contact Form From %s--%s\r\n\r\n%s", data.Name, data.Email, data.Message)
 
 	if err := client.Mail(service.secrets.EmailUser); err != nil {

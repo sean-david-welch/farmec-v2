@@ -26,7 +26,7 @@ func (handler *ContactHandler) SendEmail(context *gin.Context) {
 		return
 	}
 
-	if err := handler.service.SendEmail(data); err != nil {
+	if err := handler.service.SendContactEmail(data); err != nil {
 		log.Printf("internal server error: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "internal server error"})
 		return
