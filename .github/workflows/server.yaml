@@ -28,13 +28,9 @@ jobs:
             - name: Build Go binary with verbose output
               run: |
                   cd server
-                  CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -v -o main -ldflags '-extldflags "-static"'
+                  GOOS=linux GOARCH=amd64 CGO_ENABLED=1 CC=x86_64-linux-gnu-gcc go build -o main
               env:
                   CGO_ENABLED: '1'
-
-            - name: Inspect binary with ldd
-              run: |
-                  ldd server/main
 
             - name: Upload artifact
               uses: actions/upload-artifact@v2
