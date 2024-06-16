@@ -1,9 +1,7 @@
 package services
 
 import (
-	"fmt"
 	"github.com/sean-david-welch/farmec-v2/server/lib"
-	"io"
 	"log"
 	"net/smtp"
 
@@ -40,38 +38,9 @@ func (service *ContactServiceImpl) SendContactEmail(data *types.EmailData) error
 		}
 	}(client)
 
-	if err := service.ContactFormNotification(client, data); err != nil {
+	if err := service.smtpClient.SendFormNotification(client, data, "Contact"); err != nil {
 		log.Println("Error sending email:", err)
 		return err
 	}
-
-	return nil
-}
-
-func (service *ContactServiceImpl) ContactFormNotification(client *smtp.Client, data *types.EmailData) error {
-	msg := fmt.Sprintf("Subject: New Contact Form From %s--%s\r\n\r\n%s", data.Name, data.Email, data.Message)
-
-	if err := client.Mail(service.secrets.EmailUser); err != nil {
-		return err
-	}
-	if err := client.Rcpt(service.secrets.EmailUser); err != nil {
-		return err
-	}
-
-	wc, err := client.Data()
-	if err != nil {
-		return err
-	}
-	defer func(wc io.WriteCloser) {
-		err := wc.Close()
-		if err != nil {
-			return
-		}
-	}(wc)
-
-	if _, err := wc.Write([]byte(msg)); err != nil {
-		return err
-	}
-
 	return nil
 }

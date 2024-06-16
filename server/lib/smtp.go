@@ -2,15 +2,20 @@ package lib
 
 import (
 	"crypto/tls"
+	"fmt"
+	"github.com/sean-david-welch/farmec-v2/server/types"
+	"io"
 	"net"
 	"net/smtp"
 )
 
 type SMTPClient interface {
 	SetupSMTPClient() (*smtp.Client, error)
+	SendFormNotification(client *smtp.Client, data *types.EmailData, form string) error
 }
 
 type SMTPClientImpl struct {
+	secrets   *Secrets
 	emailAuth EmailAuth
 }
 
@@ -47,4 +52,32 @@ func (service *SMTPClientImpl) SetupSMTPClient() (*smtp.Client, error) {
 	}
 
 	return client, nil
+}
+
+func (service *SMTPClientImpl) SendFormNotification(client *smtp.Client, data *types.EmailData, form string) error {
+	msg := fmt.Sprintf("Subject: New %s Form from %s--%s\r\n\r\n%s", form, data.Name, data.Email, data.Message)
+
+	if err := client.Mail(service.secrets.EmailUser); err != nil {
+		return err
+	}
+	if err := client.Rcpt(service.secrets.EmailUser); err != nil {
+		return err
+	}
+
+	wc, err := client.Data()
+	if err != nil {
+		return err
+	}
+	defer func(wc io.WriteCloser) {
+		err := wc.Close()
+		if err != nil {
+			return
+		}
+	}(wc)
+
+	if _, err := wc.Write([]byte(msg)); err != nil {
+		return err
+	}
+
+	return nil
 }
