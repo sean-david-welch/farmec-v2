@@ -2,7 +2,6 @@ package services
 
 import (
 	"github.com/sean-david-welch/farmec-v2/server/lib"
-	"log"
 	"net/smtp"
 
 	"github.com/sean-david-welch/farmec-v2/server/types"
@@ -28,7 +27,6 @@ func NewContactService(secrets *lib.Secrets, smtpClient lib.SMTPClient) *Contact
 func (service *ContactServiceImpl) SendContactEmail(data *types.EmailData) error {
 	client, err := service.smtpClient.SetupSMTPClient()
 	if err != nil {
-		log.Println("SMTP setup error:", err)
 		return err
 	}
 	defer func(client *smtp.Client) {
@@ -39,7 +37,6 @@ func (service *ContactServiceImpl) SendContactEmail(data *types.EmailData) error
 	}(client)
 
 	if err := service.smtpClient.SendFormNotification(client, data, "Contact"); err != nil {
-		log.Println("Error sending email:", err)
 		return err
 	}
 	return nil
