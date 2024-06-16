@@ -33,7 +33,6 @@ type Secrets struct {
 }
 
 func NewSecrets() (*Secrets, error) {
-
 	env := os.Getenv("ENV")
 	if env != "production" {
 		if err := godotenv.Load(".env"); err != nil {

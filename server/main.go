@@ -23,12 +23,6 @@ func main() {
 		log.Fatal("Error loading configuration: ", err)
 	}
 
-	cwd, err := os.Getwd()
-	if err != nil {
-		log.Fatal("Error getting current working directory: ", err)
-	}
-	log.Println("Current working directory:", cwd)
-
 	var database *sql.DB
 	var connectionString string
 
@@ -53,9 +47,6 @@ func main() {
 		log.Fatal("Failed to initialize Firebase: ", err)
 	}
 
-	adminMiddleware := middleware.NewAdminMiddleware(firebase)
-	authMiddleware := middleware.NewAuthMiddleware(firebase)
-
 	corsConfig := cors.DefaultConfig()
 	if env == "production" {
 		corsConfig.AllowOrigins = []string{
@@ -74,8 +65,9 @@ func main() {
 	corsConfig.AllowCredentials = true
 
 	router := gin.Default()
+	authMiddleware := middleware.NewAuthMiddleware(firebase)
+	adminMiddleware := middleware.NewAdminMiddleware(firebase)
 	router.Use(gin.Logger(), gin.Recovery(), cors.New(corsConfig))
-
 	routes.InitRoutes(router, database, secrets, s3Client, adminMiddleware, authMiddleware, firebase)
 
 	if env == "production" {
