@@ -139,8 +139,6 @@ func TestCreateBlog(t *testing.T) {
 		}
 	}(resp.Body)
 
-	assert.Equal(t, http.StatusOK, resp.StatusCode)
-
 	var count int
 	err = db.QueryRow(`SELECT COUNT(*) FROM Blog WHERE Title = ?`, "New Blog").Scan(&count)
 	if err != nil {
@@ -148,4 +146,5 @@ func TestCreateBlog(t *testing.T) {
 	}
 
 	assert.Equal(t, 1, count)
+	assert.Equal(t, http.StatusOK, resp.StatusCode)
 }
