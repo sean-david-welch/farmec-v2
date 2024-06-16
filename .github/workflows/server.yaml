@@ -56,7 +56,7 @@ jobs:
                   key: ${{ secrets.SSH_PRIVATE_KEY }}
                   port: ${{ secrets.SSH_PORT }}
                   script: |
-                      echo ${{ secrets.SUDO_PASSWORD }} | sudo -S rm -f /home/seanwelch/bin/main
+                      echo ${{ secrets.SUDO_PASSWORD }} | sudo -S rm -f /home/seanwelch/bin/main || true
 
             - name: Copy files to EC2
               uses: appleboy/scp-action@master
