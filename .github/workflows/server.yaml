@@ -56,7 +56,7 @@ jobs:
                   key: ${{ secrets.SSH_PRIVATE_KEY }}
                   port: ${{ secrets.SSH_PORT }}
                   source: main
-                  target: /home/seanwelch/bin/main
+                  target: /home/seanwelch/bin/
 
             - name: Deploy and restart service
               uses: appleboy/ssh-action@master
