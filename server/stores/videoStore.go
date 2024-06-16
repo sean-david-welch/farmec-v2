@@ -28,7 +28,7 @@ func NewVideoStore(database *sql.DB) *VideoStoreImpl {
 func (store *VideoStoreImpl) GetVideos(id string) ([]types.Video, error) {
 	var videos []types.Video
 
-	query := `SELECT * FROM "Video" WHERE "supplier_id" = $1`
+	query := `SELECT * FROM "Video" WHERE "supplier_id" = ?`
 	rows, err := store.database.Query(query, id)
 	if err != nil {
 		return nil, fmt.Errorf("error executing query: %w", err)
@@ -62,7 +62,7 @@ func (store *VideoStoreImpl) CreateVideo(video *types.Video) error {
 	video.ID = uuid.NewString()
 	video.Created = time.Now().String()
 
-	query := `INSERT INTO "Video" ("id", "supplier_id", "web_url", "title", "description", "video_id", "thumbnail_url", "created") VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`
+	query := `INSERT INTO "Video" ("id", "supplier_id", "web_url", "title", "description", "video_id", "thumbnail_url", "created") VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
 	_, err := store.database.Exec(query, video.ID, video.SupplierID, video.WebURL, video.Title, video.Description, video.VideoID, video.ThumbnailURL, video.Created)
 
 	if err != nil {
@@ -73,7 +73,7 @@ func (store *VideoStoreImpl) CreateVideo(video *types.Video) error {
 }
 
 func (store *VideoStoreImpl) UpdateVideo(id string, video *types.Video) error {
-	query := `UPDATE "Video" SET "supplier_id" = $1, "web_url" = $2, "title" = $3, "description" = $4, "video_id" = $5, "thumbnail_url" = $6 WHERE "id" = $7`
+	query := `UPDATE "Video" SET "supplier_id" = ?, "web_url" = ?, "title" = ?, "description" = ?, "video_id" = ?, "thumbnail_url" = ? WHERE "id" = ?`
 
 	_, err := store.database.Exec(query, video.SupplierID, video.WebURL, video.Title, video.Description, video.VideoID, video.ThumbnailURL, id)
 
@@ -85,7 +85,7 @@ func (store *VideoStoreImpl) UpdateVideo(id string, video *types.Video) error {
 }
 
 func (store *VideoStoreImpl) DeleteVideo(id string) error {
-	query := `DELETE FROM "Video" WHERE "id" = $1`
+	query := `DELETE FROM "Video" WHERE "id" = ?`
 
 	_, err := store.database.Exec(query, id)
 	if err != nil {

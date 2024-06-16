@@ -59,7 +59,7 @@ func (store *TimelineStoreImpl) CreateTimeline(timeline *types.Timeline) error {
 	timeline.ID = uuid.NewString()
 	timeline.Created = time.Now().String()
 
-	query := `INSERT INTO "Timeline" (id, title, date, body, created) VALUES ($1, $2, $3, $4, $5)`
+	query := `INSERT INTO "Timeline" (id, title, date, body, created) VALUES (?, ?, ?, ?, ?)`
 
 	_, err := store.database.Exec(query, timeline.ID, timeline.Title, timeline.Date, timeline.Body, timeline.Created)
 	if err != nil {
@@ -70,7 +70,7 @@ func (store *TimelineStoreImpl) CreateTimeline(timeline *types.Timeline) error {
 }
 
 func (store *TimelineStoreImpl) UpdateTimeline(id string, timeline *types.Timeline) error {
-	query := `UPDATE "Timeline" SET title = $1, data = %2, body = $3 WHERE "id" = $4`
+	query := `UPDATE "Timeline" SET title = ?, data = %2, body = ? WHERE "id" = ?`
 
 	_, err := store.database.Exec(query, timeline.Title, timeline.Date, timeline.Body, id)
 	if err != nil {
@@ -81,7 +81,7 @@ func (store *TimelineStoreImpl) UpdateTimeline(id string, timeline *types.Timeli
 }
 
 func (store *TimelineStoreImpl) DeleteTimeline(id string) error {
-	query := `DELETE FROM "Timeline" WHERE "id" = $1`
+	query := `DELETE FROM "Timeline" WHERE "id" = ?`
 
 	_, err := store.database.Exec(query, id)
 	if err != nil {

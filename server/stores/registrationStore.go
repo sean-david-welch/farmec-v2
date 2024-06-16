@@ -68,7 +68,7 @@ func (store *RegistrationStoreImpl) GetRegistrations() ([]types.MachineRegistrat
 func (store *RegistrationStoreImpl) GetRegistrationById(id string) (*types.MachineRegistration, error) {
 	var registration types.MachineRegistration
 
-	query := `SELECT * FROM "MachineRegistration" WHERE "id" = $1`
+	query := `SELECT * FROM "MachineRegistration" WHERE "id" = ?`
 	row := store.database.QueryRow(query, id)
 
 	if err := row.Scan(
@@ -94,7 +94,7 @@ func (store *RegistrationStoreImpl) CreateRegistration(registration *types.Machi
         "serial_number", "install_date", "invoice_number", "complete_supply", "pdi_complete", 
         "pto_correct", "machine_test_run", "safety_induction", "operator_handbook", "date", 
         "completed_by", "created"
-    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)`
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 
 	_, err := store.database.Exec(
 		query,
@@ -114,11 +114,11 @@ func (store *RegistrationStoreImpl) CreateRegistration(registration *types.Machi
 
 func (store *RegistrationStoreImpl) UpdateRegistration(id string, registration *types.MachineRegistration) error {
 	query := `UPDATE "MachineRegistration" SET 
-	"dealer_name" = $2, "dealer_address" = $3, "owner_name" = $4, "owner_address" = $5, 
-	"machine_model" = $6, "serial_number" = $7, "install_date" = $8, "invoice_number" = $9, 
-	"complete_supply" = $10, "pdi_complete" = $11, "pto_correct" = $12, "machine_test_run" = $13, 
-	"safety_induction" = $14, "operator_handbook" = $15, "date" = $16, "completed_by" = $17, 
-	WHERE "id" = $1`
+	"dealer_name" = ?, "dealer_address" = ?, "owner_name" = ?, "owner_address" = ?, 
+	"machine_model" = ?, "serial_number" = ?, "install_date" = ?, "invoice_number" = ?, 
+	"complete_supply" = ?, "pdi_complete" = ?, "pto_correct" = ?, "machine_test_run" = ?, 
+	"safety_induction" = ?, "operator_handbook" = ?, "date" = ?, "completed_by" = ?, 
+	WHERE "id" = ?`
 
 	_, err := store.database.Exec(
 		query,
@@ -137,7 +137,7 @@ func (store *RegistrationStoreImpl) UpdateRegistration(id string, registration *
 }
 
 func (store *RegistrationStoreImpl) DeleteRegistration(id string) error {
-	query := `DELETE FROM "MachineRegistration" WHERE "id" = $1`
+	query := `DELETE FROM "MachineRegistration" WHERE "id" = ?`
 
 	_, err := store.database.Exec(query, id)
 	if err != nil {

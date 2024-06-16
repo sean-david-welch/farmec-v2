@@ -61,7 +61,7 @@ func (store *WarrantyStoreImpl) GetWarrantyById(id string) (*types.WarrantyClaim
 	var warranty types.WarrantyClaim
 	var parts []types.PartsRequired
 
-	warrantyQuery := `SELECT * FROM "WarrantyClaim" WHERE "id" = $1`
+	warrantyQuery := `SELECT * FROM "WarrantyClaim" WHERE "id" = ?`
 
 	row := store.database.QueryRow(warrantyQuery, id)
 
@@ -72,7 +72,7 @@ func (store *WarrantyStoreImpl) GetWarrantyById(id string) (*types.WarrantyClaim
 		return nil, nil, fmt.Errorf("error while querying database: %w", err)
 	}
 
-	partsQuery := `SELECT * FROM "PartsRequired" WHERE "warranty_id" = $1`
+	partsQuery := `SELECT * FROM "PartsRequired" WHERE "warranty_id" = ?`
 	rows, err := store.database.Query(partsQuery, id)
 	if err != nil {
 		return nil, nil, fmt.Errorf("error querying parts required from database: %w", err)
@@ -111,7 +111,7 @@ func (store *WarrantyStoreImpl) CreateWarranty(warranty *types.WarrantyClaim, pa
 
 	warrantyQuery := `INSERT INTO "WarrantyClaim"
 	(id, dealer, dealer_contact, owner_name, machine_model, serial_number, install_date, failure_date, repair_date, failure_details, repair_details, labour_hours, completed_by, created)
-	VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)`
+	VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 
 	_, err = transaction.Exec(
 		warrantyQuery, warranty.ID, warranty.Dealer, warranty.DealerContact, warranty.OwnerName,
@@ -127,7 +127,7 @@ func (store *WarrantyStoreImpl) CreateWarranty(warranty *types.WarrantyClaim, pa
 	}
 
 	partsQuery := `INSERT INTO "PartsRequired"
-	(id, "warranty_id", part_number, quantity_needed, invoice_number, description) VALUES ($1, $2, $3, $4, $5, $6)`
+	(id, "warranty_id", part_number, quantity_needed, invoice_number, description) VALUES (?, ?, ?, ?, ?, ?)`
 
 	for _, part := range parts {
 		part.ID = uuid.NewString()
@@ -157,9 +157,9 @@ func (store *WarrantyStoreImpl) UpdateWarranty(id string, warranty *types.Warran
 	}
 
 	warrantyQuery := `UPDATE "WarrantyClaim" SET
-    dealer = $2, dealer_contact = $3, owner_name = $4, machine_model = $5, serial_number = $6,
-    install_date = $7, failure_date = $8, repair_date = $9, failure_details = $10, repair_details = $11,
-    labour_hours = $12, completed_by = $13, created = $14 WHERE id = $1`
+    dealer = ?, dealer_contact = ?, owner_name = ?, machine_model = ?, serial_number = ?,
+    install_date = ?, failure_date = ?, repair_date = ?, failure_details = ?, repair_details = ?,
+    labour_hours = ?, completed_by = ?, created = ? WHERE id = ?`
 
 	_, err = transaction.Exec(
 		warrantyQuery, id, warranty.Dealer, warranty.DealerContact, warranty.OwnerName,
@@ -174,7 +174,7 @@ func (store *WarrantyStoreImpl) UpdateWarranty(id string, warranty *types.Warran
 		return err
 	}
 
-	deleteQuery := `DELETE FROM "PartsRequired" WHERE warranty_id = $1`
+	deleteQuery := `DELETE FROM "PartsRequired" WHERE warranty_id = ?`
 	_, err = transaction.Exec(deleteQuery, id)
 	if err != nil {
 		err := transaction.Rollback()
@@ -185,7 +185,7 @@ func (store *WarrantyStoreImpl) UpdateWarranty(id string, warranty *types.Warran
 	}
 
 	partsQuery := `INSERT INTO "PartsRequired"
-	(id, warranty_id, part_number, quantity_needed, invoice_number, description) VALUES ($1, $2, $3, $4, $5, $6)`
+	(id, warranty_id, part_number, quantity_needed, invoice_number, description) VALUES (?, ?, ?, ?, ?, ?)`
 
 	for _, part := range parts {
 		part.ID = uuid.NewString()
@@ -213,7 +213,7 @@ func (store *WarrantyStoreImpl) DeleteWarranty(id string) error {
 		return err
 	}
 
-	deleteParts := `DELETE FROM "PartsRequired" WHERE "warranty_id" = $1`
+	deleteParts := `DELETE FROM "PartsRequired" WHERE "warranty_id" = ?`
 	_, err = transaction.Exec(deleteParts, id)
 	if err != nil {
 		err := transaction.Rollback()
@@ -224,7 +224,7 @@ func (store *WarrantyStoreImpl) DeleteWarranty(id string) error {
 		return err
 	}
 
-	deleteWarranty := `DELETE FROM "WarrantyClaim" WHERE "id" = $1`
+	deleteWarranty := `DELETE FROM "WarrantyClaim" WHERE "id" = ?`
 	_, err = transaction.Exec(deleteWarranty, id)
 	if err != nil {
 		err := transaction.Rollback()

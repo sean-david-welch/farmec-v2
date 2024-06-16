@@ -60,7 +60,7 @@ func (store *TermsStoreImpl) CreateTerm(term *types.Terms) error {
 	term.ID = uuid.NewString()
 	term.Created = time.Now().String()
 
-	query := `INSERT INTO "Terms" (id, title, body, created) VALUES ($1, $2, $3, $4)`
+	query := `INSERT INTO "Terms" (id, title, body, created) VALUES (?, ?, ?, ?)`
 
 	_, err := store.database.Exec(query, term.ID, term.Title, term.Body, term.Created)
 	if err != nil {
@@ -71,7 +71,7 @@ func (store *TermsStoreImpl) CreateTerm(term *types.Terms) error {
 }
 
 func (store *TermsStoreImpl) UpdateTerm(id string, term *types.Terms) error {
-	query := `UPDATE "Terms" SET title = $1, body = $2 where id = $3`
+	query := `UPDATE "Terms" SET title = ?, body = ? where id = ?`
 
 	_, err := store.database.Exec(query, term.Title, term.Body, id)
 	if err != nil {
@@ -82,7 +82,7 @@ func (store *TermsStoreImpl) UpdateTerm(id string, term *types.Terms) error {
 }
 
 func (store *TermsStoreImpl) DeleteTerm(id string) error {
-	query := `DELETE FROM "Terms" WHERE "id" = $1`
+	query := `DELETE FROM "Terms" WHERE "id" = ?`
 
 	_, err := store.database.Exec(query, id)
 	if err != nil {
