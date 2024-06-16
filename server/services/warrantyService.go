@@ -16,13 +16,12 @@ type WarrantyService interface {
 }
 
 type WarrantyServiceImpl struct {
-	secrets    *lib.Secrets
 	smtpClient lib.SMTPClient
 	store      stores.WarrantyStore
 }
 
-func NewWarrantyService(store stores.WarrantyStore, smtpClient lib.SMTPClient, secrets *lib.Secrets) *WarrantyServiceImpl {
-	return &WarrantyServiceImpl{store: store, smtpClient: smtpClient, secrets: secrets}
+func NewWarrantyService(store stores.WarrantyStore, smtpClient lib.SMTPClient) *WarrantyServiceImpl {
+	return &WarrantyServiceImpl{store: store, smtpClient: smtpClient}
 }
 
 func (service *WarrantyServiceImpl) GetWarranties() ([]types.DealerOwnerInfo, error) {

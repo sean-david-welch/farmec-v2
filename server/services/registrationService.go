@@ -1,8 +1,10 @@
 package services
 
 import (
+	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"github.com/sean-david-welch/farmec-v2/server/stores"
 	"github.com/sean-david-welch/farmec-v2/server/types"
+	"net/smtp"
 )
 
 type RegistrationService interface {
@@ -14,11 +16,12 @@ type RegistrationService interface {
 }
 
 type RegistrationServiceImpl struct {
-	store stores.RegistrationStore
+	smtpClient lib.SMTPClient
+	store      stores.RegistrationStore
 }
 
-func NewRegistrationService(store stores.RegistrationStore) *RegistrationServiceImpl {
-	return &RegistrationServiceImpl{store: store}
+func NewRegistrationService(store stores.RegistrationStore, smtpClient lib.SMTPClient) *RegistrationServiceImpl {
+	return &RegistrationServiceImpl{store: store, smtpClient: smtpClient}
 }
 
 func (service *RegistrationServiceImpl) GetRegistrations() ([]types.MachineRegistration, error) {
@@ -44,11 +47,53 @@ func (service *RegistrationServiceImpl) CreateRegistration(registration *types.M
 		return err
 	}
 
+	client, err := service.smtpClient.SetupSMTPClient()
+	if err != nil {
+		return err
+	}
+	defer func(client *smtp.Client) {
+		err := client.Close()
+		if err != nil {
+			return
+		}
+	}(client)
+
+	data := &types.EmailData{
+		Name:    registration.OwnerName,
+		Email:   registration.DealerName,
+		Message: registration.MachineModel,
+	}
+
+	if err := service.smtpClient.SendFormNotification(client, data, "Machine Registration"); err != nil {
+		return err
+	}
+
 	return nil
 }
 
 func (service *RegistrationServiceImpl) UpdateRegistration(id string, registration *types.MachineRegistration) error {
 	if err := service.store.UpdateRegistration(id, registration); err != nil {
+		return err
+	}
+
+	client, err := service.smtpClient.SetupSMTPClient()
+	if err != nil {
+		return err
+	}
+	defer func(client *smtp.Client) {
+		err := client.Close()
+		if err != nil {
+			return
+		}
+	}(client)
+
+	data := &types.EmailData{
+		Name:    registration.OwnerName,
+		Email:   registration.DealerName,
+		Message: registration.MachineModel,
+	}
+
+	if err := service.smtpClient.SendFormNotification(client, data, "Machine Registration"); err != nil {
 		return err
 	}
 
