@@ -1,16 +1,45 @@
 name: Deploy Go Application
+
 on:
     push:
         branches:
             - main
         paths:
             - server/**
+
 jobs:
-    deploy:
+    build:
         runs-on: ubuntu-latest
+
         steps:
             - name: Checkout code
               uses: actions/checkout@v2
+
+            - name: Set up Go
+              uses: actions/setup-go@v2
+              with:
+                  go-version: '1.23'
+
+            - name: Build Go binary
+              run: |
+                  cd server
+                  CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -o main
+
+            - name: Upload artifact
+              uses: actions/upload-artifact@v2
+              with:
+                  name: go-binary
+                  path: server/main
+
+    deploy:
+        runs-on: ubuntu-latest
+        needs: build
+
+        steps:
+            - name: Download artifact
+              uses: actions/download-artifact@v2
+              with:
+                  name: go-binary
 
             - name: Copy files to EC2
               uses: appleboy/scp-action@master
@@ -19,14 +48,10 @@ jobs:
                   username: ${{ secrets.EC2_USER }}
                   key: ${{ secrets.SSH_PRIVATE_KEY }}
                   port: ${{ secrets.SSH_PORT }}
-                  source: server/
-                  target: /home/seanwelch/
-                  script: |
-                      echo "Listing files in /home/seanwelch/"
-                      ls -lah /home/seanwelch/
-                      cd /home/seanwelch/server
+                  source: main
+                  target: /home/seanwelch/bin/main
 
-            - name: Build Go binary, restart application and Nginx
+            - name: Deploy and restart service
               uses: appleboy/ssh-action@master
               with:
                   host: ${{ secrets.EC2_HOST }}
@@ -34,9 +59,7 @@ jobs:
                   key: ${{ secrets.SSH_PRIVATE_KEY }}
                   port: ${{ secrets.SSH_PORT }}
                   script: |
-                      cd /home/seanwelch/server
-                      source ~/.profile
-                      CGO_ENABLED=1 go build -o /home/seanwelch/bin/main
                       echo ${{ secrets.SUDO_PASSWORD }} | sudo -S systemctl stop farmec.service
+                      sudo cp /home/seanwelch/bin/main /path/to/your/application/directory/
                       echo ${{ secrets.SUDO_PASSWORD }} | sudo -S systemctl start farmec.service
                       echo ${{ secrets.SUDO_PASSWORD }} | sudo -S systemctl restart nginx
