@@ -2,12 +2,10 @@ package main
 
 import (
 	"database/sql"
-	"log"
-	"os"
-	"path/filepath"
-
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"log"
+	"os"
 
 	_ "github.com/mattn/go-sqlite3"
 
@@ -31,10 +29,7 @@ func main() {
 	}
 	log.Println("Current working directory:", cwd)
 
-	databasePath := filepath.Join(cwd, "database/database.db")
-	log.Println("Database path:", databasePath)
-
-	database, err := sql.Open("sqlite3", databasePath)
+	database, err := sql.Open("sqlite3", "/home/seanwelch/server/bin/database/database.db")
 	if err != nil {
 		log.Fatal(err)
 	}
