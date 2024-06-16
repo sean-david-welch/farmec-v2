@@ -41,6 +41,11 @@ jobs:
               with:
                   name: go-binary
 
+            - name: Extract binary
+              run: |
+                  mkdir -p extracted
+                  tar -xzf main -C extracted
+
             - name: Copy files to EC2
               uses: appleboy/scp-action@master
               with:
@@ -48,8 +53,8 @@ jobs:
                   username: ${{ secrets.EC2_USER }}
                   key: ${{ secrets.SSH_PRIVATE_KEY }}
                   port: ${{ secrets.SSH_PORT }}
-                  source: main
-                  target: /home/seanwelch/bin/main
+                  source: extracted/main
+                  target: /home/seanwelch/server/bin/main
 
             - name: Deploy and restart service
               uses: appleboy/ssh-action@master
