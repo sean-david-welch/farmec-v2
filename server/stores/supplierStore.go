@@ -87,7 +87,7 @@ func (store *SupplierStoreImpl) CreateSupplier(supplier *types.Supplier) error {
 
 	query := `INSERT INTO "Supplier" 
 	(id, name, logo_image, marketing_image, description, social_facebook, social_instagram, social_linkedin, social_twitter, social_youtube, social_website, created) 
-	VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`
+	VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 
 	_, err := store.database.Exec(query, supplier.ID, supplier.Name, supplier.LogoImage, supplier.MarketingImage, supplier.Description, supplier.SocialFacebook, supplier.SocialInstagram, supplier.SocialLinkedin, supplier.SocialTwitter, supplier.SocialYoutube, supplier.SocialWebsite, supplier.Created)
 
@@ -99,7 +99,7 @@ func (store *SupplierStoreImpl) CreateSupplier(supplier *types.Supplier) error {
 }
 
 func (store *SupplierStoreImpl) GetSupplierById(id string) (*types.Supplier, error) {
-	query := `SELECT * FROM "Supplier" WHERE id = $1`
+	query := `SELECT * FROM "Supplier" WHERE id = ?`
 	row := store.database.QueryRow(query, id)
 
 	var supplier types.Supplier
@@ -118,30 +118,30 @@ func (store *SupplierStoreImpl) GetSupplierById(id string) (*types.Supplier, err
 
 func (store *SupplierStoreImpl) UpdateSupplier(id string, supplier *types.Supplier) error {
 	query := `UPDATE "Supplier" SET 
-                name = $1,  
-                description = $2, 
-                social_facebook = $3, 
-                social_instagram = $4, 
-                social_linkedin = $5, 
-                social_twitter = $6, 
-                social_youtube = $7, 
-                social_website = $8 
-                WHERE id = $9`
+                name = ?,  
+                description = ?, 
+                social_facebook = ?, 
+                social_instagram = ?, 
+                social_linkedin = ?, 
+                social_twitter = ?, 
+                social_youtube = ?, 
+                social_website = ? 
+                WHERE id = ?`
 	args := []interface{}{supplier.Name, supplier.Description, supplier.SocialFacebook, supplier.SocialInstagram, supplier.SocialLinkedin, supplier.SocialTwitter, supplier.SocialYoutube, supplier.SocialWebsite, id}
 
 	if supplier.LogoImage != "" && supplier.LogoImage != "null" && supplier.MarketingImage != "" && supplier.MarketingImage != "null" {
 		query = `UPDATE "Supplier" SET 
-		name = $1, 
-		logo_image = $2, 
-		marketing_image = $3, 
-		description = $4, 
-		social_facebook = $5, 
-		social_instagram = $6, 
-		social_linkedin = $7, 
-		social_twitter = $8, 
-		social_youtube = $9, 
-		social_website = $10 
-		WHERE id = $11`
+		name = ?, 
+		logo_image = ?, 
+		marketing_image = ?, 
+		description = ?, 
+		social_facebook = ?, 
+		social_instagram = ?, 
+		social_linkedin = ?, 
+		social_twitter = ?, 
+		social_youtube = ?, 
+		social_website = ? 
+		WHERE id = ?`
 		args = []interface{}{supplier.Name, supplier.LogoImage, supplier.MarketingImage, supplier.Description, supplier.SocialFacebook, supplier.SocialInstagram, supplier.SocialLinkedin, supplier.SocialTwitter, supplier.SocialYoutube, supplier.SocialWebsite, id}
 	}
 
@@ -155,7 +155,7 @@ func (store *SupplierStoreImpl) UpdateSupplier(id string, supplier *types.Suppli
 }
 
 func (store *SupplierStoreImpl) DeleteSupplier(id string) error {
-	query := `DELETE FROM "Supplier" WHERE id = $1`
+	query := `DELETE FROM "Supplier" WHERE id = ?`
 
 	_, err := store.database.Exec(query, id)
 
