@@ -29,15 +29,19 @@ func main() {
 	}
 	log.Println("Current working directory:", cwd)
 
-	database, err := sql.Open("sqlite3", "/home/seanwelch/server/bin/database/database.db")
+	var database *sql.DB
+	var connectionString string
+
+	if env == "production" {
+		connectionString = "/home/seanwelch/server/bin/database/database.db"
+	} else {
+		connectionString = "./database/database.db"
+	}
+
+	database, err = sql.Open("sqlite3", connectionString)
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer func() {
-		if err := database.Close(); err != nil {
-			log.Fatal("Failed to close database: ", err)
-		}
-	}()
 
 	s3Client, err := lib.NewS3Client("eu-west-1", secrets.AwsAccessKey, secrets.AwsSecret)
 	if err != nil {
