@@ -27,8 +27,7 @@ func setupTestDB() (*sql.DB, error) {
 		return nil, err
 	}
 
-	schema := `
-	CREATE TABLE Blog (
+	schema := `CREATE TABLE Blog (
 		ID INTEGER PRIMARY KEY AUTOINCREMENT,
 		Title TEXT,
 		Date TEXT,
@@ -108,7 +107,12 @@ func TestGetBlogs(t *testing.T) {
 
 func TestCreateBlog(t *testing.T) {
 	router, db := initializeHandler()
-	defer db.Close()
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
+			return
+		}
+	}(db)
 
 	server := httptest.NewServer(router)
 	defer server.Close()
@@ -127,7 +131,12 @@ func TestCreateBlog(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Request failed: %v", err)
 	}
-	defer resp.Body.Close()
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+			return
+		}
+	}(resp.Body)
 
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
 
