@@ -57,7 +57,7 @@ func (store *ExhibitionStoreImpl) CreateExhibition(exhibition *types.Exhibition)
 	exhibition.ID = uuid.NewString()
 	exhibition.Created = time.Now().String()
 
-	query := `INSERT INTO "Exhibition" (id, title, date, location, info, created) VALUES ($1, $2, $3, $4, $5, $6)`
+	query := `INSERT INTO "Exhibition" (id, title, date, location, info, created) VALUES (?, ?, ?, ?, ?, ?)`
 	_, err := store.database.Exec(query, exhibition.ID, exhibition.Title, exhibition.Date, exhibition.Location, exhibition.Info, exhibition.Created)
 	if err != nil {
 		return fmt.Errorf("error creating exhibition: %w", err)
@@ -67,7 +67,7 @@ func (store *ExhibitionStoreImpl) CreateExhibition(exhibition *types.Exhibition)
 }
 
 func (store *ExhibitionStoreImpl) UpdateExhibition(id string, exhibition *types.Exhibition) error {
-	query := `UPDATE "Exhibiton" SET "title" = $1, "date" = $2, "location" = $3, "info" = $4 WHERE "id" = $1`
+	query := `UPDATE "Exhibiton" SET "title" = ?, "date" = ?, "location" = ?, "info" = ? WHERE "id" = ?`
 
 	_, err := store.database.Exec(query, id, exhibition.Title, exhibition.Date, exhibition.Location, exhibition.Info)
 	if err != nil {
@@ -78,7 +78,7 @@ func (store *ExhibitionStoreImpl) UpdateExhibition(id string, exhibition *types.
 }
 
 func (store *ExhibitionStoreImpl) DeleteExhibition(id string) error {
-	query := `DELETE FROM "Exhibition" WHERE "id" = $1`
+	query := `DELETE FROM "Exhibition" WHERE "id" = ?`
 
 	_, err := store.database.Exec(query, id)
 	if err != nil {
