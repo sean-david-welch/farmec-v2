@@ -76,7 +76,7 @@ func (service *ProductServiceImpl) UpdateProduct(id string, product *types.Produ
 		product.ProductImage = imageUrl
 	}
 
-	err = service.store.UpdateMachine(id, product)
+	err = service.store.UpdateProduct(id, product)
 	if err != nil {
 		return nil, err
 	}

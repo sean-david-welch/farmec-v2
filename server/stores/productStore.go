@@ -2,6 +2,7 @@ package stores
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"log"
 
@@ -13,7 +14,7 @@ type ProductStore interface {
 	GetProducts(id string) ([]types.Product, error)
 	GetProductById(id string) (*types.Product, error)
 	CreateProduct(product *types.Product) error
-	UpdateMachine(id string, product *types.Product) error
+	UpdateProduct(id string, product *types.Product) error
 	DeleteProduct(id string) error
 }
 
@@ -45,7 +46,7 @@ func ScanProduct(row interface{}, product *types.Product) error {
 func (store *ProductStoreImpl) GetProducts(id string) ([]types.Product, error) {
 	var products []types.Product
 
-	query := `SELECT * FROM "Product" WHERE "machine_id" = $1`
+	query := `SELECT * FROM "Product" WHERE "machine_id" = ?`
 	rows, err := store.database.Query(query, id)
 	if err != nil {
 		return nil, fmt.Errorf("error executing query: %w", err)
@@ -75,13 +76,13 @@ func (store *ProductStoreImpl) GetProducts(id string) ([]types.Product, error) {
 }
 
 func (store *ProductStoreImpl) GetProductById(id string) (*types.Product, error) {
-	query := `SELECT * FROM "Product" WHERE "id" = $1`
+	query := `SELECT * FROM "Product" WHERE "id" = ?`
 	row := store.database.QueryRow(query, id)
 
 	var product types.Product
 
 	if err := ScanProduct(row, &product); err != nil {
-		if err == sql.ErrNoRows {
+		if errors.Is(err, sql.ErrNoRows) {
 			return nil, fmt.Errorf("error item found with the given id: %w", err)
 		}
 
@@ -95,7 +96,7 @@ func (store *ProductStoreImpl) CreateProduct(product *types.Product) error {
 	product.ID = uuid.NewString()
 
 	query := `INSERT INTO "Product" (id, machine_id, name, product_image, description, product_link)
-	VALUES ($1, $2, $3, $4, $5, $6)`
+	VALUES (?, ?, ?, ?, ?, ?)`
 
 	_, err := store.database.Exec(query, product.ID, product.MachineID, product.Name, product.ProductImage, product.Description, product.ProductLink)
 
@@ -106,12 +107,12 @@ func (store *ProductStoreImpl) CreateProduct(product *types.Product) error {
 	return nil
 }
 
-func (store *ProductStoreImpl) UpdateMachine(id string, product *types.Product) error {
-	query := `UPDATE "Product" SET machine_id = $1, name = $2, description = $3, product_link = $4 WHERE id = $6`
+func (store *ProductStoreImpl) UpdateProduct(id string, product *types.Product) error {
+	query := `UPDATE "Product" SET machine_id = ?, name = ?, description = ?, product_link = ? WHERE id = ?`
 	args := []interface{}{product.MachineID, product.Name, product.Description, product.ProductLink, id}
 
 	if product.ProductImage != "" && product.ProductImage != "null" {
-		query = `UPDATE "Product" SET machine_id = $1, name = $2, product_image = $3, description = $4, product_link = $5 WHERE id = $6`
+		query = `UPDATE "Product" SET machine_id = ?, name = ?, product_image = ?, description = ?, product_link = ? WHERE id = ?`
 		args = []interface{}{product.MachineID, product.Name, product.ProductImage, product.Description, product.ProductLink, id}
 
 	}
@@ -126,7 +127,7 @@ func (store *ProductStoreImpl) UpdateMachine(id string, product *types.Product) 
 }
 
 func (store *ProductStoreImpl) DeleteProduct(id string) error {
-	query := `DELETE FROM "Product" WHERE id = $1`
+	query := `DELETE FROM "Product" WHERE id = ?`
 
 	_, err := store.database.Exec(query, id)
 	if err != nil {

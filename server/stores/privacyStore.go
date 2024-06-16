@@ -60,7 +60,7 @@ func (store *PrivacyStoreImpl) CreatePrivacy(privacy *types.Privacy) error {
 	privacy.ID = uuid.NewString()
 	privacy.Created = time.Now().String()
 
-	query := `INSERT INTO "Privacy" (id, title, body, created) VALUES ($1, $2, $3, $4)`
+	query := `INSERT INTO "Privacy" (id, title, body, created) VALUES (?, ?, ?, ?)`
 
 	_, err := store.database.Exec(query, privacy.ID, privacy.Title, privacy.Body, privacy.Created)
 	if err != nil {
@@ -71,7 +71,7 @@ func (store *PrivacyStoreImpl) CreatePrivacy(privacy *types.Privacy) error {
 }
 
 func (store *PrivacyStoreImpl) UpdatePrivacy(id string, privacy *types.Privacy) error {
-	query := `UPDATE "Privacy" SET title = $1, body = $2 where id = $3`
+	query := `UPDATE "Privacy" SET title = ?, body = ? where id = ?`
 
 	_, err := store.database.Exec(query, privacy.Title, privacy.Body, id)
 	if err != nil {
@@ -82,7 +82,7 @@ func (store *PrivacyStoreImpl) UpdatePrivacy(id string, privacy *types.Privacy) 
 }
 
 func (store *PrivacyStoreImpl) DeletePrivacy(id string) error {
-	query := `DELETE FROM "Privacy" WHERE "id" = $1`
+	query := `DELETE FROM "Privacy" WHERE "id" = ?`
 
 	_, err := store.database.Exec(query, id)
 	if err != nil {
