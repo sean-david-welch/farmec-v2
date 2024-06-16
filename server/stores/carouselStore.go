@@ -58,7 +58,7 @@ func (store *CarouselStoreImpl) GetCarousels() ([]types.Carousel, error) {
 }
 
 func (store *CarouselStoreImpl) GetCarouselById(id string) (*types.Carousel, error) {
-	query := `SELECT * FROM "Carousel" WHERE id = $1`
+	query := `SELECT * FROM "Carousel" WHERE id = ?`
 	row := store.database.QueryRow(query, id)
 
 	var carousel types.Carousel
@@ -80,7 +80,7 @@ func (store *CarouselStoreImpl) CreateCarousel(carousel *types.Carousel) error {
 
 	query := `INSERT INTO "Carousel"
 	(id, name, image, created)
-	VALUES ($1, $2, $3, $4)`
+	VALUES (?, ?, ?, ?)`
 
 	_, err := store.database.Exec(query, carousel.ID, carousel.Name, carousel.Image, carousel.Created)
 	if err != nil {
@@ -91,11 +91,11 @@ func (store *CarouselStoreImpl) CreateCarousel(carousel *types.Carousel) error {
 }
 
 func (store *CarouselStoreImpl) UpdateCarousel(id string, carousel *types.Carousel) error {
-	query := `UPDATE "Carousel" SET name = $1 WHERE id = $3`
+	query := `UPDATE "Carousel" SET name = ? WHERE id = ?`
 	args := []interface{}{carousel.Name, id}
 
 	if carousel.Image != "" && carousel.Image != "null" {
-		query = `UPDATE "Carousel" SET name = $1, image = $2 WHERE id = $3`
+		query = `UPDATE "Carousel" SET name = ?, image = ? WHERE id = ?`
 		args = []interface{}{carousel.Name, carousel.Image, id}
 	}
 
@@ -108,7 +108,7 @@ func (store *CarouselStoreImpl) UpdateCarousel(id string, carousel *types.Carous
 }
 
 func (store *CarouselStoreImpl) DeleteCarousel(id string) error {
-	query := `DELETE FROM "Carousel" WHERE id = $1`
+	query := `DELETE FROM "Carousel" WHERE id = ?`
 
 	_, err := store.database.Exec(query, id)
 	if err != nil {
