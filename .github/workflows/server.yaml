@@ -79,5 +79,6 @@ jobs:
                       echo ${{ secrets.SUDO_PASSWORD }} | sudo -S systemctl stop farmec.service
                       sudo rm -f /home/seanwelch/server/bin/main
                       sudo cp /home/seanwelch/bin/main /home/seanwelch/server/bin/main
+                      sudo chmod +x /home/seanwelch/server/bin/main
                       echo ${{ secrets.SUDO_PASSWORD }} | sudo -S systemctl start farmec.service
                       echo ${{ secrets.SUDO_PASSWORD }} | sudo -S systemctl restart nginx

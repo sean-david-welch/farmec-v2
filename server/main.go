@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"log"
 	"os"
+	"path/filepath"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -24,7 +25,16 @@ func main() {
 		log.Fatal("Error loading configuration: ", err)
 	}
 
-	database, err := sql.Open("sqlite3", "./database/database.db")
+	cwd, err := os.Getwd()
+	if err != nil {
+		log.Fatal("Error getting current working directory: ", err)
+	}
+	log.Println("Current working directory:", cwd)
+
+	databasePath := filepath.Join(cwd, "database/database.db")
+	log.Println("Database path:", databasePath)
+
+	database, err := sql.Open("sqlite3", databasePath)
 	if err != nil {
 		log.Fatal(err)
 	}
