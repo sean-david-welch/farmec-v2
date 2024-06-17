@@ -19,6 +19,10 @@ type SMTPClientImpl struct {
 	emailAuth EmailAuth
 }
 
+func NewSTMPClient(secrets *Secrets, emailAuth EmailAuth) *SMTPClientImpl {
+	return &SMTPClientImpl{secrets: secrets, emailAuth: emailAuth}
+}
+
 func (service *SMTPClientImpl) SetupSMTPClient() (*smtp.Client, error) {
 	conn, err := net.Dial("tcp", "smtp.office365.com:587")
 	if err != nil {

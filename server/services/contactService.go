@@ -9,17 +9,14 @@ import (
 
 type ContactService interface {
 	SendContactEmail(data *types.EmailData) error
-	ContactFormNotification(client *smtp.Client, data *types.EmailData) error
 }
 
 type ContactServiceImpl struct {
-	secrets    *lib.Secrets
 	smtpClient lib.SMTPClient
 }
 
-func NewContactService(secrets *lib.Secrets, smtpClient lib.SMTPClient) *ContactServiceImpl {
+func NewContactService(smtpClient lib.SMTPClient) *ContactServiceImpl {
 	return &ContactServiceImpl{
-		secrets:    secrets,
 		smtpClient: smtpClient,
 	}
 }

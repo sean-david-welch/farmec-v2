@@ -2,6 +2,7 @@ package routes
 
 import (
 	"database/sql"
+	"github.com/sean-david-welch/farmec-v2/server/lib"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sean-david-welch/farmec-v2/server/handlers"
@@ -10,9 +11,9 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/stores"
 )
 
-func InitRegistrations(router *gin.Engine, database *sql.DB, authMiddleware *middleware.AuthMiddleware) {
+func InitRegistrations(router *gin.Engine, database *sql.DB, authMiddleware *middleware.AuthMiddleware, smtp lib.SMTPClient) {
 	store := stores.NewRegistrationStore(database)
-	service := services.NewRegistrationService(store)
+	service := services.NewRegistrationService(store, smtp)
 	handler := handlers.NewRegistrationHandler(service)
 
 	RegistrationRoutes(router, handler, authMiddleware)

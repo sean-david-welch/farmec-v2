@@ -7,9 +7,8 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/services"
 )
 
-func InitContact(router *gin.Engine, secrets *lib.Secrets) {
-	emailAuth := lib.NewLoginAuth(secrets.EmailUser, secrets.EmailPass)
-	service := services.NewContactService(secrets, emailAuth)
+func InitContact(router *gin.Engine, smtp lib.SMTPClient) {
+	service := services.NewContactService(smtp)
 	handler := handlers.NewContactHandler(service)
 
 	ContactRoutes(router, handler)

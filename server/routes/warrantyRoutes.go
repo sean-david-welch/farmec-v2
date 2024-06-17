@@ -2,6 +2,7 @@ package routes
 
 import (
 	"database/sql"
+	"github.com/sean-david-welch/farmec-v2/server/lib"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sean-david-welch/farmec-v2/server/handlers"
@@ -10,9 +11,9 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/stores"
 )
 
-func InitWarranty(router *gin.Engine, database *sql.DB, authMiddleware *middleware.AuthMiddleware) {
+func InitWarranty(router *gin.Engine, database *sql.DB, authMiddleware *middleware.AuthMiddleware, smtp lib.SMTPClient) {
 	warrantyStore := stores.NewWarrantyStore(database)
-	service := services.NewWarrantyService(warrantyStore)
+	service := services.NewWarrantyService(warrantyStore, smtp)
 	handler := handlers.NewWarrantyHandler(service)
 
 	WarrantyRoutes(router, handler, authMiddleware)

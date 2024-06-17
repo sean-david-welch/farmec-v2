@@ -9,7 +9,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
 )
 
-func InitRoutes(router *gin.Engine, database *sql.DB, secrets *lib.Secrets, s3Client lib.S3Client, adminMiddleware *middleware.AdminMiddleware, authMiddleware *middleware.AuthMiddleware, firebase *lib.Firebase) {
+func InitRoutes(router *gin.Engine, database *sql.DB, secrets *lib.Secrets, s3Client lib.S3Client, adminMiddleware *middleware.AdminMiddleware, authMiddleware *middleware.AuthMiddleware, firebase *lib.Firebase, smtp lib.SMTPClient) {
 	router.GET("/", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "Welcome to Farmec Ireland's API Service.",
@@ -20,7 +20,7 @@ func InitRoutes(router *gin.Engine, database *sql.DB, secrets *lib.Secrets, s3Cl
 		c.Redirect(http.StatusMovedPermanently, "/")
 	})
 
-	// Supplier Module Recources
+	// Supplier Module Resources
 	InitParts(router, database, s3Client, adminMiddleware)
 	InitVideos(router, database, secrets, adminMiddleware)
 	InitProduct(router, database, s3Client, adminMiddleware)
@@ -38,13 +38,13 @@ func InitRoutes(router *gin.Engine, database *sql.DB, secrets *lib.Secrets, s3Cl
 	InitBlogs(router, database, s3Client, adminMiddleware)
 
 	// Misc Resources
-	InitWarranty(router, database, authMiddleware)
-	InitRegistrations(router, database, authMiddleware)
+	InitWarranty(router, database, authMiddleware, smtp)
+	InitRegistrations(router, database, authMiddleware, smtp)
 	InitLineItems(router, database, s3Client, adminMiddleware)
 	InitCarousel(router, database, s3Client, adminMiddleware)
 
 	// Util Resources
-	InitContact(router, secrets)
+	InitContact(router, smtp)
 	InitCheckout(router, database, secrets)
 	InitPdfRenderer(router, adminMiddleware)
 	InitAuth(router, firebase, adminMiddleware)
