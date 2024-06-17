@@ -47,9 +47,6 @@ func main() {
 		log.Fatal("Failed to initialize Firebase: ", err)
 	}
 
-	emailAuth := lib.NewLoginAuth(secrets.EmailUser, secrets.EmailPass)
-	smtp := lib.NewSTMPClient(secrets, emailAuth)
-
 	corsConfig := cors.DefaultConfig()
 	if env == "production" {
 		corsConfig.AllowOrigins = []string{
@@ -68,6 +65,8 @@ func main() {
 	corsConfig.AllowCredentials = true
 
 	router := gin.Default()
+	emailAuth := lib.NewLoginAuth(secrets.EmailUser, secrets.EmailPass)
+	smtp := lib.NewSTMPClient(secrets, emailAuth)
 	authMiddleware := middleware.NewAuthMiddleware(firebase)
 	adminMiddleware := middleware.NewAdminMiddleware(firebase)
 	router.Use(gin.Logger(), gin.Recovery(), cors.New(corsConfig))
