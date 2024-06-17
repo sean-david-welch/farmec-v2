@@ -12,7 +12,7 @@ import (
 func InitRoutes(router *gin.Engine, database *sql.DB, secrets *lib.Secrets, s3Client lib.S3Client, adminMiddleware *middleware.AdminMiddleware, authMiddleware *middleware.AuthMiddleware, firebase *lib.Firebase) {
 	router.GET("/", func(c *gin.Context) {
 		c.JSON(200, gin.H{
-			"message": "Welcome to Farmec Irelands API Service.",
+			"message": "Welcome to Farmec Ireland's API Service.",
 		})
 	})
 
@@ -20,7 +20,7 @@ func InitRoutes(router *gin.Engine, database *sql.DB, secrets *lib.Secrets, s3Cl
 		c.Redirect(http.StatusMovedPermanently, "/")
 	})
 
-	// Supplier Module Resouces
+	// Supplier Module Recources
 	InitParts(router, database, s3Client, adminMiddleware)
 	InitVideos(router, database, secrets, adminMiddleware)
 	InitProduct(router, database, s3Client, adminMiddleware)
@@ -33,7 +33,7 @@ func InitRoutes(router *gin.Engine, database *sql.DB, secrets *lib.Secrets, s3Cl
 	InitTimelines(router, database, adminMiddleware)
 	InitializeEmployee(router, database, s3Client, adminMiddleware)
 
-	// Blog Modeule Resources
+	// Blog Module Resources
 	InitExhibitions(router, database, adminMiddleware)
 	InitBlogs(router, database, s3Client, adminMiddleware)
 
