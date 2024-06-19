@@ -29,19 +29,18 @@ func setupTestDB(t *testing.T) (*sql.DB, sqlmock.Sqlmock, error) {
 	}
 
 	mock.ExpectExec("CREATE TABLE Blog").WillReturnResult(sqlmock.NewResult(1, 1))
-	mock.ExpectExec(`INSERT INTO "Blog"`).WithArgs(
-		"Test Title", "2023-01-01", "image.jpg", "Test Subheading", "Test Body", "2023-01-01 10:00:00",
+	mock.ExpectExec("INSERT INTO Blog").WithArgs(
+		sqlmock.AnyArg(), "Test Title", "2023-01-01", "image.jpg", "Test Subheading", "Test Body", "2023-01-01 10:00:00",
 	).WillReturnResult(sqlmock.NewResult(1, 1))
 
-	// Create table
 	schema := `CREATE TABLE Blog (
-        ID INTEGER PRIMARY KEY AUTOINCREMENT,
-        Title TEXT,
-        Date TEXT,
-        MainImage TEXT,
-        Subheading TEXT,
-        Body TEXT,
-        Created DATETIME
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT,
+        date TEXT,
+        mainImage TEXT,
+        subheading TEXT,
+        body TEXT,
+        created DATETIME
     );`
 
 	if _, err := db.Exec(schema); err != nil {
@@ -83,8 +82,7 @@ func TestGetBlogs(t *testing.T) {
 		}
 	}(db)
 
-	// Setup mock expectation for the SELECT query
-	rows := sqlmock.NewRows([]string{"ID", "Title", "Date", "MainImage", "Subheading", "Body", "Created"}).
+	rows := sqlmock.NewRows([]string{"id", "title", "date", "mainImage", "subheading", "body", "created"}).
 		AddRow(1, "Test Title", "2023-01-01", "image.jpg", "Test Subheading", "Test Body", "2023-01-01 10:00:00")
 	mock.ExpectQuery("SELECT * FROM Blog").WillReturnRows(rows)
 
@@ -113,7 +111,6 @@ func TestGetBlogs(t *testing.T) {
 	assert.Len(t, blogs, 1)
 	assert.Equal(t, "Test Title", blogs[0].Title)
 
-	// Ensure all expectations were met
 	if err := mock.ExpectationsWereMet(); err != nil {
 		t.Errorf("there were unfulfilled expectations: %s", err)
 	}
