@@ -12,10 +12,10 @@ import (
 )
 
 type BlogService interface {
-	GetBlogs() ([]types.Blog, error)
-	GetBlogsByID(id string) (*types.Blog, error)
-	CreateBlog(blog *types.Blog) (*types.ModelResult, error)
-	UpdateBlog(id string, blog *types.Blog) (*types.ModelResult, error)
+	GetBlogs() ([]database.Blog, error)
+	GetBlogsByID(id string) (*database.Blog, error)
+	CreateBlog(blog *database.Blog) (*types.ModelResult, error)
+	UpdateBlog(id string, blog *database.Blog) (*types.ModelResult, error)
 	DeleteBlog(id string) error
 }
 

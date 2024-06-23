@@ -1,12 +1,12 @@
 package handlers
 
 import (
+	"github.com/sean-david-welch/farmec-v2/server/database"
 	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sean-david-welch/farmec-v2/server/services"
-	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type BlogHandler struct {
@@ -41,7 +41,7 @@ func (handler *BlogHandler) GetBlogByID(context *gin.Context) {
 }
 
 func (handler *BlogHandler) CreateBlog(context *gin.Context) {
-	var blog types.Blog
+	var blog database.Blog
 
 	if err := context.ShouldBindJSON(&blog); err != nil {
 		log.Printf("error while creating blog: %v", err)
@@ -64,7 +64,7 @@ func (handler *BlogHandler) CreateBlog(context *gin.Context) {
 func (handler *BlogHandler) UpdateBlog(context *gin.Context) {
 	id := context.Param("id")
 
-	var blog types.Blog
+	var blog database.Blog
 
 	if err := context.ShouldBindJSON(&blog); err != nil {
 		log.Printf("error while updating blog: %v", err)
