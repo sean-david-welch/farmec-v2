@@ -90,12 +90,12 @@ func (store *BlogStoreImpl) UpdateBlog(id string, blog *database.Blog) error {
 
 	if blog.MainImage.Valid {
 		params := database.UpdateBlogParams{
-			ID:         blog.ID,
 			Title:      blog.Title,
 			MainImage:  blog.MainImage,
 			Date:       blog.Date,
 			Subheading: blog.Subheading,
 			Body:       blog.Body,
+			ID:         id,
 		}
 		err := store.queries.UpdateBlog(ctx, params)
 		if err != nil {
@@ -103,11 +103,11 @@ func (store *BlogStoreImpl) UpdateBlog(id string, blog *database.Blog) error {
 		}
 	} else {
 		params := database.UpdateBlogNoImageParams{
-			ID:         blog.ID,
 			Title:      blog.Title,
 			Date:       blog.Date,
 			Subheading: blog.Subheading,
 			Body:       blog.Body,
+			ID:         id,
 		}
 		err := store.queries.UpdateBlogNoImage(ctx, params)
 		if err != nil {

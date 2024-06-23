@@ -13,92 +13,92 @@ import { faPenToSquare } from '@fortawesome/free-solid-svg-icons/faPenToSquare';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface Props {
-    id?: string;
-    carousel?: Carousel;
+	id?: string;
+	carousel?: Carousel;
 }
 
 const CarouselForm: React.FC<Props> = ({ id, carousel }) => {
-    const [showForm, setShowForm] = useState(false);
-    const formFields = carousel ? getFormFields(carousel) : getFormFields();
+	const [showForm, setShowForm] = useState(false);
+	const formFields = carousel ? getFormFields(carousel) : getFormFields();
 
-    const {
-        mutateAsync: createCarousel,
-        isError: isCreateError,
-        error: createError,
-        isPending: createPending,
-    } = useMutateResource<Carousel>('carousels');
+	const {
+		mutateAsync: createCarousel,
+		isError: isCreateError,
+		error: createError,
+		isPending: createPending,
+	} = useMutateResource<Carousel>('carousels');
 
-    const {
-        mutateAsync: updateCarousel,
-        isError: isUpdateError,
-        error: updateError,
-        isPending: updatingPending,
-    } = useMutateResource<Carousel>('carousels', id);
+	const {
+		mutateAsync: updateCarousel,
+		isError: isUpdateError,
+		error: updateError,
+		isPending: updatingPending,
+	} = useMutateResource<Carousel>('carousels', id);
 
-    const error = id ? updateError : createError;
-    const isError = id ? isUpdateError : isCreateError;
-    const submitCarousel = id ? updateCarousel : createCarousel;
+	const error = id ? updateError : createError;
+	const isError = id ? isUpdateError : isCreateError;
+	const submitCarousel = id ? updateCarousel : createCarousel;
 
-    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-        event.preventDefault();
+	async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+		event.preventDefault();
 
-        const formData = new FormData(event.currentTarget as HTMLFormElement);
-        const imageFile = formData.get('image') as File;
+		const formData = new FormData(event.currentTarget as HTMLFormElement);
+		const imageFile = formData.get('image') as File;
 
-        const body: Carousel = {
-            name: formData.get('name') as string,
-            image: imageFile ? imageFile.name : 'null',
-        };
+		const body: Carousel = {
+			name: formData.get('name') as string,
+			image: imageFile ? imageFile.name : '',
+		};
 
-        try {
-            const response = await submitCarousel(body);
+		try {
+			const response = await submitCarousel(body);
 
-            if (imageFile) {
-                const imageData = {
-                    imageFile: imageFile,
-                    presignedUrl: response.presignedUrl,
-                };
-                await uploadFileToS3(imageData);
-            }
+			if (imageFile) {
+				const imageData = {
+					imageFile: imageFile,
+					presignedUrl: response.presignedUrl,
+				};
+				await uploadFileToS3(imageData);
+			}
 
-            response && !isError && setShowForm(false);
-        } catch (error) {
-            console.error('error creating carousel', error);
-        }
-    }
+			response && !isError && setShowForm(false);
+		} catch (error) {
+			console.error('error creating carousel', error);
+		}
+	}
 
-    if (createPending || updatingPending) return <Loading />;
+	if (createPending || updatingPending) return <Loading />;
 
-    return (
-        <section id="form">
-            <button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
-                {id ? <FontAwesomeIcon icon={faPenToSquare} /> : 'Create Carousel'}
-            </button>
+	return (
+		<section id="form">
+			<button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
+				{id ? <FontAwesomeIcon icon={faPenToSquare} /> : 'Create Carousel'}
+			</button>
 
-            <FormDialog visible={showForm} onClose={() => setShowForm(false)}>
-                <form className={utils.form} onSubmit={handleSubmit} encType="multipart/form-data">
-                    <h1 className={utils.mainHeading}>Carousel Form</h1>
-                    {formFields.map(field => (
-                        <div key={field.name}>
-                            <label htmlFor={field.name}>{field.label}</label>
-                            <input
-                                type={field.type}
-                                name={field.name}
-                                id={field.name}
-                                placeholder={field.placeholder}
-                                defaultValue={field.defaultValue}
-                            />
-                        </div>
-                    ))}
-                    <button className={utils.btnForm} type="submit">
-                        Submit
-                    </button>
-                </form>
+			<FormDialog visible={showForm} onClose={() => setShowForm(false)}>
+				<form className={utils.form} onSubmit={handleSubmit} encType="multipart/form-data">
+					<h1 className={utils.mainHeading}>Carousel Form</h1>
+					{formFields.map(field => (
+						<div key={field.name}>
+							<label htmlFor={field.name}>{field.label}</label>
+							<input
+								type={field.type}
+								name={field.name}
+								id={field.name}
+								placeholder={field.placeholder}
+								defaultValue={field.defaultValue}
+							/>
+						</div>
+					))}
+					<button className={utils.btnForm} type="submit">
+						Submit
+					</button>
+				</form>
 
-                {isError && <p>Error: {error?.message}</p>}
-            </FormDialog>
-        </section>
-    );
+				{isError && <p>Error: {error?.message}</p>}
+			</FormDialog>
+		</section>
+	);
 };
 
 export default CarouselForm;
