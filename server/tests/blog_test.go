@@ -58,35 +58,38 @@ func initializeHandler(t *testing.T) (*gin.Engine, *sql.DB, sqlmock.Sqlmock) {
 
 func TestGetBlogs(t *testing.T) {
 	router, db, mock := initializeHandler(t)
-	defer db.Close()
+	defer func() {
+		err := db.Close()
+		if err != nil {
+			t.Fatalf("Error closing the database: %v", err)
+		}
+	}()
 
-	// Mock the expected query and result
 	rows := sqlmock.NewRows([]string{"id", "title", "date", "main_image", "subheading", "body", "created"}).
 		AddRow("1", "Test Title", "2023-01-01", "image.jpg", "Test Subheading", "Test Body", "2023-01-01 10:00:00")
 	mock.ExpectQuery("SELECT id, title, date, main_image, subheading, body, created FROM Blog").WillReturnRows(rows)
 
-	// Create a test server
 	server := httptest.NewServer(router)
 	defer server.Close()
 
-	// Perform a GET request to /blogs
 	resp, err := http.Get(fmt.Sprintf("%s/blogs", server.URL))
 	require.NoError(t, err)
-	defer resp.Body.Close()
+	defer func() {
+		err := resp.Body.Close()
+		if err != nil {
+			t.Fatalf("Error closing response body: %v", err)
+		}
+	}()
 
-	// Check the response status code
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
 
-	// Parse the response body
 	var blogs []types.Blog
 	err = json.NewDecoder(resp.Body).Decode(&blogs)
 	require.NoError(t, err)
 
-	// Validate the response
 	require.Len(t, blogs, 1)
 	assert.Equal(t, "Test Title", blogs[0].Title)
 
-	// Ensure all expectations were met
 	err = mock.ExpectationsWereMet()
 	require.NoError(t, err)
 }
