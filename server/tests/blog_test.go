@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/suite"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -17,13 +18,18 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/services"
 	"github.com/sean-david-welch/farmec-v2/server/stores"
 	"github.com/sean-david-welch/farmec-v2/server/types"
-
-	"github.com/stretchr/testify/assert"
 )
 
-func setupTestDB(t *testing.T) (*sql.DB, sqlmock.Sqlmock) {
+type BlogTestSuite struct {
+	suite.Suite
+	db     *sql.DB
+	mock   sqlmock.Sqlmock
+	router *gin.Engine
+}
+
+func (suite *BlogTestSuite) SetupTest() {
 	db, mock, err := sqlmock.New()
-	require.NoError(t, err)
+	require.NoError(suite.T(), err)
 
 	schema := `CREATE TABLE Blog (
 		id TEXT PRIMARY KEY,
@@ -36,62 +42,56 @@ func setupTestDB(t *testing.T) (*sql.DB, sqlmock.Sqlmock) {
 	);`
 
 	_, err = db.Exec(schema)
-	require.NoError(t, err)
+	require.NoError(suite.T(), err)
 
-	return db, mock
-}
-
-func initializeHandler(t *testing.T) (*gin.Engine, *sql.DB, sqlmock.Sqlmock) {
-	db, mock := setupTestDB(t)
+	suite.db = db
+	suite.mock = mock
 
 	store := stores.NewBlogStore(db)
 	s3Client := lib.NewNoOpS3Client()
 	service := services.NewBlogService(store, s3Client, "test-folder")
 	handler := handlers.NewBlogHandler(service)
 
-	router := gin.Default()
-	router.GET("/blogs", handler.GetBlogs)
-	router.POST("/blogs", handler.CreateBlog)
-
-	return router, db, mock
+	suite.router = gin.Default()
+	suite.router.GET("/blogs", handler.GetBlogs)
+	suite.router.POST("/blogs", handler.CreateBlog)
 }
 
-func TestGetBlogs(t *testing.T) {
-	router, db, mock := initializeHandler(t)
-	defer func() {
-		err := db.Close()
-		if err != nil {
-			t.Fatalf("Error closing the database: %v", err)
-		}
-	}()
+func (suite *BlogTestSuite) TearDownTest() {
+	err := suite.db.Close()
+	require.NoError(suite.T(), err)
+}
 
+func (suite *BlogTestSuite) TestGetBlogs() {
 	rows := sqlmock.NewRows([]string{"id", "title", "date", "main_image", "subheading", "body", "created"}).
 		AddRow("1", "Test Title", "2023-01-01", "image.jpg", "Test Subheading", "Test Body", "2023-01-01 10:00:00")
-	mock.ExpectQuery("SELECT id, title, date, main_image, subheading, body, created FROM Blog").WillReturnRows(rows)
+	suite.mock.ExpectQuery("SELECT id, title, date, main_image, subheading, body, created FROM Blog").WillReturnRows(rows)
 
-	server := httptest.NewServer(router)
+	server := httptest.NewServer(suite.router)
 	defer server.Close()
 
 	resp, err := http.Get(fmt.Sprintf("%s/blogs", server.URL))
-	require.NoError(t, err)
+	require.NoError(suite.T(), err)
 	defer func() {
 		err := resp.Body.Close()
-		if err != nil {
-			t.Fatalf("Error closing response body: %v", err)
-		}
+		require.NoError(suite.T(), err)
 	}()
 
-	assert.Equal(t, http.StatusOK, resp.StatusCode)
+	require.Equal(suite.T(), http.StatusOK, resp.StatusCode)
 
 	var blogs []types.Blog
 	err = json.NewDecoder(resp.Body).Decode(&blogs)
-	require.NoError(t, err)
+	require.NoError(suite.T(), err)
 
-	require.Len(t, blogs, 1)
-	assert.Equal(t, "Test Title", blogs[0].Title)
+	require.Len(suite.T(), blogs, 1)
+	require.Equal(suite.T(), "Test Title", blogs[0].Title)
 
-	err = mock.ExpectationsWereMet()
-	require.NoError(t, err)
+	err = suite.mock.ExpectationsWereMet()
+	require.NoError(suite.T(), err)
+}
+
+func TestBlogTestSuite(t *testing.T) {
+	suite.Run(t, new(BlogTestSuite))
 }
 
 //func TestCreateBlog(t *testing.T) {
