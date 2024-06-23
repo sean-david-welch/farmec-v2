@@ -1,6 +1,7 @@
 package tests
 
 import (
+	"bytes"
 	"database/sql"
 	"encoding/json"
 	"fmt"
@@ -90,49 +91,42 @@ func (suite *BlogTestSuite) TestGetBlogs() {
 	require.NoError(suite.T(), err)
 }
 
+func (suite *BlogTestSuite) TestCreateBlog() {
+	blog := types.Blog{
+		Title:      "New Blog",
+		Date:       "2024-01-01",
+		MainImage:  "new_image.jpg",
+		Subheading: "New Subheading",
+		Body:       "New Body",
+		Created:    "2024-01-01 12:00:00",
+	}
+	payload, _ := json.Marshal(blog)
+
+	suite.mock.ExpectExec("INSERT INTO Blog").
+		WithArgs(sqlmock.AnyArg(), blog.Title, blog.Date, blog.MainImage, blog.Subheading, blog.Body, blog.Created).
+		WillReturnResult(sqlmock.NewResult(1, 1))
+
+	server := httptest.NewServer(suite.router)
+	defer server.Close()
+
+	resp, err := http.Post(fmt.Sprintf("%s/blogs", server.URL), "application/json", bytes.NewBuffer(payload))
+	require.NoError(suite.T(), err)
+	defer func() {
+		err := resp.Body.Close()
+		require.NoError(suite.T(), err)
+	}()
+
+	require.Equal(suite.T(), http.StatusCreated, resp.StatusCode)
+
+	err = suite.mock.ExpectationsWereMet()
+	require.NoError(suite.T(), err)
+
+	var count int
+	err = suite.db.QueryRow(`SELECT COUNT(*) FROM Blog WHERE title = ?`, "New Blog").Scan(&count)
+	require.NoError(suite.T(), err)
+	require.Equal(suite.T(), 1, count)
+}
+
 func TestBlogTestSuite(t *testing.T) {
 	suite.Run(t, new(BlogTestSuite))
 }
-
-//func TestCreateBlog(t *testing.T) {
-//	router, db := initializeHandler()
-//	defer func(db *sql.DB) {
-//		err := db.Close()
-//		if err != nil {
-//			return
-//		}
-//	}(db)
-//
-//	server := httptest.NewServer(router)
-//	defer server.Close()
-//
-//	blog := types.Blog{
-//		Title:      "New Blog",
-//		Date:       "2024-01-01",
-//		MainImage:  "new_image.jpg",
-//		Subheading: "New Subheading",
-//		Body:       "New Body",
-//		Created:    "2024-01-01 12:00:00",
-//	}
-//	payload, _ := json.Marshal(blog)
-//
-//	resp, err := http.Post(fmt.Sprintf("%s/blogs", server.URL), "application/json", bytes.NewBuffer(payload))
-//	if err != nil {
-//		t.Fatalf("Request failed: %v", err)
-//	}
-//	defer func(Body io.ReadCloser) {
-//		err := Body.Close()
-//		if err != nil {
-//			return
-//		}
-//	}(resp.Body)
-//
-//	var count int
-//	err = db.QueryRow(`SELECT COUNT(*) FROM Blog WHERE Title = ?`, "New Blog").Scan(&count)
-//	if err != nil {
-//		t.Fatalf("Failed to query database: %v", err)
-//	}
-//
-//	assert.Equal(t, 1, count)
-//	assert.Equal(t, http.StatusOK, resp.StatusCode)
-//}
