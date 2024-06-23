@@ -16,13 +16,13 @@ VALUES (?, ?, ?, ?, ?, ?, ?)
 `
 
 type CreateBlogParams struct {
-	ID         string
-	Title      string
-	Date       sql.NullString
-	MainImage  sql.NullString
-	Subheading sql.NullString
-	Body       sql.NullString
-	Created    sql.NullString
+	ID         string         `json:"id"`
+	Title      string         `json:"title"`
+	Date       sql.NullString `json:"date"`
+	MainImage  sql.NullString `json:"main_image"`
+	Subheading sql.NullString `json:"subheading"`
+	Body       sql.NullString `json:"body"`
+	Created    sql.NullString `json:"created"`
 }
 
 func (q *Queries) CreateBlog(ctx context.Context, arg CreateBlogParams) error {
@@ -113,12 +113,12 @@ WHERE id = ?
 `
 
 type UpdateBlogParams struct {
-	Title      string
-	Date       sql.NullString
-	MainImage  sql.NullString
-	Subheading sql.NullString
-	Body       sql.NullString
-	ID         string
+	Title      string         `json:"title"`
+	Date       sql.NullString `json:"date"`
+	MainImage  sql.NullString `json:"main_image"`
+	Subheading sql.NullString `json:"subheading"`
+	Body       sql.NullString `json:"body"`
+	ID         string         `json:"id"`
 }
 
 func (q *Queries) UpdateBlog(ctx context.Context, arg UpdateBlogParams) error {
@@ -140,11 +140,11 @@ WHERE id = ?
 `
 
 type UpdateBlogNoImageParams struct {
-	Title      string
-	Date       sql.NullString
-	Subheading sql.NullString
-	Body       sql.NullString
-	ID         string
+	Title      string         `json:"title"`
+	Date       sql.NullString `json:"date"`
+	Subheading sql.NullString `json:"subheading"`
+	Body       sql.NullString `json:"body"`
+	ID         string         `json:"id"`
 }
 
 func (q *Queries) UpdateBlogNoImage(ctx context.Context, arg UpdateBlogNoImageParams) error {

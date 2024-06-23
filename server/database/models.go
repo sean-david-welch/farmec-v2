@@ -9,165 +9,165 @@ import (
 )
 
 type Blog struct {
-	ID         string
-	Title      string
-	Date       sql.NullString
-	MainImage  sql.NullString
-	Subheading sql.NullString
-	Body       sql.NullString
-	Created    sql.NullString
+	ID         string         `json:"id"`
+	Title      string         `json:"title"`
+	Date       sql.NullString `json:"date"`
+	MainImage  sql.NullString `json:"main_image"`
+	Subheading sql.NullString `json:"subheading"`
+	Body       sql.NullString `json:"body"`
+	Created    sql.NullString `json:"created"`
 }
 
 type Carousel struct {
-	ID      string
-	Name    string
-	Image   sql.NullString
-	Created sql.NullString
+	ID      string         `json:"id"`
+	Name    string         `json:"name"`
+	Image   sql.NullString `json:"image"`
+	Created sql.NullString `json:"created"`
 }
 
 type Employee struct {
-	ID           string
-	Name         string
-	Email        string
-	Role         string
-	ProfileImage sql.NullString
-	Created      sql.NullString
+	ID           string         `json:"id"`
+	Name         string         `json:"name"`
+	Email        string         `json:"email"`
+	Role         string         `json:"role"`
+	ProfileImage sql.NullString `json:"profile_image"`
+	Created      sql.NullString `json:"created"`
 }
 
 type Exhibition struct {
-	ID       string
-	Title    string
-	Date     sql.NullString
-	Location sql.NullString
-	Info     sql.NullString
-	Created  sql.NullString
+	ID       string         `json:"id"`
+	Title    string         `json:"title"`
+	Date     sql.NullString `json:"date"`
+	Location sql.NullString `json:"location"`
+	Info     sql.NullString `json:"info"`
+	Created  sql.NullString `json:"created"`
 }
 
 type LineItem struct {
-	ID    string
-	Name  string
-	Price float64
-	Image sql.NullString
+	ID    string         `json:"id"`
+	Name  string         `json:"name"`
+	Price float64        `json:"price"`
+	Image sql.NullString `json:"image"`
 }
 
 type Machine struct {
-	ID           string
-	SupplierID   string
-	Name         string
-	MachineImage sql.NullString
-	Description  sql.NullString
-	MachineLink  sql.NullString
-	Created      sql.NullString
+	ID           string         `json:"id"`
+	SupplierID   string         `json:"supplier_id"`
+	Name         string         `json:"name"`
+	MachineImage sql.NullString `json:"machine_image"`
+	Description  sql.NullString `json:"description"`
+	MachineLink  sql.NullString `json:"machine_link"`
+	Created      sql.NullString `json:"created"`
 }
 
 type MachineRegistration struct {
-	ID               string
-	DealerName       string
-	DealerAddress    sql.NullString
-	OwnerName        string
-	OwnerAddress     sql.NullString
-	MachineModel     string
-	SerialNumber     string
-	InstallDate      sql.NullString
-	InvoiceNumber    sql.NullString
-	CompleteSupply   sql.NullInt64
-	PdiComplete      sql.NullInt64
-	PtoCorrect       sql.NullInt64
-	MachineTestRun   sql.NullInt64
-	SafetyInduction  sql.NullInt64
-	OperatorHandbook sql.NullInt64
-	Date             sql.NullString
-	CompletedBy      sql.NullString
-	Created          sql.NullString
+	ID               string         `json:"id"`
+	DealerName       string         `json:"dealer_name"`
+	DealerAddress    sql.NullString `json:"dealer_address"`
+	OwnerName        string         `json:"owner_name"`
+	OwnerAddress     sql.NullString `json:"owner_address"`
+	MachineModel     string         `json:"machine_model"`
+	SerialNumber     string         `json:"serial_number"`
+	InstallDate      sql.NullString `json:"install_date"`
+	InvoiceNumber    sql.NullString `json:"invoice_number"`
+	CompleteSupply   sql.NullInt64  `json:"complete_supply"`
+	PdiComplete      sql.NullInt64  `json:"pdi_complete"`
+	PtoCorrect       sql.NullInt64  `json:"pto_correct"`
+	MachineTestRun   sql.NullInt64  `json:"machine_test_run"`
+	SafetyInduction  sql.NullInt64  `json:"safety_induction"`
+	OperatorHandbook sql.NullInt64  `json:"operator_handbook"`
+	Date             sql.NullString `json:"date"`
+	CompletedBy      sql.NullString `json:"completed_by"`
+	Created          sql.NullString `json:"created"`
 }
 
 type PartsRequired struct {
-	ID             string
-	WarrantyID     string
-	PartNumber     sql.NullString
-	QuantityNeeded string
-	InvoiceNumber  sql.NullString
-	Description    sql.NullString
+	ID             string         `json:"id"`
+	WarrantyID     string         `json:"warranty_id"`
+	PartNumber     sql.NullString `json:"part_number"`
+	QuantityNeeded string         `json:"quantity_needed"`
+	InvoiceNumber  sql.NullString `json:"invoice_number"`
+	Description    sql.NullString `json:"description"`
 }
 
 type Privacy struct {
-	ID      string
-	Title   string
-	Body    sql.NullString
-	Created sql.NullString
+	ID      string         `json:"id"`
+	Title   string         `json:"title"`
+	Body    sql.NullString `json:"body"`
+	Created sql.NullString `json:"created"`
 }
 
 type Product struct {
-	ID           string
-	MachineID    string
-	Name         string
-	ProductImage sql.NullString
-	Description  sql.NullString
-	ProductLink  sql.NullString
+	ID           string         `json:"id"`
+	MachineID    string         `json:"machine_id"`
+	Name         string         `json:"name"`
+	ProductImage sql.NullString `json:"product_image"`
+	Description  sql.NullString `json:"description"`
+	ProductLink  sql.NullString `json:"product_link"`
 }
 
 type SparePart struct {
-	ID             string
-	SupplierID     string
-	Name           string
-	PartsImage     sql.NullString
-	SparePartsLink sql.NullString
+	ID             string         `json:"id"`
+	SupplierID     string         `json:"supplier_id"`
+	Name           string         `json:"name"`
+	PartsImage     sql.NullString `json:"parts_image"`
+	SparePartsLink sql.NullString `json:"spare_parts_link"`
 }
 
 type Supplier struct {
-	ID              string
-	Name            string
-	LogoImage       sql.NullString
-	MarketingImage  sql.NullString
-	Description     sql.NullString
-	SocialFacebook  sql.NullString
-	SocialTwitter   sql.NullString
-	SocialInstagram sql.NullString
-	SocialYoutube   sql.NullString
-	SocialLinkedin  sql.NullString
-	SocialWebsite   sql.NullString
-	Created         sql.NullString
+	ID              string         `json:"id"`
+	Name            string         `json:"name"`
+	LogoImage       sql.NullString `json:"logo_image"`
+	MarketingImage  sql.NullString `json:"marketing_image"`
+	Description     sql.NullString `json:"description"`
+	SocialFacebook  sql.NullString `json:"social_facebook"`
+	SocialTwitter   sql.NullString `json:"social_twitter"`
+	SocialInstagram sql.NullString `json:"social_instagram"`
+	SocialYoutube   sql.NullString `json:"social_youtube"`
+	SocialLinkedin  sql.NullString `json:"social_linkedin"`
+	SocialWebsite   sql.NullString `json:"social_website"`
+	Created         sql.NullString `json:"created"`
 }
 
 type Term struct {
-	ID      string
-	Title   string
-	Body    sql.NullString
-	Created sql.NullString
+	ID      string         `json:"id"`
+	Title   string         `json:"title"`
+	Body    sql.NullString `json:"body"`
+	Created sql.NullString `json:"created"`
 }
 
 type Timeline struct {
-	ID      string
-	Title   string
-	Date    sql.NullString
-	Body    sql.NullString
-	Created sql.NullString
+	ID      string         `json:"id"`
+	Title   string         `json:"title"`
+	Date    sql.NullString `json:"date"`
+	Body    sql.NullString `json:"body"`
+	Created sql.NullString `json:"created"`
 }
 
 type Video struct {
-	ID           string
-	SupplierID   string
-	WebUrl       sql.NullString
-	Title        sql.NullString
-	Description  sql.NullString
-	VideoID      sql.NullString
-	ThumbnailUrl sql.NullString
-	Created      sql.NullString
+	ID           string         `json:"id"`
+	SupplierID   string         `json:"supplier_id"`
+	WebUrl       sql.NullString `json:"web_url"`
+	Title        sql.NullString `json:"title"`
+	Description  sql.NullString `json:"description"`
+	VideoID      sql.NullString `json:"video_id"`
+	ThumbnailUrl sql.NullString `json:"thumbnail_url"`
+	Created      sql.NullString `json:"created"`
 }
 
 type WarrantyClaim struct {
-	ID             string
-	Dealer         string
-	DealerContact  sql.NullString
-	OwnerName      string
-	MachineModel   string
-	SerialNumber   string
-	InstallDate    sql.NullString
-	FailureDate    sql.NullString
-	RepairDate     sql.NullString
-	FailureDetails sql.NullString
-	RepairDetails  sql.NullString
-	LabourHours    sql.NullString
-	CompletedBy    sql.NullString
-	Created        sql.NullString
+	ID             string         `json:"id"`
+	Dealer         string         `json:"dealer"`
+	DealerContact  sql.NullString `json:"dealer_contact"`
+	OwnerName      string         `json:"owner_name"`
+	MachineModel   string         `json:"machine_model"`
+	SerialNumber   string         `json:"serial_number"`
+	InstallDate    sql.NullString `json:"install_date"`
+	FailureDate    sql.NullString `json:"failure_date"`
+	RepairDate     sql.NullString `json:"repair_date"`
+	FailureDetails sql.NullString `json:"failure_details"`
+	RepairDetails  sql.NullString `json:"repair_details"`
+	LabourHours    sql.NullString `json:"labour_hours"`
+	CompletedBy    sql.NullString `json:"completed_by"`
+	Created        sql.NullString `json:"created"`
 }
