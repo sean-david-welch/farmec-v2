@@ -7,7 +7,67 @@ package database
 
 import (
 	"context"
+	"database/sql"
 )
+
+const createBlog = `-- name: CreateBlog :exec
+INSERT INTO Blog (id, title, date, main_image, subheading, body, created)
+VALUES (?, ?, ?, ?, ?, ?, ?)
+`
+
+type CreateBlogParams struct {
+	ID         string
+	Title      string
+	Date       sql.NullString
+	MainImage  sql.NullString
+	Subheading sql.NullString
+	Body       sql.NullString
+	Created    sql.NullString
+}
+
+func (q *Queries) CreateBlog(ctx context.Context, arg CreateBlogParams) error {
+	_, err := q.db.ExecContext(ctx, createBlog,
+		arg.ID,
+		arg.Title,
+		arg.Date,
+		arg.MainImage,
+		arg.Subheading,
+		arg.Body,
+		arg.Created,
+	)
+	return err
+}
+
+const deleteBlog = `-- name: DeleteBlog :exec
+DELETE FROM Blog
+WHERE id = ?
+`
+
+func (q *Queries) DeleteBlog(ctx context.Context, id string) error {
+	_, err := q.db.ExecContext(ctx, deleteBlog, id)
+	return err
+}
+
+const getBlogByID = `-- name: GetBlogByID :one
+SELECT id, title, date, main_image, subheading, body, created
+FROM Blog
+WHERE id = ?
+`
+
+func (q *Queries) GetBlogByID(ctx context.Context, id string) (Blog, error) {
+	row := q.db.QueryRowContext(ctx, getBlogByID, id)
+	var i Blog
+	err := row.Scan(
+		&i.ID,
+		&i.Title,
+		&i.Date,
+		&i.MainImage,
+		&i.Subheading,
+		&i.Body,
+		&i.Created,
+	)
+	return i, err
+}
 
 const getBlogs = `-- name: GetBlogs :many
 SELECT id, title, date, main_image, subheading, body, created
@@ -44,4 +104,56 @@ func (q *Queries) GetBlogs(ctx context.Context) ([]Blog, error) {
 		return nil, err
 	}
 	return items, nil
+}
+
+const updateBlog = `-- name: UpdateBlog :exec
+UPDATE Blog
+SET title = ?, date = ?, main_image = ?, subheading = ?, body = ?
+WHERE id = ?
+`
+
+type UpdateBlogParams struct {
+	Title      string
+	Date       sql.NullString
+	MainImage  sql.NullString
+	Subheading sql.NullString
+	Body       sql.NullString
+	ID         string
+}
+
+func (q *Queries) UpdateBlog(ctx context.Context, arg UpdateBlogParams) error {
+	_, err := q.db.ExecContext(ctx, updateBlog,
+		arg.Title,
+		arg.Date,
+		arg.MainImage,
+		arg.Subheading,
+		arg.Body,
+		arg.ID,
+	)
+	return err
+}
+
+const updateBlogNoImage = `-- name: UpdateBlogNoImage :exec
+UPDATE Blog
+SET title = ?, date = ?, subheading = ?, body = ?
+WHERE id = ?
+`
+
+type UpdateBlogNoImageParams struct {
+	Title      string
+	Date       sql.NullString
+	Subheading sql.NullString
+	Body       sql.NullString
+	ID         string
+}
+
+func (q *Queries) UpdateBlogNoImage(ctx context.Context, arg UpdateBlogNoImageParams) error {
+	_, err := q.db.ExecContext(ctx, updateBlogNoImage,
+		arg.Title,
+		arg.Date,
+		arg.Subheading,
+		arg.Body,
+		arg.ID,
+	)
+	return err
 }
