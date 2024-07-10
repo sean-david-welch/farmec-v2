@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/DATA-DOG/go-sqlmock"
+	"github.com/sean-david-welch/farmec-v2/server/database"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 	"net/http"
@@ -18,7 +19,6 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"github.com/sean-david-welch/farmec-v2/server/services"
 	"github.com/sean-david-welch/farmec-v2/server/stores"
-	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type BlogTestSuite struct {
@@ -32,17 +32,25 @@ func (suite *BlogTestSuite) SetupTest() {
 	db, mock, err := sqlmock.New()
 	require.NoError(suite.T(), err)
 
-	schema := `CREATE TABLE Blog (
-		id TEXT PRIMARY KEY,
-		title TEXT,
-		date TEXT,
-		main_image TEXT,
-		subheading TEXT,
-		body TEXT,
-		created TEXT
-	);`
+	mock.ExpectExec(`CREATE TABLE Blog \(
+        id TEXT PRIMARY KEY,
+        title TEXT,
+        date TEXT,
+        main_image TEXT,
+        subheading TEXT,
+        body TEXT,
+        created TEXT
+    \);`).WillReturnResult(sqlmock.NewResult(0, 0))
 
-	_, err = db.Exec(schema)
+	_, err = db.Exec(`CREATE TABLE Blog (
+        id TEXT PRIMARY KEY,
+        title TEXT,
+        date TEXT,
+        main_image TEXT,
+        subheading TEXT,
+        body TEXT,
+        created TEXT
+    );`)
 	require.NoError(suite.T(), err)
 
 	suite.db = db
@@ -80,27 +88,31 @@ func (suite *BlogTestSuite) TestGetBlogs() {
 
 	require.Equal(suite.T(), http.StatusOK, resp.StatusCode)
 
-	var blogs []types.Blog
+	var blogs []database.Blog
 	err = json.NewDecoder(resp.Body).Decode(&blogs)
 	require.NoError(suite.T(), err)
 
 	require.Len(suite.T(), blogs, 1)
 	require.Equal(suite.T(), "Test Title", blogs[0].Title)
+	require.Equal(suite.T(), "2023-01-01", blogs[0].Date.String)
 
 	err = suite.mock.ExpectationsWereMet()
 	require.NoError(suite.T(), err)
 }
 
 func (suite *BlogTestSuite) TestCreateBlog() {
-	blog := types.Blog{
+	blog := database.Blog{
+		ID:         "",
 		Title:      "New Blog",
-		Date:       "2024-01-01",
-		MainImage:  "new_image.jpg",
-		Subheading: "New Subheading",
-		Body:       "New Body",
-		Created:    "2024-01-01 12:00:00",
+		Date:       sql.NullString{String: "2024-06-23", Valid: true},
+		MainImage:  sql.NullString{String: "image.jpg", Valid: true},
+		Subheading: sql.NullString{String: "This is a subheading", Valid: true},
+		Body:       sql.NullString{String: "This is the body of the blog.", Valid: true},
+		Created:    sql.NullString{String: "2024-06-23 10:00:00", Valid: true},
 	}
-	payload, _ := json.Marshal(blog)
+
+	payload, err := json.Marshal(blog)
+	require.NoError(suite.T(), err)
 
 	suite.mock.ExpectExec("INSERT INTO Blog").
 		WithArgs(sqlmock.AnyArg(), blog.Title, blog.Date, blog.MainImage, blog.Subheading, blog.Body, blog.Created).
