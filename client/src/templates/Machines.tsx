@@ -14,56 +14,61 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightToBracket } from '@fortawesome/free-solid-svg-icons/faRightToBracket';
 
 interface Props {
-    machines: Machine[];
-    isAdmin: boolean;
+	machines: Machine[];
+	isAdmin: boolean;
 }
 
 const Machines: React.FC<Props> = ({ machines, isAdmin }) => {
-    const { suppliers } = useSupplierStore();
+	const { suppliers } = useSupplierStore();
 
-    if (!suppliers) {
-        return <Loading />;
-    }
+	if (!suppliers) {
+		return <Loading />;
+	}
 
-    return (
-        <section id="machines">
-            <h1 className={utils.sectionHeading}>Machinery</h1>
-            {machines.map(machine => (
-                <Fragment key={machine.id}>
-                    <div className={styles.machineCard} id={machine.name}>
-                        <div className={styles.machineGrid}>
-                            <img
-                                src={machine.machine_image || '/default.jpg'}
-                                alt={machine.name || 'Default Image'}
-                                className={styles.machineImage}
-                                width={600}
-                                height={600}
-                            />
-                            <div className={styles.machineInfo}>
-                                <h1 className={utils.mainHeading}>{machine.name}</h1>
-                                <p className={utils.paragraph}>{machine.description}</p>
-                                <button className={utils.btn}>
-                                    <Link to={`/machines/${machine.id}`}>
-                                        View Products
-                                        <FontAwesomeIcon icon={faRightToBracket} />
-                                    </Link>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+	const imageError = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
+		event.currentTarget.src = '/default.jpg';
+	};
 
-                    {isAdmin && machine.id && (
-                        <div className={utils.optionsBtn}>
-                            <MachineFrom id={machine.id} machine={machine} suppliers={suppliers} />
-                            <DeleteButton id={machine.id} resourceKey="machines" />
-                        </div>
-                    )}
-                </Fragment>
-            ))}
+	return (
+		<section id="machines">
+			<h1 className={utils.sectionHeading}>Machinery</h1>
+			{machines.map(machine => (
+				<Fragment key={machine.id}>
+					<div className={styles.machineCard} id={machine.name}>
+						<div className={styles.machineGrid}>
+							<img
+								src={machine.machine_image}
+								alt={machine.name || 'Default Image'}
+								className={styles.machineImage}
+								width={600}
+								height={600}
+								onError={imageError}
+							/>
+							<div className={styles.machineInfo}>
+								<h1 className={utils.mainHeading}>{machine.name}</h1>
+								<p className={utils.paragraph}>{machine.description}</p>
+								<button className={utils.btn}>
+									<Link to={`/machines/${machine.id}`}>
+										View Products
+										<FontAwesomeIcon icon={faRightToBracket} />
+									</Link>
+								</button>
+							</div>
+						</div>
+					</div>
 
-            {isAdmin && <MachineFrom suppliers={suppliers} />}
-        </section>
-    );
+					{isAdmin && machine.id && (
+						<div className={utils.optionsBtn}>
+							<MachineFrom id={machine.id} machine={machine} suppliers={suppliers} />
+							<DeleteButton id={machine.id} resourceKey="machines" />
+						</div>
+					)}
+				</Fragment>
+			))}
+
+			{isAdmin && <MachineFrom suppliers={suppliers} />}
+		</section>
+	);
 };
 
 export default Machines;
