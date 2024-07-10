@@ -37,7 +37,7 @@ const Carousel = (props: ImageProps) => {
 							key={index}
 							src={image}
 							alt="Slide"
-							onError={image}
+							onError={imageError}
 							className={`${styles.slides} ${currentIndex === index ? styles.fadeIn : styles.fadeOut}`}
 						/>
 					))}
