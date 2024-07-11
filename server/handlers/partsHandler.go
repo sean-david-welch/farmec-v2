@@ -52,9 +52,10 @@ func (handler *PartsHandler) CreateParts(context *gin.Context) {
 	}
 
 	response := gin.H{
-		"part":         part,
-		"presignedUrl": result.PresignedUrl,
-		"imageUrl":     result.ImageUrl,
+		"part":             part,
+		"presignedUrl":     result.PresignedImageUrl,
+		"imageUrl":         result.ImageUrl,
+		"presignedLinkUrl": result.PresignedLinkUrl,
 	}
 
 	context.JSON(http.StatusCreated, response)
@@ -83,9 +84,10 @@ func (handler *PartsHandler) UpdateParts(context *gin.Context) {
 	}
 
 	response := gin.H{
-		"part":         part,
-		"presignedUrl": result.PresignedUrl,
-		"imageUrl":     result.ImageUrl,
+		"part":             part,
+		"presignedUrl":     result.PresignedImageUrl,
+		"imageUrl":         result.ImageUrl,
+		"presignedLinkUrl": result.PresignedLinkUrl,
 	}
 
 	context.JSON(http.StatusAccepted, response)
