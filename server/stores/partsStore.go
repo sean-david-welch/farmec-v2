@@ -2,6 +2,7 @@ package stores
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"log"
 
@@ -79,11 +80,9 @@ func (store *PartsStoreImpl) GetPartById(id string) (*types.Sparepart, error) {
 	var part types.Sparepart
 
 	if err := ScanParts(row, &part); err != nil {
-
-		if err == sql.ErrNoRows {
+		if errors.Is(err, sql.ErrNoRows) {
 			return nil, fmt.Errorf("error item found with the given id: %w", err)
 		}
-
 		return nil, fmt.Errorf("error scanning row: %w", err)
 	}
 
