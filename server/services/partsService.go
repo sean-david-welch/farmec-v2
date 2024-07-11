@@ -70,9 +70,9 @@ func (service *PartsServiceImpl) CreatePart(part *types.Sparepart) (*types.Parts
 	}
 
 	result := &types.PartsModelResult{
-		PresignedUrl:     presignedImageUrl,
-		ImageUrl:         imageUrl,
-		PresignedLinkUrl: presignedLinkUrl,
+		PresignedImageUrl: presignedImageUrl,
+		ImageUrl:          imageUrl,
+		PresignedLinkUrl:  presignedLinkUrl,
 	}
 
 	return result, nil
@@ -116,9 +116,9 @@ func (service *PartsServiceImpl) UpdatePart(id string, part *types.Sparepart) (*
 	}
 
 	result := &types.PartsModelResult{
-		PresignedUrl:     presignedUrl,
-		ImageUrl:         imageUrl,
-		PresignedLinkUrl: presignedLinkUrl,
+		PresignedImageUrl: presignedUrl,
+		ImageUrl:          imageUrl,
+		PresignedLinkUrl:  presignedLinkUrl,
 	}
 
 	return result, nil
