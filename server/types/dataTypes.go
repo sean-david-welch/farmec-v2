@@ -13,9 +13,9 @@ type ModelResult struct {
 }
 
 type PartsModelResult struct {
-	PresignedUrl     string `json:"presignedUrl"`
-	ImageUrl         string `json:"imageUrl"`
-	PresignedLinkUrl string `json:"linkUrl"`
+	PresignedImageUrl string `json:"presignedUrl"`
+	ImageUrl          string `json:"imageUrl"`
+	PresignedLinkUrl  string `json:"linkUrl"`
 }
 
 type EmailData struct {
