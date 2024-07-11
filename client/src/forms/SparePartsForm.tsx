@@ -13,106 +13,144 @@ import { faPenToSquare } from '@fortawesome/free-solid-svg-icons/faPenToSquare';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface Props {
-    id?: string;
-    sparepart?: Sparepart;
-    suppliers: Supplier[];
+	id?: string;
+	sparepart?: Sparepart;
+	suppliers: Supplier[];
 }
 
 const SparepartForm: React.FC<Props> = ({ id, sparepart, suppliers }) => {
-    const [showForm, setShowForm] = useState(false);
-    const formFields = sparepart ? getFormFields(suppliers, sparepart) : getFormFields(suppliers);
+	const [showForm, setShowForm] = useState(false);
+	const [isLinkFile, setIsLinkFile] = useState(false);
+	const formFields = sparepart ? getFormFields(suppliers, sparepart) : getFormFields(suppliers);
 
-    const {
-        mutateAsync: createSparepart,
-        isError: isCreateError,
-        error: createError,
-        isPending: createPending,
-    } = useMutateResource<Sparepart>('spareparts');
+	const {
+		mutateAsync: createSparepart,
+		isError: isCreateError,
+		error: createError,
+		isPending: createPending,
+	} = useMutateResource<Sparepart>('spareparts');
 
-    const {
-        mutateAsync: updateSparepart,
-        isError: isUpdateError,
-        error: updateError,
-        isPending: updatingPending,
-    } = useMutateResource<Sparepart>('spareparts', id);
+	const {
+		mutateAsync: updateSparepart,
+		isError: isUpdateError,
+		error: updateError,
+		isPending: updatingPending,
+	} = useMutateResource<Sparepart>('spareparts', id);
 
-    const error = id ? updateError : createError;
-    const isError = id ? isUpdateError : isCreateError;
-    const submitSparepart = id ? updateSparepart : createSparepart;
+	const error = id ? updateError : createError;
+	const isError = id ? isUpdateError : isCreateError;
+	const submitSparepart = id ? updateSparepart : createSparepart;
 
-    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-        event.preventDefault();
+	async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+		event.preventDefault();
 
-        const formData = new FormData(event.currentTarget as HTMLFormElement);
-        const imageFile = formData.get('parts_image') as File;
+		const formData = new FormData(event.currentTarget as HTMLFormElement);
+		const imageFile = formData.get('parts_image') as File;
+		const sparePartsLinkInput = formData.get('spare_parts_link');
 
-        const body: Sparepart = {
-            supplier_id: formData.get('supplier_id') as string,
-            name: formData.get('name') as string,
-            parts_image: imageFile ? imageFile.name : 'null',
-            spare_parts_link: formData.get('spare_parts_link') as string,
-        };
+		let sparePartsLink: string;
+		let sparePartsLinkFile: File | null = null;
 
-        try {
-            const response = await submitSparepart(body);
+		if (sparePartsLinkInput instanceof File) {
+			sparePartsLinkFile = sparePartsLinkInput;
+			sparePartsLink = sparePartsLinkFile.name;
+		} else {
+			sparePartsLink = sparePartsLinkInput as string;
+		}
 
-            if (imageFile) {
-                const imageData = {
-                    imageFile: imageFile,
-                    presignedUrl: response.presignedUrl,
-                };
-                await uploadFileToS3(imageData);
-            }
-            response && !isError && setShowForm(false);
-        } catch (error) {
-            console.error('error creating sparepart', error);
-        }
-    }
+		const body: Sparepart = {
+			supplier_id: formData.get('supplier_id') as string,
+			name: formData.get('name') as string,
+			parts_image: imageFile ? imageFile.name : 'null',
+			spare_parts_link: formData.get('spare_parts_link') as string,
+		};
 
-    if (createPending || updatingPending) return <Loading />;
-    return (
-        <section id="form">
-            <button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
-                {id ? <FontAwesomeIcon icon={faPenToSquare} /> : 'Create Sparepart'}
-            </button>
+		try {
+			const response = await submitSparepart(body);
 
-            <FormDialog visible={showForm} onClose={() => setShowForm(false)}>
-                <form className={utils.form} onSubmit={handleSubmit} encType="multipart/form-data">
-                    <h1 className={utils.mainHeading}>Sparepart Form</h1>
-                    {formFields.map(field => (
-                        <div key={field.name}>
-                            <label htmlFor={field.name}>{field.label}</label>
-                            {field.type === 'select' ? (
-                                <select name={field.name} id={field.name}>
-                                    {field.options?.map(option => (
-                                        <option
-                                            key={option.value}
-                                            value={option.value}
-                                            defaultValue={field.defaultValue}>
-                                            {option.label}
-                                        </option>
-                                    ))}
-                                </select>
-                            ) : (
-                                <input
-                                    type={field.type}
-                                    name={field.name}
-                                    id={field.name}
-                                    placeholder={field.placeholder}
-                                    defaultValue={field.defaultValue}
-                                />
-                            )}
-                        </div>
-                    ))}
-                    <button className={utils.btnForm} type="submit">
-                        Submit
-                    </button>
-                </form>
+			if (imageFile) {
+				const imageData = {
+					imageFile: imageFile,
+					presignedUrl: response.presignedUrl,
+				};
+				await uploadFileToS3(imageData);
+			}
 
-                {isError && <p>Error: {error?.message}</p>}
-            </FormDialog>
-        </section>
-    );
+			if (sparePartsLinkFile) {
+				const linkData = {
+					imageFile: sparePartsLinkFile,
+					presignedUrl: response.linkUrl,
+				};
+				await uploadFileToS3(linkData);
+			}
+			response && !isError && setShowForm(false);
+		} catch (error) {
+			console.error('error creating sparepart', error);
+		}
+	}
+
+	if (createPending || updatingPending) return <Loading />;
+	return (
+		<section id="form">
+			<button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
+				{id ? <FontAwesomeIcon icon={faPenToSquare} /> : 'Create Sparepart'}
+			</button>
+
+			<FormDialog visible={showForm} onClose={() => setShowForm(false)}>
+				<form className={utils.form} onSubmit={handleSubmit} encType="multipart/form-data">
+					<h1 className={utils.mainHeading}>Sparepart Form</h1>
+					{formFields.map(field => (
+						<div key={field.name}>
+							<label htmlFor={field.name}>{field.label}</label>
+							{field.type === 'select' ? (
+								<select name={field.name} id={field.name}>
+									{field.options?.map(option => (
+										<option
+											key={option.value}
+											value={option.value}
+											defaultValue={field.defaultValue}>
+											{option.label}
+										</option>
+									))}
+								</select>
+							) : field.type === 'radio' ? (
+								<div>
+									{field.options?.map(option => (
+										<label key={option.value}>
+											<input
+												type="radio"
+												name={field.name}
+												value={option.value}
+												defaultChecked={option.value === field.defaultValue}
+												onChange={e => setIsLinkFile(e.target.value === 'file')}
+											/>
+											{option.label}
+										</label>
+									))}
+								</div>
+							) : (
+								<input
+									type={field.type}
+									name={field.name}
+									id={field.name}
+									placeholder={field.placeholder}
+									defaultValue={field.defaultValue}
+									accept={field.accept}
+									style={{
+										display: field.name === 'spare_parts_link' && isLinkFile ? 'none' : 'block',
+									}}
+								/>
+							)}
+						</div>
+					))}
+					<button className={utils.btnForm} type="submit">
+						Submit
+					</button>
+				</form>
+				{isError && <p>Error: {error?.message}</p>}
+			</FormDialog>
+		</section>
+	);
 };
 
 export default SparepartForm;
