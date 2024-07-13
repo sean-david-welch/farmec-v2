@@ -48,6 +48,7 @@ const PartsDetail: React.FC = () => {
 	return (
 		<section id="partsDetail">
 			<h1 className={utils.sectionHeading}>Parts Catalogues</h1>
+			{isAdmin && suppliers && <SparepartForm suppliers={suppliers} />}
 
 			{spareparts && (
 				<div className={utils.index}>
@@ -94,7 +95,6 @@ const PartsDetail: React.FC = () => {
 			) : (
 				<div>error: {error || 'Unknown error'}</div>
 			)}
-			{isAdmin && suppliers && <SparepartForm suppliers={suppliers} />}
 		</section>
 	);
 };
