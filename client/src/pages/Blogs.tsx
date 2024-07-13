@@ -28,6 +28,7 @@ const Blogs: React.FC = () => {
 		<section id="blog">
 			<h1 className={utils.sectionHeading}>Check out our Latest Blog Posts</h1>
 			<p className={utils.subHeading}> Read our latest news</p>
+			{isAdmin && <BlogForm />}
 			{blogs && (
 				<div className={utils.index}>
 					<h1 className={utils.indexHeading}>Blogs</h1>
@@ -70,7 +71,6 @@ const Blogs: React.FC = () => {
 					)}
 				</div>
 			))}
-			{isAdmin && <BlogForm />}
 		</section>
 	);
 };
