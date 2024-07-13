@@ -49,11 +49,16 @@ const SparepartForm: React.FC<Props> = ({ id, sparepart, suppliers }) => {
 		const formData = new FormData(event.currentTarget as HTMLFormElement);
 		const imageFile = formData.get('parts_image') as File;
 
+		const sparePartsFileLink = formData.get('spare_parts_file_link') as File;
+		const sparePartsUrlLink = formData.get('spare_parts_url_link') as string;
+
+		const spare_parts_link = sparePartsFileLink ? sparePartsFileLink.name : sparePartsUrlLink;
+
 		const body: Sparepart = {
 			supplier_id: formData.get('supplier_id') as string,
 			name: formData.get('name') as string,
 			parts_image: imageFile ? imageFile.name : 'null',
-			spare_parts_link: formData.get('spare_parts_link') as string,
+			spare_parts_link: spare_parts_link,
 		};
 
 		try {
@@ -65,6 +70,14 @@ const SparepartForm: React.FC<Props> = ({ id, sparepart, suppliers }) => {
 					presignedUrl: response.presignedUrl,
 				};
 				await uploadFileToS3(imageData);
+			}
+
+			if (fileLink && sparePartsFileLink) {
+				const fileData = {
+					imageFile: sparePartsFileLink,
+					presignedUrl: response.presignedUrl,
+				};
+				await uploadFileToS3(fileData);
 			}
 			response && !isError && setShowForm(false);
 		} catch (error) {
@@ -96,15 +109,18 @@ const SparepartForm: React.FC<Props> = ({ id, sparepart, suppliers }) => {
 										</option>
 									))}
 								</select>
-							) : field.type === 'radio' ? (
-								<div onChange={e => setFileLink((e.target as HTMLInputElement).value === 'file')}>
+							) : field.name === 'spare_parts_link_type' ? (
+								<select
+									name="spare_parts_link_type"
+									id="spare_parts_link_type"
+									defaultValue={field.defaultValue}
+									onChange={e => setFileLink(e.target.value === 'file')}>
 									{field.options?.map(option => (
-										<label key={option.value}>
-											<input type="radio" name={field.name} value={option.value} />
+										<option key={option.value} value={option.value}>
 											{option.label}
-										</label>
+										</option>
 									))}
-								</div>
+								</select>
 							) : (
 								<input
 									type={field.type}

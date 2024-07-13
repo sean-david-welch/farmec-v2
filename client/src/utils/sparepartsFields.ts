@@ -40,7 +40,7 @@ export const getFormFields = (suppliers: Supplier[], sparepart?: Sparepart, file
 		{
 			name: 'spare_parts_link_type',
 			label: 'Spare Parts Link Type',
-			type: 'radio',
+			type: 'select',
 			options: [
 				{ value: 'url', label: 'URL' },
 				{ value: 'file', label: 'File Upload' },
@@ -49,13 +49,13 @@ export const getFormFields = (suppliers: Supplier[], sparepart?: Sparepart, file
 		},
 		fileLink
 			? {
-					name: 'spare_parts_link',
+					name: 'spare_parts_file_link',
 					label: 'Spare Parts Link File',
 					type: 'file',
 					accept: '.pdf,.doc,.docx',
 			  }
 			: {
-					name: 'spare_parts_link',
+					name: 'spare_parts_url_link',
 					label: 'Spare Parts Link',
 					type: 'text',
 					placeholder: 'Enter URL or select file',
