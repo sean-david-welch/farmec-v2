@@ -97,7 +97,7 @@ const SparepartForm: React.FC<Props> = ({ id, sparepart, suppliers }) => {
 									))}
 								</select>
 							) : field.type === 'radio' ? (
-								<div onChange={e => setFileLink(e.target.value === 'file')}>
+								<div onChange={e => setFileLink((e.target as HTMLInputElement).value === 'file')}>
 									{field.options?.map(option => (
 										<label key={option.value}>
 											<input type="radio" name={field.name} value={option.value} />
