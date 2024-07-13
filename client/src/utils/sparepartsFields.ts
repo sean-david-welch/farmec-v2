@@ -33,7 +33,7 @@ export const getFormFields = (suppliers: Supplier[], sparepart?: Sparepart, file
 		{
 			name: 'spare_parts_link_type',
 			label: 'Spare Parts Link Type',
-			type: 'radio',
+			type: 'select',
 			options: [
 				{ value: 'url', label: 'URL' },
 				{ value: 'file', label: 'File Upload' },
