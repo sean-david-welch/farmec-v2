@@ -1,6 +1,6 @@
 import { Sparepart, Supplier } from '../types/supplierTypes';
 
-export const getFormFields = (suppliers: Supplier[], sparepart?: Sparepart) => {
+export const getFormFields = (suppliers: Supplier[], sparepart?: Sparepart, fileLink?: boolean) => {
 	const supplierOptions = Array.isArray(suppliers)
 		? suppliers.map(supplier => ({
 				label: supplier.name,
@@ -37,5 +37,29 @@ export const getFormFields = (suppliers: Supplier[], sparepart?: Sparepart) => {
 			placeholder: 'Enter sparepart link',
 			defaultValue: sparepart?.spare_parts_link,
 		},
+		{
+			name: 'spare_parts_link_type',
+			label: 'Spare Parts Link Type',
+			type: 'radio',
+			options: [
+				{ value: 'url', label: 'URL' },
+				{ value: 'file', label: 'File Upload' },
+			],
+			defaultValue: 'url',
+		},
+		fileLink
+			? {
+					name: 'spare_parts_link',
+					label: 'Spare Parts Link File',
+					type: 'file',
+					accept: '.pdf,.doc,.docx',
+			  }
+			: {
+					name: 'spare_parts_link',
+					label: 'Spare Parts Link',
+					type: 'text',
+					placeholder: 'Enter URL or select file',
+					defaultValue: sparepart?.spare_parts_link || '',
+			  },
 	];
 };

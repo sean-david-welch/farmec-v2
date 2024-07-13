@@ -20,7 +20,10 @@ interface Props {
 
 const SparepartForm: React.FC<Props> = ({ id, sparepart, suppliers }) => {
 	const [showForm, setShowForm] = useState(false);
-	const formFields = sparepart ? getFormFields(suppliers, sparepart) : getFormFields(suppliers);
+	const [fileLink, setFileLink] = useState(false);
+	const formFields = sparepart
+		? getFormFields(suppliers, sparepart, fileLink)
+		: getFormFields(suppliers, undefined, fileLink);
 
 	const {
 		mutateAsync: createSparepart,
@@ -93,6 +96,15 @@ const SparepartForm: React.FC<Props> = ({ id, sparepart, suppliers }) => {
 										</option>
 									))}
 								</select>
+							) : field.type === 'radio' ? (
+								<div onChange={e => setFileLink(e.target.value === 'file')}>
+									{field.options?.map(option => (
+										<label key={option.value}>
+											<input type="radio" name={field.name} value={option.value} />
+											{option.label}
+										</label>
+									))}
+								</div>
 							) : (
 								<input
 									type={field.type}
