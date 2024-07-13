@@ -20,7 +20,6 @@ interface Props {
 
 const SparepartForm: React.FC<Props> = ({ id, sparepart, suppliers }) => {
 	const [showForm, setShowForm] = useState(false);
-	const [isLinkFile, setIsLinkFile] = useState(false);
 	const formFields = sparepart ? getFormFields(suppliers, sparepart) : getFormFields(suppliers);
 
 	const {
@@ -46,17 +45,6 @@ const SparepartForm: React.FC<Props> = ({ id, sparepart, suppliers }) => {
 
 		const formData = new FormData(event.currentTarget as HTMLFormElement);
 		const imageFile = formData.get('parts_image') as File;
-		const sparePartsLinkInput = formData.get('spare_parts_link');
-
-		let sparePartsLink: string;
-		let sparePartsLinkFile: File | null = null;
-
-		if (sparePartsLinkInput instanceof File) {
-			sparePartsLinkFile = sparePartsLinkInput;
-			sparePartsLink = sparePartsLinkFile.name;
-		} else {
-			sparePartsLink = sparePartsLinkInput as string;
-		}
 
 		const body: Sparepart = {
 			supplier_id: formData.get('supplier_id') as string,
@@ -74,14 +62,6 @@ const SparepartForm: React.FC<Props> = ({ id, sparepart, suppliers }) => {
 					presignedUrl: response.presignedUrl,
 				};
 				await uploadFileToS3(imageData);
-			}
-
-			if (sparePartsLinkFile) {
-				const linkData = {
-					imageFile: sparePartsLinkFile,
-					presignedUrl: response.linkUrl,
-				};
-				await uploadFileToS3(linkData);
 			}
 			response && !isError && setShowForm(false);
 		} catch (error) {
@@ -113,21 +93,6 @@ const SparepartForm: React.FC<Props> = ({ id, sparepart, suppliers }) => {
 										</option>
 									))}
 								</select>
-							) : field.type === 'radio' ? (
-								<div>
-									{field.options?.map(option => (
-										<label key={option.value}>
-											<input
-												type="radio"
-												name={field.name}
-												value={option.value}
-												defaultChecked={option.value === field.defaultValue}
-												onChange={e => setIsLinkFile(e.target.value === 'file')}
-											/>
-											{option.label}
-										</label>
-									))}
-								</div>
 							) : (
 								<input
 									type={field.type}
@@ -135,10 +100,6 @@ const SparepartForm: React.FC<Props> = ({ id, sparepart, suppliers }) => {
 									id={field.name}
 									placeholder={field.placeholder}
 									defaultValue={field.defaultValue}
-									accept={field.accept}
-									style={{
-										display: field.name === 'spare_parts_link' && isLinkFile ? 'none' : 'block',
-									}}
 								/>
 							)}
 						</div>
@@ -147,6 +108,7 @@ const SparepartForm: React.FC<Props> = ({ id, sparepart, suppliers }) => {
 						Submit
 					</button>
 				</form>
+
 				{isError && <p>Error: {error?.message}</p>}
 			</FormDialog>
 		</section>

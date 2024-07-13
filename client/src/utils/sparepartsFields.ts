@@ -31,27 +31,11 @@ export const getFormFields = (suppliers: Supplier[], sparepart?: Sparepart) => {
 			placeholder: 'Upload parts image',
 		},
 		{
-			name: 'spare_parts_link_type',
-			label: 'Spare Parts Link Type',
-			type: 'radio',
-			options: [
-				{ value: 'url', label: 'URL' },
-				{ value: 'file', label: 'File Upload' },
-			],
-			defaultValue: 'url',
-		},
-		{
 			name: 'spare_parts_link',
 			label: 'Spare Parts Link',
 			type: 'text',
-			placeholder: 'Enter URL or select file',
-			defaultValue: sparepart?.spare_parts_link || '',
-		},
-		{
-			name: 'spare_parts_link_file',
-			label: 'Spare Parts Link File',
-			type: 'file',
-			accept: '.pdf,.doc,.docx',
+			placeholder: 'Enter sparepart link',
+			defaultValue: sparepart?.spare_parts_link,
 		},
 	];
 };
