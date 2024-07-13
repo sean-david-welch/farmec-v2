@@ -31,21 +31,14 @@ export const getFormFields = (suppliers: Supplier[], sparepart?: Sparepart, file
 			placeholder: 'Upload parts image',
 		},
 		{
-			name: 'spare_parts_link',
-			label: 'Spare Parts Link',
-			type: 'text',
-			placeholder: 'Enter sparepart link',
-			defaultValue: sparepart?.spare_parts_link,
-		},
-		{
 			name: 'spare_parts_link_type',
 			label: 'Spare Parts Link Type',
-			type: 'select',
+			type: 'radio',
 			options: [
 				{ value: 'url', label: 'URL' },
 				{ value: 'file', label: 'File Upload' },
 			],
-			defaultValue: 'url',
+			defaultValue: fileLink ? 'file' : 'url',
 		},
 		fileLink
 			? {

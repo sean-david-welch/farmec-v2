@@ -110,17 +110,23 @@ const SparepartForm: React.FC<Props> = ({ id, sparepart, suppliers }) => {
 									))}
 								</select>
 							) : field.name === 'spare_parts_link_type' ? (
-								<select
-									name="spare_parts_link_type"
-									id="spare_parts_link_type"
-									defaultValue={field.defaultValue}
-									onChange={e => setFileLink(e.target.value === 'file')}>
-									{field.options?.map(option => (
-										<option key={option.value} value={option.value}>
+								<div className={utils.radio}>
+									{[
+										{ value: 'url', label: 'URL' },
+										{ value: 'file', label: 'File Upload' },
+									].map(option => (
+										<label key={option.value}>
+											<input
+												type="radio"
+												name="spare_parts_link_type"
+												value={option.value}
+												checked={fileLink === (option.value === 'file')}
+												onChange={e => setFileLink(e.target.value === 'file')}
+											/>
 											{option.label}
-										</option>
+										</label>
 									))}
-								</select>
+								</div>
 							) : (
 								<input
 									type={field.type}
