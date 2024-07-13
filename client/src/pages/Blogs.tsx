@@ -20,7 +20,7 @@ const Blogs: React.FC = () => {
 	if (isError) return <ErrorPage />;
 	if (isLoading) return <Loading />;
 
-	const handleError = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
+	const imageError = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
 		event.currentTarget.src = '/default.jpg';
 	};
 
@@ -45,11 +45,11 @@ const Blogs: React.FC = () => {
 					<div className={styles.blogCard}>
 						<img
 							className={styles.blogImage}
-							src={blog.main_image || '/default.jpg'}
+							src={blog.main_image}
 							alt="Blog image"
 							width={300}
 							height={300}
-							onError={handleError}
+							onError={imageError}
 						/>
 						<div className={styles.blogLink}>
 							<h1 className={utils.mainHeading}>{blog.title}</h1>

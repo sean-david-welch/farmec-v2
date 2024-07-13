@@ -21,11 +21,12 @@ const Suppliers: React.FC = () => {
 	if (isError) return <ErrorPage />;
 	if (isLoading) return <Loading />;
 
+	const imageError = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
+		event.currentTarget.src = '/default.jpg';
+	};
+
 	return (
 		<section id="suppliers">
-			<h1 className={utils.sectionHeading}>Spare-Parts</h1>
-			{isAdmin && <SupplierForm />}
-
 			{suppliers ? (
 				<div className={utils.index}>
 					<h1 className={utils.indexHeading}>Suppliers:</h1>
@@ -45,11 +46,12 @@ const Suppliers: React.FC = () => {
 								<div className={styles.supplierHead}>
 									<h1 className={utils.mainHeading}>{supplier.name}</h1>
 									<img
-										src={supplier.logo_image || '/default.jpg'}
+										src={supplier.logo_image}
 										alt="Supplier logo"
 										className={styles.supplierLogo}
 										width={200}
 										height={200}
+										onError={imageError}
 									/>
 
 									<SocialLinks
@@ -62,11 +64,12 @@ const Suppliers: React.FC = () => {
 									/>
 								</div>
 								<img
-									src={supplier.marketing_image || '/default.jpg'}
+									src={supplier.marketing_image}
 									alt="Marketing"
 									className={styles.supplierImage}
 									width={550}
 									height={550}
+									onError={imageError}
 								/>
 							</div>
 							<div className={styles.supplierInfo}>
@@ -85,6 +88,8 @@ const Suppliers: React.FC = () => {
 						)}
 					</Fragment>
 				))}
+
+			{isAdmin && <SupplierForm />}
 		</section>
 	);
 };
