@@ -27,6 +27,7 @@ const Suppliers: React.FC = () => {
 
 	return (
 		<section id="suppliers">
+			{isAdmin && <SupplierForm />}
 			{suppliers ? (
 				<div className={utils.index}>
 					<h1 className={utils.indexHeading}>Suppliers:</h1>
@@ -88,8 +89,6 @@ const Suppliers: React.FC = () => {
 						)}
 					</Fragment>
 				))}
-
-			{isAdmin && <SupplierForm />}
 		</section>
 	);
 };
