@@ -75,7 +75,7 @@ const SparepartForm: React.FC<Props> = ({ id, sparepart, suppliers }) => {
 			if (fileLink && sparePartsFileLink) {
 				const fileData = {
 					imageFile: sparePartsFileLink,
-					presignedUrl: response.presignedUrl,
+					presignedUrl: response.presignedLinkUrl,
 				};
 				await uploadFileToS3(fileData);
 			}
