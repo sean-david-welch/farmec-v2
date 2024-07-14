@@ -52,7 +52,6 @@ const Products: React.FC<Props> = ({ id, isAdmin, products }: Props) => {
 					</div>
 				))}
 			</div>
-			{isAdmin && <ProductForm machine={machine} />}
 		</section>
 	);
 };

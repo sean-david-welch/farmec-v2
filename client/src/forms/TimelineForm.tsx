@@ -65,7 +65,7 @@ const TimelineForm: React.FC<Props> = ({ id, timeline }) => {
 					<FontAwesomeIcon icon={faPenToSquare} />
 				) : (
 					<div>
-						Create Term
+						Create Timeline Event
 						<FontAwesomeIcon icon={faPenToSquare} />
 					</div>
 				)}

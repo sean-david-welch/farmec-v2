@@ -27,6 +27,8 @@ const Suppliers: React.FC = () => {
 
 	return (
 		<section id="suppliers">
+			<h1 className={utils.sectionHeading}>Suppliers</h1>
+
 			{isAdmin && <SupplierForm />}
 			{suppliers ? (
 				<div className={utils.index}>

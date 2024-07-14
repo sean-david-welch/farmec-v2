@@ -18,6 +18,7 @@ export const Employees = () => {
 
 	return (
 		<section id="employees">
+			{isAdmin && <EmployeeForm />}
 			<div className={styles.employees}>
 				{employees.data?.map(employee => (
 					<div className={styles.employeeCard} key={employee.id}>
@@ -44,8 +45,6 @@ export const Employees = () => {
 					</div>
 				))}
 			</div>
-
-			{isAdmin && <EmployeeForm />}
 		</section>
 	);
 };
