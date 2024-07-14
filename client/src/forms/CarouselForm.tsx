@@ -47,7 +47,7 @@ const CarouselForm: React.FC<Props> = ({ id, carousel }) => {
 
 		const body: Carousel = {
 			name: formData.get('name') as string,
-			image: imageFile ? imageFile.name : '',
+			image: imageFile ? imageFile.name : 'null',
 		};
 
 		try {
@@ -72,7 +72,14 @@ const CarouselForm: React.FC<Props> = ({ id, carousel }) => {
 	return (
 		<section id="form">
 			<button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
-				{id ? <FontAwesomeIcon icon={faPenToSquare} /> : 'Create Carousel'}
+				{id ? (
+					<FontAwesomeIcon icon={faPenToSquare} />
+				) : (
+					<div>
+						Create Carousel
+						<FontAwesomeIcon icon={faPenToSquare} />
+					</div>
+				)}
 			</button>
 
 			<FormDialog visible={showForm} onClose={() => setShowForm(false)}>

@@ -12,6 +12,12 @@ type ModelResult struct {
 	ImageUrl     string `json:"imageUrl"`
 }
 
+type PartsModelResult struct {
+	PresignedImageUrl string `json:"presignedUrl"`
+	ImageUrl          string `json:"imageUrl"`
+	PresignedLinkUrl  string `json:"linkUrl"`
+}
+
 type EmailData struct {
 	Name    string `json:"name"`
 	Email   string `json:"email"`

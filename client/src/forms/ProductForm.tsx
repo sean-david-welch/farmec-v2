@@ -51,7 +51,7 @@ const ProductForm: React.FC<Props> = ({ id, product, machine }) => {
 		const body: Product = {
 			machine_id: formData.get('machine_id') as string,
 			name: formData.get('name') as string,
-			product_image: imageFile ? imageFile.name : '',
+			product_image: imageFile ? imageFile.name : 'null',
 			description: formData.get('description') as string,
 			product_link: formData.get('product_link') as string,
 		};
@@ -76,7 +76,14 @@ const ProductForm: React.FC<Props> = ({ id, product, machine }) => {
 	return (
 		<section id="form">
 			<button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
-				{id ? <FontAwesomeIcon icon={faPenToSquare} /> : 'Create Product'}
+				{id ? (
+					<FontAwesomeIcon icon={faPenToSquare} />
+				) : (
+					<div>
+						Create Product
+						<FontAwesomeIcon icon={faPenToSquare} />
+					</div>
+				)}
 			</button>
 
 			<FormDialog visible={showForm} onClose={() => setShowForm(false)}>

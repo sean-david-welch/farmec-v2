@@ -50,7 +50,7 @@ const MachineFrom: React.FC<Props> = ({ id, machine, suppliers }) => {
 		const body: Machine = {
 			supplier_id: formData.get('supplier_id') as string,
 			name: formData.get('name') as string,
-			machine_image: imageFile ? imageFile.name : '',
+			machine_image: imageFile ? imageFile.name : 'null',
 			description: formData.get('description') as string,
 			machine_link: formData.get('machine_link') as string,
 		};
@@ -75,7 +75,14 @@ const MachineFrom: React.FC<Props> = ({ id, machine, suppliers }) => {
 	return (
 		<section id="form">
 			<button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
-				{id ? <FontAwesomeIcon icon={faPenToSquare} /> : 'Create Machine'}
+				{id ? (
+					<FontAwesomeIcon icon={faPenToSquare} />
+				) : (
+					<div>
+						Create Machine
+						<FontAwesomeIcon icon={faPenToSquare} />
+					</div>
+				)}
 			</button>
 
 			<FormDialog visible={showForm} onClose={() => setShowForm(false)}>

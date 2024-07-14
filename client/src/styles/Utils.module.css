@@ -1,54 +1,54 @@
 /* Misc */
 .container {
-    @apply mx-auto my-28 min-h-screen max-w-full overflow-x-hidden p-20 text-center;
+	@apply mx-auto my-28 min-h-screen max-w-full overflow-x-hidden p-20 text-center;
 }
 
 .home {
-    @apply flex flex-col items-center justify-center text-center text-gray-800;
+	@apply flex flex-col items-center justify-center text-center text-gray-800;
 }
 
 .sectionHeading {
-    @apply my-5;
-    @apply mx-auto text-3xl font-semibold;
-    @apply text-zinc-900 underline decoration-red-600 decoration-4 underline-offset-8;
+	@apply my-5;
+	@apply mx-auto text-3xl font-semibold;
+	@apply text-zinc-900 underline decoration-red-600 decoration-4 underline-offset-8;
 }
 
 .mainHeading {
-    @apply mx-auto my-2 text-2xl font-semibold underline;
+	@apply mx-auto my-2 text-2xl font-semibold underline;
 }
 
 .subHeading {
-    @apply mx-40 mb-8 mt-2 text-center text-xl font-medium text-zinc-800;
-    @apply md:mx-5;
+	@apply mx-40 mb-8 mt-2 text-center text-xl font-medium text-zinc-800;
+	@apply md:mx-5;
 }
 
 .paragraph {
-    @apply mx-auto text-base font-normal;
+	@apply mx-auto text-base font-normal;
 }
 
 .aboutHeading {
-    @apply mx-44;
-    @apply md:mx-2;
+	@apply mx-44;
+	@apply md:mx-2;
 }
 
 /* Forms */
 .form {
-    @apply flex flex-col bg-zinc-800 p-10 text-center;
+	@apply flex flex-col bg-zinc-800 p-10 text-center;
 }
 
 .loginForm {
-    @apply flex flex-col rounded-2xl bg-zinc-800 p-10 text-center;
-    @apply md:mx-5;
+	@apply flex flex-col rounded-2xl bg-zinc-800 p-10 text-center;
+	@apply md:mx-5;
 }
 
 .form > *,
 .loginForm > * {
-    @apply my-4;
+	@apply my-4;
 }
 
 .form label,
 .loginForm label {
-    @apply my-2 block text-lg font-medium text-gray-900 dark:text-white;
+	@apply my-2 block text-lg font-medium text-gray-900 dark:text-white;
 }
 
 .form textarea,
@@ -57,176 +57,184 @@
 .loginForm textarea,
 .loginForm input,
 .loginForm select {
-    @apply mx-auto block w-2/3 rounded-lg border-gray-300 bg-zinc-600 p-2.5 text-sm text-gray-900;
-    @apply border-zinc-600 bg-zinc-700 text-white placeholder-gray-400 focus:border-red-700 focus:ring-red-700;
+	@apply mx-auto block w-2/3 rounded-lg border-gray-300 bg-zinc-600 p-2.5 text-sm text-gray-900;
+	@apply border-zinc-600 bg-zinc-700 text-white placeholder-gray-400 focus:border-red-700 focus:ring-red-700;
 }
 
 .form .btn {
-    @apply mt-4;
+	@apply mt-4;
+}
+
+.form .radio {
+	@apply flex justify-center items-center;
+}
+
+.form .radio > * {
+	@apply mx-5;
 }
 
 /* Buttons */
 .btn {
-    @apply z-10 mx-auto my-2 hover:bg-red-600;
-    @apply flex flex-row items-center justify-center rounded-xl;
-    @apply whitespace-nowrap px-8 py-2 text-center text-base font-semibold;
-    @apply transition-all duration-700 ease-in-out;
-    @apply bg-red-700;
+	@apply z-10 mx-auto my-2 hover:bg-red-600;
+	@apply flex flex-row items-center justify-center rounded-xl;
+	@apply whitespace-nowrap px-8 py-2 text-center text-base font-semibold;
+	@apply transition-all duration-700 ease-in-out;
+	@apply bg-red-700;
 }
 
 .btn:hover {
-    @apply boxshadow;
+	@apply boxshadow;
 }
 
 .boxshadow {
-    box-shadow: 0 0 0 2px rgba(200, 1, 1, 0.5), 0 0 0 3px rgba(200, 1, 1, 0.5), 0 0 0 4px rgba(200, 1, 1, 0.5),
-        0 0 0 5px rgba(200, 1, 1, 0.5);
+	box-shadow: 0 0 0 2px rgba(200, 1, 1, 0.5), 0 0 0 3px rgba(200, 1, 1, 0.5), 0 0 0 4px rgba(200, 1, 1, 0.5),
+		0 0 0 5px rgba(200, 1, 1, 0.5);
 }
 
 .btn svg {
-    @apply mx-1 h-4 w-4 whitespace-nowrap;
+	@apply mx-1 h-4 w-4 whitespace-nowrap;
 }
 
 .btnForm {
-    @apply btn mx-auto pb-4 text-zinc-100;
+	@apply btn mx-auto pb-4 text-zinc-100;
 }
 
 .btnFooter {
-    @apply btn w-[150px];
+	@apply btn w-[150px];
 }
 
 .updateIcon {
-    @apply mx-2 h-4 w-4;
+	@apply mx-2 h-4 w-4;
 }
 
 .optionsBtn {
-    @apply mx-auto flex flex-row justify-center;
+	@apply mx-auto flex flex-row justify-center;
 }
 
 .optionsBtn > * {
-    @apply mx-2;
+	@apply mx-2;
 }
 
 /* Mics */
 .dialog {
-    @apply max-h-[90vh] w-[80vw];
-    @apply fixed left-1/2 top-1/2 z-50;
-    @apply rounded-2xl bg-zinc-900 text-gray-200 shadow-lg;
-    @apply border-4 border-zinc-600;
-    @apply -translate-x-1/2 -translate-y-1/2 transform;
-    @apply transition-all duration-700 ease-in-out;
-    @apply opacity-0;
+	@apply max-h-[90vh] w-[80vw];
+	@apply fixed left-1/2 top-1/2 z-50;
+	@apply rounded-2xl bg-zinc-900 text-gray-200 shadow-lg;
+	@apply border-4 border-zinc-600;
+	@apply -translate-x-1/2 -translate-y-1/2 transform;
+	@apply transition-all duration-700 ease-in-out;
+	@apply opacity-0;
 }
 
 .dialogVisible {
-    @apply opacity-100;
+	@apply opacity-100;
 }
 
 .dialogBtn {
-    @apply fixed left-5 top-5 cursor-pointer px-3 py-2;
-    @apply rounded-full border-2 border-zinc-800 bg-zinc-800;
-    @apply z-30 transition-all duration-300 ease-in-out;
+	@apply fixed left-5 top-5 cursor-pointer px-3 py-2;
+	@apply rounded-full border-2 border-zinc-800 bg-zinc-800;
+	@apply z-30 transition-all duration-300 ease-in-out;
 }
 
 .dialogBtn:hover {
-    @apply border-2 border-red-700;
+	@apply border-2 border-red-700;
 }
 
 .dialogBtn svg {
-    @apply h-4 w-4;
+	@apply h-4 w-4;
 }
 
 .checkout {
-    @apply mx-72 my-10 rounded-2xl bg-white p-5;
-    @apply md:mx-5;
+	@apply mx-72 my-10 rounded-2xl bg-white p-5;
+	@apply md:mx-5;
 }
 
 .loginSection {
-    @apply mx-72;
-    @apply md:mx-5;
+	@apply mx-72;
+	@apply md:mx-5;
 }
 /* index */
 .index {
-    @apply flex flex-col items-start;
-    @apply p-5;
-    @apply bg-zinc-800 text-gray-200;
-    @apply mx-52 my-5 rounded-xl border-4 border-zinc-600;
-    @apply md:mx-5;
+	@apply flex flex-col items-start;
+	@apply p-5;
+	@apply bg-zinc-800 text-gray-200;
+	@apply mx-52 my-5 rounded-xl border-4 border-zinc-600;
+	@apply md:mx-5;
 }
 
 .accountIndex {
-    @apply index;
-    @apply mx-16;
-    @apply md:mx-5;
+	@apply index;
+	@apply mx-16;
+	@apply md:mx-5;
 }
 
 .index > * {
-    @apply my-2;
+	@apply my-2;
 }
 
 .indexHeading {
-    @apply my-5;
-    @apply text-xl;
-    @apply text-gray-200 underline decoration-red-600 decoration-4 underline-offset-8;
+	@apply my-5;
+	@apply text-xl;
+	@apply text-gray-200 underline decoration-red-600 decoration-4 underline-offset-8;
 }
 
 .indexItem {
-    @apply transition-all duration-700 ease-in-out hover:text-red-600;
+	@apply transition-all duration-700 ease-in-out hover:text-red-600;
 }
 
 /* To Top Button */
 .toTopButton {
-    @apply fixed bottom-5 right-5 cursor-pointer;
-    @apply rounded-full border-2 border-zinc-800 bg-zinc-800 px-3 py-2;
-    @apply z-30 transition-all duration-300 ease-in-out;
+	@apply fixed bottom-5 right-5 cursor-pointer;
+	@apply rounded-full border-2 border-zinc-800 bg-zinc-800 px-3 py-2;
+	@apply z-30 transition-all duration-300 ease-in-out;
 }
 
 .toTopButton svg {
-    @apply h-6 w-6;
+	@apply h-6 w-6;
 }
 
 .toTopButton:hover,
 .toTopButton:hover svg path {
-    @apply border-2 border-red-700 bg-zinc-800 fill-red-700;
+	@apply border-2 border-red-700 bg-zinc-800 fill-red-700;
 }
 
 .toTopButton svg path {
-    @apply fill-gray-100;
-    @apply transition-all duration-150 ease-in-out;
+	@apply fill-gray-100;
+	@apply transition-all duration-150 ease-in-out;
 }
 
 .mainIcon svg {
-    @apply mx-auto h-20 w-20;
+	@apply mx-auto h-20 w-20;
 }
 
 /* Loading */
 .loadingPage {
-    @apply h-screen w-screen;
+	@apply h-screen w-screen;
 }
 
 .spinner {
-    @apply absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2;
-    @apply h-[75px] w-[75px] rounded-[50px] border-[5px] border-t-[5px] border-solid border-red-700  border-t-white;
-    animation: spin 1s linear infinite;
+	@apply absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2;
+	@apply h-[75px] w-[75px] rounded-[50px] border-[5px] border-t-[5px] border-solid border-red-700  border-t-white;
+	animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
 }
 
 .error {
-    @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+	@apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
 }
 
 .routesList {
-    @apply flex flex-row;
+	@apply flex flex-row;
 }
 
 .routesList > * {
-    @apply mx-2;
+	@apply mx-2;
 }

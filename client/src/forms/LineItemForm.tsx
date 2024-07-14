@@ -48,7 +48,7 @@ const LineItemForm: React.FC<Props> = ({ id, lineItem }) => {
 		const body: LineItem = {
 			name: formData.get('name') as string,
 			price: parseFloat(formData.get('price') as string),
-			image: imageFile ? imageFile.name : '',
+			image: imageFile ? imageFile.name : 'null',
 		};
 
 		try {
@@ -72,7 +72,14 @@ const LineItemForm: React.FC<Props> = ({ id, lineItem }) => {
 	return (
 		<section id="form">
 			<button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
-				{id ? <FontAwesomeIcon icon={faPenToSquare} /> : 'Create LineItem'}
+				{id ? (
+					<FontAwesomeIcon icon={faPenToSquare} />
+				) : (
+					<div>
+						Create Line Item
+						<FontAwesomeIcon icon={faPenToSquare} />
+					</div>
+				)}
 			</button>
 
 			<FormDialog visible={showForm} onClose={() => setShowForm(false)}>

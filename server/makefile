@@ -1,3 +1,10 @@
+.PHONY: build run test dev database
+
+include .env
+export
+
+REMOTE_HOST := $(REMOTE_SERVER_IP)
+
 build:
 	@go build -o bin/main
 
@@ -9,3 +16,6 @@ test:
 
 dev:
 	ENV=development PORT=8000 air
+
+database:
+	scp -i ~/.ssh/farmec.pem -r ${REMOTE_HOST}:/home/seanwelch/server/bin/database/* ./database/

@@ -48,7 +48,7 @@ const BlogForm: React.FC<Props> = ({ id, blog }) => {
 		const body: Blog = {
 			title: formData.get('title') as string,
 			date: formData.get('date') as string,
-			main_image: imageFile ? imageFile.name : '',
+			main_image: imageFile ? imageFile.name : 'null',
 			subheading: formData.get('subheading') as string,
 			body: formData.get('body') as string,
 		};
@@ -74,7 +74,14 @@ const BlogForm: React.FC<Props> = ({ id, blog }) => {
 	return (
 		<section id="form">
 			<button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
-				{id ? <FontAwesomeIcon icon={faPenToSquare} /> : 'Create Blog'}
+				{id ? (
+					<FontAwesomeIcon icon={faPenToSquare} />
+				) : (
+					<div>
+						Create Blog
+						<FontAwesomeIcon icon={faPenToSquare} />
+					</div>
+				)}
 			</button>
 
 			<FormDialog visible={showForm} onClose={() => setShowForm(false)}>

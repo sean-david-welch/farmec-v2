@@ -48,8 +48,8 @@ const SupplierForm: React.FC<Props> = ({ id, supplier }) => {
 		const body: Supplier = {
 			name: formData.get('name') as string,
 			description: formData.get('description') as string,
-			logo_image: logoFile ? logoFile.name : '',
-			marketing_image: marketingFile ? marketingFile.name : '',
+			logo_image: logoFile ? logoFile.name : 'null',
+			marketing_image: marketingFile ? marketingFile.name : 'null',
 			social_facebook: formData.get('social_facebook') as string,
 			social_twitter: formData.get('social_twitter') as string,
 			social_instagram: formData.get('social_instagram') as string,
@@ -86,7 +86,14 @@ const SupplierForm: React.FC<Props> = ({ id, supplier }) => {
 	return (
 		<section id="form">
 			<button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
-				{id ? <FontAwesomeIcon icon={faPenToSquare} /> : 'Create Supplier'}
+				{id ? (
+					<FontAwesomeIcon icon={faPenToSquare} />
+				) : (
+					<div>
+						Create Supplier
+						<FontAwesomeIcon icon={faPenToSquare} />
+					</div>
+				)}
 			</button>
 
 			<FormDialog visible={showForm} onClose={() => setShowForm(false)}>

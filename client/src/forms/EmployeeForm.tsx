@@ -49,7 +49,7 @@ const EmployeeForm: React.FC<Props> = ({ id, employee }) => {
 			name: formData.get('name') as string,
 			email: formData.get('email') as string,
 			role: formData.get('role') as string,
-			profile_image: imageFile ? imageFile.name : '',
+			profile_image: imageFile ? imageFile.name : 'null',
 		};
 
 		try {
@@ -73,7 +73,14 @@ const EmployeeForm: React.FC<Props> = ({ id, employee }) => {
 	return (
 		<section id="form">
 			<button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
-				{id ? <FontAwesomeIcon icon={faPenToSquare} /> : 'Create Employee'}
+				{id ? (
+					<FontAwesomeIcon icon={faPenToSquare} />
+				) : (
+					<div>
+						Create Employee
+						<FontAwesomeIcon icon={faPenToSquare} />
+					</div>
+				)}
 			</button>
 
 			<FormDialog visible={showForm} onClose={() => setShowForm(false)}>

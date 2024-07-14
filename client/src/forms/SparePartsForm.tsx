@@ -20,7 +20,10 @@ interface Props {
 
 const SparepartForm: React.FC<Props> = ({ id, sparepart, suppliers }) => {
 	const [showForm, setShowForm] = useState(false);
-	const formFields = sparepart ? getFormFields(suppliers, sparepart) : getFormFields(suppliers);
+	const [fileLink, setFileLink] = useState(false);
+	const formFields = sparepart
+		? getFormFields(suppliers, sparepart, fileLink)
+		: getFormFields(suppliers, undefined, fileLink);
 
 	const {
 		mutateAsync: createSparepart,
@@ -46,11 +49,16 @@ const SparepartForm: React.FC<Props> = ({ id, sparepart, suppliers }) => {
 		const formData = new FormData(event.currentTarget as HTMLFormElement);
 		const imageFile = formData.get('parts_image') as File;
 
+		const sparePartsFileLink = formData.get('spare_parts_file_link') as File;
+		const sparePartsUrlLink = formData.get('spare_parts_url_link') as string;
+
+		const spare_parts_link = sparePartsFileLink ? sparePartsFileLink.name : sparePartsUrlLink;
+
 		const body: Sparepart = {
 			supplier_id: formData.get('supplier_id') as string,
 			name: formData.get('name') as string,
-			parts_image: imageFile ? imageFile.name : '',
-			spare_parts_link: formData.get('spare_parts_link') as string,
+			parts_image: imageFile ? imageFile.name : 'null',
+			spare_parts_link: spare_parts_link,
 		};
 
 		try {
@@ -63,6 +71,14 @@ const SparepartForm: React.FC<Props> = ({ id, sparepart, suppliers }) => {
 				};
 				await uploadFileToS3(imageData);
 			}
+
+			if (fileLink && sparePartsFileLink) {
+				const fileData = {
+					imageFile: sparePartsFileLink,
+					presignedUrl: response.presignedLinkUrl,
+				};
+				await uploadFileToS3(fileData);
+			}
 			response && !isError && setShowForm(false);
 		} catch (error) {
 			console.error('error creating sparepart', error);
@@ -73,7 +89,14 @@ const SparepartForm: React.FC<Props> = ({ id, sparepart, suppliers }) => {
 	return (
 		<section id="form">
 			<button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
-				{id ? <FontAwesomeIcon icon={faPenToSquare} /> : 'Create Sparepart'}
+				{id ? (
+					<FontAwesomeIcon icon={faPenToSquare} />
+				) : (
+					<div>
+						Create Sparepart
+						<FontAwesomeIcon icon={faPenToSquare} />
+					</div>
+				)}
 			</button>
 
 			<FormDialog visible={showForm} onClose={() => setShowForm(false)}>
@@ -82,13 +105,20 @@ const SparepartForm: React.FC<Props> = ({ id, sparepart, suppliers }) => {
 					{formFields.map(field => (
 						<div key={field.name}>
 							<label htmlFor={field.name}>{field.label}</label>
-							{field.type === 'select' ? (
-								<select name={field.name} id={field.name}>
+							{field.type === 'select' || field.name === 'spare_parts_link_type' ? (
+								<select
+									name={field.name}
+									id={field.name}
+									onChange={
+										field.name === 'spare_parts_link_type'
+											? e => setFileLink(e.target.value === 'file')
+											: undefined
+									}
+									value={
+										field.name === 'spare_parts_link_type' && fileLink ? 'file' : field.defaultValue
+									}>
 									{field.options?.map(option => (
-										<option
-											key={option.value}
-											value={option.value}
-											defaultValue={field.defaultValue}>
+										<option key={option.value} value={option.value}>
 											{option.label}
 										</option>
 									))}
