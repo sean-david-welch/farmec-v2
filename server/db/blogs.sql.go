@@ -11,8 +11,8 @@ import (
 )
 
 const createBlog = `-- name: CreateBlog :exec
-INSERT INTO Blog (id, title, date, main_image, subheading, body, created)
-VALUES (?, ?, ?, ?, ?, ?, ?)
+insert into Blog (id, title, date, main_image, subheading, body, created)
+values (?, ?, ?, ?, ?, ?, ?)
 `
 
 type CreateBlogParams struct {
@@ -39,8 +39,8 @@ func (q *Queries) CreateBlog(ctx context.Context, arg CreateBlogParams) error {
 }
 
 const deleteBlog = `-- name: DeleteBlog :exec
-DELETE FROM Blog
-WHERE id = ?
+delete from Blog
+where id = ?
 `
 
 func (q *Queries) DeleteBlog(ctx context.Context, id string) error {
@@ -49,9 +49,9 @@ func (q *Queries) DeleteBlog(ctx context.Context, id string) error {
 }
 
 const getBlogByID = `-- name: GetBlogByID :one
-SELECT id, title, date, main_image, subheading, body, created
-FROM Blog
-WHERE id = ?
+select id, title, date, main_image, subheading, body, created
+from Blog
+where id = ?
 `
 
 func (q *Queries) GetBlogByID(ctx context.Context, id string) (Blog, error) {
@@ -70,9 +70,9 @@ func (q *Queries) GetBlogByID(ctx context.Context, id string) (Blog, error) {
 }
 
 const getBlogs = `-- name: GetBlogs :many
-SELECT id, title, date, main_image, subheading, body, created
-FROM Blog
-ORDER BY created DESC
+select id, title, date, main_image, subheading, body, created
+from Blog
+order by created desc
 `
 
 func (q *Queries) GetBlogs(ctx context.Context) ([]Blog, error) {
@@ -107,9 +107,9 @@ func (q *Queries) GetBlogs(ctx context.Context) ([]Blog, error) {
 }
 
 const updateBlog = `-- name: UpdateBlog :exec
-UPDATE Blog
-SET title = ?, date = ?, main_image = ?, subheading = ?, body = ?
-WHERE id = ?
+update Blog
+set title = ?, date = ?, main_image = ?, subheading = ?, body = ?
+where id = ?
 `
 
 type UpdateBlogParams struct {
@@ -134,9 +134,9 @@ func (q *Queries) UpdateBlog(ctx context.Context, arg UpdateBlogParams) error {
 }
 
 const updateBlogNoImage = `-- name: UpdateBlogNoImage :exec
-UPDATE Blog
-SET title = ?, date = ?, subheading = ?, body = ?
-WHERE id = ?
+update Blog
+set title = ?, date = ?, subheading = ?, body = ?
+where id = ?
 `
 
 type UpdateBlogNoImageParams struct {
