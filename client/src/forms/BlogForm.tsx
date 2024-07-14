@@ -11,7 +11,6 @@ import { useMutateResource } from '../hooks/genericHooks';
 import { blogFormFields } from '../utils/blogFields';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons/faPenToSquare';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRightToBracket } from '@fortawesome/free-solid-svg-icons';
 
 interface Props {
 	id?: string;
@@ -80,7 +79,7 @@ const BlogForm: React.FC<Props> = ({ id, blog }) => {
 				) : (
 					<div>
 						Create Blog
-						<FontAwesomeIcon icon={faRightToBracket} />
+						<FontAwesomeIcon icon={faPenToSquare} />
 					</div>
 				)}
 			</button>

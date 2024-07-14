@@ -10,7 +10,6 @@ import { useMutateResource } from '../hooks/genericHooks';
 import { timelineFormFields } from '../utils/aboutFields';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons/faPenToSquare';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRightToBracket } from '@fortawesome/free-solid-svg-icons';
 
 interface Props {
 	id?: string;
@@ -67,7 +66,7 @@ const TimelineForm: React.FC<Props> = ({ id, timeline }) => {
 				) : (
 					<div>
 						Create Term
-						<FontAwesomeIcon icon={faRightToBracket} />
+						<FontAwesomeIcon icon={faPenToSquare} />
 					</div>
 				)}
 			</button>

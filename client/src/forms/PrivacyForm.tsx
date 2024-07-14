@@ -10,7 +10,6 @@ import { useMutateResource } from '../hooks/genericHooks';
 import { privacyFormFields } from '../utils/aboutFields';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons/faPenToSquare';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRightToBracket } from '@fortawesome/free-solid-svg-icons';
 
 interface Props {
 	id?: string;
@@ -66,7 +65,7 @@ const PrivacyForm: React.FC<Props> = ({ id, privacy }) => {
 				) : (
 					<div>
 						Create Privacy
-						<FontAwesomeIcon icon={faRightToBracket} />
+						<FontAwesomeIcon icon={faPenToSquare} />
 					</div>
 				)}
 			</button>

@@ -9,7 +9,6 @@ import { Machine, Supplier } from '../types/supplierTypes';
 import { getFormFields } from '../utils/machineFields';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons/faPenToSquare';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRightToBracket } from '@fortawesome/free-solid-svg-icons';
 
 interface Props {
 	id?: string;
@@ -81,7 +80,7 @@ const MachineFrom: React.FC<Props> = ({ id, machine, suppliers }) => {
 				) : (
 					<div>
 						Create Machine
-						<FontAwesomeIcon icon={faRightToBracket} />
+						<FontAwesomeIcon icon={faPenToSquare} />
 					</div>
 				)}
 			</button>

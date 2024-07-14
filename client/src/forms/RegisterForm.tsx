@@ -7,7 +7,6 @@ import { UserData } from '../types/dataTypes';
 import { useMutateResource } from '../hooks/genericHooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons/faPenToSquare';
-import { faRightToBracket } from '@fortawesome/free-solid-svg-icons';
 
 interface Props {
 	id?: string;
@@ -63,7 +62,7 @@ const RegisterForm: React.FC<Props> = ({ id }) => {
 				) : (
 					<div>
 						Create User
-						<FontAwesomeIcon icon={faRightToBracket} />
+						<FontAwesomeIcon icon={faPenToSquare} />
 					</div>
 				)}
 			</button>

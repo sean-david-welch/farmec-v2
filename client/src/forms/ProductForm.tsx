@@ -10,7 +10,6 @@ import { Machine, Product } from '../types/supplierTypes';
 import { useMutateResource } from '../hooks/genericHooks';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons/faPenToSquare';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRightToBracket } from '@fortawesome/free-solid-svg-icons';
 
 interface Props {
 	id?: string;
@@ -82,7 +81,7 @@ const ProductForm: React.FC<Props> = ({ id, product, machine }) => {
 				) : (
 					<div>
 						Create Product
-						<FontAwesomeIcon icon={faRightToBracket} />
+						<FontAwesomeIcon icon={faPenToSquare} />
 					</div>
 				)}
 			</button>

@@ -10,7 +10,6 @@ import { useMutateResource } from '../hooks/genericHooks';
 import { getFormFields } from '../utils/supplierFields';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons/faPenToSquare';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRightToBracket } from '@fortawesome/free-solid-svg-icons';
 
 interface Props {
 	id?: string;
@@ -92,7 +91,7 @@ const SupplierForm: React.FC<Props> = ({ id, supplier }) => {
 				) : (
 					<div>
 						Create Supplier
-						<FontAwesomeIcon icon={faRightToBracket} />
+						<FontAwesomeIcon icon={faPenToSquare} />
 					</div>
 				)}
 			</button>

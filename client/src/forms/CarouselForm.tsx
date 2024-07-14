@@ -11,7 +11,6 @@ import { useMutateResource } from '../hooks/genericHooks';
 import { getFormFields } from '../utils/carouselFields';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons/faPenToSquare';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRightToBracket } from '@fortawesome/free-solid-svg-icons';
 
 interface Props {
 	id?: string;
@@ -78,7 +77,7 @@ const CarouselForm: React.FC<Props> = ({ id, carousel }) => {
 				) : (
 					<div>
 						Create Carousel
-						<FontAwesomeIcon icon={faRightToBracket} />
+						<FontAwesomeIcon icon={faPenToSquare} />
 					</div>
 				)}
 			</button>

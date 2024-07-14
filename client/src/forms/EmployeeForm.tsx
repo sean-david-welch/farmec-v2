@@ -11,7 +11,6 @@ import { useMutateResource } from '../hooks/genericHooks';
 import { employeeFormFields } from '../utils/aboutFields';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons/faPenToSquare';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRightToBracket } from '@fortawesome/free-solid-svg-icons';
 
 interface Props {
 	id?: string;
@@ -79,7 +78,7 @@ const EmployeeForm: React.FC<Props> = ({ id, employee }) => {
 				) : (
 					<div>
 						Create Employee
-						<FontAwesomeIcon icon={faRightToBracket} />
+						<FontAwesomeIcon icon={faPenToSquare} />
 					</div>
 				)}
 			</button>

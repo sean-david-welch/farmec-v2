@@ -10,7 +10,6 @@ import { useMutateResource } from '../hooks/genericHooks';
 import { termsFormFields } from '../utils/aboutFields';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons/faPenToSquare';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRightToBracket } from '@fortawesome/free-solid-svg-icons';
 
 interface Props {
 	id?: string;
@@ -66,7 +65,7 @@ const TermForm: React.FC<Props> = ({ id, term }) => {
 				) : (
 					<div>
 						Create Term
-						<FontAwesomeIcon icon={faRightToBracket} />
+						<FontAwesomeIcon icon={faPenToSquare} />
 					</div>
 				)}
 			</button>

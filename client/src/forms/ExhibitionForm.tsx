@@ -10,7 +10,6 @@ import { useMutateResource } from '../hooks/genericHooks';
 import { exhibitionFormFields } from '../utils/blogFields';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons/faPenToSquare';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRightToBracket } from '@fortawesome/free-solid-svg-icons';
 
 interface Props {
 	id?: string;
@@ -68,7 +67,7 @@ const ExhibitionForm: React.FC<Props> = ({ id, exhibition }) => {
 				) : (
 					<div>
 						Create Exhibition
-						<FontAwesomeIcon icon={faRightToBracket} />
+						<FontAwesomeIcon icon={faPenToSquare} />
 					</div>
 				)}
 			</button>

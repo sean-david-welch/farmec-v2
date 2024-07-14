@@ -11,7 +11,6 @@ import { Video, VideoWebUrl } from '../types/videoTypes';
 import { getFormFields } from '../utils/videoFields';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons/faPenToSquare';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRightToBracket } from '@fortawesome/free-solid-svg-icons';
 
 interface Props {
 	id?: string;
@@ -68,7 +67,7 @@ const VideoForm: React.FC<Props> = ({ id, video, suppliers }) => {
 				) : (
 					<div>
 						Create Video
-						<FontAwesomeIcon icon={faRightToBracket} />
+						<FontAwesomeIcon icon={faPenToSquare} />
 					</div>
 				)}
 			</button>
