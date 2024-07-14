@@ -1,27 +1,27 @@
 -- name: GetBlogs :many
-SELECT id, title, date, main_image, subheading, body, created
-FROM Blog
-ORDER BY created DESC;
+select id, title, date, main_image, subheading, body, created
+from Blog
+order by created desc;
 
 -- name: GetBlogByID :one
-SELECT id, title, date, main_image, subheading, body, created
-FROM Blog
-WHERE id = ?;
+select id, title, date, main_image, subheading, body, created
+from Blog
+where id = ?;
 
 -- name: CreateBlog :exec
-INSERT INTO Blog (id, title, date, main_image, subheading, body, created)
-VALUES (?, ?, ?, ?, ?, ?, ?);
+insert into Blog (id, title, date, main_image, subheading, body, created)
+values (?, ?, ?, ?, ?, ?, ?);
 
 -- name: UpdateBlogNoImage :exec
-UPDATE Blog
-SET title = ?, date = ?, subheading = ?, body = ?
-WHERE id = ?;
+update Blog
+set title = ?, date = ?, subheading = ?, body = ?
+where id = ?;
 
 -- name: UpdateBlog :exec
-UPDATE Blog
-SET title = ?, date = ?, main_image = ?, subheading = ?, body = ?
-WHERE id = ?;
+update Blog
+set title = ?, date = ?, main_image = ?, subheading = ?, body = ?
+where id = ?;
 
 -- name: DeleteBlog :exec
-DELETE FROM Blog
-WHERE id = ?;
+delete from Blog
+where id = ?;
