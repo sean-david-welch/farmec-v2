@@ -11,6 +11,7 @@ import { useMutateResource } from '../hooks/genericHooks';
 import { getFormFields } from '../utils/sparepartsFields';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons/faPenToSquare';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRightToBracket } from '@fortawesome/free-solid-svg-icons';
 
 interface Props {
 	id?: string;
@@ -89,7 +90,14 @@ const SparepartForm: React.FC<Props> = ({ id, sparepart, suppliers }) => {
 	return (
 		<section id="form">
 			<button className={utils.btnForm} onClick={() => setShowForm(!showForm)}>
-				{id ? <FontAwesomeIcon icon={faPenToSquare} /> : 'Create Sparepart'}
+				{id ? (
+					<FontAwesomeIcon icon={faPenToSquare} />
+				) : (
+					<div>
+						Create Sparepart
+						<FontAwesomeIcon icon={faRightToBracket} />
+					</div>
+				)}
 			</button>
 
 			<FormDialog visible={showForm} onClose={() => setShowForm(false)}>
