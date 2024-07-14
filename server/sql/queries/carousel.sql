@@ -1,4 +1,4 @@
---name: GetCarousels :many
+-- name: GetCarousels :many
 select id, name, image, created from Carousel order by created desc;
 
 -- name: GetCarouselByID :one
