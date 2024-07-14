@@ -29,7 +29,7 @@ type BlogTestSuite struct {
 }
 
 func (suite *BlogTestSuite) SetupTest() {
-	db, mock, err := sqlmock.New()
+	database, mock, err := sqlmock.New()
 	require.NoError(suite.T(), err)
 
 	mock.ExpectExec(`CREATE TABLE Blog \(
@@ -42,7 +42,7 @@ func (suite *BlogTestSuite) SetupTest() {
         created TEXT
     \);`).WillReturnResult(sqlmock.NewResult(0, 0))
 
-	_, err = db.Exec(`CREATE TABLE Blog (
+	_, err = database.Exec(`CREATE TABLE Blog (
         id TEXT PRIMARY KEY,
         title TEXT,
         date TEXT,
@@ -53,10 +53,10 @@ func (suite *BlogTestSuite) SetupTest() {
     );`)
 	require.NoError(suite.T(), err)
 
-	suite.db = db
+	suite.db = database
 	suite.mock = mock
 
-	store := stores.NewBlogStore(db)
+	store := stores.NewBlogStore(database)
 	s3Client := lib.NewNoOpS3Client()
 	service := services.NewBlogService(store, s3Client, "test-folder")
 	handler := handlers.NewBlogHandler(service)
