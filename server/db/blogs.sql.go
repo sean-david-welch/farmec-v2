@@ -3,7 +3,7 @@
 //   sqlc v1.26.0
 // source: blogs.sql
 
-package database
+package db
 
 import (
 	"context"

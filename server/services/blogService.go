@@ -3,7 +3,7 @@ package services
 import (
 	"database/sql"
 	"errors"
-	"github.com/sean-david-welch/farmec-v2/server/database"
+	"github.com/sean-david-welch/farmec-v2/server/db"
 	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"log"
 
@@ -12,10 +12,10 @@ import (
 )
 
 type BlogService interface {
-	GetBlogs() ([]database.Blog, error)
-	GetBlogsByID(id string) (*database.Blog, error)
-	CreateBlog(blog *database.Blog) (*types.ModelResult, error)
-	UpdateBlog(id string, blog *database.Blog) (*types.ModelResult, error)
+	GetBlogs() ([]db.Blog, error)
+	GetBlogsByID(id string) (*db.Blog, error)
+	CreateBlog(blog *db.Blog) (*types.ModelResult, error)
+	UpdateBlog(id string, blog *db.Blog) (*types.ModelResult, error)
 	DeleteBlog(id string) error
 }
 
@@ -29,7 +29,7 @@ func NewBlogService(store stores.BlogStore, s3Client lib.S3Client, folder string
 	return &BlogServiceImpl{store: store, s3Client: s3Client, folder: folder}
 }
 
-func (service *BlogServiceImpl) GetBlogs() ([]database.Blog, error) {
+func (service *BlogServiceImpl) GetBlogs() ([]db.Blog, error) {
 	blogs, err := service.store.GetBlogs()
 	if err != nil {
 		return nil, err
@@ -38,7 +38,7 @@ func (service *BlogServiceImpl) GetBlogs() ([]database.Blog, error) {
 	return blogs, nil
 }
 
-func (service *BlogServiceImpl) GetBlogsByID(id string) (*database.Blog, error) {
+func (service *BlogServiceImpl) GetBlogsByID(id string) (*db.Blog, error) {
 	blog, err := service.store.GetBlogById(id)
 	if err != nil {
 		return nil, err
@@ -47,7 +47,7 @@ func (service *BlogServiceImpl) GetBlogsByID(id string) (*database.Blog, error) 
 	return blog, nil
 }
 
-func (service *BlogServiceImpl) CreateBlog(blog *database.Blog) (*types.ModelResult, error) {
+func (service *BlogServiceImpl) CreateBlog(blog *db.Blog) (*types.ModelResult, error) {
 	image := blog.MainImage
 
 	if !image.Valid {
@@ -74,7 +74,7 @@ func (service *BlogServiceImpl) CreateBlog(blog *database.Blog) (*types.ModelRes
 	return result, nil
 }
 
-func (service *BlogServiceImpl) UpdateBlog(id string, blog *database.Blog) (*types.ModelResult, error) {
+func (service *BlogServiceImpl) UpdateBlog(id string, blog *db.Blog) (*types.ModelResult, error) {
 	image := blog.MainImage
 
 	var presignedUrl, imageUrl string

@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"github.com/sean-david-welch/farmec-v2/server/database"
+	"github.com/sean-david-welch/farmec-v2/server/db"
 	"log"
 	"net/http"
 
@@ -41,7 +41,7 @@ func (handler *BlogHandler) GetBlogByID(context *gin.Context) {
 }
 
 func (handler *BlogHandler) CreateBlog(context *gin.Context) {
-	var blog database.Blog
+	var blog db.Blog
 
 	if err := context.ShouldBindJSON(&blog); err != nil {
 		log.Printf("error while creating blog: %v", err)
@@ -64,7 +64,7 @@ func (handler *BlogHandler) CreateBlog(context *gin.Context) {
 func (handler *BlogHandler) UpdateBlog(context *gin.Context) {
 	id := context.Param("id")
 
-	var blog database.Blog
+	var blog db.Blog
 
 	if err := context.ShouldBindJSON(&blog); err != nil {
 		log.Printf("error while updating blog: %v", err)

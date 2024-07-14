@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/DATA-DOG/go-sqlmock"
-	"github.com/sean-david-welch/farmec-v2/server/database"
+	"github.com/sean-david-welch/farmec-v2/server/db"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 	"net/http"
@@ -88,7 +88,7 @@ func (suite *BlogTestSuite) TestGetBlogs() {
 
 	require.Equal(suite.T(), http.StatusOK, resp.StatusCode)
 
-	var blogs []database.Blog
+	var blogs []db.Blog
 	err = json.NewDecoder(resp.Body).Decode(&blogs)
 	require.NoError(suite.T(), err)
 
@@ -101,7 +101,7 @@ func (suite *BlogTestSuite) TestGetBlogs() {
 }
 
 func (suite *BlogTestSuite) TestCreateBlog() {
-	blog := database.Blog{
+	blog := db.Blog{
 		ID:         "",
 		Title:      "New Blog",
 		Date:       sql.NullString{String: "2024-06-23", Valid: true},

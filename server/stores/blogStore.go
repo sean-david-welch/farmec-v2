@@ -5,30 +5,30 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/google/uuid"
-	"github.com/sean-david-welch/farmec-v2/server/database"
+	"github.com/sean-david-welch/farmec-v2/server/db"
 	"time"
 )
 
 type BlogStore interface {
-	GetBlogs() ([]database.Blog, error)
-	GetBlogById(id string) (*database.Blog, error)
-	CreateBlog(blog *database.Blog) error
-	UpdateBlog(id string, blog *database.Blog) error
+	GetBlogs() ([]db.Blog, error)
+	GetBlogById(id string) (*db.Blog, error)
+	CreateBlog(blog *db.Blog) error
+	UpdateBlog(id string, blog *db.Blog) error
 	DeleteBlog(id string) error
 }
 
 type BlogStoreImpl struct {
-	queries *database.Queries
+	queries *db.Queries
 }
 
 func NewBlogStore(sql *sql.DB) *BlogStoreImpl {
-	queries := database.New(sql)
+	queries := db.New(sql)
 	return &BlogStoreImpl{
 		queries: queries,
 	}
 }
 
-func (store *BlogStoreImpl) GetBlogs() ([]database.Blog, error) {
+func (store *BlogStoreImpl) GetBlogs() ([]db.Blog, error) {
 	ctx := context.Background()
 	blogs, err := store.queries.GetBlogs(ctx)
 	if err != nil {
@@ -36,9 +36,9 @@ func (store *BlogStoreImpl) GetBlogs() ([]database.Blog, error) {
 	}
 
 	// Convert from the generated database to your database if needed
-	var result []database.Blog
+	var result []db.Blog
 	for _, blog := range blogs {
-		result = append(result, database.Blog{
+		result = append(result, db.Blog{
 			ID:         blog.ID,
 			Title:      blog.Title,
 			Date:       blog.Date,
@@ -52,7 +52,7 @@ func (store *BlogStoreImpl) GetBlogs() ([]database.Blog, error) {
 	return result, nil
 }
 
-func (store *BlogStoreImpl) GetBlogById(id string) (*database.Blog, error) {
+func (store *BlogStoreImpl) GetBlogById(id string) (*db.Blog, error) {
 	ctx := context.Background()
 	blog, err := store.queries.GetBlogByID(ctx, id)
 	if err != nil {
@@ -62,12 +62,12 @@ func (store *BlogStoreImpl) GetBlogById(id string) (*database.Blog, error) {
 	return &blog, nil
 }
 
-func (store *BlogStoreImpl) CreateBlog(blog *database.Blog) error {
+func (store *BlogStoreImpl) CreateBlog(blog *db.Blog) error {
 	ctx := context.Background()
 	blog.ID = uuid.NewString()
 	blog.Created = sql.NullString{String: time.Now().String(), Valid: true}
 
-	params := database.CreateBlogParams{
+	params := db.CreateBlogParams{
 		ID:         blog.ID,
 		Title:      blog.Title,
 		Date:       blog.Date,
@@ -85,11 +85,11 @@ func (store *BlogStoreImpl) CreateBlog(blog *database.Blog) error {
 	return nil
 }
 
-func (store *BlogStoreImpl) UpdateBlog(id string, blog *database.Blog) error {
+func (store *BlogStoreImpl) UpdateBlog(id string, blog *db.Blog) error {
 	ctx := context.Background()
 
 	if blog.MainImage.Valid {
-		params := database.UpdateBlogParams{
+		params := db.UpdateBlogParams{
 			Title:      blog.Title,
 			MainImage:  blog.MainImage,
 			Date:       blog.Date,
@@ -102,7 +102,7 @@ func (store *BlogStoreImpl) UpdateBlog(id string, blog *database.Blog) error {
 			return fmt.Errorf("error occurred while updating blog with image: %w", err)
 		}
 	} else {
-		params := database.UpdateBlogNoImageParams{
+		params := db.UpdateBlogNoImageParams{
 			Title:      blog.Title,
 			Date:       blog.Date,
 			Subheading: blog.Subheading,
