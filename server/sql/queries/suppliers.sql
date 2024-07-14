@@ -3,7 +3,7 @@ select id, name, logo_image, marketing_image,
        description, social_facebook, social_instagram,
        social_linkedin, social_twitter, social_youtube, social_website, created
 from Supplier
-order by created desc ;
+order by created desc;
 
 -- name: GetSupplierByID :one
 select id, name, logo_image, marketing_image,
