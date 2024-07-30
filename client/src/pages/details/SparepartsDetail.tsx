@@ -60,41 +60,42 @@ const PartsDetail: React.FC = () => {
 					))}
 				</div>
 			)}
-
-			{spareparts ? (
-				spareparts.map(sparepart => (
-					<div className={styles.sparepartGrid} key={sparepart.id}>
-						<div className={styles.sparepartsCard} id={sparepart.name || ''}>
-							<div className={styles.sparepartsGrid}>
-								<div className={styles.sparepartsInfo}>
-									<h1 className={utils.mainHeading}>{sparepart.name}</h1>
-									<button className={utils.btn}>
-										<Link to={sparepart.spare_parts_link || '#'} target="_blank">
-											Parts Catalogue <FontAwesomeIcon icon={faRightToBracket} />
-										</Link>
-									</button>
+			<div className={styles.partsColumn}>
+				{spareparts ? (
+					spareparts.map(sparepart => (
+						<div className={styles.sparepartGrid} key={sparepart.id}>
+							<div className={styles.sparepartsCard} id={sparepart.name || ''}>
+								<div className={styles.sparepartsGrid}>
+									<div className={styles.sparepartsInfo}>
+										<h1 className={utils.mainHeading}>{sparepart.name}</h1>
+										<button className={utils.btn}>
+											<Link to={sparepart.spare_parts_link || '#'} target="_blank">
+												Parts Catalogue <FontAwesomeIcon icon={faRightToBracket} />
+											</Link>
+										</button>
+									</div>
+									<img
+										src={sparepart.parts_image}
+										alt={'/default.jpg'}
+										className={styles.sparepartsLogo}
+										width={600}
+										height={600}
+										onError={imageError}
+									/>
 								</div>
-								<img
-									src={sparepart.parts_image}
-									alt={'/default.jpg'}
-									className={styles.sparepartsLogo}
-									width={600}
-									height={600}
-									onError={imageError}
-								/>
 							</div>
+							{isAdmin && suppliers && sparepart.id && (
+								<div className={utils.optionsBtn}>
+									<SparepartForm suppliers={suppliers} sparepart={sparepart} id={sparepart.id} />
+									<DeleteButton id={sparepart.id} resourceKey={'spareparts'} />
+								</div>
+							)}
 						</div>
-						{isAdmin && suppliers && sparepart.id && (
-							<div className={utils.optionsBtn}>
-								<SparepartForm suppliers={suppliers} sparepart={sparepart} id={sparepart.id} />
-								<DeleteButton id={sparepart.id} resourceKey={'spareparts'} />
-							</div>
-						)}
-					</div>
-				))
-			) : (
-				<div>error: {error || 'Unknown error'}</div>
-			)}
+					))
+				) : (
+					<div>error: {error || 'Unknown error'}</div>
+				)}
+			</div>
 		</section>
 	);
 };
