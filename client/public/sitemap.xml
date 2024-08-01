@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+        xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+    <!-- Static Routes -->
+    <url>
+        <loc>https://www.farmec.ie/</loc>
+        <lastmod>2024-07-30T10:04:04+00:00</lastmod>
+    </url>
+    <url>
+        <loc>https://www.farmec.ie/about</loc>
+        <lastmod>2024-07-30T10:04:04+00:00</lastmod>
+    </url>
+    <url>
+        <loc>https://www.farmec.ie/about/policies</loc>
+        <lastmod>2024-07-30T10:04:04+00:00</lastmod>
+    </url>
+    <url>
+        <loc>https://www.farmec.ie/suppliers</loc>
+        <lastmod>2024-07-30T10:04:04+00:00</lastmod>
+    </url>
+    <url>
+        <loc>https://www.farmec.ie/spareparts</loc>
+        <lastmod>2024-07-30T10:04:04+00:00</lastmod>
+    </url>
+    <url>
+        <loc>https://www.farmec.ie/blogs</loc>
+        <lastmod>2024-07-30T10:04:04+00:00</lastmod>
+    </url>
+    <url>
+        <loc>https://www.farmec.ie/blog/exhibitions</loc>
+        <lastmod>2024-07-30T10:04:04+00:00</lastmod>
+    </url>
+    <url>
+        <loc>https://www.farmec.ie/warranties</loc>
+        <lastmod>2024-07-30T10:04:04+00:00</lastmod>
+    </url>
+    <url>
+        <loc>https://www.farmec.ie/registrations</loc>
+        <lastmod>2024-07-30T10:04:04+00:00</lastmod>
+    </url>
+    <url>
+        <loc>https://www.farmec.ie/login</loc>
+        <lastmod>2024-07-30T10:04:04+00:00</lastmod>
+    </url>
+    <url>
+        <loc>https://www.farmec.ie/return</loc>
+        <lastmod>2024-07-30T10:04:04+00:00</lastmod>
+    </url>
+
+    <!-- Dynamic Routes - Example entries -->
+    <!-- Supplier Detail Pages -->
+    <url>
+        <loc>https://www.farmec.ie/suppliers/1</loc>
+        <lastmod>2024-07-30T10:04:04+00:00</lastmod>
+    </url>
+    <url>
+        <loc>https://www.farmec.ie/suppliers/2</loc>
+        <lastmod>2024-07-30T10:04:04+00:00</lastmod>
+    </url>
+
+    <!-- Spare Parts Detail Pages -->
+    <url>
+        <loc>https://www.farmec.ie/spareparts/1</loc>
+        <lastmod>2024-07-30T10:04:04+00:00</lastmod>
+    </url>
+    <url>
+        <loc>https://www.farmec.ie/spareparts/2</loc>
+        <lastmod>2024-07-30T10:04:04+00:00</lastmod>
+    </url>
+
+</urlset>
