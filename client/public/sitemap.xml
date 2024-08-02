@@ -53,22 +53,44 @@
     <!-- Dynamic Routes - Example entries -->
     <!-- Supplier Detail Pages -->
     <url>
-        <loc>https://www.farmec.ie/suppliers/1</loc>
+        <loc>https://www.farmec.ie/suppliers/35607ae9-d92e-4e8f-8dd8-b40654d5eceb</loc>
         <lastmod>2024-07-30T10:04:04+00:00</lastmod>
     </url>
     <url>
-        <loc>https://www.farmec.ie/suppliers/2</loc>
+        <loc>https://www.farmec.ie/suppliers/ad309b14-3c19-449c-8dac-78786a95f071</loc>
         <lastmod>2024-07-30T10:04:04+00:00</lastmod>
     </url>
-
+    <url>
+        <loc>https://www.farmec.ie/suppliers/d1eb312f-d00a-44ee-a3e4-45cf9f4783cd</loc>
+        <lastmod>2024-07-30T10:04:04+00:00</lastmod>
+    </url>
+    <url>
+        <loc>https://www.farmec.ie/suppliers/ef0408e4-6e44-4c29-a1d9-e713d4e80d41</loc>
+        <lastmod>2024-07-30T10:04:04+00:00</lastmod>
+    </url>
+    <url>
+        <loc>https://www.farmec.ie/suppliers/67adf8ca-d663-4b16-aa15-4ac9cba0cfc1</loc>
+        <lastmod>2024-07-30T10:04:04+00:00</lastmod>
+    </url>
     <!-- Spare Parts Detail Pages -->
     <url>
-        <loc>https://www.farmec.ie/spareparts/1</loc>
+        <loc>https://www.farmec.ie/spareparts/35607ae9-d92e-4e8f-8dd8-b40654d5eceb</loc>
         <lastmod>2024-07-30T10:04:04+00:00</lastmod>
     </url>
     <url>
-        <loc>https://www.farmec.ie/spareparts/2</loc>
+        <loc>https://www.farmec.ie/spareparts/ad309b14-3c19-449c-8dac-78786a95f071</loc>
         <lastmod>2024-07-30T10:04:04+00:00</lastmod>
     </url>
-
+    <url>
+        <loc>https://www.farmec.ie/spareparts/d1eb312f-d00a-44ee-a3e4-45cf9f4783cd</loc>
+        <lastmod>2024-07-30T10:04:04+00:00</lastmod>
+    </url>
+    <url>
+        <loc>https://www.farmec.ie/spareparts/ef0408e4-6e44-4c29-a1d9-e713d4e80d41</loc>
+        <lastmod>2024-07-30T10:04:04+00:00</lastmod>
+    </url>
+    <url>
+        <loc>https://www.farmec.ie/spareparts/67adf8ca-d663-4b16-aa15-4ac9cba0cfc1</loc>
+        <lastmod>2024-07-30T10:04:04+00:00</lastmod>
+    </url>
 </urlset>
