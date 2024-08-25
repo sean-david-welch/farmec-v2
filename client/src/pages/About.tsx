@@ -16,17 +16,17 @@ const About: FC = () => {
     return (
         <>
             <Helmet>
-                <title>About Us - Farmec</title>
+                <title>About Us - Farmec Ireland</title>
                 <meta name="description" content="Learn more about Farmec's staff and history. Meet our team and explore our 30-year journey as a family-run business providing high-quality machinery." />
 
-                <meta property="og:title" content="About Us - Farmec" />
+                <meta property="og:title" content="About Us - Farmec Ireland" />
                 <meta property="og:description" content="Discover Farmec's staff, history, and vision for the future." />
                 <meta property="og:image" content="https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp" />
                 <meta property="og:url" content="https://www.farmec.ie/about" />
                 <meta property="og:type" content="website" />
 
                 <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="About Us - Farmec" />
+                <meta name="twitter:title" content="About Us - Farmec Ireland" />
                 <meta name="twitter:description" content="Learn more about Farmec's staff and history. Meet our team and explore our 30-year journey as a family-run business providing high-quality machinery." />
                 <meta name="twitter:image" content="https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp" />
                 <link rel="canonical" href="https://www.farmec.ie/about" />
