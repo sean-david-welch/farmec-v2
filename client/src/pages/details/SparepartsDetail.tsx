@@ -14,9 +14,9 @@ import DeleteButton from '../../components/DeleteButton';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightToBracket } from '@fortawesome/free-solid-svg-icons/faRightToBracket';
-import { useEffect } from 'react';
+import {FC, SyntheticEvent, useEffect} from 'react';
 
-const PartsDetail: React.FC = () => {
+const PartsDetail: FC = () => {
 	const { isAdmin } = useUserStore();
 	const { suppliers } = useSupplierStore();
 
@@ -28,7 +28,7 @@ const PartsDetail: React.FC = () => {
 	if (isError) return <ErrorPage />;
 	if (isLoading) return <Loading />;
 
-	const imageError = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
+	const imageError = (event: SyntheticEvent<HTMLImageElement, Event>) => {
 		event.currentTarget.src = '/default.jpg';
 	};
 
