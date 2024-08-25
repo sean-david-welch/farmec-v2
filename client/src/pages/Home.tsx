@@ -6,11 +6,12 @@ import Contact from '../templates/Contact';
 import Displays from '../templates/Displays';
 import Carousel from '../templates/Carousel';
 
-import { useGetResource } from '../hooks/genericHooks';
-import { Carousel as CarouselType } from '../types/miscTypes';
+import {useGetResource} from '../hooks/genericHooks';
+import {Carousel as CarouselType} from '../types/miscTypes';
 import {Helmet} from "react-helmet";
+import {FC} from "react";
 
-const Home: React.FC = () => {
+const Home: FC = () => {
     const { data: carousels, isLoading, isError } = useGetResource<CarouselType[]>('carousels');
 
     const images = carousels?.map(carousel => carousel.image) || [];
