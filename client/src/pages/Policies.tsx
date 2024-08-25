@@ -32,14 +32,14 @@ const Policies: FC = () => {
 				<meta name="description" content="Read more about our Privacy Policy and how we use your data"/>
 
 				<meta property="og:title" content="Policies - Farmec Ireland"/>
-				<meta property="og:description" content="Discover Farmec's staff, history, and vision for the future."/>
+				<meta property="og:description" content="Read more about our Privacy Policy and how we use your data."/>
 				<meta property="og:image" content="https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp"/>
 				<meta property="og:url" content="https://www.farmec.ie/policies"/>
 				<meta property="og:type" content="website"/>
 
 				<meta name="twitter:card" content="summary_large_image"/>
 				<meta name="twitter:title" content="Policies - Farmec Ireland"/>
-				<meta name="twitter:description" content="Read more about our Privacy Policy and how we use your data"/>
+				<meta name="twitter:description" content="Read more about our Privacy Policy and how we use your data."/>
 				<meta name="twitter:image" content="https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp"/>
 				<link rel="canonical" href="https://www.farmec.ie/policies"/>
 			</Helmet>
