@@ -10,12 +10,12 @@ import { useParams } from 'react-router-dom';
 import { Resources } from '../../types/dataTypes';
 import { useMultipleResources } from '../../hooks/genericHooks';
 import { useSupplierStore, useUserStore } from '../../lib/store';
-import { useEffect, Fragment } from 'react';
+import {useEffect, Fragment, FC} from 'react';
 import SupplierForm from '../../forms/SupplierForm';
 import DeleteButton from '../../components/DeleteButton';
 import {Helmet} from "react-helmet";
 
-const SuppliersDetails: React.FC = () => {
+const SuppliersDetails: FC = () => {
 	const { isAdmin } = useUserStore();
 	const { suppliers } = useSupplierStore();
 
