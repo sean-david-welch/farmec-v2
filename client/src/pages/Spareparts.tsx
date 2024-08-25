@@ -1,17 +1,18 @@
 import utils from '../styles/Utils.module.css';
 import styles from '../styles/Suppliers.module.css';
 
-import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRightToBracket } from '@fortawesome/free-solid-svg-icons';
-import { useSupplierStore, useUserStore } from '../lib/store';
+import {Link} from 'react-router-dom';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faRightToBracket} from '@fortawesome/free-solid-svg-icons';
+import {useSupplierStore, useUserStore} from '../lib/store';
 
 import WarrantyForm from '../forms/WarrantyForm';
 import SparepartForm from '../forms/SparePartsForm';
 import RegistrationForm from '../forms/RegistrationForm';
-import { Helmet } from 'react-helmet';
+import {Helmet} from 'react-helmet';
+import {FC} from "react";
 
-const SpareParts: React.FC = () => {
+const SpareParts: FC = () => {
 	const { isAdmin } = useUserStore();
 	const { suppliers } = useSupplierStore();
 
