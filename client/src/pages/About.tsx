@@ -6,10 +6,11 @@ import {useUserStore} from '../lib/store';
 import {Employees} from '../templates/Employees';
 
 
-import { Helmet } from 'react-helmet';
+import {Helmet} from 'react-helmet';
+import {FC} from "react";
 import TimelineForm from '../forms/TimelineForm';
 
-const About: React.FC = () => {
+const About: FC = () => {
     const {isAdmin} = useUserStore();
 
     return (
