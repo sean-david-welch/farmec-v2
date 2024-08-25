@@ -15,6 +15,7 @@ import DeleteButton from '../../components/DeleteButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightToBracket } from '@fortawesome/free-solid-svg-icons/faRightToBracket';
 import {FC, SyntheticEvent, useEffect} from 'react';
+import {Helmet} from "react-helmet";
 
 const PartsDetail: FC = () => {
 	const { isAdmin } = useUserStore();
@@ -31,6 +32,7 @@ const PartsDetail: FC = () => {
 	const imageError = (event: SyntheticEvent<HTMLImageElement, Event>) => {
 		event.currentTarget.src = '/default.jpg';
 	};
+	const supplier = spareparts && spareparts.length > 0 && suppliers?.find(s => s.id === spareparts[0].supplier_id);
 
 	if (!spareparts) {
 		return (
@@ -46,6 +48,33 @@ const PartsDetail: FC = () => {
 	}
 
 	return (
+		<>
+			<Helmet>
+				<title>{supplier ? `${supplier.name} Spare Parts - Farmec Ireland` : 'Spare Parts - Farmec Ireland'}</title>
+				<meta
+					name="description"
+					content={supplier ? `Explore spare parts for ${supplier.name}. Farmec offers top-quality spare parts for your agricultural machinery.` : 'Browse spare parts from various suppliers to ensure your machines are always operational.'}
+				/>
+
+				<meta property="og:title" content={supplier ? `${supplier.name} Spare Parts - Farmec Ireland` : 'Spare Parts - Farmec Ireland'} />
+				<meta
+					property="og:description"
+					content={supplier ? `Explore spare parts for ${supplier.name}. Farmec offers top-quality spare parts for your agricultural machinery.` : 'Browse spare parts from various suppliers to ensure your machines are always operational.'}
+				/>
+				<meta property="og:image" content="https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp" />
+				<meta property="og:url" content={`https://www.farmec.ie/spareparts/${id}`} />
+				<meta property="og:type" content="website" />
+
+				<meta name="twitter:card" content="summary_large_image" />
+				<meta name="twitter:title" content={supplier ? `${supplier.name} Spare Parts - Farmec Ireland` : 'Spare Parts - Farmec Ireland'} />
+				<meta
+					name="twitter:description"
+					content={supplier ? `Explore spare parts for ${supplier.name}. Farmec offers top-quality spare parts for your agricultural machinery.` : 'Browse spare parts from various suppliers to ensure your machines are always operational.'}
+				/>
+				<meta name="twitter:image" content="https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp" />
+
+				<link rel="canonical" href={`https://www.farmec.ie/spareparts/${id}`} />
+			</Helmet>
 		<section id="partsDetail">
 			<h1 className={utils.sectionHeading}>Parts Catalogues</h1>
 			{isAdmin && suppliers && <SparepartForm suppliers={suppliers} />}
@@ -97,6 +126,7 @@ const PartsDetail: FC = () => {
 				)}
 			</div>
 		</section>
+		</>
 	);
 };
 
