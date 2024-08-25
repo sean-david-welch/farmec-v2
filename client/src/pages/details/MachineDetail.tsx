@@ -36,14 +36,14 @@ const MachineDetail: FC = () => {
 
 				<meta property="og:title" content={machine ? `${machine.name} - Farmec Ireland` : 'Machine - Farmec Ireland'} />
 				<meta property="og:description" content={machine ? machine.description : "Browse our machines and products to learn more about what we offer."} />
-				<meta property="og:image" content={machine?.marketing_image ? machine.marketing_image : "https://www.farmec.ie/farmec_images/Machines/default-machine-image.webp"} />
+				<meta property="og:image" content={machine?.marketing_image ? machine.marketing_image : "https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp"} />
 				<meta property="og:url" content={`https://www.farmec.ie/machines/${machine?.id}`} />
 				<meta property="og:type" content="website" />
 
 				<meta name="twitter:card" content="summary_large_image" />
 				<meta name="twitter:title" content={machine ? `${machine.name} - Farmec Ireland` : 'Machine - Farmec Ireland'} />
 				<meta name="twitter:description" content={machine ? machine.description : "Browse our machines and products to learn more about what we offer."} />
-				<meta name="twitter:image" content={machine?.marketing_image ? machine.marketing_image : "https://www.farmec.ie/farmec_images/Machines/default-machine-image.webp"} />
+				<meta name="twitter:image" content={machine?.marketing_image ? machine.marketing_image : "https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp"} />
 
 				<link rel="canonical" href={`https://www.farmec.ie/machines/${machine?.id}`} />
 			</Helmet>
