@@ -13,15 +13,16 @@ import { useGetResource } from '../hooks/genericHooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightToBracket } from '@fortawesome/free-solid-svg-icons/faRightToBracket';
 import { Helmet } from 'react-helmet';
+import {FC, SyntheticEvent} from "react";
 
-const Blogs: React.FC = () => {
+const Blogs: FC = () => {
 	const { isAdmin } = useUserStore();
 	const { data: blogs, isLoading, isError } = useGetResource<Blog[]>('blogs');
 
 	if (isError) return <ErrorPage />;
 	if (isLoading) return <Loading />;
 
-	const imageError = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
+	const imageError = (event: SyntheticEvent<HTMLImageElement, Event>) => {
 		event.currentTarget.src = '/default.jpg';
 	};
 
