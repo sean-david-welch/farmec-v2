@@ -7,11 +7,11 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/handlers"
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
 	"github.com/sean-david-welch/farmec-v2/server/services"
-	"github.com/sean-david-welch/farmec-v2/server/stores"
+	"github.com/sean-david-welch/farmec-v2/server/store"
 )
 
 func InitTimelines(router *gin.Engine, database *sql.DB, adminMiddleware *middleware.AdminMiddleware) {
-	timelineStore := stores.NewTimelineStore(database)
+	timelineStore := store.NewTimelineStore(database)
 	service := services.NewTimelineService(timelineStore)
 	handler := handlers.NewTimelineHandler(service)
 

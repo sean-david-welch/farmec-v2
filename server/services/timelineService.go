@@ -1,7 +1,7 @@
 package services
 
 import (
-	"github.com/sean-david-welch/farmec-v2/server/stores"
+	"github.com/sean-david-welch/farmec-v2/server/store"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
@@ -13,10 +13,10 @@ type TimelineService interface {
 }
 
 type TimelineServiceImpl struct {
-	store stores.TimelineStore
+	store store.TimelineStore
 }
 
-func NewTimelineService(store stores.TimelineStore) *TimelineServiceImpl {
+func NewTimelineService(store store.TimelineStore) *TimelineServiceImpl {
 	return &TimelineServiceImpl{store: store}
 }
 

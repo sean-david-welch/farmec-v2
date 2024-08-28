@@ -5,7 +5,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"log"
 
-	"github.com/sean-david-welch/farmec-v2/server/stores"
+	"github.com/sean-david-welch/farmec-v2/server/store"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
@@ -17,12 +17,12 @@ type CarouselService interface {
 }
 
 type CarouselServiceImpl struct {
-	store    stores.CarouselStore
+	store    store.CarouselStore
 	s3Client lib.S3Client
 	folder   string
 }
 
-func NewCarouselService(store stores.CarouselStore, s3Client lib.S3Client, folder string) *CarouselServiceImpl {
+func NewCarouselService(store store.CarouselStore, s3Client lib.S3Client, folder string) *CarouselServiceImpl {
 	return &CarouselServiceImpl{
 		store:    store,
 		s3Client: s3Client,

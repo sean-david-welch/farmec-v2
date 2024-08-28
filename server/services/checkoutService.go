@@ -4,7 +4,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"log"
 
-	"github.com/sean-david-welch/farmec-v2/server/stores"
+	"github.com/sean-david-welch/farmec-v2/server/store"
 	"github.com/stripe/stripe-go/v76"
 	"github.com/stripe/stripe-go/v76/checkout/session"
 )
@@ -16,10 +16,10 @@ type CheckoutService interface {
 
 type CheckoutServiceImpl struct {
 	secrets *lib.Secrets
-	store   stores.LineItemStore
+	store   store.LineItemStore
 }
 
-func NewCheckoutService(secrets *lib.Secrets, store stores.LineItemStore) *CheckoutServiceImpl {
+func NewCheckoutService(secrets *lib.Secrets, store store.LineItemStore) *CheckoutServiceImpl {
 	return &CheckoutServiceImpl{secrets: secrets, store: store}
 }
 func (service *CheckoutServiceImpl) CreateCheckoutSession(id string) (*stripe.CheckoutSession, error) {

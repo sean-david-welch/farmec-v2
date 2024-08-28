@@ -7,11 +7,11 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/handlers"
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
 	"github.com/sean-david-welch/farmec-v2/server/services"
-	"github.com/sean-david-welch/farmec-v2/server/stores"
+	"github.com/sean-david-welch/farmec-v2/server/store"
 )
 
 func InitTerms(router *gin.Engine, database *sql.DB, adminMiddleware *middleware.AdminMiddleware) {
-	termsStore := stores.NewTermsStore(database)
+	termsStore := store.NewTermsStore(database)
 	service := services.NewTermsService(termsStore)
 	handler := handlers.NewTermsHandler(service)
 

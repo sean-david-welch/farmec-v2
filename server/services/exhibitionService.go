@@ -1,7 +1,7 @@
 package services
 
 import (
-	"github.com/sean-david-welch/farmec-v2/server/stores"
+	"github.com/sean-david-welch/farmec-v2/server/store"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
@@ -13,10 +13,10 @@ type ExhibitionService interface {
 }
 
 type ExhibitionServiceImpl struct {
-	store stores.ExhibitionStore
+	store store.ExhibitionStore
 }
 
-func NewExhibitionService(store stores.ExhibitionStore) *ExhibitionServiceImpl {
+func NewExhibitionService(store store.ExhibitionStore) *ExhibitionServiceImpl {
 	return &ExhibitionServiceImpl{store: store}
 }
 

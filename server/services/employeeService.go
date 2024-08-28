@@ -5,7 +5,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"log"
 
-	"github.com/sean-david-welch/farmec-v2/server/stores"
+	"github.com/sean-david-welch/farmec-v2/server/store"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
@@ -17,12 +17,12 @@ type EmployeeService interface {
 }
 
 type EmployeeServiceImpl struct {
-	store    stores.EmployeeStore
+	store    store.EmployeeStore
 	s3Client lib.S3Client
 	folder   string
 }
 
-func NewEmployeeService(store stores.EmployeeStore, s3Client lib.S3Client, folder string) *EmployeeServiceImpl {
+func NewEmployeeService(store store.EmployeeStore, s3Client lib.S3Client, folder string) *EmployeeServiceImpl {
 	return &EmployeeServiceImpl{store: store, s3Client: s3Client, folder: folder}
 }
 

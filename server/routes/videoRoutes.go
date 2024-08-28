@@ -10,7 +10,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/handlers"
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
 	"github.com/sean-david-welch/farmec-v2/server/services"
-	"github.com/sean-david-welch/farmec-v2/server/stores"
+	"github.com/sean-david-welch/farmec-v2/server/store"
 	"google.golang.org/api/option"
 	"google.golang.org/api/youtube/v3"
 )
@@ -21,7 +21,7 @@ func InitVideos(router *gin.Engine, database *sql.DB, secrets *lib.Secrets, admi
 		log.Fatal("error calling YouTube API: ", err)
 	}
 
-	videoStore := stores.NewVideoStore(database)
+	videoStore := store.NewVideoStore(database)
 	videoService := services.NewVideoService(videoStore, youtubeService)
 	videoHandler := handlers.NewVideoHandler(videoService)
 

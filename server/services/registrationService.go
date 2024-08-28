@@ -2,7 +2,7 @@ package services
 
 import (
 	"github.com/sean-david-welch/farmec-v2/server/lib"
-	"github.com/sean-david-welch/farmec-v2/server/stores"
+	"github.com/sean-david-welch/farmec-v2/server/store"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"net/smtp"
 )
@@ -17,10 +17,10 @@ type RegistrationService interface {
 
 type RegistrationServiceImpl struct {
 	smtpClient lib.SMTPClient
-	store      stores.RegistrationStore
+	store      store.RegistrationStore
 }
 
-func NewRegistrationService(store stores.RegistrationStore, smtpClient lib.SMTPClient) *RegistrationServiceImpl {
+func NewRegistrationService(store store.RegistrationStore, smtpClient lib.SMTPClient) *RegistrationServiceImpl {
 	return &RegistrationServiceImpl{store: store, smtpClient: smtpClient}
 }
 

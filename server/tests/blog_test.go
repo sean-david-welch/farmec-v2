@@ -18,7 +18,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/handlers"
 	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"github.com/sean-david-welch/farmec-v2/server/services"
-	"github.com/sean-david-welch/farmec-v2/server/stores"
+	"github.com/sean-david-welch/farmec-v2/server/store"
 )
 
 type BlogTestSuite struct {
@@ -56,7 +56,7 @@ func (suite *BlogTestSuite) SetupTest() {
 	suite.db = database
 	suite.mock = mock
 
-	store := stores.NewBlogStore(database)
+	store := store.NewBlogStore(database)
 	s3Client := lib.NewNoOpS3Client()
 	service := services.NewBlogService(store, s3Client, "test-folder")
 	handler := handlers.NewBlogHandler(service)
