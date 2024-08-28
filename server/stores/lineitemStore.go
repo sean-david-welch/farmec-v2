@@ -89,7 +89,7 @@ func (store *LineItemStoreImpl) CreateLineItem(lineItem *types.LineItem) error {
 }
 
 func (store *LineItemStoreImpl) UpdateLineItem(id string, lineItem *types.LineItem) error {
-	query := `UPDATE "LineItems" SET "name" = ?, "price" = ?,  WHERE "id" = ?`
+	query := `UPDATE "LineItems" SET "name" = ?, "price" = ?  WHERE "id" = ?`
 	args := []interface{}{id, lineItem.Name, lineItem.Price}
 
 	if lineItem.Image != "" && lineItem.Image != "null" {
