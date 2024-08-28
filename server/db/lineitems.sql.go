@@ -11,7 +11,8 @@ import (
 )
 
 const createLineItem = `-- name: CreateLineItem :exec
-insert into LineItems (id, name, price, image) values (?, ?, ?, ?)
+insert into LineItems (id, name, price, image)
+values (?, ?, ?, ?)
 `
 
 type CreateLineItemParams struct {
@@ -32,7 +33,9 @@ func (q *Queries) CreateLineItem(ctx context.Context, arg CreateLineItemParams) 
 }
 
 const deleteLineItem = `-- name: DeleteLineItem :exec
-delete from LineItems where id = ?
+delete
+from LineItems
+where id = ?
 `
 
 func (q *Queries) DeleteLineItem(ctx context.Context, id string) error {
@@ -41,7 +44,9 @@ func (q *Queries) DeleteLineItem(ctx context.Context, id string) error {
 }
 
 const getLineItemByID = `-- name: GetLineItemByID :one
-select id, name, price, image from LineItems where id = ?
+select id, name, price, image
+from LineItems
+where id = ?
 `
 
 func (q *Queries) GetLineItemByID(ctx context.Context, id string) (LineItem, error) {
@@ -57,7 +62,8 @@ func (q *Queries) GetLineItemByID(ctx context.Context, id string) (LineItem, err
 }
 
 const getLineItems = `-- name: GetLineItems :many
-select id, name, price, image from LineItems
+select id, name, price, image
+from LineItems
 `
 
 func (q *Queries) GetLineItems(ctx context.Context) ([]LineItem, error) {
@@ -89,7 +95,11 @@ func (q *Queries) GetLineItems(ctx context.Context) ([]LineItem, error) {
 }
 
 const updateLineItem = `-- name: UpdateLineItem :exec
-update LineItems set name = ?, price = ?, image = ? where id = ?
+update LineItems
+set name  = ?,
+    price = ?,
+    image = ?
+where id = ?
 `
 
 type UpdateLineItemParams struct {
@@ -110,7 +120,10 @@ func (q *Queries) UpdateLineItem(ctx context.Context, arg UpdateLineItemParams) 
 }
 
 const updateLineItemNoImage = `-- name: UpdateLineItemNoImage :exec
-update LineItems set name = ?, price = ? where id = ?
+update LineItems
+set name  = ?,
+    price = ?
+where id = ?
 `
 
 type UpdateLineItemNoImageParams struct {
