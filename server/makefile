@@ -17,5 +17,8 @@ test:
 dev:
 	ENV=development PORT=8000 air
 
-database:
+database-down:
 	scp -i ~/.ssh/farmec.pem -r ${REMOTE_HOST}:/home/seanwelch/server/bin/database/* ./database/
+
+database-up:
+	scp -i ~/.ssh/farmec.pem -r ./database/* ${REMOTE_HOST}:/home/seanwelch/server/bin/database/
