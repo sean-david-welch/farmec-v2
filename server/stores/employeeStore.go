@@ -30,7 +30,7 @@ func NewEmployeeStore(database *sql.DB) *EmployeeStoreImpl {
 func (store *EmployeeStoreImpl) GetEmployees() ([]types.Employee, error) {
 	var employees []types.Employee
 
-	query := `SELECT * FROM "Employee" ORDER BY "created" ASC`
+	query := `SELECT * FROM "Employee" ORDER BY "created"`
 	rows, err := store.database.Query(query)
 	if err != nil {
 		return nil, err
@@ -92,7 +92,7 @@ func (store *EmployeeStoreImpl) CreateEmployee(employee *types.Employee) error {
 }
 
 func (store *EmployeeStoreImpl) UpdateEmployee(id string, employee *types.Employee) error {
-	query := `UPDATE "Employee" SET name = ?, email = ?, role = ?, WHERE "id" = ?`
+	query := `UPDATE "Employee" SET name = ?, email = ?, role = ? WHERE id = ?`
 	args := []interface{}{id, employee.Name, employee.Email, employee.Role}
 
 	if employee.ProfileImage != "" && employee.ProfileImage != "null" {
