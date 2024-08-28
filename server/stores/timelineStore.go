@@ -70,7 +70,7 @@ func (store *TimelineStoreImpl) CreateTimeline(timeline *types.Timeline) error {
 }
 
 func (store *TimelineStoreImpl) UpdateTimeline(id string, timeline *types.Timeline) error {
-	query := `UPDATE "Timeline" SET title = ?, data = %2, body = ? WHERE "id" = ?`
+	query := `UPDATE "Timeline" SET title = ?, date = ?, body = ? WHERE "id" = ?`
 
 	_, err := store.database.Exec(query, timeline.Title, timeline.Date, timeline.Body, id)
 	if err != nil {
