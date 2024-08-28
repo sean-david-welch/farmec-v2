@@ -28,7 +28,7 @@ func NewExhibitionStore(database *sql.DB) *ExhibitionStoreImpl {
 func (store *ExhibitionStoreImpl) GetExhibitions() ([]types.Exhibition, error) {
 	var exhibitions []types.Exhibition
 
-	query := `SELECT * FROM "Exhibition" ORDER BY "created" ASC`
+	query := `SELECT * FROM "Exhibition" ORDER BY "created"`
 	rows, err := store.database.Query(query)
 	if err != nil {
 		return nil, fmt.Errorf("error occurred while querying database: %w", err)
