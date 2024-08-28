@@ -93,7 +93,7 @@ func (store *PartsStoreImpl) CreatePart(part *types.Sparepart) error {
 	part.ID = uuid.NewString()
 
 	query := `INSERT INTO "SpareParts" (id, supplier_id, name, parts_image, spare_parts_link)
-	VALUES (?, $2, $3, $4, $5)`
+	VALUES (?, ?, ?, ?, ?)`
 
 	_, err := store.database.Exec(query, part.ID, part.SupplierID, part.Name, part.PartsImage, part.SparePartsLink)
 
@@ -105,11 +105,11 @@ func (store *PartsStoreImpl) CreatePart(part *types.Sparepart) error {
 }
 
 func (store *PartsStoreImpl) UpdatePart(id string, part *types.Sparepart) error {
-	query := `UPDATE "SpareParts" SET supplier_id = $2, name = $3, spare_parts_link  = $4 WHERE ID = ?`
+	query := `UPDATE "SpareParts" SET supplier_id = ?, name = ?, spare_parts_link  = ? WHERE ID = ?`
 	args := []interface{}{id, part.SupplierID, part.Name, part.SparePartsLink}
 
 	if part.PartsImage != "" && part.PartsImage != "null" {
-		query = `UPDATE "SpareParts" SET supplier_id = $2, name = $3, parts_image = $4, spare_parts_link  = $5 WHERE ID = ?`
+		query = `UPDATE "SpareParts" SET supplier_id = ?, name = ?, parts_image = ?, spare_parts_link  = ? WHERE ID = ?`
 		args = []interface{}{id, part.SupplierID, part.Name, part.PartsImage, part.SparePartsLink}
 	}
 
