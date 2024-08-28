@@ -5,7 +5,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"log"
 
-	"github.com/sean-david-welch/farmec-v2/server/store"
+	"github.com/sean-david-welch/farmec-v2/server/stores"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
@@ -18,12 +18,12 @@ type LineItemService interface {
 }
 
 type LineItemServiceImpl struct {
-	store    store.LineItemStore
+	store    stores.LineItemStore
 	s3Client lib.S3Client
 	folder   string
 }
 
-func NewLineItemService(store store.LineItemStore, s3Client lib.S3Client, folder string) *LineItemServiceImpl {
+func NewLineItemService(store stores.LineItemStore, s3Client lib.S3Client, folder string) *LineItemServiceImpl {
 	return &LineItemServiceImpl{store: store, s3Client: s3Client, folder: folder}
 }
 

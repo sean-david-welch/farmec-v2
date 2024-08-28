@@ -2,7 +2,7 @@ package services
 
 import (
 	"github.com/sean-david-welch/farmec-v2/server/lib"
-	"github.com/sean-david-welch/farmec-v2/server/store"
+	"github.com/sean-david-welch/farmec-v2/server/stores"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"net/smtp"
 )
@@ -17,10 +17,10 @@ type WarrantyService interface {
 
 type WarrantyServiceImpl struct {
 	smtpClient lib.SMTPClient
-	store      store.WarrantyStore
+	store      stores.WarrantyStore
 }
 
-func NewWarrantyService(store store.WarrantyStore, smtpClient lib.SMTPClient) *WarrantyServiceImpl {
+func NewWarrantyService(store stores.WarrantyStore, smtpClient lib.SMTPClient) *WarrantyServiceImpl {
 	return &WarrantyServiceImpl{store: store, smtpClient: smtpClient}
 }
 

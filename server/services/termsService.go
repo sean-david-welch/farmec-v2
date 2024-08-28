@@ -1,7 +1,7 @@
 package services
 
 import (
-	"github.com/sean-david-welch/farmec-v2/server/store"
+	"github.com/sean-david-welch/farmec-v2/server/stores"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
@@ -13,10 +13,10 @@ type TermsService interface {
 }
 
 type TermsServiceImpl struct {
-	store store.TermsStore
+	store stores.TermsStore
 }
 
-func NewTermsService(store store.TermsStore) *TermsServiceImpl {
+func NewTermsService(store stores.TermsStore) *TermsServiceImpl {
 	return &TermsServiceImpl{store: store}
 }
 

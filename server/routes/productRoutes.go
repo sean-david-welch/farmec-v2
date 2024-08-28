@@ -8,11 +8,11 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/handlers"
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
 	"github.com/sean-david-welch/farmec-v2/server/services"
-	"github.com/sean-david-welch/farmec-v2/server/store"
+	"github.com/sean-david-welch/farmec-v2/server/stores"
 )
 
 func InitProduct(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, adminMiddleware *middleware.AdminMiddleware) {
-	productStore := store.NewProductStore(database)
+	productStore := stores.NewProductStore(database)
 	productService := services.NewProductService(productStore, s3Client, "Products")
 	productHandler := handlers.NewProductHandler(productService)
 
