@@ -67,7 +67,7 @@ func (store *ExhibitionStoreImpl) CreateExhibition(exhibition *types.Exhibition)
 }
 
 func (store *ExhibitionStoreImpl) UpdateExhibition(id string, exhibition *types.Exhibition) error {
-	query := `UPDATE "Exhibiton" SET "title" = ?, "date" = ?, "location" = ?, "info" = ? WHERE "id" = ?`
+	query := `UPDATE "Exhibition" SET "title" = ?, "date" = ?, "location" = ?, "info" = ? WHERE "id" = ?`
 
 	_, err := store.database.Exec(query, id, exhibition.Title, exhibition.Date, exhibition.Location, exhibition.Info)
 	if err != nil {
