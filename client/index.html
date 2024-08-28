@@ -3,20 +3,32 @@
 
 <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Farmec Ireland Ltd</title>
 
     <meta name="description"
-        content="Farmec Ireland Ltd specializes in providing high-quality agricultural machinery and services to enhance your farming operations. Explore our range of products and services tailored for Irish farms.">
-    <meta name="keywords"
-        content="agricultural machinery, farming equipment, Ireland agriculture, farm services, farmec Ireland">
+          content="Farmec Ireland Ltd specializes in providing high-quality agricultural machinery and services to enhance your farming operations. Explore our range of products and services tailored for Irish farms.">
+
     <meta name="author" content="Farmec Ireland Ltd">
+
+    <!-- Google Analytics Tag -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5J4GB3RZ0N"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-5J4GB3RZ0N', {
+            send_page_view: true
+        });
+    </script>
 </head>
 
 <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+<div id="root"></div>
+<script type="module" src="/src/main.tsx"></script>
 </body>
 
 </html>
