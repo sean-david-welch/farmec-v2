@@ -33,6 +33,8 @@ insert into WarrantyClaim (id, dealer, dealer_contact, owner_name, machine_model
                            failure_date, repair_date, failure_details, repair_details, labour_hours, completed_by,
                            created)
 values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+-- name: CreatePartsRequired :exec
 insert into PartsRequired (id, warranty_id, part_number, quantity_needed, invoice_number, description)
 values (?, ?, ?, ?, ?, ?);
 
@@ -51,11 +53,11 @@ set dealer          = ?,
     labour_hours    = ?,
     completed_by    = ?
 where id = ?;
+
+-- name: DeletePartRequired :exec
 delete
 from PartsRequired
 where warranty_id = ?;
-insert into PartsRequired (id, warranty_id, part_number, quantity_needed, invoice_number, description)
-values (?, ?, ?, ?, ?, ?);
 
 -- name: DeleteWarranty :exec
 delete from PartsRequired where warranty_id = ?;
