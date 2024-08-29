@@ -1,0 +1,20 @@
+-- name: GetRegistrations :many
+select id,
+       dealer_name,
+       dealer_address,
+       owner_name,
+       owner_address,
+       machine_model,
+       serial_number,
+       install_date,
+       invoice_number,
+       complete_supply,
+       pdi_complete,
+       pto_correct,
+       machine_test_run,
+       safety_induction,
+       operator_handbook,
+       date,
+       completed_by,
+       created
+from MachineRegistration;
