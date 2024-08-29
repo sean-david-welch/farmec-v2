@@ -11,7 +11,8 @@ import (
 )
 
 const createTimeline = `-- name: CreateTimeline :exec
-insert into Timeline (id, title, date, body, created) values (?, ?, ?, ?, ?)
+insert into Timeline (id, title, date, body, created)
+values (?, ?, ?, ?, ?)
 `
 
 type CreateTimelineParams struct {
@@ -34,7 +35,9 @@ func (q *Queries) CreateTimeline(ctx context.Context, arg CreateTimelineParams) 
 }
 
 const deleteTimeline = `-- name: DeleteTimeline :exec
-delete from Timeline where id = ?
+delete
+from Timeline
+where id = ?
 `
 
 func (q *Queries) DeleteTimeline(ctx context.Context, id string) error {
@@ -43,7 +46,9 @@ func (q *Queries) DeleteTimeline(ctx context.Context, id string) error {
 }
 
 const getTimelineByID = `-- name: GetTimelineByID :one
-select id, title, date, body, created from Timeline where id = ?
+select id, title, date, body, created
+from Timeline
+where id = ?
 `
 
 func (q *Queries) GetTimelineByID(ctx context.Context, id string) (Timeline, error) {
@@ -60,7 +65,8 @@ func (q *Queries) GetTimelineByID(ctx context.Context, id string) (Timeline, err
 }
 
 const getTimelines = `-- name: GetTimelines :many
-select id, title, date, body, created from Timeline
+select id, title, date, body, created
+from Timeline
 `
 
 func (q *Queries) GetTimelines(ctx context.Context) ([]Timeline, error) {
@@ -93,7 +99,11 @@ func (q *Queries) GetTimelines(ctx context.Context) ([]Timeline, error) {
 }
 
 const updateTimeline = `-- name: UpdateTimeline :exec
-update Timeline set title = ?, date = ?, body = ? where id = ?
+update Timeline
+set title = ?,
+    date  = ?,
+    body  = ?
+where id = ?
 `
 
 type UpdateTimelineParams struct {
