@@ -28,8 +28,7 @@ func NewMachineStore(sql *sql.DB) *MachineStoreImpl {
 	return &MachineStoreImpl{queries: queries}
 }
 
-func (store *MachineStoreImpl) GetMachines(id string) ([]db.Machine, error) {
-	ctx := context.Background()
+func (store *MachineStoreImpl) GetMachines(ctx context.Context, id string) ([]db.Machine, error) {
 	machines, err := store.queries.GetMachines(ctx, id)
 	if err != nil {
 		return nil, fmt.Errorf("error occurred while querying the database for machines: %w", err)
@@ -51,8 +50,7 @@ func (store *MachineStoreImpl) GetMachines(id string) ([]db.Machine, error) {
 	return result, nil
 }
 
-func (store *MachineStoreImpl) GetMachineById(id string) (*db.Machine, error) {
-	ctx := context.Background()
+func (store *MachineStoreImpl) GetMachineById(ctx context.Context, id string) (*db.Machine, error) {
 	machine, err := store.queries.GetMachineByID(ctx, id)
 	if err != nil {
 		return nil, fmt.Errorf("error occurred while querying the database for machines: %w", err)
@@ -61,18 +59,22 @@ func (store *MachineStoreImpl) GetMachineById(id string) (*db.Machine, error) {
 	return &machine, nil
 }
 
-func (store *MachineStoreImpl) CreateMachine(machine *types.Machine) error {
-	ctx := context.Background()
+func (store *MachineStoreImpl) CreateMachine(ctx context.Context, machine *db.Machine) error {
 	machine.ID = uuid.NewString()
-	machine.Created = time.Now().String()
+	machine.Created = sql.NullString{String: time.Now().String(), Valid: true}
 
-	query := `INSERT INTO "Machine" (id, supplier_id, name, machine_image, description, machine_link, created)
-	VALUES (?, ?, ?, ?, ?, ?, ?)`
+	params := db.CreateMachineParams{
+		ID:           machine.ID,
+		SupplierID:   machine.SupplierID,
+		Name:         machine.Name,
+		MachineImage: machine.MachineImage,
+		Description:  machine.Description,
+		MachineLink:  machine.MachineLink,
+		Created:      machine.Created,
+	}
 
-	_, err := store.database.Exec(query, machine.ID, machine.SupplierID, machine.Name, machine.MachineImage, machine.Description, machine.MachineLink, machine.Created)
-
-	if err != nil {
-		return fmt.Errorf("error creating machine: %w", err)
+	if err := store.queries.CreateMachine(ctx, params); err != nil {
+		return fmt.Errorf("error occurred while creating a machine: %w", err)
 	}
 
 	return nil
