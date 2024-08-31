@@ -12,11 +12,11 @@ import (
 )
 
 type MachineStore interface {
-	GetMachines(id string) ([]db.Machine, error)
-	GetMachineById(id string) (*db.Machine, error)
-	CreateMachine(machine *db.Machine) error
-	UpdateMachine(id string, machine *db.Machine) error
-	DeleteMachine(id string) error
+	GetMachines(ctx context.Context, id string) ([]db.Machine, error)
+	GetMachineById(ctx context.Context, id string) (*db.Machine, error)
+	CreateMachine(ctx context.Context, machine *db.Machine) error
+	UpdateMachine(ctx context.Context, id string, machine *db.Machine) error
+	DeleteMachine(ctx context.Context, id string) error
 }
 
 type MachineStoreImpl struct {
@@ -62,6 +62,7 @@ func (store *MachineStoreImpl) GetMachineById(id string) (*db.Machine, error) {
 }
 
 func (store *MachineStoreImpl) CreateMachine(machine *types.Machine) error {
+	ctx := context.Background()
 	machine.ID = uuid.NewString()
 	machine.Created = time.Now().String()
 
