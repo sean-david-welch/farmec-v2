@@ -107,13 +107,9 @@ func (store *MachineStoreImpl) UpdateMachine(ctx context.Context, id string, mac
 	return nil
 }
 
-func (store *MachineStoreImpl) DeleteMachine(id string) error {
-	query := `DELETE FROM "Machine" WHERE id = ?`
-
-	_, err := store.database.Exec(query, id)
-	if err != nil {
-		return fmt.Errorf("error deleting machine: %w", err)
+func (store *MachineStoreImpl) DeleteMachine(ctx context.Context, id string) error {
+	if err := store.queries.DeleteMachine(ctx, id); err != nil {
+		return fmt.Errorf("error occurred while deleting machine: %w", err)
 	}
-
 	return nil
 }
