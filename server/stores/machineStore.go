@@ -1,10 +1,10 @@
 package stores
 
 import (
+	"context"
 	"database/sql"
-	"errors"
 	"fmt"
-	"log"
+	"github.com/sean-david-welch/farmec-v2/server/db"
 	"time"
 
 	"github.com/google/uuid"
@@ -12,82 +12,50 @@ import (
 )
 
 type MachineStore interface {
-	GetMachines(id string) ([]types.Machine, error)
-	GetMachineById(id string) (*types.Machine, error)
-	CreateMachine(machine *types.Machine) error
-	UpdateMachine(id string, machine *types.Machine) error
+	GetMachines(id string) ([]db.Machine, error)
+	GetMachineById(id string) (*db.Machine, error)
+	CreateMachine(machine *db.Machine) error
+	UpdateMachine(id string, machine *db.Machine) error
 	DeleteMachine(id string) error
 }
 
 type MachineStoreImpl struct {
-	database *sql.DB
+	queries *db.Queries
 }
 
-func NewMachineStore(database *sql.DB) *MachineStoreImpl {
-	return &MachineStoreImpl{database: database}
+func NewMachineStore(sql *sql.DB) *MachineStoreImpl {
+	queries := db.New(sql)
+	return &MachineStoreImpl{queries: queries}
 }
 
-func ScanMachine(row interface{}, machine *types.Machine) error {
-	var scanner interface {
-		Scan(dest ...interface{}) error
-	}
-
-	switch value := row.(type) {
-	case *sql.Row:
-		scanner = value
-	case *sql.Rows:
-		scanner = value
-	default:
-		return fmt.Errorf("unsupported type: %T", value)
-	}
-
-	return scanner.Scan(&machine.ID, &machine.SupplierID, &machine.Name, &machine.MachineImage, &machine.Description, &machine.MachineLink, &machine.Created)
-}
-
-func (store *MachineStoreImpl) GetMachines(id string) ([]types.Machine, error) {
-	var machines []types.Machine
-
-	query := `SELECT * FROM "Machine" WHERE "supplier_id" = ?`
-	rows, err := store.database.Query(query, id)
+func (store *MachineStoreImpl) GetMachines(id string) ([]db.Machine, error) {
+	ctx := context.Background()
+	machines, err := store.queries.GetMachines(ctx, id)
 	if err != nil {
-		return nil, fmt.Errorf("error executing query: %w", err)
+		return nil, fmt.Errorf("error occurred while querying the database for machines: %w", err)
 	}
 
-	defer func() {
-		if err := rows.Close(); err != nil {
-			log.Fatal("Failed to close database: ", err)
-		}
-	}()
-
-	for rows.Next() {
-		var machine types.Machine
-
-		if err := ScanMachine(rows, &machine); err != nil {
-			return nil, fmt.Errorf("error scanning row: %w", err)
-		}
-		machines = append(machines, machine)
+	var result []db.Machine
+	for _, machine := range machines {
+		result = append(result, db.Machine{
+			ID:           machine.ID,
+			SupplierID:   machine.SupplierID,
+			Name:         machine.Name,
+			MachineImage: machine.MachineImage,
+			Description:  machine.Description,
+			MachineLink:  machine.MachineLink,
+			Created:      machine.Created,
+		})
 	}
 
-	if err = rows.Err(); err != nil {
-		return nil, fmt.Errorf("error after iterating over rows: %w", err)
-	}
-
-	return machines, nil
+	return result, nil
 }
 
-func (store *MachineStoreImpl) GetMachineById(id string) (*types.Machine, error) {
-	query := `SELECT * FROM "Machine" WHERE id = ?`
-	row := store.database.QueryRow(query, id)
-
-	var machine types.Machine
-
-	if err := ScanMachine(row, &machine); err != nil {
-
-		if errors.Is(err, sql.ErrNoRows) {
-			return nil, fmt.Errorf("error item found with the given id: %w", err)
-		}
-
-		return nil, fmt.Errorf("error scanning row: %w", err)
+func (store *MachineStoreImpl) GetMachineById(id string) (*db.Machine, error) {
+	ctx := context.Background()
+	machine, err := store.queries.GetMachineByID(ctx, id)
+	if err != nil {
+		return nil, fmt.Errorf("error occurred while querying the database for machines: %w", err)
 	}
 
 	return &machine, nil
