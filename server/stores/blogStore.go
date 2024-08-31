@@ -10,11 +10,11 @@ import (
 )
 
 type BlogStore interface {
-	GetBlogs() ([]db.Blog, error)
-	GetBlogById(id string) (*db.Blog, error)
-	CreateBlog(blog *db.Blog) error
-	UpdateBlog(id string, blog *db.Blog) error
-	DeleteBlog(id string) error
+	GetBlogs(ctx context.Context) ([]db.Blog, error)
+	GetBlogById(ctx context.Context, id string) (*db.Blog, error)
+	CreateBlog(ctx context.Context, blog *db.Blog) error
+	UpdateBlog(ctx context.Context, id string, blog *db.Blog) error
+	DeleteBlog(ctx context.Context, id string) error
 }
 
 type BlogStoreImpl struct {
@@ -28,14 +28,12 @@ func NewBlogStore(sql *sql.DB) *BlogStoreImpl {
 	}
 }
 
-func (store *BlogStoreImpl) GetBlogs() ([]db.Blog, error) {
-	ctx := context.Background()
+func (store *BlogStoreImpl) GetBlogs(ctx context.Context) ([]db.Blog, error) {
 	blogs, err := store.queries.GetBlogs(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("error occurred while querying database: %w", err)
 	}
 
-	// Convert from the generated database to your database if needed
 	var result []db.Blog
 	for _, blog := range blogs {
 		result = append(result, db.Blog{
@@ -52,8 +50,7 @@ func (store *BlogStoreImpl) GetBlogs() ([]db.Blog, error) {
 	return result, nil
 }
 
-func (store *BlogStoreImpl) GetBlogById(id string) (*db.Blog, error) {
-	ctx := context.Background()
+func (store *BlogStoreImpl) GetBlogById(ctx context.Context, id string) (*db.Blog, error) {
 	blog, err := store.queries.GetBlogByID(ctx, id)
 	if err != nil {
 		return nil, fmt.Errorf("error occurred while querying database: %w", err)
@@ -62,8 +59,7 @@ func (store *BlogStoreImpl) GetBlogById(id string) (*db.Blog, error) {
 	return &blog, nil
 }
 
-func (store *BlogStoreImpl) CreateBlog(blog *db.Blog) error {
-	ctx := context.Background()
+func (store *BlogStoreImpl) CreateBlog(ctx context.Context, blog *db.Blog) error {
 	blog.ID = uuid.NewString()
 	blog.Created = sql.NullString{String: time.Now().String(), Valid: true}
 
@@ -85,9 +81,7 @@ func (store *BlogStoreImpl) CreateBlog(blog *db.Blog) error {
 	return nil
 }
 
-func (store *BlogStoreImpl) UpdateBlog(id string, blog *db.Blog) error {
-	ctx := context.Background()
-
+func (store *BlogStoreImpl) UpdateBlog(ctx context.Context, id string, blog *db.Blog) error {
 	if blog.MainImage.Valid {
 		params := db.UpdateBlogParams{
 			Title:      blog.Title,
@@ -118,9 +112,7 @@ func (store *BlogStoreImpl) UpdateBlog(id string, blog *db.Blog) error {
 	return nil
 }
 
-func (store *BlogStoreImpl) DeleteBlog(id string) error {
-	ctx := context.Background()
-
+func (store *BlogStoreImpl) DeleteBlog(ctx context.Context, id string) error {
 	err := store.queries.DeleteBlog(ctx, id)
 	if err != nil {
 		return fmt.Errorf("error occurred while deleting blog: %w", err)
