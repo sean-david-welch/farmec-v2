@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type MachineStore interface {
@@ -80,21 +79,31 @@ func (store *MachineStoreImpl) CreateMachine(ctx context.Context, machine *db.Ma
 	return nil
 }
 
-func (store *MachineStoreImpl) UpdateMachine(id string, machine *types.Machine) error {
-	query := `UPDATE "Machine" SET supplier_id = ?, name = ?, description = ?, machine_link = ? WHERE ID = ?`
-	args := []interface{}{machine.SupplierID, machine.Name, machine.Description, machine.MachineLink, id}
-
-	if machine.MachineImage != "" && machine.MachineImage != "null" {
-		query = `UPDATE "Machine" SET supplier_id = ?, name = ?, machine_image = ?, description = ?, machine_link = ? WHERE ID = ?`
-		args = []interface{}{machine.SupplierID, machine.Name, machine.MachineImage, machine.Description, machine.MachineLink, id}
+func (store *MachineStoreImpl) UpdateMachine(ctx context.Context, id string, machine *db.Machine) error {
+	if machine.MachineImage.Valid {
+		params := db.UpdateMachineParams{
+			SupplierID:   machine.SupplierID,
+			Name:         machine.Name,
+			MachineImage: machine.MachineImage,
+			Description:  machine.Description,
+			MachineLink:  machine.MachineLink,
+			ID:           machine.ID,
+		}
+		if err := store.queries.UpdateMachine(ctx, params); err != nil {
+			return fmt.Errorf("error ocurred while updating a machine with image: %w", err)
+		}
+	} else {
+		params := db.UpdateMachineNoImageParams{
+			SupplierID:  machine.SupplierID,
+			Name:        machine.Name,
+			Description: machine.Description,
+			MachineLink: machine.MachineLink,
+			ID:          machine.ID,
+		}
+		if err := store.queries.UpdateMachineNoImage(ctx, params); err != nil {
+			return fmt.Errorf("error occurred while updating the machine without image: %w", err)
+		}
 	}
-
-	_, err := store.database.Exec(query, args...)
-
-	if err != nil {
-		return fmt.Errorf("error updating machine: %w", err)
-	}
-
 	return nil
 }
 
