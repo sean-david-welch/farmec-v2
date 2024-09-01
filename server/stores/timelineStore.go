@@ -1,20 +1,21 @@
 package stores
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"log"
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/sean-david-welch/farmec-v2/server/types"
+	"github.com/sean-david-welch/farmec-v2/server/db"
 )
 
 type TimelineStore interface {
-	GetTimelines() ([]types.Timeline, error)
-	CreateTimeline(timeline *types.Timeline) error
-	UpdateTimeline(id string, timeline *types.Timeline) error
-	DeleteTimeline(id string) error
+	GetTimelines(ctx context.Context) ([]db.Timeline, error)
+	CreateTimeline(ctx context.Context, timeline *db.Timeline) error
+	UpdateTimeline(ctx context.Context, id string, timeline *db.Timeline) error
+	DeleteTimeline(ctx context.Context, id string) error
 }
 
 type TimelineStoreImpl struct {
@@ -25,8 +26,8 @@ func NewTimelineStore(database *sql.DB) *TimelineStoreImpl {
 	return &TimelineStoreImpl{database: database}
 }
 
-func (store *TimelineStoreImpl) GetTimelines() ([]types.Timeline, error) {
-	var timelines []types.Timeline
+func (store *TimelineStoreImpl) GetTimelines() ([]db.Timeline, error) {
+	var timelines []db.Timeline
 
 	query := `SELECT * FROM "Timeline"`
 	rows, err := store.database.Query(query)
@@ -40,7 +41,7 @@ func (store *TimelineStoreImpl) GetTimelines() ([]types.Timeline, error) {
 	}()
 
 	for rows.Next() {
-		var timeline types.Timeline
+		var timeline db.Timeline
 
 		if err := rows.Scan(&timeline.ID, &timeline.Title, &timeline.Date, &timeline.Body, &timeline.Created); err != nil {
 			return nil, fmt.Errorf("error occurred while scanning rows: %w", err)
@@ -55,7 +56,7 @@ func (store *TimelineStoreImpl) GetTimelines() ([]types.Timeline, error) {
 	return timelines, nil
 }
 
-func (store *TimelineStoreImpl) CreateTimeline(timeline *types.Timeline) error {
+func (store *TimelineStoreImpl) CreateTimeline(timeline *db.Timeline) error {
 	timeline.ID = uuid.NewString()
 	timeline.Created = time.Now().String()
 
@@ -69,7 +70,7 @@ func (store *TimelineStoreImpl) CreateTimeline(timeline *types.Timeline) error {
 	return nil
 }
 
-func (store *TimelineStoreImpl) UpdateTimeline(id string, timeline *types.Timeline) error {
+func (store *TimelineStoreImpl) UpdateTimeline(id string, timeline *db.Timeline) error {
 	query := `UPDATE "Timeline" SET title = ?, date = ?, body = ? WHERE "id" = ?`
 
 	_, err := store.database.Exec(query, timeline.Title, timeline.Date, timeline.Body, id)
