@@ -80,17 +80,6 @@ func (q *Queries) CreateWarranty(ctx context.Context, arg CreateWarrantyParams) 
 	return err
 }
 
-const deletePartRequired = `-- name: DeletePartRequired :exec
-delete
-from PartsRequired
-where warranty_id = ?
-`
-
-func (q *Queries) DeletePartRequired(ctx context.Context, warrantyID string) error {
-	_, err := q.db.ExecContext(ctx, deletePartRequired, warrantyID)
-	return err
-}
-
 const deletePartsRequired = `-- name: DeletePartsRequired :exec
 delete from PartsRequired where warranty_id = ?
 `
