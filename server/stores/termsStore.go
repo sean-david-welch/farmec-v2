@@ -43,17 +43,21 @@ func (store *TermsStoreImpl) GetTerms(ctx context.Context) ([]db.Term, error) {
 	return result, nil
 }
 
-func (store *TermsStoreImpl) CreateTerm(term *db.Term) error {
+func (store *TermsStoreImpl) CreateTerm(ctx context.Context, term *db.Term) error {
 	term.ID = uuid.NewString()
-	term.Created = time.Now().String()
-
-	query := `INSERT INTO "Term" (id, title, body, created) VALUES (?, ?, ?, ?)`
-
-	_, err := store.database.Exec(query, term.ID, term.Title, term.Body, term.Created)
-	if err != nil {
-		return fmt.Errorf("error occurred while creating term term: %w", err)
+	term.Created = sql.NullString{
+		String: time.Now().String(),
+		Valid:  true,
 	}
-
+	params := db.CreateTermParams{
+		ID:      term.ID,
+		Title:   term.Title,
+		Body:    term.Body,
+		Created: term.Created,
+	}
+	if err := store.queries.CreateTerm(ctx, params); err != nil {
+		return fmt.Errorf("error occured while creating a term: %w", err)
+	}
 	return nil
 }
 
