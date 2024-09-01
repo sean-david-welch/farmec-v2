@@ -29,7 +29,7 @@ func NewExhibitionStore(sql *sql.DB) *ExhibitionStoreImpl {
 func (store *ExhibitionStoreImpl) GetExhibitions(ctx context.Context) ([]db.Exhibition, error) {
 	exhibitions, err := store.queries.GetExhibitions(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("An error occurred while querying the database for machines: %w", err)
+		return nil, fmt.Errorf("an error occurred while querying the database for exhibitions: %w", err)
 	}
 
 	var result []db.Exhibition
@@ -43,16 +43,28 @@ func (store *ExhibitionStoreImpl) GetExhibitions(ctx context.Context) ([]db.Exhi
 			Created:  exhibition.Created,
 		})
 	}
+
+	return exhibitions, nil
 }
 
-func (store *ExhibitionStoreImpl) CreateExhibition(exhibition *db.Exhibition) error {
+func (store *ExhibitionStoreImpl) CreateExhibition(ctx context.Context, exhibition *db.Exhibition) error {
 	exhibition.ID = uuid.NewString()
-	exhibition.Created = time.Now().String()
+	exhibition.Created = sql.NullString{
+		String: time.Now().String(),
+		Valid:  true,
+	}
 
-	query := `INSERT INTO "Exhibition" (id, title, date, location, info, created) VALUES (?, ?, ?, ?, ?, ?)`
-	_, err := store.database.Exec(query, exhibition.ID, exhibition.Title, exhibition.Date, exhibition.Location, exhibition.Info, exhibition.Created)
-	if err != nil {
-		return fmt.Errorf("error creating exhibition: %w", err)
+	params := db.CreateExhibitionParams{
+		ID:       exhibition.ID,
+		Title:    exhibition.Title,
+		Date:     exhibition.Date,
+		Location: exhibition.Location,
+		Info:     exhibition.Info,
+		Created:  exhibition.Created,
+	}
+
+	if err := store.queries.CreateExhibition(ctx, params); err != nil {
+		return fmt.Errorf("error occurred while creating an exhibitions: %w", err)
 	}
 
 	return nil
