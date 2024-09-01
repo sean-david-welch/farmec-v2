@@ -60,5 +60,7 @@ from PartsRequired
 where warranty_id = ?;
 
 -- name: DeleteWarranty :exec
-delete from PartsRequired where warranty_id = ?;
 delete from WarrantyClaim where id = ?;
+
+-- name: DeletePartsRequired :exec
+delete from PartsRequired where warranty_id = ?;
