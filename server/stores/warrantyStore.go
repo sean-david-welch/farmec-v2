@@ -5,7 +5,6 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/sean-david-welch/farmec-v2/server/types"
-	"log"
 	"time"
 
 	"github.com/google/uuid"
@@ -212,36 +211,26 @@ func (store *WarrantyStoreImpl) UpdateWarranty(ctx context.Context, id string, w
 }
 
 func (store *WarrantyStoreImpl) DeleteWarranty(ctx context.Context, id string) error {
-	transaction, err := store.database.Begin()
+	tx, err := store.db.BeginTx(ctx, nil)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to begin transaction: %w", err)
 	}
-
-	deleteParts := `DELETE FROM "PartsRequired" WHERE "warranty_id" = ?`
-	_, err = transaction.Exec(deleteParts, id)
-	if err != nil {
-		err := transaction.Rollback()
+	defer func(tx *sql.Tx) {
+		err := tx.Rollback()
 		if err != nil {
-			return err
+			return
 		}
-		log.Printf("error occurred while deleting parts from warranty: %v", err)
-		return err
-	}
+	}(tx)
+	qtx := store.queries.WithTx(tx)
 
-	deleteWarranty := `DELETE FROM "WarrantyClaim" WHERE "id" = ?`
-	_, err = transaction.Exec(deleteWarranty, id)
-	if err != nil {
-		err := transaction.Rollback()
-		if err != nil {
-			return err
-		}
-		log.Printf("error occurred while deleting warranty claim: %v", err)
-		return err
+	if err = qtx.DeletePartsRequired(ctx, id); err != nil {
+		return fmt.Errorf("error occurred while deleting parts required: %w", err)
 	}
-
-	if err := transaction.Commit(); err != nil {
-		return err
+	if err = qtx.DeleteWarranty(ctx, id); err != nil {
+		return fmt.Errorf("error occurred while deleting warranty: %w", err)
 	}
-
+	if err := tx.Commit(); err != nil {
+		return fmt.Errorf("failed to commit transaction: %w", err)
+	}
 	return nil
 }
