@@ -1,86 +1,60 @@
 package stores
 
 import (
+	"context"
 	"database/sql"
 	"errors"
 	"fmt"
-	"log"
+	"github.com/sean-david-welch/farmec-v2/server/db"
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type SupplierStore interface {
-	GetSuppliers() ([]types.Supplier, error)
-	CreateSupplier(supplier *types.Supplier) error
-	GetSupplierById(id string) (*types.Supplier, error)
-	UpdateSupplier(id string, supplier *types.Supplier) error
-	DeleteSupplier(id string) error
+	GetSuppliers(ctx context.Context) ([]db.Supplier, error)
+	CreateSupplier(ctx context.Context, supplier *db.Supplier) error
+	GetSupplierById(ctx context.Context, id string) (*db.Supplier, error)
+	UpdateSupplier(ctx context.Context, id string, supplier *db.Supplier) error
+	DeleteSupplier(ctx context.Context, id string) error
 }
 
 type SupplierStoreImpl struct {
-	database *sql.DB
+	queries *db.Queries
 }
 
-func NewSupplierStore(database *sql.DB) *SupplierStoreImpl {
-	return &SupplierStoreImpl{database: database}
+func NewSupplierStore(sql *sql.DB) *SupplierStoreImpl {
+	queries := db.New(sql)
+	return &SupplierStoreImpl{queries: queries}
 }
 
-func scanSupplier(row interface{}, supplier *types.Supplier) error {
-	var scanner interface {
-		Scan(dest ...interface{}) error
-	}
-
-	switch value := row.(type) {
-	case *sql.Row:
-		scanner = value
-	case *sql.Rows:
-		scanner = value
-	default:
-		return fmt.Errorf("unsupported type: %T", value)
-	}
-
-	return scanner.Scan(
-		&supplier.ID, &supplier.Name, &supplier.LogoImage,
-		&supplier.MarketingImage, &supplier.Description,
-		&supplier.SocialFacebook, &supplier.SocialInstagram, &supplier.SocialLinkedin,
-		&supplier.SocialTwitter, &supplier.SocialYoutube, &supplier.SocialWebsite, &supplier.Created,
-	)
-}
-
-func (store *SupplierStoreImpl) GetSuppliers() ([]types.Supplier, error) {
-	var suppliers []types.Supplier
-
-	query := `SELECT * FROM "Supplier" ORDER BY created DESC`
-	rows, err := store.database.Query(query)
-
+func (store *SupplierStoreImpl) GetSuppliers(ctx context.Context) ([]db.Supplier, error) {
+	suppliers, err := store.queries.GetSuppliers(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("error executing query: %w", err)
-	}
-	defer func() {
-		if err := rows.Close(); err != nil {
-			log.Fatal("Failed to close database: ", err)
-		}
-	}()
-
-	for rows.Next() {
-		var supplier types.Supplier
-
-		if err := scanSupplier(rows, &supplier); err != nil {
-			return nil, fmt.Errorf("error scanning row: %w", err)
-		}
-		suppliers = append(suppliers, supplier)
+		return nil, fmt.Errorf("error occurred while getting suppliers from the db: %w", err)
 	}
 
-	if err = rows.Err(); err != nil {
-		return nil, fmt.Errorf("error after iterating over rows: %w", err)
+	var result []db.Supplier
+	for _, supplier := range suppliers {
+		result = append(result, db.Supplier{
+			ID:              supplier.ID,
+			Name:            supplier.Name,
+			LogoImage:       supplier.LogoImage,
+			MarketingImage:  supplier.MarketingImage,
+			Description:     supplier.Description,
+			SocialFacebook:  supplier.SocialFacebook,
+			SocialTwitter:   supplier.SocialTwitter,
+			SocialInstagram: supplier.SocialInstagram,
+			SocialYoutube:   supplier.SocialYoutube,
+			SocialLinkedin:  supplier.SocialLinkedin,
+			SocialWebsite:   supplier.SocialWebsite,
+			Created:         supplier.Created,
+		})
 	}
-
-	return suppliers, nil
+	return result, nil
 }
 
-func (store *SupplierStoreImpl) CreateSupplier(supplier *types.Supplier) error {
+func (store *SupplierStoreImpl) CreateSupplier(supplier *db.Supplier) error {
 
 	supplier.ID = uuid.NewString()
 	supplier.Created = time.Now().String()
@@ -98,11 +72,11 @@ func (store *SupplierStoreImpl) CreateSupplier(supplier *types.Supplier) error {
 	return nil
 }
 
-func (store *SupplierStoreImpl) GetSupplierById(id string) (*types.Supplier, error) {
+func (store *SupplierStoreImpl) GetSupplierById(id string) (*db.Supplier, error) {
 	query := `SELECT * FROM "Supplier" WHERE id = ?`
 	row := store.database.QueryRow(query, id)
 
-	var supplier types.Supplier
+	var supplier db.Supplier
 
 	if err := scanSupplier(row, &supplier); err != nil {
 
@@ -116,7 +90,7 @@ func (store *SupplierStoreImpl) GetSupplierById(id string) (*types.Supplier, err
 	return &supplier, nil
 }
 
-func (store *SupplierStoreImpl) UpdateSupplier(id string, supplier *types.Supplier) error {
+func (store *SupplierStoreImpl) UpdateSupplier(id string, supplier *db.Supplier) error {
 	query := `UPDATE "Supplier" SET 
                 name = ?,  
                 description = ?, 
