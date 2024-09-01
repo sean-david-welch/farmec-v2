@@ -102,52 +102,46 @@ func (store *SupplierStoreImpl) CreateSupplier(ctx context.Context, supplier *db
 	return nil
 }
 
-func (store *SupplierStoreImpl) UpdateSupplier(id string, supplier *db.Supplier) error {
-	query := `UPDATE "Supplier" SET 
-                name = ?,  
-                description = ?, 
-                social_facebook = ?, 
-                social_instagram = ?, 
-                social_linkedin = ?, 
-                social_twitter = ?, 
-                social_youtube = ?, 
-                social_website = ? 
-                WHERE id = ?`
-	args := []interface{}{supplier.Name, supplier.Description, supplier.SocialFacebook, supplier.SocialInstagram, supplier.SocialLinkedin, supplier.SocialTwitter, supplier.SocialYoutube, supplier.SocialWebsite, id}
-
-	if supplier.LogoImage != "" && supplier.LogoImage != "null" && supplier.MarketingImage != "" && supplier.MarketingImage != "null" {
-		query = `UPDATE "Supplier" SET 
-		name = ?, 
-		logo_image = ?, 
-		marketing_image = ?, 
-		description = ?, 
-		social_facebook = ?, 
-		social_instagram = ?, 
-		social_linkedin = ?, 
-		social_twitter = ?, 
-		social_youtube = ?, 
-		social_website = ? 
-		WHERE id = ?`
-		args = []interface{}{supplier.Name, supplier.LogoImage, supplier.MarketingImage, supplier.Description, supplier.SocialFacebook, supplier.SocialInstagram, supplier.SocialLinkedin, supplier.SocialTwitter, supplier.SocialYoutube, supplier.SocialWebsite, id}
+func (store *SupplierStoreImpl) UpdateSupplier(ctx context.Context, id string, supplier *db.Supplier) error {
+	if supplier.LogoImage.Valid && supplier.MarketingImage.Valid {
+		params := db.UpdateSupplierParams{
+			Name:            supplier.Name,
+			LogoImage:       supplier.LogoImage,
+			MarketingImage:  supplier.MarketingImage,
+			Description:     supplier.Description,
+			SocialFacebook:  supplier.SocialFacebook,
+			SocialTwitter:   supplier.SocialTwitter,
+			SocialInstagram: supplier.SocialInstagram,
+			SocialYoutube:   supplier.SocialYoutube,
+			SocialLinkedin:  supplier.SocialLinkedin,
+			SocialWebsite:   supplier.SocialWebsite,
+			ID:              id,
+		}
+		if err := store.queries.UpdateSupplier(ctx, params); err != nil {
+			return fmt.Errorf("error while updating the supplier: %w", err)
+		}
+	} else {
+		params := db.UpdateSupplierNoImageParams{
+			Name:            supplier.Name,
+			Description:     supplier.Description,
+			SocialFacebook:  supplier.SocialFacebook,
+			SocialTwitter:   supplier.SocialTwitter,
+			SocialInstagram: supplier.SocialInstagram,
+			SocialYoutube:   supplier.SocialYoutube,
+			SocialLinkedin:  supplier.SocialLinkedin,
+			SocialWebsite:   supplier.SocialWebsite,
+			ID:              id,
+		}
+		if err := store.queries.UpdateSupplierNoImage(ctx, params); err != nil {
+			return fmt.Errorf("error while updating the supplier: %w", err)
+		}
 	}
-
-	_, err := store.database.Exec(query, args...)
-
-	if err != nil {
-		return fmt.Errorf("error updating supplier: %w", err)
-	}
-
 	return nil
 }
 
-func (store *SupplierStoreImpl) DeleteSupplier(id string) error {
-	query := `DELETE FROM "Supplier" WHERE id = ?`
-
-	_, err := store.database.Exec(query, id)
-
-	if err != nil {
-		return fmt.Errorf("error deleting supplier: %w", err)
+func (store *SupplierStoreImpl) DeleteSupplier(ctx context.Context, id string) error {
+	if err := store.queries.DeleteSupplier(ctx, id); err != nil {
+		return fmt.Errorf("error occurred while deleting supplier: %w", err)
 	}
-
 	return nil
 }
