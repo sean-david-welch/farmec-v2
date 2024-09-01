@@ -1,68 +1,42 @@
 package stores
 
 import (
+	"context"
 	"database/sql"
 	"errors"
 	"fmt"
-	"log"
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/sean-david-welch/farmec-v2/server/types"
+	"github.com/sean-david-welch/farmec-v2/server/db"
 )
 
 type EmployeeStore interface {
-	GetEmployees() ([]types.Employee, error)
-	GetEmployeeById(id string) (*types.Employee, error)
-	CreateEmployee(employee *types.Employee) error
-	UpdateEmployee(id string, employee *types.Employee) error
-	DeleteEmployee(id string) error
+	GetEmployees(ctx context.Context) ([]db.Employee, error)
+	GetEmployeeById(ctx context.Context, id string) (*db.Employee, error)
+	CreateEmployee(ctx context.Context, employee *db.Employee) error
+	UpdateEmployee(ctx context.Context, id string, employee *db.Employee) error
+	DeleteEmployee(ctx context.Context, id string) error
 }
 
 type EmployeeStoreImpl struct {
-	database *sql.DB
+	queries *db.Queries
 }
 
-func NewEmployeeStore(database *sql.DB) *EmployeeStoreImpl {
-	return &EmployeeStoreImpl{database: database}
+func NewEmployeeStore(sql *sql.DB) *EmployeeStoreImpl {
+	queries := db.New(sql)
+	return &EmployeeStoreImpl{queries: queries}
 }
 
-func (store *EmployeeStoreImpl) GetEmployees() ([]types.Employee, error) {
-	var employees []types.Employee
+func (store *EmployeeStoreImpl) GetEmployees(ctx context.Context) ([]db.Employee, error) {
 
-	query := `SELECT * FROM "Employee" ORDER BY "created"`
-	rows, err := store.database.Query(query)
-	if err != nil {
-		return nil, err
-	}
-	defer func() {
-		if err := rows.Close(); err != nil {
-			log.Fatal("Failed to close database: ", err)
-		}
-	}()
-
-	for rows.Next() {
-		var employee types.Employee
-
-		err := rows.Scan(&employee.ID, &employee.Name, &employee.Email, &employee.Role, &employee.ProfileImage, &employee.Created)
-		if err != nil {
-			return nil, fmt.Errorf("error occurred while scanning rows: %v", err)
-		}
-		employees = append(employees, employee)
-	}
-
-	if err := rows.Err(); err != nil {
-		return nil, fmt.Errorf("error occurred after iterating over the rows: %w", err)
-	}
-
-	return employees, nil
 }
 
-func (store *EmployeeStoreImpl) GetEmployeeById(id string) (*types.Employee, error) {
+func (store *EmployeeStoreImpl) GetEmployeeById(id string) (*db.Employee, error) {
 	query := `SELECT * FROM "Employee" WHERE "id" = ?`
 	row := store.database.QueryRow(query, id)
 
-	var employee types.Employee
+	var employee db.Employee
 
 	err := row.Scan(&employee.ID, &employee.Name, &employee.Email, &employee.Role, &employee.ProfileImage, &employee.Created)
 	if err != nil {
@@ -76,7 +50,7 @@ func (store *EmployeeStoreImpl) GetEmployeeById(id string) (*types.Employee, err
 	return &employee, nil
 }
 
-func (store *EmployeeStoreImpl) CreateEmployee(employee *types.Employee) error {
+func (store *EmployeeStoreImpl) CreateEmployee(employee *db.Employee) error {
 	employee.ID = uuid.NewString()
 	employee.Created = time.Now().String()
 
@@ -91,7 +65,7 @@ func (store *EmployeeStoreImpl) CreateEmployee(employee *types.Employee) error {
 	return nil
 }
 
-func (store *EmployeeStoreImpl) UpdateEmployee(id string, employee *types.Employee) error {
+func (store *EmployeeStoreImpl) UpdateEmployee(id string, employee *db.Employee) error {
 	query := `UPDATE "Employee" SET name = ?, email = ?, role = ? WHERE id = ?`
 	args := []interface{}{id, employee.Name, employee.Email, employee.Role}
 
