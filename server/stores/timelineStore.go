@@ -66,24 +66,22 @@ func (store *TimelineStoreImpl) CreateTimeline(ctx context.Context, timeline *db
 	return nil
 }
 
-func (store *TimelineStoreImpl) UpdateTimeline(id string, timeline *db.Timeline) error {
-	query := `UPDATE "Timeline" SET title = ?, date = ?, body = ? WHERE "id" = ?`
-
-	_, err := store.database.Exec(query, timeline.Title, timeline.Date, timeline.Body, id)
-	if err != nil {
-		return fmt.Errorf("error occurred while updating timeline: %w", err)
+func (store *TimelineStoreImpl) UpdateTimeline(ctx context.Context, id string, timeline *db.Timeline) error {
+	params := db.UpdateTimelineParams{
+		Title: timeline.Title,
+		Date:  timeline.Date,
+		Body:  timeline.Body,
+		ID:    id,
 	}
-
+	if err := store.queries.UpdateTimeline(ctx, params); err != nil {
+		return fmt.Errorf("error occurred while updating a timeline: %w", err)
+	}
 	return nil
 }
 
-func (store *TimelineStoreImpl) DeleteTimeline(id string) error {
-	query := `DELETE FROM "Timeline" WHERE "id" = ?`
-
-	_, err := store.database.Exec(query, id)
-	if err != nil {
-		return fmt.Errorf("error occurred while deleting timeline: %w", err)
+func (store *TimelineStoreImpl) DeleteTimeline(ctx context.Context, id string) error {
+	if err := store.queries.DeleteTimeline(ctx, id); err != nil {
+		return fmt.Errorf("error occurred while deleting the timeline: %w", err)
 	}
-
 	return nil
 }
