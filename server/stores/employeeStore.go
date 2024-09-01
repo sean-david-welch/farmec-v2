@@ -3,7 +3,6 @@ package stores
 import (
 	"context"
 	"database/sql"
-	"errors"
 	"fmt"
 	"time"
 
@@ -49,62 +48,66 @@ func (store *EmployeeStoreImpl) GetEmployees(ctx context.Context) ([]db.Employee
 	return result, nil
 }
 
-func (store *EmployeeStoreImpl) GetEmployeeById(id string) (*db.Employee, error) {
-	query := `SELECT * FROM "Employee" WHERE "id" = ?`
-	row := store.database.QueryRow(query, id)
-
-	var employee db.Employee
-
-	err := row.Scan(&employee.ID, &employee.Name, &employee.Email, &employee.Role, &employee.ProfileImage, &employee.Created)
+func (store *EmployeeStoreImpl) GetEmployeeById(ctx context.Context, id string) (*db.Employee, error) {
+	employee, err := store.queries.GetEmployee(ctx, id)
 	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			return nil, fmt.Errorf("error item found with the given id: %w", err)
-		}
-
-		return nil, fmt.Errorf("error scanning row: %w", err)
+		return nil, fmt.Errorf("error occurred while querying the database for employee: %w", err)
 	}
 
 	return &employee, nil
 }
 
-func (store *EmployeeStoreImpl) CreateEmployee(employee *db.Employee) error {
+func (store *EmployeeStoreImpl) CreateEmployee(ctx context.Context, employee *db.Employee) error {
 	employee.ID = uuid.NewString()
-	employee.Created = time.Now().String()
+	employee.Created = sql.NullString{
+		String: time.Now().String(),
+		Valid:  true,
+	}
+	params := db.CreateEmployeeParams{
+		ID:           employee.ID,
+		Name:         employee.Name,
+		Email:        employee.Email,
+		Role:         employee.Role,
+		ProfileImage: employee.ProfileImage,
+		Created:      employee.Created,
+	}
 
-	query := `INSERT INTO "Employee" (id, name, email, role, profile_image, created)
-				VALUES (?, ?, ?, ?, ?, ?)`
-
-	_, err := store.database.Exec(query, employee.ID, employee.Name, employee.Email, employee.Role, employee.ProfileImage, employee.Created)
-	if err != nil {
-		return err
+	if err := store.queries.CreateEmployee(ctx, params); err != nil {
+		return fmt.Errorf("error occurred while creating an employee: %w", err)
 	}
 
 	return nil
 }
 
-func (store *EmployeeStoreImpl) UpdateEmployee(id string, employee *db.Employee) error {
-	query := `UPDATE "Employee" SET name = ?, email = ?, role = ? WHERE id = ?`
-	args := []interface{}{id, employee.Name, employee.Email, employee.Role}
-
-	if employee.ProfileImage != "" && employee.ProfileImage != "null" {
-		query = `UPDATE "Employee" SET name = ?, email = ?, role = ?, profile_image = ? WHERE "id" = ?`
-		args = []interface{}{id, employee.Name, employee.Email, employee.Role, employee.ProfileImage}
+func (store *EmployeeStoreImpl) UpdateEmployee(ctx context.Context, id string, employee *db.Employee) error {
+	if employee.ProfileImage.Valid {
+		params := db.UpdateEmployeeParams{
+			Name:         employee.Name,
+			Email:        employee.Email,
+			Role:         employee.Role,
+			ProfileImage: employee.ProfileImage,
+			ID:           id,
+		}
+		if err := store.queries.UpdateEmployee(ctx, params); err != nil {
+			return fmt.Errorf("error occurred while updatig an employee: %w", err)
+		}
+	} else {
+		params := db.UpdateEmployeeNoImageParams{
+			Name:  employee.Name,
+			Email: employee.Email,
+			Role:  employee.Role,
+			ID:    id,
+		}
+		if err := store.queries.UpdateEmployeeNoImage(ctx, params); err != nil {
+			return fmt.Errorf("an error occurred while updating the employee: %w", err)
+		}
 	}
-
-	_, err := store.database.Exec(query, args...)
-	if err != nil {
-		return err
-	}
-
 	return nil
 }
 
-func (store *EmployeeStoreImpl) DeleteEmployee(id string) error {
-	query := `DELETE FROM "Employee" WHERE "id" = ?`
-	_, err := store.database.Exec(query, id)
-	if err != nil {
-		return err
+func (store *EmployeeStoreImpl) DeleteEmployee(ctx context.Context, id string) error {
+	if err := store.queries.DeleteEmployee(ctx, id); err != nil {
+		return fmt.Errorf("error occurred while deleting employee: %w", err)
 	}
-
 	return nil
 }
