@@ -10,5 +10,8 @@ insert into Carousel (id, name, image, created) VALUES (?, ?, ?, ?);
 -- name: UpdateCarousel :exec
 update Carousel set name = ?, image = ? where id = ?;
 
+-- name: UpdateCarouselNoImage :exec
+update Carousel set name = ? where id = ?;
+
 -- name: DeleteCarousel :exec
 delete from Carousel where id = ?;

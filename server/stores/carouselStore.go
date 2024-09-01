@@ -74,21 +74,16 @@ func (store *CarouselStoreImpl) CreateCarousel(ctx context.Context, carousel *db
 	return nil
 }
 
-func (store *CarouselStoreImpl) UpdateCarousel(id string, carousel *db.Carousel) error {
-	query := `UPDATE "Carousel" SET name = ? WHERE id = ?`
-	args := []interface{}{carousel.Name, id}
-
-	if carousel.Image != "" && carousel.Image != "null" {
-		query = `UPDATE "Carousel" SET name = ?, image = ? WHERE id = ?`
-		args = []interface{}{carousel.Name, carousel.Image, id}
+func (store *CarouselStoreImpl) UpdateCarousel(ctx context.Context, id string, carousel *db.Carousel) error {
+	if carousel.Image.Valid {
+		params := db.UpdateCarouselParams{
+			Name:  carousel.Name,
+			Image: carousel.Image,
+			ID:    id,
+		}
+	} else {
 	}
 
-	_, err := store.database.Exec(query, args...)
-	if err != nil {
-		return fmt.Errorf("error updating carousel: %w", err)
-	}
-
-	return nil
 }
 
 func (store *CarouselStoreImpl) DeleteCarousel(id string) error {
