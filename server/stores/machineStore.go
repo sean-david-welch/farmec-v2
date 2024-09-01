@@ -87,7 +87,7 @@ func (store *MachineStoreImpl) UpdateMachine(ctx context.Context, id string, mac
 			MachineImage: machine.MachineImage,
 			Description:  machine.Description,
 			MachineLink:  machine.MachineLink,
-			ID:           machine.ID,
+			ID:           id,
 		}
 		if err := store.queries.UpdateMachine(ctx, params); err != nil {
 			return fmt.Errorf("error ocurred while updating a machine with image: %w", err)
@@ -98,7 +98,7 @@ func (store *MachineStoreImpl) UpdateMachine(ctx context.Context, id string, mac
 			Name:        machine.Name,
 			Description: machine.Description,
 			MachineLink: machine.MachineLink,
-			ID:          machine.ID,
+			ID:          id,
 		}
 		if err := store.queries.UpdateMachineNoImage(ctx, params); err != nil {
 			return fmt.Errorf("error occurred while updating the machine without image: %w", err)
