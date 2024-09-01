@@ -96,28 +96,25 @@ func (q *Queries) GetTerms(ctx context.Context) ([]Term, error) {
 
 const updateTerm = `-- name: UpdateTerm :exec
 update Terms
-set id      = ?,
-    title   = ?,
+set title   = ?,
     body    = ?,
     created = ?
 where id = ?
 `
 
 type UpdateTermParams struct {
-	ID      string         `json:"id"`
 	Title   string         `json:"title"`
 	Body    sql.NullString `json:"body"`
 	Created sql.NullString `json:"created"`
-	ID_2    string         `json:"id_2"`
+	ID      string         `json:"id"`
 }
 
 func (q *Queries) UpdateTerm(ctx context.Context, arg UpdateTermParams) error {
 	_, err := q.db.ExecContext(ctx, updateTerm,
-		arg.ID,
 		arg.Title,
 		arg.Body,
 		arg.Created,
-		arg.ID_2,
+		arg.ID,
 	)
 	return err
 }
