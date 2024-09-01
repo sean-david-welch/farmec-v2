@@ -81,9 +81,19 @@ func (store *CarouselStoreImpl) UpdateCarousel(ctx context.Context, id string, c
 			Image: carousel.Image,
 			ID:    id,
 		}
+		if err := store.queries.UpdateCarousel(ctx, params); err != nil {
+			return fmt.Errorf("error occurred while updating a carousel: %w", err)
+		}
 	} else {
+		params := db.UpdateCarouselNoImageParams{
+			Name: carousel.Name,
+			ID:   id,
+		}
+		if err := store.queries.UpdateCarouselNoImage(ctx, params); err != nil {
+			return fmt.Errorf("error occurred while updating a carousel: %w", err)
+		}
 	}
-
+	return nil
 }
 
 func (store *CarouselStoreImpl) DeleteCarousel(id string) error {
