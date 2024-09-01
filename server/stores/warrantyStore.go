@@ -22,11 +22,12 @@ type WarrantyStore interface {
 
 type WarrantyStoreImpl struct {
 	queries *db.Queries
+	db      *sql.DB
 }
 
-func NewWarrantyStore(sql *sql.DB) *WarrantyStoreImpl {
-	queries := db.New(sql)
-	return &WarrantyStoreImpl{queries: queries}
+func NewWarrantyStore(sqlDB *sql.DB) *WarrantyStoreImpl {
+	queries := db.New(sqlDB)
+	return &WarrantyStoreImpl{queries: queries, db: sqlDB}
 }
 
 func (store *WarrantyStoreImpl) GetWarranties(ctx context.Context) ([]types.DealerOwnerInfo, error) {
@@ -93,6 +94,19 @@ func (store *WarrantyStoreImpl) GetWarrantyById(ctx context.Context, id string) 
 }
 
 func (store *WarrantyStoreImpl) CreateWarranty(ctx context.Context, warranty *db.WarrantyClaim, parts []db.PartsRequired) error {
+	tx, err := store.db.BeginTx(ctx, nil)
+	if err != nil {
+		return fmt.Errorf("failed to begin transaction: %w", err)
+	}
+	defer func(tx *sql.Tx) {
+		err := tx.Rollback()
+		if err != nil {
+			return
+		}
+	}(tx)
+
+	qtx := store.queries.WithTx(tx)
+
 	warranty.ID = uuid.NewString()
 	warranty.Created = sql.NullString{
 		String: time.Now().String(),
@@ -115,7 +129,7 @@ func (store *WarrantyStoreImpl) CreateWarranty(ctx context.Context, warranty *db
 		CompletedBy:    warranty.CompletedBy,
 		Created:        warranty.Created,
 	}
-	if err := store.queries.CreateWarranty(ctx, params); err != nil {
+	if err := qtx.CreateWarranty(ctx, params); err != nil {
 		return fmt.Errorf("error occurred while creating warranty: %w", err)
 	}
 
@@ -123,19 +137,23 @@ func (store *WarrantyStoreImpl) CreateWarranty(ctx context.Context, warranty *db
 		part.ID = uuid.NewString()
 		params := db.CreatePartsRequiredParams{
 			ID:             part.ID,
-			WarrantyID:     part.WarrantyID,
+			WarrantyID:     warranty.ID,
 			PartNumber:     part.PartNumber,
 			QuantityNeeded: part.QuantityNeeded,
 			InvoiceNumber:  part.InvoiceNumber,
 			Description:    part.Description,
 		}
-		if err := store.queries.CreatePartsRequired(ctx, params); err != nil {
+		if err := qtx.CreatePartsRequired(ctx, params); err != nil {
 			return fmt.Errorf("an error occurred while creating the part: %w", err)
 		}
 	}
+
+	if err := tx.Commit(); err != nil {
+		return fmt.Errorf("failed to commit transaction: %w", err)
+	}
+
 	return nil
 }
-
 func (store *WarrantyStoreImpl) UpdateWarranty(id string, warranty *db.WarrantyClaim, parts []db.PartsRequired) error {
 	transaction, err := store.database.Begin()
 	if err != nil {
