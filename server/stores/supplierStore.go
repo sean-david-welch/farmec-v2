@@ -54,24 +54,6 @@ func (store *SupplierStoreImpl) GetSuppliers(ctx context.Context) ([]db.Supplier
 	return result, nil
 }
 
-func (store *SupplierStoreImpl) CreateSupplier(supplier *db.Supplier) error {
-
-	supplier.ID = uuid.NewString()
-	supplier.Created = time.Now().String()
-
-	query := `INSERT INTO "Supplier" 
-	(id, name, logo_image, marketing_image, description, social_facebook, social_instagram, social_linkedin, social_twitter, social_youtube, social_website, created) 
-	VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-
-	_, err := store.database.Exec(query, supplier.ID, supplier.Name, supplier.LogoImage, supplier.MarketingImage, supplier.Description, supplier.SocialFacebook, supplier.SocialInstagram, supplier.SocialLinkedin, supplier.SocialTwitter, supplier.SocialYoutube, supplier.SocialWebsite, supplier.Created)
-
-	if err != nil {
-		return fmt.Errorf("error creating supplier: %w", err)
-	}
-
-	return nil
-}
-
 func (store *SupplierStoreImpl) GetSupplierById(id string) (*db.Supplier, error) {
 	query := `SELECT * FROM "Supplier" WHERE id = ?`
 	row := store.database.QueryRow(query, id)
@@ -88,6 +70,33 @@ func (store *SupplierStoreImpl) GetSupplierById(id string) (*db.Supplier, error)
 	}
 
 	return &supplier, nil
+}
+
+func (store *SupplierStoreImpl) CreateSupplier(ctx context.Context, supplier *db.Supplier) error {
+	supplier.ID = uuid.NewString()
+	supplier.Created = sql.NullString{
+		String: time.Now().String(),
+		Valid:  true,
+	}
+
+	params := db.CreateSupplierParams{
+		ID:              supplier.ID,
+		Name:            supplier.Name,
+		LogoImage:       supplier.LogoImage,
+		MarketingImage:  supplier.MarketingImage,
+		Description:     supplier.Description,
+		SocialFacebook:  supplier.SocialFacebook,
+		SocialTwitter:   supplier.SocialTwitter,
+		SocialInstagram: supplier.SocialInstagram,
+		SocialYoutube:   supplier.SocialYoutube,
+		SocialLinkedin:  supplier.SocialLinkedin,
+		SocialWebsite:   supplier.SocialWebsite,
+		Created:         supplier.Created,
+	}
+	if err := store.queries.CreateSupplier(ctx, params); err != nil {
+		return fmt.Errorf("error occurred while creating supplier: %w", err)
+	}
+	return nil
 }
 
 func (store *SupplierStoreImpl) UpdateSupplier(id string, supplier *db.Supplier) error {
