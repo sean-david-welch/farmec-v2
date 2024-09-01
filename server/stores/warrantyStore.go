@@ -1,106 +1,98 @@
 package stores
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 	"log"
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/sean-david-welch/farmec-v2/server/types"
+	"github.com/sean-david-welch/farmec-v2/server/db"
 )
 
 type WarrantyStore interface {
-	GetWarranties() ([]types.DealerOwnerInfo, error)
-	GetWarrantyById(id string) (*types.WarrantyClaim, []types.PartsRequired, error)
-	CreateWarranty(warranty *types.WarrantyClaim, parts []types.PartsRequired) error
-	UpdateWarranty(id string, warranty *types.WarrantyClaim, parts []types.PartsRequired) error
-	DeleteWarranty(id string) error
+	GetWarranties(ctx context.Context) ([]types.DealerOwnerInfo, error)
+	GetWarrantyById(ctx context.Context, id string) (*db.WarrantyClaim, []db.PartsRequired, error)
+	CreateWarranty(ctx context.Context, warranty *db.WarrantyClaim, parts []db.PartsRequired) error
+	UpdateWarranty(ctx context.Context, id string, warranty *db.WarrantyClaim, parts []db.PartsRequired) error
+	DeleteWarranty(ctx context.Context, id string) error
 }
 
 type WarrantyStoreImpl struct {
-	database *sql.DB
+	queries *db.Queries
 }
 
-func NewWarrantyStore(database *sql.DB) *WarrantyStoreImpl {
-	return &WarrantyStoreImpl{database: database}
+func NewWarrantyStore(sql *sql.DB) *WarrantyStoreImpl {
+	queries := db.New(sql)
+	return &WarrantyStoreImpl{queries: queries}
 }
 
-func (store *WarrantyStoreImpl) GetWarranties() ([]types.DealerOwnerInfo, error) {
-	var warranties []types.DealerOwnerInfo
-
-	query := `SELECT "id", "dealer", "owner_name" FROM "WarrantyClaim" ORDER BY "created" DESC`
-	rows, err := store.database.Query(query)
+func (store *WarrantyStoreImpl) GetWarranties(ctx context.Context) ([]types.DealerOwnerInfo, error) {
+	warranties, err := store.queries.GetWarranties(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("error occurred while querying database: %w", err)
-	}
-	defer func() {
-		if err := rows.Close(); err != nil {
-			log.Fatal("Failed to close database: ", err)
-		}
-	}()
-
-	for rows.Next() {
-		var warranty types.DealerOwnerInfo
-
-		if err := rows.Scan(&warranty.ID, &warranty.Dealer, &warranty.OwnerName); err != nil {
-			return nil, fmt.Errorf("error occurred while interating over rows: %w", err)
-		}
-
-		warranties = append(warranties, warranty)
+		return nil, fmt.Errorf("an error occurred while getting warranties: %w", err)
 	}
 
-	if err := rows.Err(); err != nil {
-		return nil, fmt.Errorf("error occurred after interating over rows: %w", err)
+	var result []types.DealerOwnerInfo
+	for _, warranty := range warranties {
+		result = append(result, types.DealerOwnerInfo{
+			ID:        warranty.ID,
+			Dealer:    warranty.Dealer,
+			OwnerName: warranty.OwnerName,
+		})
 	}
-
-	return warranties, nil
+	return result, nil
 }
 
-func (store *WarrantyStoreImpl) GetWarrantyById(id string) (*types.WarrantyClaim, []types.PartsRequired, error) {
-	var warranty types.WarrantyClaim
-	var parts []types.PartsRequired
-
-	warrantyQuery := `SELECT * FROM "WarrantyClaim" WHERE "id" = ?`
-
-	row := store.database.QueryRow(warrantyQuery, id)
-
-	if err := row.Scan(&warranty.ID, &warranty.Dealer, &warranty.DealerContact, &warranty.OwnerName,
-		&warranty.MachineModel, &warranty.SerialNumber, &warranty.InstallDate, &warranty.FailureDate, &warranty.RepairDate,
-		&warranty.FailureDetails, &warranty.RepairDetails, &warranty.LabourHours, &warranty.CompletedBy, &warranty.Created,
-	); err != nil {
-		return nil, nil, fmt.Errorf("error while querying database: %w", err)
-	}
-
-	partsQuery := `SELECT * FROM "PartsRequired" WHERE "warranty_id" = ?`
-	rows, err := store.database.Query(partsQuery, id)
+func (store *WarrantyStoreImpl) GetWarrantyById(ctx context.Context, id string) (*db.WarrantyClaim, []db.PartsRequired, error) {
+	rows, err := store.queries.GetWarrantyByID(ctx, id)
 	if err != nil {
-		return nil, nil, fmt.Errorf("error querying parts required from database: %w", err)
+		return nil, nil, fmt.Errorf("error occurred while getting warranty from the db: %w", err)
 	}
-	defer func() {
-		if err := rows.Close(); err != nil {
-			log.Fatal("Failed to close database: ", err)
+
+	var warranty *db.WarrantyClaim
+	var parts []db.PartsRequired
+
+	for _, row := range rows {
+		if warranty == nil {
+			warranty = &db.WarrantyClaim{
+				ID:             row.ID,
+				Dealer:         row.Dealer,
+				DealerContact:  row.DealerContact,
+				OwnerName:      row.OwnerName,
+				MachineModel:   row.MachineModel,
+				SerialNumber:   row.SerialNumber,
+				InstallDate:    row.InstallDate,
+				FailureDate:    row.FailureDate,
+				RepairDate:     row.RepairDate,
+				FailureDetails: row.FailureDetails,
+				RepairDetails:  row.RepairDetails,
+				LabourHours:    row.LabourHours,
+				CompletedBy:    row.CompletedBy,
+				Created:        row.Created,
+			}
 		}
-	}()
-
-	for rows.Next() {
-		var part types.PartsRequired
-
-		if err := rows.Scan(&part.ID, &part.WarrantyID, &part.PartNumber, &part.QuantityNeeded, &part.InvoiceNumber, &part.Description); err != nil {
-			return nil, nil, fmt.Errorf("error while iterating over rows")
+		if row.PartID.Valid {
+			parts = append(parts, db.PartsRequired{
+				ID:             row.PartID.String,
+				WarrantyID:     row.ID,
+				PartNumber:     row.PartNumber,
+				QuantityNeeded: row.QuantityNeeded.String,
+				InvoiceNumber:  row.InvoiceNumber,
+				Description:    row.Description,
+			})
 		}
-
-		parts = append(parts, part)
 	}
 
-	if err := rows.Err(); err != nil {
-		return nil, nil, fmt.Errorf("error iterating over parts required rows: %w", err)
+	if warranty == nil {
+		return nil, nil, fmt.Errorf("warranty with id %s not found", id)
 	}
-
-	return &warranty, parts, nil
+	return warranty, parts, nil
 }
 
-func (store *WarrantyStoreImpl) CreateWarranty(warranty *types.WarrantyClaim, parts []types.PartsRequired) error {
+func (store *WarrantyStoreImpl) CreateWarranty(warranty *db.WarrantyClaim, parts []db.PartsRequired) error {
 	warranty.ID = uuid.NewString()
 	warranty.Created = time.Now().String()
 
@@ -150,7 +142,7 @@ func (store *WarrantyStoreImpl) CreateWarranty(warranty *types.WarrantyClaim, pa
 	return nil
 }
 
-func (store *WarrantyStoreImpl) UpdateWarranty(id string, warranty *types.WarrantyClaim, parts []types.PartsRequired) error {
+func (store *WarrantyStoreImpl) UpdateWarranty(id string, warranty *db.WarrantyClaim, parts []db.PartsRequired) error {
 	transaction, err := store.database.Begin()
 	if err != nil {
 		return err
