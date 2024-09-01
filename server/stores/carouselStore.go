@@ -96,13 +96,9 @@ func (store *CarouselStoreImpl) UpdateCarousel(ctx context.Context, id string, c
 	return nil
 }
 
-func (store *CarouselStoreImpl) DeleteCarousel(id string) error {
-	query := `DELETE FROM "Carousel" WHERE id = ?`
-
-	_, err := store.database.Exec(query, id)
-	if err != nil {
-		return fmt.Errorf("error deleting supplier: %w", err)
+func (store *CarouselStoreImpl) DeleteCarousel(ctx context.Context, id string) error {
+	if err := store.queries.DeleteCarousel(ctx, id); err != nil {
+		return fmt.Errorf("error occurred while deleting a carousel: %w", err)
 	}
-
 	return nil
 }
