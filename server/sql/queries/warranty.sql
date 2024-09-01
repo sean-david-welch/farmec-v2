@@ -3,7 +3,7 @@ select id, dealer, owner_name
 from WarrantyClaim
 order by created desc;
 
--- name: GetWarrantyByID :one
+-- name: GetWarrantyByID :many
 select wc.id,
        wc.dealer,
        wc.dealer_contact,
