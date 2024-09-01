@@ -69,25 +69,25 @@ func (store *VideoStoreImpl) CreateVideo(ctx context.Context, video *db.Video) e
 	return nil
 }
 
-func (store *VideoStoreImpl) UpdateVideo(id string, video *db.Video) error {
-	query := `UPDATE "Video" SET "supplier_id" = ?, "web_url" = ?, "title" = ?, "description" = ?, "video_id" = ?, "thumbnail_url" = ? WHERE "id" = ?`
-
-	_, err := store.database.Exec(query, video.SupplierID, video.WebURL, video.Title, video.Description, video.VideoID, video.ThumbnailURL, id)
-
-	if err != nil {
-		return fmt.Errorf("error updating video: %w", err)
+func (store *VideoStoreImpl) UpdateVideo(ctx context.Context, id string, video *db.Video) error {
+	params := db.UpdateVideoParams{
+		SupplierID:   video.SupplierID,
+		WebUrl:       video.ThumbnailUrl,
+		Title:        video.ThumbnailUrl,
+		Description:  video.ThumbnailUrl,
+		VideoID:      video.ThumbnailUrl,
+		ThumbnailUrl: video.ThumbnailUrl,
+		ID:           id,
 	}
-
+	if err := store.queries.UpdateVideo(ctx, params); err != nil {
+		return fmt.Errorf("error occurred while updating a video: %w", err)
+	}
 	return nil
 }
 
-func (store *VideoStoreImpl) DeleteVideo(id string) error {
-	query := `DELETE FROM "Video" WHERE "id" = ?`
-
-	_, err := store.database.Exec(query, id)
-	if err != nil {
-		return fmt.Errorf("error deleting video: %w", err)
+func (store *VideoStoreImpl) DeleteVideo(ctx context.Context, id string) error {
+	if err := store.queries.DeleteMachine(ctx, id); err != nil {
+		return fmt.Errorf("error occurred while deleting video: %w", err)
 	}
-
 	return nil
 }
