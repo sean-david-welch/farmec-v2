@@ -13,8 +13,7 @@ values (?, ?, ?, ?);
 
 -- name: UpdateTerm :exec
 update Terms
-set id      = ?,
-    title   = ?,
+set title   = ?,
     body    = ?,
     created = ?
 where id = ?;
