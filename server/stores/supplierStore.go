@@ -3,7 +3,6 @@ package stores
 import (
 	"context"
 	"database/sql"
-	"errors"
 	"fmt"
 	"github.com/sean-david-welch/farmec-v2/server/db"
 	"time"
@@ -54,21 +53,25 @@ func (store *SupplierStoreImpl) GetSuppliers(ctx context.Context) ([]db.Supplier
 	return result, nil
 }
 
-func (store *SupplierStoreImpl) GetSupplierById(id string) (*db.Supplier, error) {
-	query := `SELECT * FROM "Supplier" WHERE id = ?`
-	row := store.database.QueryRow(query, id)
-
-	var supplier db.Supplier
-
-	if err := scanSupplier(row, &supplier); err != nil {
-
-		if errors.Is(err, sql.ErrNoRows) {
-			return nil, fmt.Errorf("error item found with the given id: %w", err)
-		}
-
-		return nil, fmt.Errorf("error scanning row: %w", err)
+func (store *SupplierStoreImpl) GetSupplierById(ctx context.Context, id string) (*db.Supplier, error) {
+	supplierRow, err := store.queries.GetSupplierByID(ctx, id)
+	if err != nil {
+		return nil, fmt.Errorf("error occurred while getting suppliers from the db: %w", err)
 	}
-
+	supplier := db.Supplier{
+		ID:              supplierRow.ID,
+		Name:            supplierRow.Name,
+		LogoImage:       supplierRow.LogoImage,
+		MarketingImage:  supplierRow.MarketingImage,
+		Description:     supplierRow.Description,
+		SocialFacebook:  supplierRow.SocialFacebook,
+		SocialTwitter:   supplierRow.SocialTwitter,
+		SocialInstagram: supplierRow.SocialInstagram,
+		SocialYoutube:   supplierRow.SocialYoutube,
+		SocialLinkedin:  supplierRow.SocialLinkedin,
+		SocialWebsite:   supplierRow.SocialWebsite,
+		Created:         supplierRow.Created,
+	}
 	return &supplier, nil
 }
 
