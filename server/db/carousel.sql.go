@@ -102,3 +102,17 @@ func (q *Queries) UpdateCarousel(ctx context.Context, arg UpdateCarouselParams) 
 	_, err := q.db.ExecContext(ctx, updateCarousel, arg.Name, arg.Image, arg.ID)
 	return err
 }
+
+const updateCarouselNoImage = `-- name: UpdateCarouselNoImage :exec
+update Carousel set name = ? where id = ?
+`
+
+type UpdateCarouselNoImageParams struct {
+	Name string `json:"name"`
+	ID   string `json:"id"`
+}
+
+func (q *Queries) UpdateCarouselNoImage(ctx context.Context, arg UpdateCarouselNoImageParams) error {
+	_, err := q.db.ExecContext(ctx, updateCarouselNoImage, arg.Name, arg.ID)
+	return err
+}
