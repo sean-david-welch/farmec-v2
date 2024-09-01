@@ -29,7 +29,24 @@ func NewEmployeeStore(sql *sql.DB) *EmployeeStoreImpl {
 }
 
 func (store *EmployeeStoreImpl) GetEmployees(ctx context.Context) ([]db.Employee, error) {
+	employees, err := store.queries.GetEmployees(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("error occurred while querying employees: %w", err)
+	}
 
+	var result []db.Employee
+	for _, employee := range employees {
+		result = append(result, db.Employee{
+			ID:           employee.ID,
+			Name:         employee.Name,
+			Email:        employee.Email,
+			Role:         employee.Role,
+			ProfileImage: employee.ProfileImage,
+			Created:      employee.Created,
+		})
+	}
+
+	return result, nil
 }
 
 func (store *EmployeeStoreImpl) GetEmployeeById(id string) (*db.Employee, error) {
