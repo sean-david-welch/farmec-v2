@@ -70,24 +70,24 @@ func (store *ExhibitionStoreImpl) CreateExhibition(ctx context.Context, exhibiti
 	return nil
 }
 
-func (store *ExhibitionStoreImpl) UpdateExhibition(id string, exhibition *db.Exhibition) error {
-	query := `UPDATE "Exhibition" SET "title" = ?, "date" = ?, "location" = ?, "info" = ? WHERE "id" = ?`
-
-	_, err := store.database.Exec(query, id, exhibition.Title, exhibition.Date, exhibition.Location, exhibition.Info)
-	if err != nil {
-		return fmt.Errorf("error updating exhibition: %w", err)
+func (store *ExhibitionStoreImpl) UpdateExhibition(ctx context.Context, id string, exhibition *db.Exhibition) error {
+	params := db.UpdateExhibitionParams{
+		Title:    exhibition.Title,
+		Date:     exhibition.Date,
+		Location: exhibition.Location,
+		Info:     exhibition.Info,
+		ID:       id,
 	}
 
+	if err := store.queries.UpdateExhibition(ctx, params); err != nil {
+		return fmt.Errorf("error occurred while updating an exhiibtion: %w", err)
+	}
 	return nil
 }
 
-func (store *ExhibitionStoreImpl) DeleteExhibition(id string) error {
-	query := `DELETE FROM "Exhibition" WHERE "id" = ?`
-
-	_, err := store.database.Exec(query, id)
-	if err != nil {
-		return fmt.Errorf("error deleting exhibiton: %w", err)
+func (store *ExhibitionStoreImpl) DeleteExhibition(ctx context.Context, id string) error {
+	if err := store.queries.DeleteExhibition(ctx, id); err != nil {
+		return fmt.Errorf("error occurred while delting an exhibition: %w", err)
 	}
-
 	return nil
 }
