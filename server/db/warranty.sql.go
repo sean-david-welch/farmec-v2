@@ -135,7 +135,7 @@ func (q *Queries) GetWarranties(ctx context.Context) ([]GetWarrantiesRow, error)
 	return items, nil
 }
 
-const getWarrantyByID = `-- name: GetWarrantyByID :one
+const getWarrantyByID = `-- name: GetWarrantyByID :many
 select wc.id,
        wc.dealer,
        wc.dealer_contact,
@@ -183,31 +183,47 @@ type GetWarrantyByIDRow struct {
 	Description    sql.NullString `json:"description"`
 }
 
-func (q *Queries) GetWarrantyByID(ctx context.Context, id string) (GetWarrantyByIDRow, error) {
-	row := q.db.QueryRowContext(ctx, getWarrantyByID, id)
-	var i GetWarrantyByIDRow
-	err := row.Scan(
-		&i.ID,
-		&i.Dealer,
-		&i.DealerContact,
-		&i.OwnerName,
-		&i.MachineModel,
-		&i.SerialNumber,
-		&i.InstallDate,
-		&i.FailureDate,
-		&i.RepairDate,
-		&i.FailureDetails,
-		&i.RepairDetails,
-		&i.LabourHours,
-		&i.CompletedBy,
-		&i.Created,
-		&i.PartID,
-		&i.PartNumber,
-		&i.QuantityNeeded,
-		&i.InvoiceNumber,
-		&i.Description,
-	)
-	return i, err
+func (q *Queries) GetWarrantyByID(ctx context.Context, id string) ([]GetWarrantyByIDRow, error) {
+	rows, err := q.db.QueryContext(ctx, getWarrantyByID, id)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []GetWarrantyByIDRow
+	for rows.Next() {
+		var i GetWarrantyByIDRow
+		if err := rows.Scan(
+			&i.ID,
+			&i.Dealer,
+			&i.DealerContact,
+			&i.OwnerName,
+			&i.MachineModel,
+			&i.SerialNumber,
+			&i.InstallDate,
+			&i.FailureDate,
+			&i.RepairDate,
+			&i.FailureDetails,
+			&i.RepairDetails,
+			&i.LabourHours,
+			&i.CompletedBy,
+			&i.Created,
+			&i.PartID,
+			&i.PartNumber,
+			&i.QuantityNeeded,
+			&i.InvoiceNumber,
+			&i.Description,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
 
 const updateWarranty = `-- name: UpdateWarranty :exec
