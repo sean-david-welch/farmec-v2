@@ -154,64 +154,64 @@ func (store *WarrantyStoreImpl) CreateWarranty(ctx context.Context, warranty *db
 
 	return nil
 }
-func (store *WarrantyStoreImpl) UpdateWarranty(id string, warranty *db.WarrantyClaim, parts []db.PartsRequired) error {
-	transaction, err := store.database.Begin()
+func (store *WarrantyStoreImpl) UpdateWarranty(ctx context.Context, id string, warranty *db.WarrantyClaim, parts []db.PartsRequired) error {
+	tx, err := store.db.BeginTx(ctx, nil)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to begin transaction: %w", err)
 	}
-
-	warrantyQuery := `UPDATE "WarrantyClaim" SET
-    dealer = ?, dealer_contact = ?, owner_name = ?, machine_model = ?, serial_number = ?,
-    install_date = ?, failure_date = ?, repair_date = ?, failure_details = ?, repair_details = ?,
-    labour_hours = ?, completed_by = ?, created = ? WHERE id = ?`
-
-	_, err = transaction.Exec(
-		warrantyQuery, id, warranty.Dealer, warranty.DealerContact, warranty.OwnerName,
-		warranty.MachineModel, warranty.SerialNumber, warranty.InstallDate, warranty.FailureDate, warranty.RepairDate,
-		warranty.FailureDetails, warranty.RepairDetails, warranty.LabourHours, warranty.CompletedBy, warranty.Created,
-	)
-	if err != nil {
-		err := transaction.Rollback()
+	defer func(tx *sql.Tx) {
+		err := tx.Rollback()
 		if err != nil {
-			return err
+			return
 		}
-		return err
-	}
+	}(tx)
+	qtx := store.queries.WithTx(tx)
 
-	deleteQuery := `DELETE FROM "PartsRequired" WHERE warranty_id = ?`
-	_, err = transaction.Exec(deleteQuery, id)
-	if err != nil {
-		err := transaction.Rollback()
-		if err != nil {
-			return err
-		}
-		return err
+	params := db.UpdateWarrantyParams{
+		Dealer:         warranty.Dealer,
+		DealerContact:  warranty.DealerContact,
+		OwnerName:      warranty.OwnerName,
+		MachineModel:   warranty.MachineModel,
+		SerialNumber:   warranty.SerialNumber,
+		InstallDate:    warranty.InstallDate,
+		FailureDate:    warranty.FailureDate,
+		RepairDate:     warranty.RepairDate,
+		FailureDetails: warranty.FailureDetails,
+		RepairDetails:  warranty.RepairDetails,
+		LabourHours:    warranty.LabourHours,
+		CompletedBy:    warranty.CompletedBy,
+		ID:             id,
 	}
-
-	partsQuery := `INSERT INTO "PartsRequired"
-	(id, warranty_id, part_number, quantity_needed, invoice_number, description) VALUES (?, ?, ?, ?, ?, ?)`
+	if err := qtx.UpdateWarranty(ctx, params); err != nil {
+		return fmt.Errorf("error occurred while updating warranty: %w", err)
+	}
+	if err = qtx.DeletePartsRequired(ctx, id); err != nil {
+		return fmt.Errorf("error occurred while deleting parts required: %w", err)
+	}
 
 	for _, part := range parts {
 		part.ID = uuid.NewString()
-
-		_, err := transaction.Exec(partsQuery, part.ID, warranty.ID, part.PartNumber, part.QuantityNeeded, part.InvoiceNumber, part.Description)
-		if err != nil {
-			err := transaction.Rollback()
-			if err != nil {
-				return err
-			}
-			return err
+		params := db.CreatePartsRequiredParams{
+			ID:             part.ID,
+			WarrantyID:     warranty.ID,
+			PartNumber:     part.PartNumber,
+			QuantityNeeded: part.QuantityNeeded,
+			InvoiceNumber:  part.InvoiceNumber,
+			Description:    part.Description,
+		}
+		if err := qtx.CreatePartsRequired(ctx, params); err != nil {
+			return fmt.Errorf("an error occurred while creating the part: %w", err)
 		}
 	}
 
-	if err := transaction.Commit(); err != nil {
-		return err
+	if err := tx.Commit(); err != nil {
+		return fmt.Errorf("failed to commit transaction: %w", err)
 	}
 
 	return nil
 }
 
-func (store *WarrantyStoreImpl) DeleteWarranty(id string) error {
+func (store *WarrantyStoreImpl) DeleteWarranty(ctx context.Context, id string) error {
 	transaction, err := store.database.Begin()
 	if err != nil {
 		return err
