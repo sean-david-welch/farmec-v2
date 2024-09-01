@@ -92,53 +92,47 @@ func (store *WarrantyStoreImpl) GetWarrantyById(ctx context.Context, id string) 
 	return warranty, parts, nil
 }
 
-func (store *WarrantyStoreImpl) CreateWarranty(warranty *db.WarrantyClaim, parts []db.PartsRequired) error {
+func (store *WarrantyStoreImpl) CreateWarranty(ctx context.Context, warranty *db.WarrantyClaim, parts []db.PartsRequired) error {
 	warranty.ID = uuid.NewString()
-	warranty.Created = time.Now().String()
-
-	transaction, err := store.database.Begin()
-	if err != nil {
-		return err
+	warranty.Created = sql.NullString{
+		String: time.Now().String(),
+		Valid:  true,
 	}
 
-	warrantyQuery := `INSERT INTO "WarrantyClaim"
-	(id, dealer, dealer_contact, owner_name, machine_model, serial_number, install_date, failure_date, repair_date, failure_details, repair_details, labour_hours, completed_by, created)
-	VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-
-	_, err = transaction.Exec(
-		warrantyQuery, warranty.ID, warranty.Dealer, warranty.DealerContact, warranty.OwnerName,
-		warranty.MachineModel, warranty.SerialNumber, warranty.InstallDate, warranty.FailureDate, warranty.RepairDate,
-		warranty.FailureDetails, warranty.RepairDetails, warranty.LabourHours, warranty.CompletedBy, warranty.Created,
-	)
-	if err != nil {
-		err := transaction.Rollback()
-		if err != nil {
-			return err
-		}
-		return err
+	params := db.CreateWarrantyParams{
+		ID:             warranty.ID,
+		Dealer:         warranty.Dealer,
+		DealerContact:  warranty.DealerContact,
+		OwnerName:      warranty.OwnerName,
+		MachineModel:   warranty.MachineModel,
+		SerialNumber:   warranty.SerialNumber,
+		InstallDate:    warranty.InstallDate,
+		FailureDate:    warranty.FailureDate,
+		RepairDate:     warranty.RepairDate,
+		FailureDetails: warranty.FailureDetails,
+		RepairDetails:  warranty.RepairDetails,
+		LabourHours:    warranty.LabourHours,
+		CompletedBy:    warranty.CompletedBy,
+		Created:        warranty.Created,
 	}
-
-	partsQuery := `INSERT INTO "PartsRequired"
-	(id, "warranty_id", part_number, quantity_needed, invoice_number, description) VALUES (?, ?, ?, ?, ?, ?)`
+	if err := store.queries.CreateWarranty(ctx, params); err != nil {
+		return fmt.Errorf("error occurred while creating warranty: %w", err)
+	}
 
 	for _, part := range parts {
 		part.ID = uuid.NewString()
-
-		_, err := transaction.Exec(partsQuery, part.ID, warranty.ID, part.PartNumber, part.QuantityNeeded, part.InvoiceNumber, part.Description)
-		if err != nil {
-			err := transaction.Rollback()
-			if err != nil {
-				return err
-			}
-			return err
+		params := db.CreatePartsRequiredParams{
+			ID:             part.ID,
+			WarrantyID:     part.WarrantyID,
+			PartNumber:     part.PartNumber,
+			QuantityNeeded: part.QuantityNeeded,
+			InvoiceNumber:  part.InvoiceNumber,
+			Description:    part.Description,
 		}
-
+		if err := store.queries.CreatePartsRequired(ctx, params); err != nil {
+			return fmt.Errorf("an error occurred while creating the part: %w", err)
+		}
 	}
-
-	if err := transaction.Commit(); err != nil {
-		return err
-	}
-
 	return nil
 }
 
