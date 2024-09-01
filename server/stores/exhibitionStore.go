@@ -1,59 +1,51 @@
 package stores
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
-	"log"
+	"github.com/sean-david-welch/farmec-v2/server/db"
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type ExhibitionStore interface {
-	GetExhibitions() ([]types.Exhibition, error)
-	CreateExhibition(exhibition *types.Exhibition) error
-	UpdateExhibition(id string, exhibition *types.Exhibition) error
-	DeleteExhibition(id string) error
+	GetExhibitions(ctx context.Context) ([]db.Exhibition, error)
+	CreateExhibition(ctx context.Context, exhibition *db.Exhibition) error
+	UpdateExhibition(ctx context.Context, id string, exhibition *db.Exhibition) error
+	DeleteExhibition(ctx context.Context, id string) error
 }
 
 type ExhibitionStoreImpl struct {
-	database *sql.DB
+	queries *db.Queries
 }
 
-func NewExhibitionStore(database *sql.DB) *ExhibitionStoreImpl {
-	return &ExhibitionStoreImpl{database: database}
+func NewExhibitionStore(sql *sql.DB) *ExhibitionStoreImpl {
+	queries := db.New(sql)
+	return &ExhibitionStoreImpl{queries: queries}
 }
 
-func (store *ExhibitionStoreImpl) GetExhibitions() ([]types.Exhibition, error) {
-	var exhibitions []types.Exhibition
-
-	query := `SELECT * FROM "Exhibition" ORDER BY "created"`
-	rows, err := store.database.Query(query)
+func (store *ExhibitionStoreImpl) GetExhibitions(ctx context.Context) ([]db.Exhibition, error) {
+	exhibitions, err := store.queries.GetExhibitions(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("error occurred while querying database: %w", err)
-	}
-	defer func() {
-		if err := rows.Close(); err != nil {
-			log.Fatal("Failed to close database: ", err)
-		}
-	}()
-
-	for rows.Next() {
-		var exhibition types.Exhibition
-
-		err := rows.Scan(&exhibition.ID, &exhibition.Title, &exhibition.Date, &exhibition.Location, &exhibition.Info, &exhibition.Created)
-		if err != nil {
-			return nil, fmt.Errorf("error occurred while scanning rows: %w", err)
-		}
-
-		exhibitions = append(exhibitions, exhibition)
+		return nil, fmt.Errorf("An error occurred while querying the database for machines: %w", err)
 	}
 
-	return exhibitions, nil
+	var result []db.Exhibition
+	for _, exhibition := range exhibitions {
+		result = append(result, db.Exhibition{
+			ID:       exhibition.ID,
+			Title:    exhibition.Title,
+			Date:     exhibition.Date,
+			Location: exhibition.Location,
+			Info:     exhibition.Info,
+			Created:  exhibition.Created,
+		})
+	}
 }
 
-func (store *ExhibitionStoreImpl) CreateExhibition(exhibition *types.Exhibition) error {
+func (store *ExhibitionStoreImpl) CreateExhibition(exhibition *db.Exhibition) error {
 	exhibition.ID = uuid.NewString()
 	exhibition.Created = time.Now().String()
 
@@ -66,7 +58,7 @@ func (store *ExhibitionStoreImpl) CreateExhibition(exhibition *types.Exhibition)
 	return nil
 }
 
-func (store *ExhibitionStoreImpl) UpdateExhibition(id string, exhibition *types.Exhibition) error {
+func (store *ExhibitionStoreImpl) UpdateExhibition(id string, exhibition *db.Exhibition) error {
 	query := `UPDATE "Exhibition" SET "title" = ?, "date" = ?, "location" = ?, "info" = ? WHERE "id" = ?`
 
 	_, err := store.database.Exec(query, id, exhibition.Title, exhibition.Date, exhibition.Location, exhibition.Info)
