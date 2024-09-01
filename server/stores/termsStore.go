@@ -61,24 +61,22 @@ func (store *TermsStoreImpl) CreateTerm(ctx context.Context, term *db.Term) erro
 	return nil
 }
 
-func (store *TermsStoreImpl) UpdateTerm(id string, term *db.Term) error {
-	query := `UPDATE "Term" SET title = ?, body = ? where id = ?`
-
-	_, err := store.database.Exec(query, term.Title, term.Body, id)
-	if err != nil {
-		return fmt.Errorf("error occurred while updating term term: %w", err)
+func (store *TermsStoreImpl) UpdateTerm(ctx context.Context, id string, term *db.Term) error {
+	params := db.UpdateTermParams{
+		Title:   term.Title,
+		Body:    term.Body,
+		Created: term.Created,
+		ID:      id,
 	}
-
+	if err := store.queries.UpdateTerm(ctx, params); err != nil {
+		return fmt.Errorf("error ocurred while updating a machine with image: %w", err)
+	}
 	return nil
 }
 
-func (store *TermsStoreImpl) DeleteTerm(id string) error {
-	query := `DELETE FROM "Term" WHERE "id" = ?`
-
-	_, err := store.database.Exec(query, id)
-	if err != nil {
-		return fmt.Errorf("error occurred while deleting term term: %w", err)
+func (store *TermsStoreImpl) DeleteTerm(ctx context.Context, id string) error {
+	if err := store.queries.DeleteTerm(ctx, id); err != nil {
+		return fmt.Errorf("error occurred while deleting term: %w", err)
 	}
-
 	return nil
 }
