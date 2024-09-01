@@ -1,96 +1,80 @@
 package stores
 
 import (
+	"context"
 	"database/sql"
-	"errors"
 	"fmt"
-	"log"
+	"github.com/sean-david-welch/farmec-v2/server/db"
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type CarouselStore interface {
-	GetCarousels() ([]types.Carousel, error)
-	GetCarouselById(id string) (*types.Carousel, error)
-	CreateCarousel(carousel *types.Carousel) error
-	UpdateCarousel(id string, carousel *types.Carousel) error
-	DeleteCarousel(id string) error
+	GetCarousels(ctx context.Context) ([]db.Carousel, error)
+	GetCarouselById(ctx context.Context, id string) (*db.Carousel, error)
+	CreateCarousel(ctx context.Context, carousel *db.Carousel) error
+	UpdateCarousel(ctx context.Context, id string, carousel *db.Carousel) error
+	DeleteCarousel(ctx context.Context, id string) error
 }
 
 type CarouselStoreImpl struct {
-	database *sql.DB
+	queries *db.Queries
 }
 
-func NewCarouselStore(database *sql.DB) *CarouselStoreImpl {
-	return &CarouselStoreImpl{database: database}
+func NewCarouselStore(sql *sql.DB) *CarouselStoreImpl {
+	queries := db.New(sql)
+	return &CarouselStoreImpl{queries: queries}
 }
 
-func (store *CarouselStoreImpl) GetCarousels() ([]types.Carousel, error) {
-	var carousels []types.Carousel
-
-	query := `SELECT * FROM "Carousel"`
-	rows, err := store.database.Query(query)
+func (store *CarouselStoreImpl) GetCarousels(ctx context.Context) ([]db.Carousel, error) {
+	carousels, err := store.queries.GetCarousels(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("error executing query: %w", err)
-	}
-	defer func() {
-		if err := rows.Close(); err != nil {
-			log.Fatal("Failed to close database: ", err)
-		}
-	}()
-
-	for rows.Next() {
-		var carousel types.Carousel
-
-		if err := rows.Scan(&carousel.ID, &carousel.Name, &carousel.Image, &carousel.Created); err != nil {
-			return nil, fmt.Errorf("error occurred while scanning rows: %w", err)
-		}
-		carousels = append(carousels, carousel)
+		return nil, fmt.Errorf("error occurred while querying the database for carousels: %w", err)
 	}
 
-	if err = rows.Err(); err != nil {
-		return nil, fmt.Errorf("error after iterating over rows: %w", err)
+	var result []db.Carousel
+	for _, carousel := range carousels {
+		result = append(result, db.Carousel{
+			ID:      carousel.ID,
+			Name:    carousel.Name,
+			Image:   carousel.Image,
+			Created: carousel.Created,
+		})
 	}
-
-	return carousels, nil
+	return result, nil
 }
 
-func (store *CarouselStoreImpl) GetCarouselById(id string) (*types.Carousel, error) {
-	query := `SELECT * FROM "Carousel" WHERE id = ?`
-	row := store.database.QueryRow(query, id)
-
-	var carousel types.Carousel
-
-	if err := row.Scan(&carousel.ID, &carousel.Name, &carousel.Image, &carousel.Created); err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			return nil, fmt.Errorf("error item found with the given id: %w", err)
-		}
-
-		return nil, fmt.Errorf("error scanning row: %w", err)
+func (store *CarouselStoreImpl) GetCarouselById(ctx context.Context, id string) (*db.Carousel, error) {
+	carousel, err := store.queries.GetCarouselByID(ctx, id)
+	if err != nil {
+		return nil, fmt.Errorf("error occurred while querying the database for carousel: %w", err)
 	}
 
 	return &carousel, nil
 }
 
-func (store *CarouselStoreImpl) CreateCarousel(carousel *types.Carousel) error {
+func (store *CarouselStoreImpl) CreateCarousel(ctx context.Context, carousel *db.Carousel) error {
 	carousel.ID = uuid.NewString()
-	carousel.Created = time.Now().String()
-
-	query := `INSERT INTO "Carousel"
-	(id, name, image, created)
-	VALUES (?, ?, ?, ?)`
-
-	_, err := store.database.Exec(query, carousel.ID, carousel.Name, carousel.Image, carousel.Created)
-	if err != nil {
-		return fmt.Errorf("error creating carousel: %w", err)
+	carousel.Created = sql.NullString{
+		String: time.Now().String(),
+		Valid:  true,
 	}
 
+	params := db.CreateCarouselParams{
+		ID:      carousel.ID,
+		Name:    carousel.Name,
+		Image:   carousel.Image,
+		Created: carousel.Created,
+	}
+
+	if err := store.queries.CreateCarousel(ctx, params); err != nil {
+		return fmt.Errorf("error occurred while create a carousel: %w", err)
+	}
 	return nil
 }
 
-func (store *CarouselStoreImpl) UpdateCarousel(id string, carousel *types.Carousel) error {
+func (store *CarouselStoreImpl) UpdateCarousel(id string, carousel *db.Carousel) error {
 	query := `UPDATE "Carousel" SET name = ? WHERE id = ?`
 	args := []interface{}{carousel.Name, id}
 
