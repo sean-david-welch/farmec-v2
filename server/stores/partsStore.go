@@ -1,86 +1,59 @@
 package stores
 
 import (
+	"context"
 	"database/sql"
 	"errors"
 	"fmt"
 	"log"
 
 	"github.com/google/uuid"
-	"github.com/sean-david-welch/farmec-v2/server/types"
+	"github.com/sean-david-welch/farmec-v2/server/db"
 )
 
 type PartsStore interface {
-	GetParts(id string) ([]types.Sparepart, error)
-	GetPartById(id string) (*types.Sparepart, error)
-	CreatePart(part *types.Sparepart) error
-	UpdatePart(id string, part *types.Sparepart) error
-	DeletePart(id string) error
+	GetParts(ctx context.Context, id string) ([]db.SparePart, error)
+	GetPartById(ctx context.Context, id string) (*db.SparePart, error)
+	CreatePart(ctx context.Context, part *db.SparePart) error
+	UpdatePart(ctx context.Context, id string, part *db.SparePart) error
+	DeletePart(ctx context.Context, id string) error
 }
 
 type PartsStoreImpl struct {
-	database *sql.DB
+	queries *db.Queries
 }
 
-func NewPartsStore(database *sql.DB) *PartsStoreImpl {
-	return &PartsStoreImpl{database: database}
+func NewPartsStore(sql *sql.DB) *PartsStoreImpl {
+	queries := db.New(sql)
+	return &PartsStoreImpl{queries: queries}
 }
 
-func ScanParts(row interface{}, part *types.Sparepart) error {
-	var scanner interface {
-		Scan(dest ...interface{}) error
-	}
-
-	switch value := row.(type) {
-	case *sql.Row:
-		scanner = value
-	case *sql.Rows:
-		scanner = value
-	default:
-		return fmt.Errorf("unsupported type: %T", value)
-	}
-
-	return scanner.Scan(&part.ID, &part.SupplierID, &part.Name, &part.PartsImage, &part.SparePartsLink)
-}
-
-func (store *PartsStoreImpl) GetParts(id string) ([]types.Sparepart, error) {
-	var parts []types.Sparepart
-
-	query := `SELECT * FROM "SpareParts" WHERE "supplier_id" = ?`
-	rows, err := store.database.Query(query, id)
+func (store *PartsStoreImpl) GetParts(ctx context.Context, id string) ([]db.SparePart, error) {
+	parts, err := store.queries.GetParts(ctx, id)
 	if err != nil {
-		return nil, fmt.Errorf("error executing query: %w", err)
+		return nil, fmt.Errorf("error occurred while getting spare parts: %w", err)
 	}
-	defer func() {
-		if err := rows.Close(); err != nil {
-			log.Fatal("Failed to close database: ", err)
-		}
-	}()
-
-	for rows.Next() {
-		var part types.Sparepart
-
-		if err := ScanParts(rows, &part); err != nil {
-			return nil, fmt.Errorf("error scanning row: %w", err)
-		}
-		parts = append(parts, part)
+	var result []db.SparePart
+	for _, part := range parts {
+		result = append(result, db.SparePart{
+			ID: part.ID,
+			SupplierID: part.SupplierID,
+			Name: part.Name,
+			PartsImage: part.PartsImage,
+			SparePartsLink: part.SparePartsLink,
+		})
 	}
-
-	if err = rows.Err(); err != nil {
-		return nil, fmt.Errorf("error after iterating over rows: %w", err)
-	}
-
-	return parts, nil
+	return result, nil
 }
 
-func (store *PartsStoreImpl) GetPartById(id string) (*types.Sparepart, error) {
+func (store *PartsStoreImpl) GetPartById(ctx context.Context, id string) (*db.SparePart, error) {
 	query := `SELECT * FROM "SpareParts" WHERE id = ?`
 	row := store.database.QueryRow(query, id)
 
-	var part types.Sparepart
+	var part dbSparePart.
 
 	if err := ScanParts(row, &part); err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
+		if errors.Is(err, sqlctx context.Context, .ErrNoRows) {
 			return nil, fmt.Errorf("error item found with the given id: %w", err)
 		}
 		return nil, fmt.Errorf("error scanning row: %w", err)
@@ -89,7 +62,7 @@ func (store *PartsStoreImpl) GetPartById(id string) (*types.Sparepart, error) {
 	return &part, nil
 }
 
-func (store *PartsStoreImpl) CreatePart(part *types.Sparepart) error {
+func (store *PartsStoreImpl) CreatePart(ctx context.Context, part *db.SparePart) error {
 	part.ID = uuid.NewString()
 
 	query := `INSERT INTO "SpareParts" (id, supplier_id, name, parts_image, spare_parts_link)
@@ -104,7 +77,7 @@ func (store *PartsStoreImpl) CreatePart(part *types.Sparepart) error {
 	return nil
 }
 
-func (store *PartsStoreImpl) UpdatePart(id string, part *types.Sparepart) error {
+func (store *PartsStoreImpl) UpdatePart(ctx context.Context, id string, part *db.SparePart) error {
 	query := `UPDATE "SpareParts" SET supplier_id = ?, name = ?, spare_parts_link  = ? WHERE ID = ?`
 	args := []interface{}{id, part.SupplierID, part.Name, part.SparePartsLink}
 
@@ -121,7 +94,7 @@ func (store *PartsStoreImpl) UpdatePart(id string, part *types.Sparepart) error 
 	return nil
 }
 
-func (store *PartsStoreImpl) DeletePart(id string) error {
+func (store *PartsStoreImpl) DeletePart(ctx context.Context, id string) error {
 	query := `DELETE FROM "SpareParts" WHERE id = ?`
 
 	_, err := store.database.Exec(query, id)
