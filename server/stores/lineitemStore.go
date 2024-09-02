@@ -1,71 +1,59 @@
 package stores
 
 import (
+	"context"
 	"database/sql"
 	"errors"
 	"fmt"
+	"github.com/sean-david-welch/farmec-v2/server/db"
 	"log"
 
 	"github.com/google/uuid"
-	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type LineItemStore interface {
-	GetLineItems() ([]types.LineItem, error)
-	GetLineItemById(id string) (*types.LineItem, error)
-	CreateLineItem(lineItem *types.LineItem) error
-	UpdateLineItem(id string, lineItem *types.LineItem) error
-	DeleteLineItem(id string) error
+	GetLineItems(ctx context.Context) ([]db.LineItem, error)
+	GetLineItemById(ctx context.Context, id string) (*db.LineItem, error)
+	CreateLineItem(ctx context.Context, lineItem *db.LineItem) error
+	UpdateLineItem(ctx context.Context, id string, lineItem *db.LineItem) error
+	DeleteLineItem(ctx context.Context, id string) error
 }
 
 type LineItemStoreImpl struct {
-	database *sql.DB
+	queries *db.Queries
 }
 
-func NewLineItemStore(database *sql.DB) *LineItemStoreImpl {
-	return &LineItemStoreImpl{database: database}
+func NewLineItemStore(sql *sql.DB) *LineItemStoreImpl {
+	queries := db.New(sql)
+	return &LineItemStoreImpl{queries: queries}
 }
 
-func (store *LineItemStoreImpl) GetLineItems() ([]types.LineItem, error) {
-	var lineItems []types.LineItem
-
-	query := `SELECT * FROM "LineItems"`
-	rows, err := store.database.Query(query)
+func (store *LineItemStoreImpl) GetLineItems(ctx context.Context) ([]db.LineItem, error) {
+	lineItems, err := store.queries.GetLineItems(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("error occurred while querying database: %w", err)
+		return nil, fmt.Errorf("error occurred while getting line items: %w", err)
 	}
-	defer func() {
-		if err := rows.Close(); err != nil {
-			log.Fatal("Failed to close database: ", err)
-		}
-	}()
-
-	for rows.Next() {
-		var lineItem types.LineItem
-
-		if err := rows.Scan(&lineItem.ID, &lineItem.Name, &lineItem.Price, &lineItem.Image); err != nil {
-			return nil, fmt.Errorf("error occurred while scanning line item: %w", err)
-		}
-
-		lineItems = append(lineItems, lineItem)
+	var result []db.LineItem
+	for _, lineItem := range lineItems {
+		result = append(result, db.LineItem{
+			ID: lineItem.ID,
+			Name: lineItem.Name,
+			Price: lineItem.Price,
+			Image: lineItem.Image,
+		})
 	}
-
-	if err := rows.Err(); err != nil {
-		return nil, fmt.Errorf("error occurred after iterating over rows: %w", err)
-	}
-
-	return lineItems, nil
+	return result, nil
 }
 
-func (store *LineItemStoreImpl) GetLineItemById(id string) (*types.LineItem, error) {
-	var lineItem types.LineItem
+func (store *LineItemStoreImpl) GetLineItemById(ctx context.Context, id string) (*db.LineItem, error) {
+	var lineItem db.LineItem
 
 	query := `SELECT * FROM "LineItems" WHERE "id" = ?`
 	row := store.database.QueryRow(query, id)
 
 	if err := row.Scan(&lineItem.ID, &lineItem.Name, &lineItem.Price, &lineItem.Image); err != nil {
 
-		if errors.Is(err, sql.ErrNoRows) {
+		if errors.Is(err, ctx context.Context, sql.ErrNoRows) {
 			return nil, fmt.Errorf("error item found with the given id: %w", err)
 		}
 
@@ -75,7 +63,7 @@ func (store *LineItemStoreImpl) GetLineItemById(id string) (*types.LineItem, err
 	return &lineItem, nil
 }
 
-func (store *LineItemStoreImpl) CreateLineItem(lineItem *types.LineItem) error {
+func (store *LineItemStoreImpl) CreateLineItem(ctx context.Context, lineItem *db.LineItem) error {
 	lineItem.ID = uuid.NewString()
 
 	query := `INSERT INTO "LineItems" (id, name, price, image) VALUES (?, ?, ?, ?)`
@@ -88,7 +76,7 @@ func (store *LineItemStoreImpl) CreateLineItem(lineItem *types.LineItem) error {
 	return nil
 }
 
-func (store *LineItemStoreImpl) UpdateLineItem(id string, lineItem *types.LineItem) error {
+func (store *LineItemStoreImpl) UpdateLineItem(ctx context.Context, id string, lineItem *db.LineItem) error {
 	query := `UPDATE "LineItems" SET "name" = ?, "price" = ?  WHERE "id" = ?`
 	args := []interface{}{id, lineItem.Name, lineItem.Price}
 
@@ -105,7 +93,7 @@ func (store *LineItemStoreImpl) UpdateLineItem(id string, lineItem *types.LineIt
 	return nil
 }
 
-func (store *LineItemStoreImpl) DeleteLineItem(id string) error {
+func (store *LineItemStoreImpl) DeleteLineItem(ctx context.Context, id string) error {
 	query := `DELETE FROM "LineItems" WHERE "id" = ?`
 
 	_, err := store.database.Exec(query, id)
