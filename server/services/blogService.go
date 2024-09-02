@@ -1,6 +1,7 @@
 package services
 
 import (
+	"context"
 	"database/sql"
 	"errors"
 	"github.com/sean-david-welch/farmec-v2/server/db"
@@ -12,11 +13,11 @@ import (
 )
 
 type BlogService interface {
-	GetBlogs() ([]db.Blog, error)
-	GetBlogsByID(id string) (*db.Blog, error)
-	CreateBlog(blog *db.Blog) (*types.ModelResult, error)
-	UpdateBlog(id string, blog *db.Blog) (*types.ModelResult, error)
-	DeleteBlog(id string) error
+	GetBlogs(ctx context.Context) ([]db.Blog, error)
+	GetBlogsByID(ctx context.Context, id string) (*db.Blog, error)
+	CreateBlog(ctx context.Context, blog *db.Blog) (*types.ModelResult, error)
+	UpdateBlog(ctx context.Context, id string, blog *db.Blog) (*types.ModelResult, error)
+	DeleteBlog(ctx context.Context, id string) error
 }
 
 type BlogServiceImpl struct {
@@ -29,8 +30,8 @@ func NewBlogService(store stores.BlogStore, s3Client lib.S3Client, folder string
 	return &BlogServiceImpl{store: store, s3Client: s3Client, folder: folder}
 }
 
-func (service *BlogServiceImpl) GetBlogs() ([]db.Blog, error) {
-	blogs, err := service.store.GetBlogs()
+func (service *BlogServiceImpl) GetBlogs(ctx context.Context) ([]db.Blog, error) {
+	blogs, err := service.store.GetBlogs(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -38,8 +39,8 @@ func (service *BlogServiceImpl) GetBlogs() ([]db.Blog, error) {
 	return blogs, nil
 }
 
-func (service *BlogServiceImpl) GetBlogsByID(id string) (*db.Blog, error) {
-	blog, err := service.store.GetBlogById(id)
+func (service *BlogServiceImpl) GetBlogsByID(ctx context.Context, id string) (*db.Blog, error) {
+	blog, err := service.store.GetBlogById(ctx, id)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +48,7 @@ func (service *BlogServiceImpl) GetBlogsByID(id string) (*db.Blog, error) {
 	return blog, nil
 }
 
-func (service *BlogServiceImpl) CreateBlog(blog *db.Blog) (*types.ModelResult, error) {
+func (service *BlogServiceImpl) CreateBlog(ctx context.Context, blog *db.Blog) (*types.ModelResult, error) {
 	image := blog.MainImage
 
 	if !image.Valid {
@@ -62,7 +63,7 @@ func (service *BlogServiceImpl) CreateBlog(blog *db.Blog) (*types.ModelResult, e
 
 	blog.MainImage = sql.NullString{String: imageUrl, Valid: true}
 
-	if err := service.store.CreateBlog(blog); err != nil {
+	if err := service.store.CreateBlog(ctx, blog); err != nil {
 		return nil, err
 	}
 
@@ -74,7 +75,7 @@ func (service *BlogServiceImpl) CreateBlog(blog *db.Blog) (*types.ModelResult, e
 	return result, nil
 }
 
-func (service *BlogServiceImpl) UpdateBlog(id string, blog *db.Blog) (*types.ModelResult, error) {
+func (service *BlogServiceImpl) UpdateBlog(ctx context.Context, id string, blog *db.Blog) (*types.ModelResult, error) {
 	image := blog.MainImage
 
 	var presignedUrl, imageUrl string
@@ -89,7 +90,7 @@ func (service *BlogServiceImpl) UpdateBlog(id string, blog *db.Blog) (*types.Mod
 		blog.MainImage = sql.NullString{String: imageUrl, Valid: true}
 	}
 
-	if err := service.store.UpdateBlog(id, blog); err != nil {
+	if err := service.store.UpdateBlog(ctx, id, blog); err != nil {
 		return nil, err
 	}
 
@@ -101,8 +102,8 @@ func (service *BlogServiceImpl) UpdateBlog(id string, blog *db.Blog) (*types.Mod
 	return result, nil
 }
 
-func (service *BlogServiceImpl) DeleteBlog(id string) error {
-	blog, err := service.store.GetBlogById(id)
+func (service *BlogServiceImpl) DeleteBlog(ctx context.Context, id string) error {
+	blog, err := service.store.GetBlogById(ctx, id)
 	if err != nil {
 		return err
 	}
@@ -111,7 +112,7 @@ func (service *BlogServiceImpl) DeleteBlog(id string) error {
 		return err
 	}
 
-	if err := service.store.DeleteBlog(id); err != nil {
+	if err := service.store.DeleteBlog(ctx, id); err != nil {
 		return err
 	}
 
