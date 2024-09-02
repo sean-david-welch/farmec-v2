@@ -3,12 +3,9 @@ package stores
 import (
 	"context"
 	"database/sql"
-	"errors"
 	"fmt"
-	"github.com/sean-david-welch/farmec-v2/server/db"
-	"log"
-
 	"github.com/google/uuid"
+	"github.com/sean-david-welch/farmec-v2/server/db"
 )
 
 type LineItemStore interface {
@@ -36,8 +33,8 @@ func (store *LineItemStoreImpl) GetLineItems(ctx context.Context) ([]db.LineItem
 	var result []db.LineItem
 	for _, lineItem := range lineItems {
 		result = append(result, db.LineItem{
-			ID: lineItem.ID,
-			Name: lineItem.Name,
+			ID:    lineItem.ID,
+			Name:  lineItem.Name,
 			Price: lineItem.Price,
 			Image: lineItem.Image,
 		})
@@ -46,20 +43,10 @@ func (store *LineItemStoreImpl) GetLineItems(ctx context.Context) ([]db.LineItem
 }
 
 func (store *LineItemStoreImpl) GetLineItemById(ctx context.Context, id string) (*db.LineItem, error) {
-	var lineItem db.LineItem
-
-	query := `SELECT * FROM "LineItems" WHERE "id" = ?`
-	row := store.database.QueryRow(query, id)
-
-	if err := row.Scan(&lineItem.ID, &lineItem.Name, &lineItem.Price, &lineItem.Image); err != nil {
-
-		if errors.Is(err, ctx context.Context, sql.ErrNoRows) {
-			return nil, fmt.Errorf("error item found with the given id: %w", err)
-		}
-
-		return nil, fmt.Errorf("error occurrred while scanning line item: %w", err)
+	lineItem, err := store.queries.GetLineItemByID(ctx, id)
+	if err != nil {
+		return nil, fmt.Errorf("error occurred while getting line items from db: %w", err)
 	}
-
 	return &lineItem, nil
 }
 
