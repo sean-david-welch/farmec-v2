@@ -4,7 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"log"
 	"time"
 
 	"github.com/google/uuid"
@@ -27,52 +26,43 @@ func NewPrivacyStore(sql *sql.DB) *PrivacyStoreImpl {
 	return &PrivacyStoreImpl{queries: queries}
 }
 
-func (store *PrivacyStoreImpl) GetPrivacy() ([]db.Privacy, error) {
-	var privacyTerms []db.Privacy
-
-	query := `SELECT * FROM "Privacy"`
-	rows, err := store.database.Query(query)
+func (store *PrivacyStoreImpl) GetPrivacy(ctx context.Context) ([]db.Privacy, error) {
+	privacies, err := store.queries.GetPrivacies(ctx)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("an error occurred while getting privacy policy: %w", err)
 	}
-	defer func() {
-		if err := rows.Close(); err != nil {
-			log.Fatal("Failed to close database: ", err)
-		}
-	}()
-
-	for rows.Next() {
-		var privacyTerm db.Privacy
-
-		if err := rows.Scan(&privacyTerm.ID, &privacyTerm.Title, &privacyTerm.Body, &privacyTerm.Created); err != nil {
-			return nil, fmt.Errorf("error occurred while scanning row: %w", err)
-		}
-
-		privacyTerms = append(privacyTerms, privacyTerm)
-
-		if err := rows.Err(); err != nil {
-			return nil, fmt.Errorf("error occurred after iterating over rows: %w", err)
-		}
+	var result []db.Privacy
+	for _, privacy := range privacies {
+		result = append(result, db.Privacy{
+			ID:      privacy.ID,
+			Title:   privacy.Title,
+			Body:    privacy.Body,
+			Created: privacy.Created,
+		})
 	}
-
-	return privacyTerms, err
+	return result, nil
 }
 
-func (store *PrivacyStoreImpl) CreatePrivacy(privacy *db.Privacy) error {
+func (store *PrivacyStoreImpl) CreatePrivacy(ctx context.Context, privacy *db.Privacy) error {
 	privacy.ID = uuid.NewString()
-	privacy.Created = time.Now().String()
-
-	query := `INSERT INTO "Privacy" (id, title, body, created) VALUES (?, ?, ?, ?)`
-
-	_, err := store.database.Exec(query, privacy.ID, privacy.Title, privacy.Body, privacy.Created)
-	if err != nil {
-		return fmt.Errorf("error occurred while creating privacy term: %w", err)
+	privacy.Created = sql.NullString{
+		String: time.Now().String(),
+		Valid:  true,
 	}
 
+	params := db.CreatePrivacyParams{
+		ID:      privacy.ID,
+		Title:   privacy.Title,
+		Body:    privacy.Body,
+		Created: privacy.Created,
+	}
+	if err := store.queries.CreatePrivacy(ctx, params); err != nil {
+		return fmt.Errorf("error occurred while creating policy: %w", err)
+	}
 	return nil
 }
 
-func (store *PrivacyStoreImpl) UpdatePrivacy(id string, privacy *db.Privacy) error {
+func (store *PrivacyStoreImpl) UpdatePrivacy(ctx context.Context, id string, privacy *db.Privacy) error {
 	query := `UPDATE "Privacy" SET title = ?, body = ? where id = ?`
 
 	_, err := store.database.Exec(query, privacy.Title, privacy.Body, id)
@@ -83,7 +73,7 @@ func (store *PrivacyStoreImpl) UpdatePrivacy(id string, privacy *db.Privacy) err
 	return nil
 }
 
-func (store *PrivacyStoreImpl) DeletePrivacy(id string) error {
+func (store *PrivacyStoreImpl) DeletePrivacy(ctx context.Context, id string) error {
 	query := `DELETE FROM "Privacy" WHERE "id" = ?`
 
 	_, err := store.database.Exec(query, id)
