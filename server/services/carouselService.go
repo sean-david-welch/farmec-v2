@@ -1,19 +1,22 @@
 package services
 
 import (
+	"database/sql"
 	"errors"
 	"github.com/sean-david-welch/farmec-v2/server/lib"
+	"github.com/sean-david-welch/farmec-v2/server/types"
+	"golang.org/x/net/context"
 	"log"
 
+	"github.com/sean-david-welch/farmec-v2/server/db"
 	"github.com/sean-david-welch/farmec-v2/server/stores"
-	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type CarouselService interface {
-	GetCarousels() ([]types.Carousel, error)
-	CreateCarousel(carousel *types.Carousel) (*types.ModelResult, error)
-	UpdateCarousel(id string, carousel *types.Carousel) (*types.ModelResult, error)
-	DeleteCarousel(id string) error
+	GetCarousels(ctx context.Context) ([]db.Carousel, error)
+	CreateCarousel(ctx context.Context, carousel *db.Carousel) (*types.ModelResult, error)
+	UpdateCarousel(ctx context.Context, id string, carousel *db.Carousel) (*types.ModelResult, error)
+	DeleteCarousel(ctx context.Context, id string) error
 }
 
 type CarouselServiceImpl struct {
@@ -30,26 +33,33 @@ func NewCarouselService(store stores.CarouselStore, s3Client lib.S3Client, folde
 	}
 }
 
-func (service *CarouselServiceImpl) GetCarousels() ([]types.Carousel, error) {
-	return service.store.GetCarousels()
+func (service *CarouselServiceImpl) GetCarousels(ctx context.Context) ([]db.Carousel, error) {
+	carousels, err := service.store.GetCarousels(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return carousels, nil
 }
 
-func (service *CarouselServiceImpl) CreateCarousel(carousel *types.Carousel) (*types.ModelResult, error) {
+func (service *CarouselServiceImpl) CreateCarousel(ctx context.Context, carousel *db.Carousel) (*types.ModelResult, error) {
 	image := carousel.Image
 
-	if image == "" || image == "null" {
+	if image.Valid {
 		return nil, errors.New("image is empty")
 	}
 
-	presignedUrl, imageUrl, err := service.s3Client.GeneratePresignedUrl(service.folder, image)
+	presignedUrl, imageUrl, err := service.s3Client.GeneratePresignedUrl(service.folder, image.String)
 	if err != nil {
 		log.Printf("error occurred while generating presigned url: %v", err)
 		return nil, err
 	}
 
-	carousel.Image = imageUrl
+	carousel.Image = sql.NullString{
+		String: imageUrl,
+		Valid:  true,
+	}
 
-	if err := service.store.CreateCarousel(carousel); err != nil {
+	if err := service.store.CreateCarousel(ctx, carousel); err != nil {
 		return nil, err
 	}
 
@@ -61,22 +71,25 @@ func (service *CarouselServiceImpl) CreateCarousel(carousel *types.Carousel) (*t
 	return result, nil
 }
 
-func (service *CarouselServiceImpl) UpdateCarousel(id string, carousel *types.Carousel) (*types.ModelResult, error) {
+func (service *CarouselServiceImpl) UpdateCarousel(ctx context.Context, id string, carousel *db.Carousel) (*types.ModelResult, error) {
 	image := carousel.Image
 
 	var presignedUrl, imageUrl string
 	var err error
 
-	if image != "" && image != "null" {
-		presignedUrl, imageUrl, err = service.s3Client.GeneratePresignedUrl(service.folder, image)
+	if image.Valid {
+		presignedUrl, imageUrl, err = service.s3Client.GeneratePresignedUrl(service.folder, image.String)
 		if err != nil {
 			log.Printf("error occurred while generating presigned url: %v", err)
 			return nil, err
 		}
-		carousel.Image = imageUrl
+		carousel.Image = sql.NullString{
+			String: imageUrl,
+			Valid:  true,
+		}
 	}
 
-	if err := service.store.UpdateCarousel(id, carousel); err != nil {
+	if err := service.store.UpdateCarousel(ctx, id, carousel); err != nil {
 		return nil, err
 	}
 
@@ -88,17 +101,17 @@ func (service *CarouselServiceImpl) UpdateCarousel(id string, carousel *types.Ca
 	return result, nil
 }
 
-func (service *CarouselServiceImpl) DeleteCarousel(id string) error {
-	carousel, err := service.store.GetCarouselById(id)
+func (service *CarouselServiceImpl) DeleteCarousel(ctx context.Context, id string) error {
+	carousel, err := service.store.GetCarouselById(ctx, id)
 	if err != nil {
 		return err
 	}
 
-	if err := service.s3Client.DeleteImageFromS3(carousel.Image); err != nil {
+	if err := service.s3Client.DeleteImageFromS3(carousel.Image.String); err != nil {
 		return err
 	}
 
-	if err := service.store.DeleteCarousel(id); err != nil {
+	if err := service.store.DeleteCarousel(ctx, id); err != nil {
 		return err
 	}
 
