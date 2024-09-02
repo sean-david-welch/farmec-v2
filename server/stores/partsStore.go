@@ -54,15 +54,16 @@ func (store *PartsStoreImpl) GetPartById(ctx context.Context, id string) (*db.Sp
 func (store *PartsStoreImpl) CreatePart(ctx context.Context, part *db.SparePart) error {
 	part.ID = uuid.NewString()
 
-	query := `INSERT INTO "SpareParts" (id, supplier_id, name, parts_image, spare_parts_link)
-	VALUES (?, ?, ?, ?, ?)`
-
-	_, err := store.database.Exec(query, part.ID, part.SupplierID, part.Name, part.PartsImage, part.SparePartsLink)
-
-	if err != nil {
-		return fmt.Errorf("error creating spare part: %w", err)
+	params := db.CreateSparePartParams{
+		ID:             part.ID,
+		SupplierID:     part.SupplierID,
+		Name:           part.Name,
+		PartsImage:     part.PartsImage,
+		SparePartsLink: part.SparePartsLink,
 	}
-
+	if err := store.queries.CreateSparePart(ctx, params); err != nil {
+		return fmt.Errorf("error occurred while creating spare parts: %w", err)
+	}
 	return nil
 }
 
