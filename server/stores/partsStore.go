@@ -3,10 +3,7 @@ package stores
 import (
 	"context"
 	"database/sql"
-	"errors"
 	"fmt"
-	"log"
-
 	"github.com/google/uuid"
 	"github.com/sean-david-welch/farmec-v2/server/db"
 )
@@ -36,10 +33,10 @@ func (store *PartsStoreImpl) GetParts(ctx context.Context, id string) ([]db.Spar
 	var result []db.SparePart
 	for _, part := range parts {
 		result = append(result, db.SparePart{
-			ID: part.ID,
-			SupplierID: part.SupplierID,
-			Name: part.Name,
-			PartsImage: part.PartsImage,
+			ID:             part.ID,
+			SupplierID:     part.SupplierID,
+			Name:           part.Name,
+			PartsImage:     part.PartsImage,
 			SparePartsLink: part.SparePartsLink,
 		})
 	}
@@ -47,19 +44,11 @@ func (store *PartsStoreImpl) GetParts(ctx context.Context, id string) ([]db.Spar
 }
 
 func (store *PartsStoreImpl) GetPartById(ctx context.Context, id string) (*db.SparePart, error) {
-	query := `SELECT * FROM "SpareParts" WHERE id = ?`
-	row := store.database.QueryRow(query, id)
-
-	var part dbSparePart.
-
-	if err := ScanParts(row, &part); err != nil {
-		if errors.Is(err, sqlctx context.Context, .ErrNoRows) {
-			return nil, fmt.Errorf("error item found with the given id: %w", err)
-		}
-		return nil, fmt.Errorf("error scanning row: %w", err)
+	part, err := store.queries.GetPartByID(ctx, id)
+	if err != nil {
+		return nil, fmt.Errorf("error occurred while getting part from the db: %w", err)
 	}
-
-	return &part, nil
+	return &part, err
 }
 
 func (store *PartsStoreImpl) CreatePart(ctx context.Context, part *db.SparePart) error {
