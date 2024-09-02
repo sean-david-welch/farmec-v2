@@ -53,13 +53,15 @@ func (store *LineItemStoreImpl) GetLineItemById(ctx context.Context, id string) 
 func (store *LineItemStoreImpl) CreateLineItem(ctx context.Context, lineItem *db.LineItem) error {
 	lineItem.ID = uuid.NewString()
 
-	query := `INSERT INTO "LineItems" (id, name, price, image) VALUES (?, ?, ?, ?)`
-
-	_, err := store.database.Exec(query, lineItem.ID, lineItem.Name, lineItem.Price, lineItem.Image)
-	if err != nil {
-		return fmt.Errorf("error occurred while creating line item: %w", err)
+	params := db.CreateLineItemParams{
+		ID:    lineItem.ID,
+		Name:  lineItem.Name,
+		Price: lineItem.Price,
+		Image: lineItem.Image,
 	}
-
+	if err := store.queries.CreateLineItem(ctx, params); err != nil {
+		return fmt.Errorf("error occurred while creating line items: %w", err)
+	}
 	return nil
 }
 
