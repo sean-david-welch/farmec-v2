@@ -66,19 +66,26 @@ func (store *LineItemStoreImpl) CreateLineItem(ctx context.Context, lineItem *db
 }
 
 func (store *LineItemStoreImpl) UpdateLineItem(ctx context.Context, id string, lineItem *db.LineItem) error {
-	query := `UPDATE "LineItems" SET "name" = ?, "price" = ?  WHERE "id" = ?`
-	args := []interface{}{id, lineItem.Name, lineItem.Price}
-
-	if lineItem.Image != "" && lineItem.Image != "null" {
-		query = `UPDATE "LineItems" SET "name" = ?, "price" = ?, "image" = ? WHERE "id" = ?`
-		args = []interface{}{id, lineItem.Name, lineItem.Price, lineItem.Image}
+	if lineItem.Image.Valid {
+		params := db.UpdateLineItemParams{
+			Name:  lineItem.Name,
+			Price: lineItem.Price,
+			Image: lineItem.Image,
+			ID:    id,
+		}
+		if err := store.queries.UpdateLineItem(ctx, params); err != nil {
+			return fmt.Errorf("error occurred while updating a line item: %w", err)
+		}
+	} else {
+		params := db.UpdateLineItemNoImageParams{
+			Name:  lineItem.Name,
+			Price: lineItem.Price,
+			ID:    id,
+		}
+		if err := store.queries.UpdateLineItemNoImage(ctx, params); err != nil {
+			return fmt.Errorf("error occurred while updating a line item: %w", err)
+		}
 	}
-
-	_, err := store.database.Exec(query, args...)
-	if err != nil {
-		return fmt.Errorf("error occurred while updating line item: %w", err)
-	}
-
 	return nil
 }
 
