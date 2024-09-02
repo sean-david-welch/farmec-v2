@@ -63,23 +63,20 @@ func (store *PrivacyStoreImpl) CreatePrivacy(ctx context.Context, privacy *db.Pr
 }
 
 func (store *PrivacyStoreImpl) UpdatePrivacy(ctx context.Context, id string, privacy *db.Privacy) error {
-	query := `UPDATE "Privacy" SET title = ?, body = ? where id = ?`
-
-	_, err := store.database.Exec(query, privacy.Title, privacy.Body, id)
-	if err != nil {
-		return fmt.Errorf("error occurred while updating privacy term: %w", err)
+	params := db.UpdatePrivacyParams{
+		Title: privacy.Title,
+		Body:  privacy.Body,
+		ID:    id,
 	}
-
+	if err := store.queries.UpdatePrivacy(ctx, params); err != nil {
+		return fmt.Errorf("an error occurred while")
+	}
 	return nil
 }
 
 func (store *PrivacyStoreImpl) DeletePrivacy(ctx context.Context, id string) error {
-	query := `DELETE FROM "Privacy" WHERE "id" = ?`
-
-	_, err := store.database.Exec(query, id)
-	if err != nil {
-		return fmt.Errorf("error occurred while deleting privacy term: %w", err)
+	if err := store.queries.DeletePrivacy(ctx, id); err != nil {
+		return fmt.Errorf("an error occurred while deleting privacy: %w", err)
 	}
-
 	return nil
 }
