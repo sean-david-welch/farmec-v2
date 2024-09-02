@@ -128,12 +128,8 @@ func (store *RegistrationStoreImpl) UpdateRegistration(ctx context.Context, id s
 }
 
 func (store *RegistrationStoreImpl) DeleteRegistration(ctx context.Context, id string) error {
-	query := `DELETE FROM "MachineRegistration" WHERE "id" = ?`
-
-	_, err := store.database.Exec(query, id)
-	if err != nil {
-		return fmt.Errorf("error occurred while deleting registration")
+	if err := store.queries.DeleteRegistration(ctx, id); err != nil {
+		return fmt.Errorf("an error occurred while deleting a registration: %w", err)
 	}
-
 	return nil
 }
