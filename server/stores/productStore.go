@@ -1,88 +1,61 @@
 package stores
 
 import (
+	"context"
 	"database/sql"
 	"errors"
 	"fmt"
 	"log"
 
 	"github.com/google/uuid"
-	"github.com/sean-david-welch/farmec-v2/server/types"
+	"github.com/sean-david-welch/farmec-v2/server/db"
 )
 
 type ProductStore interface {
-	GetProducts(id string) ([]types.Product, error)
-	GetProductById(id string) (*types.Product, error)
-	CreateProduct(product *types.Product) error
-	UpdateProduct(id string, product *types.Product) error
-	DeleteProduct(id string) error
+	GetProducts(ctx context.Context, id string) ([]db.Product, error)
+	GetProductById(ctx context.Context, id string) (*db.Product, error)
+	CreateProduct(ctx context.Context, product *db.Product) error
+	UpdateProduct(ctx context.Context, id string, product *db.Product) error
+	DeleteProduct(ctx context.Context, id string) error
 }
 
 type ProductStoreImpl struct {
-	database *sql.DB
+	queries *db.Queries
 }
 
-func NewProductStore(database *sql.DB) *ProductStoreImpl {
-	return &ProductStoreImpl{database: database}
+func NewProductStore(sql *sql.DB) *ProductStoreImpl {
+	queries := db.New(sql)
+	return &ProductStoreImpl{queries: queries}
 }
 
-func ScanProduct(row interface{}, product *types.Product) error {
-	var scanner interface {
-		Scan(dest ...interface{}) error
-	}
-
-	switch value := row.(type) {
-	case *sql.Row:
-		scanner = value
-	case *sql.Rows:
-		scanner = value
-	default:
-		return fmt.Errorf("unsupported type: %T", value)
-	}
-
-	return scanner.Scan(&product.ID, &product.MachineID, &product.Name, &product.ProductImage, &product.Description, &product.ProductLink)
-}
-
-func (store *ProductStoreImpl) GetProducts(id string) ([]types.Product, error) {
-	var products []types.Product
-
-	query := `SELECT * FROM "Product" WHERE "machine_id" = ?`
-	rows, err := store.database.Query(query, id)
+func (store *ProductStoreImpl) GetProducts(ctx context.Context, id string) ([]db.Product, error) {
+	products, err := store.queries.GetProducts(context, id)
 	if err != nil {
-		return nil, fmt.Errorf("error executing query: %w", err)
+		return nil, fmt.Errorf("an error occurred while getting products: %w", err)
 	}
 
-	defer func() {
-		if err := rows.Close(); err != nil {
-			log.Fatal("Failed to close database: ", err)
-		}
-	}()
-
-	for rows.Next() {
-		var product types.Product
-
-		if err := ScanProduct(rows, &product); err != nil {
-			return nil, fmt.Errorf("error scanning row: %w", err)
-		}
-
-		products = append(products, product)
+	var result []db.Product
+	for _, product := range products {
+		result = append(result, db.Product{
+			ID: product.ID,
+			MachineID: product.MachineID,
+			Name: product.Name,
+			ProductImage: product.ProductImage,
+			Description: product.Description,
+			ProductLink: product.ProductLink,
+		})
 	}
-
-	if err = rows.Err(); err != nil {
-		return nil, fmt.Errorf("error after iterating over rows: %w", err)
-	}
-
-	return products, nil
+	return result, nil
 }
 
-func (store *ProductStoreImpl) GetProductById(id string) (*types.Product, error) {
+func (store *ProductStoreImpl) GetProductById(ctx context.Context, id string) (*db.Product, error) {
 	query := `SELECT * FROM "Product" WHERE "id" = ?`
 	row := store.database.QueryRow(query, id)
 
-	var product types.Product
+	var product db.Product
 
 	if err := ScanProduct(row, &product); err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
+		if errors.Is(err, ctx context.Context, sql.ErrNoRows) {
 			return nil, fmt.Errorf("error item found with the given id: %w", err)
 		}
 
@@ -92,7 +65,7 @@ func (store *ProductStoreImpl) GetProductById(id string) (*types.Product, error)
 	return &product, nil
 }
 
-func (store *ProductStoreImpl) CreateProduct(product *types.Product) error {
+func (store *ProductStoreImpl) CreateProduct(ctx context.Context, product *db.Product) error {
 	product.ID = uuid.NewString()
 
 	query := `INSERT INTO "Product" (id, machine_id, name, product_image, description, product_link)
@@ -107,7 +80,7 @@ func (store *ProductStoreImpl) CreateProduct(product *types.Product) error {
 	return nil
 }
 
-func (store *ProductStoreImpl) UpdateProduct(id string, product *types.Product) error {
+func (store *ProductStoreImpl) UpdateProduct(ctx context.Context, id string, product *db.Product) error {
 	query := `UPDATE "Product" SET machine_id = ?, name = ?, description = ?, product_link = ? WHERE id = ?`
 	args := []interface{}{product.MachineID, product.Name, product.Description, product.ProductLink, id}
 
@@ -126,7 +99,7 @@ func (store *ProductStoreImpl) UpdateProduct(id string, product *types.Product) 
 	return nil
 }
 
-func (store *ProductStoreImpl) DeleteProduct(id string) error {
+func (store *ProductStoreImpl) DeleteProduct(ctx context.Context, id string) error {
 	query := `DELETE FROM "Product" WHERE id = ?`
 
 	_, err := store.database.Exec(query, id)
