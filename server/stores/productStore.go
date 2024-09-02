@@ -3,10 +3,7 @@ package stores
 import (
 	"context"
 	"database/sql"
-	"errors"
 	"fmt"
-	"log"
-
 	"github.com/google/uuid"
 	"github.com/sean-david-welch/farmec-v2/server/db"
 )
@@ -37,44 +34,37 @@ func (store *ProductStoreImpl) GetProducts(ctx context.Context, id string) ([]db
 	var result []db.Product
 	for _, product := range products {
 		result = append(result, db.Product{
-			ID: product.ID,
-			MachineID: product.MachineID,
-			Name: product.Name,
+			ID:           product.ID,
+			MachineID:    product.MachineID,
+			Name:         product.Name,
 			ProductImage: product.ProductImage,
-			Description: product.Description,
-			ProductLink: product.ProductLink,
+			Description:  product.Description,
+			ProductLink:  product.ProductLink,
 		})
 	}
 	return result, nil
 }
 
 func (store *ProductStoreImpl) GetProductById(ctx context.Context, id string) (*db.Product, error) {
-	query := `SELECT * FROM "Product" WHERE "id" = ?`
-	row := store.database.QueryRow(query, id)
-
-	var product db.Product
-
-	if err := ScanProduct(row, &product); err != nil {
-		if errors.Is(err, ctx context.Context, sql.ErrNoRows) {
-			return nil, fmt.Errorf("error item found with the given id: %w", err)
-		}
-
-		return nil, fmt.Errorf("error scanning row: %w", err)
+	product, err := store.queries.GetProductByID(ctx, id)
+	if err != nil {
+		return nil, fmt.Errorf("an error occurred while getting product: %w", err)
 	}
-
 	return &product, nil
 }
 
 func (store *ProductStoreImpl) CreateProduct(ctx context.Context, product *db.Product) error {
 	product.ID = uuid.NewString()
-
-	query := `INSERT INTO "Product" (id, machine_id, name, product_image, description, product_link)
-	VALUES (?, ?, ?, ?, ?, ?)`
-
-	_, err := store.database.Exec(query, product.ID, product.MachineID, product.Name, product.ProductImage, product.Description, product.ProductLink)
-
-	if err != nil {
-		return fmt.Errorf("error creating product: %w", err)
+	params := db.CreateProductParams{
+		ID:           product.ID,
+		MachineID:    product.MachineID,
+		Name:         product.Name,
+		ProductImage: product.ProductImage,
+		Description:  product.Description,
+		ProductLink:  product.ProductLink,
+	}
+	if err := store.queries.CreateProduct(ctx, params); err != nil {
+		return fmt.Errorf("an error occurred while creating a product: %w", err)
 	}
 
 	return nil
