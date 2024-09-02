@@ -68,19 +68,28 @@ func (store *PartsStoreImpl) CreatePart(ctx context.Context, part *db.SparePart)
 }
 
 func (store *PartsStoreImpl) UpdatePart(ctx context.Context, id string, part *db.SparePart) error {
-	query := `UPDATE "SpareParts" SET supplier_id = ?, name = ?, spare_parts_link  = ? WHERE ID = ?`
-	args := []interface{}{id, part.SupplierID, part.Name, part.SparePartsLink}
-
-	if part.PartsImage != "" && part.PartsImage != "null" {
-		query = `UPDATE "SpareParts" SET supplier_id = ?, name = ?, parts_image = ?, spare_parts_link  = ? WHERE ID = ?`
-		args = []interface{}{id, part.SupplierID, part.Name, part.PartsImage, part.SparePartsLink}
+	if part.PartsImage.Valid {
+		params := db.UpdateSparePartParams{
+			SupplierID:     part.SupplierID,
+			Name:           part.Name,
+			PartsImage:     part.PartsImage,
+			SparePartsLink: part.SparePartsLink,
+			ID:             id,
+		}
+		if err := store.queries.UpdateSparePart(ctx, params); err != nil {
+			return fmt.Errorf("error occurred while updating a spare part: %w", err)
+		}
+	} else {
+		params := db.UpdateSparePartNoImageParams{
+			SupplierID:     part.SupplierID,
+			Name:           part.Name,
+			SparePartsLink: part.SparePartsLink,
+			ID:             id,
+		}
+		if err := store.queries.UpdateSparePartNoImage(ctx, params); err != nil {
+			return fmt.Errorf("error occurred while updating a spare part: %w", err)
+		}
 	}
-
-	_, err := store.database.Exec(query, args...)
-	if err != nil {
-		return fmt.Errorf("error updating part: %w", err)
-	}
-
 	return nil
 }
 
