@@ -1,6 +1,6 @@
 -- name: GetProducts :many
 select id, machine_id, name, product_image, description, product_link
-from Product;
+from Product where machine_id = ?;
 
 -- name: GetProductByID :one
 select id, machine_id, name, product_image, description, product_link

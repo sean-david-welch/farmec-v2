@@ -29,7 +29,7 @@ func NewProductStore(sql *sql.DB) *ProductStoreImpl {
 }
 
 func (store *ProductStoreImpl) GetProducts(ctx context.Context, id string) ([]db.Product, error) {
-	products, err := store.queries.GetProducts(context, id)
+	products, err := store.queries.GetProducts(ctx, id)
 	if err != nil {
 		return nil, fmt.Errorf("an error occurred while getting products: %w", err)
 	}
