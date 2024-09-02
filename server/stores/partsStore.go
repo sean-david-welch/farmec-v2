@@ -94,12 +94,8 @@ func (store *PartsStoreImpl) UpdatePart(ctx context.Context, id string, part *db
 }
 
 func (store *PartsStoreImpl) DeletePart(ctx context.Context, id string) error {
-	query := `DELETE FROM "SpareParts" WHERE id = ?`
-
-	_, err := store.database.Exec(query, id)
-	if err != nil {
-		return fmt.Errorf("error deleting part: %w", err)
+	if err := store.queries.DeleteSparePart(ctx, id); err != nil {
+		return fmt.Errorf("error occurred while deleting a spare part: %w", err)
 	}
-
 	return nil
 }
