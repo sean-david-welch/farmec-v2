@@ -66,26 +66,34 @@ func (store *ProductStoreImpl) CreateProduct(ctx context.Context, product *db.Pr
 	if err := store.queries.CreateProduct(ctx, params); err != nil {
 		return fmt.Errorf("an error occurred while creating a product: %w", err)
 	}
-
 	return nil
 }
 
 func (store *ProductStoreImpl) UpdateProduct(ctx context.Context, id string, product *db.Product) error {
-	query := `UPDATE "Product" SET machine_id = ?, name = ?, description = ?, product_link = ? WHERE id = ?`
-	args := []interface{}{product.MachineID, product.Name, product.Description, product.ProductLink, id}
-
-	if product.ProductImage != "" && product.ProductImage != "null" {
-		query = `UPDATE "Product" SET machine_id = ?, name = ?, product_image = ?, description = ?, product_link = ? WHERE id = ?`
-		args = []interface{}{product.MachineID, product.Name, product.ProductImage, product.Description, product.ProductLink, id}
-
+	if product.ProductImage.Valid {
+		params := db.UpdateProductParams{
+			MachineID:    product.MachineID,
+			Name:         product.Name,
+			ProductImage: product.ProductImage,
+			Description:  product.Description,
+			ProductLink:  product.ProductLink,
+			ID:           id,
+		}
+		if err := store.queries.UpdateProduct(ctx, params); err != nil {
+			return fmt.Errorf("an error occurred while updating product: %w", err)
+		}
+	} else {
+		params := db.UpdateProductNoImageParams{
+			MachineID:   product.MachineID,
+			Name:        product.Name,
+			Description: product.Description,
+			ProductLink: product.ProductLink,
+			ID:          id,
+		}
+		if err := store.queries.UpdateProductNoImage(ctx, params); err != nil {
+			return fmt.Errorf("an error occurred while updating product: %w", err)
+		}
 	}
-
-	_, err := store.database.Exec(query, args...)
-
-	if err != nil {
-		return fmt.Errorf("error updating product: %w", err)
-	}
-
 	return nil
 }
 
