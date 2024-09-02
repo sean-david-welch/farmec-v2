@@ -90,12 +90,8 @@ func (store *LineItemStoreImpl) UpdateLineItem(ctx context.Context, id string, l
 }
 
 func (store *LineItemStoreImpl) DeleteLineItem(ctx context.Context, id string) error {
-	query := `DELETE FROM "LineItems" WHERE "id" = ?`
-
-	_, err := store.database.Exec(query, id)
-	if err != nil {
-		return fmt.Errorf("error occurred while deleting line items: %w", err)
+	if err := store.queries.DeleteLineItem(ctx, id); err != nil {
+		return fmt.Errorf("error occurred while deleting a line item: %w", err)
 	}
-
 	return nil
 }
