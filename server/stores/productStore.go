@@ -98,12 +98,8 @@ func (store *ProductStoreImpl) UpdateProduct(ctx context.Context, id string, pro
 }
 
 func (store *ProductStoreImpl) DeleteProduct(ctx context.Context, id string) error {
-	query := `DELETE FROM "Product" WHERE id = ?`
-
-	_, err := store.database.Exec(query, id)
-	if err != nil {
-		return fmt.Errorf("error deleting product: %w", err)
+	if err := store.queries.DeleteProduct(ctx, id); err != nil {
+		return fmt.Errorf("error occurred while deleting a product: %w", err)
 	}
-
 	return nil
 }
