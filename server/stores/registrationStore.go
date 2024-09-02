@@ -101,24 +101,27 @@ func (store *RegistrationStoreImpl) CreateRegistration(ctx context.Context, regi
 }
 
 func (store *RegistrationStoreImpl) UpdateRegistration(ctx context.Context, id string, registration *db.MachineRegistration) error {
-	query := `UPDATE "MachineRegistration" SET 
-	"dealer_name" = ?, "dealer_address" = ?, "owner_name" = ?, "owner_address" = ?, 
-	"machine_model" = ?, "serial_number" = ?, "install_date" = ?, "invoice_number" = ?, 
-	"complete_supply" = ?, "pdi_complete" = ?, "pto_correct" = ?, "machine_test_run" = ?, 
-	"safety_induction" = ?, "operator_handbook" = ?, "date" = ?, "completed_by" = ?
-	WHERE "id" = ?`
-
-	_, err := store.database.Exec(
-		query,
-		id, registration.DealerName, registration.DealerAddress, registration.OwnerName,
-		registration.OwnerAddress, registration.MachineModel, registration.SerialNumber,
-		registration.InstallDate, registration.InvoiceNumber, registration.CompleteSupply,
-		registration.PdiComplete, registration.PtoCorrect, registration.MachineTestRun,
-		registration.SafetyInduction, registration.OperatorHandbook, registration.Date,
-		registration.CompletedBy,
-	)
-	if err != nil {
-		return fmt.Errorf("error occurred while updating registration")
+	params := db.UpdateRegistrationParams{
+		DealerName:       registration.DealerName,
+		DealerAddress:    registration.DealerAddress,
+		OwnerName:        registration.OwnerName,
+		OwnerAddress:     registration.OwnerAddress,
+		MachineModel:     registration.MachineModel,
+		SerialNumber:     registration.SerialNumber,
+		InstallDate:      registration.InstallDate,
+		InvoiceNumber:    registration.InvoiceNumber,
+		CompleteSupply:   registration.CompleteSupply,
+		PdiComplete:      registration.PdiComplete,
+		PtoCorrect:       registration.PtoCorrect,
+		MachineTestRun:   registration.MachineTestRun,
+		SafetyInduction:  registration.SafetyInduction,
+		OperatorHandbook: registration.OperatorHandbook,
+		Date:             registration.Date,
+		CompletedBy:      registration.CompletedBy,
+		ID:               id,
+	}
+	if err := store.queries.UpdateRegistration(ctx, params); err != nil {
+		return fmt.Errorf("error occurred while updating registration: %w", err)
 	}
 
 	return nil
