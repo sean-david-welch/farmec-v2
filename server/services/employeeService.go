@@ -1,7 +1,10 @@
 package services
 
 import (
+	"context"
+	"database/sql"
 	"errors"
+	"github.com/sean-david-welch/farmec-v2/server/db"
 	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"log"
 
@@ -10,10 +13,10 @@ import (
 )
 
 type EmployeeService interface {
-	GetEmployees() ([]types.Employee, error)
-	CreateEmployee(employee *types.Employee) (*types.ModelResult, error)
-	UpdateEmployee(id string, employee *types.Employee) (*types.ModelResult, error)
-	DeleteEmployee(id string) error
+	GetEmployees(ctx context.Context) ([]db.Employee, error)
+	CreateEmployee(ctx context.Context, employee *db.Employee) (*types.ModelResult, error)
+	UpdateEmployee(ctx context.Context, id string, employee *db.Employee) (*types.ModelResult, error)
+	DeleteEmployee(ctx context.Context, id string) error
 }
 
 type EmployeeServiceImpl struct {
@@ -26,8 +29,8 @@ func NewEmployeeService(store stores.EmployeeStore, s3Client lib.S3Client, folde
 	return &EmployeeServiceImpl{store: store, s3Client: s3Client, folder: folder}
 }
 
-func (service *EmployeeServiceImpl) GetEmployees() ([]types.Employee, error) {
-	employees, err := service.store.GetEmployees()
+func (service *EmployeeServiceImpl) GetEmployees(ctx context.Context) ([]db.Employee, error) {
+	employees, err := service.store.GetEmployees(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -35,22 +38,25 @@ func (service *EmployeeServiceImpl) GetEmployees() ([]types.Employee, error) {
 	return employees, nil
 }
 
-func (service *EmployeeServiceImpl) CreateEmployee(employee *types.Employee) (*types.ModelResult, error) {
+func (service *EmployeeServiceImpl) CreateEmployee(ctx context.Context, employee *db.Employee) (*types.ModelResult, error) {
 	image := employee.ProfileImage
 
-	if image == "" || image == "null" {
+	if image.Valid {
 		return nil, errors.New("image is empty")
 	}
 
-	PresignedUrl, imageUrl, err := service.s3Client.GeneratePresignedUrl(service.folder, image)
+	PresignedUrl, imageUrl, err := service.s3Client.GeneratePresignedUrl(service.folder, image.String)
 	if err != nil {
 		log.Printf("error occurred while generating presigned url: %v", err)
 		return nil, err
 	}
 
-	employee.ProfileImage = imageUrl
+	employee.ProfileImage = sql.NullString{
+		String: imageUrl,
+		Valid:  true,
+	}
 
-	if err := service.store.CreateEmployee(employee); err != nil {
+	if err := service.store.CreateEmployee(ctx, employee); err != nil {
 		return nil, err
 	}
 
@@ -62,22 +68,25 @@ func (service *EmployeeServiceImpl) CreateEmployee(employee *types.Employee) (*t
 	return result, nil
 }
 
-func (service *EmployeeServiceImpl) UpdateEmployee(id string, employee *types.Employee) (*types.ModelResult, error) {
+func (service *EmployeeServiceImpl) UpdateEmployee(ctx context.Context, id string, employee *db.Employee) (*types.ModelResult, error) {
 	image := employee.ProfileImage
 
 	var PresignedUrl, imageUrl string
 	var err error
 
-	if image != "" && image != "null" {
-		PresignedUrl, imageUrl, err = service.s3Client.GeneratePresignedUrl(service.folder, image)
+	if image.Valid {
+		PresignedUrl, imageUrl, err = service.s3Client.GeneratePresignedUrl(service.folder, image.String)
 		if err != nil {
 			log.Printf("error occurred while generating presigned url: %v", err)
 			return nil, err
 		}
-		employee.ProfileImage = imageUrl
+		employee.ProfileImage = sql.NullString{
+			String: imageUrl,
+			Valid:  true,
+		}
 	}
 
-	if err := service.store.UpdateEmployee(id, employee); err != nil {
+	if err := service.store.UpdateEmployee(ctx, id, employee); err != nil {
 		return nil, err
 	}
 
@@ -89,17 +98,17 @@ func (service *EmployeeServiceImpl) UpdateEmployee(id string, employee *types.Em
 	return result, nil
 }
 
-func (service *EmployeeServiceImpl) DeleteEmployee(id string) error {
-	employee, err := service.store.GetEmployeeById(id)
+func (service *EmployeeServiceImpl) DeleteEmployee(ctx context.Context, id string) error {
+	employee, err := service.store.GetEmployeeById(ctx, id)
 	if err != nil {
 		return err
 	}
 
-	if err := service.s3Client.DeleteImageFromS3(employee.ProfileImage); err != nil {
+	if err := service.s3Client.DeleteImageFromS3(employee.ProfileImage.String); err != nil {
 		return err
 	}
 
-	if err := service.store.DeleteEmployee(id); err != nil {
+	if err := service.store.DeleteEmployee(ctx, id); err != nil {
 		return err
 	}
 
