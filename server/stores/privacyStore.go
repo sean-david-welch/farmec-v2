@@ -1,32 +1,34 @@
 package stores
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"log"
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/sean-david-welch/farmec-v2/server/types"
+	"github.com/sean-david-welch/farmec-v2/server/db"
 )
 
 type PrivacyStore interface {
-	GetPrivacy() ([]types.Privacy, error)
-	CreatePrivacy(privacy *types.Privacy) error
-	UpdatePrivacy(id string, privacy *types.Privacy) error
-	DeletePrivacy(id string) error
+	GetPrivacy(ctx context.Context) ([]db.Privacy, error)
+	CreatePrivacy(ctx context.Context, privacy *db.Privacy) error
+	UpdatePrivacy(ctx context.Context, id string, privacy *db.Privacy) error
+	DeletePrivacy(ctx context.Context, id string) error
 }
 
 type PrivacyStoreImpl struct {
-	database *sql.DB
+	queries *db.Queries
 }
 
-func NewPrivacyStore(database *sql.DB) *PrivacyStoreImpl {
-	return &PrivacyStoreImpl{database: database}
+func NewPrivacyStore(sql *sql.DB) *PrivacyStoreImpl {
+	queries := db.New(sql)
+	return &PrivacyStoreImpl{queries: queries}
 }
 
-func (store *PrivacyStoreImpl) GetPrivacy() ([]types.Privacy, error) {
-	var privacyTerms []types.Privacy
+func (store *PrivacyStoreImpl) GetPrivacy() ([]db.Privacy, error) {
+	var privacyTerms []db.Privacy
 
 	query := `SELECT * FROM "Privacy"`
 	rows, err := store.database.Query(query)
@@ -40,7 +42,7 @@ func (store *PrivacyStoreImpl) GetPrivacy() ([]types.Privacy, error) {
 	}()
 
 	for rows.Next() {
-		var privacyTerm types.Privacy
+		var privacyTerm db.Privacy
 
 		if err := rows.Scan(&privacyTerm.ID, &privacyTerm.Title, &privacyTerm.Body, &privacyTerm.Created); err != nil {
 			return nil, fmt.Errorf("error occurred while scanning row: %w", err)
@@ -56,7 +58,7 @@ func (store *PrivacyStoreImpl) GetPrivacy() ([]types.Privacy, error) {
 	return privacyTerms, err
 }
 
-func (store *PrivacyStoreImpl) CreatePrivacy(privacy *types.Privacy) error {
+func (store *PrivacyStoreImpl) CreatePrivacy(privacy *db.Privacy) error {
 	privacy.ID = uuid.NewString()
 	privacy.Created = time.Now().String()
 
@@ -70,7 +72,7 @@ func (store *PrivacyStoreImpl) CreatePrivacy(privacy *types.Privacy) error {
 	return nil
 }
 
-func (store *PrivacyStoreImpl) UpdatePrivacy(id string, privacy *types.Privacy) error {
+func (store *PrivacyStoreImpl) UpdatePrivacy(id string, privacy *db.Privacy) error {
 	query := `UPDATE "Privacy" SET title = ?, body = ? where id = ?`
 
 	_, err := store.database.Exec(query, privacy.Title, privacy.Body, id)
