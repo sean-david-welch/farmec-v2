@@ -69,11 +69,11 @@ func (q *Queries) GetProductByID(ctx context.Context, id string) (Product, error
 
 const getProducts = `-- name: GetProducts :many
 select id, machine_id, name, product_image, description, product_link
-from Product
+from Product where machine_id = ?
 `
 
-func (q *Queries) GetProducts(ctx context.Context) ([]Product, error) {
-	rows, err := q.db.QueryContext(ctx, getProducts)
+func (q *Queries) GetProducts(ctx context.Context, machineID string) ([]Product, error) {
+	rows, err := q.db.QueryContext(ctx, getProducts, machineID)
 	if err != nil {
 		return nil, err
 	}
