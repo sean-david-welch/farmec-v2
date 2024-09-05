@@ -81,17 +81,21 @@ func (service *VideoServiceImpl) TransformData(video *db.Video) (*db.Video, erro
 	return videoData, nil
 }
 
-func (service *VideoServiceImpl) GetVideos(id string) ([]db.Video, error) {
-	return service.store.GetVideos(id)
+func (service *VideoServiceImpl) GetVideos(ctx context.Context, id string) ([]db.Video, error) {
+	videos, err := service.store.GetVideos(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	return videos, nil
 }
 
-func (service *VideoServiceImpl) CreateVideo(video *db.Video) error {
+func (service *VideoServiceImpl) CreateVideo(ctx context.Context, video *db.Video) error {
 	videoData, err := service.TransformData(video)
 	if err != nil {
 		return err
 	}
 
-	err = service.store.CreateVideo(videoData)
+	err = service.store.CreateVideo(ctx, videoData)
 	if err != nil {
 		return err
 	}
@@ -99,13 +103,13 @@ func (service *VideoServiceImpl) CreateVideo(video *db.Video) error {
 	return nil
 }
 
-func (service *VideoServiceImpl) UpdateVideo(id string, video *db.Video) error {
+func (service *VideoServiceImpl) UpdateVideo(ctx context.Context, id string, video *db.Video) error {
 	videoData, err := service.TransformData(video)
 	if err != nil {
 		return err
 	}
 
-	err = service.store.UpdateVideo(id, videoData)
+	err = service.store.UpdateVideo(ctx, id, videoData)
 	if err != nil {
 		return err
 	}
@@ -113,8 +117,8 @@ func (service *VideoServiceImpl) UpdateVideo(id string, video *db.Video) error {
 	return nil
 }
 
-func (service *VideoServiceImpl) DeleteVideo(id string) error {
-	err := service.store.DeleteVideo(id)
+func (service *VideoServiceImpl) DeleteVideo(ctx context.Context, id string) error {
+	err := service.store.DeleteVideo(ctx, id)
 	if err != nil {
 		return err
 	}
