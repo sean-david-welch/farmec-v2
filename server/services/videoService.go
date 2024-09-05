@@ -1,20 +1,22 @@
 package services
 
 import (
+	"context"
+	"database/sql"
 	"fmt"
+	"github.com/sean-david-welch/farmec-v2/server/db"
 	"strings"
 
 	"github.com/sean-david-welch/farmec-v2/server/stores"
-	"github.com/sean-david-welch/farmec-v2/server/types"
 	"google.golang.org/api/youtube/v3"
 )
 
 type VideoService interface {
-	TransformData(video *types.Video) (*types.Video, error)
-	GetVideos(id string) ([]types.Video, error)
-	CreateVideo(video *types.Video) error
-	UpdateVideo(id string, video *types.Video) error
-	DeleteVideo(id string) error
+	TransformData(video *db.Video) (*db.Video, error)
+	GetVideos(ctx context.Context, id string) ([]db.Video, error)
+	CreateVideo(ctx context.Context, video *db.Video) error
+	UpdateVideo(ctx context.Context, id string, video *db.Video) error
+	DeleteVideo(ctx context.Context, id string) error
 }
 
 type VideoServiceImpl struct {
@@ -29,8 +31,8 @@ func NewVideoService(store stores.VideoStore, youtubeService *youtube.Service) *
 	}
 }
 
-func (service *VideoServiceImpl) TransformData(video *types.Video) (*types.Video, error) {
-	splits := strings.Split(video.WebURL, "v=")
+func (service *VideoServiceImpl) TransformData(video *db.Video) (*db.Video, error) {
+	splits := strings.Split(video.WebUrl.String, "v=")
 	if len(splits) < 2 {
 		return nil, fmt.Errorf("invalid web_url format")
 	}
@@ -53,25 +55,37 @@ func (service *VideoServiceImpl) TransformData(video *types.Video) (*types.Video
 	}
 
 	item := response.Items[0]
-	videoData := &types.Video{
-		ID:           video.ID,
-		SupplierID:   video.SupplierID,
-		WebURL:       video.WebURL,
-		Title:        &item.Snippet.Title,
-		Description:  &item.Snippet.Description,
-		VideoID:      &item.Id,
-		ThumbnailURL: &item.Snippet.Thumbnails.Medium.Url,
-		Created:      video.Created,
+	videoData := &db.Video{
+		ID:         video.ID,
+		SupplierID: video.SupplierID,
+		WebUrl:     video.WebUrl,
+		Title: sql.NullString{
+			String: item.Snippet.Title,
+			Valid:  true,
+		},
+		Description: sql.NullString{
+			String: item.Snippet.Description,
+			Valid:  true,
+		},
+		VideoID: sql.NullString{
+			String: item.Id,
+			Valid:  true,
+		},
+		ThumbnailUrl: sql.NullString{
+			String: item.Snippet.Thumbnails.Medium.Url,
+			Valid:  true,
+		},
+		Created: video.Created,
 	}
 
 	return videoData, nil
 }
 
-func (service *VideoServiceImpl) GetVideos(id string) ([]types.Video, error) {
+func (service *VideoServiceImpl) GetVideos(id string) ([]db.Video, error) {
 	return service.store.GetVideos(id)
 }
 
-func (service *VideoServiceImpl) CreateVideo(video *types.Video) error {
+func (service *VideoServiceImpl) CreateVideo(video *db.Video) error {
 	videoData, err := service.TransformData(video)
 	if err != nil {
 		return err
@@ -85,7 +99,7 @@ func (service *VideoServiceImpl) CreateVideo(video *types.Video) error {
 	return nil
 }
 
-func (service *VideoServiceImpl) UpdateVideo(id string, video *types.Video) error {
+func (service *VideoServiceImpl) UpdateVideo(id string, video *db.Video) error {
 	videoData, err := service.TransformData(video)
 	if err != nil {
 		return err
