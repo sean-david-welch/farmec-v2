@@ -1,15 +1,16 @@
 package services
 
 import (
+	"context"
+	"github.com/sean-david-welch/farmec-v2/server/db"
 	"github.com/sean-david-welch/farmec-v2/server/stores"
-	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type PrivacyService interface {
-	GetPrivacys() ([]types.Privacy, error)
-	CreatePrivacy(privacy *types.Privacy) error
-	UpdatePrivacy(id string, privacy *types.Privacy) error
-	DeletePrivacy(id string) error
+	GetPrivacys(ctx context.Context) ([]db.Privacy, error)
+	CreatePrivacy(ctx context.Context, privacy *db.Privacy) error
+	UpdatePrivacy(ctx context.Context, id string, privacy *db.Privacy) error
+	DeletePrivacy(ctx context.Context, id string) error
 }
 
 type PrivacyServiceImpl struct {
@@ -20,8 +21,8 @@ func NewPrivacyService(store stores.PrivacyStore) *PrivacyServiceImpl {
 	return &PrivacyServiceImpl{store: store}
 }
 
-func (service *PrivacyServiceImpl) GetPrivacys() ([]types.Privacy, error) {
-	privacys, err := service.store.GetPrivacy()
+func (service *PrivacyServiceImpl) GetPrivacys(ctx context.Context) ([]db.Privacy, error) {
+	privacys, err := service.store.GetPrivacy(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -29,24 +30,24 @@ func (service *PrivacyServiceImpl) GetPrivacys() ([]types.Privacy, error) {
 	return privacys, nil
 }
 
-func (service *PrivacyServiceImpl) CreatePrivacy(privacy *types.Privacy) error {
-	if err := service.store.CreatePrivacy(privacy); err != nil {
+func (service *PrivacyServiceImpl) CreatePrivacy(ctx context.Context, privacy *db.Privacy) error {
+	if err := service.store.CreatePrivacy(ctx, privacy); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (service *PrivacyServiceImpl) UpdatePrivacy(id string, privacy *types.Privacy) error {
-	if err := service.store.UpdatePrivacy(id, privacy); err != nil {
+func (service *PrivacyServiceImpl) UpdatePrivacy(ctx context.Context, id string, privacy *db.Privacy) error {
+	if err := service.store.UpdatePrivacy(ctx, id, privacy); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (service *PrivacyServiceImpl) DeletePrivacy(id string) error {
-	if err := service.store.DeletePrivacy(id); err != nil {
+func (service *PrivacyServiceImpl) DeletePrivacy(ctx context.Context, id string) error {
+	if err := service.store.DeletePrivacy(ctx, id); err != nil {
 		return err
 	}
 
