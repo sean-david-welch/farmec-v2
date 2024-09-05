@@ -1,7 +1,10 @@
 package services
 
 import (
+	"context"
+	"database/sql"
 	"errors"
+	"github.com/sean-david-welch/farmec-v2/server/db"
 	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"log"
 
@@ -10,11 +13,11 @@ import (
 )
 
 type LineItemService interface {
-	GetLineItems() ([]types.LineItem, error)
-	GetLineItemById(id string) (*types.LineItem, error)
-	CreateLineItem(lineItem *types.LineItem) (*types.ModelResult, error)
-	UpdateLineItem(id string, lineItem *types.LineItem) (*types.ModelResult, error)
-	DeleteLineItem(id string) error
+	GetLineItems(ctx context.Context) ([]db.LineItem, error)
+	GetLineItemById(ctx context.Context, id string) (*db.LineItem, error)
+	CreateLineItem(ctx context.Context, lineItem *db.LineItem) (*types.ModelResult, error)
+	UpdateLineItem(ctx context.Context, id string, lineItem *db.LineItem) (*types.ModelResult, error)
+	DeleteLineItem(ctx context.Context, id string) error
 }
 
 type LineItemServiceImpl struct {
@@ -27,8 +30,8 @@ func NewLineItemService(store stores.LineItemStore, s3Client lib.S3Client, folde
 	return &LineItemServiceImpl{store: store, s3Client: s3Client, folder: folder}
 }
 
-func (service *LineItemServiceImpl) GetLineItems() ([]types.LineItem, error) {
-	lineItems, err := service.store.GetLineItems()
+func (service *LineItemServiceImpl) GetLineItems(ctx context.Context) ([]db.LineItem, error) {
+	lineItems, err := service.store.GetLineItems(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -36,8 +39,8 @@ func (service *LineItemServiceImpl) GetLineItems() ([]types.LineItem, error) {
 	return lineItems, nil
 }
 
-func (service *LineItemServiceImpl) GetLineItemById(id string) (*types.LineItem, error) {
-	lineItem, err := service.store.GetLineItemById(id)
+func (service *LineItemServiceImpl) GetLineItemById(ctx context.Context, id string) (*db.LineItem, error) {
+	lineItem, err := service.store.GetLineItemById(ctx, id)
 	if err != nil {
 		return nil, err
 	}
@@ -45,22 +48,25 @@ func (service *LineItemServiceImpl) GetLineItemById(id string) (*types.LineItem,
 	return lineItem, nil
 }
 
-func (service *LineItemServiceImpl) CreateLineItem(lineItem *types.LineItem) (*types.ModelResult, error) {
+func (service *LineItemServiceImpl) CreateLineItem(ctx context.Context, lineItem *db.LineItem) (*types.ModelResult, error) {
 	image := lineItem.Image
 
-	if image == "" || image == "null" {
+	if image.Valid {
 		return nil, errors.New("image is empty")
 	}
 
-	PresignedUrl, imageUrl, err := service.s3Client.GeneratePresignedUrl(service.folder, image)
+	PresignedUrl, imageUrl, err := service.s3Client.GeneratePresignedUrl(service.folder, image.String)
 	if err != nil {
 		log.Printf("error occurred while generating presigned url: %v", err)
 		return nil, err
 	}
 
-	lineItem.Image = imageUrl
+	lineItem.Image = sql.NullString{
+		String: imageUrl,
+		Valid:  true,
+	}
 
-	if err := service.store.CreateLineItem(lineItem); err != nil {
+	if err := service.store.CreateLineItem(ctx, lineItem); err != nil {
 		return nil, err
 	}
 
@@ -72,22 +78,25 @@ func (service *LineItemServiceImpl) CreateLineItem(lineItem *types.LineItem) (*t
 	return result, nil
 }
 
-func (service *LineItemServiceImpl) UpdateLineItem(id string, lineItem *types.LineItem) (*types.ModelResult, error) {
+func (service *LineItemServiceImpl) UpdateLineItem(ctx context.Context, id string, lineItem *db.LineItem) (*types.ModelResult, error) {
 	image := lineItem.Image
 
 	var PresignedUrl, imageUrl string
 	var err error
 
-	if image != "" && image != "null" {
-		PresignedUrl, imageUrl, err = service.s3Client.GeneratePresignedUrl(service.folder, image)
+	if image.Valid {
+		PresignedUrl, imageUrl, err = service.s3Client.GeneratePresignedUrl(service.folder, image.String)
 		if err != nil {
 			log.Printf("error occurred while generating presigned url: %v", err)
 			return nil, err
 		}
-		lineItem.Image = imageUrl
+		lineItem.Image = sql.NullString{
+			String: imageUrl,
+			Valid:  true,
+		}
 	}
 
-	if err := service.store.UpdateLineItem(id, lineItem); err != nil {
+	if err := service.store.UpdateLineItem(ctx, id, lineItem); err != nil {
 		return nil, err
 	}
 
@@ -99,17 +108,17 @@ func (service *LineItemServiceImpl) UpdateLineItem(id string, lineItem *types.Li
 	return result, nil
 }
 
-func (service *LineItemServiceImpl) DeleteLineItem(id string) error {
-	lineItem, err := service.store.GetLineItemById(id)
+func (service *LineItemServiceImpl) DeleteLineItem(ctx context.Context, id string) error {
+	lineItem, err := service.store.GetLineItemById(ctx, id)
 	if err != nil {
 		return err
 	}
 
-	if err := service.s3Client.DeleteImageFromS3(lineItem.Image); err != nil {
+	if err := service.s3Client.DeleteImageFromS3(lineItem.Image.String); err != nil {
 		return err
 	}
 
-	if err := service.store.DeleteLineItem(id); err != nil {
+	if err := service.store.DeleteLineItem(ctx, id); err != nil {
 		return err
 	}
 
