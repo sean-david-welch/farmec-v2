@@ -68,7 +68,7 @@ func (service *PdfServiceImpl) RenderRegistrationPdf(registration *types.Machine
 }
 
 func (service *PdfServiceImpl) RenderWarrantyClaimPdf(warranty *types.WarranrtyParts) ([]byte, error) {
-	pdf, err := service.InitPdf("Warranty Claim " + "-- " + *warranty.Warranty.OwnerName)
+	pdf, err := service.InitPdf("Warranty Claim " + "-- " + warranty.Warranty.OwnerName)
 	if err != nil {
 		return nil, err
 	}
