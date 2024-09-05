@@ -1,12 +1,12 @@
 package handlers
 
 import (
+	"github.com/sean-david-welch/farmec-v2/server/db"
 	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sean-david-welch/farmec-v2/server/services"
-	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type SupplierHandler struct {
@@ -18,7 +18,8 @@ func NewSupplierContoller(supplierService services.SupplierService) *SupplierHan
 }
 
 func (handler *SupplierHandler) GetSuppliers(context *gin.Context) {
-	suppliers, err := handler.supplierService.GetSuppliers()
+	ctx := context.Request.Context()
+	suppliers, err := handler.supplierService.GetSuppliers(ctx)
 
 	if err != nil {
 		log.Printf("Error getting suppliers: %v", err)
@@ -29,14 +30,15 @@ func (handler *SupplierHandler) GetSuppliers(context *gin.Context) {
 }
 
 func (handler *SupplierHandler) CreateSupplier(context *gin.Context) {
-	var supplier types.Supplier
+	ctx := context.Request.Context()
+	var supplier db.Supplier
 
 	if err := context.ShouldBindJSON(&supplier); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body", "details": err.Error()})
 		return
 	}
 
-	result, err := handler.supplierService.CreateSupplier(&supplier)
+	result, err := handler.supplierService.CreateSupplier(ctx, &supplier)
 	if err != nil {
 		log.Printf("Error creating supplier: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while creating supplier", "details": err.Error()})
@@ -55,8 +57,9 @@ func (handler *SupplierHandler) CreateSupplier(context *gin.Context) {
 }
 
 func (handler *SupplierHandler) GetSupplierByID(context *gin.Context) {
+	ctx := context.Request.Context()
 	id := context.Param("id")
-	supplier, err := handler.supplierService.GetSupplierById(id)
+	supplier, err := handler.supplierService.GetSupplierById(ctx, id)
 
 	if err != nil {
 		log.Printf("Error getting suppliers: %v", err)
@@ -68,16 +71,17 @@ func (handler *SupplierHandler) GetSupplierByID(context *gin.Context) {
 }
 
 func (handler *SupplierHandler) UpdateSupplier(context *gin.Context) {
+	ctx := context.Request.Context()
 	id := context.Param("id")
 
-	var supplier types.Supplier
+	var supplier db.Supplier
 
 	if err := context.ShouldBindJSON(&supplier); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body", "details": err.Error()})
 		return
 	}
 
-	result, err := handler.supplierService.UpdateSupplier(id, &supplier)
+	result, err := handler.supplierService.UpdateSupplier(ctx, id, &supplier)
 	if err != nil {
 		log.Printf("Error updating supplier: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while updating supplier", "details": err.Error()})
@@ -96,9 +100,10 @@ func (handler *SupplierHandler) UpdateSupplier(context *gin.Context) {
 }
 
 func (handler *SupplierHandler) DeleteSupplier(context *gin.Context) {
+	ctx := context.Request.Context()
 	id := context.Param("id")
 
-	err := handler.supplierService.DeleteSupplier(id)
+	err := handler.supplierService.DeleteSupplier(ctx, id)
 
 	if err != nil {
 		log.Printf("Error deleting supplier: %v", err)
