@@ -1,6 +1,8 @@
 package services
 
 import (
+	"context"
+	"github.com/sean-david-welch/farmec-v2/server/db"
 	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"github.com/sean-david-welch/farmec-v2/server/stores"
 	"github.com/sean-david-welch/farmec-v2/server/types"
@@ -8,11 +10,11 @@ import (
 )
 
 type WarrantyService interface {
-	GetWarranties() ([]types.DealerOwnerInfo, error)
-	GetWarrantyById(id string) (*types.WarrantyClaim, []types.PartsRequired, error)
-	CreateWarranty(warranty *types.WarrantyClaim, parts []types.PartsRequired) error
-	UpdateWarranty(id string, warranty *types.WarrantyClaim, parts []types.PartsRequired) error
-	DeleteWarranty(id string) error
+	GetWarranties(ctx context.Context) ([]types.DealerOwnerInfo, error)
+	GetWarrantyById(ctx context.Context, id string) (*db.WarrantyClaim, []db.PartsRequired, error)
+	CreateWarranty(ctx context.Context, warranty *db.WarrantyClaim, parts []db.PartsRequired) error
+	UpdateWarranty(ctx context.Context, id string, warranty *db.WarrantyClaim, parts []db.PartsRequired) error
+	DeleteWarranty(ctx context.Context, id string) error
 }
 
 type WarrantyServiceImpl struct {
@@ -24,8 +26,8 @@ func NewWarrantyService(store stores.WarrantyStore, smtpClient lib.SMTPClient) *
 	return &WarrantyServiceImpl{store: store, smtpClient: smtpClient}
 }
 
-func (service *WarrantyServiceImpl) GetWarranties() ([]types.DealerOwnerInfo, error) {
-	warranties, err := service.store.GetWarranties()
+func (service *WarrantyServiceImpl) GetWarranties(ctx context.Context) ([]types.DealerOwnerInfo, error) {
+	warranties, err := service.store.GetWarranties(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -33,8 +35,8 @@ func (service *WarrantyServiceImpl) GetWarranties() ([]types.DealerOwnerInfo, er
 	return warranties, nil
 }
 
-func (service *WarrantyServiceImpl) GetWarrantyById(id string) (*types.WarrantyClaim, []types.PartsRequired, error) {
-	warranty, partsRequired, err := service.store.GetWarrantyById(id)
+func (service *WarrantyServiceImpl) GetWarrantyById(ctx context.Context, id string) (*db.WarrantyClaim, []db.PartsRequired, error) {
+	warranty, partsRequired, err := service.store.GetWarrantyById(ctx, id)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -42,8 +44,8 @@ func (service *WarrantyServiceImpl) GetWarrantyById(id string) (*types.WarrantyC
 	return warranty, partsRequired, nil
 }
 
-func (service *WarrantyServiceImpl) CreateWarranty(warranty *types.WarrantyClaim, parts []types.PartsRequired) error {
-	if err := service.store.CreateWarranty(warranty, parts); err != nil {
+func (service *WarrantyServiceImpl) CreateWarranty(ctx context.Context, warranty *db.WarrantyClaim, parts []db.PartsRequired) error {
+	if err := service.store.CreateWarranty(ctx, warranty, parts); err != nil {
 		return err
 	}
 
@@ -59,9 +61,9 @@ func (service *WarrantyServiceImpl) CreateWarranty(warranty *types.WarrantyClaim
 	}(client)
 
 	data := &types.EmailData{
-		Name:    *warranty.OwnerName,
+		Name:    warranty.OwnerName,
 		Email:   warranty.Dealer,
-		Message: *warranty.MachineModel,
+		Message: warranty.MachineModel,
 	}
 
 	if err := service.smtpClient.SendFormNotification(client, data, "Warranty"); err != nil {
@@ -71,8 +73,8 @@ func (service *WarrantyServiceImpl) CreateWarranty(warranty *types.WarrantyClaim
 	return nil
 }
 
-func (service *WarrantyServiceImpl) UpdateWarranty(id string, warranty *types.WarrantyClaim, parts []types.PartsRequired) error {
-	if err := service.store.UpdateWarranty(id, warranty, parts); err != nil {
+func (service *WarrantyServiceImpl) UpdateWarranty(ctx context.Context, id string, warranty *db.WarrantyClaim, parts []db.PartsRequired) error {
+	if err := service.store.UpdateWarranty(ctx, id, warranty, parts); err != nil {
 		return err
 	}
 
@@ -88,9 +90,9 @@ func (service *WarrantyServiceImpl) UpdateWarranty(id string, warranty *types.Wa
 	}(client)
 
 	data := &types.EmailData{
-		Name:    *warranty.OwnerName,
+		Name:    warranty.OwnerName,
 		Email:   warranty.Dealer,
-		Message: *warranty.MachineModel,
+		Message: warranty.MachineModel,
 	}
 
 	if err := service.smtpClient.SendFormNotification(client, data, "Warranty"); err != nil {
@@ -100,8 +102,8 @@ func (service *WarrantyServiceImpl) UpdateWarranty(id string, warranty *types.Wa
 	return nil
 }
 
-func (service *WarrantyServiceImpl) DeleteWarranty(id string) error {
-	if err := service.store.DeleteWarranty(id); err != nil {
+func (service *WarrantyServiceImpl) DeleteWarranty(ctx context.Context, id string) error {
+	if err := service.store.DeleteWarranty(ctx, id); err != nil {
 		return err
 	}
 
