@@ -1,12 +1,12 @@
 package handlers
 
 import (
+	"github.com/sean-david-welch/farmec-v2/server/db"
 	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sean-david-welch/farmec-v2/server/services"
-	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type ProductHandler struct {
@@ -18,9 +18,10 @@ func NewProductHandler(productService services.ProductService) *ProductHandler {
 }
 
 func (handler *ProductHandler) GetProducts(context *gin.Context) {
+	ctx := context.Request.Context()
 	id := context.Param("id")
 
-	products, err := handler.productService.GetProducts(id)
+	products, err := handler.productService.GetProducts(ctx, id)
 	if err != nil {
 		log.Printf("Error getting machines: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occured while getting products"})
@@ -31,7 +32,8 @@ func (handler *ProductHandler) GetProducts(context *gin.Context) {
 }
 
 func (handler *ProductHandler) CreateProduct(context *gin.Context) {
-	var product types.Product
+	ctx := context.Request.Context()
+	var product db.Product
 
 	if err := context.ShouldBindJSON(&product); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body", "details": err.Error()})
@@ -43,7 +45,7 @@ func (handler *ProductHandler) CreateProduct(context *gin.Context) {
 		return
 	}
 
-	result, err := handler.productService.CreateProduct(&product)
+	result, err := handler.productService.CreateProduct(ctx, &product)
 	if err != nil {
 		log.Printf("Error creating product: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while creating product", "details": err.Error()})
@@ -60,9 +62,10 @@ func (handler *ProductHandler) CreateProduct(context *gin.Context) {
 }
 
 func (handler *ProductHandler) UpdateProduct(context *gin.Context) {
+	ctx := context.Request.Context()
 	id := context.Param("id")
 
-	var product types.Product
+	var product db.Product
 
 	if err := context.ShouldBindJSON(&product); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Request Body", "details": err.Error()})
@@ -74,7 +77,7 @@ func (handler *ProductHandler) UpdateProduct(context *gin.Context) {
 		return
 	}
 
-	result, err := handler.productService.UpdateProduct(id, &product)
+	result, err := handler.productService.UpdateProduct(ctx, id, &product)
 	if err != nil {
 		log.Printf("Error updating product: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while updating machine", "details": err.Error()})
@@ -91,9 +94,10 @@ func (handler *ProductHandler) UpdateProduct(context *gin.Context) {
 }
 
 func (handler *ProductHandler) DeleteProduct(context *gin.Context) {
+	ctx := context.Request.Context()
 	id := context.Param("id")
 
-	if err := handler.productService.DeleteProduct(id); err != nil {
+	if err := handler.productService.DeleteProduct(ctx, id); err != nil {
 		log.Printf("Error deleting machine: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while deleting machine", "details": err.Error()})
 		return
