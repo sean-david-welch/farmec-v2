@@ -1,5 +1,7 @@
 package types
 
+import "github.com/sean-david-welch/farmec-v2/server/db"
+
 type Carousel struct {
 	ID      string `json:"id"`
 	Name    string `json:"name"`
@@ -40,8 +42,8 @@ type PartsRequired struct {
 }
 
 type WarranrtyParts struct {
-	Warranty *WarrantyClaim
-	Parts    []PartsRequired
+	Warranty *db.WarrantyClaim
+	Parts    []db.PartsRequired
 }
 
 type WarrantyClaimPDF struct {
