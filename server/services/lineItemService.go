@@ -51,7 +51,7 @@ func (service *LineItemServiceImpl) GetLineItemById(ctx context.Context, id stri
 func (service *LineItemServiceImpl) CreateLineItem(ctx context.Context, lineItem *db.LineItem) (*types.ModelResult, error) {
 	image := lineItem.Image
 
-	if image.Valid {
+	if !image.Valid {
 		return nil, errors.New("image is empty")
 	}
 

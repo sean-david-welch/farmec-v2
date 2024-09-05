@@ -41,7 +41,7 @@ func (service *EmployeeServiceImpl) GetEmployees(ctx context.Context) ([]db.Empl
 func (service *EmployeeServiceImpl) CreateEmployee(ctx context.Context, employee *db.Employee) (*types.ModelResult, error) {
 	image := employee.ProfileImage
 
-	if image.Valid {
+	if !image.Valid {
 		return nil, errors.New("image is empty")
 	}
 

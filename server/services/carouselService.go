@@ -44,7 +44,7 @@ func (service *CarouselServiceImpl) GetCarousels(ctx context.Context) ([]db.Caro
 func (service *CarouselServiceImpl) CreateCarousel(ctx context.Context, carousel *db.Carousel) (*types.ModelResult, error) {
 	image := carousel.Image
 
-	if image.Valid {
+	if !image.Valid {
 		return nil, errors.New("image is empty")
 	}
 
