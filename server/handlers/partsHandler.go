@@ -1,12 +1,12 @@
 package handlers
 
 import (
+	"github.com/sean-david-welch/farmec-v2/server/db"
 	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sean-david-welch/farmec-v2/server/services"
-	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type PartsHandler struct {
@@ -18,9 +18,10 @@ func NewPartsHandler(partsService services.PartsService) *PartsHandler {
 }
 
 func (handler *PartsHandler) GetParts(context *gin.Context) {
+	ctx := context.Request.Context()
 	id := context.Param("id")
 
-	parts, err := handler.partsService.GetParts(id)
+	parts, err := handler.partsService.GetParts(ctx, id)
 	if err != nil {
 		log.Printf("Error getting parts: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while getting parts"})
@@ -31,7 +32,8 @@ func (handler *PartsHandler) GetParts(context *gin.Context) {
 }
 
 func (handler *PartsHandler) CreateParts(context *gin.Context) {
-	var part types.Sparepart
+	ctx := context.Request.Context()
+	var part db.SparePart
 
 	if err := context.ShouldBindJSON(&part); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Ivalid request body", "details": err.Error()})
@@ -43,7 +45,7 @@ func (handler *PartsHandler) CreateParts(context *gin.Context) {
 		return
 	}
 
-	result, err := handler.partsService.CreatePart(&part)
+	result, err := handler.partsService.CreatePart(ctx, &part)
 	if err != nil {
 		log.Printf("Error creating part: %v", err)
 		context.JSON(http.StatusInternalServerError,
@@ -62,9 +64,10 @@ func (handler *PartsHandler) CreateParts(context *gin.Context) {
 }
 
 func (handler *PartsHandler) UpdateParts(context *gin.Context) {
+	ctx := context.Request.Context()
 	id := context.Param("id")
 
-	var part types.Sparepart
+	var part db.SparePart
 
 	if err := context.ShouldBindJSON(&part); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Request Body", "details": err.Error()})
@@ -76,7 +79,7 @@ func (handler *PartsHandler) UpdateParts(context *gin.Context) {
 		return
 	}
 
-	result, err := handler.partsService.UpdatePart(id, &part)
+	result, err := handler.partsService.UpdatePart(ctx, id, &part)
 	if err != nil {
 		log.Printf("Error updating part: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while updating machine", "details": err.Error()})
@@ -94,9 +97,10 @@ func (handler *PartsHandler) UpdateParts(context *gin.Context) {
 }
 
 func (handler *PartsHandler) DeletePart(context *gin.Context) {
+	ctx := context.Request.Context()
 	id := context.Param("id")
 
-	if err := handler.partsService.DeletePart(id); err != nil {
+	if err := handler.partsService.DeletePart(ctx, id); err != nil {
 		log.Printf("Erroir deleting part: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurrrd while deleting part", "details": err.Error()})
 		return
