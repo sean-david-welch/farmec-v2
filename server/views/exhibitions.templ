@@ -1,5 +1,52 @@
 package views
 
-templ Exhibitions() {
-	<div>Hello World</div>
+templ Exhibitions(isAdmin bool, exhibitions []Exhibition, isLoading, isError bool) {
+	{{ if isError }}
+		{{ ErrorPage() }}
+	{{ else if isLoading }}
+		{{ Loading() }}
+	{{ else }}
+		<head>
+			<title>Exhibitions - Farmec Ireland</title>
+			<meta name="description" content="Check out the upcoming exhibitions where Farmec will showcase its latest machinery. Don't miss the chance to see our products in action." />
+			<meta property="og:title" content="Exhibitions - Farmec Ireland" />
+			<meta property="og:description" content="Check out the upcoming exhibitions where Farmec will showcase its latest machinery. Don't miss the chance to see our products in action." />
+			<meta property="og:image" content="https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp" />
+			<meta property="og:url" content="https://www.farmec.ie/exhibitions" />
+			<meta property="og:type" content="website" />
+			<meta name="twitter:card" content="summary_large_image" />
+			<meta name="twitter:title" content="Exhibitions - Farmec Ireland" />
+			<meta name="twitter:description" content="Check out the upcoming exhibitions where Farmec will showcase its latest machinery. Don't miss the chance to see our products in action." />
+			<meta name="twitter:image" content="https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp" />
+			<link rel="canonical" href="https://www.farmec.ie/exhibitions" />
+		</head>
+
+		<section id="exhibitions">
+			<h1 class="sectionHeading">Exhibitions:</h1>
+			<h1 class="subHeading">Check out upcoming events related to Farmec</h1>
+
+			{{ if isAdmin }}
+				{{ ExhibitionForm() }}
+			{{ end }}
+
+			{{ if exhibitions }}
+				<div class="exhibitions">
+					{{ range exhibitions }}
+						<div class="exhibition">
+							<h1 class="mainHeading">{{ .Title }}</h1>
+							<p class="paragraph">{{ .Date }}</p>
+							<p class="paragraph">{{ .Location }}</p>
+							<p class="paragraph">{{ .Info }}</p>
+							{{ if isAdmin }}
+								<div class="optionsBtn">
+									// {{ ExhibitionForm(.ID) }}
+									// {{ DeleteButton(.ID, "exhibitions") }}
+								</div>
+							{{ end }}
+						</div>
+					{{ end }}
+				</div>
+			{{ end }}
+		</section>
+	{{ end }}
 }
