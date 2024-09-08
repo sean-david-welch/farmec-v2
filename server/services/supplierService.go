@@ -34,20 +34,52 @@ func NewSupplierService(store stores.SupplierStore, s3Client lib.S3Client, folde
 	}
 }
 
-func (service *SupplierServiceImpl) GetSuppliers(ctx context.Context) ([]db.Supplier, error) {
+func (service *SupplierServiceImpl) GetSuppliers(ctx context.Context) ([]types.Supplier, error) {
 	suppliers, err := service.store.GetSuppliers(ctx)
 	if err != nil {
 		return nil, err
 	}
-	return suppliers, nil
+
+	var result []types.Supplier
+	for _, supplier := range suppliers {
+		result = append(result, types.Supplier{
+			ID:              supplier.ID,
+			Name:            supplier.Name,
+			LogoImage:       supplier.LogoImage.String,
+			MarketingImage:  supplier.MarketingImage.String,
+			Description:     supplier.Description.String,
+			SocialFacebook:  &supplier.SocialFacebook.String,
+			SocialInstagram: &supplier.SocialInstagram.String,
+			SocialLinkedin:  &supplier.SocialLinkedin.String,
+			SocialTwitter:   &supplier.SocialTwitter.String,
+			SocialYoutube:   &supplier.SocialYoutube.String,
+			SocialWebsite:   &supplier.SocialWebsite.String,
+			Created:         supplier.Created.String,
+		})
+	}
+	return result, nil
 }
 
-func (service *SupplierServiceImpl) GetSupplierById(ctx context.Context, id string) (*db.Supplier, error) {
+func (service *SupplierServiceImpl) GetSupplierById(ctx context.Context, id string) (*types.Supplier, error) {
 	supplier, err := service.store.GetSupplierById(ctx, id)
 	if err != nil {
 		return nil, err
 	}
-	return supplier, nil
+	result := &types.Supplier{
+		ID:              supplier.ID,
+		Name:            supplier.Name,
+		LogoImage:       supplier.LogoImage.String,
+		MarketingImage:  supplier.MarketingImage.String,
+		Description:     supplier.Description.String,
+		SocialFacebook:  &supplier.SocialFacebook.String,
+		SocialInstagram: &supplier.SocialInstagram.String,
+		SocialLinkedin:  &supplier.SocialLinkedin.String,
+		SocialTwitter:   &supplier.SocialTwitter.String,
+		SocialYoutube:   &supplier.SocialYoutube.String,
+		SocialWebsite:   &supplier.SocialWebsite.String,
+		Created:         supplier.Created.String,
+	}
+	return result, nil
 }
 
 func (service *SupplierServiceImpl) CreateSupplier(ctx context.Context, supplier *db.Supplier) (*types.SupplierResult, error) {
