@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"github.com/sean-david-welch/farmec-v2/server/views"
 	"log"
 	"net/http"
 
@@ -17,15 +18,31 @@ func NewExhibitionHandler(service services.ExhibitionService) *ExhibitionHandler
 	return &ExhibitionHandler{service: service}
 }
 
-func (handler *ExhibitionHandler) GetExhibitions(context *gin.Context) {
+func (handler *ExhibitionHandler) GetExhibitions(c *gin.Context) {
 	exhibitions, err := handler.service.GetExhibitions()
 	if err != nil {
 		log.Printf("error getting exhibitions: %v", err)
-		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while getting exhibitions"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while getting exhibitions"})
 		return
 	}
 
-	context.JSON(http.StatusOK, exhibitions)
+	// Convert to []types.Exhibition if necessary
+	exhibitionSlice := make([]types.Exhibition, len(exhibitions))
+	for i, e := range exhibitions {
+		exhibitionSlice[i] = types.Exhibition(e)
+	}
+
+	// Render the Templ component
+	component := views.Exhibitions(true, exhibitionSlice, false, false)
+	err = component.Render(c.Request.Context(), c.Writer)
+	if err != nil {
+		log.Printf("error rendering template: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while rendering the page"})
+		return
+	}
+
+	// Set the content type to HTML
+	c.Header("Content-Type", "text/html")
 }
 
 func (handler *ExhibitionHandler) CreateExhibition(context *gin.Context) {
