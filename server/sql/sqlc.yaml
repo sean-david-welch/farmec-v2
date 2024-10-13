@@ -8,13 +8,3 @@ sql:
         package: "db"
         out: "../db"
         emit_json_tags: true
-        overrides:
-          - db_type: "TEXT"
-            nullable: true
-            go_type: "*string"
-          - db_type: "INTEGER"
-            nullable: true
-            go_type: "*int64"
-          - db_type: "TIMESTAMP"
-            nullable: true
-            go_type: "*time.Time"
