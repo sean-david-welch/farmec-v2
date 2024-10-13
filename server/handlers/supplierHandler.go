@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"github.com/sean-david-welch/farmec-v2/server/db"
 	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"log"
@@ -77,7 +76,7 @@ func (handler *SupplierHandler) UpdateSupplier(context *gin.Context) {
 	ctx := context.Request.Context()
 	id := context.Param("id")
 
-	var supplier db.Supplier
+	var supplier types.Supplier
 	dbSupplier := lib.DeserializeSupplier(supplier)
 
 	if err := context.ShouldBindJSON(&supplier); err != nil {
@@ -85,7 +84,7 @@ func (handler *SupplierHandler) UpdateSupplier(context *gin.Context) {
 		return
 	}
 
-	result, err := handler.supplierService.UpdateSupplier(ctx, id, &supplier)
+	result, err := handler.supplierService.UpdateSupplier(ctx, id, &dbSupplier)
 	if err != nil {
 		log.Printf("Error updating supplier: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while updating supplier", "details": err.Error()})
