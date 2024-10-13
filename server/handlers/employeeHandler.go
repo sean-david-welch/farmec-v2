@@ -1,7 +1,8 @@
 package handlers
 
 import (
-	"github.com/sean-david-welch/farmec-v2/server/db"
+	"github.com/sean-david-welch/farmec-v2/server/lib"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 	"log"
 	"net/http"
 
@@ -31,7 +32,8 @@ func (handler *EmployeeHandler) GetEmployees(context *gin.Context) {
 
 func (handler *EmployeeHandler) CreateEmployee(context *gin.Context) {
 	ctx := context.Request.Context()
-	var employee db.Employee
+	var employee types.Employee
+	dbEmployee := lib.DeserializeEmployee(employee)
 
 	if err := context.ShouldBindJSON(&employee); err != nil {
 		log.Printf("Error creating employee: %v", err)
@@ -39,7 +41,7 @@ func (handler *EmployeeHandler) CreateEmployee(context *gin.Context) {
 		return
 	}
 
-	result, err := handler.service.CreateEmployee(ctx, &employee)
+	result, err := handler.service.CreateEmployee(ctx, &dbEmployee)
 	if err != nil {
 		log.Printf("Error creating employee: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while creating employee", "details": err.Error()})
@@ -58,7 +60,8 @@ func (handler *EmployeeHandler) CreateEmployee(context *gin.Context) {
 func (handler *EmployeeHandler) UpdateEmployee(context *gin.Context) {
 	ctx := context.Request.Context()
 	id := context.Param("id")
-	var employee db.Employee
+	var employee types.Employee
+	dbEmployee := lib.DeserializeEmployee(employee)
 
 	if err := context.ShouldBindJSON(&employee); err != nil {
 		log.Printf("Error creating employee: %v", err)
@@ -66,7 +69,7 @@ func (handler *EmployeeHandler) UpdateEmployee(context *gin.Context) {
 		return
 	}
 
-	result, err := handler.service.UpdateEmployee(ctx, id, &employee)
+	result, err := handler.service.UpdateEmployee(ctx, id, &dbEmployee)
 	if err != nil {
 		log.Printf("Error creating employee: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while creating employee", "details": err.Error()})
