@@ -13,8 +13,8 @@ import (
 )
 
 type LineItemService interface {
-	GetLineItems(ctx context.Context) ([]db.LineItem, error)
-	GetLineItemById(ctx context.Context, id string) (*db.LineItem, error)
+	GetLineItems(ctx context.Context) ([]types.LineItem, error)
+	GetLineItemById(ctx context.Context, id string) (*types.LineItem, error)
 	CreateLineItem(ctx context.Context, lineItem *db.LineItem) (*types.ModelResult, error)
 	UpdateLineItem(ctx context.Context, id string, lineItem *db.LineItem) (*types.ModelResult, error)
 	DeleteLineItem(ctx context.Context, id string) error
@@ -30,22 +30,25 @@ func NewLineItemService(store stores.LineItemStore, s3Client lib.S3Client, folde
 	return &LineItemServiceImpl{store: store, s3Client: s3Client, folder: folder}
 }
 
-func (service *LineItemServiceImpl) GetLineItems(ctx context.Context) ([]db.LineItem, error) {
+func (service *LineItemServiceImpl) GetLineItems(ctx context.Context) ([]types.LineItem, error) {
 	lineItems, err := service.store.GetLineItems(ctx)
 	if err != nil {
 		return nil, err
 	}
-
-	return lineItems, nil
+	var result []types.LineItem
+	for _, lineItem := range lineItems {
+		result = append(result, lib.SerializeLineItem(lineItem))
+	}
+	return result, nil
 }
 
-func (service *LineItemServiceImpl) GetLineItemById(ctx context.Context, id string) (*db.LineItem, error) {
+func (service *LineItemServiceImpl) GetLineItemById(ctx context.Context, id string) (*types.LineItem, error) {
 	lineItem, err := service.store.GetLineItemById(ctx, id)
 	if err != nil {
 		return nil, err
 	}
-
-	return lineItem, nil
+	result := lib.SerializeLineItem(*lineItem)
+	return &result, nil
 }
 
 func (service *LineItemServiceImpl) CreateLineItem(ctx context.Context, lineItem *db.LineItem) (*types.ModelResult, error) {
