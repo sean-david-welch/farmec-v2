@@ -1,7 +1,8 @@
 package handlers
 
 import (
-	"github.com/sean-david-welch/farmec-v2/server/db"
+	"github.com/sean-david-welch/farmec-v2/server/lib"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 	"log"
 	"net/http"
 
@@ -33,14 +34,15 @@ func (handler *VideoHandler) GetVideos(context *gin.Context) {
 
 func (handler *VideoHandler) CreateVideo(context *gin.Context) {
 	ctx := context.Request.Context()
-	var video db.Video
+	var video types.Video
+	dbVideo := lib.DeserializeVideo(video)
 
 	if err := context.ShouldBindJSON(&video); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Request Body", "Details": err.Error()})
 		return
 	}
 
-	if err := handler.videoService.CreateVideo(ctx, &video); err != nil {
+	if err := handler.videoService.CreateVideo(ctx, &dbVideo); err != nil {
 		log.Printf("Error creating video: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while creating video", "details": err.Error()})
 		return
@@ -53,14 +55,15 @@ func (handler *VideoHandler) UpdateVideo(context *gin.Context) {
 	ctx := context.Request.Context()
 	id := context.Param("id")
 
-	var video db.Video
+	var video types.Video
+	dbVideo := lib.DeserializeVideo(video)
 
 	if err := context.ShouldBindJSON(&video); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Request Body", "Details": err.Error()})
 		return
 	}
 
-	if err := handler.videoService.UpdateVideo(ctx, id, &video); err != nil {
+	if err := handler.videoService.UpdateVideo(ctx, id, &dbVideo); err != nil {
 		log.Printf("Error updating video: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while updating video", "details": err.Error()})
 		return
