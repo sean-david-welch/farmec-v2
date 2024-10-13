@@ -14,7 +14,7 @@ import (
 )
 
 type PartsService interface {
-	GetParts(ctx context.Context, id string) ([]db.SparePart, error)
+	GetParts(ctx context.Context, id string) ([]types.Sparepart, error)
 	CreatePart(ctx context.Context, part *db.SparePart) (*types.PartsModelResult, error)
 	UpdatePart(ctx context.Context, id string, part *db.SparePart) (*types.PartsModelResult, error)
 	DeletePart(ctx context.Context, id string) error
@@ -34,12 +34,16 @@ func NewPartsService(store stores.PartsStore, s3Client lib.S3Client, folder stri
 	}
 }
 
-func (service *PartsServiceImpl) GetParts(ctx context.Context, id string) ([]db.SparePart, error) {
+func (service *PartsServiceImpl) GetParts(ctx context.Context, id string) ([]types.Sparepart, error) {
 	parts, err := service.store.GetParts(ctx, id)
 	if err != nil {
 		return nil, err
 	}
-	return parts, nil
+	var result []types.Sparepart
+	for _, part := range parts {
+		result = append(result, lib.SerializeSparePart(part))
+	}
+	return result, nil
 }
 
 func (service *PartsServiceImpl) CreatePart(ctx context.Context, part *db.SparePart) (*types.PartsModelResult, error) {
