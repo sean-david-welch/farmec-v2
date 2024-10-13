@@ -1,7 +1,8 @@
 package handlers
 
 import (
-	"github.com/sean-david-welch/farmec-v2/server/db"
+	"github.com/sean-david-welch/farmec-v2/server/lib"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 	"log"
 	"net/http"
 
@@ -31,14 +32,15 @@ func (handler *CarouselHandler) GetCarousels(context *gin.Context) {
 
 func (handler *CarouselHandler) CreateCarousel(context *gin.Context) {
 	ctx := context.Request.Context()
-	var carousel db.Carousel
+	var carousel types.Carousel
+	dbCarousel := lib.DeserializeCarousel(carousel)
 
 	if err := context.ShouldBindJSON(&carousel); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "invalid request body", "details": err.Error()})
 		return
 	}
 
-	result, err := handler.carouselService.CreateCarousel(ctx, &carousel)
+	result, err := handler.carouselService.CreateCarousel(ctx, &dbCarousel)
 	if err != nil {
 		log.Printf("Error creating carousel: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while creating carousel", "details": err.Error()})
@@ -58,14 +60,15 @@ func (handler *CarouselHandler) UpdateCarousel(context *gin.Context) {
 	ctx := context.Request.Context()
 	id := context.Param("id")
 
-	var carousel db.Carousel
+	var carousel types.Carousel
+	dbCarousel := lib.DeserializeCarousel(carousel)
 
 	if err := context.ShouldBindJSON(&carousel); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "invalid request body", "details": err.Error()})
 		return
 	}
 
-	result, err := handler.carouselService.UpdateCarousel(ctx, id, &carousel)
+	result, err := handler.carouselService.UpdateCarousel(ctx, id, &dbCarousel)
 	if err != nil {
 		log.Printf("Error updating carousel: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while updating carousel", "details": err.Error()})
