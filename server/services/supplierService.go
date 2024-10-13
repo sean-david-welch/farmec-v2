@@ -42,7 +42,7 @@ func (service *SupplierServiceImpl) GetSuppliers(ctx context.Context) ([]types.S
 
 	var result []types.Supplier
 	for _, supplier := range suppliers {
-		result = append(result, lib.ConvertSupplier(supplier))
+		result = append(result, lib.SerializeSupplier(supplier))
 	}
 	return result, nil
 }
@@ -52,11 +52,11 @@ func (service *SupplierServiceImpl) GetSupplierById(ctx context.Context, id stri
 	if err != nil {
 		return nil, err
 	}
-	result := lib.ConvertSupplier(*supplier)
+	result := lib.SerializeSupplier(*supplier)
 	return &result, nil
 }
 
-func (service *SupplierServiceImpl) CreateSupplier(ctx context.Context, supplier *db.Supplier) (*types.SupplierResult, error) {
+func (service *SupplierServiceImpl) CreateSupplier(ctx context.Context, supplier db.Supplier) (*types.SupplierResult, error) {
 	logoImage := supplier.LogoImage
 	marketingImage := supplier.MarketingImage
 
@@ -85,7 +85,7 @@ func (service *SupplierServiceImpl) CreateSupplier(ctx context.Context, supplier
 		Valid:  true,
 	}
 
-	err = service.store.CreateSupplier(ctx, supplier)
+	err = service.store.CreateSupplier(ctx, &supplier)
 	if err != nil {
 		return nil, err
 	}

@@ -2,6 +2,8 @@ package handlers
 
 import (
 	"github.com/sean-david-welch/farmec-v2/server/db"
+	"github.com/sean-david-welch/farmec-v2/server/lib"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 	"log"
 	"net/http"
 
@@ -31,14 +33,15 @@ func (handler *SupplierHandler) GetSuppliers(context *gin.Context) {
 
 func (handler *SupplierHandler) CreateSupplier(context *gin.Context) {
 	ctx := context.Request.Context()
-	var supplier db.Supplier
+	var supplier types.Supplier
+	dbSupplier := lib.DeserializeSupplier(supplier)
 
 	if err := context.ShouldBindJSON(&supplier); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body", "details": err.Error()})
 		return
 	}
 
-	result, err := handler.supplierService.CreateSupplier(ctx, &supplier)
+	result, err := handler.supplierService.CreateSupplier(ctx, &dbSupplier)
 	if err != nil {
 		log.Printf("Error creating supplier: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while creating supplier", "details": err.Error()})
