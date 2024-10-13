@@ -29,6 +29,20 @@ func (handler *LineItemHandler) GetLineItems(context *gin.Context) {
 	context.JSON(http.StatusOK, lineItems)
 }
 
+func (handler *LineItemHandler) GetLineItemById(context *gin.Context) {
+	ctx := context.Request.Context()
+	id := context.Param("id")
+
+	lineItem, err := handler.service.GetLineItemById(ctx, id)
+	if err != nil {
+		log.Printf("error occurred while getting lineItem: %v", err)
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while getting lineItem"})
+		return
+	}
+
+	context.JSON(http.StatusOK, lineItem)
+}
+
 func (handler *LineItemHandler) CreateLineItem(context *gin.Context) {
 	ctx := context.Request.Context()
 	var lineItem db.LineItem
@@ -52,20 +66,6 @@ func (handler *LineItemHandler) CreateLineItem(context *gin.Context) {
 	}
 
 	context.JSON(http.StatusCreated, response)
-}
-
-func (handler *LineItemHandler) GetLineItemById(context *gin.Context) {
-	ctx := context.Request.Context()
-	id := context.Param("id")
-
-	lineItem, err := handler.service.GetLineItemById(ctx, id)
-	if err != nil {
-		log.Printf("error occurred while getting lineItem: %v", err)
-		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while getting lineItem"})
-		return
-	}
-
-	context.JSON(http.StatusOK, lineItem)
 }
 
 func (handler *LineItemHandler) UpdateLineItem(context *gin.Context) {
