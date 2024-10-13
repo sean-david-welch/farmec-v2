@@ -11,7 +11,7 @@ import (
 
 type WarrantyService interface {
 	GetWarranties(ctx context.Context) ([]types.DealerOwnerInfo, error)
-	GetWarrantyById(ctx context.Context, id string) (*db.WarrantyClaim, []db.PartsRequired, error)
+	GetWarrantyById(ctx context.Context, id string) (types.WarrantyClaim, []types.PartsRequired, error)
 	CreateWarranty(ctx context.Context, warranty *db.WarrantyClaim, parts []db.PartsRequired) error
 	UpdateWarranty(ctx context.Context, id string, warranty *db.WarrantyClaim, parts []db.PartsRequired) error
 	DeleteWarranty(ctx context.Context, id string) error
@@ -35,13 +35,17 @@ func (service *WarrantyServiceImpl) GetWarranties(ctx context.Context) ([]types.
 	return warranties, nil
 }
 
-func (service *WarrantyServiceImpl) GetWarrantyById(ctx context.Context, id string) (*db.WarrantyClaim, []db.PartsRequired, error) {
+func (service *WarrantyServiceImpl) GetWarrantyById(ctx context.Context, id string) (*types.WarrantyClaim, []types.PartsRequired, error) {
 	warranty, partsRequired, err := service.store.GetWarrantyById(ctx, id)
 	if err != nil {
 		return nil, nil, err
 	}
-
-	return warranty, partsRequired, nil
+	warrantyClaim := lib.SerializeWarrantyClaim(*warranty)
+	var result []types.PartsRequired
+	for _, part := range partsRequired {
+		result = append(result, lib.SerializePartsRequired(part))
+	}
+	return &warrantyClaim, result, nil
 }
 
 func (service *WarrantyServiceImpl) CreateWarranty(ctx context.Context, warranty *db.WarrantyClaim, parts []db.PartsRequired) error {
