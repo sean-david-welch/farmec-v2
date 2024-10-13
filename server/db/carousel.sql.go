@@ -11,7 +11,8 @@ import (
 )
 
 const createCarousel = `-- name: CreateCarousel :exec
-insert into Carousel (id, name, image, created) VALUES (?, ?, ?, ?)
+insert into Carousel (id, name, image, created)
+VALUES (?, ?, ?, ?)
 `
 
 type CreateCarouselParams struct {
@@ -32,7 +33,9 @@ func (q *Queries) CreateCarousel(ctx context.Context, arg CreateCarouselParams) 
 }
 
 const deleteCarousel = `-- name: DeleteCarousel :exec
-delete from Carousel where id = ?
+delete
+from Carousel
+where id = ?
 `
 
 func (q *Queries) DeleteCarousel(ctx context.Context, id string) error {
@@ -41,7 +44,9 @@ func (q *Queries) DeleteCarousel(ctx context.Context, id string) error {
 }
 
 const getCarouselByID = `-- name: GetCarouselByID :one
-select id, name, image, created from Carousel where id = ?
+select id, name, image, created
+from Carousel
+where id = ?
 `
 
 func (q *Queries) GetCarouselByID(ctx context.Context, id string) (Carousel, error) {
@@ -57,7 +62,9 @@ func (q *Queries) GetCarouselByID(ctx context.Context, id string) (Carousel, err
 }
 
 const getCarousels = `-- name: GetCarousels :many
-select id, name, image, created from Carousel order by created desc
+select id, name, image, created
+from Carousel
+order by created desc
 `
 
 func (q *Queries) GetCarousels(ctx context.Context) ([]Carousel, error) {
@@ -89,7 +96,10 @@ func (q *Queries) GetCarousels(ctx context.Context) ([]Carousel, error) {
 }
 
 const updateCarousel = `-- name: UpdateCarousel :exec
-update Carousel set name = ?, image = ? where id = ?
+update Carousel
+set name  = ?,
+    image = ?
+where id = ?
 `
 
 type UpdateCarouselParams struct {
@@ -104,7 +114,9 @@ func (q *Queries) UpdateCarousel(ctx context.Context, arg UpdateCarouselParams) 
 }
 
 const updateCarouselNoImage = `-- name: UpdateCarouselNoImage :exec
-update Carousel set name = ? where id = ?
+update Carousel
+set name = ?
+where id = ?
 `
 
 type UpdateCarouselNoImageParams struct {

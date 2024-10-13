@@ -51,7 +51,9 @@ func (q *Queries) CreateSupplier(ctx context.Context, arg CreateSupplierParams) 
 }
 
 const deleteSupplier = `-- name: DeleteSupplier :exec
-delete from Supplier where id = ?
+delete
+from Supplier
+where id = ?
 `
 
 func (q *Queries) DeleteSupplier(ctx context.Context, id string) error {
@@ -60,9 +62,18 @@ func (q *Queries) DeleteSupplier(ctx context.Context, id string) error {
 }
 
 const getSupplierByID = `-- name: GetSupplierByID :one
-select id, name, logo_image, marketing_image,
-    description, social_facebook, social_instagram,
-    social_linkedin, social_twitter, social_youtube, social_website, created
+select id,
+       name,
+       logo_image,
+       marketing_image,
+       description,
+       social_facebook,
+       social_instagram,
+       social_linkedin,
+       social_twitter,
+       social_youtube,
+       social_website,
+       created
 from Supplier
 where id = ?
 `
@@ -103,9 +114,18 @@ func (q *Queries) GetSupplierByID(ctx context.Context, id string) (GetSupplierBy
 }
 
 const getSuppliers = `-- name: GetSuppliers :many
-select id, name, logo_image, marketing_image,
-       description, social_facebook, social_instagram,
-       social_linkedin, social_twitter, social_youtube, social_website, created
+select id,
+       name,
+       logo_image,
+       marketing_image,
+       description,
+       social_facebook,
+       social_instagram,
+       social_linkedin,
+       social_twitter,
+       social_youtube,
+       social_website,
+       created
 from Supplier
 order by created desc
 `
@@ -163,9 +183,16 @@ func (q *Queries) GetSuppliers(ctx context.Context) ([]GetSuppliersRow, error) {
 
 const updateSupplier = `-- name: UpdateSupplier :exec
 update Supplier
-set name = ?, logo_image = ?, marketing_image = ?, description = ?,
-    social_facebook = ?, social_twitter = ?, social_instagram = ?, social_youtube = ?,
-    social_linkedin = ?, social_website = ?
+set name             = ?,
+    logo_image       = ?,
+    marketing_image  = ?,
+    description      = ?,
+    social_facebook  = ?,
+    social_twitter   = ?,
+    social_instagram = ?,
+    social_youtube   = ?,
+    social_linkedin  = ?,
+    social_website   = ?
 where id = ?
 `
 
@@ -202,8 +229,14 @@ func (q *Queries) UpdateSupplier(ctx context.Context, arg UpdateSupplierParams) 
 
 const updateSupplierNoImage = `-- name: UpdateSupplierNoImage :exec
 update Supplier
-set name = ?, description = ?, social_facebook = ?, social_twitter = ?,
-    social_instagram = ?, social_youtube = ?, social_linkedin = ?, social_website = ?
+set name             = ?,
+    description      = ?,
+    social_facebook  = ?,
+    social_twitter   = ?,
+    social_instagram = ?,
+    social_youtube   = ?,
+    social_linkedin  = ?,
+    social_website   = ?
 where id = ?
 `
 

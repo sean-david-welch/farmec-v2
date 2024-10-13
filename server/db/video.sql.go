@@ -41,7 +41,9 @@ func (q *Queries) CreateVideo(ctx context.Context, arg CreateVideoParams) error 
 }
 
 const deleteVideo = `-- name: DeleteVideo :exec
-delete from Video where id = ?
+delete
+from Video
+where id = ?
 `
 
 func (q *Queries) DeleteVideo(ctx context.Context, id string) error {

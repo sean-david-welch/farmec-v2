@@ -11,7 +11,8 @@ import (
 )
 
 const createPrivacy = `-- name: CreatePrivacy :exec
-insert into Privacy (id, title, body, created) VALUES (?, ?, ?, ?)
+insert into Privacy (id, title, body, created)
+VALUES (?, ?, ?, ?)
 `
 
 type CreatePrivacyParams struct {
@@ -32,7 +33,9 @@ func (q *Queries) CreatePrivacy(ctx context.Context, arg CreatePrivacyParams) er
 }
 
 const deletePrivacy = `-- name: DeletePrivacy :exec
-delete from Privacy where id = ?
+delete
+from Privacy
+where id = ?
 `
 
 func (q *Queries) DeletePrivacy(ctx context.Context, id string) error {
@@ -41,7 +44,8 @@ func (q *Queries) DeletePrivacy(ctx context.Context, id string) error {
 }
 
 const getPrivacies = `-- name: GetPrivacies :many
-select id, title, body, created from Privacy
+select id, title, body, created
+from Privacy
 `
 
 func (q *Queries) GetPrivacies(ctx context.Context) ([]Privacy, error) {
@@ -73,7 +77,9 @@ func (q *Queries) GetPrivacies(ctx context.Context) ([]Privacy, error) {
 }
 
 const getPrivacyByID = `-- name: GetPrivacyByID :one
-select id, title, body, created from Privacy where id = ?
+select id, title, body, created
+from Privacy
+where id = ?
 `
 
 func (q *Queries) GetPrivacyByID(ctx context.Context, id string) (Privacy, error) {
@@ -89,7 +95,10 @@ func (q *Queries) GetPrivacyByID(ctx context.Context, id string) (Privacy, error
 }
 
 const updatePrivacy = `-- name: UpdatePrivacy :exec
-update Privacy set title = ?, body = ? where id = ?
+update Privacy
+set title = ?,
+    body  = ?
+where id = ?
 `
 
 type UpdatePrivacyParams struct {

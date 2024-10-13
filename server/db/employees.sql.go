@@ -37,7 +37,9 @@ func (q *Queries) CreateEmployee(ctx context.Context, arg CreateEmployeeParams) 
 }
 
 const deleteEmployee = `-- name: DeleteEmployee :exec
-delete from Employee where id = ?
+delete
+from Employee
+where id = ?
 `
 
 func (q *Queries) DeleteEmployee(ctx context.Context, id string) error {
@@ -46,7 +48,9 @@ func (q *Queries) DeleteEmployee(ctx context.Context, id string) error {
 }
 
 const getEmployee = `-- name: GetEmployee :one
-select id, name, email, role, profile_image, created from Employee where id = ?
+select id, name, email, role, profile_image, created
+from Employee
+where id = ?
 `
 
 func (q *Queries) GetEmployee(ctx context.Context, id string) (Employee, error) {
@@ -65,7 +69,8 @@ func (q *Queries) GetEmployee(ctx context.Context, id string) (Employee, error) 
 
 const getEmployees = `-- name: GetEmployees :many
 select id, name, email, role, profile_image, created
-from Employee order by created desc
+from Employee
+order by created desc
 `
 
 func (q *Queries) GetEmployees(ctx context.Context) ([]Employee, error) {
@@ -100,7 +105,10 @@ func (q *Queries) GetEmployees(ctx context.Context) ([]Employee, error) {
 
 const updateEmployee = `-- name: UpdateEmployee :exec
 update Employee
-set name = ?, email = ?, role = ?, profile_image = ?
+set name          = ?,
+    email         = ?,
+    role          = ?,
+    profile_image = ?
 where id = ?
 `
 
@@ -125,7 +133,9 @@ func (q *Queries) UpdateEmployee(ctx context.Context, arg UpdateEmployeeParams) 
 
 const updateEmployeeNoImage = `-- name: UpdateEmployeeNoImage :exec
 update Employee
-set name = ?, email = ?, role = ?
+set name  = ?,
+    email = ?,
+    role  = ?
 where id = ?
 `
 

@@ -39,7 +39,9 @@ func (q *Queries) CreateMachine(ctx context.Context, arg CreateMachineParams) er
 }
 
 const deleteMachine = `-- name: DeleteMachine :exec
-delete from Machine where id = ?
+delete
+from Machine
+where id = ?
 `
 
 func (q *Queries) DeleteMachine(ctx context.Context, id string) error {

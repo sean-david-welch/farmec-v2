@@ -39,7 +39,8 @@ func (q *Queries) CreateBlog(ctx context.Context, arg CreateBlogParams) error {
 }
 
 const deleteBlog = `-- name: DeleteBlog :exec
-delete from Blog
+delete
+from Blog
 where id = ?
 `
 
@@ -108,7 +109,11 @@ func (q *Queries) GetBlogs(ctx context.Context) ([]Blog, error) {
 
 const updateBlog = `-- name: UpdateBlog :exec
 update Blog
-set title = ?, date = ?, main_image = ?, subheading = ?, body = ?
+set title      = ?,
+    date       = ?,
+    main_image = ?,
+    subheading = ?,
+    body       = ?
 where id = ?
 `
 
@@ -135,7 +140,10 @@ func (q *Queries) UpdateBlog(ctx context.Context, arg UpdateBlogParams) error {
 
 const updateBlogNoImage = `-- name: UpdateBlogNoImage :exec
 update Blog
-set title = ?, date = ?, subheading = ?, body = ?
+set title      = ?,
+    date       = ?,
+    subheading = ?,
+    body       = ?
 where id = ?
 `
 

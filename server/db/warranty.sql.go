@@ -81,7 +81,9 @@ func (q *Queries) CreateWarranty(ctx context.Context, arg CreateWarrantyParams) 
 }
 
 const deletePartsRequired = `-- name: DeletePartsRequired :exec
-delete from PartsRequired where warranty_id = ?
+delete
+from PartsRequired
+where warranty_id = ?
 `
 
 func (q *Queries) DeletePartsRequired(ctx context.Context, warrantyID string) error {
@@ -90,7 +92,9 @@ func (q *Queries) DeletePartsRequired(ctx context.Context, warrantyID string) er
 }
 
 const deleteWarranty = `-- name: DeleteWarranty :exec
-delete from WarrantyClaim where id = ?
+delete
+from WarrantyClaim
+where id = ?
 `
 
 func (q *Queries) DeleteWarranty(ctx context.Context, id string) error {

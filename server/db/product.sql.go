@@ -69,7 +69,8 @@ func (q *Queries) GetProductByID(ctx context.Context, id string) (Product, error
 
 const getProducts = `-- name: GetProducts :many
 select id, machine_id, name, product_image, description, product_link
-from Product where machine_id = ?
+from Product
+where machine_id = ?
 `
 
 func (q *Queries) GetProducts(ctx context.Context, machineID string) ([]Product, error) {

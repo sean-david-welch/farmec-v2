@@ -11,7 +11,8 @@ import (
 )
 
 const createExhibition = `-- name: CreateExhibition :exec
-insert into Exhibition (id, title, date, location, info, created) values (?, ?, ?, ?, ?, ?)
+insert into Exhibition (id, title, date, location, info, created)
+values (?, ?, ?, ?, ?, ?)
 `
 
 type CreateExhibitionParams struct {
@@ -36,7 +37,9 @@ func (q *Queries) CreateExhibition(ctx context.Context, arg CreateExhibitionPara
 }
 
 const deleteExhibition = `-- name: DeleteExhibition :exec
-delete from Exhibition where id = ?
+delete
+from Exhibition
+where id = ?
 `
 
 func (q *Queries) DeleteExhibition(ctx context.Context, id string) error {
@@ -45,7 +48,9 @@ func (q *Queries) DeleteExhibition(ctx context.Context, id string) error {
 }
 
 const getExhibitionByID = `-- name: GetExhibitionByID :one
-select id, title, date, location, info, created from Exhibition where id = ?
+select id, title, date, location, info, created
+from Exhibition
+where id = ?
 `
 
 func (q *Queries) GetExhibitionByID(ctx context.Context, id string) (Exhibition, error) {
@@ -63,7 +68,9 @@ func (q *Queries) GetExhibitionByID(ctx context.Context, id string) (Exhibition,
 }
 
 const getExhibitions = `-- name: GetExhibitions :many
-select id, title, date, location, info, created from Exhibition order by created desc
+select id, title, date, location, info, created
+from Exhibition
+order by created desc
 `
 
 func (q *Queries) GetExhibitions(ctx context.Context) ([]Exhibition, error) {
@@ -98,7 +105,10 @@ func (q *Queries) GetExhibitions(ctx context.Context) ([]Exhibition, error) {
 
 const updateExhibition = `-- name: UpdateExhibition :exec
 update Exhibition
-set title = ?, date = ?, location = ?, info = ?
+set title    = ?,
+    date     = ?,
+    location = ?,
+    info     = ?
 where id = ?
 `
 
