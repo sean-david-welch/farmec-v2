@@ -1,7 +1,8 @@
 package handlers
 
 import (
-	"github.com/sean-david-welch/farmec-v2/server/db"
+	"github.com/sean-david-welch/farmec-v2/server/lib"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 	"log"
 	"net/http"
 
@@ -33,7 +34,8 @@ func (handler *PartsHandler) GetParts(context *gin.Context) {
 
 func (handler *PartsHandler) CreateParts(context *gin.Context) {
 	ctx := context.Request.Context()
-	var part db.SparePart
+	var part types.Sparepart
+	dbPart := lib.DeserializeSparePart(part)
 
 	if err := context.ShouldBindJSON(&part); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Ivalid request body", "details": err.Error()})
@@ -45,7 +47,7 @@ func (handler *PartsHandler) CreateParts(context *gin.Context) {
 		return
 	}
 
-	result, err := handler.partsService.CreatePart(ctx, &part)
+	result, err := handler.partsService.CreatePart(ctx, &dbPart)
 	if err != nil {
 		log.Printf("Error creating part: %v", err)
 		context.JSON(http.StatusInternalServerError,
@@ -67,7 +69,8 @@ func (handler *PartsHandler) UpdateParts(context *gin.Context) {
 	ctx := context.Request.Context()
 	id := context.Param("id")
 
-	var part db.SparePart
+	var part types.Sparepart
+	dbPart := lib.DeserializeSparePart(part)
 
 	if err := context.ShouldBindJSON(&part); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Request Body", "details": err.Error()})
@@ -79,7 +82,7 @@ func (handler *PartsHandler) UpdateParts(context *gin.Context) {
 		return
 	}
 
-	result, err := handler.partsService.UpdatePart(ctx, id, &part)
+	result, err := handler.partsService.UpdatePart(ctx, id, &dbPart)
 	if err != nil {
 		log.Printf("Error updating part: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while updating machine", "details": err.Error()})
