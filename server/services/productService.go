@@ -13,7 +13,7 @@ import (
 )
 
 type ProductService interface {
-	GetProducts(ctx context.Context, id string) ([]db.Product, error)
+	GetProducts(ctx context.Context, id string) ([]types.Product, error)
 	CreateProduct(ctx context.Context, product *db.Product) (*types.ModelResult, error)
 	UpdateProduct(ctx context.Context, id string, product *db.Product) (*types.ModelResult, error)
 	DeleteProduct(ctx context.Context, id string) error
@@ -33,12 +33,16 @@ func NewProductService(store stores.ProductStore, s3Client lib.S3Client, folder 
 	}
 }
 
-func (service *ProductServiceImpl) GetProducts(ctx context.Context, id string) ([]db.Product, error) {
+func (service *ProductServiceImpl) GetProducts(ctx context.Context, id string) ([]types.Product, error) {
 	products, err := service.store.GetProducts(ctx, id)
 	if err != nil {
 		return nil, err
 	}
-	return products, nil
+	var result []types.Product
+	for _, product := range products {
+		result = append(result, lib.SerializeProduct(product))
+	}
+	return result, nil
 }
 
 func (service *ProductServiceImpl) CreateProduct(ctx context.Context, product *db.Product) (*types.ModelResult, error) {
