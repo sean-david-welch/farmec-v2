@@ -1,7 +1,8 @@
 package handlers
 
 import (
-	"github.com/sean-david-welch/farmec-v2/server/db"
+	"github.com/sean-david-welch/farmec-v2/server/lib"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 	"log"
 	"net/http"
 
@@ -45,7 +46,8 @@ func (handler *LineItemHandler) GetLineItemById(context *gin.Context) {
 
 func (handler *LineItemHandler) CreateLineItem(context *gin.Context) {
 	ctx := context.Request.Context()
-	var lineItem db.LineItem
+	var lineItem types.LineItem
+	dbLineItem := lib.DeserializeLineItem(lineItem)
 
 	if err := context.ShouldBindJSON(&lineItem); err != nil {
 		log.Printf("error when creating lineItem: %v", err)
@@ -53,7 +55,7 @@ func (handler *LineItemHandler) CreateLineItem(context *gin.Context) {
 		return
 	}
 
-	result, err := handler.service.CreateLineItem(ctx, &lineItem)
+	result, err := handler.service.CreateLineItem(ctx, &dbLineItem)
 	if err != nil {
 		log.Printf("error when creating lineItem: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error when creating lineItem"})
@@ -71,7 +73,8 @@ func (handler *LineItemHandler) CreateLineItem(context *gin.Context) {
 func (handler *LineItemHandler) UpdateLineItem(context *gin.Context) {
 	ctx := context.Request.Context()
 	id := context.Param("id")
-	var lineItem db.LineItem
+	var lineItem types.LineItem
+	dbLineItem := lib.DeserializeLineItem(lineItem)
 
 	if err := context.ShouldBindJSON(&lineItem); err != nil {
 		log.Printf("error when updating lineItem: %v", err)
@@ -79,7 +82,7 @@ func (handler *LineItemHandler) UpdateLineItem(context *gin.Context) {
 		return
 	}
 
-	result, err := handler.service.UpdateLineItem(ctx, id, &lineItem)
+	result, err := handler.service.UpdateLineItem(ctx, id, &dbLineItem)
 	if err != nil {
 		log.Printf("error when updating lineItem: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error when updating lineItem"})
