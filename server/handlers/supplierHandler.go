@@ -54,7 +54,7 @@ func (handler *SupplierHandler) CreateSupplier(context *gin.Context) {
 		return
 	}
 
-	result, err := handler.supplierService.CreateSupplier(ctx, &dbSupplier)
+	result, err := handler.supplierService.CreateSupplier(ctx, dbSupplier)
 	if err != nil {
 		log.Printf("Error creating supplier: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while creating supplier", "details": err.Error()})
