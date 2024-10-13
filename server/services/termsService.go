@@ -3,11 +3,13 @@ package services
 import (
 	"context"
 	"github.com/sean-david-welch/farmec-v2/server/db"
+	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"github.com/sean-david-welch/farmec-v2/server/stores"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type TermsService interface {
-	GetTerms(ctx context.Context) ([]db.Term, error)
+	GetTerms(ctx context.Context) ([]types.Terms, error)
 	CreateTerm(ctx context.Context, term *db.Term) error
 	UpdateTerm(ctx context.Context, id string, term *db.Term) error
 	DeleteTerm(ctx context.Context, id string) error
@@ -21,12 +23,16 @@ func NewTermsService(store stores.TermsStore) *TermsServiceImpl {
 	return &TermsServiceImpl{store: store}
 }
 
-func (service *TermsServiceImpl) GetTerms(ctx context.Context) ([]db.Term, error) {
+func (service *TermsServiceImpl) GetTerms(ctx context.Context) ([]types.Terms, error) {
 	terms, err := service.store.GetTerms(ctx)
 	if err != nil {
 		return nil, err
 	}
-	return terms, nil
+	var result []types.Terms
+	for _, term := range terms {
+		result = append(result, lib.SerializeTerm(term))
+	}
+	return result, nil
 }
 
 func (service *TermsServiceImpl) CreateTerm(ctx context.Context, term *db.Term) error {
