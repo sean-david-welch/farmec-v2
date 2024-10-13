@@ -13,8 +13,8 @@ import (
 )
 
 type BlogService interface {
-	GetBlogs(ctx context.Context) ([]db.Blog, error)
-	GetBlogsByID(ctx context.Context, id string) (*db.Blog, error)
+	GetBlogs(ctx context.Context) ([]types.Blog, error)
+	GetBlogsByID(ctx context.Context, id string) (*types.Blog, error)
 	CreateBlog(ctx context.Context, blog *db.Blog) (*types.ModelResult, error)
 	UpdateBlog(ctx context.Context, id string, blog *db.Blog) (*types.ModelResult, error)
 	DeleteBlog(ctx context.Context, id string) error
@@ -30,22 +30,27 @@ func NewBlogService(store stores.BlogStore, s3Client lib.S3Client, folder string
 	return &BlogServiceImpl{store: store, s3Client: s3Client, folder: folder}
 }
 
-func (service *BlogServiceImpl) GetBlogs(ctx context.Context) ([]db.Blog, error) {
+func (service *BlogServiceImpl) GetBlogs(ctx context.Context) ([]types.Blog, error) {
 	blogs, err := service.store.GetBlogs(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	return blogs, nil
+	var result []types.Blog
+	for _, blog := range blogs {
+		result = append(result, lib.SerializeBlog(blog))
+	}
+	return result, nil
 }
 
-func (service *BlogServiceImpl) GetBlogsByID(ctx context.Context, id string) (*db.Blog, error) {
+func (service *BlogServiceImpl) GetBlogsByID(ctx context.Context, id string) (*types.Blog, error) {
 	blog, err := service.store.GetBlogById(ctx, id)
 	if err != nil {
 		return nil, err
 	}
+	result := lib.SerializeBlog(*blog)
 
-	return blog, nil
+	return &result, nil
 }
 
 func (service *BlogServiceImpl) CreateBlog(ctx context.Context, blog *db.Blog) (*types.ModelResult, error) {

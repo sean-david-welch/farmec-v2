@@ -1,7 +1,8 @@
 package handlers
 
 import (
-	"github.com/sean-david-welch/farmec-v2/server/db"
+	"github.com/sean-david-welch/farmec-v2/server/lib"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 	"log"
 	"net/http"
 
@@ -44,7 +45,8 @@ func (handler *BlogHandler) GetBlogByID(context *gin.Context) {
 
 func (handler *BlogHandler) CreateBlog(context *gin.Context) {
 	ctx := context.Request.Context()
-	var blog db.Blog
+	var blog types.Blog
+	dbBlog := lib.DeserializeBlog(blog)
 
 	if err := context.ShouldBindJSON(&blog); err != nil {
 		log.Printf("error while creating blog: %v", err)
@@ -52,7 +54,7 @@ func (handler *BlogHandler) CreateBlog(context *gin.Context) {
 		return
 	}
 
-	result, err := handler.service.CreateBlog(ctx, &blog)
+	result, err := handler.service.CreateBlog(ctx, &dbBlog)
 	if err != nil {
 		log.Printf("error while creating blog: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while creating blog"})
@@ -68,7 +70,8 @@ func (handler *BlogHandler) UpdateBlog(context *gin.Context) {
 	ctx := context.Request.Context()
 	id := context.Param("id")
 
-	var blog db.Blog
+	var blog types.Blog
+	dbBlog := lib.DeserializeBlog(blog)
 
 	if err := context.ShouldBindJSON(&blog); err != nil {
 		log.Printf("error while updating blog: %v", err)
@@ -76,7 +79,7 @@ func (handler *BlogHandler) UpdateBlog(context *gin.Context) {
 		return
 	}
 
-	result, err := handler.service.UpdateBlog(ctx, id, &blog)
+	result, err := handler.service.UpdateBlog(ctx, id, &dbBlog)
 	if err != nil {
 		log.Printf("error while updating blog: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while updating blog"})
