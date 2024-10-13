@@ -1,17 +1,29 @@
 -- name: GetCarousels :many
-select id, name, image, created from Carousel order by created desc;
+select id, name, image, created
+from Carousel
+order by created desc;
 
 -- name: GetCarouselByID :one
-select id, name, image, created from Carousel where id = ?;
+select id, name, image, created
+from Carousel
+where id = ?;
 
 -- name: CreateCarousel :exec
-insert into Carousel (id, name, image, created) VALUES (?, ?, ?, ?);
+insert into Carousel (id, name, image, created)
+VALUES (?, ?, ?, ?);
 
 -- name: UpdateCarousel :exec
-update Carousel set name = ?, image = ? where id = ?;
+update Carousel
+set name  = ?,
+    image = ?
+where id = ?;
 
 -- name: UpdateCarouselNoImage :exec
-update Carousel set name = ? where id = ?;
+update Carousel
+set name = ?
+where id = ?;
 
 -- name: DeleteCarousel :exec
-delete from Carousel where id = ?;
+delete
+from Carousel
+where id = ?;

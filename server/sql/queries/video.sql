@@ -37,4 +37,6 @@ set supplier_id   = ?,
 where id = ?;
 
 -- name: DeleteVideo :exec
-delete from Video where id = ?;
+delete
+from Video
+where id = ?;

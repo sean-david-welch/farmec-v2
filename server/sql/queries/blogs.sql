@@ -14,14 +14,22 @@ values (?, ?, ?, ?, ?, ?, ?);
 
 -- name: UpdateBlogNoImage :exec
 update Blog
-set title = ?, date = ?, subheading = ?, body = ?
+set title      = ?,
+    date       = ?,
+    subheading = ?,
+    body       = ?
 where id = ?;
 
 -- name: UpdateBlog :exec
 update Blog
-set title = ?, date = ?, main_image = ?, subheading = ?, body = ?
+set title      = ?,
+    date       = ?,
+    main_image = ?,
+    subheading = ?,
+    body       = ?
 where id = ?;
 
 -- name: DeleteBlog :exec
-delete from Blog
+delete
+from Blog
 where id = ?;

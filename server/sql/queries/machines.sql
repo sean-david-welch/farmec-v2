@@ -30,4 +30,6 @@ set supplier_id   = ?,
 where id = ?;
 
 -- name: DeleteMachine :exec
-delete from Machine where id = ?;
+delete
+from Machine
+where id = ?;

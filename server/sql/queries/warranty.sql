@@ -55,7 +55,11 @@ set dealer          = ?,
 where id = ?;
 
 -- name: DeleteWarranty :exec
-delete from WarrantyClaim where id = ?;
+delete
+from WarrantyClaim
+where id = ?;
 
 -- name: DeletePartsRequired :exec
-delete from PartsRequired where warranty_id = ?;
+delete
+from PartsRequired
+where warranty_id = ?;
