@@ -13,7 +13,7 @@ import (
 )
 
 type EmployeeService interface {
-	GetEmployees(ctx context.Context) ([]db.Employee, error)
+	GetEmployees(ctx context.Context) ([]types.Employee, error)
 	CreateEmployee(ctx context.Context, employee *db.Employee) (*types.ModelResult, error)
 	UpdateEmployee(ctx context.Context, id string, employee *db.Employee) (*types.ModelResult, error)
 	DeleteEmployee(ctx context.Context, id string) error
@@ -29,13 +29,16 @@ func NewEmployeeService(store stores.EmployeeStore, s3Client lib.S3Client, folde
 	return &EmployeeServiceImpl{store: store, s3Client: s3Client, folder: folder}
 }
 
-func (service *EmployeeServiceImpl) GetEmployees(ctx context.Context) ([]db.Employee, error) {
+func (service *EmployeeServiceImpl) GetEmployees(ctx context.Context) ([]types.Employee, error) {
 	employees, err := service.store.GetEmployees(ctx)
 	if err != nil {
 		return nil, err
 	}
-
-	return employees, nil
+	var result []types.Employee
+	for _, employee := range employees {
+		result = append(result, lib.SerializeEmployee(employee))
+	}
+	return result, nil
 }
 
 func (service *EmployeeServiceImpl) CreateEmployee(ctx context.Context, employee *db.Employee) (*types.ModelResult, error) {

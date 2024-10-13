@@ -23,6 +23,7 @@ type CheckoutServiceImpl struct {
 func NewCheckoutService(secrets *lib.Secrets, store stores.LineItemStore) *CheckoutServiceImpl {
 	return &CheckoutServiceImpl{secrets: secrets, store: store}
 }
+
 func (service *CheckoutServiceImpl) CreateCheckoutSession(ctx context.Context, id string) (*stripe.CheckoutSession, error) {
 	stripe.Key = service.secrets.StripeSecretKey
 
