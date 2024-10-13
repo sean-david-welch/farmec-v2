@@ -45,6 +45,10 @@ type PartsRequired struct {
 }
 
 type WarranrtyParts struct {
+	Warranty *WarrantyClaim
+	Parts    []PartsRequired
+}
+type WarranrtyPartsDB struct {
 	Warranty *db.WarrantyClaim
 	Parts    []db.PartsRequired
 }
