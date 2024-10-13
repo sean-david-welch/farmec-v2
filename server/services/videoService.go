@@ -5,6 +5,8 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/sean-david-welch/farmec-v2/server/db"
+	"github.com/sean-david-welch/farmec-v2/server/lib"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 	"strings"
 
 	"github.com/sean-david-welch/farmec-v2/server/stores"
@@ -13,7 +15,7 @@ import (
 
 type VideoService interface {
 	TransformData(video *db.Video) (*db.Video, error)
-	GetVideos(ctx context.Context, id string) ([]db.Video, error)
+	GetVideos(ctx context.Context, id string) ([]types.Video, error)
 	CreateVideo(ctx context.Context, video *db.Video) error
 	UpdateVideo(ctx context.Context, id string, video *db.Video) error
 	DeleteVideo(ctx context.Context, id string) error
@@ -81,12 +83,16 @@ func (service *VideoServiceImpl) TransformData(video *db.Video) (*db.Video, erro
 	return videoData, nil
 }
 
-func (service *VideoServiceImpl) GetVideos(ctx context.Context, id string) ([]db.Video, error) {
+func (service *VideoServiceImpl) GetVideos(ctx context.Context, id string) ([]types.Video, error) {
 	videos, err := service.store.GetVideos(ctx, id)
 	if err != nil {
 		return nil, err
 	}
-	return videos, nil
+	var result []types.Video
+	for _, video := range videos {
+		result = append(result, lib.SerializeVideo(video))
+	}
+	return result, nil
 }
 
 func (service *VideoServiceImpl) CreateVideo(ctx context.Context, video *db.Video) error {
