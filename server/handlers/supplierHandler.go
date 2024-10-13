@@ -31,6 +31,20 @@ func (handler *SupplierHandler) GetSuppliers(context *gin.Context) {
 	context.JSON(http.StatusOK, suppliers)
 }
 
+func (handler *SupplierHandler) GetSupplierByID(context *gin.Context) {
+	ctx := context.Request.Context()
+	id := context.Param("id")
+	supplier, err := handler.supplierService.GetSupplierById(ctx, id)
+
+	if err != nil {
+		log.Printf("Error getting suppliers: %v", err)
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while getting suppliers"})
+		return
+	}
+
+	context.JSON(http.StatusOK, supplier)
+}
+
 func (handler *SupplierHandler) CreateSupplier(context *gin.Context) {
 	ctx := context.Request.Context()
 	var supplier types.Supplier
@@ -59,25 +73,12 @@ func (handler *SupplierHandler) CreateSupplier(context *gin.Context) {
 	context.JSON(http.StatusCreated, response)
 }
 
-func (handler *SupplierHandler) GetSupplierByID(context *gin.Context) {
-	ctx := context.Request.Context()
-	id := context.Param("id")
-	supplier, err := handler.supplierService.GetSupplierById(ctx, id)
-
-	if err != nil {
-		log.Printf("Error getting suppliers: %v", err)
-		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while getting suppliers"})
-		return
-	}
-
-	context.JSON(http.StatusOK, supplier)
-}
-
 func (handler *SupplierHandler) UpdateSupplier(context *gin.Context) {
 	ctx := context.Request.Context()
 	id := context.Param("id")
 
 	var supplier db.Supplier
+	dbSupplier := lib.DeserializeSupplier(supplier)
 
 	if err := context.ShouldBindJSON(&supplier); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body", "details": err.Error()})
