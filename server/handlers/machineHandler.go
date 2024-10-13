@@ -1,7 +1,8 @@
 package handlers
 
 import (
-	"github.com/sean-david-welch/farmec-v2/server/db"
+	"github.com/sean-david-welch/farmec-v2/server/lib"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 	"log"
 	"net/http"
 
@@ -47,7 +48,8 @@ func (handler *MachineHandler) GetMachineById(context *gin.Context) {
 
 func (handler *MachineHandler) CreateMachine(context *gin.Context) {
 	ctx := context.Request.Context()
-	var machine db.Machine
+	var machine types.Machine
+	dbMachine := lib.DeserializeMachine(machine)
 
 	if err := context.ShouldBindJSON(&machine); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body", "details": err.Error()})
@@ -59,7 +61,7 @@ func (handler *MachineHandler) CreateMachine(context *gin.Context) {
 		return
 	}
 
-	result, err := handler.machineService.CreateMachine(ctx, &machine)
+	result, err := handler.machineService.CreateMachine(ctx, &dbMachine)
 	if err != nil {
 		log.Printf("Error creating machine: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while creating machine", "details": err.Error()})
@@ -79,7 +81,8 @@ func (handler *MachineHandler) UpdateMachine(context *gin.Context) {
 	ctx := context.Request.Context()
 	id := context.Param("id")
 
-	var machine db.Machine
+	var machine types.Machine
+	dbMachine := lib.DeserializeMachine(machine)
 
 	if err := context.ShouldBindJSON(&machine); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body", "details": err.Error()})
@@ -91,7 +94,7 @@ func (handler *MachineHandler) UpdateMachine(context *gin.Context) {
 		return
 	}
 
-	result, err := handler.machineService.UpdateMachine(ctx, id, &machine)
+	result, err := handler.machineService.UpdateMachine(ctx, id, &dbMachine)
 	if err != nil {
 		log.Printf("Error updating machine: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while updating machine", "details": err.Error()})
