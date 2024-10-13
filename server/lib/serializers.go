@@ -11,7 +11,7 @@ func int64ToBool(i sql.NullInt64) bool {
 	return val
 }
 
-func ConvertSupplier(supplier db.Supplier) types.Supplier {
+func SerializeSupplier(supplier db.Supplier) types.Supplier {
 	return types.Supplier{
 		ID:              supplier.ID,
 		Name:            supplier.Name,
@@ -28,7 +28,7 @@ func ConvertSupplier(supplier db.Supplier) types.Supplier {
 	}
 }
 
-func ConvertBlog(blog db.Blog) types.Blog {
+func SerializeBlog(blog db.Blog) types.Blog {
 	return types.Blog{
 		ID:         blog.ID,
 		Title:      blog.Title,
@@ -40,7 +40,7 @@ func ConvertBlog(blog db.Blog) types.Blog {
 	}
 }
 
-func ConvertCarousel(carousel db.Carousel) types.Carousel {
+func SerializeCarousel(carousel db.Carousel) types.Carousel {
 	return types.Carousel{
 		ID:      carousel.ID,
 		Name:    carousel.Name,
@@ -49,7 +49,7 @@ func ConvertCarousel(carousel db.Carousel) types.Carousel {
 	}
 }
 
-func ConvertEmployee(employee db.Employee) types.Employee {
+func SerializeEmployee(employee db.Employee) types.Employee {
 	return types.Employee{
 		ID:           employee.ID,
 		Name:         employee.Name,
@@ -60,7 +60,7 @@ func ConvertEmployee(employee db.Employee) types.Employee {
 	}
 }
 
-func ConvertExhibition(exhibition db.Exhibition) types.Exhibition {
+func SerializeExhibition(exhibition db.Exhibition) types.Exhibition {
 	return types.Exhibition{
 		ID:       exhibition.ID,
 		Title:    exhibition.Title,
@@ -71,7 +71,7 @@ func ConvertExhibition(exhibition db.Exhibition) types.Exhibition {
 	}
 }
 
-func ConvertLineItem(lineItem db.LineItem) types.LineItem {
+func SerializeLineItem(lineItem db.LineItem) types.LineItem {
 	return types.LineItem{
 		ID:    lineItem.ID,
 		Name:  lineItem.Name,
@@ -80,7 +80,7 @@ func ConvertLineItem(lineItem db.LineItem) types.LineItem {
 	}
 }
 
-func ConvertMachine(machine db.Machine) types.Machine {
+func SerializeMachine(machine db.Machine) types.Machine {
 	return types.Machine{
 		ID:           machine.ID,
 		SupplierID:   machine.SupplierID,
@@ -92,7 +92,7 @@ func ConvertMachine(machine db.Machine) types.Machine {
 	}
 }
 
-func ConvertMachineRegistration(reg db.MachineRegistration) types.MachineRegistration {
+func SerializeMachineRegistration(reg db.MachineRegistration) types.MachineRegistration {
 	return types.MachineRegistration{
 		ID:               reg.ID,
 		DealerName:       reg.DealerName,
@@ -115,7 +115,7 @@ func ConvertMachineRegistration(reg db.MachineRegistration) types.MachineRegistr
 	}
 }
 
-func ConvertPartsRequired(parts db.PartsRequired) types.PartsRequired {
+func SerializePartsRequired(parts db.PartsRequired) types.PartsRequired {
 	return types.PartsRequired{
 		ID:             parts.ID,
 		WarrantyID:     parts.WarrantyID,
@@ -126,7 +126,7 @@ func ConvertPartsRequired(parts db.PartsRequired) types.PartsRequired {
 	}
 }
 
-func ConvertPrivacy(privacy db.Privacy) types.Privacy {
+func SerializePrivacy(privacy db.Privacy) types.Privacy {
 	return types.Privacy{
 		ID:      privacy.ID,
 		Title:   privacy.Title,
@@ -135,7 +135,7 @@ func ConvertPrivacy(privacy db.Privacy) types.Privacy {
 	}
 }
 
-func ConvertProduct(product db.Product) types.Product {
+func SerializeProduct(product db.Product) types.Product {
 	return types.Product{
 		ID:           product.ID,
 		MachineID:    product.MachineID,
@@ -146,7 +146,7 @@ func ConvertProduct(product db.Product) types.Product {
 	}
 }
 
-func ConvertSparePart(sparePart db.SparePart) types.Sparepart {
+func SerializeSparePart(sparePart db.SparePart) types.Sparepart {
 	return types.Sparepart{
 		ID:             sparePart.ID,
 		SupplierID:     sparePart.SupplierID,
@@ -156,7 +156,7 @@ func ConvertSparePart(sparePart db.SparePart) types.Sparepart {
 	}
 }
 
-func ConvertTerm(term db.Term) types.Terms {
+func SerializeTerm(term db.Term) types.Terms {
 	return types.Terms{
 		ID:      term.ID,
 		Title:   term.Title,
@@ -165,7 +165,7 @@ func ConvertTerm(term db.Term) types.Terms {
 	}
 }
 
-func ConvertTimeline(timeline db.Timeline) types.Timeline {
+func SerializeTimeline(timeline db.Timeline) types.Timeline {
 	return types.Timeline{
 		ID:      timeline.ID,
 		Title:   timeline.Title,
@@ -175,7 +175,7 @@ func ConvertTimeline(timeline db.Timeline) types.Timeline {
 	}
 }
 
-func ConvertVideo(video db.Video) types.Video {
+func SerializeVideo(video db.Video) types.Video {
 	return types.Video{
 		ID:           video.ID,
 		SupplierID:   video.SupplierID,
@@ -188,7 +188,7 @@ func ConvertVideo(video db.Video) types.Video {
 	}
 }
 
-func ConvertWarrantyClaim(claim db.WarrantyClaim) types.WarrantyClaim {
+func SerializeWarrantyClaim(claim db.WarrantyClaim) types.WarrantyClaim {
 	return types.WarrantyClaim{
 		ID:             claim.ID,
 		Dealer:         claim.Dealer,
