@@ -10,8 +10,8 @@ import (
 )
 
 type RegistrationService interface {
-	GetRegistrations(ctx context.Context) ([]db.MachineRegistration, error)
-	GetRegistrationById(ctx context.Context, id string) (*db.MachineRegistration, error)
+	GetRegistrations(ctx context.Context) ([]types.MachineRegistration, error)
+	GetRegistrationById(ctx context.Context, id string) (*types.MachineRegistration, error)
 	CreateRegistration(ctx context.Context, registration *db.MachineRegistration) error
 	UpdateRegistration(ctx context.Context, id string, registration *db.MachineRegistration) error
 	DeleteRegistration(ctx context.Context, id string) error
@@ -26,22 +26,25 @@ func NewRegistrationService(store stores.RegistrationStore, smtpClient lib.SMTPC
 	return &RegistrationServiceImpl{store: store, smtpClient: smtpClient}
 }
 
-func (service *RegistrationServiceImpl) GetRegistrations(ctx context.Context) ([]db.MachineRegistration, error) {
+func (service *RegistrationServiceImpl) GetRegistrations(ctx context.Context) ([]types.MachineRegistration, error) {
 	registrations, err := service.store.GetRegistrations(ctx)
 	if err != nil {
 		return nil, err
 	}
-
-	return registrations, nil
+	var result []types.MachineRegistration
+	for _, reg := range registrations {
+		result = append(result, lib.SerializeMachineRegistration(reg))
+	}
+	return result, nil
 }
 
-func (service *RegistrationServiceImpl) GetRegistrationById(ctx context.Context, id string) (*db.MachineRegistration, error) {
+func (service *RegistrationServiceImpl) GetRegistrationById(ctx context.Context, id string) (*types.MachineRegistration, error) {
 	registration, err := service.store.GetRegistrationById(ctx, id)
 	if err != nil {
 		return nil, err
 	}
-
-	return registration, nil
+	result := lib.SerializeMachineRegistration(*registration)
+	return &result, nil
 }
 
 func (service *RegistrationServiceImpl) CreateRegistration(ctx context.Context, registration *db.MachineRegistration) error {
