@@ -1,7 +1,8 @@
 package handlers
 
 import (
-	"github.com/sean-david-welch/farmec-v2/server/db"
+	"github.com/sean-david-welch/farmec-v2/server/lib"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 	"log"
 	"net/http"
 
@@ -45,7 +46,8 @@ func (handler *RegistrationHandler) GetRegistrationById(context *gin.Context) {
 
 func (handler *RegistrationHandler) CreateRegistration(context *gin.Context) {
 	ctx := context.Request.Context()
-	var registration *db.MachineRegistration
+	var registration types.MachineRegistration
+	dbRegistration := lib.DeserializeMachineRegistration(registration)
 
 	if err := context.ShouldBindJSON(&registration); err != nil {
 		log.Printf("error when creating registration: %v", err)
@@ -53,7 +55,7 @@ func (handler *RegistrationHandler) CreateRegistration(context *gin.Context) {
 		return
 	}
 
-	if err := handler.service.CreateRegistration(ctx, registration); err != nil {
+	if err := handler.service.CreateRegistration(ctx, &dbRegistration); err != nil {
 		log.Printf("error when creating registration: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error when creating registration"})
 	}
@@ -64,7 +66,8 @@ func (handler *RegistrationHandler) CreateRegistration(context *gin.Context) {
 func (handler *RegistrationHandler) UpdateRegistration(context *gin.Context) {
 	ctx := context.Request.Context()
 	id := context.Param("id")
-	var registration *db.MachineRegistration
+	var registration types.MachineRegistration
+	dbRegistration := lib.DeserializeMachineRegistration(registration)
 
 	if err := context.ShouldBindJSON(&registration); err != nil {
 		log.Printf("error when updating registration: %v", err)
@@ -72,7 +75,7 @@ func (handler *RegistrationHandler) UpdateRegistration(context *gin.Context) {
 		return
 	}
 
-	if err := handler.service.UpdateRegistration(ctx, id, registration); err != nil {
+	if err := handler.service.UpdateRegistration(ctx, id, &dbRegistration); err != nil {
 		log.Printf("error when updating registration: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error when updating registration"})
 	}
