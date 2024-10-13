@@ -1,11 +1,12 @@
 package handlers
 
 import (
+	"github.com/sean-david-welch/farmec-v2/server/lib"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sean-david-welch/farmec-v2/server/db"
 	"github.com/sean-david-welch/farmec-v2/server/services"
 )
 
@@ -31,14 +32,15 @@ func (handler *ExhibitionHandler) GetExhibitions(context *gin.Context) {
 
 func (handler *ExhibitionHandler) CreateExhibition(context *gin.Context) {
 	ctx := context.Request.Context()
-	var exhibition *db.Exhibition
+	var exhibition types.Exhibition
+	dbExhibition := lib.DeserializeExhibition(exhibition)
 
 	if err := context.ShouldBindJSON(&exhibition); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "invalid request body", "details": err.Error()})
 		return
 	}
 
-	if err := handler.service.CreateExhibition(ctx, exhibition); err != nil {
+	if err := handler.service.CreateExhibition(ctx, &dbExhibition); err != nil {
 		log.Printf("error occurred while creating exhibition: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while creating exhibition", "details": err.Error()})
 		return
@@ -51,14 +53,15 @@ func (handler *ExhibitionHandler) UpdateExhibition(context *gin.Context) {
 	ctx := context.Request.Context()
 	id := context.Param("id")
 
-	var exhibition *db.Exhibition
+	var exhibition types.Exhibition
+	dbExhibition := lib.DeserializeExhibition(exhibition)
 
 	if err := context.ShouldBindJSON(&exhibition); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "invalid request body", "details": err.Error()})
 		return
 	}
 
-	if err := handler.service.UpdateExhibition(ctx, id, exhibition); err != nil {
+	if err := handler.service.UpdateExhibition(ctx, id, &dbExhibition); err != nil {
 		log.Printf("error occurred while updating exhibition: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while updating exhibition", "details": err.Error()})
 		return
