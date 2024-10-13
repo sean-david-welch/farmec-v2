@@ -13,8 +13,8 @@ import (
 )
 
 type MachineService interface {
-	GetMachines(ctx context.Context, id string) ([]db.Machine, error)
-	GetMachineById(ctx context.Context, id string) (*db.Machine, error)
+	GetMachines(ctx context.Context, id string) ([]types.Machine, error)
+	GetMachineById(ctx context.Context, id string) (*types.Machine, error)
 	CreateMachine(ctx context.Context, machine *db.Machine) (*types.ModelResult, error)
 	UpdateMachine(ctx context.Context, id string, machine *db.Machine) (*types.ModelResult, error)
 	DeleteMachine(ctx context.Context, id string) error
@@ -34,22 +34,26 @@ func NewMachineService(store stores.MachineStore, s3Client lib.S3Client, folder 
 	}
 }
 
-func (service *MachineServiceImpl) GetMachines(ctx context.Context, id string) ([]db.Machine, error) {
+func (service *MachineServiceImpl) GetMachines(ctx context.Context, id string) ([]types.Machine, error) {
 	machines, err := service.store.GetMachines(ctx, id)
 	if err != nil {
 		return nil, errors.New("machines with supplier_id not foud")
 	}
-
-	return machines, nil
+	var result []types.Machine
+	for _, machine := range machines {
+		result = append(result, lib.SerializeMachine(machine))
+	}
+	return result, nil
 }
 
-func (service *MachineServiceImpl) GetMachineById(ctx context.Context, id string) (*db.Machine, error) {
+func (service *MachineServiceImpl) GetMachineById(ctx context.Context, id string) (*types.Machine, error) {
 	machine, err := service.store.GetMachineById(ctx, id)
 	if err != nil {
 		return nil, errors.New("machine with id not found")
 	}
+	result := lib.SerializeMachine(*machine)
 
-	return machine, nil
+	return &result, nil
 }
 
 func (service *MachineServiceImpl) CreateMachine(ctx context.Context, machine *db.Machine) (*types.ModelResult, error) {
