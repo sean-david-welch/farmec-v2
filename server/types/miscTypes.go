@@ -1,7 +1,6 @@
 package types
 
 import (
-	"database/sql"
 	"github.com/sean-david-welch/farmec-v2/server/db"
 )
 
@@ -54,25 +53,25 @@ type WarranrtyPartsDB struct {
 }
 
 type WarrantyClaimPDF struct {
-	Dealer         string         `json:"dealer"`
-	DealerContact  sql.NullString `json:"dealer_contact"`
-	OwnerName      string         `json:"owner_name"`
-	MachineModel   string         `json:"machine_model"`
-	SerialNumber   string         `json:"serial_number"`
-	InstallDate    sql.NullString `json:"install_date"`
-	FailureDate    sql.NullString `json:"failure_date"`
-	RepairDate     sql.NullString `json:"repair_date"`
-	FailureDetails sql.NullString `json:"failure_details"`
-	RepairDetails  sql.NullString `json:"repair_details"`
-	LabourHours    sql.NullString `json:"labour_hours"`
-	CompletedBy    sql.NullString `json:"completed_by"`
+	Dealer         string  `json:"dealer"`
+	DealerContact  *string `json:"dealer_contact"`
+	OwnerName      *string `json:"owner_name"`
+	MachineModel   *string `json:"machine_model"`
+	SerialNumber   *string `json:"serial_number"`
+	InstallDate    *string `json:"install_date"`
+	FailureDate    *string `json:"failure_date"`
+	RepairDate     *string `json:"repair_date"`
+	FailureDetails *string `json:"failure_details"`
+	RepairDetails  *string `json:"repair_details"`
+	LabourHours    *string `json:"labour_hours"`
+	CompletedBy    *string `json:"completed_by"`
 }
 
 type PartsRequiredPDF struct {
-	PartNumber     sql.NullString `json:"part_number"`
-	QuantityNeeded string         `json:"quantity_needed"`
-	InvoiceNumber  sql.NullString `json:"invoice_number"`
-	Description    sql.NullString `json:"description"`
+	PartNumber     string `json:"part_number"`
+	QuantityNeeded string `json:"quantity_needed"`
+	InvoiceNumber  string `json:"invoice_number"`
+	Description    string `json:"description"`
 }
 
 type MachineRegistration struct {
