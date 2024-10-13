@@ -66,7 +66,13 @@ func (handler *PdfHandler) RenderWarrantyClaimPdf(context *gin.Context) {
 
 	fileName := fmt.Sprintf("%s-%s.warranty.pdf",
 		strings.ReplaceAll(warranty.Warranty.Dealer, " ", ""),
-		strings.ReplaceAll(warranty.Warranty.OwnerName, " ", ""))
+		func(ownerName *string) string {
+			if ownerName != nil {
+				return strings.ReplaceAll(*ownerName, " ", "")
+			}
+			return "unknown_owner"
+		}(warranty.Warranty.OwnerName),
+	)
 
 	contentDisposition := fmt.Sprintf("attachment; filename=\"%s\"", fileName)
 
