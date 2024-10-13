@@ -1,7 +1,8 @@
 package handlers
 
 import (
-	"github.com/sean-david-welch/farmec-v2/server/db"
+	"github.com/sean-david-welch/farmec-v2/server/lib"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 	"log"
 	"net/http"
 
@@ -33,7 +34,8 @@ func (handler *ProductHandler) GetProducts(context *gin.Context) {
 
 func (handler *ProductHandler) CreateProduct(context *gin.Context) {
 	ctx := context.Request.Context()
-	var product db.Product
+	var product types.Product
+	dbProduct := lib.DeserializeProduct(product)
 
 	if err := context.ShouldBindJSON(&product); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body", "details": err.Error()})
@@ -45,7 +47,7 @@ func (handler *ProductHandler) CreateProduct(context *gin.Context) {
 		return
 	}
 
-	result, err := handler.productService.CreateProduct(ctx, &product)
+	result, err := handler.productService.CreateProduct(ctx, &dbProduct)
 	if err != nil {
 		log.Printf("Error creating product: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while creating product", "details": err.Error()})
@@ -65,7 +67,8 @@ func (handler *ProductHandler) UpdateProduct(context *gin.Context) {
 	ctx := context.Request.Context()
 	id := context.Param("id")
 
-	var product db.Product
+	var product types.Product
+	dbProduct := lib.DeserializeProduct(product)
 
 	if err := context.ShouldBindJSON(&product); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Request Body", "details": err.Error()})
@@ -77,7 +80,7 @@ func (handler *ProductHandler) UpdateProduct(context *gin.Context) {
 		return
 	}
 
-	result, err := handler.productService.UpdateProduct(ctx, id, &product)
+	result, err := handler.productService.UpdateProduct(ctx, id, &dbProduct)
 	if err != nil {
 		log.Printf("Error updating product: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while updating machine", "details": err.Error()})
