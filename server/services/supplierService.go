@@ -42,20 +42,7 @@ func (service *SupplierServiceImpl) GetSuppliers(ctx context.Context) ([]types.S
 
 	var result []types.Supplier
 	for _, supplier := range suppliers {
-		result = append(result, types.Supplier{
-			ID:              supplier.ID,
-			Name:            supplier.Name,
-			LogoImage:       supplier.LogoImage.String,
-			MarketingImage:  supplier.MarketingImage.String,
-			Description:     supplier.Description.String,
-			SocialFacebook:  &supplier.SocialFacebook.String,
-			SocialInstagram: &supplier.SocialInstagram.String,
-			SocialLinkedin:  &supplier.SocialLinkedin.String,
-			SocialTwitter:   &supplier.SocialTwitter.String,
-			SocialYoutube:   &supplier.SocialYoutube.String,
-			SocialWebsite:   &supplier.SocialWebsite.String,
-			Created:         supplier.Created.String,
-		})
+		result = append(result, lib.ConvertSupplier(supplier))
 	}
 	return result, nil
 }
@@ -65,21 +52,8 @@ func (service *SupplierServiceImpl) GetSupplierById(ctx context.Context, id stri
 	if err != nil {
 		return nil, err
 	}
-	result := &types.Supplier{
-		ID:              supplier.ID,
-		Name:            supplier.Name,
-		LogoImage:       supplier.LogoImage.String,
-		MarketingImage:  supplier.MarketingImage.String,
-		Description:     supplier.Description.String,
-		SocialFacebook:  &supplier.SocialFacebook.String,
-		SocialInstagram: &supplier.SocialInstagram.String,
-		SocialLinkedin:  &supplier.SocialLinkedin.String,
-		SocialTwitter:   &supplier.SocialTwitter.String,
-		SocialYoutube:   &supplier.SocialYoutube.String,
-		SocialWebsite:   &supplier.SocialWebsite.String,
-		Created:         supplier.Created.String,
-	}
-	return result, nil
+	result := lib.ConvertSupplier(*supplier)
+	return &result, nil
 }
 
 func (service *SupplierServiceImpl) CreateSupplier(ctx context.Context, supplier *db.Supplier) (*types.SupplierResult, error) {
