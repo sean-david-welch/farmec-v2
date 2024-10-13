@@ -13,7 +13,7 @@ import (
 )
 
 type CarouselService interface {
-	GetCarousels(ctx context.Context) ([]db.Carousel, error)
+	GetCarousels(ctx context.Context) ([]types.Carousel, error)
 	CreateCarousel(ctx context.Context, carousel *db.Carousel) (*types.ModelResult, error)
 	UpdateCarousel(ctx context.Context, id string, carousel *db.Carousel) (*types.ModelResult, error)
 	DeleteCarousel(ctx context.Context, id string) error
@@ -33,12 +33,16 @@ func NewCarouselService(store stores.CarouselStore, s3Client lib.S3Client, folde
 	}
 }
 
-func (service *CarouselServiceImpl) GetCarousels(ctx context.Context) ([]db.Carousel, error) {
+func (service *CarouselServiceImpl) GetCarousels(ctx context.Context) ([]types.Carousel, error) {
 	carousels, err := service.store.GetCarousels(ctx)
 	if err != nil {
 		return nil, err
 	}
-	return carousels, nil
+	var result []types.Carousel
+	for _, carousel := range carousels {
+		result = append(result, lib.SerializeCarousel(carousel))
+	}
+	return result, nil
 }
 
 func (service *CarouselServiceImpl) CreateCarousel(ctx context.Context, carousel *db.Carousel) (*types.ModelResult, error) {
