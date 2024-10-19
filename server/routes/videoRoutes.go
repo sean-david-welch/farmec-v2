@@ -16,13 +16,13 @@ import (
 )
 
 func InitVideos(router *gin.Engine, database *sql.DB, secrets *lib.Secrets, adminMiddleware *middleware.AdminMiddleware) {
-	service, err := youtube.NewService(context.Background(), option.WithAPIKey(secrets.YoutubeApiKey))
+	yt, err := youtube.NewService(context.Background(), option.WithAPIKey(secrets.YoutubeApiKey))
 	if err != nil {
 		log.Fatal("error calling YouTube API: ", err)
 	}
 
 	repo := repository.NewVideoRepo(database)
-	service := services.NewVideoService(repo, service)
+	service := services.NewVideoService(repo, yt)
 	handler := handlers.NewVideoHandler(service)
 
 	VideoRoutes(router, handler, adminMiddleware)
