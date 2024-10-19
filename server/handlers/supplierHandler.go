@@ -51,8 +51,8 @@ func (handler *SupplierHandler) CreateSupplier(context *gin.Context) {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body", "details": err.Error()})
 		return
 	}
-	dbSupplier := lib.DeserializeSupplier(supplier)
 
+	dbSupplier := lib.DeserializeSupplier(supplier)
 	result, err := handler.service.CreateSupplier(ctx, dbSupplier)
 	if err != nil {
 		log.Printf("Error creating supplier: %v", err)
@@ -76,13 +76,12 @@ func (handler *SupplierHandler) UpdateSupplier(context *gin.Context) {
 	id := context.Param("id")
 
 	var supplier types.Supplier
-	dbSupplier := lib.DeserializeSupplier(supplier)
-
 	if err := context.ShouldBindJSON(&supplier); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body", "details": err.Error()})
 		return
 	}
 
+	dbSupplier := lib.DeserializeSupplier(supplier)
 	result, err := handler.service.UpdateSupplier(ctx, id, &dbSupplier)
 	if err != nil {
 		log.Printf("Error updating supplier: %v", err)
