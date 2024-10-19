@@ -7,12 +7,12 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sean-david-welch/farmec-v2/server/handlers"
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
+	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/services"
-	"github.com/sean-david-welch/farmec-v2/server/stores"
 )
 
 func InitCarousel(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, adminMiddleare *middleware.AdminMiddleware) {
-	carouselStore := stores.NewCarouselStore(database)
+	carouselStore := repository.NewCarouselStore(database)
 	carouselService := services.NewCarouselService(carouselStore, s3Client, "Carousels")
 	carouselHandler := handlers.NewCarouselHandler(carouselService)
 

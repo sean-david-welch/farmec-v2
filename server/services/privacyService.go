@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/sean-david-welch/farmec-v2/server/db"
 	"github.com/sean-david-welch/farmec-v2/server/lib"
-	"github.com/sean-david-welch/farmec-v2/server/stores"
+	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
@@ -16,10 +16,10 @@ type PrivacyService interface {
 }
 
 type PrivacyServiceImpl struct {
-	store stores.PrivacyStore
+	store repository.PrivacyStore
 }
 
-func NewPrivacyService(store stores.PrivacyStore) *PrivacyServiceImpl {
+func NewPrivacyService(store repository.PrivacyStore) *PrivacyServiceImpl {
 	return &PrivacyServiceImpl{store: store}
 }
 

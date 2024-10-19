@@ -5,7 +5,7 @@ import (
 	"golang.org/x/net/context"
 	"log"
 
-	"github.com/sean-david-welch/farmec-v2/server/stores"
+	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/stripe/stripe-go/v76"
 	"github.com/stripe/stripe-go/v76/checkout/session"
 )
@@ -17,10 +17,10 @@ type CheckoutService interface {
 
 type CheckoutServiceImpl struct {
 	secrets *lib.Secrets
-	store   stores.LineItemStore
+	store   repository.LineItemStore
 }
 
-func NewCheckoutService(secrets *lib.Secrets, store stores.LineItemStore) *CheckoutServiceImpl {
+func NewCheckoutService(secrets *lib.Secrets, store repository.LineItemStore) *CheckoutServiceImpl {
 	return &CheckoutServiceImpl{secrets: secrets, store: store}
 }
 

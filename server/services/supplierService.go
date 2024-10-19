@@ -8,7 +8,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"log"
 
-	"github.com/sean-david-welch/farmec-v2/server/stores"
+	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
@@ -23,10 +23,10 @@ type SupplierService interface {
 type SupplierServiceImpl struct {
 	folder   string
 	s3Client lib.S3Client
-	store    stores.SupplierStore
+	store    repository.SupplierStore
 }
 
-func NewSupplierService(store stores.SupplierStore, s3Client lib.S3Client, folder string) *SupplierServiceImpl {
+func NewSupplierService(store repository.SupplierStore, s3Client lib.S3Client, folder string) *SupplierServiceImpl {
 	return &SupplierServiceImpl{
 		store:    store,
 		s3Client: s3Client,

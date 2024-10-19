@@ -17,8 +17,8 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/sean-david-welch/farmec-v2/server/handlers"
 	"github.com/sean-david-welch/farmec-v2/server/lib"
+	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/services"
-	"github.com/sean-david-welch/farmec-v2/server/stores"
 )
 
 type BlogTestSuite struct {
@@ -56,7 +56,7 @@ func (suite *BlogTestSuite) SetupTest() {
 	suite.db = database
 	suite.mock = mock
 
-	store := stores.NewBlogStore(database)
+	store := repository.NewBlogStore(database)
 	s3Client := lib.NewNoOpS3Client()
 	service := services.NewBlogService(store, s3Client, "test-folder")
 	handler := handlers.NewBlogHandler(service)

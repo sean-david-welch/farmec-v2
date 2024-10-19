@@ -8,7 +8,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"log"
 
-	"github.com/sean-david-welch/farmec-v2/server/stores"
+	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
@@ -23,10 +23,10 @@ type MachineService interface {
 type MachineServiceImpl struct {
 	folder   string
 	s3Client lib.S3Client
-	store    stores.MachineStore
+	store    repository.MachineStore
 }
 
-func NewMachineService(store stores.MachineStore, s3Client lib.S3Client, folder string) *MachineServiceImpl {
+func NewMachineService(store repository.MachineStore, s3Client lib.S3Client, folder string) *MachineServiceImpl {
 	return &MachineServiceImpl{
 		store:    store,
 		s3Client: s3Client,

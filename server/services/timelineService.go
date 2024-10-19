@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/sean-david-welch/farmec-v2/server/db"
 	"github.com/sean-david-welch/farmec-v2/server/lib"
-	"github.com/sean-david-welch/farmec-v2/server/stores"
+	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
@@ -16,10 +16,10 @@ type TimelineService interface {
 }
 
 type TimelineServiceImpl struct {
-	store stores.TimelineStore
+	store repository.TimelineStore
 }
 
-func NewTimelineService(store stores.TimelineStore) *TimelineServiceImpl {
+func NewTimelineService(store repository.TimelineStore) *TimelineServiceImpl {
 	return &TimelineServiceImpl{store: store}
 }
 
