@@ -33,13 +33,13 @@ func (handler *TimelineHandler) GetTimelines(context *gin.Context) {
 func (handler *TimelineHandler) CreateTimeline(context *gin.Context) {
 	ctx := context.Request.Context()
 	var timeline types.Timeline
-	dbTimeline := lib.DeserializeTimeline(timeline)
 
 	if err := context.ShouldBindJSON(&timeline); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "invalid request body", "details": err.Error()})
 		return
 	}
 
+	dbTimeline := lib.DeserializeTimeline(timeline)
 	if err := handler.service.CreateTimeline(ctx, &dbTimeline); err != nil {
 		log.Printf("error while creating timeline: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while creating timeline", "details": err.Error()})
@@ -53,13 +53,13 @@ func (handler *TimelineHandler) UpdateTimeline(context *gin.Context) {
 	ctx := context.Request.Context()
 	id := context.Param("id")
 	var timeline types.Timeline
-	dbTimeline := lib.DeserializeTimeline(timeline)
 
 	if err := context.ShouldBindJSON(&timeline); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "invalid request body", "details": err.Error()})
 		return
 	}
 
+	dbTimeline := lib.DeserializeTimeline(timeline)
 	if err := handler.service.UpdateTimeline(ctx, id, &dbTimeline); err != nil {
 		log.Printf("error while updating timeline: %v", err)
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Error occurred while updating timeline", "details": err.Error()})
