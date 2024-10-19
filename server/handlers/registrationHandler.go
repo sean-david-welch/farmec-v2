@@ -47,14 +47,13 @@ func (handler *RegistrationHandler) GetRegistrationById(context *gin.Context) {
 func (handler *RegistrationHandler) CreateRegistration(context *gin.Context) {
 	ctx := context.Request.Context()
 	var registration types.MachineRegistration
-	dbRegistration := lib.DeserializeMachineRegistration(registration)
-
 	if err := context.ShouldBindJSON(&registration); err != nil {
 		log.Printf("error when creating registration: %v", err)
 		context.JSON(http.StatusBadRequest, gin.H{"error": "error occurred while creating registration -  bad request"})
 		return
 	}
 
+	dbRegistration := lib.DeserializeMachineRegistration(registration)
 	if err := handler.service.CreateRegistration(ctx, &dbRegistration); err != nil {
 		log.Printf("error when creating registration: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error when creating registration"})
@@ -66,15 +65,15 @@ func (handler *RegistrationHandler) CreateRegistration(context *gin.Context) {
 func (handler *RegistrationHandler) UpdateRegistration(context *gin.Context) {
 	ctx := context.Request.Context()
 	id := context.Param("id")
-	var registration types.MachineRegistration
-	dbRegistration := lib.DeserializeMachineRegistration(registration)
 
+	var registration types.MachineRegistration
 	if err := context.ShouldBindJSON(&registration); err != nil {
 		log.Printf("error when updating registration: %v", err)
 		context.JSON(http.StatusBadRequest, gin.H{"error": "error occurred while updating registration -  bad request"})
 		return
 	}
 
+	dbRegistration := lib.DeserializeMachineRegistration(registration)
 	if err := handler.service.UpdateRegistration(ctx, id, &dbRegistration); err != nil {
 		log.Printf("error when updating registration: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error when updating registration"})
