@@ -35,18 +35,17 @@ func (handler *ProductHandler) GetProducts(context *gin.Context) {
 func (handler *ProductHandler) CreateProduct(context *gin.Context) {
 	ctx := context.Request.Context()
 	var product types.Product
-	dbProduct := lib.DeserializeProduct(product)
 
 	if err := context.ShouldBindJSON(&product); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body", "details": err.Error()})
 		return
 	}
-
 	if product.MachineID == "" || product.MachineID == "null" {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "SupplierID cannot be empty"})
 		return
 	}
 
+	dbProduct := lib.DeserializeProduct(product)
 	result, err := handler.service.CreateProduct(ctx, &dbProduct)
 	if err != nil {
 		log.Printf("Error creating product: %v", err)
@@ -68,18 +67,16 @@ func (handler *ProductHandler) UpdateProduct(context *gin.Context) {
 	id := context.Param("id")
 
 	var product types.Product
-	dbProduct := lib.DeserializeProduct(product)
-
 	if err := context.ShouldBindJSON(&product); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Request Body", "details": err.Error()})
 		return
 	}
-
 	if product.MachineID == "" || product.MachineID == "null" {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "SupplierID cannot be empty"})
 		return
 	}
 
+	dbProduct := lib.DeserializeProduct(product)
 	result, err := handler.service.UpdateProduct(ctx, id, &dbProduct)
 	if err != nil {
 		log.Printf("Error updating product: %v", err)
