@@ -33,13 +33,13 @@ func (handler *ExhibitionHandler) GetExhibitions(context *gin.Context) {
 func (handler *ExhibitionHandler) CreateExhibition(context *gin.Context) {
 	ctx := context.Request.Context()
 	var exhibition types.Exhibition
-	dbExhibition := lib.DeserializeExhibition(exhibition)
 
 	if err := context.ShouldBindJSON(&exhibition); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "invalid request body", "details": err.Error()})
 		return
 	}
 
+	dbExhibition := lib.DeserializeExhibition(exhibition)
 	if err := handler.service.CreateExhibition(ctx, &dbExhibition); err != nil {
 		log.Printf("error occurred while creating exhibition: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while creating exhibition", "details": err.Error()})
@@ -54,13 +54,12 @@ func (handler *ExhibitionHandler) UpdateExhibition(context *gin.Context) {
 	id := context.Param("id")
 
 	var exhibition types.Exhibition
-	dbExhibition := lib.DeserializeExhibition(exhibition)
-
 	if err := context.ShouldBindJSON(&exhibition); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "invalid request body", "details": err.Error()})
 		return
 	}
 
+	dbExhibition := lib.DeserializeExhibition(exhibition)
 	if err := handler.service.UpdateExhibition(ctx, id, &dbExhibition); err != nil {
 		log.Printf("error occurred while updating exhibition: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while updating exhibition", "details": err.Error()})

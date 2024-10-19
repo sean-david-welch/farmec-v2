@@ -47,7 +47,6 @@ func (handler *LineItemHandler) GetLineItemById(context *gin.Context) {
 func (handler *LineItemHandler) CreateLineItem(context *gin.Context) {
 	ctx := context.Request.Context()
 	var lineItem types.LineItem
-	dbLineItem := lib.DeserializeLineItem(lineItem)
 
 	if err := context.ShouldBindJSON(&lineItem); err != nil {
 		log.Printf("error when creating lineItem: %v", err)
@@ -55,6 +54,7 @@ func (handler *LineItemHandler) CreateLineItem(context *gin.Context) {
 		return
 	}
 
+	dbLineItem := lib.DeserializeLineItem(lineItem)
 	result, err := handler.service.CreateLineItem(ctx, &dbLineItem)
 	if err != nil {
 		log.Printf("error when creating lineItem: %v", err)
@@ -73,15 +73,15 @@ func (handler *LineItemHandler) CreateLineItem(context *gin.Context) {
 func (handler *LineItemHandler) UpdateLineItem(context *gin.Context) {
 	ctx := context.Request.Context()
 	id := context.Param("id")
-	var lineItem types.LineItem
-	dbLineItem := lib.DeserializeLineItem(lineItem)
 
+	var lineItem types.LineItem
 	if err := context.ShouldBindJSON(&lineItem); err != nil {
 		log.Printf("error when updating lineItem: %v", err)
 		context.JSON(http.StatusBadRequest, gin.H{"error": "error occurred while updating lineItem -  bad request"})
 		return
 	}
 
+	dbLineItem := lib.DeserializeLineItem(lineItem)
 	result, err := handler.service.UpdateLineItem(ctx, id, &dbLineItem)
 	if err != nil {
 		log.Printf("error when updating lineItem: %v", err)

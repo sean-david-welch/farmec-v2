@@ -49,18 +49,17 @@ func (handler *MachineHandler) GetMachineById(context *gin.Context) {
 func (handler *MachineHandler) CreateMachine(context *gin.Context) {
 	ctx := context.Request.Context()
 	var machine types.Machine
-	dbMachine := lib.DeserializeMachine(machine)
 
 	if err := context.ShouldBindJSON(&machine); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body", "details": err.Error()})
 		return
 	}
-
 	if machine.SupplierID == "" || machine.SupplierID == "null" {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "SupplierID cannot be empty"})
 		return
 	}
 
+	dbMachine := lib.DeserializeMachine(machine)
 	result, err := handler.service.CreateMachine(ctx, &dbMachine)
 	if err != nil {
 		log.Printf("Error creating machine: %v", err)
@@ -82,18 +81,16 @@ func (handler *MachineHandler) UpdateMachine(context *gin.Context) {
 	id := context.Param("id")
 
 	var machine types.Machine
-	dbMachine := lib.DeserializeMachine(machine)
-
 	if err := context.ShouldBindJSON(&machine); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body", "details": err.Error()})
 		return
 	}
-
 	if machine.SupplierID == "" || machine.SupplierID == "null" {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "SupplierID cannot be empty"})
 		return
 	}
 
+	dbMachine := lib.DeserializeMachine(machine)
 	result, err := handler.service.UpdateMachine(ctx, id, &dbMachine)
 	if err != nil {
 		log.Printf("Error updating machine: %v", err)
