@@ -6,6 +6,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/types"
+	"log"
 	"net/smtp"
 )
 
@@ -24,6 +25,30 @@ type WarrantyServiceImpl struct {
 
 func NewWarrantyService(repo repository.WarrantyRepo, smtpClient lib.SMTPClient) *WarrantyServiceImpl {
 	return &WarrantyServiceImpl{repo: repo, smtpClient: smtpClient}
+}
+
+func (service *WarrantyServiceImpl) sendWarrantyEmail(warranty *db.WarrantyClaim) {
+	client, err := service.smtpClient.SetupSMTPClient()
+	if err != nil {
+		log.Printf("Failed to setup SMTP client: %v", err)
+		return
+	}
+	defer func(client *smtp.Client) {
+		if err := client.Close(); err != nil {
+			log.Printf("Failed to close SMTP client: %v", err)
+		}
+	}(client)
+
+	data := &types.EmailData{
+		Name:    warranty.OwnerName,
+		Email:   warranty.Dealer,
+		Message: warranty.MachineModel,
+	}
+
+	if err := service.smtpClient.SendFormNotification(client, data, "Warranty"); err != nil {
+		log.Printf("Failed to send warranty email: %v", err)
+		return
+	}
 }
 
 func (service *WarrantyServiceImpl) GetWarranties(ctx context.Context) ([]types.DealerOwnerInfo, error) {
@@ -53,26 +78,7 @@ func (service *WarrantyServiceImpl) CreateWarranty(ctx context.Context, warranty
 		return err
 	}
 
-	client, err := service.smtpClient.SetupSMTPClient()
-	if err != nil {
-		return err
-	}
-	defer func(client *smtp.Client) {
-		err := client.Close()
-		if err != nil {
-			return
-		}
-	}(client)
-
-	data := &types.EmailData{
-		Name:    warranty.OwnerName,
-		Email:   warranty.Dealer,
-		Message: warranty.MachineModel,
-	}
-
-	if err := service.smtpClient.SendFormNotification(client, data, "Warranty"); err != nil {
-		return err
-	}
+	go service.sendWarrantyEmail(warranty)
 
 	return nil
 }
@@ -82,26 +88,7 @@ func (service *WarrantyServiceImpl) UpdateWarranty(ctx context.Context, id strin
 		return err
 	}
 
-	client, err := service.smtpClient.SetupSMTPClient()
-	if err != nil {
-		return err
-	}
-	defer func(client *smtp.Client) {
-		err := client.Close()
-		if err != nil {
-			return
-		}
-	}(client)
-
-	data := &types.EmailData{
-		Name:    warranty.OwnerName,
-		Email:   warranty.Dealer,
-		Message: warranty.MachineModel,
-	}
-
-	if err := service.smtpClient.SendFormNotification(client, data, "Warranty"); err != nil {
-		return err
-	}
+	go service.sendWarrantyEmail(warranty)
 
 	return nil
 }
