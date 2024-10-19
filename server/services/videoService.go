@@ -13,7 +13,7 @@ import (
 )
 
 type VideoService interface {
-	TransformData(video *db.Video) (*db.Video, error)
+	TransformData(ctx context.Context, video *db.Video) (*db.Video, error)
 	GetVideos(ctx context.Context, id string) ([]types.Video, error)
 	CreateVideo(ctx context.Context, video *db.Video) error
 	UpdateVideo(ctx context.Context, id string, video *db.Video) error
