@@ -80,7 +80,7 @@ func (handler *WarrantyHandler) UpdateWarranty(context *gin.Context) {
 	id := context.Param("id")
 
 	var warrantyParts types.WarranrtyParts
-	if err := context.ShouldBindJSON(warrantyParts); err != nil {
+	if err := context.ShouldBindJSON(&warrantyParts); err != nil {
 		log.Printf("error occurred - bad request: %v", err)
 		context.JSON(http.StatusBadRequest, gin.H{"error": "error occurred bad request"})
 		return
