@@ -25,8 +25,8 @@ func NewProductRepo(sql *sql.DB) *ProductRepoImpl {
 	return &ProductRepoImpl{queries: queries}
 }
 
-func (store *ProductRepoImpl) GetProducts(ctx context.Context, id string) ([]db.Product, error) {
-	products, err := store.queries.GetProducts(ctx, id)
+func (repo *ProductRepoImpl) GetProducts(ctx context.Context, id string) ([]db.Product, error) {
+	products, err := repo.queries.GetProducts(ctx, id)
 	if err != nil {
 		return nil, fmt.Errorf("an error occurred while getting products: %w", err)
 	}
@@ -45,15 +45,15 @@ func (store *ProductRepoImpl) GetProducts(ctx context.Context, id string) ([]db.
 	return result, nil
 }
 
-func (store *ProductRepoImpl) GetProductById(ctx context.Context, id string) (*db.Product, error) {
-	product, err := store.queries.GetProductByID(ctx, id)
+func (repo *ProductRepoImpl) GetProductById(ctx context.Context, id string) (*db.Product, error) {
+	product, err := repo.queries.GetProductByID(ctx, id)
 	if err != nil {
 		return nil, fmt.Errorf("an error occurred while getting product: %w", err)
 	}
 	return &product, nil
 }
 
-func (store *ProductRepoImpl) CreateProduct(ctx context.Context, product *db.Product) error {
+func (repo *ProductRepoImpl) CreateProduct(ctx context.Context, product *db.Product) error {
 	product.ID = uuid.NewString()
 	params := db.CreateProductParams{
 		ID:           product.ID,
@@ -63,13 +63,13 @@ func (store *ProductRepoImpl) CreateProduct(ctx context.Context, product *db.Pro
 		Description:  product.Description,
 		ProductLink:  product.ProductLink,
 	}
-	if err := store.queries.CreateProduct(ctx, params); err != nil {
+	if err := repo.queries.CreateProduct(ctx, params); err != nil {
 		return fmt.Errorf("an error occurred while creating a product: %w", err)
 	}
 	return nil
 }
 
-func (store *ProductRepoImpl) UpdateProduct(ctx context.Context, id string, product *db.Product) error {
+func (repo *ProductRepoImpl) UpdateProduct(ctx context.Context, id string, product *db.Product) error {
 	if product.ProductImage.Valid {
 		params := db.UpdateProductParams{
 			MachineID:    product.MachineID,
@@ -79,7 +79,7 @@ func (store *ProductRepoImpl) UpdateProduct(ctx context.Context, id string, prod
 			ProductLink:  product.ProductLink,
 			ID:           id,
 		}
-		if err := store.queries.UpdateProduct(ctx, params); err != nil {
+		if err := repo.queries.UpdateProduct(ctx, params); err != nil {
 			return fmt.Errorf("an error occurred while updating product: %w", err)
 		}
 	} else {
@@ -90,15 +90,15 @@ func (store *ProductRepoImpl) UpdateProduct(ctx context.Context, id string, prod
 			ProductLink: product.ProductLink,
 			ID:          id,
 		}
-		if err := store.queries.UpdateProductNoImage(ctx, params); err != nil {
+		if err := repo.queries.UpdateProductNoImage(ctx, params); err != nil {
 			return fmt.Errorf("an error occurred while updating product: %w", err)
 		}
 	}
 	return nil
 }
 
-func (store *ProductRepoImpl) DeleteProduct(ctx context.Context, id string) error {
-	if err := store.queries.DeleteProduct(ctx, id); err != nil {
+func (repo *ProductRepoImpl) DeleteProduct(ctx context.Context, id string) error {
+	if err := repo.queries.DeleteProduct(ctx, id); err != nil {
 		return fmt.Errorf("error occurred while deleting a product: %w", err)
 	}
 	return nil

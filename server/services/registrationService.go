@@ -19,15 +19,15 @@ type RegistrationService interface {
 
 type RegistrationServiceImpl struct {
 	smtpClient lib.SMTPClient
-	store      repository.RegistrationRepo
+	repo       repository.RegistrationRepo
 }
 
-func NewRegistrationService(store repository.RegistrationRepo, smtpClient lib.SMTPClient) *RegistrationServiceImpl {
-	return &RegistrationServiceImpl{store: store, smtpClient: smtpClient}
+func NewRegistrationService(repo repository.RegistrationRepo, smtpClient lib.SMTPClient) *RegistrationServiceImpl {
+	return &RegistrationServiceImpl{repo: repo, smtpClient: smtpClient}
 }
 
 func (service *RegistrationServiceImpl) GetRegistrations(ctx context.Context) ([]types.MachineRegistration, error) {
-	registrations, err := service.store.GetRegistrations(ctx)
+	registrations, err := service.repo.GetRegistrations(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -39,7 +39,7 @@ func (service *RegistrationServiceImpl) GetRegistrations(ctx context.Context) ([
 }
 
 func (service *RegistrationServiceImpl) GetRegistrationById(ctx context.Context, id string) (*types.MachineRegistration, error) {
-	registration, err := service.store.GetRegistrationById(ctx, id)
+	registration, err := service.repo.GetRegistrationById(ctx, id)
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +48,7 @@ func (service *RegistrationServiceImpl) GetRegistrationById(ctx context.Context,
 }
 
 func (service *RegistrationServiceImpl) CreateRegistration(ctx context.Context, registration *db.MachineRegistration) error {
-	if err := service.store.CreateRegistration(ctx, registration); err != nil {
+	if err := service.repo.CreateRegistration(ctx, registration); err != nil {
 		return err
 	}
 
@@ -77,7 +77,7 @@ func (service *RegistrationServiceImpl) CreateRegistration(ctx context.Context, 
 }
 
 func (service *RegistrationServiceImpl) UpdateRegistration(ctx context.Context, id string, registration *db.MachineRegistration) error {
-	if err := service.store.UpdateRegistration(ctx, id, registration); err != nil {
+	if err := service.repo.UpdateRegistration(ctx, id, registration); err != nil {
 		return err
 	}
 
@@ -106,7 +106,7 @@ func (service *RegistrationServiceImpl) UpdateRegistration(ctx context.Context, 
 }
 
 func (service *RegistrationServiceImpl) DeleteRegistration(ctx context.Context, id string) error {
-	if err := service.store.DeleteRegistration(ctx, id); err != nil {
+	if err := service.repo.DeleteRegistration(ctx, id); err != nil {
 		return err
 	}
 

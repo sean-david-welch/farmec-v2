@@ -20,17 +20,17 @@ type EmployeeService interface {
 }
 
 type EmployeeServiceImpl struct {
-	store    repository.EmployeeRepo
+	repo     repository.EmployeeRepo
 	s3Client lib.S3Client
 	folder   string
 }
 
-func NewEmployeeService(store repository.EmployeeRepo, s3Client lib.S3Client, folder string) *EmployeeServiceImpl {
-	return &EmployeeServiceImpl{store: store, s3Client: s3Client, folder: folder}
+func NewEmployeeService(repo repository.EmployeeRepo, s3Client lib.S3Client, folder string) *EmployeeServiceImpl {
+	return &EmployeeServiceImpl{repo: repo, s3Client: s3Client, folder: folder}
 }
 
 func (service *EmployeeServiceImpl) GetEmployees(ctx context.Context) ([]types.Employee, error) {
-	employees, err := service.store.GetEmployees(ctx)
+	employees, err := service.repo.GetEmployees(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -59,7 +59,7 @@ func (service *EmployeeServiceImpl) CreateEmployee(ctx context.Context, employee
 		Valid:  true,
 	}
 
-	if err := service.store.CreateEmployee(ctx, employee); err != nil {
+	if err := service.repo.CreateEmployee(ctx, employee); err != nil {
 		return nil, err
 	}
 
@@ -89,7 +89,7 @@ func (service *EmployeeServiceImpl) UpdateEmployee(ctx context.Context, id strin
 		}
 	}
 
-	if err := service.store.UpdateEmployee(ctx, id, employee); err != nil {
+	if err := service.repo.UpdateEmployee(ctx, id, employee); err != nil {
 		return nil, err
 	}
 
@@ -102,7 +102,7 @@ func (service *EmployeeServiceImpl) UpdateEmployee(ctx context.Context, id strin
 }
 
 func (service *EmployeeServiceImpl) DeleteEmployee(ctx context.Context, id string) error {
-	employee, err := service.store.GetEmployeeById(ctx, id)
+	employee, err := service.repo.GetEmployeeById(ctx, id)
 	if err != nil {
 		return err
 	}
@@ -111,7 +111,7 @@ func (service *EmployeeServiceImpl) DeleteEmployee(ctx context.Context, id strin
 		return err
 	}
 
-	if err := service.store.DeleteEmployee(ctx, id); err != nil {
+	if err := service.repo.DeleteEmployee(ctx, id); err != nil {
 		return err
 	}
 

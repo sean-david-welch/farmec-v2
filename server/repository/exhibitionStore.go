@@ -26,8 +26,8 @@ func NewExhibitionRepo(sql *sql.DB) *ExhibitionRepoImpl {
 	return &ExhibitionRepoImpl{queries: queries}
 }
 
-func (store *ExhibitionRepoImpl) GetExhibitions(ctx context.Context) ([]db.Exhibition, error) {
-	exhibitions, err := store.queries.GetExhibitions(ctx)
+func (repo *ExhibitionRepoImpl) GetExhibitions(ctx context.Context) ([]db.Exhibition, error) {
+	exhibitions, err := repo.queries.GetExhibitions(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("an error occurred while querying the database for exhibitions: %w", err)
 	}
@@ -47,7 +47,7 @@ func (store *ExhibitionRepoImpl) GetExhibitions(ctx context.Context) ([]db.Exhib
 	return exhibitions, nil
 }
 
-func (store *ExhibitionRepoImpl) CreateExhibition(ctx context.Context, exhibition *db.Exhibition) error {
+func (repo *ExhibitionRepoImpl) CreateExhibition(ctx context.Context, exhibition *db.Exhibition) error {
 	exhibition.ID = uuid.NewString()
 	exhibition.Created = sql.NullString{
 		String: time.Now().String(),
@@ -63,14 +63,14 @@ func (store *ExhibitionRepoImpl) CreateExhibition(ctx context.Context, exhibitio
 		Created:  exhibition.Created,
 	}
 
-	if err := store.queries.CreateExhibition(ctx, params); err != nil {
+	if err := repo.queries.CreateExhibition(ctx, params); err != nil {
 		return fmt.Errorf("error occurred while creating an exhibitions: %w", err)
 	}
 
 	return nil
 }
 
-func (store *ExhibitionRepoImpl) UpdateExhibition(ctx context.Context, id string, exhibition *db.Exhibition) error {
+func (repo *ExhibitionRepoImpl) UpdateExhibition(ctx context.Context, id string, exhibition *db.Exhibition) error {
 	params := db.UpdateExhibitionParams{
 		Title:    exhibition.Title,
 		Date:     exhibition.Date,
@@ -79,14 +79,14 @@ func (store *ExhibitionRepoImpl) UpdateExhibition(ctx context.Context, id string
 		ID:       id,
 	}
 
-	if err := store.queries.UpdateExhibition(ctx, params); err != nil {
+	if err := repo.queries.UpdateExhibition(ctx, params); err != nil {
 		return fmt.Errorf("error occurred while updating an exhiibtion: %w", err)
 	}
 	return nil
 }
 
-func (store *ExhibitionRepoImpl) DeleteExhibition(ctx context.Context, id string) error {
-	if err := store.queries.DeleteExhibition(ctx, id); err != nil {
+func (repo *ExhibitionRepoImpl) DeleteExhibition(ctx context.Context, id string) error {
+	if err := repo.queries.DeleteExhibition(ctx, id); err != nil {
 		return fmt.Errorf("error occurred while delting an exhibition: %w", err)
 	}
 	return nil

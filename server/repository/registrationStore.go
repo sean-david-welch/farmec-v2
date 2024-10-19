@@ -27,8 +27,8 @@ func NewRegistrationRepo(sql *sql.DB) *RegistrationRepoImpl {
 	return &RegistrationRepoImpl{queries: queries}
 }
 
-func (store *RegistrationRepoImpl) GetRegistrations(ctx context.Context) ([]db.MachineRegistration, error) {
-	registrations, err := store.queries.GetRegistrations(ctx)
+func (repo *RegistrationRepoImpl) GetRegistrations(ctx context.Context) ([]db.MachineRegistration, error) {
+	registrations, err := repo.queries.GetRegistrations(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("error occurred while getting registration from the db: %w", err)
 	}
@@ -59,15 +59,15 @@ func (store *RegistrationRepoImpl) GetRegistrations(ctx context.Context) ([]db.M
 	return result, nil
 }
 
-func (store *RegistrationRepoImpl) GetRegistrationById(ctx context.Context, id string) (*db.MachineRegistration, error) {
-	registration, err := store.queries.GetRegistrationsByID(ctx, id)
+func (repo *RegistrationRepoImpl) GetRegistrationById(ctx context.Context, id string) (*db.MachineRegistration, error) {
+	registration, err := repo.queries.GetRegistrationsByID(ctx, id)
 	if err != nil {
 		return nil, fmt.Errorf("error occurred while getting a registration: %w", err)
 	}
 	return &registration, nil
 }
 
-func (store *RegistrationRepoImpl) CreateRegistration(ctx context.Context, registration *db.MachineRegistration) error {
+func (repo *RegistrationRepoImpl) CreateRegistration(ctx context.Context, registration *db.MachineRegistration) error {
 	registration.ID = uuid.NewString()
 	registration.Created = sql.NullString{
 		String: time.Now().String(),
@@ -94,13 +94,13 @@ func (store *RegistrationRepoImpl) CreateRegistration(ctx context.Context, regis
 		CompletedBy:      registration.CompletedBy,
 		Created:          registration.Created,
 	}
-	if err := store.queries.CreateRegistration(ctx, params); err != nil {
+	if err := repo.queries.CreateRegistration(ctx, params); err != nil {
 		return fmt.Errorf("error occurred while creating a registration: %w", err)
 	}
 	return nil
 }
 
-func (store *RegistrationRepoImpl) UpdateRegistration(ctx context.Context, id string, registration *db.MachineRegistration) error {
+func (repo *RegistrationRepoImpl) UpdateRegistration(ctx context.Context, id string, registration *db.MachineRegistration) error {
 	params := db.UpdateRegistrationParams{
 		DealerName:       registration.DealerName,
 		DealerAddress:    registration.DealerAddress,
@@ -120,15 +120,15 @@ func (store *RegistrationRepoImpl) UpdateRegistration(ctx context.Context, id st
 		CompletedBy:      registration.CompletedBy,
 		ID:               id,
 	}
-	if err := store.queries.UpdateRegistration(ctx, params); err != nil {
+	if err := repo.queries.UpdateRegistration(ctx, params); err != nil {
 		return fmt.Errorf("error occurred while updating registration: %w", err)
 	}
 
 	return nil
 }
 
-func (store *RegistrationRepoImpl) DeleteRegistration(ctx context.Context, id string) error {
-	if err := store.queries.DeleteRegistration(ctx, id); err != nil {
+func (repo *RegistrationRepoImpl) DeleteRegistration(ctx context.Context, id string) error {
+	if err := repo.queries.DeleteRegistration(ctx, id); err != nil {
 		return fmt.Errorf("an error occurred while deleting a registration: %w", err)
 	}
 	return nil

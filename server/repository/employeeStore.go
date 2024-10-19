@@ -27,8 +27,8 @@ func NewEmployeeRepo(sql *sql.DB) *EmployeeRepoImpl {
 	return &EmployeeRepoImpl{queries: queries}
 }
 
-func (store *EmployeeRepoImpl) GetEmployees(ctx context.Context) ([]db.Employee, error) {
-	employees, err := store.queries.GetEmployees(ctx)
+func (repo *EmployeeRepoImpl) GetEmployees(ctx context.Context) ([]db.Employee, error) {
+	employees, err := repo.queries.GetEmployees(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("error occurred while querying employees: %w", err)
 	}
@@ -48,8 +48,8 @@ func (store *EmployeeRepoImpl) GetEmployees(ctx context.Context) ([]db.Employee,
 	return result, nil
 }
 
-func (store *EmployeeRepoImpl) GetEmployeeById(ctx context.Context, id string) (*db.Employee, error) {
-	employee, err := store.queries.GetEmployee(ctx, id)
+func (repo *EmployeeRepoImpl) GetEmployeeById(ctx context.Context, id string) (*db.Employee, error) {
+	employee, err := repo.queries.GetEmployee(ctx, id)
 	if err != nil {
 		return nil, fmt.Errorf("error occurred while querying the database for employee: %w", err)
 	}
@@ -57,7 +57,7 @@ func (store *EmployeeRepoImpl) GetEmployeeById(ctx context.Context, id string) (
 	return &employee, nil
 }
 
-func (store *EmployeeRepoImpl) CreateEmployee(ctx context.Context, employee *db.Employee) error {
+func (repo *EmployeeRepoImpl) CreateEmployee(ctx context.Context, employee *db.Employee) error {
 	employee.ID = uuid.NewString()
 	employee.Created = sql.NullString{
 		String: time.Now().String(),
@@ -72,14 +72,14 @@ func (store *EmployeeRepoImpl) CreateEmployee(ctx context.Context, employee *db.
 		Created:      employee.Created,
 	}
 
-	if err := store.queries.CreateEmployee(ctx, params); err != nil {
+	if err := repo.queries.CreateEmployee(ctx, params); err != nil {
 		return fmt.Errorf("error occurred while creating an employee: %w", err)
 	}
 
 	return nil
 }
 
-func (store *EmployeeRepoImpl) UpdateEmployee(ctx context.Context, id string, employee *db.Employee) error {
+func (repo *EmployeeRepoImpl) UpdateEmployee(ctx context.Context, id string, employee *db.Employee) error {
 	if employee.ProfileImage.Valid {
 		params := db.UpdateEmployeeParams{
 			Name:         employee.Name,
@@ -88,7 +88,7 @@ func (store *EmployeeRepoImpl) UpdateEmployee(ctx context.Context, id string, em
 			ProfileImage: employee.ProfileImage,
 			ID:           id,
 		}
-		if err := store.queries.UpdateEmployee(ctx, params); err != nil {
+		if err := repo.queries.UpdateEmployee(ctx, params); err != nil {
 			return fmt.Errorf("error occurred while updatig an employee: %w", err)
 		}
 	} else {
@@ -98,15 +98,15 @@ func (store *EmployeeRepoImpl) UpdateEmployee(ctx context.Context, id string, em
 			Role:  employee.Role,
 			ID:    id,
 		}
-		if err := store.queries.UpdateEmployeeNoImage(ctx, params); err != nil {
+		if err := repo.queries.UpdateEmployeeNoImage(ctx, params); err != nil {
 			return fmt.Errorf("an error occurred while updating the employee: %w", err)
 		}
 	}
 	return nil
 }
 
-func (store *EmployeeRepoImpl) DeleteEmployee(ctx context.Context, id string) error {
-	if err := store.queries.DeleteEmployee(ctx, id); err != nil {
+func (repo *EmployeeRepoImpl) DeleteEmployee(ctx context.Context, id string) error {
+	if err := repo.queries.DeleteEmployee(ctx, id); err != nil {
 		return fmt.Errorf("error occurred while deleting employee: %w", err)
 	}
 	return nil

@@ -16,15 +16,15 @@ type TimelineService interface {
 }
 
 type TimelineServiceImpl struct {
-	store repository.TimelineRepo
+	repo repository.TimelineRepo
 }
 
-func NewTimelineService(store repository.TimelineRepo) *TimelineServiceImpl {
-	return &TimelineServiceImpl{store: store}
+func NewTimelineService(repo repository.TimelineRepo) *TimelineServiceImpl {
+	return &TimelineServiceImpl{repo: repo}
 }
 
 func (service *TimelineServiceImpl) GetTimelines(ctx context.Context) ([]types.Timeline, error) {
-	timelines, err := service.store.GetTimelines(ctx)
+	timelines, err := service.repo.GetTimelines(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -36,21 +36,21 @@ func (service *TimelineServiceImpl) GetTimelines(ctx context.Context) ([]types.T
 }
 
 func (service *TimelineServiceImpl) CreateTimeline(ctx context.Context, timeline *db.Timeline) error {
-	if err := service.store.CreateTimeline(ctx, timeline); err != nil {
+	if err := service.repo.CreateTimeline(ctx, timeline); err != nil {
 		return err
 	}
 	return nil
 }
 
 func (service *TimelineServiceImpl) UpdateTimeline(ctx context.Context, id string, timeline *db.Timeline) error {
-	if err := service.store.UpdateTimeline(ctx, id, timeline); err != nil {
+	if err := service.repo.UpdateTimeline(ctx, id, timeline); err != nil {
 		return err
 	}
 	return nil
 }
 
 func (service *TimelineServiceImpl) DeleteTimeline(ctx context.Context, id string) error {
-	if err := service.store.DeleteTimeline(ctx, id); err != nil {
+	if err := service.repo.DeleteTimeline(ctx, id); err != nil {
 		return err
 	}
 	return nil

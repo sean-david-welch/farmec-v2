@@ -17,11 +17,11 @@ type CheckoutService interface {
 
 type CheckoutServiceImpl struct {
 	secrets *lib.Secrets
-	store   repository.LineItemRepo
+	repo    repository.LineItemRepo
 }
 
-func NewCheckoutService(secrets *lib.Secrets, store repository.LineItemRepo) *CheckoutServiceImpl {
-	return &CheckoutServiceImpl{secrets: secrets, store: store}
+func NewCheckoutService(secrets *lib.Secrets, repo repository.LineItemRepo) *CheckoutServiceImpl {
+	return &CheckoutServiceImpl{secrets: secrets, repo: repo}
 }
 
 func (service *CheckoutServiceImpl) CreateCheckoutSession(ctx context.Context, id string) (*stripe.CheckoutSession, error) {
@@ -29,7 +29,7 @@ func (service *CheckoutServiceImpl) CreateCheckoutSession(ctx context.Context, i
 
 	log.Printf("Creating checkout session for product ID: %s", id)
 
-	product, err := service.store.GetLineItemById(ctx, id)
+	product, err := service.repo.GetLineItemById(ctx, id)
 	if err != nil {
 		log.Printf("Error retrieving product by ID: %v", err)
 		return nil, err

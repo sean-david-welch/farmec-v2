@@ -19,15 +19,15 @@ type WarrantyService interface {
 
 type WarrantyServiceImpl struct {
 	smtpClient lib.SMTPClient
-	store      repository.WarrantyRepo
+	repo       repository.WarrantyRepo
 }
 
-func NewWarrantyService(store repository.WarrantyRepo, smtpClient lib.SMTPClient) *WarrantyServiceImpl {
-	return &WarrantyServiceImpl{store: store, smtpClient: smtpClient}
+func NewWarrantyService(repo repository.WarrantyRepo, smtpClient lib.SMTPClient) *WarrantyServiceImpl {
+	return &WarrantyServiceImpl{repo: repo, smtpClient: smtpClient}
 }
 
 func (service *WarrantyServiceImpl) GetWarranties(ctx context.Context) ([]types.DealerOwnerInfo, error) {
-	warranties, err := service.store.GetWarranties(ctx)
+	warranties, err := service.repo.GetWarranties(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -36,7 +36,7 @@ func (service *WarrantyServiceImpl) GetWarranties(ctx context.Context) ([]types.
 }
 
 func (service *WarrantyServiceImpl) GetWarrantyById(ctx context.Context, id string) (*types.WarrantyClaim, []types.PartsRequired, error) {
-	warranty, partsRequired, err := service.store.GetWarrantyById(ctx, id)
+	warranty, partsRequired, err := service.repo.GetWarrantyById(ctx, id)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -49,7 +49,7 @@ func (service *WarrantyServiceImpl) GetWarrantyById(ctx context.Context, id stri
 }
 
 func (service *WarrantyServiceImpl) CreateWarranty(ctx context.Context, warranty *db.WarrantyClaim, parts []db.PartsRequired) error {
-	if err := service.store.CreateWarranty(ctx, warranty, parts); err != nil {
+	if err := service.repo.CreateWarranty(ctx, warranty, parts); err != nil {
 		return err
 	}
 
@@ -78,7 +78,7 @@ func (service *WarrantyServiceImpl) CreateWarranty(ctx context.Context, warranty
 }
 
 func (service *WarrantyServiceImpl) UpdateWarranty(ctx context.Context, id string, warranty *db.WarrantyClaim, parts []db.PartsRequired) error {
-	if err := service.store.UpdateWarranty(ctx, id, warranty, parts); err != nil {
+	if err := service.repo.UpdateWarranty(ctx, id, warranty, parts); err != nil {
 		return err
 	}
 
@@ -107,7 +107,7 @@ func (service *WarrantyServiceImpl) UpdateWarranty(ctx context.Context, id strin
 }
 
 func (service *WarrantyServiceImpl) DeleteWarranty(ctx context.Context, id string) error {
-	if err := service.store.DeleteWarranty(ctx, id); err != nil {
+	if err := service.repo.DeleteWarranty(ctx, id); err != nil {
 		return err
 	}
 

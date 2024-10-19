@@ -21,17 +21,17 @@ type BlogService interface {
 }
 
 type BlogServiceImpl struct {
-	store    repository.BlogRepo
+	repo     repository.BlogRepo
 	s3Client lib.S3Client
 	folder   string
 }
 
-func NewBlogService(store repository.BlogRepo, s3Client lib.S3Client, folder string) *BlogServiceImpl {
-	return &BlogServiceImpl{store: store, s3Client: s3Client, folder: folder}
+func NewBlogService(repo repository.BlogRepo, s3Client lib.S3Client, folder string) *BlogServiceImpl {
+	return &BlogServiceImpl{repo: repo, s3Client: s3Client, folder: folder}
 }
 
 func (service *BlogServiceImpl) GetBlogs(ctx context.Context) ([]types.Blog, error) {
-	blogs, err := service.store.GetBlogs(ctx)
+	blogs, err := service.repo.GetBlogs(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -44,7 +44,7 @@ func (service *BlogServiceImpl) GetBlogs(ctx context.Context) ([]types.Blog, err
 }
 
 func (service *BlogServiceImpl) GetBlogsByID(ctx context.Context, id string) (*types.Blog, error) {
-	blog, err := service.store.GetBlogById(ctx, id)
+	blog, err := service.repo.GetBlogById(ctx, id)
 	if err != nil {
 		return nil, err
 	}
@@ -68,7 +68,7 @@ func (service *BlogServiceImpl) CreateBlog(ctx context.Context, blog *db.Blog) (
 
 	blog.MainImage = sql.NullString{String: imageUrl, Valid: true}
 
-	if err := service.store.CreateBlog(ctx, blog); err != nil {
+	if err := service.repo.CreateBlog(ctx, blog); err != nil {
 		return nil, err
 	}
 
@@ -95,7 +95,7 @@ func (service *BlogServiceImpl) UpdateBlog(ctx context.Context, id string, blog 
 		blog.MainImage = sql.NullString{String: imageUrl, Valid: true}
 	}
 
-	if err := service.store.UpdateBlog(ctx, id, blog); err != nil {
+	if err := service.repo.UpdateBlog(ctx, id, blog); err != nil {
 		return nil, err
 	}
 
@@ -108,7 +108,7 @@ func (service *BlogServiceImpl) UpdateBlog(ctx context.Context, id string, blog 
 }
 
 func (service *BlogServiceImpl) DeleteBlog(ctx context.Context, id string) error {
-	blog, err := service.store.GetBlogById(ctx, id)
+	blog, err := service.repo.GetBlogById(ctx, id)
 	if err != nil {
 		return err
 	}
@@ -117,7 +117,7 @@ func (service *BlogServiceImpl) DeleteBlog(ctx context.Context, id string) error
 		return err
 	}
 
-	if err := service.store.DeleteBlog(ctx, id); err != nil {
+	if err := service.repo.DeleteBlog(ctx, id); err != nil {
 		return err
 	}
 

@@ -23,19 +23,19 @@ type SupplierService interface {
 type SupplierServiceImpl struct {
 	folder   string
 	s3Client lib.S3Client
-	store    repository.SupplierRepo
+	repo     repository.SupplierRepo
 }
 
-func NewSupplierService(store repository.SupplierRepo, s3Client lib.S3Client, folder string) *SupplierServiceImpl {
+func NewSupplierService(repo repository.SupplierRepo, s3Client lib.S3Client, folder string) *SupplierServiceImpl {
 	return &SupplierServiceImpl{
-		store:    store,
+		repo:     repo,
 		s3Client: s3Client,
 		folder:   folder,
 	}
 }
 
 func (service *SupplierServiceImpl) GetSuppliers(ctx context.Context) ([]types.Supplier, error) {
-	suppliers, err := service.store.GetSuppliers(ctx)
+	suppliers, err := service.repo.GetSuppliers(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +48,7 @@ func (service *SupplierServiceImpl) GetSuppliers(ctx context.Context) ([]types.S
 }
 
 func (service *SupplierServiceImpl) GetSupplierById(ctx context.Context, id string) (*types.Supplier, error) {
-	supplier, err := service.store.GetSupplierById(ctx, id)
+	supplier, err := service.repo.GetSupplierById(ctx, id)
 	if err != nil {
 		return nil, err
 	}
@@ -85,7 +85,7 @@ func (service *SupplierServiceImpl) CreateSupplier(ctx context.Context, supplier
 		Valid:  true,
 	}
 
-	err = service.store.CreateSupplier(ctx, &supplier)
+	err = service.repo.CreateSupplier(ctx, &supplier)
 	if err != nil {
 		return nil, err
 	}
@@ -129,7 +129,7 @@ func (service *SupplierServiceImpl) UpdateSupplier(ctx context.Context, id strin
 		}
 	}
 
-	err = service.store.UpdateSupplier(ctx, id, supplier)
+	err = service.repo.UpdateSupplier(ctx, id, supplier)
 	if err != nil {
 		return nil, err
 	}
@@ -145,7 +145,7 @@ func (service *SupplierServiceImpl) UpdateSupplier(ctx context.Context, id strin
 }
 
 func (service *SupplierServiceImpl) DeleteSupplier(ctx context.Context, id string) error {
-	supplier, err := service.store.GetSupplierById(ctx, id)
+	supplier, err := service.repo.GetSupplierById(ctx, id)
 	if err != nil {
 		return err
 	}
@@ -158,7 +158,7 @@ func (service *SupplierServiceImpl) DeleteSupplier(ctx context.Context, id strin
 		return err
 	}
 
-	if err := service.store.DeleteSupplier(ctx, id); err != nil {
+	if err := service.repo.DeleteSupplier(ctx, id); err != nil {
 		return err
 	}
 

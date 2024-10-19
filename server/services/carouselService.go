@@ -20,21 +20,21 @@ type CarouselService interface {
 }
 
 type CarouselServiceImpl struct {
-	store    repository.CarouselRepo
+	repo     repository.CarouselRepo
 	s3Client lib.S3Client
 	folder   string
 }
 
-func NewCarouselService(store repository.CarouselRepo, s3Client lib.S3Client, folder string) *CarouselServiceImpl {
+func NewCarouselService(repo repository.CarouselRepo, s3Client lib.S3Client, folder string) *CarouselServiceImpl {
 	return &CarouselServiceImpl{
-		store:    store,
+		repo:     repo,
 		s3Client: s3Client,
 		folder:   folder,
 	}
 }
 
 func (service *CarouselServiceImpl) GetCarousels(ctx context.Context) ([]types.Carousel, error) {
-	carousels, err := service.store.GetCarousels(ctx)
+	carousels, err := service.repo.GetCarousels(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -63,7 +63,7 @@ func (service *CarouselServiceImpl) CreateCarousel(ctx context.Context, carousel
 		Valid:  true,
 	}
 
-	if err := service.store.CreateCarousel(ctx, carousel); err != nil {
+	if err := service.repo.CreateCarousel(ctx, carousel); err != nil {
 		return nil, err
 	}
 
@@ -93,7 +93,7 @@ func (service *CarouselServiceImpl) UpdateCarousel(ctx context.Context, id strin
 		}
 	}
 
-	if err := service.store.UpdateCarousel(ctx, id, carousel); err != nil {
+	if err := service.repo.UpdateCarousel(ctx, id, carousel); err != nil {
 		return nil, err
 	}
 
@@ -106,7 +106,7 @@ func (service *CarouselServiceImpl) UpdateCarousel(ctx context.Context, id strin
 }
 
 func (service *CarouselServiceImpl) DeleteCarousel(ctx context.Context, id string) error {
-	carousel, err := service.store.GetCarouselById(ctx, id)
+	carousel, err := service.repo.GetCarouselById(ctx, id)
 	if err != nil {
 		return err
 	}
@@ -115,7 +115,7 @@ func (service *CarouselServiceImpl) DeleteCarousel(ctx context.Context, id strin
 		return err
 	}
 
-	if err := service.store.DeleteCarousel(ctx, id); err != nil {
+	if err := service.repo.DeleteCarousel(ctx, id); err != nil {
 		return err
 	}
 

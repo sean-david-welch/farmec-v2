@@ -27,8 +27,8 @@ func NewCarouselRepo(sql *sql.DB) *CarouselRepoImpl {
 	return &CarouselRepoImpl{queries: queries}
 }
 
-func (store *CarouselRepoImpl) GetCarousels(ctx context.Context) ([]db.Carousel, error) {
-	carousels, err := store.queries.GetCarousels(ctx)
+func (repo *CarouselRepoImpl) GetCarousels(ctx context.Context) ([]db.Carousel, error) {
+	carousels, err := repo.queries.GetCarousels(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("error occurred while querying the database for carousels: %w", err)
 	}
@@ -45,8 +45,8 @@ func (store *CarouselRepoImpl) GetCarousels(ctx context.Context) ([]db.Carousel,
 	return result, nil
 }
 
-func (store *CarouselRepoImpl) GetCarouselById(ctx context.Context, id string) (*db.Carousel, error) {
-	carousel, err := store.queries.GetCarouselByID(ctx, id)
+func (repo *CarouselRepoImpl) GetCarouselById(ctx context.Context, id string) (*db.Carousel, error) {
+	carousel, err := repo.queries.GetCarouselByID(ctx, id)
 	if err != nil {
 		return nil, fmt.Errorf("error occurred while querying the database for carousel: %w", err)
 	}
@@ -54,7 +54,7 @@ func (store *CarouselRepoImpl) GetCarouselById(ctx context.Context, id string) (
 	return &carousel, nil
 }
 
-func (store *CarouselRepoImpl) CreateCarousel(ctx context.Context, carousel *db.Carousel) error {
+func (repo *CarouselRepoImpl) CreateCarousel(ctx context.Context, carousel *db.Carousel) error {
 	carousel.ID = uuid.NewString()
 	carousel.Created = sql.NullString{
 		String: time.Now().String(),
@@ -68,20 +68,20 @@ func (store *CarouselRepoImpl) CreateCarousel(ctx context.Context, carousel *db.
 		Created: carousel.Created,
 	}
 
-	if err := store.queries.CreateCarousel(ctx, params); err != nil {
+	if err := repo.queries.CreateCarousel(ctx, params); err != nil {
 		return fmt.Errorf("error occurred while create a carousel: %w", err)
 	}
 	return nil
 }
 
-func (store *CarouselRepoImpl) UpdateCarousel(ctx context.Context, id string, carousel *db.Carousel) error {
+func (repo *CarouselRepoImpl) UpdateCarousel(ctx context.Context, id string, carousel *db.Carousel) error {
 	if carousel.Image.Valid {
 		params := db.UpdateCarouselParams{
 			Name:  carousel.Name,
 			Image: carousel.Image,
 			ID:    id,
 		}
-		if err := store.queries.UpdateCarousel(ctx, params); err != nil {
+		if err := repo.queries.UpdateCarousel(ctx, params); err != nil {
 			return fmt.Errorf("error occurred while updating a carousel: %w", err)
 		}
 	} else {
@@ -89,15 +89,15 @@ func (store *CarouselRepoImpl) UpdateCarousel(ctx context.Context, id string, ca
 			Name: carousel.Name,
 			ID:   id,
 		}
-		if err := store.queries.UpdateCarouselNoImage(ctx, params); err != nil {
+		if err := repo.queries.UpdateCarouselNoImage(ctx, params); err != nil {
 			return fmt.Errorf("error occurred while updating a carousel: %w", err)
 		}
 	}
 	return nil
 }
 
-func (store *CarouselRepoImpl) DeleteCarousel(ctx context.Context, id string) error {
-	if err := store.queries.DeleteCarousel(ctx, id); err != nil {
+func (repo *CarouselRepoImpl) DeleteCarousel(ctx context.Context, id string) error {
+	if err := repo.queries.DeleteCarousel(ctx, id); err != nil {
 		return fmt.Errorf("error occurred while deleting a carousel: %w", err)
 	}
 	return nil

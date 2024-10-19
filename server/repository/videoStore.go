@@ -26,8 +26,8 @@ func NewVideoRepo(sql *sql.DB) *VideoRepoImpl {
 	return &VideoRepoImpl{queries: queries}
 }
 
-func (store *VideoRepoImpl) GetVideos(ctx context.Context, id string) ([]db.Video, error) {
-	videos, err := store.queries.SelectVideos(ctx, id)
+func (repo *VideoRepoImpl) GetVideos(ctx context.Context, id string) ([]db.Video, error) {
+	videos, err := repo.queries.SelectVideos(ctx, id)
 	if err != nil {
 		return nil, fmt.Errorf("error occurred while getting videos from the database: %w", err)
 	}
@@ -47,7 +47,7 @@ func (store *VideoRepoImpl) GetVideos(ctx context.Context, id string) ([]db.Vide
 	return result, nil
 }
 
-func (store *VideoRepoImpl) CreateVideo(ctx context.Context, video *db.Video) error {
+func (repo *VideoRepoImpl) CreateVideo(ctx context.Context, video *db.Video) error {
 	video.ID = uuid.NewString()
 	video.Created = sql.NullString{
 		String: time.Now().String(),
@@ -63,13 +63,13 @@ func (store *VideoRepoImpl) CreateVideo(ctx context.Context, video *db.Video) er
 		ThumbnailUrl: video.ThumbnailUrl,
 		Created:      video.Created,
 	}
-	if err := store.queries.CreateVideo(ctx, params); err != nil {
+	if err := repo.queries.CreateVideo(ctx, params); err != nil {
 		return fmt.Errorf("error occurred while creating a video in the db: %w", err)
 	}
 	return nil
 }
 
-func (store *VideoRepoImpl) UpdateVideo(ctx context.Context, id string, video *db.Video) error {
+func (repo *VideoRepoImpl) UpdateVideo(ctx context.Context, id string, video *db.Video) error {
 	params := db.UpdateVideoParams{
 		SupplierID:   video.SupplierID,
 		WebUrl:       video.ThumbnailUrl,
@@ -79,14 +79,14 @@ func (store *VideoRepoImpl) UpdateVideo(ctx context.Context, id string, video *d
 		ThumbnailUrl: video.ThumbnailUrl,
 		ID:           id,
 	}
-	if err := store.queries.UpdateVideo(ctx, params); err != nil {
+	if err := repo.queries.UpdateVideo(ctx, params); err != nil {
 		return fmt.Errorf("error occurred while updating a video: %w", err)
 	}
 	return nil
 }
 
-func (store *VideoRepoImpl) DeleteVideo(ctx context.Context, id string) error {
-	if err := store.queries.DeleteMachine(ctx, id); err != nil {
+func (repo *VideoRepoImpl) DeleteVideo(ctx context.Context, id string) error {
+	if err := repo.queries.DeleteMachine(ctx, id); err != nil {
 		return fmt.Errorf("error occurred while deleting video: %w", err)
 	}
 	return nil

@@ -56,9 +56,9 @@ func (suite *BlogTestSuite) SetupTest() {
 	suite.db = database
 	suite.mock = mock
 
-	store := repository.NewBlogRepo(database)
+	repo := repository.NewBlogRepo(database)
 	s3Client := lib.NewNoOpS3Client()
-	service := services.NewBlogService(store, s3Client, "test-folder")
+	service := services.NewBlogService(repo, s3Client, "test-folder")
 	handler := handlers.NewBlogHandler(service)
 
 	suite.router = gin.Default()

@@ -12,8 +12,8 @@ import (
 )
 
 func InitRegistrations(router *gin.Engine, database *sql.DB, authMiddleware *middleware.AuthMiddleware, smtp lib.SMTPClient) {
-	store := repository.NewRegistrationRepo(database)
-	service := services.NewRegistrationService(store, smtp)
+	repo := repository.NewRegistrationRepo(database)
+	service := services.NewRegistrationService(repo, smtp)
 	handler := handlers.NewRegistrationHandler(service)
 
 	RegistrationRoutes(router, handler, authMiddleware)

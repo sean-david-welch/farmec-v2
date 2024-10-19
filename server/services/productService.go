@@ -22,19 +22,19 @@ type ProductService interface {
 type ProductServiceImpl struct {
 	folder   string
 	s3Client lib.S3Client
-	store    repository.ProductRepo
+	repo     repository.ProductRepo
 }
 
-func NewProductService(store repository.ProductRepo, s3Client lib.S3Client, folder string) *ProductServiceImpl {
+func NewProductService(repo repository.ProductRepo, s3Client lib.S3Client, folder string) *ProductServiceImpl {
 	return &ProductServiceImpl{
-		store:    store,
+		repo:     repo,
 		s3Client: s3Client,
 		folder:   folder,
 	}
 }
 
 func (service *ProductServiceImpl) GetProducts(ctx context.Context, id string) ([]types.Product, error) {
-	products, err := service.store.GetProducts(ctx, id)
+	products, err := service.repo.GetProducts(ctx, id)
 	if err != nil {
 		return nil, err
 	}
@@ -62,7 +62,7 @@ func (service *ProductServiceImpl) CreateProduct(ctx context.Context, product *d
 		Valid:  true,
 	}
 
-	err = service.store.CreateProduct(ctx, product)
+	err = service.repo.CreateProduct(ctx, product)
 	if err != nil {
 		return nil, err
 	}
@@ -93,7 +93,7 @@ func (service *ProductServiceImpl) UpdateProduct(ctx context.Context, id string,
 		}
 	}
 
-	err = service.store.UpdateProduct(ctx, id, product)
+	err = service.repo.UpdateProduct(ctx, id, product)
 	if err != nil {
 		return nil, err
 	}
@@ -107,7 +107,7 @@ func (service *ProductServiceImpl) UpdateProduct(ctx context.Context, id string,
 }
 
 func (service *ProductServiceImpl) DeleteProduct(ctx context.Context, id string) error {
-	product, err := service.store.GetProductById(ctx, id)
+	product, err := service.repo.GetProductById(ctx, id)
 	if err != nil {
 		return nil
 	}
@@ -116,7 +116,7 @@ func (service *ProductServiceImpl) DeleteProduct(ctx context.Context, id string)
 		return err
 	}
 
-	if err := service.store.DeleteProduct(ctx, id); err != nil {
+	if err := service.repo.DeleteProduct(ctx, id); err != nil {
 		return err
 	}
 

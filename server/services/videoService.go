@@ -22,13 +22,13 @@ type VideoService interface {
 }
 
 type VideoServiceImpl struct {
-	store          repository.VideoRepo
+	repo           repository.VideoRepo
 	youtubeService *youtube.Service
 }
 
-func NewVideoService(store repository.VideoRepo, youtubeService *youtube.Service) *VideoServiceImpl {
+func NewVideoService(repo repository.VideoRepo, youtubeService *youtube.Service) *VideoServiceImpl {
 	return &VideoServiceImpl{
-		store:          store,
+		repo:           repo,
 		youtubeService: youtubeService,
 	}
 }
@@ -84,7 +84,7 @@ func (service *VideoServiceImpl) TransformData(video *db.Video) (*db.Video, erro
 }
 
 func (service *VideoServiceImpl) GetVideos(ctx context.Context, id string) ([]types.Video, error) {
-	videos, err := service.store.GetVideos(ctx, id)
+	videos, err := service.repo.GetVideos(ctx, id)
 	if err != nil {
 		return nil, err
 	}
@@ -101,7 +101,7 @@ func (service *VideoServiceImpl) CreateVideo(ctx context.Context, video *db.Vide
 		return err
 	}
 
-	err = service.store.CreateVideo(ctx, videoData)
+	err = service.repo.CreateVideo(ctx, videoData)
 	if err != nil {
 		return err
 	}
@@ -115,7 +115,7 @@ func (service *VideoServiceImpl) UpdateVideo(ctx context.Context, id string, vid
 		return err
 	}
 
-	err = service.store.UpdateVideo(ctx, id, videoData)
+	err = service.repo.UpdateVideo(ctx, id, videoData)
 	if err != nil {
 		return err
 	}
@@ -124,7 +124,7 @@ func (service *VideoServiceImpl) UpdateVideo(ctx context.Context, id string, vid
 }
 
 func (service *VideoServiceImpl) DeleteVideo(ctx context.Context, id string) error {
-	err := service.store.DeleteVideo(ctx, id)
+	err := service.repo.DeleteVideo(ctx, id)
 	if err != nil {
 		return err
 	}

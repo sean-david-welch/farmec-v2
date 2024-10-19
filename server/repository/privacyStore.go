@@ -26,8 +26,8 @@ func NewPrivacyRepo(sql *sql.DB) *PrivacyRepoImpl {
 	return &PrivacyRepoImpl{queries: queries}
 }
 
-func (store *PrivacyRepoImpl) GetPrivacy(ctx context.Context) ([]db.Privacy, error) {
-	privacies, err := store.queries.GetPrivacies(ctx)
+func (repo *PrivacyRepoImpl) GetPrivacy(ctx context.Context) ([]db.Privacy, error) {
+	privacies, err := repo.queries.GetPrivacies(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("an error occurred while getting privacy policy: %w", err)
 	}
@@ -43,7 +43,7 @@ func (store *PrivacyRepoImpl) GetPrivacy(ctx context.Context) ([]db.Privacy, err
 	return result, nil
 }
 
-func (store *PrivacyRepoImpl) CreatePrivacy(ctx context.Context, privacy *db.Privacy) error {
+func (repo *PrivacyRepoImpl) CreatePrivacy(ctx context.Context, privacy *db.Privacy) error {
 	privacy.ID = uuid.NewString()
 	privacy.Created = sql.NullString{
 		String: time.Now().String(),
@@ -56,26 +56,26 @@ func (store *PrivacyRepoImpl) CreatePrivacy(ctx context.Context, privacy *db.Pri
 		Body:    privacy.Body,
 		Created: privacy.Created,
 	}
-	if err := store.queries.CreatePrivacy(ctx, params); err != nil {
+	if err := repo.queries.CreatePrivacy(ctx, params); err != nil {
 		return fmt.Errorf("error occurred while creating policy: %w", err)
 	}
 	return nil
 }
 
-func (store *PrivacyRepoImpl) UpdatePrivacy(ctx context.Context, id string, privacy *db.Privacy) error {
+func (repo *PrivacyRepoImpl) UpdatePrivacy(ctx context.Context, id string, privacy *db.Privacy) error {
 	params := db.UpdatePrivacyParams{
 		Title: privacy.Title,
 		Body:  privacy.Body,
 		ID:    id,
 	}
-	if err := store.queries.UpdatePrivacy(ctx, params); err != nil {
+	if err := repo.queries.UpdatePrivacy(ctx, params); err != nil {
 		return fmt.Errorf("an error occurred while")
 	}
 	return nil
 }
 
-func (store *PrivacyRepoImpl) DeletePrivacy(ctx context.Context, id string) error {
-	if err := store.queries.DeletePrivacy(ctx, id); err != nil {
+func (repo *PrivacyRepoImpl) DeletePrivacy(ctx context.Context, id string) error {
+	if err := repo.queries.DeletePrivacy(ctx, id); err != nil {
 		return fmt.Errorf("an error occurred while deleting privacy: %w", err)
 	}
 	return nil

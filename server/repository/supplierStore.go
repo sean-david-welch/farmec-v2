@@ -27,8 +27,8 @@ func NewSupplierRepo(sql *sql.DB) *SupplierRepoImpl {
 	return &SupplierRepoImpl{queries: queries}
 }
 
-func (store *SupplierRepoImpl) GetSuppliers(ctx context.Context) ([]db.Supplier, error) {
-	suppliers, err := store.queries.GetSuppliers(ctx)
+func (repo *SupplierRepoImpl) GetSuppliers(ctx context.Context) ([]db.Supplier, error) {
+	suppliers, err := repo.queries.GetSuppliers(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("error occurred while getting suppliers from the db: %w", err)
 	}
@@ -53,8 +53,8 @@ func (store *SupplierRepoImpl) GetSuppliers(ctx context.Context) ([]db.Supplier,
 	return result, nil
 }
 
-func (store *SupplierRepoImpl) GetSupplierById(ctx context.Context, id string) (*db.Supplier, error) {
-	supplierRow, err := store.queries.GetSupplierByID(ctx, id)
+func (repo *SupplierRepoImpl) GetSupplierById(ctx context.Context, id string) (*db.Supplier, error) {
+	supplierRow, err := repo.queries.GetSupplierByID(ctx, id)
 	if err != nil {
 		return nil, fmt.Errorf("error occurred while getting suppliers from the db: %w", err)
 	}
@@ -75,7 +75,7 @@ func (store *SupplierRepoImpl) GetSupplierById(ctx context.Context, id string) (
 	return &supplier, nil
 }
 
-func (store *SupplierRepoImpl) CreateSupplier(ctx context.Context, supplier *db.Supplier) error {
+func (repo *SupplierRepoImpl) CreateSupplier(ctx context.Context, supplier *db.Supplier) error {
 	supplier.ID = uuid.NewString()
 	supplier.Created = sql.NullString{
 		String: time.Now().String(),
@@ -96,13 +96,13 @@ func (store *SupplierRepoImpl) CreateSupplier(ctx context.Context, supplier *db.
 		SocialWebsite:   supplier.SocialWebsite,
 		Created:         supplier.Created,
 	}
-	if err := store.queries.CreateSupplier(ctx, params); err != nil {
+	if err := repo.queries.CreateSupplier(ctx, params); err != nil {
 		return fmt.Errorf("error occurred while creating supplier: %w", err)
 	}
 	return nil
 }
 
-func (store *SupplierRepoImpl) UpdateSupplier(ctx context.Context, id string, supplier *db.Supplier) error {
+func (repo *SupplierRepoImpl) UpdateSupplier(ctx context.Context, id string, supplier *db.Supplier) error {
 	if supplier.LogoImage.Valid && supplier.MarketingImage.Valid {
 		params := db.UpdateSupplierParams{
 			Name:            supplier.Name,
@@ -117,7 +117,7 @@ func (store *SupplierRepoImpl) UpdateSupplier(ctx context.Context, id string, su
 			SocialWebsite:   supplier.SocialWebsite,
 			ID:              id,
 		}
-		if err := store.queries.UpdateSupplier(ctx, params); err != nil {
+		if err := repo.queries.UpdateSupplier(ctx, params); err != nil {
 			return fmt.Errorf("error while updating the supplier: %w", err)
 		}
 	} else {
@@ -132,15 +132,15 @@ func (store *SupplierRepoImpl) UpdateSupplier(ctx context.Context, id string, su
 			SocialWebsite:   supplier.SocialWebsite,
 			ID:              id,
 		}
-		if err := store.queries.UpdateSupplierNoImage(ctx, params); err != nil {
+		if err := repo.queries.UpdateSupplierNoImage(ctx, params); err != nil {
 			return fmt.Errorf("error while updating the supplier: %w", err)
 		}
 	}
 	return nil
 }
 
-func (store *SupplierRepoImpl) DeleteSupplier(ctx context.Context, id string) error {
-	if err := store.queries.DeleteSupplier(ctx, id); err != nil {
+func (repo *SupplierRepoImpl) DeleteSupplier(ctx context.Context, id string) error {
+	if err := repo.queries.DeleteSupplier(ctx, id); err != nil {
 		return fmt.Errorf("error occurred while deleting supplier: %w", err)
 	}
 	return nil

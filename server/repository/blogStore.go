@@ -28,8 +28,8 @@ func NewBlogRepo(sql *sql.DB) *BlogRepoImpl {
 	}
 }
 
-func (store *BlogRepoImpl) GetBlogs(ctx context.Context) ([]db.Blog, error) {
-	blogs, err := store.queries.GetBlogs(ctx)
+func (repo *BlogRepoImpl) GetBlogs(ctx context.Context) ([]db.Blog, error) {
+	blogs, err := repo.queries.GetBlogs(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("error occurred while querying database: %w", err)
 	}
@@ -50,8 +50,8 @@ func (store *BlogRepoImpl) GetBlogs(ctx context.Context) ([]db.Blog, error) {
 	return result, nil
 }
 
-func (store *BlogRepoImpl) GetBlogById(ctx context.Context, id string) (*db.Blog, error) {
-	blog, err := store.queries.GetBlogByID(ctx, id)
+func (repo *BlogRepoImpl) GetBlogById(ctx context.Context, id string) (*db.Blog, error) {
+	blog, err := repo.queries.GetBlogByID(ctx, id)
 	if err != nil {
 		return nil, fmt.Errorf("error occurred while querying database: %w", err)
 	}
@@ -59,7 +59,7 @@ func (store *BlogRepoImpl) GetBlogById(ctx context.Context, id string) (*db.Blog
 	return &blog, nil
 }
 
-func (store *BlogRepoImpl) CreateBlog(ctx context.Context, blog *db.Blog) error {
+func (repo *BlogRepoImpl) CreateBlog(ctx context.Context, blog *db.Blog) error {
 	blog.ID = uuid.NewString()
 	blog.Created = sql.NullString{String: time.Now().String(), Valid: true}
 
@@ -73,7 +73,7 @@ func (store *BlogRepoImpl) CreateBlog(ctx context.Context, blog *db.Blog) error 
 		Created:    blog.Created,
 	}
 
-	err := store.queries.CreateBlog(ctx, params)
+	err := repo.queries.CreateBlog(ctx, params)
 	if err != nil {
 		return fmt.Errorf("error occurred while creating blog: %w", err)
 	}
@@ -81,7 +81,7 @@ func (store *BlogRepoImpl) CreateBlog(ctx context.Context, blog *db.Blog) error 
 	return nil
 }
 
-func (store *BlogRepoImpl) UpdateBlog(ctx context.Context, id string, blog *db.Blog) error {
+func (repo *BlogRepoImpl) UpdateBlog(ctx context.Context, id string, blog *db.Blog) error {
 	if blog.MainImage.Valid {
 		params := db.UpdateBlogParams{
 			Title:      blog.Title,
@@ -91,7 +91,7 @@ func (store *BlogRepoImpl) UpdateBlog(ctx context.Context, id string, blog *db.B
 			Body:       blog.Body,
 			ID:         id,
 		}
-		err := store.queries.UpdateBlog(ctx, params)
+		err := repo.queries.UpdateBlog(ctx, params)
 		if err != nil {
 			return fmt.Errorf("error occurred while updating blog with image: %w", err)
 		}
@@ -103,7 +103,7 @@ func (store *BlogRepoImpl) UpdateBlog(ctx context.Context, id string, blog *db.B
 			Body:       blog.Body,
 			ID:         id,
 		}
-		err := store.queries.UpdateBlogNoImage(ctx, params)
+		err := repo.queries.UpdateBlogNoImage(ctx, params)
 		if err != nil {
 			return fmt.Errorf("error occurred while updating blog without image: %w", err)
 		}
@@ -112,8 +112,8 @@ func (store *BlogRepoImpl) UpdateBlog(ctx context.Context, id string, blog *db.B
 	return nil
 }
 
-func (store *BlogRepoImpl) DeleteBlog(ctx context.Context, id string) error {
-	err := store.queries.DeleteBlog(ctx, id)
+func (repo *BlogRepoImpl) DeleteBlog(ctx context.Context, id string) error {
+	err := repo.queries.DeleteBlog(ctx, id)
 	if err != nil {
 		return fmt.Errorf("error occurred while deleting blog: %w", err)
 	}
