@@ -52,19 +52,19 @@ func (handler *WarrantyHandler) GetWarrantyById(context *gin.Context) {
 
 func (handler *WarrantyHandler) CreateWarranty(context *gin.Context) {
 	ctx := context.Request.Context()
-	var warrantyParts types.WarranrtyParts
-	warranty := lib.DeserializeWarrantyClaim(*warrantyParts.Warranty)
-	var parts []db.PartsRequired
-	for _, part := range warrantyParts.Parts {
-		parts = append(parts, lib.DeserializePartsRequired(part))
-	}
 
+	var warrantyParts types.WarranrtyParts
+	var parts []db.PartsRequired
 	if err := context.ShouldBindJSON(&warrantyParts); err != nil {
 		log.Printf("error occurred - bad request: %v", err)
 		context.JSON(http.StatusBadRequest, gin.H{"error": "error occurred bad request"})
 		return
 	}
 
+	warranty := lib.DeserializeWarrantyClaim(*warrantyParts.Warranty)
+	for _, part := range warrantyParts.Parts {
+		parts = append(parts, lib.DeserializePartsRequired(part))
+	}
 	if err := handler.service.CreateWarranty(ctx, &warranty, parts); err != nil {
 		log.Printf("error occurred while creating warranty: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while creating warranty claim"})
@@ -77,19 +77,19 @@ func (handler *WarrantyHandler) CreateWarranty(context *gin.Context) {
 func (handler *WarrantyHandler) UpdateWarranty(context *gin.Context) {
 	ctx := context.Request.Context()
 	id := context.Param("id")
-	var warrantyParts types.WarranrtyParts
-	warranty := lib.DeserializeWarrantyClaim(*warrantyParts.Warranty)
-	var parts []db.PartsRequired
-	for _, part := range warrantyParts.Parts {
-		parts = append(parts, lib.DeserializePartsRequired(part))
-	}
 
+	var warrantyParts types.WarranrtyParts
+	var parts []db.PartsRequired
 	if err := context.ShouldBindJSON(warrantyParts); err != nil {
 		log.Printf("error occurred - bad request: %v", err)
 		context.JSON(http.StatusBadRequest, gin.H{"error": "error occurred bad request"})
 		return
 	}
+	for _, part := range warrantyParts.Parts {
+		parts = append(parts, lib.DeserializePartsRequired(part))
+	}
 
+	warranty := lib.DeserializeWarrantyClaim(*warrantyParts.Warranty)
 	if err := handler.service.UpdateWarranty(ctx, id, &warranty, parts); err != nil {
 		log.Printf("error occurred while updating warranty: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while updating warranty claim"})
