@@ -35,18 +35,17 @@ func (handler *PartsHandler) GetParts(context *gin.Context) {
 func (handler *PartsHandler) CreateParts(context *gin.Context) {
 	ctx := context.Request.Context()
 	var part types.Sparepart
-	dbPart := lib.DeserializeSparePart(part)
 
 	if err := context.ShouldBindJSON(&part); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Ivalid request body", "details": err.Error()})
 		return
 	}
-
 	if part.SupplierID == "" || part.SupplierID == "null" {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "SupplierID cannot be empty"})
 		return
 	}
 
+	dbPart := lib.DeserializeSparePart(part)
 	result, err := handler.service.CreatePart(ctx, &dbPart)
 	if err != nil {
 		log.Printf("Error creating part: %v", err)
@@ -70,18 +69,16 @@ func (handler *PartsHandler) UpdateParts(context *gin.Context) {
 	id := context.Param("id")
 
 	var part types.Sparepart
-	dbPart := lib.DeserializeSparePart(part)
-
 	if err := context.ShouldBindJSON(&part); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Request Body", "details": err.Error()})
 		return
 	}
-
 	if part.SupplierID == "" || part.SupplierID == "null" {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "SupplierID cannot be empty"})
 		return
 	}
 
+	dbPart := lib.DeserializeSparePart(part)
 	result, err := handler.service.UpdatePart(ctx, id, &dbPart)
 	if err != nil {
 		log.Printf("Error updating part: %v", err)
