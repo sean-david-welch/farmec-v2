@@ -11,8 +11,8 @@ import (
 )
 
 func InitExhibitions(router *gin.Engine, database *sql.DB, adminMiddleware *middleware.AdminMiddleware) {
-	exhibitionStore := repository.NewExhibitionStore(database)
-	service := services.NewExhibitionService(exhibitionStore)
+	exhibitionRepo := repository.NewExhibitionRepo(database)
+	service := services.NewExhibitionService(exhibitionRepo)
 	handler := handlers.NewExhibitionHandler(service)
 
 	ExhibitionRoutes(router, handler, adminMiddleware)

@@ -8,7 +8,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/db"
 )
 
-type PartsStore interface {
+type PartsRepo interface {
 	GetParts(ctx context.Context, id string) ([]db.SparePart, error)
 	GetPartById(ctx context.Context, id string) (*db.SparePart, error)
 	CreatePart(ctx context.Context, part *db.SparePart) error
@@ -16,16 +16,16 @@ type PartsStore interface {
 	DeletePart(ctx context.Context, id string) error
 }
 
-type PartsStoreImpl struct {
+type PartsRepoImpl struct {
 	queries *db.Queries
 }
 
-func NewPartsStore(sql *sql.DB) *PartsStoreImpl {
+func NewPartsRepo(sql *sql.DB) *PartsRepoImpl {
 	queries := db.New(sql)
-	return &PartsStoreImpl{queries: queries}
+	return &PartsRepoImpl{queries: queries}
 }
 
-func (store *PartsStoreImpl) GetParts(ctx context.Context, id string) ([]db.SparePart, error) {
+func (store *PartsRepoImpl) GetParts(ctx context.Context, id string) ([]db.SparePart, error) {
 	parts, err := store.queries.GetParts(ctx, id)
 	if err != nil {
 		return nil, fmt.Errorf("error occurred while getting spare parts: %w", err)
@@ -43,7 +43,7 @@ func (store *PartsStoreImpl) GetParts(ctx context.Context, id string) ([]db.Spar
 	return result, nil
 }
 
-func (store *PartsStoreImpl) GetPartById(ctx context.Context, id string) (*db.SparePart, error) {
+func (store *PartsRepoImpl) GetPartById(ctx context.Context, id string) (*db.SparePart, error) {
 	part, err := store.queries.GetPartByID(ctx, id)
 	if err != nil {
 		return nil, fmt.Errorf("error occurred while getting part from the db: %w", err)
@@ -51,7 +51,7 @@ func (store *PartsStoreImpl) GetPartById(ctx context.Context, id string) (*db.Sp
 	return &part, err
 }
 
-func (store *PartsStoreImpl) CreatePart(ctx context.Context, part *db.SparePart) error {
+func (store *PartsRepoImpl) CreatePart(ctx context.Context, part *db.SparePart) error {
 	part.ID = uuid.NewString()
 
 	params := db.CreateSparePartParams{
@@ -67,7 +67,7 @@ func (store *PartsStoreImpl) CreatePart(ctx context.Context, part *db.SparePart)
 	return nil
 }
 
-func (store *PartsStoreImpl) UpdatePart(ctx context.Context, id string, part *db.SparePart) error {
+func (store *PartsRepoImpl) UpdatePart(ctx context.Context, id string, part *db.SparePart) error {
 	if part.PartsImage.Valid {
 		params := db.UpdateSparePartParams{
 			SupplierID:     part.SupplierID,
@@ -93,7 +93,7 @@ func (store *PartsStoreImpl) UpdatePart(ctx context.Context, id string, part *db
 	return nil
 }
 
-func (store *PartsStoreImpl) DeletePart(ctx context.Context, id string) error {
+func (store *PartsRepoImpl) DeletePart(ctx context.Context, id string) error {
 	if err := store.queries.DeleteSparePart(ctx, id); err != nil {
 		return fmt.Errorf("error occurred while deleting a spare part: %w", err)
 	}

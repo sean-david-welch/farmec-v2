@@ -10,7 +10,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/db"
 )
 
-type EmployeeStore interface {
+type EmployeeRepo interface {
 	GetEmployees(ctx context.Context) ([]db.Employee, error)
 	GetEmployeeById(ctx context.Context, id string) (*db.Employee, error)
 	CreateEmployee(ctx context.Context, employee *db.Employee) error
@@ -18,16 +18,16 @@ type EmployeeStore interface {
 	DeleteEmployee(ctx context.Context, id string) error
 }
 
-type EmployeeStoreImpl struct {
+type EmployeeRepoImpl struct {
 	queries *db.Queries
 }
 
-func NewEmployeeStore(sql *sql.DB) *EmployeeStoreImpl {
+func NewEmployeeRepo(sql *sql.DB) *EmployeeRepoImpl {
 	queries := db.New(sql)
-	return &EmployeeStoreImpl{queries: queries}
+	return &EmployeeRepoImpl{queries: queries}
 }
 
-func (store *EmployeeStoreImpl) GetEmployees(ctx context.Context) ([]db.Employee, error) {
+func (store *EmployeeRepoImpl) GetEmployees(ctx context.Context) ([]db.Employee, error) {
 	employees, err := store.queries.GetEmployees(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("error occurred while querying employees: %w", err)
@@ -48,7 +48,7 @@ func (store *EmployeeStoreImpl) GetEmployees(ctx context.Context) ([]db.Employee
 	return result, nil
 }
 
-func (store *EmployeeStoreImpl) GetEmployeeById(ctx context.Context, id string) (*db.Employee, error) {
+func (store *EmployeeRepoImpl) GetEmployeeById(ctx context.Context, id string) (*db.Employee, error) {
 	employee, err := store.queries.GetEmployee(ctx, id)
 	if err != nil {
 		return nil, fmt.Errorf("error occurred while querying the database for employee: %w", err)
@@ -57,7 +57,7 @@ func (store *EmployeeStoreImpl) GetEmployeeById(ctx context.Context, id string) 
 	return &employee, nil
 }
 
-func (store *EmployeeStoreImpl) CreateEmployee(ctx context.Context, employee *db.Employee) error {
+func (store *EmployeeRepoImpl) CreateEmployee(ctx context.Context, employee *db.Employee) error {
 	employee.ID = uuid.NewString()
 	employee.Created = sql.NullString{
 		String: time.Now().String(),
@@ -79,7 +79,7 @@ func (store *EmployeeStoreImpl) CreateEmployee(ctx context.Context, employee *db
 	return nil
 }
 
-func (store *EmployeeStoreImpl) UpdateEmployee(ctx context.Context, id string, employee *db.Employee) error {
+func (store *EmployeeRepoImpl) UpdateEmployee(ctx context.Context, id string, employee *db.Employee) error {
 	if employee.ProfileImage.Valid {
 		params := db.UpdateEmployeeParams{
 			Name:         employee.Name,
@@ -105,7 +105,7 @@ func (store *EmployeeStoreImpl) UpdateEmployee(ctx context.Context, id string, e
 	return nil
 }
 
-func (store *EmployeeStoreImpl) DeleteEmployee(ctx context.Context, id string) error {
+func (store *EmployeeRepoImpl) DeleteEmployee(ctx context.Context, id string) error {
 	if err := store.queries.DeleteEmployee(ctx, id); err != nil {
 		return fmt.Errorf("error occurred while deleting employee: %w", err)
 	}

@@ -56,7 +56,7 @@ func (suite *BlogTestSuite) SetupTest() {
 	suite.db = database
 	suite.mock = mock
 
-	store := repository.NewBlogStore(database)
+	store := repository.NewBlogRepo(database)
 	s3Client := lib.NewNoOpS3Client()
 	service := services.NewBlogService(store, s3Client, "test-folder")
 	handler := handlers.NewBlogHandler(service)

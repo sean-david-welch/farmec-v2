@@ -8,7 +8,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/db"
 )
 
-type ProductStore interface {
+type ProductRepo interface {
 	GetProducts(ctx context.Context, id string) ([]db.Product, error)
 	GetProductById(ctx context.Context, id string) (*db.Product, error)
 	CreateProduct(ctx context.Context, product *db.Product) error
@@ -16,16 +16,16 @@ type ProductStore interface {
 	DeleteProduct(ctx context.Context, id string) error
 }
 
-type ProductStoreImpl struct {
+type ProductRepoImpl struct {
 	queries *db.Queries
 }
 
-func NewProductStore(sql *sql.DB) *ProductStoreImpl {
+func NewProductRepo(sql *sql.DB) *ProductRepoImpl {
 	queries := db.New(sql)
-	return &ProductStoreImpl{queries: queries}
+	return &ProductRepoImpl{queries: queries}
 }
 
-func (store *ProductStoreImpl) GetProducts(ctx context.Context, id string) ([]db.Product, error) {
+func (store *ProductRepoImpl) GetProducts(ctx context.Context, id string) ([]db.Product, error) {
 	products, err := store.queries.GetProducts(ctx, id)
 	if err != nil {
 		return nil, fmt.Errorf("an error occurred while getting products: %w", err)
@@ -45,7 +45,7 @@ func (store *ProductStoreImpl) GetProducts(ctx context.Context, id string) ([]db
 	return result, nil
 }
 
-func (store *ProductStoreImpl) GetProductById(ctx context.Context, id string) (*db.Product, error) {
+func (store *ProductRepoImpl) GetProductById(ctx context.Context, id string) (*db.Product, error) {
 	product, err := store.queries.GetProductByID(ctx, id)
 	if err != nil {
 		return nil, fmt.Errorf("an error occurred while getting product: %w", err)
@@ -53,7 +53,7 @@ func (store *ProductStoreImpl) GetProductById(ctx context.Context, id string) (*
 	return &product, nil
 }
 
-func (store *ProductStoreImpl) CreateProduct(ctx context.Context, product *db.Product) error {
+func (store *ProductRepoImpl) CreateProduct(ctx context.Context, product *db.Product) error {
 	product.ID = uuid.NewString()
 	params := db.CreateProductParams{
 		ID:           product.ID,
@@ -69,7 +69,7 @@ func (store *ProductStoreImpl) CreateProduct(ctx context.Context, product *db.Pr
 	return nil
 }
 
-func (store *ProductStoreImpl) UpdateProduct(ctx context.Context, id string, product *db.Product) error {
+func (store *ProductRepoImpl) UpdateProduct(ctx context.Context, id string, product *db.Product) error {
 	if product.ProductImage.Valid {
 		params := db.UpdateProductParams{
 			MachineID:    product.MachineID,
@@ -97,7 +97,7 @@ func (store *ProductStoreImpl) UpdateProduct(ctx context.Context, id string, pro
 	return nil
 }
 
-func (store *ProductStoreImpl) DeleteProduct(ctx context.Context, id string) error {
+func (store *ProductRepoImpl) DeleteProduct(ctx context.Context, id string) error {
 	if err := store.queries.DeleteProduct(ctx, id); err != nil {
 		return fmt.Errorf("error occurred while deleting a product: %w", err)
 	}

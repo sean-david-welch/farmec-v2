@@ -16,10 +16,10 @@ type ExhibitionService interface {
 }
 
 type ExhibitionServiceImpl struct {
-	store repository.ExhibitionStore
+	store repository.ExhibitionRepo
 }
 
-func NewExhibitionService(store repository.ExhibitionStore) *ExhibitionServiceImpl {
+func NewExhibitionService(store repository.ExhibitionRepo) *ExhibitionServiceImpl {
 	return &ExhibitionServiceImpl{store: store}
 }
 

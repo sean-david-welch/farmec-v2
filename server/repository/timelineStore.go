@@ -10,23 +10,23 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/db"
 )
 
-type TimelineStore interface {
+type TimelineRepo interface {
 	GetTimelines(ctx context.Context) ([]db.Timeline, error)
 	CreateTimeline(ctx context.Context, timeline *db.Timeline) error
 	UpdateTimeline(ctx context.Context, id string, timeline *db.Timeline) error
 	DeleteTimeline(ctx context.Context, id string) error
 }
 
-type TimelineStoreImpl struct {
+type TimelineRepoImpl struct {
 	queries *db.Queries
 }
 
-func NewTimelineStore(sql *sql.DB) *TimelineStoreImpl {
+func NewTimelineRepo(sql *sql.DB) *TimelineRepoImpl {
 	queries := db.New(sql)
-	return &TimelineStoreImpl{queries: queries}
+	return &TimelineRepoImpl{queries: queries}
 }
 
-func (store *TimelineStoreImpl) GetTimelines(ctx context.Context) ([]db.Timeline, error) {
+func (store *TimelineRepoImpl) GetTimelines(ctx context.Context) ([]db.Timeline, error) {
 	timelines, err := store.queries.GetTimelines(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("error occurred while getting timelines from the db: %w", err)
@@ -45,7 +45,7 @@ func (store *TimelineStoreImpl) GetTimelines(ctx context.Context) ([]db.Timeline
 	return result, nil
 }
 
-func (store *TimelineStoreImpl) CreateTimeline(ctx context.Context, timeline *db.Timeline) error {
+func (store *TimelineRepoImpl) CreateTimeline(ctx context.Context, timeline *db.Timeline) error {
 	timeline.ID = uuid.NewString()
 	timeline.Created = sql.NullString{
 		String: time.Now().String(),
@@ -66,7 +66,7 @@ func (store *TimelineStoreImpl) CreateTimeline(ctx context.Context, timeline *db
 	return nil
 }
 
-func (store *TimelineStoreImpl) UpdateTimeline(ctx context.Context, id string, timeline *db.Timeline) error {
+func (store *TimelineRepoImpl) UpdateTimeline(ctx context.Context, id string, timeline *db.Timeline) error {
 	params := db.UpdateTimelineParams{
 		Title: timeline.Title,
 		Date:  timeline.Date,
@@ -79,7 +79,7 @@ func (store *TimelineStoreImpl) UpdateTimeline(ctx context.Context, id string, t
 	return nil
 }
 
-func (store *TimelineStoreImpl) DeleteTimeline(ctx context.Context, id string) error {
+func (store *TimelineRepoImpl) DeleteTimeline(ctx context.Context, id string) error {
 	if err := store.queries.DeleteTimeline(ctx, id); err != nil {
 		return fmt.Errorf("error occurred while deleting the timeline: %w", err)
 	}

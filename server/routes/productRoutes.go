@@ -12,8 +12,8 @@ import (
 )
 
 func InitProduct(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, adminMiddleware *middleware.AdminMiddleware) {
-	productStore := repository.NewProductStore(database)
-	productService := services.NewProductService(productStore, s3Client, "Products")
+	productRepo := repository.NewProductRepo(database)
+	productService := services.NewProductService(productRepo, s3Client, "Products")
 	productHandler := handlers.NewProductHandler(productService)
 
 	ProductRoutes(router, productHandler, adminMiddleware)

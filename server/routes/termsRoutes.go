@@ -11,8 +11,8 @@ import (
 )
 
 func InitTerms(router *gin.Engine, database *sql.DB, adminMiddleware *middleware.AdminMiddleware) {
-	termsStore := repository.NewTermsStore(database)
-	service := services.NewTermsService(termsStore)
+	termsRepo := repository.NewTermsRepo(database)
+	service := services.NewTermsService(termsRepo)
 	handler := handlers.NewTermsHandler(service)
 
 	TermsRoutes(router, handler, adminMiddleware)

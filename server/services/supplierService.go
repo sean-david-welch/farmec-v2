@@ -23,10 +23,10 @@ type SupplierService interface {
 type SupplierServiceImpl struct {
 	folder   string
 	s3Client lib.S3Client
-	store    repository.SupplierStore
+	store    repository.SupplierRepo
 }
 
-func NewSupplierService(store repository.SupplierStore, s3Client lib.S3Client, folder string) *SupplierServiceImpl {
+func NewSupplierService(store repository.SupplierRepo, s3Client lib.S3Client, folder string) *SupplierServiceImpl {
 	return &SupplierServiceImpl{
 		store:    store,
 		s3Client: s3Client,

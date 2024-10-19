@@ -10,7 +10,7 @@ import (
 	"github.com/google/uuid"
 )
 
-type MachineStore interface {
+type MachineRepo interface {
 	GetMachines(ctx context.Context, id string) ([]db.Machine, error)
 	GetMachineById(ctx context.Context, id string) (*db.Machine, error)
 	CreateMachine(ctx context.Context, machine *db.Machine) error
@@ -18,16 +18,16 @@ type MachineStore interface {
 	DeleteMachine(ctx context.Context, id string) error
 }
 
-type MachineStoreImpl struct {
+type MachineRepoImpl struct {
 	queries *db.Queries
 }
 
-func NewMachineStore(sql *sql.DB) *MachineStoreImpl {
+func NewMachineRepo(sql *sql.DB) *MachineRepoImpl {
 	queries := db.New(sql)
-	return &MachineStoreImpl{queries: queries}
+	return &MachineRepoImpl{queries: queries}
 }
 
-func (store *MachineStoreImpl) GetMachines(ctx context.Context, id string) ([]db.Machine, error) {
+func (store *MachineRepoImpl) GetMachines(ctx context.Context, id string) ([]db.Machine, error) {
 	machines, err := store.queries.GetMachines(ctx, id)
 	if err != nil {
 		return nil, fmt.Errorf("error occurred while querying the database for machines: %w", err)
@@ -49,7 +49,7 @@ func (store *MachineStoreImpl) GetMachines(ctx context.Context, id string) ([]db
 	return result, nil
 }
 
-func (store *MachineStoreImpl) GetMachineById(ctx context.Context, id string) (*db.Machine, error) {
+func (store *MachineRepoImpl) GetMachineById(ctx context.Context, id string) (*db.Machine, error) {
 	machine, err := store.queries.GetMachineByID(ctx, id)
 	if err != nil {
 		return nil, fmt.Errorf("error occurred while querying the database for machines: %w", err)
@@ -58,7 +58,7 @@ func (store *MachineStoreImpl) GetMachineById(ctx context.Context, id string) (*
 	return &machine, nil
 }
 
-func (store *MachineStoreImpl) CreateMachine(ctx context.Context, machine *db.Machine) error {
+func (store *MachineRepoImpl) CreateMachine(ctx context.Context, machine *db.Machine) error {
 	machine.ID = uuid.NewString()
 	machine.Created = sql.NullString{String: time.Now().String(), Valid: true}
 
@@ -79,7 +79,7 @@ func (store *MachineStoreImpl) CreateMachine(ctx context.Context, machine *db.Ma
 	return nil
 }
 
-func (store *MachineStoreImpl) UpdateMachine(ctx context.Context, id string, machine *db.Machine) error {
+func (store *MachineRepoImpl) UpdateMachine(ctx context.Context, id string, machine *db.Machine) error {
 	if machine.MachineImage.Valid {
 		params := db.UpdateMachineParams{
 			SupplierID:   machine.SupplierID,
@@ -107,7 +107,7 @@ func (store *MachineStoreImpl) UpdateMachine(ctx context.Context, id string, mac
 	return nil
 }
 
-func (store *MachineStoreImpl) DeleteMachine(ctx context.Context, id string) error {
+func (store *MachineRepoImpl) DeleteMachine(ctx context.Context, id string) error {
 	if err := store.queries.DeleteMachine(ctx, id); err != nil {
 		return fmt.Errorf("error occurred while deleting machine: %w", err)
 	}

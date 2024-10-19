@@ -23,10 +23,10 @@ type PartsService interface {
 type PartsServiceImpl struct {
 	folder   string
 	s3Client lib.S3Client
-	store    repository.PartsStore
+	store    repository.PartsRepo
 }
 
-func NewPartsService(store repository.PartsStore, s3Client lib.S3Client, folder string) *PartsServiceImpl {
+func NewPartsService(store repository.PartsRepo, s3Client lib.S3Client, folder string) *PartsServiceImpl {
 	return &PartsServiceImpl{
 		store:    store,
 		s3Client: s3Client,

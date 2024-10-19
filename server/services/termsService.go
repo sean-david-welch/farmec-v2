@@ -16,10 +16,10 @@ type TermsService interface {
 }
 
 type TermsServiceImpl struct {
-	store repository.TermsStore
+	store repository.TermsRepo
 }
 
-func NewTermsService(store repository.TermsStore) *TermsServiceImpl {
+func NewTermsService(store repository.TermsRepo) *TermsServiceImpl {
 	return &TermsServiceImpl{store: store}
 }
 

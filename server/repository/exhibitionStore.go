@@ -10,23 +10,23 @@ import (
 	"github.com/google/uuid"
 )
 
-type ExhibitionStore interface {
+type ExhibitionRepo interface {
 	GetExhibitions(ctx context.Context) ([]db.Exhibition, error)
 	CreateExhibition(ctx context.Context, exhibition *db.Exhibition) error
 	UpdateExhibition(ctx context.Context, id string, exhibition *db.Exhibition) error
 	DeleteExhibition(ctx context.Context, id string) error
 }
 
-type ExhibitionStoreImpl struct {
+type ExhibitionRepoImpl struct {
 	queries *db.Queries
 }
 
-func NewExhibitionStore(sql *sql.DB) *ExhibitionStoreImpl {
+func NewExhibitionRepo(sql *sql.DB) *ExhibitionRepoImpl {
 	queries := db.New(sql)
-	return &ExhibitionStoreImpl{queries: queries}
+	return &ExhibitionRepoImpl{queries: queries}
 }
 
-func (store *ExhibitionStoreImpl) GetExhibitions(ctx context.Context) ([]db.Exhibition, error) {
+func (store *ExhibitionRepoImpl) GetExhibitions(ctx context.Context) ([]db.Exhibition, error) {
 	exhibitions, err := store.queries.GetExhibitions(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("an error occurred while querying the database for exhibitions: %w", err)
@@ -47,7 +47,7 @@ func (store *ExhibitionStoreImpl) GetExhibitions(ctx context.Context) ([]db.Exhi
 	return exhibitions, nil
 }
 
-func (store *ExhibitionStoreImpl) CreateExhibition(ctx context.Context, exhibition *db.Exhibition) error {
+func (store *ExhibitionRepoImpl) CreateExhibition(ctx context.Context, exhibition *db.Exhibition) error {
 	exhibition.ID = uuid.NewString()
 	exhibition.Created = sql.NullString{
 		String: time.Now().String(),
@@ -70,7 +70,7 @@ func (store *ExhibitionStoreImpl) CreateExhibition(ctx context.Context, exhibiti
 	return nil
 }
 
-func (store *ExhibitionStoreImpl) UpdateExhibition(ctx context.Context, id string, exhibition *db.Exhibition) error {
+func (store *ExhibitionRepoImpl) UpdateExhibition(ctx context.Context, id string, exhibition *db.Exhibition) error {
 	params := db.UpdateExhibitionParams{
 		Title:    exhibition.Title,
 		Date:     exhibition.Date,
@@ -85,7 +85,7 @@ func (store *ExhibitionStoreImpl) UpdateExhibition(ctx context.Context, id strin
 	return nil
 }
 
-func (store *ExhibitionStoreImpl) DeleteExhibition(ctx context.Context, id string) error {
+func (store *ExhibitionRepoImpl) DeleteExhibition(ctx context.Context, id string) error {
 	if err := store.queries.DeleteExhibition(ctx, id); err != nil {
 		return fmt.Errorf("error occurred while delting an exhibition: %w", err)
 	}

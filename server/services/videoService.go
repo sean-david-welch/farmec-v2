@@ -22,11 +22,11 @@ type VideoService interface {
 }
 
 type VideoServiceImpl struct {
-	store          repository.VideoStore
+	store          repository.VideoRepo
 	youtubeService *youtube.Service
 }
 
-func NewVideoService(store repository.VideoStore, youtubeService *youtube.Service) *VideoServiceImpl {
+func NewVideoService(store repository.VideoRepo, youtubeService *youtube.Service) *VideoServiceImpl {
 	return &VideoServiceImpl{
 		store:          store,
 		youtubeService: youtubeService,

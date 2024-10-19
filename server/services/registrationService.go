@@ -19,10 +19,10 @@ type RegistrationService interface {
 
 type RegistrationServiceImpl struct {
 	smtpClient lib.SMTPClient
-	store      repository.RegistrationStore
+	store      repository.RegistrationRepo
 }
 
-func NewRegistrationService(store repository.RegistrationStore, smtpClient lib.SMTPClient) *RegistrationServiceImpl {
+func NewRegistrationService(store repository.RegistrationRepo, smtpClient lib.SMTPClient) *RegistrationServiceImpl {
 	return &RegistrationServiceImpl{store: store, smtpClient: smtpClient}
 }
 

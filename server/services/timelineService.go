@@ -16,10 +16,10 @@ type TimelineService interface {
 }
 
 type TimelineServiceImpl struct {
-	store repository.TimelineStore
+	store repository.TimelineRepo
 }
 
-func NewTimelineService(store repository.TimelineStore) *TimelineServiceImpl {
+func NewTimelineService(store repository.TimelineRepo) *TimelineServiceImpl {
 	return &TimelineServiceImpl{store: store}
 }
 

@@ -10,23 +10,23 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/db"
 )
 
-type PrivacyStore interface {
+type PrivacyRepo interface {
 	GetPrivacy(ctx context.Context) ([]db.Privacy, error)
 	CreatePrivacy(ctx context.Context, privacy *db.Privacy) error
 	UpdatePrivacy(ctx context.Context, id string, privacy *db.Privacy) error
 	DeletePrivacy(ctx context.Context, id string) error
 }
 
-type PrivacyStoreImpl struct {
+type PrivacyRepoImpl struct {
 	queries *db.Queries
 }
 
-func NewPrivacyStore(sql *sql.DB) *PrivacyStoreImpl {
+func NewPrivacyRepo(sql *sql.DB) *PrivacyRepoImpl {
 	queries := db.New(sql)
-	return &PrivacyStoreImpl{queries: queries}
+	return &PrivacyRepoImpl{queries: queries}
 }
 
-func (store *PrivacyStoreImpl) GetPrivacy(ctx context.Context) ([]db.Privacy, error) {
+func (store *PrivacyRepoImpl) GetPrivacy(ctx context.Context) ([]db.Privacy, error) {
 	privacies, err := store.queries.GetPrivacies(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("an error occurred while getting privacy policy: %w", err)
@@ -43,7 +43,7 @@ func (store *PrivacyStoreImpl) GetPrivacy(ctx context.Context) ([]db.Privacy, er
 	return result, nil
 }
 
-func (store *PrivacyStoreImpl) CreatePrivacy(ctx context.Context, privacy *db.Privacy) error {
+func (store *PrivacyRepoImpl) CreatePrivacy(ctx context.Context, privacy *db.Privacy) error {
 	privacy.ID = uuid.NewString()
 	privacy.Created = sql.NullString{
 		String: time.Now().String(),
@@ -62,7 +62,7 @@ func (store *PrivacyStoreImpl) CreatePrivacy(ctx context.Context, privacy *db.Pr
 	return nil
 }
 
-func (store *PrivacyStoreImpl) UpdatePrivacy(ctx context.Context, id string, privacy *db.Privacy) error {
+func (store *PrivacyRepoImpl) UpdatePrivacy(ctx context.Context, id string, privacy *db.Privacy) error {
 	params := db.UpdatePrivacyParams{
 		Title: privacy.Title,
 		Body:  privacy.Body,
@@ -74,7 +74,7 @@ func (store *PrivacyStoreImpl) UpdatePrivacy(ctx context.Context, id string, pri
 	return nil
 }
 
-func (store *PrivacyStoreImpl) DeletePrivacy(ctx context.Context, id string) error {
+func (store *PrivacyRepoImpl) DeletePrivacy(ctx context.Context, id string) error {
 	if err := store.queries.DeletePrivacy(ctx, id); err != nil {
 		return fmt.Errorf("an error occurred while deleting privacy: %w", err)
 	}

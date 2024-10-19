@@ -17,10 +17,10 @@ type CheckoutService interface {
 
 type CheckoutServiceImpl struct {
 	secrets *lib.Secrets
-	store   repository.LineItemStore
+	store   repository.LineItemRepo
 }
 
-func NewCheckoutService(secrets *lib.Secrets, store repository.LineItemStore) *CheckoutServiceImpl {
+func NewCheckoutService(secrets *lib.Secrets, store repository.LineItemRepo) *CheckoutServiceImpl {
 	return &CheckoutServiceImpl{secrets: secrets, store: store}
 }
 

@@ -10,7 +10,7 @@ import (
 	"github.com/google/uuid"
 )
 
-type SupplierStore interface {
+type SupplierRepo interface {
 	GetSuppliers(ctx context.Context) ([]db.Supplier, error)
 	CreateSupplier(ctx context.Context, supplier *db.Supplier) error
 	GetSupplierById(ctx context.Context, id string) (*db.Supplier, error)
@@ -18,16 +18,16 @@ type SupplierStore interface {
 	DeleteSupplier(ctx context.Context, id string) error
 }
 
-type SupplierStoreImpl struct {
+type SupplierRepoImpl struct {
 	queries *db.Queries
 }
 
-func NewSupplierStore(sql *sql.DB) *SupplierStoreImpl {
+func NewSupplierRepo(sql *sql.DB) *SupplierRepoImpl {
 	queries := db.New(sql)
-	return &SupplierStoreImpl{queries: queries}
+	return &SupplierRepoImpl{queries: queries}
 }
 
-func (store *SupplierStoreImpl) GetSuppliers(ctx context.Context) ([]db.Supplier, error) {
+func (store *SupplierRepoImpl) GetSuppliers(ctx context.Context) ([]db.Supplier, error) {
 	suppliers, err := store.queries.GetSuppliers(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("error occurred while getting suppliers from the db: %w", err)
@@ -53,7 +53,7 @@ func (store *SupplierStoreImpl) GetSuppliers(ctx context.Context) ([]db.Supplier
 	return result, nil
 }
 
-func (store *SupplierStoreImpl) GetSupplierById(ctx context.Context, id string) (*db.Supplier, error) {
+func (store *SupplierRepoImpl) GetSupplierById(ctx context.Context, id string) (*db.Supplier, error) {
 	supplierRow, err := store.queries.GetSupplierByID(ctx, id)
 	if err != nil {
 		return nil, fmt.Errorf("error occurred while getting suppliers from the db: %w", err)
@@ -75,7 +75,7 @@ func (store *SupplierStoreImpl) GetSupplierById(ctx context.Context, id string) 
 	return &supplier, nil
 }
 
-func (store *SupplierStoreImpl) CreateSupplier(ctx context.Context, supplier *db.Supplier) error {
+func (store *SupplierRepoImpl) CreateSupplier(ctx context.Context, supplier *db.Supplier) error {
 	supplier.ID = uuid.NewString()
 	supplier.Created = sql.NullString{
 		String: time.Now().String(),
@@ -102,7 +102,7 @@ func (store *SupplierStoreImpl) CreateSupplier(ctx context.Context, supplier *db
 	return nil
 }
 
-func (store *SupplierStoreImpl) UpdateSupplier(ctx context.Context, id string, supplier *db.Supplier) error {
+func (store *SupplierRepoImpl) UpdateSupplier(ctx context.Context, id string, supplier *db.Supplier) error {
 	if supplier.LogoImage.Valid && supplier.MarketingImage.Valid {
 		params := db.UpdateSupplierParams{
 			Name:            supplier.Name,
@@ -139,7 +139,7 @@ func (store *SupplierStoreImpl) UpdateSupplier(ctx context.Context, id string, s
 	return nil
 }
 
-func (store *SupplierStoreImpl) DeleteSupplier(ctx context.Context, id string) error {
+func (store *SupplierRepoImpl) DeleteSupplier(ctx context.Context, id string) error {
 	if err := store.queries.DeleteSupplier(ctx, id); err != nil {
 		return fmt.Errorf("error occurred while deleting supplier: %w", err)
 	}

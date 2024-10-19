@@ -21,12 +21,12 @@ type LineItemService interface {
 }
 
 type LineItemServiceImpl struct {
-	store    repository.LineItemStore
+	store    repository.LineItemRepo
 	s3Client lib.S3Client
 	folder   string
 }
 
-func NewLineItemService(store repository.LineItemStore, s3Client lib.S3Client, folder string) *LineItemServiceImpl {
+func NewLineItemService(store repository.LineItemRepo, s3Client lib.S3Client, folder string) *LineItemServiceImpl {
 	return &LineItemServiceImpl{store: store, s3Client: s3Client, folder: folder}
 }
 

@@ -10,23 +10,23 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/db"
 )
 
-type TermsStore interface {
+type TermsRepo interface {
 	GetTerms(ctx context.Context) ([]db.Term, error)
 	CreateTerm(ctx context.Context, term *db.Term) error
 	UpdateTerm(ctx context.Context, id string, term *db.Term) error
 	DeleteTerm(ctx context.Context, id string) error
 }
 
-type TermsStoreImpl struct {
+type TermsRepoImpl struct {
 	queries *db.Queries
 }
 
-func NewTermsStore(sql *sql.DB) *TermsStoreImpl {
+func NewTermsRepo(sql *sql.DB) *TermsRepoImpl {
 	queries := db.New(sql)
-	return &TermsStoreImpl{queries: queries}
+	return &TermsRepoImpl{queries: queries}
 }
 
-func (store *TermsStoreImpl) GetTerms(ctx context.Context) ([]db.Term, error) {
+func (store *TermsRepoImpl) GetTerms(ctx context.Context) ([]db.Term, error) {
 	terms, err := store.queries.GetTerms(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("error occurred while querying the database for terms: %w", err)
@@ -43,7 +43,7 @@ func (store *TermsStoreImpl) GetTerms(ctx context.Context) ([]db.Term, error) {
 	return result, nil
 }
 
-func (store *TermsStoreImpl) CreateTerm(ctx context.Context, term *db.Term) error {
+func (store *TermsRepoImpl) CreateTerm(ctx context.Context, term *db.Term) error {
 	term.ID = uuid.NewString()
 	term.Created = sql.NullString{
 		String: time.Now().String(),
@@ -61,7 +61,7 @@ func (store *TermsStoreImpl) CreateTerm(ctx context.Context, term *db.Term) erro
 	return nil
 }
 
-func (store *TermsStoreImpl) UpdateTerm(ctx context.Context, id string, term *db.Term) error {
+func (store *TermsRepoImpl) UpdateTerm(ctx context.Context, id string, term *db.Term) error {
 	params := db.UpdateTermParams{
 		Title:   term.Title,
 		Body:    term.Body,
@@ -74,7 +74,7 @@ func (store *TermsStoreImpl) UpdateTerm(ctx context.Context, id string, term *db
 	return nil
 }
 
-func (store *TermsStoreImpl) DeleteTerm(ctx context.Context, id string) error {
+func (store *TermsRepoImpl) DeleteTerm(ctx context.Context, id string) error {
 	if err := store.queries.DeleteTerm(ctx, id); err != nil {
 		return fmt.Errorf("error occurred while deleting term: %w", err)
 	}

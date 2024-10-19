@@ -11,7 +11,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/db"
 )
 
-type WarrantyStore interface {
+type WarrantyRepo interface {
 	GetWarranties(ctx context.Context) ([]types.DealerOwnerInfo, error)
 	GetWarrantyById(ctx context.Context, id string) (*db.WarrantyClaim, []db.PartsRequired, error)
 	CreateWarranty(ctx context.Context, warranty *db.WarrantyClaim, parts []db.PartsRequired) error
@@ -19,17 +19,17 @@ type WarrantyStore interface {
 	DeleteWarranty(ctx context.Context, id string) error
 }
 
-type WarrantyStoreImpl struct {
+type WarrantyRepoImpl struct {
 	queries *db.Queries
 	db      *sql.DB
 }
 
-func NewWarrantyStore(sqlDB *sql.DB) *WarrantyStoreImpl {
+func NewWarrantyRepo(sqlDB *sql.DB) *WarrantyRepoImpl {
 	queries := db.New(sqlDB)
-	return &WarrantyStoreImpl{queries: queries, db: sqlDB}
+	return &WarrantyRepoImpl{queries: queries, db: sqlDB}
 }
 
-func (store *WarrantyStoreImpl) GetWarranties(ctx context.Context) ([]types.DealerOwnerInfo, error) {
+func (store *WarrantyRepoImpl) GetWarranties(ctx context.Context) ([]types.DealerOwnerInfo, error) {
 	warranties, err := store.queries.GetWarranties(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("an error occurred while getting warranties: %w", err)
@@ -46,7 +46,7 @@ func (store *WarrantyStoreImpl) GetWarranties(ctx context.Context) ([]types.Deal
 	return result, nil
 }
 
-func (store *WarrantyStoreImpl) GetWarrantyById(ctx context.Context, id string) (*db.WarrantyClaim, []db.PartsRequired, error) {
+func (store *WarrantyRepoImpl) GetWarrantyById(ctx context.Context, id string) (*db.WarrantyClaim, []db.PartsRequired, error) {
 	rows, err := store.queries.GetWarrantyByID(ctx, id)
 	if err != nil {
 		return nil, nil, fmt.Errorf("error occurred while getting warranty from the db: %w", err)
@@ -92,7 +92,7 @@ func (store *WarrantyStoreImpl) GetWarrantyById(ctx context.Context, id string) 
 	return warranty, parts, nil
 }
 
-func (store *WarrantyStoreImpl) CreateWarranty(ctx context.Context, warranty *db.WarrantyClaim, parts []db.PartsRequired) error {
+func (store *WarrantyRepoImpl) CreateWarranty(ctx context.Context, warranty *db.WarrantyClaim, parts []db.PartsRequired) error {
 	tx, err := store.db.BeginTx(ctx, nil)
 	if err != nil {
 		return fmt.Errorf("failed to begin transaction: %w", err)
@@ -153,7 +153,7 @@ func (store *WarrantyStoreImpl) CreateWarranty(ctx context.Context, warranty *db
 
 	return nil
 }
-func (store *WarrantyStoreImpl) UpdateWarranty(ctx context.Context, id string, warranty *db.WarrantyClaim, parts []db.PartsRequired) error {
+func (store *WarrantyRepoImpl) UpdateWarranty(ctx context.Context, id string, warranty *db.WarrantyClaim, parts []db.PartsRequired) error {
 	tx, err := store.db.BeginTx(ctx, nil)
 	if err != nil {
 		return fmt.Errorf("failed to begin transaction: %w", err)
@@ -210,7 +210,7 @@ func (store *WarrantyStoreImpl) UpdateWarranty(ctx context.Context, id string, w
 	return nil
 }
 
-func (store *WarrantyStoreImpl) DeleteWarranty(ctx context.Context, id string) error {
+func (store *WarrantyRepoImpl) DeleteWarranty(ctx context.Context, id string) error {
 	tx, err := store.db.BeginTx(ctx, nil)
 	if err != nil {
 		return fmt.Errorf("failed to begin transaction: %w", err)

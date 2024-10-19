@@ -8,7 +8,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/db"
 )
 
-type LineItemStore interface {
+type LineItemRepo interface {
 	GetLineItems(ctx context.Context) ([]db.LineItem, error)
 	GetLineItemById(ctx context.Context, id string) (*db.LineItem, error)
 	CreateLineItem(ctx context.Context, lineItem *db.LineItem) error
@@ -16,16 +16,16 @@ type LineItemStore interface {
 	DeleteLineItem(ctx context.Context, id string) error
 }
 
-type LineItemStoreImpl struct {
+type LineItemRepoImpl struct {
 	queries *db.Queries
 }
 
-func NewLineItemStore(sql *sql.DB) *LineItemStoreImpl {
+func NewLineItemRepo(sql *sql.DB) *LineItemRepoImpl {
 	queries := db.New(sql)
-	return &LineItemStoreImpl{queries: queries}
+	return &LineItemRepoImpl{queries: queries}
 }
 
-func (store *LineItemStoreImpl) GetLineItems(ctx context.Context) ([]db.LineItem, error) {
+func (store *LineItemRepoImpl) GetLineItems(ctx context.Context) ([]db.LineItem, error) {
 	lineItems, err := store.queries.GetLineItems(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("error occurred while getting line items: %w", err)
@@ -42,7 +42,7 @@ func (store *LineItemStoreImpl) GetLineItems(ctx context.Context) ([]db.LineItem
 	return result, nil
 }
 
-func (store *LineItemStoreImpl) GetLineItemById(ctx context.Context, id string) (*db.LineItem, error) {
+func (store *LineItemRepoImpl) GetLineItemById(ctx context.Context, id string) (*db.LineItem, error) {
 	lineItem, err := store.queries.GetLineItemByID(ctx, id)
 	if err != nil {
 		return nil, fmt.Errorf("error occurred while getting line items from db: %w", err)
@@ -50,7 +50,7 @@ func (store *LineItemStoreImpl) GetLineItemById(ctx context.Context, id string) 
 	return &lineItem, nil
 }
 
-func (store *LineItemStoreImpl) CreateLineItem(ctx context.Context, lineItem *db.LineItem) error {
+func (store *LineItemRepoImpl) CreateLineItem(ctx context.Context, lineItem *db.LineItem) error {
 	lineItem.ID = uuid.NewString()
 
 	params := db.CreateLineItemParams{
@@ -65,7 +65,7 @@ func (store *LineItemStoreImpl) CreateLineItem(ctx context.Context, lineItem *db
 	return nil
 }
 
-func (store *LineItemStoreImpl) UpdateLineItem(ctx context.Context, id string, lineItem *db.LineItem) error {
+func (store *LineItemRepoImpl) UpdateLineItem(ctx context.Context, id string, lineItem *db.LineItem) error {
 	if lineItem.Image.Valid {
 		params := db.UpdateLineItemParams{
 			Name:  lineItem.Name,
@@ -89,7 +89,7 @@ func (store *LineItemStoreImpl) UpdateLineItem(ctx context.Context, id string, l
 	return nil
 }
 
-func (store *LineItemStoreImpl) DeleteLineItem(ctx context.Context, id string) error {
+func (store *LineItemRepoImpl) DeleteLineItem(ctx context.Context, id string) error {
 	if err := store.queries.DeleteLineItem(ctx, id); err != nil {
 		return fmt.Errorf("error occurred while deleting a line item: %w", err)
 	}

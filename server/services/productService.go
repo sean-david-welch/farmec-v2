@@ -22,10 +22,10 @@ type ProductService interface {
 type ProductServiceImpl struct {
 	folder   string
 	s3Client lib.S3Client
-	store    repository.ProductStore
+	store    repository.ProductRepo
 }
 
-func NewProductService(store repository.ProductStore, s3Client lib.S3Client, folder string) *ProductServiceImpl {
+func NewProductService(store repository.ProductRepo, s3Client lib.S3Client, folder string) *ProductServiceImpl {
 	return &ProductServiceImpl{
 		store:    store,
 		s3Client: s3Client,

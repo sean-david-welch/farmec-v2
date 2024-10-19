@@ -16,10 +16,10 @@ type PrivacyService interface {
 }
 
 type PrivacyServiceImpl struct {
-	store repository.PrivacyStore
+	store repository.PrivacyRepo
 }
 
-func NewPrivacyService(store repository.PrivacyStore) *PrivacyServiceImpl {
+func NewPrivacyService(store repository.PrivacyRepo) *PrivacyServiceImpl {
 	return &PrivacyServiceImpl{store: store}
 }
 

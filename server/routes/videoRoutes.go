@@ -21,8 +21,8 @@ func InitVideos(router *gin.Engine, database *sql.DB, secrets *lib.Secrets, admi
 		log.Fatal("error calling YouTube API: ", err)
 	}
 
-	videoStore := repository.NewVideoStore(database)
-	videoService := services.NewVideoService(videoStore, youtubeService)
+	videoRepo := repository.NewVideoRepo(database)
+	videoService := services.NewVideoService(videoRepo, youtubeService)
 	videoHandler := handlers.NewVideoHandler(videoService)
 
 	VideoRoutes(router, videoHandler, adminMiddleware)

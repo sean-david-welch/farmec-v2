@@ -12,7 +12,7 @@ import (
 )
 
 func InitRegistrations(router *gin.Engine, database *sql.DB, authMiddleware *middleware.AuthMiddleware, smtp lib.SMTPClient) {
-	store := repository.NewRegistrationStore(database)
+	store := repository.NewRegistrationRepo(database)
 	service := services.NewRegistrationService(store, smtp)
 	handler := handlers.NewRegistrationHandler(service)
 

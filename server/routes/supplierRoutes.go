@@ -13,8 +13,8 @@ import (
 )
 
 func InitSuppliers(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, adminMiddleware *middleware.AdminMiddleware) {
-	supplierStore := repository.NewSupplierStore(database)
-	supplierService := services.NewSupplierService(supplierStore, s3Client, "Suppliers")
+	supplierRepo := repository.NewSupplierRepo(database)
+	supplierService := services.NewSupplierService(supplierRepo, s3Client, "Suppliers")
 	supplierHandler := handlers.NewSupplierContoller(supplierService)
 
 	SupplierRoutes(router, supplierHandler, adminMiddleware)

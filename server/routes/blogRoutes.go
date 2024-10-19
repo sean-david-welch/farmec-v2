@@ -12,8 +12,8 @@ import (
 )
 
 func InitBlogs(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, adminMiddleware *middleware.AdminMiddleware) {
-	blogStore := repository.NewBlogStore(database)
-	service := services.NewBlogService(blogStore, s3Client, "Blogs")
+	blogRepo := repository.NewBlogRepo(database)
+	service := services.NewBlogService(blogRepo, s3Client, "Blogs")
 	handler := handlers.NewBlogHandler(service)
 
 	BlogRoutes(router, handler, adminMiddleware)
