@@ -33,13 +33,13 @@ func (handler *CarouselHandler) GetCarousels(context *gin.Context) {
 func (handler *CarouselHandler) CreateCarousel(context *gin.Context) {
 	ctx := context.Request.Context()
 	var carousel types.Carousel
-	dbCarousel := lib.DeserializeCarousel(carousel)
 
 	if err := context.ShouldBindJSON(&carousel); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "invalid request body", "details": err.Error()})
 		return
 	}
 
+	dbCarousel := lib.DeserializeCarousel(carousel)
 	result, err := handler.service.CreateCarousel(ctx, &dbCarousel)
 	if err != nil {
 		log.Printf("Error creating carousel: %v", err)
@@ -61,13 +61,12 @@ func (handler *CarouselHandler) UpdateCarousel(context *gin.Context) {
 	id := context.Param("id")
 
 	var carousel types.Carousel
-	dbCarousel := lib.DeserializeCarousel(carousel)
-
 	if err := context.ShouldBindJSON(&carousel); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "invalid request body", "details": err.Error()})
 		return
 	}
 
+	dbCarousel := lib.DeserializeCarousel(carousel)
 	result, err := handler.service.UpdateCarousel(ctx, id, &dbCarousel)
 	if err != nil {
 		log.Printf("Error updating carousel: %v", err)

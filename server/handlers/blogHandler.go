@@ -46,7 +46,6 @@ func (handler *BlogHandler) GetBlogByID(context *gin.Context) {
 func (handler *BlogHandler) CreateBlog(context *gin.Context) {
 	ctx := context.Request.Context()
 	var blog types.Blog
-	dbBlog := lib.DeserializeBlog(blog)
 
 	if err := context.ShouldBindJSON(&blog); err != nil {
 		log.Printf("error while creating blog: %v", err)
@@ -54,6 +53,7 @@ func (handler *BlogHandler) CreateBlog(context *gin.Context) {
 		return
 	}
 
+	dbBlog := lib.DeserializeBlog(blog)
 	result, err := handler.service.CreateBlog(ctx, &dbBlog)
 	if err != nil {
 		log.Printf("error while creating blog: %v", err)
@@ -71,14 +71,13 @@ func (handler *BlogHandler) UpdateBlog(context *gin.Context) {
 	id := context.Param("id")
 
 	var blog types.Blog
-	dbBlog := lib.DeserializeBlog(blog)
-
 	if err := context.ShouldBindJSON(&blog); err != nil {
 		log.Printf("error while updating blog: %v", err)
 		context.JSON(http.StatusBadRequest, gin.H{"error": "error occurred while updating blog"})
 		return
 	}
 
+	dbBlog := lib.DeserializeBlog(blog)
 	result, err := handler.service.UpdateBlog(ctx, id, &dbBlog)
 	if err != nil {
 		log.Printf("error while updating blog: %v", err)

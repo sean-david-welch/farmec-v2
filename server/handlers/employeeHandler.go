@@ -33,7 +33,6 @@ func (handler *EmployeeHandler) GetEmployees(context *gin.Context) {
 func (handler *EmployeeHandler) CreateEmployee(context *gin.Context) {
 	ctx := context.Request.Context()
 	var employee types.Employee
-	dbEmployee := lib.DeserializeEmployee(employee)
 
 	if err := context.ShouldBindJSON(&employee); err != nil {
 		log.Printf("Error creating employee: %v", err)
@@ -41,6 +40,7 @@ func (handler *EmployeeHandler) CreateEmployee(context *gin.Context) {
 		return
 	}
 
+	dbEmployee := lib.DeserializeEmployee(employee)
 	result, err := handler.service.CreateEmployee(ctx, &dbEmployee)
 	if err != nil {
 		log.Printf("Error creating employee: %v", err)
@@ -60,15 +60,15 @@ func (handler *EmployeeHandler) CreateEmployee(context *gin.Context) {
 func (handler *EmployeeHandler) UpdateEmployee(context *gin.Context) {
 	ctx := context.Request.Context()
 	id := context.Param("id")
-	var employee types.Employee
-	dbEmployee := lib.DeserializeEmployee(employee)
 
+	var employee types.Employee
 	if err := context.ShouldBindJSON(&employee); err != nil {
 		log.Printf("Error creating employee: %v", err)
 		context.JSON(http.StatusBadRequest, gin.H{"error": "invalid request body", "details": err.Error()})
 		return
 	}
 
+	dbEmployee := lib.DeserializeEmployee(employee)
 	result, err := handler.service.UpdateEmployee(ctx, id, &dbEmployee)
 	if err != nil {
 		log.Printf("Error creating employee: %v", err)
