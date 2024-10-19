@@ -71,6 +71,7 @@ func (service *RegistrationServiceImpl) GetRegistrationById(ctx context.Context,
 	result := lib.SerializeMachineRegistration(*registration)
 	return &result, nil
 }
+
 func (service *RegistrationServiceImpl) CreateRegistration(ctx context.Context, registration *db.MachineRegistration) error {
 	if err := service.repo.CreateRegistration(ctx, registration); err != nil {
 		return err
