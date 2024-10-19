@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"log"
@@ -41,10 +40,7 @@ func (handler *VideoHandler) CreateVideo(context *gin.Context) {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Request Body", "Details": err.Error()})
 		return
 	}
-	fmt.Printf("video: %v", video)
-
 	dbVideo := lib.DeserializeVideo(video)
-	fmt.Printf("videodb: %v", dbVideo)
 	if err := handler.service.CreateVideo(ctx, &dbVideo); err != nil {
 		log.Printf("Error creating video: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while creating video", "details": err.Error()})
