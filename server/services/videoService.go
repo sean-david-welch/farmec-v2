@@ -22,14 +22,14 @@ type VideoService interface {
 }
 
 type VideoServiceImpl struct {
-	repo           repository.VideoRepo
-	youtubeService *youtube.Service
+	repo    repository.VideoRepo
+	service *youtube.Service
 }
 
-func NewVideoService(repo repository.VideoRepo, youtubeService *youtube.Service) *VideoServiceImpl {
+func NewVideoService(repo repository.VideoRepo, service *youtube.Service) *VideoServiceImpl {
 	return &VideoServiceImpl{
-		repo:           repo,
-		youtubeService: youtubeService,
+		repo:    repo,
+		service: service,
 	}
 }
 
@@ -46,7 +46,7 @@ func (service *VideoServiceImpl) TransformData(video *db.Video) (*db.Video, erro
 
 	videoId := videoIdSplits[0]
 
-	call := service.youtubeService.Videos.List([]string{"id", "snippet"}).Id(videoId).MaxResults(1)
+	call := service.service.Videos.List([]string{"id", "snippet"}).Id(videoId).MaxResults(1)
 	response, err := call.Do()
 	if err != nil {
 		return nil, fmt.Errorf("error calling YouTube API: %w", err)

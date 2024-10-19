@@ -12,8 +12,8 @@ import (
 )
 
 func InitializeEmployee(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, adminMiddleware *middleware.AdminMiddleware) {
-	employeeRepo := repository.NewEmployeeRepo(database)
-	service := services.NewEmployeeService(employeeRepo, s3Client, "Employees")
+	repo := repository.NewEmployeeRepo(database)
+	service := services.NewEmployeeService(repo, s3Client, "Employees")
 	handler := handlers.NewEmployeeHandler(service)
 
 	EmployeeRoutes(router, handler, adminMiddleware)

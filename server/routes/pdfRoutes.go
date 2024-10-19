@@ -8,17 +8,17 @@ import (
 )
 
 func InitPdfRenderer(router *gin.Engine, adminMiddleware *middleware.AdminMiddleware) {
-	pdfService := services.NewPdfService()
-	pdfHandler := handlers.NewPdfHandler(pdfService)
+	service := services.NewPdfService()
+	handler := handlers.NewPdfHandler(service)
 
-	PdfRenderRoutes(router, pdfHandler, adminMiddleware)
+	PdfRenderRoutes(router, handler, adminMiddleware)
 }
 
-func PdfRenderRoutes(router *gin.Engine, pdfHandler *handlers.PdfHandler, adminMiddleware *middleware.AdminMiddleware) {
+func PdfRenderRoutes(router *gin.Engine, handler *handlers.PdfHandler, adminMiddleware *middleware.AdminMiddleware) {
 	pdfGroup := router.Group("/api/pdf")
 	protected := pdfGroup.Group("").Use(adminMiddleware.Middleware())
 	{
-		protected.POST("/registration", pdfHandler.RenderRegistrationPdf)
-		protected.POST("/warranty", pdfHandler.RenderWarrantyClaimPdf)
+		protected.POST("/registration", handler.RenderRegistrationPdf)
+		protected.POST("/warranty", handler.RenderWarrantyClaimPdf)
 	}
 }

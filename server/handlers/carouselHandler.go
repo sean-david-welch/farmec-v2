@@ -11,16 +11,16 @@ import (
 )
 
 type CarouselHandler struct {
-	carouselService services.CarouselService
+	service services.CarouselService
 }
 
-func NewCarouselHandler(carouselService services.CarouselService) *CarouselHandler {
-	return &CarouselHandler{carouselService: carouselService}
+func NewCarouselHandler(service services.CarouselService) *CarouselHandler {
+	return &CarouselHandler{service: service}
 }
 
 func (handler *CarouselHandler) GetCarousels(context *gin.Context) {
 	ctx := context.Request.Context()
-	carousels, err := handler.carouselService.GetCarousels(ctx)
+	carousels, err := handler.service.GetCarousels(ctx)
 	if err != nil {
 		log.Printf("error getting carousels: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while getting carousel images"})
@@ -40,7 +40,7 @@ func (handler *CarouselHandler) CreateCarousel(context *gin.Context) {
 		return
 	}
 
-	result, err := handler.carouselService.CreateCarousel(ctx, &dbCarousel)
+	result, err := handler.service.CreateCarousel(ctx, &dbCarousel)
 	if err != nil {
 		log.Printf("Error creating carousel: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while creating carousel", "details": err.Error()})
@@ -68,7 +68,7 @@ func (handler *CarouselHandler) UpdateCarousel(context *gin.Context) {
 		return
 	}
 
-	result, err := handler.carouselService.UpdateCarousel(ctx, id, &dbCarousel)
+	result, err := handler.service.UpdateCarousel(ctx, id, &dbCarousel)
 	if err != nil {
 		log.Printf("Error updating carousel: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while updating carousel", "details": err.Error()})
@@ -88,7 +88,7 @@ func (handler *CarouselHandler) DeleteCarousel(context *gin.Context) {
 	ctx := context.Request.Context()
 	id := context.Param("id")
 
-	if err := handler.carouselService.DeleteCarousel(ctx, id); err != nil {
+	if err := handler.service.DeleteCarousel(ctx, id); err != nil {
 		log.Printf("Error deleting carousel: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while deleting machine", "details": err.Error()})
 		return

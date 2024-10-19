@@ -11,18 +11,18 @@ import (
 )
 
 type PartsHandler struct {
-	partsService services.PartsService
+	service services.PartsService
 }
 
-func NewPartsHandler(partsService services.PartsService) *PartsHandler {
-	return &PartsHandler{partsService: partsService}
+func NewPartsHandler(service services.PartsService) *PartsHandler {
+	return &PartsHandler{service: service}
 }
 
 func (handler *PartsHandler) GetParts(context *gin.Context) {
 	ctx := context.Request.Context()
 	id := context.Param("id")
 
-	parts, err := handler.partsService.GetParts(ctx, id)
+	parts, err := handler.service.GetParts(ctx, id)
 	if err != nil {
 		log.Printf("Error getting parts: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while getting parts"})
@@ -47,7 +47,7 @@ func (handler *PartsHandler) CreateParts(context *gin.Context) {
 		return
 	}
 
-	result, err := handler.partsService.CreatePart(ctx, &dbPart)
+	result, err := handler.service.CreatePart(ctx, &dbPart)
 	if err != nil {
 		log.Printf("Error creating part: %v", err)
 		context.JSON(http.StatusInternalServerError,
@@ -82,7 +82,7 @@ func (handler *PartsHandler) UpdateParts(context *gin.Context) {
 		return
 	}
 
-	result, err := handler.partsService.UpdatePart(ctx, id, &dbPart)
+	result, err := handler.service.UpdatePart(ctx, id, &dbPart)
 	if err != nil {
 		log.Printf("Error updating part: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while updating machine", "details": err.Error()})
@@ -103,7 +103,7 @@ func (handler *PartsHandler) DeletePart(context *gin.Context) {
 	ctx := context.Request.Context()
 	id := context.Param("id")
 
-	if err := handler.partsService.DeletePart(ctx, id); err != nil {
+	if err := handler.service.DeletePart(ctx, id); err != nil {
 		log.Printf("Erroir deleting part: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurrrd while deleting part", "details": err.Error()})
 		return

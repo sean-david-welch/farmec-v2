@@ -16,27 +16,27 @@ import (
 )
 
 func InitVideos(router *gin.Engine, database *sql.DB, secrets *lib.Secrets, adminMiddleware *middleware.AdminMiddleware) {
-	youtubeService, err := youtube.NewService(context.Background(), option.WithAPIKey(secrets.YoutubeApiKey))
+	service, err := youtube.NewService(context.Background(), option.WithAPIKey(secrets.YoutubeApiKey))
 	if err != nil {
 		log.Fatal("error calling YouTube API: ", err)
 	}
 
-	videoRepo := repository.NewVideoRepo(database)
-	videoService := services.NewVideoService(videoRepo, youtubeService)
-	videoHandler := handlers.NewVideoHandler(videoService)
+	repo := repository.NewVideoRepo(database)
+	service := services.NewVideoService(repo, service)
+	handler := handlers.NewVideoHandler(service)
 
-	VideoRoutes(router, videoHandler, adminMiddleware)
+	VideoRoutes(router, handler, adminMiddleware)
 }
 
-func VideoRoutes(router *gin.Engine, videoHandler *handlers.VideoHandler, adminMiddleware *middleware.AdminMiddleware) {
+func VideoRoutes(router *gin.Engine, handler *handlers.VideoHandler, adminMiddleware *middleware.AdminMiddleware) {
 	videoGroup := router.Group("/api/videos")
 
-	videoGroup.GET("/:id", videoHandler.GetVideos)
+	videoGroup.GET("/:id", handler.GetVideos)
 
 	protected := videoGroup.Group("").Use(adminMiddleware.Middleware())
 	{
-		protected.POST("", videoHandler.CreateVideo)
-		protected.PUT("/:id", videoHandler.UpdateVideo)
-		protected.DELETE("/:id", videoHandler.DeleteVideo)
+		protected.POST("", handler.CreateVideo)
+		protected.PUT("/:id", handler.UpdateVideo)
+		protected.DELETE("/:id", handler.DeleteVideo)
 	}
 }

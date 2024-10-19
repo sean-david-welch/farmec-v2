@@ -11,18 +11,18 @@ import (
 )
 
 type VideoHandler struct {
-	videoService services.VideoService
+	service services.VideoService
 }
 
-func NewVideoHandler(videoService services.VideoService) *VideoHandler {
-	return &VideoHandler{videoService: videoService}
+func NewVideoHandler(service services.VideoService) *VideoHandler {
+	return &VideoHandler{service: service}
 }
 
 func (handler *VideoHandler) GetVideos(context *gin.Context) {
 	ctx := context.Request.Context()
 	id := context.Param("id")
 
-	videos, err := handler.videoService.GetVideos(ctx, id)
+	videos, err := handler.service.GetVideos(ctx, id)
 	if err != nil {
 		log.Printf("Error getting suppliers: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while getting suppliers"})
@@ -42,7 +42,7 @@ func (handler *VideoHandler) CreateVideo(context *gin.Context) {
 		return
 	}
 
-	if err := handler.videoService.CreateVideo(ctx, &dbVideo); err != nil {
+	if err := handler.service.CreateVideo(ctx, &dbVideo); err != nil {
 		log.Printf("Error creating video: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while creating video", "details": err.Error()})
 		return
@@ -63,7 +63,7 @@ func (handler *VideoHandler) UpdateVideo(context *gin.Context) {
 		return
 	}
 
-	if err := handler.videoService.UpdateVideo(ctx, id, &dbVideo); err != nil {
+	if err := handler.service.UpdateVideo(ctx, id, &dbVideo); err != nil {
 		log.Printf("Error updating video: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while updating video", "details": err.Error()})
 		return
@@ -76,7 +76,7 @@ func (handler *VideoHandler) DeleteVideo(context *gin.Context) {
 	ctx := context.Request.Context()
 	id := context.Param("id")
 
-	if err := handler.videoService.DeleteVideo(ctx, id); err != nil {
+	if err := handler.service.DeleteVideo(ctx, id); err != nil {
 		log.Printf("Error deleting video: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Erropr occurred while deleting supplier", "details": err.Error()})
 		return

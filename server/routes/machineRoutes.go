@@ -12,23 +12,23 @@ import (
 )
 
 func InitMachines(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, adminMiddleware *middleware.AdminMiddleware) {
-	machineRepo := repository.NewMachineRepo(database)
-	machineService := services.NewMachineService(machineRepo, s3Client, "Machines")
-	machineHandler := handlers.NewMachineHandler(machineService)
+	repo := repository.NewMachineRepo(database)
+	service := services.NewMachineService(repo, s3Client, "Machines")
+	handler := handlers.NewMachineHandler(service)
 
-	MachineRoutes(router, machineHandler, adminMiddleware)
+	MachineRoutes(router, handler, adminMiddleware)
 }
 
-func MachineRoutes(router *gin.Engine, machineHandler *handlers.MachineHandler, adminMiddleware *middleware.AdminMiddleware) {
+func MachineRoutes(router *gin.Engine, handler *handlers.MachineHandler, adminMiddleware *middleware.AdminMiddleware) {
 	machineGroup := router.Group("/api/machines")
 
-	machineGroup.GET("/:id", machineHandler.GetMachineById)
-	machineGroup.GET("/suppliers/:id", machineHandler.GetMachines)
+	machineGroup.GET("/:id", handler.GetMachineById)
+	machineGroup.GET("/suppliers/:id", handler.GetMachines)
 
 	protected := machineGroup.Group("").Use(adminMiddleware.Middleware())
 	{
-		protected.POST("", machineHandler.CreateMachine)
-		protected.PUT("/:id", machineHandler.UpdateMachine)
-		protected.DELETE("/:id", machineHandler.DeleteMachine)
+		protected.POST("", handler.CreateMachine)
+		protected.PUT("/:id", handler.UpdateMachine)
+		protected.DELETE("/:id", handler.DeleteMachine)
 	}
 }

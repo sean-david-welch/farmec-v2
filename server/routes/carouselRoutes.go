@@ -12,22 +12,22 @@ import (
 )
 
 func InitCarousel(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, adminMiddleare *middleware.AdminMiddleware) {
-	carouselRepo := repository.NewCarouselRepo(database)
-	carouselService := services.NewCarouselService(carouselRepo, s3Client, "Carousels")
-	carouselHandler := handlers.NewCarouselHandler(carouselService)
+	repo := repository.NewCarouselRepo(database)
+	service := services.NewCarouselService(repo, s3Client, "Carousels")
+	handler := handlers.NewCarouselHandler(service)
 
-	CarouselRoutes(router, carouselHandler, adminMiddleare)
+	CarouselRoutes(router, handler, adminMiddleare)
 }
 
-func CarouselRoutes(router *gin.Engine, carouselHandler *handlers.CarouselHandler, adminMiddleware *middleware.AdminMiddleware) {
+func CarouselRoutes(router *gin.Engine, handler *handlers.CarouselHandler, adminMiddleware *middleware.AdminMiddleware) {
 	carouselGroup := router.Group("/api/carousels")
 
-	carouselGroup.GET("", carouselHandler.GetCarousels)
+	carouselGroup.GET("", handler.GetCarousels)
 
 	protected := carouselGroup.Group("").Use(adminMiddleware.Middleware())
 	{
-		protected.POST("", carouselHandler.CreateCarousel)
-		protected.PUT("/:id", carouselHandler.UpdateCarousel)
-		protected.DELETE("/:id", carouselHandler.DeleteCarousel)
+		protected.POST("", handler.CreateCarousel)
+		protected.PUT("/:id", handler.UpdateCarousel)
+		protected.DELETE("/:id", handler.DeleteCarousel)
 	}
 }

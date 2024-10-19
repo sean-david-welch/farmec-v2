@@ -12,8 +12,8 @@ import (
 )
 
 func InitLineItems(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, adminMiddleware *middleware.AdminMiddleware) {
-	itemRepo := repository.NewLineItemRepo(database)
-	service := services.NewLineItemService(itemRepo, s3Client, "Lineitems")
+	repo := repository.NewLineItemRepo(database)
+	service := services.NewLineItemService(repo, s3Client, "Lineitems")
 	handler := handlers.NewLineItemHandler(service)
 
 	LineItemRoutes(router, handler, adminMiddleware)
