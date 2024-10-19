@@ -47,12 +47,11 @@ func (handler *SupplierHandler) GetSupplierByID(context *gin.Context) {
 func (handler *SupplierHandler) CreateSupplier(context *gin.Context) {
 	ctx := context.Request.Context()
 	var supplier types.Supplier
-	dbSupplier := lib.DeserializeSupplier(supplier)
-
 	if err := context.ShouldBindJSON(&supplier); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body", "details": err.Error()})
 		return
 	}
+	dbSupplier := lib.DeserializeSupplier(supplier)
 
 	result, err := handler.supplierService.CreateSupplier(ctx, dbSupplier)
 	if err != nil {
