@@ -1,8 +1,8 @@
 package services
 
 import (
+	"context"
 	"github.com/sean-david-welch/farmec-v2/server/lib"
-	"golang.org/x/net/context"
 	"log"
 
 	"github.com/sean-david-welch/farmec-v2/server/repository"
