@@ -6,6 +6,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/types"
+	"log"
 	"net/smtp"
 )
 
@@ -20,6 +21,30 @@ type RegistrationService interface {
 type RegistrationServiceImpl struct {
 	smtpClient lib.SMTPClient
 	repo       repository.RegistrationRepo
+}
+
+func (service *RegistrationServiceImpl) sendRegistrationEmail(registration *db.MachineRegistration) {
+	client, err := service.smtpClient.SetupSMTPClient()
+	if err != nil {
+		log.Printf("Failed to setup SMTP client: %v", err)
+		return
+	}
+	defer func(client *smtp.Client) {
+		if err := client.Close(); err != nil {
+			log.Printf("Failed to close SMTP client: %v", err)
+		}
+	}(client)
+
+	data := &types.EmailData{
+		Name:    registration.OwnerName,
+		Email:   registration.DealerName,
+		Message: registration.MachineModel,
+	}
+
+	if err := service.smtpClient.SendFormNotification(client, data, "Machine Registration"); err != nil {
+		log.Printf("Failed to send registration email: %v", err)
+		return
+	}
 }
 
 func NewRegistrationService(repo repository.RegistrationRepo, smtpClient lib.SMTPClient) *RegistrationServiceImpl {
@@ -46,32 +71,12 @@ func (service *RegistrationServiceImpl) GetRegistrationById(ctx context.Context,
 	result := lib.SerializeMachineRegistration(*registration)
 	return &result, nil
 }
-
 func (service *RegistrationServiceImpl) CreateRegistration(ctx context.Context, registration *db.MachineRegistration) error {
 	if err := service.repo.CreateRegistration(ctx, registration); err != nil {
 		return err
 	}
 
-	client, err := service.smtpClient.SetupSMTPClient()
-	if err != nil {
-		return err
-	}
-	defer func(client *smtp.Client) {
-		err := client.Close()
-		if err != nil {
-			return
-		}
-	}(client)
-
-	data := &types.EmailData{
-		Name:    registration.OwnerName,
-		Email:   registration.DealerName,
-		Message: registration.MachineModel,
-	}
-
-	if err := service.smtpClient.SendFormNotification(client, data, "Machine Registration"); err != nil {
-		return err
-	}
+	go service.sendRegistrationEmail(registration)
 
 	return nil
 }
@@ -81,26 +86,7 @@ func (service *RegistrationServiceImpl) UpdateRegistration(ctx context.Context, 
 		return err
 	}
 
-	client, err := service.smtpClient.SetupSMTPClient()
-	if err != nil {
-		return err
-	}
-	defer func(client *smtp.Client) {
-		err := client.Close()
-		if err != nil {
-			return
-		}
-	}(client)
-
-	data := &types.EmailData{
-		Name:    registration.OwnerName,
-		Email:   registration.DealerName,
-		Message: registration.MachineModel,
-	}
-
-	if err := service.smtpClient.SendFormNotification(client, data, "Machine Registration"); err != nil {
-		return err
-	}
+	go service.sendRegistrationEmail(registration)
 
 	return nil
 }
