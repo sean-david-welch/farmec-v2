@@ -177,16 +177,10 @@ func DeserializeTimeline(timeline types.Timeline) db.Timeline {
 	}
 }
 
-func DeserializeVideo(video types.Video) db.Video {
+func DeserializeVideo(video types.VideoRequest) db.Video {
 	return db.Video{
-		ID:           video.ID,
-		SupplierID:   video.SupplierID,
-		WebUrl:       sql.NullString{String: video.WebURL, Valid: video.WebURL != ""},
-		Title:        sql.NullString{String: *video.Title, Valid: video.Title != nil},
-		Description:  sql.NullString{String: *video.Description, Valid: video.Description != nil},
-		VideoID:      sql.NullString{String: *video.VideoID, Valid: video.VideoID != nil},
-		ThumbnailUrl: sql.NullString{String: *video.ThumbnailURL, Valid: video.ThumbnailURL != nil},
-		Created:      sql.NullString{String: video.Created, Valid: video.Created != ""},
+		SupplierID: video.SupplierID,
+		WebUrl:     sql.NullString{String: video.WebURL, Valid: video.WebURL != ""},
 	}
 }
 

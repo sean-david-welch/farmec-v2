@@ -35,13 +35,13 @@ func (handler *VideoHandler) GetVideos(context *gin.Context) {
 
 func (handler *VideoHandler) CreateVideo(context *gin.Context) {
 	ctx := context.Request.Context()
-	var video types.Video
-	fmt.Printf("video: %v", video)
+	var video types.VideoRequest
 
 	if err := context.ShouldBindJSON(&video); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Request Body", "Details": err.Error()})
 		return
 	}
+	fmt.Printf("video: %v", video)
 
 	dbVideo := lib.DeserializeVideo(video)
 	fmt.Printf("videodb: %v", dbVideo)
@@ -58,7 +58,7 @@ func (handler *VideoHandler) UpdateVideo(context *gin.Context) {
 	ctx := context.Request.Context()
 	id := context.Param("id")
 
-	var video types.Video
+	var video types.VideoRequest
 	if err := context.ShouldBindJSON(&video); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Request Body", "Details": err.Error()})
 		return
