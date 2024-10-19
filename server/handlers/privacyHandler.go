@@ -33,13 +33,13 @@ func (handler *PrivacyHandler) GetPrivacys(context *gin.Context) {
 func (handler *PrivacyHandler) CreatePrivacy(context *gin.Context) {
 	ctx := context.Request.Context()
 	var privacy types.Privacy
-	dbPrivacy := lib.DeserializePrivacy(privacy)
 
 	if err := context.ShouldBindJSON(&privacy); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "invalid request body", "details": err.Error()})
 		return
 	}
 
+	dbPrivacy := lib.DeserializePrivacy(privacy)
 	if err := handler.service.CreatePrivacy(ctx, &dbPrivacy); err != nil {
 		log.Printf("error while creating privacy: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while creating privacy", "details": err.Error()})
@@ -52,14 +52,14 @@ func (handler *PrivacyHandler) CreatePrivacy(context *gin.Context) {
 func (handler *PrivacyHandler) UpdatePrivacy(context *gin.Context) {
 	ctx := context.Request.Context()
 	id := context.Param("id")
-	var privacy types.Privacy
-	dbPrivacy := lib.DeserializePrivacy(privacy)
 
+	var privacy types.Privacy
 	if err := context.ShouldBindJSON(&privacy); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "invalid request body", "details": err.Error()})
 		return
 	}
 
+	dbPrivacy := lib.DeserializePrivacy(privacy)
 	if err := handler.service.UpdatePrivacy(ctx, id, &dbPrivacy); err != nil {
 		log.Printf("error while updating privacy: %v", err)
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Error occurred while updating privacy", "details": err.Error()})
