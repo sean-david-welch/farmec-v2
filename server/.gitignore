@@ -11,3 +11,4 @@ service-account.json
 /tmp
 /.env.production
 /.env
+node_modules
