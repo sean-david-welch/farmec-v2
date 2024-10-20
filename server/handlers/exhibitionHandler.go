@@ -19,32 +19,23 @@ func NewExhibitionHandler(service services.ExhibitionService) *ExhibitionHandler
 	return &ExhibitionHandler{service: service}
 }
 
-func (handler *ExhibitionHandler) GetExhibitions(c *gin.Context) {
-	ctx := c.Request.Context()
+func (handler *ExhibitionHandler) GetExhibitions(context *gin.Context) {
+	ctx := context.Request.Context()
+
 	exhibitions, err := handler.service.GetExhibitions(ctx)
 	if err != nil {
 		log.Printf("error getting exhibitions: %v", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while getting exhibitions"})
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while getting exhibitions"})
 		return
 	}
 
-	// Convert to []types.Exhibition if necessary
-	exhibitionSlice := make([]types.Exhibition, len(exhibitions))
-	for i, e := range exhibitions {
-		exhibitionSlice[i] = e
-	}
-
-	// Render the Templ component
-	component := views.Exhibitions(true, exhibitionSlice, false, false)
-	err = component.Render(c.Request.Context(), c.Writer)
-	if err != nil {
+	component := views.Exhibitions(true, exhibitions, false, false)
+	if err = component.Render(context.Request.Context(), context.Writer); err != nil {
 		log.Printf("error rendering template: %v", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while rendering the page"})
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while rendering the page"})
 		return
 	}
-
-	// Set the content type to HTML
-	c.Header("Content-Type", "text/html")
+	context.Header("Content-Type", "text/html")
 }
 
 func (handler *ExhibitionHandler) CreateExhibition(context *gin.Context) {
