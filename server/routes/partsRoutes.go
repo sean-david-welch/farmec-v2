@@ -7,27 +7,27 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sean-david-welch/farmec-v2/server/handlers"
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
+	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/services"
-	"github.com/sean-david-welch/farmec-v2/server/stores"
 )
 
 func InitParts(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, adminMiddleware *middleware.AdminMiddleware) {
-	partsStore := stores.NewPartsStore(database)
-	partsService := services.NewPartsService(partsStore, s3Client, "Spareparts")
-	partsHandler := handlers.NewPartsHandler(partsService)
+	repo := repository.NewPartsRepo(database)
+	service := services.NewPartsService(repo, s3Client, "Spareparts")
+	handler := handlers.NewPartsHandler(service)
 
-	PartsRoutes(router, partsHandler, adminMiddleware)
+	PartsRoutes(router, handler, adminMiddleware)
 }
 
-func PartsRoutes(router *gin.Engine, partsHandler *handlers.PartsHandler, adminMiddleware *middleware.AdminMiddleware) {
+func PartsRoutes(router *gin.Engine, handler *handlers.PartsHandler, adminMiddleware *middleware.AdminMiddleware) {
 	partsGroup := router.Group("/api/spareparts")
 
-	partsGroup.GET("/:id", partsHandler.GetParts)
+	partsGroup.GET("/:id", handler.GetParts)
 
 	protected := partsGroup.Group("").Use(adminMiddleware.Middleware())
 	{
-		protected.POST("", partsHandler.CreateParts)
-		protected.PUT("/:id", partsHandler.UpdateParts)
-		protected.DELETE("/:id", partsHandler.DeletePart)
+		protected.POST("", handler.CreateParts)
+		protected.PUT("/:id", handler.UpdateParts)
+		protected.DELETE("/:id", handler.DeletePart)
 	}
 }

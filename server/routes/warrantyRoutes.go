@@ -7,13 +7,13 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sean-david-welch/farmec-v2/server/handlers"
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
+	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/services"
-	"github.com/sean-david-welch/farmec-v2/server/stores"
 )
 
 func InitWarranty(router *gin.Engine, database *sql.DB, authMiddleware *middleware.AuthMiddleware, smtp lib.SMTPClient) {
-	warrantyStore := stores.NewWarrantyStore(database)
-	service := services.NewWarrantyService(warrantyStore, smtp)
+	repo := repository.NewWarrantyRepo(database)
+	service := services.NewWarrantyService(repo, smtp)
 	handler := handlers.NewWarrantyHandler(service)
 
 	WarrantyRoutes(router, handler, authMiddleware)

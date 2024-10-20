@@ -7,13 +7,13 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sean-david-welch/farmec-v2/server/handlers"
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
+	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/services"
-	"github.com/sean-david-welch/farmec-v2/server/stores"
 )
 
 func InitLineItems(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, adminMiddleware *middleware.AdminMiddleware) {
-	itemStore := stores.NewLineItemStore(database)
-	service := services.NewLineItemService(itemStore, s3Client, "Lineitems")
+	repo := repository.NewLineItemRepo(database)
+	service := services.NewLineItemService(repo, s3Client, "Lineitems")
 	handler := handlers.NewLineItemHandler(service)
 
 	LineItemRoutes(router, handler, adminMiddleware)

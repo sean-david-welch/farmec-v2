@@ -1,66 +1,75 @@
 package services
 
 import (
+	"context"
+	"database/sql"
 	"errors"
+	"github.com/sean-david-welch/farmec-v2/server/db"
 	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"log"
 
-	"github.com/sean-david-welch/farmec-v2/server/stores"
+	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type LineItemService interface {
-	GetLineItems() ([]types.LineItem, error)
-	GetLineItemById(id string) (*types.LineItem, error)
-	CreateLineItem(lineItem *types.LineItem) (*types.ModelResult, error)
-	UpdateLineItem(id string, lineItem *types.LineItem) (*types.ModelResult, error)
-	DeleteLineItem(id string) error
+	GetLineItems(ctx context.Context) ([]types.LineItem, error)
+	GetLineItemById(ctx context.Context, id string) (*types.LineItem, error)
+	CreateLineItem(ctx context.Context, lineItem *db.LineItem) (*types.ModelResult, error)
+	UpdateLineItem(ctx context.Context, id string, lineItem *db.LineItem) (*types.ModelResult, error)
+	DeleteLineItem(ctx context.Context, id string) error
 }
 
 type LineItemServiceImpl struct {
-	store    stores.LineItemStore
+	repo     repository.LineItemRepo
 	s3Client lib.S3Client
 	folder   string
 }
 
-func NewLineItemService(store stores.LineItemStore, s3Client lib.S3Client, folder string) *LineItemServiceImpl {
-	return &LineItemServiceImpl{store: store, s3Client: s3Client, folder: folder}
+func NewLineItemService(repo repository.LineItemRepo, s3Client lib.S3Client, folder string) *LineItemServiceImpl {
+	return &LineItemServiceImpl{repo: repo, s3Client: s3Client, folder: folder}
 }
 
-func (service *LineItemServiceImpl) GetLineItems() ([]types.LineItem, error) {
-	lineItems, err := service.store.GetLineItems()
+func (service *LineItemServiceImpl) GetLineItems(ctx context.Context) ([]types.LineItem, error) {
+	lineItems, err := service.repo.GetLineItems(ctx)
 	if err != nil {
 		return nil, err
 	}
-
-	return lineItems, nil
+	var result []types.LineItem
+	for _, lineItem := range lineItems {
+		result = append(result, lib.SerializeLineItem(lineItem))
+	}
+	return result, nil
 }
 
-func (service *LineItemServiceImpl) GetLineItemById(id string) (*types.LineItem, error) {
-	lineItem, err := service.store.GetLineItemById(id)
+func (service *LineItemServiceImpl) GetLineItemById(ctx context.Context, id string) (*types.LineItem, error) {
+	lineItem, err := service.repo.GetLineItemById(ctx, id)
 	if err != nil {
 		return nil, err
 	}
-
-	return lineItem, nil
+	result := lib.SerializeLineItem(*lineItem)
+	return &result, nil
 }
 
-func (service *LineItemServiceImpl) CreateLineItem(lineItem *types.LineItem) (*types.ModelResult, error) {
+func (service *LineItemServiceImpl) CreateLineItem(ctx context.Context, lineItem *db.LineItem) (*types.ModelResult, error) {
 	image := lineItem.Image
 
-	if image == "" || image == "null" {
+	if !image.Valid {
 		return nil, errors.New("image is empty")
 	}
 
-	PresignedUrl, imageUrl, err := service.s3Client.GeneratePresignedUrl(service.folder, image)
+	PresignedUrl, imageUrl, err := service.s3Client.GeneratePresignedUrl(service.folder, image.String)
 	if err != nil {
 		log.Printf("error occurred while generating presigned url: %v", err)
 		return nil, err
 	}
 
-	lineItem.Image = imageUrl
+	lineItem.Image = sql.NullString{
+		String: imageUrl,
+		Valid:  true,
+	}
 
-	if err := service.store.CreateLineItem(lineItem); err != nil {
+	if err := service.repo.CreateLineItem(ctx, lineItem); err != nil {
 		return nil, err
 	}
 
@@ -72,22 +81,25 @@ func (service *LineItemServiceImpl) CreateLineItem(lineItem *types.LineItem) (*t
 	return result, nil
 }
 
-func (service *LineItemServiceImpl) UpdateLineItem(id string, lineItem *types.LineItem) (*types.ModelResult, error) {
+func (service *LineItemServiceImpl) UpdateLineItem(ctx context.Context, id string, lineItem *db.LineItem) (*types.ModelResult, error) {
 	image := lineItem.Image
 
 	var PresignedUrl, imageUrl string
 	var err error
 
-	if image != "" && image != "null" {
-		PresignedUrl, imageUrl, err = service.s3Client.GeneratePresignedUrl(service.folder, image)
+	if image.Valid {
+		PresignedUrl, imageUrl, err = service.s3Client.GeneratePresignedUrl(service.folder, image.String)
 		if err != nil {
 			log.Printf("error occurred while generating presigned url: %v", err)
 			return nil, err
 		}
-		lineItem.Image = imageUrl
+		lineItem.Image = sql.NullString{
+			String: imageUrl,
+			Valid:  true,
+		}
 	}
 
-	if err := service.store.UpdateLineItem(id, lineItem); err != nil {
+	if err := service.repo.UpdateLineItem(ctx, id, lineItem); err != nil {
 		return nil, err
 	}
 
@@ -99,17 +111,17 @@ func (service *LineItemServiceImpl) UpdateLineItem(id string, lineItem *types.Li
 	return result, nil
 }
 
-func (service *LineItemServiceImpl) DeleteLineItem(id string) error {
-	lineItem, err := service.store.GetLineItemById(id)
+func (service *LineItemServiceImpl) DeleteLineItem(ctx context.Context, id string) error {
+	lineItem, err := service.repo.GetLineItemById(ctx, id)
 	if err != nil {
 		return err
 	}
 
-	if err := service.s3Client.DeleteImageFromS3(lineItem.Image); err != nil {
+	if err := service.s3Client.DeleteImageFromS3(lineItem.Image.String); err != nil {
 		return err
 	}
 
-	if err := service.store.DeleteLineItem(id); err != nil {
+	if err := service.repo.DeleteLineItem(ctx, id); err != nil {
 		return err
 	}
 

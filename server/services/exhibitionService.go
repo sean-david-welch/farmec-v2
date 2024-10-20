@@ -1,52 +1,58 @@
 package services
 
 import (
-	"github.com/sean-david-welch/farmec-v2/server/stores"
+	"context"
+	"github.com/sean-david-welch/farmec-v2/server/db"
+	"github.com/sean-david-welch/farmec-v2/server/lib"
+	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type ExhibitionService interface {
-	GetExhibitions() ([]types.Exhibition, error)
-	CreateExhibition(exhibition *types.Exhibition) error
-	UpdateExhibition(id string, exhibition *types.Exhibition) error
-	DeleteExhibition(id string) error
+	GetExhibitions(ctx context.Context) ([]types.Exhibition, error)
+	CreateExhibition(ctx context.Context, exhibition *db.Exhibition) error
+	UpdateExhibition(ctx context.Context, id string, exhibition *db.Exhibition) error
+	DeleteExhibition(ctx context.Context, id string) error
 }
 
 type ExhibitionServiceImpl struct {
-	store stores.ExhibitionStore
+	repo repository.ExhibitionRepo
 }
 
-func NewExhibitionService(store stores.ExhibitionStore) *ExhibitionServiceImpl {
-	return &ExhibitionServiceImpl{store: store}
+func NewExhibitionService(repo repository.ExhibitionRepo) *ExhibitionServiceImpl {
+	return &ExhibitionServiceImpl{repo: repo}
 }
 
-func (service *ExhibitionServiceImpl) GetExhibitions() ([]types.Exhibition, error) {
-	exhibitions, err := service.store.GetExhibitions()
+func (service *ExhibitionServiceImpl) GetExhibitions(ctx context.Context) ([]types.Exhibition, error) {
+	exhibitions, err := service.repo.GetExhibitions(ctx)
 	if err != nil {
 		return nil, err
 	}
-
-	return exhibitions, nil
+	var result []types.Exhibition
+	for _, exhibition := range exhibitions {
+		result = append(result, lib.SerializeExhibition(exhibition))
+	}
+	return result, nil
 }
 
-func (service *ExhibitionServiceImpl) CreateExhibition(exhibition *types.Exhibition) error {
-	if err := service.store.CreateExhibition(exhibition); err != nil {
+func (service *ExhibitionServiceImpl) CreateExhibition(ctx context.Context, exhibition *db.Exhibition) error {
+	if err := service.repo.CreateExhibition(ctx, exhibition); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (service *ExhibitionServiceImpl) UpdateExhibition(id string, exhibition *types.Exhibition) error {
-	if err := service.store.UpdateExhibition(id, exhibition); err != nil {
+func (service *ExhibitionServiceImpl) UpdateExhibition(ctx context.Context, id string, exhibition *db.Exhibition) error {
+	if err := service.repo.UpdateExhibition(ctx, id, exhibition); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (service *ExhibitionServiceImpl) DeleteExhibition(id string) error {
-	if err := service.store.DeleteExhibition(id); err != nil {
+func (service *ExhibitionServiceImpl) DeleteExhibition(ctx context.Context, id string) error {
+	if err := service.repo.DeleteExhibition(ctx, id); err != nil {
 		return err
 	}
 

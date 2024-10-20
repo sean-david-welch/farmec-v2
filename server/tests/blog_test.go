@@ -5,8 +5,10 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
-	"io"
-	"log"
+	"github.com/DATA-DOG/go-sqlmock"
+	"github.com/sean-david-welch/farmec-v2/server/db"
+	"github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/suite"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -15,136 +17,128 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/sean-david-welch/farmec-v2/server/handlers"
 	"github.com/sean-david-welch/farmec-v2/server/lib"
+	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/services"
-	"github.com/sean-david-welch/farmec-v2/server/stores"
-	"github.com/sean-david-welch/farmec-v2/server/types"
-	"github.com/stretchr/testify/assert"
 )
 
-func setupTestDB() (*sql.DB, error) {
-	db, err := sql.Open("sqlite3", ":memory:")
-	if err != nil {
-		return nil, err
-	}
-
-	schema := `CREATE TABLE Blog (
-		ID INTEGER PRIMARY KEY AUTOINCREMENT,
-		Title TEXT,
-		Date TEXT,
-		MainImage TEXT,
-		Subheading TEXT,
-		Body TEXT,
-		Created DATETIME
-	);`
-
-	_, err = db.Exec(schema)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create schema: %w", err)
-	}
-
-	_, err = db.Exec(`
-	INSERT INTO Blog (Title, Date, MainImage, Subheading, Body, Created)
-	VALUES ('Test Title', '2023-01-01', 'image.jpg', 'Test Subheading', 'Test Body', '2023-01-01 10:00:00');
-	`)
-	if err != nil {
-		return nil, fmt.Errorf("failed to insert test data: %w", err)
-	}
-
-	return db, nil
+type BlogTestSuite struct {
+	suite.Suite
+	db     *sql.DB
+	mock   sqlmock.Sqlmock
+	router *gin.Engine
 }
 
-func initializeHandler() (*gin.Engine, *sql.DB) {
-	db, err := setupTestDB()
-	if err != nil {
-		log.Fatalf("Failed to connect to test database: %v", err)
-	}
+func (suite *BlogTestSuite) SetupTest() {
+	database, mock, err := sqlmock.New()
+	require.NoError(suite.T(), err)
 
-	store := stores.NewBlogStore(db)
-	s3Client := lib.NewNoOpS3Client()
-	service := services.NewBlogService(store, s3Client, "test-folder")
+	mock.ExpectExec(`CREATE TABLE Blog \(
+        id TEXT PRIMARY KEY,
+        title TEXT,
+        date TEXT,
+        main_image TEXT,
+        subheading TEXT,
+        body TEXT,
+        created TEXT
+    \);`).WillReturnResult(sqlmock.NewResult(0, 0))
+
+	_, err = database.Exec(`CREATE TABLE Blog (
+        id TEXT PRIMARY KEY,
+        title TEXT,
+        date TEXT,
+        main_image TEXT,
+        subheading TEXT,
+        body TEXT,
+        created TEXT
+    );`)
+	require.NoError(suite.T(), err)
+
+	suite.db = database
+	suite.mock = mock
+
+	repo := repository.NewBlogRepo(database)
+	s3Client := lib.NewMockS3Client()
+	service := services.NewBlogService(repo, s3Client, "test-folder")
 	handler := handlers.NewBlogHandler(service)
 
-	router := gin.Default()
-	router.GET("/blogs", handler.GetBlogs)
-	router.POST("/blogs", handler.CreateBlog)
-
-	return router, db
+	suite.router = gin.Default()
+	suite.router.GET("/blogs", handler.GetBlogs)
+	suite.router.POST("/blogs", handler.CreateBlog)
 }
 
-func TestGetBlogs(t *testing.T) {
-	router, db := initializeHandler()
-	defer func(db *sql.DB) {
-		err := db.Close()
-		if err != nil {
-			return
-		}
-	}(db)
+func (suite *BlogTestSuite) TearDownTest() {
+	err := suite.db.Close()
+	require.NoError(suite.T(), err)
+}
 
-	server := httptest.NewServer(router)
+func (suite *BlogTestSuite) TestGetBlogs() {
+	rows := sqlmock.NewRows([]string{"id", "title", "date", "main_image", "subheading", "body", "created"}).
+		AddRow("1", "Test Title", "2023-01-01", "image.jpg", "Test Subheading", "Test Body", "2023-01-01 10:00:00")
+	suite.mock.ExpectQuery("SELECT id, title, date, main_image, subheading, body, created FROM Blog").WillReturnRows(rows)
+
+	server := httptest.NewServer(suite.router)
 	defer server.Close()
 
 	resp, err := http.Get(fmt.Sprintf("%s/blogs", server.URL))
-	if err != nil {
-		t.Fatalf("Request failed: %v", err)
-	}
-	defer func(Body io.ReadCloser) {
-		err := Body.Close()
-		if err != nil {
-			return
-		}
-	}(resp.Body)
+	require.NoError(suite.T(), err)
+	defer func() {
+		err := resp.Body.Close()
+		require.NoError(suite.T(), err)
+	}()
 
-	assert.Equal(t, http.StatusOK, resp.StatusCode)
+	require.Equal(suite.T(), http.StatusOK, resp.StatusCode)
 
-	var blogs []types.Blog
+	var blogs []db.Blog
 	err = json.NewDecoder(resp.Body).Decode(&blogs)
-	if err != nil {
-		t.Fatalf("Failed to decode response: %v", err)
-	}
+	require.NoError(suite.T(), err)
 
-	assert.Len(t, blogs, 1)
-	assert.Equal(t, "Test Title", blogs[0].Title)
+	require.Len(suite.T(), blogs, 1)
+	require.Equal(suite.T(), "Test Title", blogs[0].Title)
+	require.Equal(suite.T(), "2023-01-01", blogs[0].Date.String)
+
+	err = suite.mock.ExpectationsWereMet()
+	require.NoError(suite.T(), err)
 }
 
-func TestCreateBlog(t *testing.T) {
-	router, db := initializeHandler()
-	defer func(db *sql.DB) {
-		err := db.Close()
-		if err != nil {
-			return
-		}
-	}(db)
+func (suite *BlogTestSuite) TestCreateBlog() {
+	blog := db.Blog{
+		ID:         "",
+		Title:      "New Blog",
+		Date:       sql.NullString{String: "2024-06-23", Valid: true},
+		MainImage:  sql.NullString{String: "image.jpg", Valid: true},
+		Subheading: sql.NullString{String: "This is a subheading", Valid: true},
+		Body:       sql.NullString{String: "This is the body of the blog.", Valid: true},
+		Created:    sql.NullString{String: "2024-06-23 10:00:00", Valid: true},
+	}
 
-	server := httptest.NewServer(router)
+	payload, err := json.Marshal(blog)
+	require.NoError(suite.T(), err)
+
+	suite.mock.ExpectExec("INSERT INTO Blog").
+		WithArgs(sqlmock.AnyArg(), blog.Title, blog.Date, blog.MainImage, blog.Subheading, blog.Body, blog.Created).
+		WillReturnResult(sqlmock.NewResult(1, 1))
+
+	server := httptest.NewServer(suite.router)
 	defer server.Close()
 
-	blog := types.Blog{
-		Title:      "New Blog",
-		Date:       "2024-01-01",
-		MainImage:  "new_image.jpg",
-		Subheading: "New Subheading",
-		Body:       "New Body",
-		Created:    "2024-01-01 12:00:00",
-	}
-	payload, _ := json.Marshal(blog)
-
 	resp, err := http.Post(fmt.Sprintf("%s/blogs", server.URL), "application/json", bytes.NewBuffer(payload))
-	if err != nil {
-		t.Fatalf("Request failed: %v", err)
-	}
-	defer func(Body io.ReadCloser) {
-		err := Body.Close()
-		if err != nil {
-			return
-		}
-	}(resp.Body)
+	require.NoError(suite.T(), err)
+	defer func() {
+		err := resp.Body.Close()
+		require.NoError(suite.T(), err)
+	}()
+
+	require.Equal(suite.T(), http.StatusCreated, resp.StatusCode)
+
+	err = suite.mock.ExpectationsWereMet()
+	require.NoError(suite.T(), err)
 
 	var count int
-	err = db.QueryRow(`SELECT COUNT(*) FROM Blog WHERE Title = ?`, "New Blog").Scan(&count)
-	if err != nil {
-		t.Fatalf("Failed to query database: %v", err)
-	}
+	err = suite.db.QueryRow(`SELECT COUNT(*) FROM Blog WHERE title = ?`, "New Blog").Scan(&count)
+	require.NoError(suite.T(), err)
+	require.Equal(suite.T(), 1, count)
+}
 
-	assert.Equal(t, 1, count)
-	assert.Equal(t, http.StatusOK, resp.StatusCode)
+func TestBlogTestSuite(t *testing.T) {
+	suite.Run(t, new(BlogTestSuite))
 }
