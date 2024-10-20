@@ -1,52 +1,58 @@
 package services
 
 import (
-	"github.com/sean-david-welch/farmec-v2/server/stores"
+	"context"
+	"github.com/sean-david-welch/farmec-v2/server/db"
+	"github.com/sean-david-welch/farmec-v2/server/lib"
+	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type PrivacyService interface {
-	GetPrivacys() ([]types.Privacy, error)
-	CreatePrivacy(privacy *types.Privacy) error
-	UpdatePrivacy(id string, privacy *types.Privacy) error
-	DeletePrivacy(id string) error
+	GetPrivacys(ctx context.Context) ([]types.Privacy, error)
+	CreatePrivacy(ctx context.Context, privacy *db.Privacy) error
+	UpdatePrivacy(ctx context.Context, id string, privacy *db.Privacy) error
+	DeletePrivacy(ctx context.Context, id string) error
 }
 
 type PrivacyServiceImpl struct {
-	store stores.PrivacyStore
+	repo repository.PrivacyRepo
 }
 
-func NewPrivacyService(store stores.PrivacyStore) *PrivacyServiceImpl {
-	return &PrivacyServiceImpl{store: store}
+func NewPrivacyService(repo repository.PrivacyRepo) *PrivacyServiceImpl {
+	return &PrivacyServiceImpl{repo: repo}
 }
 
-func (service *PrivacyServiceImpl) GetPrivacys() ([]types.Privacy, error) {
-	privacys, err := service.store.GetPrivacy()
+func (service *PrivacyServiceImpl) GetPrivacys(ctx context.Context) ([]types.Privacy, error) {
+	privacys, err := service.repo.GetPrivacy(ctx)
 	if err != nil {
 		return nil, err
 	}
-
-	return privacys, nil
+	var result []types.Privacy
+	for _, privacy := range privacys {
+		result = append(result, lib.SerializePrivacy(privacy))
+	}
+	return result, nil
 }
 
-func (service *PrivacyServiceImpl) CreatePrivacy(privacy *types.Privacy) error {
-	if err := service.store.CreatePrivacy(privacy); err != nil {
+func (service *PrivacyServiceImpl) CreatePrivacy(ctx context.Context, privacy *db.Privacy) error {
+	if err := service.repo.CreatePrivacy(ctx, privacy); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (service *PrivacyServiceImpl) UpdatePrivacy(id string, privacy *types.Privacy) error {
-	if err := service.store.UpdatePrivacy(id, privacy); err != nil {
+func (service *PrivacyServiceImpl) UpdatePrivacy(ctx context.Context, id string, privacy *db.Privacy) error {
+	if err := service.repo.UpdatePrivacy(ctx, id, privacy); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (service *PrivacyServiceImpl) DeletePrivacy(id string) error {
-	if err := service.store.DeletePrivacy(id); err != nil {
+func (service *PrivacyServiceImpl) DeletePrivacy(ctx context.Context, id string) error {
+	if err := service.repo.DeletePrivacy(ctx, id); err != nil {
 		return err
 	}
 

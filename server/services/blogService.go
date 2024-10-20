@@ -1,66 +1,74 @@
 package services
 
 import (
+	"context"
+	"database/sql"
 	"errors"
+	"github.com/sean-david-welch/farmec-v2/server/db"
 	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"log"
 
-	"github.com/sean-david-welch/farmec-v2/server/stores"
+	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type BlogService interface {
-	GetBlogs() ([]types.Blog, error)
-	GetBlogsByID(id string) (*types.Blog, error)
-	CreateBlog(blog *types.Blog) (*types.ModelResult, error)
-	UpdateBlog(id string, blog *types.Blog) (*types.ModelResult, error)
-	DeleteBlog(id string) error
+	GetBlogs(ctx context.Context) ([]types.Blog, error)
+	GetBlogsByID(ctx context.Context, id string) (*types.Blog, error)
+	CreateBlog(ctx context.Context, blog *db.Blog) (*types.ModelResult, error)
+	UpdateBlog(ctx context.Context, id string, blog *db.Blog) (*types.ModelResult, error)
+	DeleteBlog(ctx context.Context, id string) error
 }
 
 type BlogServiceImpl struct {
-	store    stores.BlogStore
+	repo     repository.BlogRepo
 	s3Client lib.S3Client
 	folder   string
 }
 
-func NewBlogService(store stores.BlogStore, s3Client lib.S3Client, folder string) *BlogServiceImpl {
-	return &BlogServiceImpl{store: store, s3Client: s3Client, folder: folder}
+func NewBlogService(repo repository.BlogRepo, s3Client lib.S3Client, folder string) *BlogServiceImpl {
+	return &BlogServiceImpl{repo: repo, s3Client: s3Client, folder: folder}
 }
 
-func (service *BlogServiceImpl) GetBlogs() ([]types.Blog, error) {
-	blogs, err := service.store.GetBlogs()
+func (service *BlogServiceImpl) GetBlogs(ctx context.Context) ([]types.Blog, error) {
+	blogs, err := service.repo.GetBlogs(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	return blogs, nil
+	var result []types.Blog
+	for _, blog := range blogs {
+		result = append(result, lib.SerializeBlog(blog))
+	}
+	return result, nil
 }
 
-func (service *BlogServiceImpl) GetBlogsByID(id string) (*types.Blog, error) {
-	blog, err := service.store.GetBlogById(id)
+func (service *BlogServiceImpl) GetBlogsByID(ctx context.Context, id string) (*types.Blog, error) {
+	blog, err := service.repo.GetBlogById(ctx, id)
 	if err != nil {
 		return nil, err
 	}
+	result := lib.SerializeBlog(*blog)
 
-	return blog, nil
+	return &result, nil
 }
 
-func (service *BlogServiceImpl) CreateBlog(blog *types.Blog) (*types.ModelResult, error) {
+func (service *BlogServiceImpl) CreateBlog(ctx context.Context, blog *db.Blog) (*types.ModelResult, error) {
 	image := blog.MainImage
 
-	if image == "" || image == "null" {
+	if !image.Valid {
 		return nil, errors.New("image is empty")
 	}
 
-	presignedUrl, imageUrl, err := service.s3Client.GeneratePresignedUrl(service.folder, image)
+	presignedUrl, imageUrl, err := service.s3Client.GeneratePresignedUrl(service.folder, image.String)
 	if err != nil {
 		log.Printf("error occurred while generating presigned url: %v", err)
 		return nil, err
 	}
 
-	blog.MainImage = imageUrl
+	blog.MainImage = sql.NullString{String: imageUrl, Valid: true}
 
-	if err := service.store.CreateBlog(blog); err != nil {
+	if err := service.repo.CreateBlog(ctx, blog); err != nil {
 		return nil, err
 	}
 
@@ -72,44 +80,44 @@ func (service *BlogServiceImpl) CreateBlog(blog *types.Blog) (*types.ModelResult
 	return result, nil
 }
 
-func (service *BlogServiceImpl) UpdateBlog(id string, blog *types.Blog) (*types.ModelResult, error) {
+func (service *BlogServiceImpl) UpdateBlog(ctx context.Context, id string, blog *db.Blog) (*types.ModelResult, error) {
 	image := blog.MainImage
 
 	var presignedUrl, imageUrl string
 	var err error
 
-	if image != "" && image != "null" {
-		presignedUrl, imageUrl, err = service.s3Client.GeneratePresignedUrl(service.folder, image)
+	if image.Valid {
+		presignedUrl, imageUrl, err = service.s3Client.GeneratePresignedUrl(service.folder, image.String)
 		if err != nil {
 			log.Printf("error occurred while generating presigned url: %v", err)
 			return nil, err
 		}
-		blog.MainImage = imageUrl
+		blog.MainImage = sql.NullString{String: imageUrl, Valid: true}
 	}
 
-	if err := service.store.UpdateBlog(id, blog); err != nil {
+	if err := service.repo.UpdateBlog(ctx, id, blog); err != nil {
 		return nil, err
 	}
 
 	result := &types.ModelResult{
 		PresignedUrl: presignedUrl,
-		ImageUrl:     image,
+		ImageUrl:     image.String,
 	}
 
 	return result, nil
 }
 
-func (service *BlogServiceImpl) DeleteBlog(id string) error {
-	blog, err := service.store.GetBlogById(id)
+func (service *BlogServiceImpl) DeleteBlog(ctx context.Context, id string) error {
+	blog, err := service.repo.GetBlogById(ctx, id)
 	if err != nil {
 		return err
 	}
 
-	if err := service.s3Client.DeleteImageFromS3(blog.MainImage); err != nil {
+	if err := service.s3Client.DeleteImageFromS3(blog.MainImage.String); err != nil {
 		return err
 	}
 
-	if err := service.store.DeleteBlog(id); err != nil {
+	if err := service.repo.DeleteBlog(ctx, id); err != nil {
 		return err
 	}
 

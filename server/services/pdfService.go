@@ -68,7 +68,11 @@ func (service *PdfServiceImpl) RenderRegistrationPdf(registration *types.Machine
 }
 
 func (service *PdfServiceImpl) RenderWarrantyClaimPdf(warranty *types.WarranrtyParts) ([]byte, error) {
-	pdf, err := service.InitPdf("Warranty Claim " + "-- " + *warranty.Warranty.OwnerName)
+	ownerName := ""
+	if warranty.Warranty.OwnerName != nil {
+		ownerName = *warranty.Warranty.OwnerName
+	}
+	pdf, err := service.InitPdf("Warranty Claim " + "-- " + ownerName)
 	if err != nil {
 		return nil, err
 	}
@@ -137,7 +141,10 @@ func (service *PdfServiceImpl) InitPdf(model string) (*gopdf.GoPdf, error) {
 
 	title := model
 	pdf.AddHeader(func() {
-		pdf.Text(title)
+		err := pdf.Text(title)
+		if err != nil {
+			return
+		}
 	})
 
 	if err := pdf.Text(title); err != nil {
@@ -187,7 +194,10 @@ func (service *PdfServiceImpl) RenderStruct(pdf *gopdf.GoPdf, data interface{}, 
 
 		if field.Kind() == reflect.Ptr {
 			if field.IsNil() {
-				pdf.Text(fieldName + ": <nil>")
+				err := pdf.Text(fieldName + ": <nil>")
+				if err != nil {
+					return err
+				}
 			} else {
 				field = field.Elem()
 			}

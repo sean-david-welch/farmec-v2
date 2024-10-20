@@ -8,28 +8,28 @@ import (
 
 	"github.com/sean-david-welch/farmec-v2/server/handlers"
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
+	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/services"
-	"github.com/sean-david-welch/farmec-v2/server/stores"
 )
 
 func InitSuppliers(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, adminMiddleware *middleware.AdminMiddleware) {
-	supplierStore := stores.NewSupplierStore(database)
-	supplierService := services.NewSupplierService(supplierStore, s3Client, "Suppliers")
-	supplierHandler := handlers.NewSupplierContoller(supplierService)
+	repo := repository.NewSupplierRepo(database)
+	service := services.NewSupplierService(repo, s3Client, "Suppliers")
+	handler := handlers.NewSupplierContoller(service)
 
-	SupplierRoutes(router, supplierHandler, adminMiddleware)
+	SupplierRoutes(router, handler, adminMiddleware)
 }
 
-func SupplierRoutes(router *gin.Engine, supplierHandler *handlers.SupplierHandler, adminMiddleware *middleware.AdminMiddleware) {
+func SupplierRoutes(router *gin.Engine, handler *handlers.SupplierHandler, adminMiddleware *middleware.AdminMiddleware) {
 	supplierGroup := router.Group("/api/suppliers")
 
-	supplierGroup.GET("", supplierHandler.GetSuppliers)
-	supplierGroup.GET("/:id", supplierHandler.GetSupplierByID)
+	supplierGroup.GET("", handler.GetSuppliers)
+	supplierGroup.GET("/:id", handler.GetSupplierByID)
 
 	protected := supplierGroup.Group("").Use(adminMiddleware.Middleware())
 	{
-		protected.POST("", supplierHandler.CreateSupplier)
-		protected.PUT("/:id", supplierHandler.UpdateSupplier)
-		protected.DELETE("/:id", supplierHandler.DeleteSupplier)
+		protected.POST("", handler.CreateSupplier)
+		protected.PUT("/:id", handler.UpdateSupplier)
+		protected.DELETE("/:id", handler.DeleteSupplier)
 	}
 }

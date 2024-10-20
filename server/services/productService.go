@@ -1,54 +1,68 @@
 package services
 
 import (
+	"context"
+	"database/sql"
 	"errors"
+	"github.com/sean-david-welch/farmec-v2/server/db"
 	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"log"
 
-	"github.com/sean-david-welch/farmec-v2/server/stores"
+	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type ProductService interface {
-	GetProducts(id string) ([]types.Product, error)
-	CreateProduct(product *types.Product) (*types.ModelResult, error)
-	UpdateProduct(id string, product *types.Product) (*types.ModelResult, error)
-	DeleteProduct(id string) error
+	GetProducts(ctx context.Context, id string) ([]types.Product, error)
+	CreateProduct(ctx context.Context, product *db.Product) (*types.ModelResult, error)
+	UpdateProduct(ctx context.Context, id string, product *db.Product) (*types.ModelResult, error)
+	DeleteProduct(ctx context.Context, id string) error
 }
 
 type ProductServiceImpl struct {
 	folder   string
 	s3Client lib.S3Client
-	store    stores.ProductStore
+	repo     repository.ProductRepo
 }
 
-func NewProductService(store stores.ProductStore, s3Client lib.S3Client, folder string) *ProductServiceImpl {
+func NewProductService(repo repository.ProductRepo, s3Client lib.S3Client, folder string) *ProductServiceImpl {
 	return &ProductServiceImpl{
-		store:    store,
+		repo:     repo,
 		s3Client: s3Client,
 		folder:   folder,
 	}
 }
 
-func (service *ProductServiceImpl) GetProducts(id string) ([]types.Product, error) {
-	return service.store.GetProducts(id)
+func (service *ProductServiceImpl) GetProducts(ctx context.Context, id string) ([]types.Product, error) {
+	products, err := service.repo.GetProducts(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	var result []types.Product
+	for _, product := range products {
+		result = append(result, lib.SerializeProduct(product))
+	}
+	return result, nil
 }
 
-func (service *ProductServiceImpl) CreateProduct(product *types.Product) (*types.ModelResult, error) {
+func (service *ProductServiceImpl) CreateProduct(ctx context.Context, product *db.Product) (*types.ModelResult, error) {
 	productImage := product.ProductImage
-	if productImage == "" || productImage == "null" {
+	if !productImage.Valid {
 		return nil, errors.New("image is empty")
 	}
 
-	presignedUrl, imageUrl, err := service.s3Client.GeneratePresignedUrl(service.folder, productImage)
+	presignedUrl, imageUrl, err := service.s3Client.GeneratePresignedUrl(service.folder, productImage.String)
 	if err != nil {
 		log.Printf("error occurred while generating presigned url: %v", err)
 		return nil, err
 	}
 
-	product.ProductImage = imageUrl
+	product.ProductImage = sql.NullString{
+		String: imageUrl,
+		Valid:  true,
+	}
 
-	err = service.store.CreateProduct(product)
+	err = service.repo.CreateProduct(ctx, product)
 	if err != nil {
 		return nil, err
 	}
@@ -61,22 +75,25 @@ func (service *ProductServiceImpl) CreateProduct(product *types.Product) (*types
 	return result, nil
 }
 
-func (service *ProductServiceImpl) UpdateProduct(id string, product *types.Product) (*types.ModelResult, error) {
+func (service *ProductServiceImpl) UpdateProduct(ctx context.Context, id string, product *db.Product) (*types.ModelResult, error) {
 	productImage := product.ProductImage
 
 	var presignedUrl, imageUrl string
 	var err error
 
-	if productImage != "" && productImage != "null" {
-		presignedUrl, imageUrl, err = service.s3Client.GeneratePresignedUrl(service.folder, productImage)
+	if productImage.Valid {
+		presignedUrl, imageUrl, err = service.s3Client.GeneratePresignedUrl(service.folder, productImage.String)
 		if err != nil {
 			log.Printf("error occurred while generating presigned url: %v", err)
 			return nil, err
 		}
-		product.ProductImage = imageUrl
+		product.ProductImage = sql.NullString{
+			String: imageUrl,
+			Valid:  true,
+		}
 	}
 
-	err = service.store.UpdateProduct(id, product)
+	err = service.repo.UpdateProduct(ctx, id, product)
 	if err != nil {
 		return nil, err
 	}
@@ -89,17 +106,17 @@ func (service *ProductServiceImpl) UpdateProduct(id string, product *types.Produ
 	return result, err
 }
 
-func (service *ProductServiceImpl) DeleteProduct(id string) error {
-	product, err := service.store.GetProductById(id)
+func (service *ProductServiceImpl) DeleteProduct(ctx context.Context, id string) error {
+	product, err := service.repo.GetProductById(ctx, id)
 	if err != nil {
 		return nil
 	}
 
-	if err := service.s3Client.DeleteImageFromS3(product.ProductImage); err != nil {
+	if err := service.s3Client.DeleteImageFromS3(product.ProductImage.String); err != nil {
 		return err
 	}
 
-	if err := service.store.DeleteProduct(id); err != nil {
+	if err := service.repo.DeleteProduct(ctx, id); err != nil {
 		return err
 	}
 

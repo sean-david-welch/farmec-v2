@@ -1,12 +1,13 @@
 package handlers
 
 import (
+	"github.com/sean-david-welch/farmec-v2/server/lib"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sean-david-welch/farmec-v2/server/services"
-	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type LineItemHandler struct {
@@ -18,7 +19,8 @@ func NewLineItemHandler(service services.LineItemService) *LineItemHandler {
 }
 
 func (handler *LineItemHandler) GetLineItems(context *gin.Context) {
-	lineItems, err := handler.service.GetLineItems()
+	ctx := context.Request.Context()
+	lineItems, err := handler.service.GetLineItems(ctx)
 	if err != nil {
 		log.Printf("error occurred while getting lineItems: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while getting LineItem"})
@@ -28,7 +30,22 @@ func (handler *LineItemHandler) GetLineItems(context *gin.Context) {
 	context.JSON(http.StatusOK, lineItems)
 }
 
+func (handler *LineItemHandler) GetLineItemById(context *gin.Context) {
+	ctx := context.Request.Context()
+	id := context.Param("id")
+
+	lineItem, err := handler.service.GetLineItemById(ctx, id)
+	if err != nil {
+		log.Printf("error occurred while getting lineItem: %v", err)
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while getting lineItem"})
+		return
+	}
+
+	context.JSON(http.StatusOK, lineItem)
+}
+
 func (handler *LineItemHandler) CreateLineItem(context *gin.Context) {
+	ctx := context.Request.Context()
 	var lineItem types.LineItem
 
 	if err := context.ShouldBindJSON(&lineItem); err != nil {
@@ -37,7 +54,8 @@ func (handler *LineItemHandler) CreateLineItem(context *gin.Context) {
 		return
 	}
 
-	result, err := handler.service.CreateLineItem(&lineItem)
+	dbLineItem := lib.DeserializeLineItem(lineItem)
+	result, err := handler.service.CreateLineItem(ctx, &dbLineItem)
 	if err != nil {
 		log.Printf("error when creating lineItem: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error when creating lineItem"})
@@ -52,30 +70,19 @@ func (handler *LineItemHandler) CreateLineItem(context *gin.Context) {
 	context.JSON(http.StatusCreated, response)
 }
 
-func (handler *LineItemHandler) GetLineItemById(context *gin.Context) {
-	id := context.Param("id")
-
-	lineItem, err := handler.service.GetLineItemById(id)
-	if err != nil {
-		log.Printf("error occurred while getting lineItem: %v", err)
-		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while getting lineItem"})
-		return
-	}
-
-	context.JSON(http.StatusOK, lineItem)
-}
-
 func (handler *LineItemHandler) UpdateLineItem(context *gin.Context) {
+	ctx := context.Request.Context()
 	id := context.Param("id")
-	var lineItem types.LineItem
 
+	var lineItem types.LineItem
 	if err := context.ShouldBindJSON(&lineItem); err != nil {
 		log.Printf("error when updating lineItem: %v", err)
 		context.JSON(http.StatusBadRequest, gin.H{"error": "error occurred while updating lineItem -  bad request"})
 		return
 	}
 
-	result, err := handler.service.UpdateLineItem(id, &lineItem)
+	dbLineItem := lib.DeserializeLineItem(lineItem)
+	result, err := handler.service.UpdateLineItem(ctx, id, &dbLineItem)
 	if err != nil {
 		log.Printf("error when updating lineItem: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error when updating lineItem"})
@@ -91,9 +98,10 @@ func (handler *LineItemHandler) UpdateLineItem(context *gin.Context) {
 }
 
 func (handler *LineItemHandler) DeleteLineItem(context *gin.Context) {
+	ctx := context.Request.Context()
 	id := context.Param("id")
 
-	if err := handler.service.DeleteLineItem(id); err != nil {
+	if err := handler.service.DeleteLineItem(ctx, id); err != nil {
 		log.Printf("error occurred while deleting lineItem: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error while deleting lineItem"})
 	}

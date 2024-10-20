@@ -1,26 +1,28 @@
 package handlers
 
 import (
+	"github.com/sean-david-welch/farmec-v2/server/lib"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sean-david-welch/farmec-v2/server/services"
-	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type ProductHandler struct {
-	productService services.ProductService
+	service services.ProductService
 }
 
-func NewProductHandler(productService services.ProductService) *ProductHandler {
-	return &ProductHandler{productService: productService}
+func NewProductHandler(service services.ProductService) *ProductHandler {
+	return &ProductHandler{service: service}
 }
 
 func (handler *ProductHandler) GetProducts(context *gin.Context) {
+	ctx := context.Request.Context()
 	id := context.Param("id")
 
-	products, err := handler.productService.GetProducts(id)
+	products, err := handler.service.GetProducts(ctx, id)
 	if err != nil {
 		log.Printf("Error getting machines: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occured while getting products"})
@@ -31,19 +33,20 @@ func (handler *ProductHandler) GetProducts(context *gin.Context) {
 }
 
 func (handler *ProductHandler) CreateProduct(context *gin.Context) {
+	ctx := context.Request.Context()
 	var product types.Product
 
 	if err := context.ShouldBindJSON(&product); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body", "details": err.Error()})
 		return
 	}
-
 	if product.MachineID == "" || product.MachineID == "null" {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "SupplierID cannot be empty"})
 		return
 	}
 
-	result, err := handler.productService.CreateProduct(&product)
+	dbProduct := lib.DeserializeProduct(product)
+	result, err := handler.service.CreateProduct(ctx, &dbProduct)
 	if err != nil {
 		log.Printf("Error creating product: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while creating product", "details": err.Error()})
@@ -60,21 +63,21 @@ func (handler *ProductHandler) CreateProduct(context *gin.Context) {
 }
 
 func (handler *ProductHandler) UpdateProduct(context *gin.Context) {
+	ctx := context.Request.Context()
 	id := context.Param("id")
 
 	var product types.Product
-
 	if err := context.ShouldBindJSON(&product); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Request Body", "details": err.Error()})
 		return
 	}
-
 	if product.MachineID == "" || product.MachineID == "null" {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "SupplierID cannot be empty"})
 		return
 	}
 
-	result, err := handler.productService.UpdateProduct(id, &product)
+	dbProduct := lib.DeserializeProduct(product)
+	result, err := handler.service.UpdateProduct(ctx, id, &dbProduct)
 	if err != nil {
 		log.Printf("Error updating product: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while updating machine", "details": err.Error()})
@@ -91,9 +94,10 @@ func (handler *ProductHandler) UpdateProduct(context *gin.Context) {
 }
 
 func (handler *ProductHandler) DeleteProduct(context *gin.Context) {
+	ctx := context.Request.Context()
 	id := context.Param("id")
 
-	if err := handler.productService.DeleteProduct(id); err != nil {
+	if err := handler.service.DeleteProduct(ctx, id); err != nil {
 		log.Printf("Error deleting machine: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while deleting machine", "details": err.Error()})
 		return

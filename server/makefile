@@ -25,3 +25,6 @@ database-up:
 
 templ:
 	templ generate
+
+sqlc:
+	cd sql && sqlc generate

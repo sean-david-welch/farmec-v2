@@ -52,3 +52,8 @@ type Video struct {
 	ThumbnailURL *string `json:"thumbnail_url"`
 	Created      string  `json:"created"`
 }
+
+type VideoRequest struct {
+	SupplierID string `json:"supplier_id"`
+	WebURL     string `json:"web_url"`
+}

@@ -1,33 +1,35 @@
 package services
 
 import (
+	"context"
 	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"log"
 
-	"github.com/sean-david-welch/farmec-v2/server/stores"
+	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/stripe/stripe-go/v76"
 	"github.com/stripe/stripe-go/v76/checkout/session"
 )
 
 type CheckoutService interface {
-	CreateCheckoutSession(id string) (*stripe.CheckoutSession, error)
+	CreateCheckoutSession(ctx context.Context, id string) (*stripe.CheckoutSession, error)
 	RetrieveCheckoutSession(sessionId string) (*stripe.CheckoutSession, error)
 }
 
 type CheckoutServiceImpl struct {
 	secrets *lib.Secrets
-	store   stores.LineItemStore
+	repo    repository.LineItemRepo
 }
 
-func NewCheckoutService(secrets *lib.Secrets, store stores.LineItemStore) *CheckoutServiceImpl {
-	return &CheckoutServiceImpl{secrets: secrets, store: store}
+func NewCheckoutService(secrets *lib.Secrets, repo repository.LineItemRepo) *CheckoutServiceImpl {
+	return &CheckoutServiceImpl{secrets: secrets, repo: repo}
 }
-func (service *CheckoutServiceImpl) CreateCheckoutSession(id string) (*stripe.CheckoutSession, error) {
+
+func (service *CheckoutServiceImpl) CreateCheckoutSession(ctx context.Context, id string) (*stripe.CheckoutSession, error) {
 	stripe.Key = service.secrets.StripeSecretKey
 
 	log.Printf("Creating checkout session for product ID: %s", id)
 
-	product, err := service.store.GetLineItemById(id)
+	product, err := service.repo.GetLineItemById(ctx, id)
 	if err != nil {
 		log.Printf("Error retrieving product by ID: %v", err)
 		return nil, err
@@ -45,7 +47,7 @@ func (service *CheckoutServiceImpl) CreateCheckoutSession(id string) (*stripe.Ch
 					Currency: stripe.String("eur"),
 					ProductData: &stripe.CheckoutSessionLineItemPriceDataProductDataParams{
 						Name:   stripe.String(product.Name),
-						Images: stripe.StringSlice([]string{product.Image}),
+						Images: stripe.StringSlice([]string{product.Image.String}),
 					},
 					UnitAmount: stripe.Int64(int64(product.Price * 100)),
 				},

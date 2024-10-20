@@ -1,59 +1,77 @@
 package services
 
 import (
+	"context"
+	"database/sql"
 	"errors"
+	"github.com/sean-david-welch/farmec-v2/server/db"
 	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"log"
 	url2 "net/url"
 
-	"github.com/sean-david-welch/farmec-v2/server/stores"
+	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type PartsService interface {
-	GetParts(id string) ([]types.Sparepart, error)
-	CreatePart(part *types.Sparepart) (*types.PartsModelResult, error)
-	UpdatePart(id string, part *types.Sparepart) (*types.PartsModelResult, error)
-	DeletePart(id string) error
+	GetParts(ctx context.Context, id string) ([]types.Sparepart, error)
+	CreatePart(ctx context.Context, part *db.SparePart) (*types.PartsModelResult, error)
+	UpdatePart(ctx context.Context, id string, part *db.SparePart) (*types.PartsModelResult, error)
+	DeletePart(ctx context.Context, id string) error
 }
 
 type PartsServiceImpl struct {
 	folder   string
 	s3Client lib.S3Client
-	store    stores.PartsStore
+	repo     repository.PartsRepo
 }
 
-func NewPartsService(store stores.PartsStore, s3Client lib.S3Client, folder string) *PartsServiceImpl {
+func NewPartsService(repo repository.PartsRepo, s3Client lib.S3Client, folder string) *PartsServiceImpl {
 	return &PartsServiceImpl{
-		store:    store,
+		repo:     repo,
 		s3Client: s3Client,
 		folder:   folder,
 	}
 }
 
-func (service *PartsServiceImpl) GetParts(id string) ([]types.Sparepart, error) {
-	return service.store.GetParts(id)
+func (service *PartsServiceImpl) GetParts(ctx context.Context, id string) ([]types.Sparepart, error) {
+	parts, err := service.repo.GetParts(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	var result []types.Sparepart
+	for _, part := range parts {
+		result = append(result, lib.SerializeSparePart(part))
+	}
+	return result, nil
 }
 
-func (service *PartsServiceImpl) CreatePart(part *types.Sparepart) (*types.PartsModelResult, error) {
+func (service *PartsServiceImpl) CreatePart(ctx context.Context, part *db.SparePart) (*types.PartsModelResult, error) {
 	partsImage := part.PartsImage
-	if partsImage == "" || partsImage == "null" {
+	if !partsImage.Valid {
 		return nil, errors.New("image is empty")
 	}
-	presignedImageUrl, imageUrl, err := service.s3Client.GeneratePresignedUrl(service.folder, partsImage)
+
+	presignedImageUrl, imageUrl, err := service.s3Client.GeneratePresignedUrl(service.folder, partsImage.String)
 	if err != nil {
 		log.Printf("error occurred while generating presigned url: %v", err)
 		return nil, err
 	}
-	part.PartsImage = imageUrl
+	part.PartsImage = sql.NullString{
+		String: imageUrl,
+		Valid:  true,
+	}
 
 	var partsLinkUrl, presignedLinkUrl string
-	partsLink := part.SparePartsLink
-	u, err := url2.Parse(partsLink)
+	partsLink := sql.NullString{
+		String: part.SparePartsLink.String,
+		Valid:  true,
+	}
+	u, err := url2.Parse(partsLink.String)
 	if err == nil && u.Scheme != "" && u.Host != "" {
-		partsLinkUrl = partsLink
+		partsLinkUrl = partsLink.String
 	} else {
-		presignedUrl, linkUrl, err := service.s3Client.GeneratePresignedUrl(service.folder, partsLink)
+		presignedUrl, linkUrl, err := service.s3Client.GeneratePresignedUrl(service.folder, partsLink.String)
 		if err != nil {
 			log.Printf("error occurred while generating presigned url for link: %v", err)
 			return nil, err
@@ -61,9 +79,12 @@ func (service *PartsServiceImpl) CreatePart(part *types.Sparepart) (*types.Parts
 		partsLinkUrl = linkUrl
 		presignedLinkUrl = presignedUrl
 	}
-	part.SparePartsLink = partsLinkUrl
+	part.SparePartsLink = sql.NullString{
+		String: partsLinkUrl,
+		Valid:  true,
+	}
 
-	err = service.store.CreatePart(part)
+	err = service.repo.CreatePart(ctx, part)
 	if err != nil {
 		log.Printf("Failed to create part: %v", err)
 		return nil, err
@@ -78,28 +99,34 @@ func (service *PartsServiceImpl) CreatePart(part *types.Sparepart) (*types.Parts
 	return result, nil
 }
 
-func (service *PartsServiceImpl) UpdatePart(id string, part *types.Sparepart) (*types.PartsModelResult, error) {
+func (service *PartsServiceImpl) UpdatePart(ctx context.Context, id string, part *db.SparePart) (*types.PartsModelResult, error) {
 	partsImage := part.PartsImage
 	var presignedUrl, imageUrl string
 	var err error
 
-	if partsImage != "" && partsImage != "null" {
-		presignedUrl, imageUrl, err = service.s3Client.GeneratePresignedUrl(service.folder, partsImage)
+	if partsImage.Valid {
+		presignedUrl, imageUrl, err = service.s3Client.GeneratePresignedUrl(service.folder, partsImage.String)
 		if err != nil {
 			log.Printf("error occurred while generating presigned url: %v", err)
 			return nil, err
 		}
-		part.PartsImage = imageUrl
+		part.PartsImage = sql.NullString{
+			String: imageUrl,
+			Valid:  true,
+		}
 	}
 
 	var partsLinkUrl, presignedLinkUrl string
-	partsLink := part.SparePartsLink
+	partsLink := sql.NullString{
+		String: part.SparePartsLink.String,
+		Valid:  true,
+	}
 
-	u, err := url2.Parse(partsLink)
+	u, err := url2.Parse(partsLink.String)
 	if err == nil && u.Scheme != "" && u.Host != "" {
-		partsLinkUrl = partsLink
+		partsLinkUrl = partsLink.String
 	} else {
-		presignedUrl, linkUrl, err := service.s3Client.GeneratePresignedUrl(service.folder, partsLink)
+		presignedUrl, linkUrl, err := service.s3Client.GeneratePresignedUrl(service.folder, partsLink.String)
 		if err != nil {
 			log.Printf("error occurred while generating presigned url for link: %v", err)
 			return nil, err
@@ -107,9 +134,12 @@ func (service *PartsServiceImpl) UpdatePart(id string, part *types.Sparepart) (*
 		partsLinkUrl = linkUrl
 		presignedLinkUrl = presignedUrl
 	}
-	part.SparePartsLink = partsLinkUrl
+	part.SparePartsLink = sql.NullString{
+		String: partsLinkUrl,
+		Valid:  true,
+	}
 
-	err = service.store.UpdatePart(id, part)
+	err = service.repo.UpdatePart(ctx, id, part)
 	if err != nil {
 		log.Printf("Failed to update part: %v", err)
 		return nil, err
@@ -124,17 +154,17 @@ func (service *PartsServiceImpl) UpdatePart(id string, part *types.Sparepart) (*
 	return result, nil
 }
 
-func (service *PartsServiceImpl) DeletePart(id string) error {
-	part, err := service.store.GetPartById(id)
+func (service *PartsServiceImpl) DeletePart(ctx context.Context, id string) error {
+	part, err := service.repo.GetPartById(ctx, id)
 	if err != nil {
 		return err
 	}
 
-	if err := service.s3Client.DeleteImageFromS3(part.PartsImage); err != nil {
+	if err := service.s3Client.DeleteImageFromS3(part.PartsImage.String); err != nil {
 		return err
 	}
 
-	if err := service.store.DeletePart(id); err != nil {
+	if err := service.repo.DeletePart(ctx, id); err != nil {
 		return err
 	}
 

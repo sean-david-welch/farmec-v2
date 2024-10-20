@@ -9,9 +9,9 @@ type AuthMiddleware struct {
 	FirebaseService *lib.Firebase
 }
 
-func NewAuthMiddleware(firebaseService *lib.Firebase) *AuthMiddleware {
+func NewAuthMiddleware(service *lib.Firebase) *AuthMiddleware {
 	return &AuthMiddleware{
-		FirebaseService: firebaseService,
+		FirebaseService: service,
 	}
 }
 

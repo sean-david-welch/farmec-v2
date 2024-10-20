@@ -1,26 +1,28 @@
 package handlers
 
 import (
+	"github.com/sean-david-welch/farmec-v2/server/lib"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sean-david-welch/farmec-v2/server/services"
-	"github.com/sean-david-welch/farmec-v2/server/types"
 )
 
 type PartsHandler struct {
-	partsService services.PartsService
+	service services.PartsService
 }
 
-func NewPartsHandler(partsService services.PartsService) *PartsHandler {
-	return &PartsHandler{partsService: partsService}
+func NewPartsHandler(service services.PartsService) *PartsHandler {
+	return &PartsHandler{service: service}
 }
 
 func (handler *PartsHandler) GetParts(context *gin.Context) {
+	ctx := context.Request.Context()
 	id := context.Param("id")
 
-	parts, err := handler.partsService.GetParts(id)
+	parts, err := handler.service.GetParts(ctx, id)
 	if err != nil {
 		log.Printf("Error getting parts: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while getting parts"})
@@ -31,19 +33,20 @@ func (handler *PartsHandler) GetParts(context *gin.Context) {
 }
 
 func (handler *PartsHandler) CreateParts(context *gin.Context) {
+	ctx := context.Request.Context()
 	var part types.Sparepart
 
 	if err := context.ShouldBindJSON(&part); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Ivalid request body", "details": err.Error()})
 		return
 	}
-
 	if part.SupplierID == "" || part.SupplierID == "null" {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "SupplierID cannot be empty"})
 		return
 	}
 
-	result, err := handler.partsService.CreatePart(&part)
+	dbPart := lib.DeserializeSparePart(part)
+	result, err := handler.service.CreatePart(ctx, &dbPart)
 	if err != nil {
 		log.Printf("Error creating part: %v", err)
 		context.JSON(http.StatusInternalServerError,
@@ -62,21 +65,21 @@ func (handler *PartsHandler) CreateParts(context *gin.Context) {
 }
 
 func (handler *PartsHandler) UpdateParts(context *gin.Context) {
+	ctx := context.Request.Context()
 	id := context.Param("id")
 
 	var part types.Sparepart
-
 	if err := context.ShouldBindJSON(&part); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Request Body", "details": err.Error()})
 		return
 	}
-
 	if part.SupplierID == "" || part.SupplierID == "null" {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "SupplierID cannot be empty"})
 		return
 	}
 
-	result, err := handler.partsService.UpdatePart(id, &part)
+	dbPart := lib.DeserializeSparePart(part)
+	result, err := handler.service.UpdatePart(ctx, id, &dbPart)
 	if err != nil {
 		log.Printf("Error updating part: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while updating machine", "details": err.Error()})
@@ -94,9 +97,10 @@ func (handler *PartsHandler) UpdateParts(context *gin.Context) {
 }
 
 func (handler *PartsHandler) DeletePart(context *gin.Context) {
+	ctx := context.Request.Context()
 	id := context.Param("id")
 
-	if err := handler.partsService.DeletePart(id); err != nil {
+	if err := handler.service.DeletePart(ctx, id); err != nil {
 		log.Printf("Erroir deleting part: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurrrd while deleting part", "details": err.Error()})
 		return
