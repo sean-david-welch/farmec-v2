@@ -1,0 +1,79 @@
+.footer {
+    @apply border-t-2 border-zinc-900 bg-zinc-900 py-12;
+    @apply grid grid-cols-3;
+    @apply justify-center justify-items-center;
+    @apply hover:border-red-600 md:grid-cols-1;
+    @apply transition-all duration-700 ease-in-out;
+}
+
+.footer img {
+    @apply mx-auto;
+}
+
+.footerInfo {
+    @apply mx-auto flex flex-col;
+}
+
+.footerInfo > * {
+    @apply mx-auto;
+}
+
+.companyInfo {
+    @apply mx-auto flex flex-col items-center text-center;
+}
+
+.companyInfo > * {
+    @apply my-1 text-lg font-semibold;
+}
+
+.footerLinks {
+    @apply mx-auto flex flex-col items-center justify-center;
+}
+
+.footerLinks img {
+    @apply duration-700 ease-in-out hover:scale-105;
+    @apply mx-auto ml-4 flex flex-col items-center justify-center text-center;
+}
+
+.socialLinks {
+    @apply mx-auto flex flex-row items-center justify-center text-center;
+}
+
+.socialLinks svg {
+    @apply m-4 h-7 rounded-lg border-2;
+    @apply cursor-pointer p-3;
+    @apply transition-all duration-700 ease-in-out;
+}
+
+.socialLinks path {
+    @apply transition-all duration-700 ease-in-out;
+}
+
+.socialLinks svg:hover {
+    @apply border-red-700;
+}
+
+.socialLinks svg:hover path {
+    @apply fill-red-700;
+}
+
+.navLinks {
+    @apply flex flex-col;
+}
+
+.navLinks > * {
+    @apply my-2;
+}
+
+.toTopButton {
+    @apply fixed bottom-5 right-5 z-30 cursor-pointer rounded-full border-2 border-zinc-800 bg-gray-800 px-3 py-5 transition-all duration-300 ease-in-out;
+}
+
+.toTopButton:hover,
+.toTopButton:hover svg path {
+    @apply border-2 border-indigo-800 bg-zinc-700 fill-indigo-800;
+}
+
+.toTopButton svg path {
+    @apply fill-indigo-800;
+}

@@ -1,0 +1,73 @@
+.blogGrid {
+    @apply grid grid-cols-1;
+}
+
+.blogCard {
+    @apply flex flex-row;
+    @apply mx-52 my-10;
+    @apply rounded-xl border-4 border-zinc-600 bg-zinc-800;
+    @apply transition-all duration-700 ease-in-out;
+    @apply md:mx-5 md:flex-col-reverse;
+}
+
+.blogCard:hover {
+    @apply border-red-600;
+    @apply scale-[1.025];
+}
+
+.blogCard img {
+    @apply w-full max-w-[500px] rounded-l-lg border-r-4 border-r-zinc-600 object-cover;
+    @apply md:rounded-b-lg md:rounded-tl-none md:border-r-0 md:border-t-4 md:border-t-zinc-600;
+}
+
+.blogLink {
+    @apply flex flex-col justify-center p-4;
+}
+
+.blogLink > * {
+    @apply my-2;
+}
+
+.blogDetail {
+    @apply mx-auto flex flex-col;
+    @apply mx-72 my-10;
+    @apply md:mx-5 md:my-5;
+}
+
+.blogDetail img {
+    @apply w-[600px];
+}
+
+.blogDetail > * {
+    @apply my-2;
+}
+
+.blogBody {
+    @apply rounded-xl border-4 border-zinc-600 bg-zinc-800 px-24 py-8;
+    @apply transition-all duration-700 ease-in-out;
+    @apply md:px-5;
+}
+
+.blogBody:hover {
+    @apply border-red-600;
+    @apply scale-[1.005];
+}
+
+.blogBody img {
+    @apply mx-auto my-4 rounded-lg;
+}
+
+.exhibitions {
+    @apply mx-52 grid grid-cols-1;
+    @apply md:mx-5;
+}
+
+.exhibition {
+    @apply my-5 rounded-xl border-4 border-zinc-600 bg-zinc-800 p-4;
+    @apply transition-all duration-700 ease-in-out;
+}
+
+.exhibition:hover {
+    @apply border-red-600;
+    @apply scale-[1.005];
+}

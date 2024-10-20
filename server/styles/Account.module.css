@@ -1,0 +1,97 @@
+.accountMap {
+    @apply grid grid-cols-1;
+    @apply rounded-2xl border-4 border-zinc-800 bg-zinc-800;
+    @apply mx-52 my-8 p-10;
+    @apply md:mx-5 md:p-2;
+}
+
+.accountSection {
+    @apply grid grid-cols-2;
+    @apply rounded-2xl border-4 border-zinc-600 bg-zinc-800;
+    @apply mx-16 my-8 p-10;
+    @apply md:mx-5 md:grid-cols-1 md:p-2;
+}
+
+.accountSection > * {
+    @apply flex flex-col;
+    @apply my-10;
+}
+
+.productView {
+    @apply mx-72 my-10 flex flex-col p-4;
+    @apply justify-center rounded-2xl border-4 border-zinc-600 bg-zinc-800;
+    @apply transition-all duration-500 ease-in-out;
+    @apply md:mx-2;
+}
+
+.productView > * {
+    @apply my-2;
+}
+
+.productView:hover {
+    @apply border-red-700;
+}
+
+.productView img {
+    @apply mx-auto;
+    @apply rounded-xl;
+    @apply transition-all duration-500 ease-in-out;
+}
+
+.carouselAdmin {
+    @apply mx-72 rounded-2xl border-4 border-zinc-600 bg-zinc-800;
+    @apply my-10 p-2;
+    @apply md:mx-2;
+}
+
+.carouselAdmin > img {
+    @apply mx-auto my-4 rounded-2xl;
+}
+
+.warrantyDetail {
+    @apply flex flex-col;
+    @apply mx-52 my-10 p-4;
+    @apply rounded-2xl border-4 border-zinc-600 bg-zinc-800;
+    @apply transition-all duration-500 ease-in-out;
+    @apply md:mx-5;
+}
+
+.warrantyDetail:hover {
+    @apply border-red-700;
+}
+
+.warrantyGrid {
+    @apply grid grid-cols-2;
+}
+
+.label {
+    @apply text-xl capitalize;
+}
+
+.warrantyView {
+    @apply hover:border-red-700;
+    @apply transition-all duration-700 ease-in-out;
+    @apply rounded-2xl border-4 border-zinc-800 bg-zinc-800;
+    @apply mx-56 my-4 p-2;
+    @apply md:mx-5;
+}
+
+.userGrid {
+    @apply grid grid-cols-2;
+    @apply md:grid-cols-1;
+}
+
+.userSection {
+    @apply mx-16 my-4 p-2;
+    @apply rounded-2xl border-4 border-zinc-600 bg-zinc-800;
+    @apply md:mx-2;
+}
+
+.userCard {
+    @apply flex flex-col;
+    @apply md:flex-col;
+}
+
+.userCard > * {
+    @apply my-4;
+}

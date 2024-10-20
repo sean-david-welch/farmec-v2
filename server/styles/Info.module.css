@@ -1,0 +1,110 @@
+.info {
+    @apply py-5;
+}
+
+.infoSection {
+    @apply flex flex-col items-center;
+    @apply rounded-lg bg-zinc-300;
+    @apply mx-auto w-[80vw];
+    @apply md:w-[80vw];
+}
+
+.infoSection > * {
+    @apply mx-auto;
+}
+
+.infoSection {
+    @apply mb-5 mt-10;
+}
+
+.infoSection .mainHeading {
+    @apply decoration-red-600;
+}
+/* Stats */
+
+.stats {
+    @apply mx-5 mt-5 grid grid-cols-4 gap-36;
+    @apply md:grid-cols-1;
+}
+
+.statList {
+    @apply grid grid-cols-1;
+    @apply transition-all duration-700 ease-in-out;
+}
+
+.statList:hover {
+    @apply scale-105;
+}
+
+.statList:hover svg path {
+    @apply fill-red-700;
+}
+
+.statList:hover .statListItem {
+    @apply text-red-700;
+}
+
+.statList > * {
+    @apply mx-4;
+}
+
+.statListItem {
+    @apply mx-5 text-xl font-semibold text-zinc-800;
+}
+
+.statListItem:nth-child(3) {
+    @apply text-lg font-normal;
+}
+
+.statListItem svg {
+    @apply mx-auto h-16;
+}
+
+.statListItem svg path {
+    @apply fill-zinc-900 transition-all duration-700 ease-in-out;
+}
+
+/* Specails */
+
+.specials {
+    @apply mb-2 grid grid-cols-4;
+    @apply md:grid-cols-1;
+}
+
+.specialList {
+    @apply grid grid-cols-1;
+    @apply transition-all duration-700 ease-in-out;
+}
+
+.specialList:hover {
+    @apply scale-105;
+}
+
+.specialList:hover svg path {
+    @apply fill-red-700;
+}
+
+.specialList:hover .specialListItem {
+    @apply text-red-700;
+}
+
+.specialList > * {
+    @apply mx-4;
+}
+
+.specialListItem {
+    @apply text-xl font-semibold text-zinc-800;
+}
+
+.specialListItem:nth-child(3) {
+    @apply mx-10 text-base font-normal;
+}
+
+.specialListItem svg {
+    @apply mx-auto h-16;
+}
+
+.specialListItem svg path {
+    @apply fill-zinc-900;
+    @apply transition-all duration-700 ease-in-out;
+}

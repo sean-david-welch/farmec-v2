@@ -1,0 +1,83 @@
+/* Contact form */
+.contactSection {
+    @apply mx-10 mb-10 grid p-4;
+    @apply rounded-lg bg-zinc-800;
+    grid-template-columns: 1fr 2fr 1fr;
+    @apply md:grid-cols-1;
+}
+
+.contactSection > * {
+    @apply mx-8 my-2;
+    @apply md:mx-2;
+}
+
+.contactForm label {
+    @apply block text-2xl font-medium text-gray-900 dark:text-white;
+}
+
+.contactForm input,
+.contactForm select,
+.contactForm textarea {
+    @apply my-4 rounded-xl border border-gray-300 p-2.5 text-sm text-zinc-800;
+    @apply border-zinc-600 bg-zinc-100 placeholder-zinc-800 focus:border-red-700 focus:ring-red-700;
+}
+
+.contactForm {
+    @apply mx-2 flex w-[20vw] flex-col rounded-lg bg-zinc-800 py-2 text-center;
+    @apply md:mx-2 md:w-[70vw];
+}
+
+.recapcha {
+    @apply mx-auto;
+}
+
+.map {
+    @apply flex items-center justify-center;
+    @apply mx-auto rounded-xl;
+    @apply md:w-[70vw];
+}
+
+.infoSection {
+    @apply flex w-[250px] flex-col;
+    @apply md:w-[70vw];
+}
+
+.subHeading {
+    @apply text-2xl text-gray-200 underline;
+}
+
+.info {
+    @apply mt-4;
+}
+
+.infoItem {
+    @apply bottom-4 rounded-lg border-zinc-950 bg-zinc-800;
+    @apply text-lg font-medium text-zinc-100;
+    @apply my-4;
+}
+
+.infoItemText {
+    @apply text-lg font-medium text-zinc-100;
+}
+
+.socialLinks {
+    @apply mx-auto mt-4 flex flex-row items-center justify-center text-center;
+}
+
+.socialLinks svg {
+    @apply m-4 h-6 rounded-lg border-2;
+    @apply cursor-pointer p-3;
+    @apply transition-all duration-700 ease-in-out;
+}
+
+.socialLinks path {
+    @apply transition-all duration-700 ease-in-out;
+}
+
+.socialLinks svg:hover {
+    @apply border-red-700;
+}
+
+.socialLinks svg:hover path {
+    @apply fill-red-700;
+}
