@@ -107,7 +107,7 @@ func (suite *BlogTestSuite) TestCreateBlog() {
 		Date:       sql.NullString{String: "2024-06-23", Valid: true},
 		MainImage:  sql.NullString{String: "image.jpg", Valid: true},
 		Subheading: sql.NullString{String: "This is a subheading", Valid: true},
-		Body:       sql.NullString{String: "This is the body of the blog.", Valid: true},
+		Body:       sql.NullString{String: "This is the body of the blo", Valid: true},
 		Created:    sql.NullString{String: "2024-06-23 10:00:00", Valid: true},
 	}
 
