@@ -37,7 +37,7 @@ func (handler *WarrantyHandler) GetWarrantyById(context *gin.Context) {
 
 	warranty, parts, err := handler.service.GetWarrantyById(ctx, id)
 	if err != nil {
-		log.Printf("error occurred while getting warrantiy and adjoining parts: %v", err)
+		log.Printf("error occurred while getting warranty and adjoining parts: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while getting warrantiy and adjoining parts"})
 		return
 	}
