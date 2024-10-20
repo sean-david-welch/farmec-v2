@@ -33,7 +33,7 @@ jobs:
                   CGO_ENABLED: '1'
 
             - name: Upload artifact
-              uses: actions/upload-artifact@v2
+              uses: actions/upload-artifact@v3
               with:
                   name: go-binary
                   path: server/main
@@ -44,7 +44,7 @@ jobs:
 
         steps:
             - name: Download artifact
-              uses: actions/download-artifact@v2
+              uses: actions/download-artifact@v3
               with:
                   name: go-binary
 
