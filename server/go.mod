@@ -7,6 +7,7 @@ toolchain go1.23.2
 require (
 	firebase.google.com/go v3.13.0+incompatible
 	github.com/DATA-DOG/go-sqlmock v1.5.2
+	github.com/a-h/templ v0.2.778
 	github.com/aws/aws-sdk-go-v2 v1.32.2
 	github.com/aws/aws-sdk-go-v2/config v1.28.0
 	github.com/aws/aws-sdk-go-v2/credentials v1.17.41

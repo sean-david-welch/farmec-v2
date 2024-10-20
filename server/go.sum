@@ -36,6 +36,8 @@ github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/cloudmock v0
 github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/cloudmock v0.48.3/go.mod h1:pNP/L2wDlaQnQlFvkDKGSruDoYRpmAxB6drgsskfYwg=
 github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/resourcemapping v0.48.3 h1:2vcVkrNdSMJpoOVAWi9ApsQR5iqNeFGt5Qx8Xlt3IoI=
 github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/resourcemapping v0.48.3/go.mod h1:wRbFgBQUVm1YXrvWKofAEmq9HNJTDphbAaJSSX01KUI=
+github.com/a-h/templ v0.2.778 h1:VzhOuvWECrwOec4790lcLlZpP4Iptt5Q4K9aFxQmtaM=
+github.com/a-h/templ v0.2.778/go.mod h1:lq48JXoUvuQrU0VThrK31yFwdRjTCnIE5bcPCM9IP1w=
 github.com/aws/aws-sdk-go-v2 v1.32.2 h1:AkNLZEyYMLnx/Q/mSKkcMqwNFXMAvFto9bNsHqcTduI=
 github.com/aws/aws-sdk-go-v2 v1.32.2/go.mod h1:2SK5n0a2karNTv5tbP1SjsX0uhttou00v/HpXKM1ZUo=
 github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.6.6 h1:pT3hpW0cOHRJx8Y0DfJUEQuqPild8jRGmSFmBgvydr0=
