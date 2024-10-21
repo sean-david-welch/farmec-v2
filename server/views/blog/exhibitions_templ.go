@@ -28,7 +28,7 @@ func Exhibitions(isAdmin bool, exhibitions []types.Exhibition, isLoading, isErro
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<head><title>Exhibitions - Farmec Ireland</title><meta name=\"description\" content=\"Check out the upcoming exhibitions where Farmec will showcase its latest machinery. Don&#39;t miss the chance to see our products in action.\"><meta property=\"og:title\" content=\"Exhibitions - Farmec Ireland\"><meta property=\"og:description\" content=\"Check out the upcoming exhibitions where Farmec will showcase its latest machinery. Don&#39;t miss the chance to see our products in action.\"><meta property=\"og:image\" content=\"https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp\"><meta property=\"og:url\" content=\"https://www.farmec.ie/exhibitions\"><meta property=\"og:type\" content=\"website\"><meta name=\"twitter:card\" content=\"summary_large_image\"><meta name=\"twitter:title\" content=\"Exhibitions - Farmec Ireland\"><meta name=\"twitter:description\" content=\"Check out the upcoming exhibitions where Farmec will showcase its latest machinery. Don&#39;t miss the chance to see our products in action.\"><meta name=\"twitter:image\" content=\"https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp\"><link rel=\"canonical\" href=\"https://www.farmec.ie/exhibitions\"></head><section id=\"exhibitions\"><h1 class=\"sectionHeading\">Exhibitions:</h1><h1 class=\"subHeading\">Check out upcoming events related to Farmec</h1><div class=\"exhibitions\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<head><title>Exhibitions - Farmec Ireland</title><meta name=\"description\" content=\"Check out the upcoming exhibitions where Farmec will showcase its latest machinery. Don&#39;t miss the chance to see our products in action.\"><meta property=\"og:title\" content=\"Exhibitions - Farmec Ireland\"><meta property=\"og:description\" content=\"Check out the upcoming exhibitions where Farmec will showcase its latest machinery. Don&#39;t miss the chance to see our products in action.\"><meta property=\"og:image\" content=\"https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp\"><meta property=\"og:url\" content=\"https://www.farmec.ie/exhibitions\"><meta property=\"og:type\" content=\"website\"><meta name=\"twitter:card\" content=\"summary_large_image\"><meta name=\"twitter:title\" content=\"Exhibitions - Farmec Ireland\"><meta name=\"twitter:description\" content=\"Check out the upcoming exhibitions where Farmec will showcase its latest machinery. Don&#39;t miss the chance to see our products in action.\"><meta name=\"twitter:image\" content=\"https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp\"><link rel=\"canonical\" href=\"https://www.farmec.ie/exhibitions\"><link rel=\"stylesheet\" href=\"/public/index.css\"></head><section id=\"exhibitions\"><h1 class=\"sectionHeading\">Exhibitions:</h1><h1 class=\"subHeading\">Check out upcoming events related to Farmec</h1><div class=\"exhibitions\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -40,7 +40,7 @@ func Exhibitions(isAdmin bool, exhibitions []types.Exhibition, isLoading, isErro
 			var templ_7745c5c3_Var2 string
 			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(exhibition.Title)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/blog/exhibitions.templ`, Line: 26, Col: 47}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/blog/exhibitions.templ`, Line: 27, Col: 47}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 			if templ_7745c5c3_Err != nil {
@@ -53,7 +53,7 @@ func Exhibitions(isAdmin bool, exhibitions []types.Exhibition, isLoading, isErro
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(exhibition.Date)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/blog/exhibitions.templ`, Line: 27, Col: 43}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/blog/exhibitions.templ`, Line: 28, Col: 43}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -66,7 +66,7 @@ func Exhibitions(isAdmin bool, exhibitions []types.Exhibition, isLoading, isErro
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(exhibition.Location)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/blog/exhibitions.templ`, Line: 28, Col: 47}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/blog/exhibitions.templ`, Line: 29, Col: 47}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -79,7 +79,7 @@ func Exhibitions(isAdmin bool, exhibitions []types.Exhibition, isLoading, isErro
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(exhibition.Info)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/blog/exhibitions.templ`, Line: 29, Col: 43}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/blog/exhibitions.templ`, Line: 30, Col: 43}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
