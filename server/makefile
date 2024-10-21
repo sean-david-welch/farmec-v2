@@ -30,4 +30,4 @@ sqlc:
 	cd sql && sqlc generate
 
 tailwind:
-	@./tailwindcss -i views/css/styles.css -o public/styles.css --watch
+	@tailwindcss -i styles/index.css -o public/index.css --watch
