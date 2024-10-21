@@ -70,6 +70,7 @@ func main() {
 	authMiddleware := middleware.NewAuthMiddleware(firebase)
 	adminMiddleware := middleware.NewAdminMiddleware(firebase)
 	router.Use(gin.Logger(), gin.Recovery(), cors.New(corsConfig))
+	router.Static("/public", "./public")
 	routes.InitRoutes(router, database, secrets, s3Client, adminMiddleware, authMiddleware, firebase, smtp)
 
 	if env == "production" {
