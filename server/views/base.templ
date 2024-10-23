@@ -1,26 +1,39 @@
+// base.templ
 package views
 
-templ Base(content templ.Component) {
-	<!DOCTYPE html>
-	<html lang="en">
-		<head>
-			<title>Farmec Ireland Ltd</title>
-			<title>Home - Farmec Ireland</title>
-			<meta name="description" content="Welcome to Farmec Ireland Ltd. Importers and Distributors of High quality Farm and Amenity Machinery"/>
-			<meta property="og:title" content="Home - Farmec Ireland"/>
-			<meta property="og:description" content="Discover Farmec's staff, history, and vision for the future."/>
-			<meta property="og:image" content="https://www.farmec. ie/farmec_images/Suppliers/sip1250.webp"/>
-			<meta property="og:url" content="https://www.farmec.ie"/>
-			<meta property="og:type" content="website"/>
-			<meta name="twitter:card" content="summary_large_image"/>
-			<meta name="twitter:title" content="Home - Farmec Ireland"/>
-			<meta name="twitter:description" content="Welcome to Farmec Ireland Ltd. Importers and Distributors of High quality Farm and Amenity Machinery"/>
-			<meta name="twitter:image" content="https://www.farmec. ie/farmec_images/Suppliers/sip1250.webp"/>
-			<link rel="canonical" href="https://www.farmec.ie"/>
-			<link rel="stylesheet" href="/public/index.css"/>
-		</head>
-		<body>
-			@content
-		</body>
-	</html>
+type Metadata struct {
+    Title           string
+    Description     string
+    OgTitle         string
+    OgDescription   string
+    OgImage         string
+    OgUrl           string
+    TwitterTitle    string
+    TwitterDesc     string
+    TwitterImage    string
+    CanonicalUrl    string
+}
+
+templ Base(content templ.Component, metadata Metadata) {
+    <!DOCTYPE html>
+    <html lang="en">
+        <head>
+            <title>{metadata.Title}</title>
+            <meta name="description" content={metadata.Description}/>
+            <meta property="og:title" content={metadata.OgTitle}/>
+            <meta property="og:description" content={metadata.OgDescription}/>
+            <meta property="og:image" content={metadata.OgImage}/>
+            <meta property="og:url" content={metadata.OgUrl}/>
+            <meta property="og:type" content="website"/>
+            <meta name="twitter:card" content="summary_large_image"/>
+            <meta name="twitter:title" content={metadata.TwitterTitle}/>
+            <meta name="twitter:description" content={metadata.TwitterDesc}/>
+            <meta name="twitter:image" content={metadata.TwitterImage}/>
+            <link rel="canonical" href={metadata.CanonicalUrl}/>
+            <link rel="stylesheet" href="/public/index.css"/>
+        </head>
+        <body>
+            @content
+        </body>
+    </html>
 }
