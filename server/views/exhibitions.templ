@@ -1,0 +1,24 @@
+package views
+
+import "github.com/sean-david-welch/farmec-v2/server/types"
+
+templ exhibitionsContent(isAdmin bool, exhibitions []types.Exhibition, isLoading, isError bool) {
+    <section id="exhibitions">
+        <h1 class="sectionHeading">Exhibitions:</h1>
+        <h1 class="subHeading">Check out upcoming events related to Farmec</h1>
+        <div class="exhibitions">
+            for _, exhibition := range exhibitions {
+                <div class="exhibition">
+                    <h1 class="mainHeading">{exhibition.Title}</h1>
+                    <p class="paragraph">{exhibition.Date}</p>
+                    <p class="paragraph">{exhibition.Location}</p>
+                    <p class="paragraph">{exhibition.Info}</p>
+                </div>
+            }
+        </div>
+    </section>
+}
+
+templ Exhibitions(isAdmin bool, exhibitions []types.Exhibition, isLoading, isError bool) {
+    @Base(exhibitionsContent(isAdmin, exhibitions, isLoading, isError))
+}
