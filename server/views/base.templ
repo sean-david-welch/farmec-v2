@@ -19,8 +19,7 @@ templ Base(content templ.Component) {
             <link rel="stylesheet" href="/public/index.css">
         </head>
         <body>
-                        { content.Render(ctx) }
-
+            @content
         </body>
     </html>
 }
