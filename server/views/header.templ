@@ -1,0 +1,91 @@
+package views
+
+import "github.com/sean-david-welch/farmec-v2/server/types"
+
+templ headerContent(suppliers []types.Supplier, isHomepage bool) {
+    <nav x-data="{ isHomepage: window.location.pathname === '/' }" :class="isHomepage ? 'transparentNav' : 'navbar'">
+        <a href="/" aria-label="logo button">
+            <img
+                src="https://www.farmec.ie/farmec_images/farmeclogo.webp"
+                alt="Logo"
+                width="250"
+                height="250"
+            />
+        </a>
+
+        <ul class="navList">
+            <li class="navItem">
+                <a href="/about" class="navListItem">About Us</a>
+                <ul class="navDrop">
+                    <li class="navDropItem">
+                        <a href="/about">Staff & Management</a>
+                    </li>
+                    <li class="navDropItem">
+                        <a href="/about#timeline">Company History</a>
+                    </li>
+                    <li class="navDropItem">
+                        <a href="/about/policies">Terms of Use</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="navItem">
+                <a href="/suppliers" class="navListItem">Suppliers</a>
+                if len(suppliers) > 0 {
+                    <ul class="navDrop">
+                        for _, supplier := range suppliers {
+                            <li class="navDropItem">
+                                <a href={ templ.SafeURL("/suppliers/" + supplier.ID) }>
+                                    { supplier.Name }
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                }
+            </li>
+
+            <li class="navItem">
+                <a href="/spareparts" class="navListItem">Spare Parts</a>
+                if len(suppliers) > 0 {
+                    <ul class="navDrop">
+                        for _, supplier := range suppliers {
+                            <li class="navDropItem">
+                                <a href={ templ.SafeURL("/spareparts/" + supplier.ID) }>
+                                    { supplier.Name }
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                }
+            </li>
+
+            <li class="navItem">
+                <a href="/blogs" class="navListItem">Blog</a>
+                <ul class="navDrop">
+                    <li class="navDropItem">
+                        <a href="/blogs">Latest Posts</a>
+                    </li>
+                    <li class="navDropItem">
+                        <a href="/blog/exhibitions">Exhibition Information</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="navItem">
+                <a href="/#contact" class="navListItem">Contact</a>
+            </li>
+
+            @accountButton()
+        </ul>
+    </nav>
+}
+
+templ accountButton() {
+    <div class="accountButton">
+        <a href="/account" class="navListItem">Account</a>
+    </div>
+}
+
+templ Header(suppliers []types.Supplier, isHomepage bool) {
+    @headerContent(suppliers, isHomepage)
+}
