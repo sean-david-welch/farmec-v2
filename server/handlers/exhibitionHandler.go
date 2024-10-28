@@ -3,7 +3,7 @@ package handlers
 import (
 	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"github.com/sean-david-welch/farmec-v2/server/types"
-	views "github.com/sean-david-welch/farmec-v2/server/views/blog"
+	"github.com/sean-david-welch/farmec-v2/server/views"
 	"log"
 	"net/http"
 
