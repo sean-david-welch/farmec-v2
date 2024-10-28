@@ -7,6 +7,7 @@ import (
 	"io"
 	"net"
 	"net/smtp"
+	"time"
 )
 
 type SMTPClient interface {
@@ -24,9 +25,16 @@ func NewSTMPClient(secrets *Secrets, emailAuth EmailAuth) *SMTPClientImpl {
 }
 
 func (service *SMTPClientImpl) SetupSMTPClient() (*smtp.Client, error) {
-	conn, err := net.Dial("tcp", "smtp.office365.com:587")
+	conn, err := net.DialTimeout("tcp", "smtp.office365.com:587", 10*time.Second)
 	if err != nil {
 		return nil, fmt.Errorf("failed to establish TCP connection: %w", err)
+	}
+
+	deadline := time.Now().Add(30 * time.Second)
+	err = conn.SetDeadline(deadline)
+	if err != nil {
+		err := conn.Close()
+		return nil, fmt.Errorf("failed to set deadline: %w", err)
 	}
 
 	client, err := smtp.NewClient(conn, "smtp.office365.com")
@@ -38,7 +46,7 @@ func (service *SMTPClientImpl) SetupSMTPClient() (*smtp.Client, error) {
 		return nil, fmt.Errorf("failed to create SMTP client: %w", err)
 	}
 
-	tlsConfig := &tls.Config{ServerName: "smtp.office365.com"}
+	tlsConfig := &tls.Config{ServerName: "smtp.office365.com", MinVersion: tls.VersionTLS12}
 	if err = client.StartTLS(tlsConfig); err != nil {
 		err := client.Close()
 		if err != nil {
