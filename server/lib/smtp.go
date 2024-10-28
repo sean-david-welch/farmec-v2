@@ -26,33 +26,34 @@ func NewSTMPClient(secrets *Secrets, emailAuth EmailAuth) *SMTPClientImpl {
 func (service *SMTPClientImpl) SetupSMTPClient() (*smtp.Client, error) {
 	conn, err := net.Dial("tcp", "smtp.office365.com:587")
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to establish TCP connection: %w", err)
 	}
 
 	client, err := smtp.NewClient(conn, "smtp.office365.com")
 	if err != nil {
 		err := conn.Close()
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("failed to create SMTP client: %w", err)
 		}
-		return nil, err
+		return nil, fmt.Errorf("failed to create SMTP client: %w", err)
 	}
 
 	tlsConfig := &tls.Config{ServerName: "smtp.office365.com"}
 	if err = client.StartTLS(tlsConfig); err != nil {
 		err := client.Close()
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("TLS startup failed: %w", err)
+
 		}
-		return nil, err
+		return nil, fmt.Errorf("TLS startup failed: %w", err)
 	}
 
 	if err = client.Auth(service.emailAuth); err != nil {
 		err := client.Close()
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("authentication failed: %w", err)
 		}
-		return nil, err
+		return nil, fmt.Errorf("authentication failed: %w", err)
 	}
 
 	return client, nil
