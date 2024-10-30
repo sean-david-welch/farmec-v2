@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"os"
+	"time"
 
 	_ "github.com/mattn/go-sqlite3"
 
@@ -69,7 +70,8 @@ func main() {
 	smtp := lib.NewSTMPClient(secrets, emailAuth)
 	authMiddleware := middleware.NewAuthMiddleware(firebase)
 	adminMiddleware := middleware.NewAdminMiddleware(firebase)
-	router.Use(gin.Logger(), gin.Recovery(), cors.New(corsConfig))
+	supplierMiddleware := middleware.NewSupplierCache(2 * time.Hour)
+	router.Use(gin.Logger(), gin.Recovery(), cors.New(corsConfig), supplierMiddleware())
 	router.Static("/public", "./public")
 	routes.InitRoutes(router, database, secrets, s3Client, adminMiddleware, authMiddleware, firebase, smtp)
 
