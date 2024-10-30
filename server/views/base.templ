@@ -37,7 +37,7 @@ templ Base(content templ.Component, metadata Metadata, suppliers []types.Supplie
             <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.3/dist/cdn.min.js"></script>
         </head>
         <body class="app">
-            @Header()
+            @Header(suppliers)
             @content
         </body>
     </html>
