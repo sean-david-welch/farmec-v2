@@ -19,7 +19,7 @@ func NewExhibitionHandler(service services.ExhibitionService) *ExhibitionHandler
 	return &ExhibitionHandler{service: service}
 }
 
-func (handler *ExhibitionHandler) GetExhibitions(context *gin.Context) {
+func (handler *ExhibitionHandler) ExhibitionsView(context *gin.Context) {
 	ctx := context.Request.Context()
 
 	exhibitions, err := handler.service.GetExhibitions(ctx)
@@ -36,6 +36,18 @@ func (handler *ExhibitionHandler) GetExhibitions(context *gin.Context) {
 		return
 	}
 	context.Header("Content-Type", "text/html")
+}
+
+func (handler *ExhibitionHandler) GetExhibitions(context *gin.Context) {
+	ctx := context.Request.Context()
+	exhibitions, err := handler.service.GetExhibitions(ctx)
+	if err != nil {
+		log.Printf("error getting exhibitions: %v", err)
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while getting exhibitions"})
+		return
+	}
+
+	context.JSON(http.StatusOK, exhibitions)
 }
 
 func (handler *ExhibitionHandler) CreateExhibition(context *gin.Context) {
