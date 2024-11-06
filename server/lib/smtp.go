@@ -11,7 +11,7 @@ import (
 
 type SMTPClient interface {
 	SetupSMTPClient() (*smtp.Client, error)
-	SendFormNotification(client *smtp.Client, data *types.EmailData, form string) error
+	SendFormNotification(data *types.EmailData, form string) error
 }
 
 type SMTPClientImpl struct {
@@ -21,8 +21,8 @@ type SMTPClientImpl struct {
 
 func NewSTMPClient(secrets *Secrets) *SMTPClientImpl {
 	auth := NewLoginAuth(
-		secrets.EmailUser, // Should be full email address
-		secrets.EmailPass, // Should be app password
+		secrets.EmailUser,
+		secrets.EmailPass,
 	)
 	return &SMTPClientImpl{
 		secrets:   secrets,
