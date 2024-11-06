@@ -4,11 +4,9 @@ import (
 	"database/sql"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	_ "github.com/mattn/go-sqlite3"
 	"log"
 	"os"
-	"time"
-
-	_ "github.com/mattn/go-sqlite3"
 
 	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
@@ -70,8 +68,8 @@ func main() {
 	smtp := lib.NewSTMPClient(secrets, emailAuth)
 	authMiddleware := middleware.NewAuthMiddleware(firebase)
 	adminMiddleware := middleware.NewAdminMiddleware(firebase)
-	supplierMiddleware := middleware.NewSupplierCache(2 * time.Hour)
-	router.Use(gin.Logger(), gin.Recovery(), cors.New(corsConfig), supplierMiddleware())
+	//supplierMiddleware := middleware.NewSupplierCache(2 * time.Hour)
+	router.Use(gin.Logger(), gin.Recovery(), cors.New(corsConfig))
 	router.Static("/public", "./public")
 	routes.InitRoutes(router, database, secrets, s3Client, adminMiddleware, authMiddleware, firebase, smtp)
 
