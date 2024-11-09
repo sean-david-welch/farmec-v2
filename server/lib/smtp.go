@@ -4,6 +4,7 @@ import (
 	"crypto/tls"
 	"fmt"
 	"github.com/sean-david-welch/farmec-v2/server/types"
+	"io"
 	"net"
 	"net/smtp"
 	"time"
@@ -39,12 +40,18 @@ func (service *SMTPClientImpl) SetupSMTPClient() (*smtp.Client, error) {
 
 	client, err := smtp.NewClient(conn, "smtp.office365.com")
 	if err != nil {
-		conn.Close()
+		err := conn.Close()
+		if err != nil {
+			return nil, err
+		}
 		return nil, fmt.Errorf("failed to create SMTP client: %w", err)
 	}
 
 	if err = client.Hello("localhost"); err != nil {
-		client.Close()
+		err := client.Close()
+		if err != nil {
+			return nil, err
+		}
 		return nil, fmt.Errorf("HELO failed: %w", err)
 	}
 
@@ -54,12 +61,18 @@ func (service *SMTPClientImpl) SetupSMTPClient() (*smtp.Client, error) {
 	}
 
 	if err = client.StartTLS(tlsConfig); err != nil {
-		client.Close()
+		err := client.Close()
+		if err != nil {
+			return nil, err
+		}
 		return nil, fmt.Errorf("TLS startup failed: %w", err)
 	}
 
 	if err = client.Auth(service.emailAuth); err != nil {
-		client.Close()
+		err := client.Close()
+		if err != nil {
+			return nil, err
+		}
 		return nil, fmt.Errorf("authentication failed: %w", err)
 	}
 
@@ -71,7 +84,12 @@ func (service *SMTPClientImpl) SendFormNotification(data *types.EmailData, form 
 	if err != nil {
 		return fmt.Errorf("failed to setup client: %w", err)
 	}
-	defer client.Close()
+	defer func(client *smtp.Client) {
+		err := client.Close()
+		if err != nil {
+			return
+		}
+	}(client)
 
 	msg := fmt.Sprintf("Subject: New %s Form from %s--%s\r\n\r\n%s",
 		form, data.Name, data.Email, data.Message)
@@ -88,7 +106,12 @@ func (service *SMTPClientImpl) SendFormNotification(data *types.EmailData, form 
 	if err != nil {
 		return fmt.Errorf("DATA command failed: %w", err)
 	}
-	defer wc.Close()
+	defer func(wc io.WriteCloser) {
+		err := wc.Close()
+		if err != nil {
+			return
+		}
+	}(wc)
 
 	if _, err = wc.Write([]byte(msg)); err != nil {
 		return fmt.Errorf("write failed: %w", err)
