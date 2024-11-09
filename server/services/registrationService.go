@@ -7,7 +7,6 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"log"
-	"net/smtp"
 )
 
 type RegistrationService interface {
@@ -24,17 +23,6 @@ type RegistrationServiceImpl struct {
 }
 
 func (service *RegistrationServiceImpl) sendRegistrationEmail(registration *db.MachineRegistration) {
-	client, err := service.smtpClient.SetupSMTPClient()
-	if err != nil {
-		log.Printf("Failed to setup SMTP client: %v", err)
-		return
-	}
-	defer func(client *smtp.Client) {
-		if err := client.Close(); err != nil {
-			log.Printf("Failed to close SMTP client: %v", err)
-		}
-	}(client)
-
 	data := &types.EmailData{
 		Name:    registration.OwnerName,
 		Email:   registration.DealerName,
