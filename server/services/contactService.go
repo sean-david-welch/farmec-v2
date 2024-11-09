@@ -33,7 +33,7 @@ func (service *ContactServiceImpl) SendContactEmail(data *types.EmailData) error
 		}
 	}(client)
 
-	if err := service.smtpClient.SendFormNotification(client, data, "Contact"); err != nil {
+	if err := service.smtpClient.SendFormNotification(data, "Contact"); err != nil {
 		return err
 	}
 	return nil

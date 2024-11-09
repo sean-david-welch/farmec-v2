@@ -41,7 +41,7 @@ func (service *RegistrationServiceImpl) sendRegistrationEmail(registration *db.M
 		Message: registration.MachineModel,
 	}
 
-	if err := service.smtpClient.SendFormNotification(client, data, "Machine Registration"); err != nil {
+	if err := service.smtpClient.SendFormNotification(data, "Machine Registration"); err != nil {
 		log.Printf("Failed to send registration email: %v", err)
 		return
 	}

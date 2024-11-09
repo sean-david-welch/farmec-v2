@@ -45,7 +45,7 @@ func (service *WarrantyServiceImpl) sendWarrantyEmail(warranty *db.WarrantyClaim
 		Message: warranty.MachineModel,
 	}
 
-	if err := service.smtpClient.SendFormNotification(client, data, "Warranty"); err != nil {
+	if err := service.smtpClient.SendFormNotification(data, "Warranty"); err != nil {
 		log.Printf("Failed to send warranty email: %v", err)
 		return
 	}
