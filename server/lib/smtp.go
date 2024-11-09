@@ -20,7 +20,7 @@ type SMTPClientImpl struct {
 }
 
 func NewSTMPClient(secrets *Secrets) *SMTPClientImpl {
-	auth := NewLoginAuth(
+	auth := NewOffice365Auth(
 		secrets.EmailUser,
 		secrets.EmailPass,
 	)
