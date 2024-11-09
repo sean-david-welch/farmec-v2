@@ -54,7 +54,7 @@ func TestSMTPAuth(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			auth := lib.NewLoginAuth(tt.user, tt.pass)
+			auth := lib.NewOffice365Auth(tt.user, tt.pass)
 
 			// Connect to the SMTP Server
 			c, err := smtp.Dial("smtp.office365.com:587")
