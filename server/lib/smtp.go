@@ -16,7 +16,7 @@ type SMTPClient interface {
 
 type SMTPClientImpl struct {
 	secrets   *Secrets
-	emailAuth EmailAuth
+	emailAuth smtp.Auth
 }
 
 func NewSTMPClient(secrets *Secrets) *SMTPClientImpl {
@@ -24,6 +24,7 @@ func NewSTMPClient(secrets *Secrets) *SMTPClientImpl {
 		secrets.EmailUser,
 		secrets.EmailPass,
 	)
+
 	return &SMTPClientImpl{
 		secrets:   secrets,
 		emailAuth: auth,
@@ -38,36 +39,27 @@ func (service *SMTPClientImpl) SetupSMTPClient() (*smtp.Client, error) {
 
 	client, err := smtp.NewClient(conn, "smtp.office365.com")
 	if err != nil {
-		err := conn.Close()
-		if err != nil {
-			return nil, fmt.Errorf("failed to create SMTP client: %w", err)
-		}
+		conn.Close()
 		return nil, fmt.Errorf("failed to create SMTP client: %w", err)
 	}
 
 	if err = client.Hello("localhost"); err != nil {
-		err := client.Close()
-		if err != nil {
-			return nil, err
-		}
+		client.Close()
 		return nil, fmt.Errorf("HELO failed: %w", err)
 	}
 
-	tlsConfig := &tls.Config{ServerName: "smtp.office365.com", MinVersion: tls.VersionTLS12}
-	if err = client.StartTLS(tlsConfig); err != nil {
-		err := client.Close()
-		if err != nil {
-			return nil, fmt.Errorf("TLS startup failed: %w", err)
+	tlsConfig := &tls.Config{
+		ServerName: "smtp.office365.com",
+		MinVersion: tls.VersionTLS12,
+	}
 
-		}
+	if err = client.StartTLS(tlsConfig); err != nil {
+		client.Close()
 		return nil, fmt.Errorf("TLS startup failed: %w", err)
 	}
 
 	if err = client.Auth(service.emailAuth); err != nil {
-		err := client.Close()
-		if err != nil {
-			return nil, fmt.Errorf("authentication failed: %w", err)
-		}
+		client.Close()
 		return nil, fmt.Errorf("authentication failed: %w", err)
 	}
 
@@ -75,17 +67,11 @@ func (service *SMTPClientImpl) SetupSMTPClient() (*smtp.Client, error) {
 }
 
 func (service *SMTPClientImpl) SendFormNotification(data *types.EmailData, form string) error {
-	// Create new client for each send operation
 	client, err := service.SetupSMTPClient()
 	if err != nil {
 		return fmt.Errorf("failed to setup client: %w", err)
 	}
-	defer func(client *smtp.Client) {
-		err := client.Close()
-		if err != nil {
-			return
-		}
-	}(client)
+	defer client.Close()
 
 	msg := fmt.Sprintf("Subject: New %s Form from %s--%s\r\n\r\n%s",
 		form, data.Name, data.Email, data.Message)
@@ -102,19 +88,10 @@ func (service *SMTPClientImpl) SendFormNotification(data *types.EmailData, form 
 	if err != nil {
 		return fmt.Errorf("DATA command failed: %w", err)
 	}
+	defer wc.Close()
 
-	_, err = wc.Write([]byte(msg))
-	if err != nil {
-		err := wc.Close()
-		if err != nil {
-			return err
-		}
+	if _, err = wc.Write([]byte(msg)); err != nil {
 		return fmt.Errorf("write failed: %w", err)
-	}
-
-	err = wc.Close()
-	if err != nil {
-		return fmt.Errorf("close failed: %w", err)
 	}
 
 	return nil
