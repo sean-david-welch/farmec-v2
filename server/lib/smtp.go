@@ -24,12 +24,12 @@ func NewSTMPClient(secrets *Secrets, emailAuth EmailAuth) *SMTPClientImpl {
 }
 
 func (service *SMTPClientImpl) SetupSMTPClient() (*smtp.Client, error) {
-	conn, err := net.Dial("tcp", "smtp.office365.com:587")
+	conn, err := net.Dial("tcp", "smtp-legacy.office365.com:587")
 	if err != nil {
 		return nil, err
 	}
 
-	client, err := smtp.NewClient(conn, "smtp.office365.com")
+	client, err := smtp.NewClient(conn, "smtp-legacy.office365.com")
 	if err != nil {
 		err := conn.Close()
 		if err != nil {
@@ -38,7 +38,7 @@ func (service *SMTPClientImpl) SetupSMTPClient() (*smtp.Client, error) {
 		return nil, err
 	}
 
-	tlsConfig := &tls.Config{ServerName: "smtp.office365.com"}
+	tlsConfig := &tls.Config{ServerName: "smtp-legacy.office365.com"}
 	if err = client.StartTLS(tlsConfig); err != nil {
 		err := client.Close()
 		if err != nil {
