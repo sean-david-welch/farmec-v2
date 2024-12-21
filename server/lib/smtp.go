@@ -1,12 +1,12 @@
 package lib
 
 import (
-	"crypto/tls"
 	"fmt"
 	"github.com/sean-david-welch/farmec-v2/server/types"
-	"io"
-	"net"
+	"log"
+	"net/mail"
 	"net/smtp"
+	"strings"
 )
 
 type SMTPClient interface {
@@ -23,79 +23,50 @@ func NewSTMPClient(secrets *Secrets, emailAuth EmailAuth) *SMTPClientImpl {
 	return &SMTPClientImpl{secrets: secrets, emailAuth: emailAuth}
 }
 
-func (service *SMTPClientImpl) SetupSMTPClient() (*smtp.Client, error) {
-	host := "smtp.office365.com"
-	port := 587
-	addr := fmt.Sprintf("%s:%d", host, port)
+func (service *SMTPClientImpl) SendEmail(to []string, subject, body string) error {
+	smtpHost := "smtp.office365.com"
+	smtpPort := 587
 
-	// Create auth mechanism
-	auth := smtp.PlainAuth(
-		"",                        // Identity (can be empty)
-		service.secrets.EmailUser, // Username (full email)
-		service.secrets.EmailPass, // App Password
-		host,                      // Host for auth
+	log.Printf("Attempting to send email via %s:%d", smtpHost, smtpPort)
+	log.Printf("From: %s", service.secrets.EmailUser)
+	log.Printf("To: %s", strings.Join(to, ";"))
+	log.Printf("Subject: %s", subject)
+
+	// Message composition
+	from := mail.Address{Name: "Farmec", Address: service.secrets.EmailUser}
+	message := strings.Builder{}
+	message.WriteString(fmt.Sprintf("From: %s\r\n", from.String()))
+	message.WriteString(fmt.Sprintf("To: %s\r\n", strings.Join(to, ";")))
+	message.WriteString(fmt.Sprintf("Subject: %s\r\n", subject))
+	message.WriteString("\r\n")
+	message.WriteString(body)
+
+	// Use CRAM-MD5 auth instead of PlainAuth
+	auth := smtp.CRAMMD5Auth(service.secrets.EmailUser, service.secrets.EmailPass)
+
+	err := smtp.SendMail(
+		fmt.Sprintf("%s:%d", smtpHost, smtpPort),
+		auth,
+		service.secrets.EmailUser,
+		to,
+		[]byte(message.String()),
 	)
 
-	// Connect first
-	c, err := net.Dial("tcp", addr)
 	if err != nil {
-		return nil, fmt.Errorf("dial failed: %v", err)
+		log.Printf("Failed to send email: %v", err)
+		return fmt.Errorf("failed to send email: %v", err)
 	}
 
-	client, err := smtp.NewClient(c, host)
-	if err != nil {
-		return nil, fmt.Errorf("client creation failed: %v", err)
-	}
-
-	// EHLO/HELO - use your domain
-	if err = client.Hello("farmec.ie"); err != nil {
-		return nil, fmt.Errorf("HELO failed: %v", err)
-	}
-
-	// Get server capabilities
-	if ok, _ := client.Extension("STARTTLS"); ok {
-		if err = client.StartTLS(&tls.Config{
-			ServerName: host,
-			MinVersion: tls.VersionTLS12,
-		}); err != nil {
-			return nil, fmt.Errorf("StartTLS failed: %v", err)
-		}
-	}
-
-	// Get authentication mechanisms
-	if ok, _ := client.Extension("AUTH"); ok {
-		if err = client.Auth(auth); err != nil {
-			return nil, fmt.Errorf("auth failed: %v", err)
-		}
-	}
-
-	return client, nil
+	log.Printf("Email sent successfully")
+	return nil
 }
 
-func (service *SMTPClientImpl) SendFormNotification(client *smtp.Client, data *types.EmailData, form string) error {
-	msg := fmt.Sprintf("Subject: New %s Form from %s--%s\r\n\r\n%s", form, data.Name, data.Email, data.Message)
+func (service *SMTPClientImpl) SendFormNotification(data *types.EmailData, form string) error {
+	log.Printf("Sending form notification for %s form", form)
 
-	if err := client.Mail(service.secrets.EmailUser); err != nil {
-		return err
-	}
-	if err := client.Rcpt(service.secrets.EmailUser); err != nil {
-		return err
-	}
+	to := []string{service.secrets.EmailUser}
+	subject := fmt.Sprintf("New %s Form from %s", form, data.Name)
+	body := fmt.Sprintf("From: %s\nEmail: %s\n\nMessage:\n%s", data.Name, data.Email, data.Message)
 
-	wc, err := client.Data()
-	if err != nil {
-		return err
-	}
-	defer func(wc io.WriteCloser) {
-		err := wc.Close()
-		if err != nil {
-			return
-		}
-	}(wc)
-
-	if _, err := wc.Write([]byte(msg)); err != nil {
-		return err
-	}
-
-	return nil
+	return service.SendEmail(to, subject, body)
 }
