@@ -24,10 +24,10 @@ func (service *SMTPClientImpl) SendEmail(to []string, subject, body string) erro
 	smtpHost := "smtp.office365.com"
 	smtpPort := 587
 
-	fmt.Printf("Attempting to send email via %s:%d", smtpHost, smtpPort)
-	fmt.Printf("From: %s", service.secrets.EmailUser)
-	fmt.Printf("To: %s", strings.Join(to, ";"))
-	fmt.Printf("Subject: %s", subject)
+	fmt.Printf("Attempting to send email via %s:%d\n", smtpHost, smtpPort)
+	fmt.Printf("From: %s\n", service.secrets.EmailUser)
+	fmt.Printf("To: %s\n", strings.Join(to, ";"))
+	fmt.Printf("Subject: %s\n", subject)
 
 	// Message composition
 	from := mail.Address{Name: "Farmec", Address: service.secrets.EmailUser}
@@ -38,8 +38,13 @@ func (service *SMTPClientImpl) SendEmail(to []string, subject, body string) erro
 	message.WriteString("\r\n")
 	message.WriteString(body)
 
-	// Use CRAM-MD5 auth instead of PlainAuth
-	auth := smtp.CRAMMD5Auth(service.secrets.EmailUser, service.secrets.EmailPass)
+	// Use PlainAuth for Office 365
+	auth := smtp.PlainAuth(
+		"",                        // Identity (use empty string for no identity)
+		service.secrets.EmailUser, // Email address
+		service.secrets.EmailPass, // Email password (or app password)
+		smtpHost,                  // SMTP server
+	)
 
 	err := smtp.SendMail(
 		fmt.Sprintf("%s:%d", smtpHost, smtpPort),
@@ -48,18 +53,17 @@ func (service *SMTPClientImpl) SendEmail(to []string, subject, body string) erro
 		to,
 		[]byte(message.String()),
 	)
-
 	if err != nil {
-		fmt.Printf("Failed to send email: %v", err)
+		fmt.Printf("Failed to send email. Error: %v\n", err)
 		return fmt.Errorf("failed to send email: %v", err)
 	}
 
-	fmt.Printf("Email sent successfully")
+	fmt.Println("Email sent successfully")
 	return nil
 }
 
 func (service *SMTPClientImpl) SendFormNotification(data *types.EmailData, form string) error {
-	fmt.Printf("Sending form notification for %s form", form)
+	fmt.Printf("Sending form notification for %s form\n", form)
 
 	to := []string{service.secrets.EmailUser}
 	subject := fmt.Sprintf("New %s Form from %s", form, data.Name)
