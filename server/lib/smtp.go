@@ -9,17 +9,15 @@ import (
 )
 
 type SMTPClient interface {
-	SetupSMTPClient() (*smtp.Client, error)
-	SendFormNotification(client *smtp.Client, data *types.EmailData, form string) error
+	SendFormNotification(data *types.EmailData, form string) error
 }
 
 type SMTPClientImpl struct {
-	secrets   *Secrets
-	emailAuth EmailAuth
+	secrets *Secrets
 }
 
-func NewSTMPClient(secrets *Secrets, emailAuth EmailAuth) *SMTPClientImpl {
-	return &SMTPClientImpl{secrets: secrets, emailAuth: emailAuth}
+func NewSTMPClient(secrets *Secrets) *SMTPClientImpl {
+	return &SMTPClientImpl{secrets: secrets}
 }
 
 func (service *SMTPClientImpl) SendEmail(to []string, subject, body string) error {

@@ -65,8 +65,7 @@ func main() {
 	corsConfig.AllowCredentials = true
 
 	router := gin.Default()
-	emailAuth := lib.NewLoginAuth(secrets.EmailUser, secrets.EmailPass)
-	smtp := lib.NewSTMPClient(secrets, emailAuth)
+	smtp := lib.NewSTMPClient(secrets)
 	authMiddleware := middleware.NewAuthMiddleware(firebase)
 	adminMiddleware := middleware.NewAdminMiddleware(firebase)
 	router.Use(gin.Logger(), gin.Recovery(), cors.New(corsConfig))
