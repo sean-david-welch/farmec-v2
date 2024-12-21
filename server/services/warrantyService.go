@@ -7,7 +7,6 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"log"
-	"net/smtp"
 )
 
 type WarrantyService interface {
@@ -28,24 +27,12 @@ func NewWarrantyService(repo repository.WarrantyRepo, smtpClient lib.SMTPClient)
 }
 
 func (service *WarrantyServiceImpl) sendWarrantyEmail(warranty *db.WarrantyClaim) {
-	client, err := service.smtpClient.SetupSMTPClient()
-	if err != nil {
-		log.Printf("Failed to setup SMTP client: %v", err)
-		return
-	}
-	defer func(client *smtp.Client) {
-		if err := client.Close(); err != nil {
-			log.Printf("Failed to close SMTP client: %v", err)
-		}
-	}(client)
-
 	data := &types.EmailData{
 		Name:    warranty.OwnerName,
 		Email:   warranty.Dealer,
 		Message: warranty.MachineModel,
 	}
-
-	if err := service.smtpClient.SendFormNotification(client, data, "Warranty"); err != nil {
+	if err := service.smtpClient.SendFormNotification(data, "Warranty"); err != nil {
 		log.Printf("Failed to send warranty email: %v", err)
 		return
 	}
