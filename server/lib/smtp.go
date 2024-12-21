@@ -3,7 +3,6 @@ package lib
 import (
 	"fmt"
 	"github.com/sean-david-welch/farmec-v2/server/types"
-	"log"
 	"net/mail"
 	"net/smtp"
 	"strings"
@@ -27,10 +26,10 @@ func (service *SMTPClientImpl) SendEmail(to []string, subject, body string) erro
 	smtpHost := "smtp.office365.com"
 	smtpPort := 587
 
-	log.Printf("Attempting to send email via %s:%d", smtpHost, smtpPort)
-	log.Printf("From: %s", service.secrets.EmailUser)
-	log.Printf("To: %s", strings.Join(to, ";"))
-	log.Printf("Subject: %s", subject)
+	fmt.Printf("Attempting to send email via %s:%d", smtpHost, smtpPort)
+	fmt.Printf("From: %s", service.secrets.EmailUser)
+	fmt.Printf("To: %s", strings.Join(to, ";"))
+	fmt.Printf("Subject: %s", subject)
 
 	// Message composition
 	from := mail.Address{Name: "Farmec", Address: service.secrets.EmailUser}
@@ -53,16 +52,16 @@ func (service *SMTPClientImpl) SendEmail(to []string, subject, body string) erro
 	)
 
 	if err != nil {
-		log.Printf("Failed to send email: %v", err)
+		fmt.Printf("Failed to send email: %v", err)
 		return fmt.Errorf("failed to send email: %v", err)
 	}
 
-	log.Printf("Email sent successfully")
+	fmt.Printf("Email sent successfully")
 	return nil
 }
 
 func (service *SMTPClientImpl) SendFormNotification(data *types.EmailData, form string) error {
-	log.Printf("Sending form notification for %s form", form)
+	fmt.Printf("Sending form notification for %s form", form)
 
 	to := []string{service.secrets.EmailUser}
 	subject := fmt.Sprintf("New %s Form from %s", form, data.Name)
