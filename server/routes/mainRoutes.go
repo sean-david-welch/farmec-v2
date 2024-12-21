@@ -9,7 +9,10 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
 )
 
-func InitRoutes(router *gin.Engine, database *sql.DB, secrets *lib.Secrets, s3Client lib.S3Client, adminMiddleware *middleware.AdminMiddleware, authMiddleware *middleware.AuthMiddleware, firebase *lib.Firebase, smtp lib.SMTPClient) {
+func InitRoutes(
+	router *gin.Engine, database *sql.DB, secrets *lib.Secrets, s3Client lib.S3Client, adminMiddleware *middleware.AdminMiddleware,
+	authMiddleware *middleware.AuthMiddleware, firebase *lib.Firebase, smtp lib.SMTPClient,
+) {
 	router.GET("/", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "Welcome to Farmec Ireland's API Service.",
