@@ -24,35 +24,49 @@ func NewSTMPClient(secrets *Secrets, emailAuth EmailAuth) *SMTPClientImpl {
 }
 
 func (service *SMTPClientImpl) SetupSMTPClient() (*smtp.Client, error) {
-	conn, err := net.Dial("tcp", "smtp-legacy.office365.com:587")
+	host := "smtp.office365.com"
+	port := 587
+	addr := fmt.Sprintf("%s:%d", host, port)
+
+	// Create auth mechanism
+	auth := smtp.PlainAuth(
+		"",                        // Identity (can be empty)
+		service.secrets.EmailUser, // Username (full email)
+		service.secrets.EmailPass, // App Password
+		host,                      // Host for auth
+	)
+
+	// Connect first
+	c, err := net.Dial("tcp", addr)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("dial failed: %v", err)
 	}
 
-	client, err := smtp.NewClient(conn, "smtp-legacy.office365.com")
+	client, err := smtp.NewClient(c, host)
 	if err != nil {
-		err := conn.Close()
-		if err != nil {
-			return nil, err
-		}
-		return nil, err
+		return nil, fmt.Errorf("client creation failed: %v", err)
 	}
 
-	tlsConfig := &tls.Config{ServerName: "smtp-legacy.office365.com"}
-	if err = client.StartTLS(tlsConfig); err != nil {
-		err := client.Close()
-		if err != nil {
-			return nil, err
-		}
-		return nil, err
+	// EHLO/HELO - use your domain
+	if err = client.Hello("farmec.ie"); err != nil {
+		return nil, fmt.Errorf("HELO failed: %v", err)
 	}
 
-	if err = client.Auth(service.emailAuth); err != nil {
-		err := client.Close()
-		if err != nil {
-			return nil, err
+	// Get server capabilities
+	if ok, _ := client.Extension("STARTTLS"); ok {
+		if err = client.StartTLS(&tls.Config{
+			ServerName: host,
+			MinVersion: tls.VersionTLS12,
+		}); err != nil {
+			return nil, fmt.Errorf("StartTLS failed: %v", err)
 		}
-		return nil, err
+	}
+
+	// Get authentication mechanisms
+	if ok, _ := client.Extension("AUTH"); ok {
+		if err = client.Auth(auth); err != nil {
+			return nil, fmt.Errorf("auth failed: %v", err)
+		}
 	}
 
 	return client, nil
