@@ -2,7 +2,7 @@ package lib
 
 import (
 	"fmt"
-	"github.co
+	"github.com/sean-david-welch/farmec-v2/server/types"
 	"net/mail"
 	"net/smtp"
 	"strings"
