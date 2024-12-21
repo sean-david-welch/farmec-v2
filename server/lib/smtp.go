@@ -33,12 +33,12 @@ func NewSTMPClient(secrets *Secrets) *SMTPClientImpl {
 }
 
 func (service *SMTPClientImpl) SetupSMTPClient() (*smtp.Client, error) {
-	conn, err := net.DialTimeout("tcp", "smtp.office365.com:587", 10*time.Second)
+	conn, err := net.DialTimeout("tcp", "smtp-legacy.office365.com:587", 10*time.Second)
 	if err != nil {
 		return nil, fmt.Errorf("failed to establish TCP connection: %w", err)
 	}
 
-	client, err := smtp.NewClient(conn, "smtp.office365.com")
+	client, err := smtp.NewClient(conn, "smtp-legacy.office365.com")
 	if err != nil {
 		err := conn.Close()
 		if err != nil {
@@ -56,7 +56,7 @@ func (service *SMTPClientImpl) SetupSMTPClient() (*smtp.Client, error) {
 	}
 
 	tlsConfig := &tls.Config{
-		ServerName: "smtp.office365.com",
+		ServerName: "smtp-legacy.office365.com",
 		MinVersion: tls.VersionTLS12,
 	}
 
