@@ -10,10 +10,10 @@ type ContactService interface {
 }
 
 type ContactServiceImpl struct {
-	smtpClient lib.SMTPClientImpl
+	smtpClient *lib.SMTPClientImpl
 }
 
-func NewContactService(smtpClient lib.SMTPClientImpl) *ContactServiceImpl {
+func NewContactService(smtpClient *lib.SMTPClientImpl) *ContactServiceImpl {
 	return &ContactServiceImpl{
 		smtpClient: smtpClient,
 	}

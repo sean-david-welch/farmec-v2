@@ -7,7 +7,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/services"
 )
 
-func InitContact(router *gin.Engine, smtp lib.SMTPClient) {
+func InitContact(router *gin.Engine, smtp *lib.SMTPClientImpl) {
 	service := services.NewContactService(smtp)
 	handler := handlers.NewContactHandler(service)
 

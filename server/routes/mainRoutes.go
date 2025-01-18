@@ -11,7 +11,7 @@ import (
 
 func InitRoutes(
 	router *gin.Engine, database *sql.DB, secrets *lib.Secrets, s3Client lib.S3Client, adminMiddleware *middleware.AdminMiddleware,
-	authMiddleware *middleware.AuthMiddleware, firebase *lib.Firebase, smtp lib.SMTPClient,
+	authMiddleware *middleware.AuthMiddleware, firebase *lib.Firebase, smtp *lib.SMTPClientImpl,
 ) {
 	router.GET("/", func(c *gin.Context) {
 		c.JSON(200, gin.H{
