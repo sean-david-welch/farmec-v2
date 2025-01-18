@@ -32,5 +32,5 @@ func (handler *ContactHandler) SendEmail(context *gin.Context) {
 		}
 	}()
 
-	context.JSON(http.StatusOK, gin.H{"message": "email sent successfully"})
+	context.JSON(http.StatusOK, gin.H{"message": "email was sent successfully"})
 }
