@@ -64,8 +64,7 @@ func main() {
 	corsConfig.AllowCredentials = true
 
 	router := gin.Default()
-	emailAuth := lib.NewLoginAuth(secrets.EmailUser, secrets.EmailPass)
-	smtp := lib.NewSTMPClient(secrets, emailAuth)
+	smtp := lib.NewSTMPClient(secrets)
 	authMiddleware := middleware.NewAuthMiddleware(firebase)
 	adminMiddleware := middleware.NewAdminMiddleware(firebase)
 	//supplierMiddleware := middleware.NewSupplierCache(2 * time.Hour)

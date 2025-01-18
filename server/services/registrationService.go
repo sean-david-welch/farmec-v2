@@ -7,7 +7,6 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"log"
-	"net/smtp"
 )
 
 type RegistrationService interface {
@@ -19,35 +18,24 @@ type RegistrationService interface {
 }
 
 type RegistrationServiceImpl struct {
-	smtpClient lib.SMTPClient
+	smtpClient lib.SMTPClientImpl
 	repo       repository.RegistrationRepo
 }
 
 func (service *RegistrationServiceImpl) sendRegistrationEmail(registration *db.MachineRegistration) {
-	client, err := service.smtpClient.SetupSMTPClient()
-	if err != nil {
-		log.Printf("Failed to setup SMTP client: %v", err)
-		return
-	}
-	defer func(client *smtp.Client) {
-		if err := client.Close(); err != nil {
-			log.Printf("Failed to close SMTP client: %v", err)
-		}
-	}(client)
-
 	data := &types.EmailData{
 		Name:    registration.OwnerName,
 		Email:   registration.DealerName,
 		Message: registration.MachineModel,
 	}
 
-	if err := service.smtpClient.SendFormNotification(client, data, "Machine Registration"); err != nil {
+	if err := service.smtpClient.SendFormNotification(data, "Machine Registration"); err != nil {
 		log.Printf("Failed to send registration email: %v", err)
 		return
 	}
 }
 
-func NewRegistrationService(repo repository.RegistrationRepo, smtpClient lib.SMTPClient) *RegistrationServiceImpl {
+func NewRegistrationService(repo repository.RegistrationRepo, smtpClient lib.SMTPClientImpl) *RegistrationServiceImpl {
 	return &RegistrationServiceImpl{repo: repo, smtpClient: smtpClient}
 }
 

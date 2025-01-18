@@ -1,87 +1,62 @@
 package lib
 
 import (
-	"crypto/tls"
 	"fmt"
 	"github.com/sean-david-welch/farmec-v2/server/types"
-	"io"
-	"net"
+	"net/mail"
 	"net/smtp"
+	"strings"
 )
 
-type SMTPClient interface {
-	SetupSMTPClient() (*smtp.Client, error)
-	SendFormNotification(client *smtp.Client, data *types.EmailData, form string) error
-}
-
 type SMTPClientImpl struct {
-	secrets   *Secrets
-	emailAuth EmailAuth
+	secrets *Secrets
 }
 
-func NewSTMPClient(secrets *Secrets, emailAuth EmailAuth) *SMTPClientImpl {
-	return &SMTPClientImpl{secrets: secrets, emailAuth: emailAuth}
+func NewSTMPClient(secrets *Secrets) *SMTPClientImpl {
+	return &SMTPClientImpl{secrets: secrets}
 }
 
-func (service *SMTPClientImpl) SetupSMTPClient() (*smtp.Client, error) {
-	conn, err := net.Dial("tcp", "smtp.office365.com:587")
+func (service *SMTPClientImpl) SendEmail(to []string, subject, body string) error {
+	smtpHost := "smtp.office365.com"
+	smtpPort := 587
+
+	// Message composition
+	from := mail.Address{Name: "Farmec", Address: service.secrets.EmailUser}
+	message := strings.Builder{}
+	message.WriteString(fmt.Sprintf("From: %s\r\n", from.String()))
+	message.WriteString(fmt.Sprintf("To: %s\r\n", strings.Join(to, ", "))) // Changed separator to comma+space
+	message.WriteString(fmt.Sprintf("Subject: %s\r\n", subject))
+	message.WriteString("MIME-Version: 1.0\r\n")
+	message.WriteString("Content-Type: text/plain; charset=UTF-8\r\n")
+	message.WriteString("\r\n")
+	message.WriteString(body)
+
+	// Use PlainAuth with App Password
+	auth := smtp.PlainAuth(
+		"",                        // Identity
+		service.secrets.EmailUser, // Username (full email address)
+		service.secrets.EmailPass, // App Password (NOT your regular password)
+		smtpHost,
+	)
+
+	err := smtp.SendMail(
+		fmt.Sprintf("%s:%d", smtpHost, smtpPort),
+		auth,
+		service.secrets.EmailUser,
+		to,
+		[]byte(message.String()),
+	)
 	if err != nil {
-		return nil, err
-	}
-
-	client, err := smtp.NewClient(conn, "smtp.office365.com")
-	if err != nil {
-		err := conn.Close()
-		if err != nil {
-			return nil, err
-		}
-		return nil, err
-	}
-
-	tlsConfig := &tls.Config{ServerName: "smtp.office365.com"}
-	if err = client.StartTLS(tlsConfig); err != nil {
-		err := client.Close()
-		if err != nil {
-			return nil, err
-		}
-		return nil, err
-	}
-
-	if err = client.Auth(service.emailAuth); err != nil {
-		err := client.Close()
-		if err != nil {
-			return nil, err
-		}
-		return nil, err
-	}
-
-	return client, nil
-}
-
-func (service *SMTPClientImpl) SendFormNotification(client *smtp.Client, data *types.EmailData, form string) error {
-	msg := fmt.Sprintf("Subject: New %s Form from %s--%s\r\n\r\n%s", form, data.Name, data.Email, data.Message)
-
-	if err := client.Mail(service.secrets.EmailUser); err != nil {
-		return err
-	}
-	if err := client.Rcpt(service.secrets.EmailUser); err != nil {
-		return err
-	}
-
-	wc, err := client.Data()
-	if err != nil {
-		return err
-	}
-	defer func(wc io.WriteCloser) {
-		err := wc.Close()
-		if err != nil {
-			return
-		}
-	}(wc)
-
-	if _, err := wc.Write([]byte(msg)); err != nil {
-		return err
+		return fmt.Errorf("failed to send email: %v", err)
 	}
 
 	return nil
+}
+
+func (service *SMTPClientImpl) SendFormNotification(data *types.EmailData, form string) error {
+	to := []string{service.secrets.EmailUser}
+	subject := fmt.Sprintf("New %s Form from %s", form, data.Name)
+	body := fmt.Sprintf("From: %s\nEmail: %s\n\nMessage:\n%s", data.Name, data.Email, data.Message)
+
+	return service.SendEmail(to, subject, body)
 }
