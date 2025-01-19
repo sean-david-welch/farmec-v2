@@ -52,7 +52,7 @@ func InitRoutes(
 	InitializeEmployee(router, database, s3Client, adminMiddleware)
 
 	// Blog Module Resources
-	InitExhibitions(router, database, adminMiddleware)
+	InitExhibitions(router, database, adminMiddleware, supplierCache)
 	InitBlogs(router, database, s3Client, adminMiddleware)
 
 	// Misc Resources
