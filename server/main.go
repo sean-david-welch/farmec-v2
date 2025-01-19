@@ -10,6 +10,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/routes"
 	"log"
 	"os"
+	"time"
 )
 
 func main() {
@@ -66,10 +67,10 @@ func main() {
 	smtp := lib.NewSTMPClient(secrets)
 	authMiddleware := middleware.NewAuthMiddleware(firebase)
 	adminMiddleware := middleware.NewAdminMiddleware(firebase)
-	//supplierMiddleware := middleware.NewSupplierCache(2 * time.Hour)
+	supplierMiddleware := middleware.NewSupplierCache(2 * time.Hour)
 	router.Use(gin.Logger(), gin.Recovery(), cors.New(corsConfig))
 	router.Static("/public", "./public")
-	routes.InitRoutes(router, database, secrets, s3Client, adminMiddleware, authMiddleware, firebase, smtp)
+	routes.InitRoutes(router, database, secrets, s3Client, adminMiddleware, authMiddleware, firebase, smtp, supplierMiddleware)
 
 	if env == "production" {
 		gin.SetMode(gin.ReleaseMode)
