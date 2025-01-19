@@ -10,10 +10,10 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/services"
 )
 
-func InitExhibitions(router *gin.Engine, database *sql.DB, adminMiddleware *middleware.AdminMiddleware) {
+func InitExhibitions(router *gin.Engine, database *sql.DB, adminMiddleware *middleware.AdminMiddleware, supplierCache *middleware.SupplierCache) {
 	repo := repository.NewExhibitionRepo(database)
 	service := services.NewExhibitionService(repo)
-	handler := handlers.NewExhibitionHandler(service)
+	handler := handlers.NewExhibitionHandler(service, supplierCache)
 
 	ExhibitionRoutes(router, handler, adminMiddleware)
 }
