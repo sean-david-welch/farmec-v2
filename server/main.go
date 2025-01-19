@@ -5,12 +5,11 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/mattn/go-sqlite3"
-	"log"
-	"os"
-
 	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
 	"github.com/sean-david-welch/farmec-v2/server/routes"
+	"log"
+	"os"
 )
 
 func main() {
