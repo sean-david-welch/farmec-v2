@@ -2,7 +2,7 @@ package views
 
 import "github.com/sean-david-welch/farmec-v2/server/types"
 
-templ exhibitionsContent(isAdmin bool, exhibitions []types.Exhibition, isLoading, isError bool) {
+templ exhibitionsContent(isAdmin bool, isLoading bool, isError bool, exhibitions []types.Exhibition) {
     <section id="exhibitions">
         <h1 class="sectionHeading">Exhibitions:</h1>
         <h1 class="subHeading">Check out upcoming events related to Farmec</h1>
@@ -19,9 +19,9 @@ templ exhibitionsContent(isAdmin bool, exhibitions []types.Exhibition, isLoading
     </section>
 }
 
-templ Exhibitions(isAdmin bool, exhibitions []types.Exhibition, isLoading, isError bool) {
+templ Exhibitions(isAdmin bool, isLoading bool, isError bool, exhibitions []types.Exhibition, suppliers []types.Supplier) {
     @Base(
-        exhibitionsContent(isAdmin, exhibitions, isLoading, isError),
+        exhibitionsContent(isAdmin, isLoading, isError, exhibitions),
         Metadata{
             Title: "Farmec Ireland - Exhibitions",
             Description: "Check out the upcoming exhibitions where Farmec will showcase its latest machinery. Don't miss the chance to see our products in action.",
@@ -34,5 +34,6 @@ templ Exhibitions(isAdmin bool, exhibitions []types.Exhibition, isLoading, isErr
             TwitterImage: "https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp",
             CanonicalUrl: "https://www.farmec.ie/exhibitions",
         },
+        suppliers,
     )
 }

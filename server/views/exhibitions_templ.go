@@ -10,7 +10,7 @@ import templruntime "github.com/a-h/templ/runtime"
 
 import "github.com/sean-david-welch/farmec-v2/server/types"
 
-func exhibitionsContent(isAdmin bool, exhibitions []types.Exhibition, isLoading, isError bool) templ.Component {
+func exhibitionsContent(isAdmin bool, isLoading bool, isError bool, exhibitions []types.Exhibition) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -101,7 +101,7 @@ func exhibitionsContent(isAdmin bool, exhibitions []types.Exhibition, isLoading,
 	})
 }
 
-func Exhibitions(isAdmin bool, exhibitions []types.Exhibition, isLoading, isError bool) templ.Component {
+func Exhibitions(isAdmin bool, isLoading bool, isError bool, exhibitions []types.Exhibition, suppliers []types.Supplier) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -123,7 +123,7 @@ func Exhibitions(isAdmin bool, exhibitions []types.Exhibition, isLoading, isErro
 		}
 		ctx = templ.ClearChildren(ctx)
 		templ_7745c5c3_Err = Base(
-			exhibitionsContent(isAdmin, exhibitions, isLoading, isError),
+			exhibitionsContent(isAdmin, isLoading, isError, exhibitions),
 			Metadata{
 				Title:         "Farmec Ireland - Exhibitions",
 				Description:   "Check out the upcoming exhibitions where Farmec will showcase its latest machinery. Don't miss the chance to see our products in action.",
@@ -136,6 +136,7 @@ func Exhibitions(isAdmin bool, exhibitions []types.Exhibition, isLoading, isErro
 				TwitterImage:  "https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp",
 				CanonicalUrl:  "https://www.farmec.ie/exhibitions",
 			},
+			suppliers,
 		).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
