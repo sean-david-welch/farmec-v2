@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"github.com/sean-david-welch/farmec-v2/server/lib"
+	"github.com/sean-david-welch/farmec-v2/server/middleware"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"github.com/sean-david-welch/farmec-v2/server/views"
 	"log"
@@ -12,11 +13,12 @@ import (
 )
 
 type ExhibitionHandler struct {
-	service services.ExhibitionService
+	service       services.ExhibitionService
+	supplierCache *middleware.SupplierCache
 }
 
-func NewExhibitionHandler(service services.ExhibitionService) *ExhibitionHandler {
-	return &ExhibitionHandler{service: service}
+func NewExhibitionHandler(service services.ExhibitionService, supplierCache *middleware.SupplierCache) *ExhibitionHandler {
+	return &ExhibitionHandler{service: service, supplierCache: supplierCache}
 }
 
 func (handler *ExhibitionHandler) ExhibitionsView(context *gin.Context) {
@@ -28,8 +30,8 @@ func (handler *ExhibitionHandler) ExhibitionsView(context *gin.Context) {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while getting exhibitions"})
 		return
 	}
-
-	component := views.Exhibitions(true, exhibitions, false, false)
+	suppliers, _ := handler.supplierCache.Get()
+	component := views.Exhibitions(true, false, false, exhibitions, suppliers)
 	if err = component.Render(context.Request.Context(), context.Writer); err != nil {
 		log.Printf("error rendering template: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while rendering the page"})
