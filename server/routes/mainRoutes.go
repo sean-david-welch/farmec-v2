@@ -2,6 +2,9 @@ package routes
 
 import (
 	"database/sql"
+	"github.com/sean-david-welch/farmec-v2/server/handlers"
+	"github.com/sean-david-welch/farmec-v2/server/repository"
+	"github.com/sean-david-welch/farmec-v2/server/services"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -10,9 +13,17 @@ import (
 )
 
 func InitRoutes(
-	router *gin.Engine, database *sql.DB, secrets *lib.Secrets, s3Client lib.S3Client, adminMiddleware *middleware.AdminMiddleware,
-	authMiddleware *middleware.AuthMiddleware, firebase *lib.Firebase, smtp *lib.SMTPClientImpl, supplierCache *middleware.SupplierCache,
+	router *gin.Engine, database *sql.DB, secrets *lib.Secrets, s3Client lib.S3Client,
+	adminMiddleware *middleware.AdminMiddleware, authMiddleware *middleware.AuthMiddleware,
+	firebase *lib.Firebase, smtp *lib.SMTPClientImpl, supplierCache *middleware.SupplierCache,
 ) {
+	// instantiate supplier resouces and middleware
+	repo := repository.NewSupplierRepo(database)
+	supplierService := services.NewSupplierService(repo, s3Client, "Suppliers")
+	router.Use(middleware.WithSupplierCache(supplierCache, supplierService))
+	handler := handlers.NewSupplierContoller(supplierService)
+
+	// default routes
 	router.GET("/", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "Welcome to Farmec Ireland's API Service.",
@@ -39,11 +50,11 @@ func InitRoutes(
 	})
 
 	// Supplier Module Resources
+	SupplierRoutes(router, handler, adminMiddleware)
 	InitParts(router, database, s3Client, adminMiddleware)
 	InitVideos(router, database, secrets, adminMiddleware)
 	InitProduct(router, database, s3Client, adminMiddleware)
 	InitMachines(router, database, s3Client, adminMiddleware)
-	InitSuppliers(router, database, s3Client, adminMiddleware)
 
 	// About Module Resources
 	InitTerms(router, database, adminMiddleware)
