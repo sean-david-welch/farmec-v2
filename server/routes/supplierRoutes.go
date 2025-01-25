@@ -12,12 +12,13 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/services"
 )
 
-func InitSuppliers(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, adminMiddleware *middleware.AdminMiddleware) {
+func InitSuppliers(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, adminMiddleware *middleware.AdminMiddleware) services.SupplierService {
 	repo := repository.NewSupplierRepo(database)
 	service := services.NewSupplierService(repo, s3Client, "Suppliers")
 	handler := handlers.NewSupplierContoller(service)
 
 	SupplierRoutes(router, handler, adminMiddleware)
+	return service
 }
 
 func SupplierRoutes(router *gin.Engine, handler *handlers.SupplierHandler, adminMiddleware *middleware.AdminMiddleware) {
