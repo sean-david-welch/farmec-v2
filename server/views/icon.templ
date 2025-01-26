@@ -4,6 +4,6 @@ import (
     "fmt"
 )
 
-templ Icon(path string, width int, height int) {
-    <img src={"/public/icons/" + path} class="icon" width={fmt.Sprintf("%d", width)} height={fmt.Sprintf("%d", height)} alt="icon" />
+templ Icon(path string, width int) {
+    <img src={"/public/icons/" + path} class="icon" width={fmt.Sprintf("%d", width)} alt="icon" />
 }

@@ -33,7 +33,7 @@ func footerContent() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Icon("facebook.svg", 64, 64).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Icon("facebook.svg", 64).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -41,7 +41,7 @@ func footerContent() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Icon("twitter.svg", 64, 64).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Icon("twitter.svg", 64).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -49,7 +49,7 @@ func footerContent() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Icon("right-bracket.svg", 18, 18).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Icon("right-bracket.svg", 8).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -57,7 +57,7 @@ func footerContent() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Icon("right-bracket.svg", 18, 18).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Icon("right-bracket.svg", 8).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -65,7 +65,7 @@ func footerContent() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Icon("right-bracket.svg", 18, 18).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Icon("right-bracket.svg", 8).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -73,7 +73,7 @@ func footerContent() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Icon("right-bracket.svg", 18, 18).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Icon("right-bracket.svg", 8).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -81,7 +81,7 @@ func footerContent() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Icon("right-bracket.svg", 18, 18).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Icon("right-bracket.svg", 8).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -126,7 +126,7 @@ func toTopButton() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Icon("arrow-up.svg", 64, 64).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Icon("arrow-up.svg", 64).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
