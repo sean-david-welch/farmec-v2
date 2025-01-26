@@ -43,7 +43,7 @@ templ Base(content templ.Component, metadata Metadata, stylesheets []string, sup
             <link rel="canonical" href={metadata.CanonicalUrl}/>
 
             // Stylesheets
-            <link rel="stylesheet" href="/public/index.css"/>
+            <link rel="stylesheet" href="/public/styles/index.css"/>
             for _, stylesheet := range stylesheets {
                 <link rel="stylesheet" href={stylesheet}/>
             }
