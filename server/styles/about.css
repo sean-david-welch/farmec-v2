@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .employees {
     @apply grid grid-cols-3 gap-5;
     @apply mt-10 mb-24 mx-36;
