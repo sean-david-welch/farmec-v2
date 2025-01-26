@@ -44,6 +44,8 @@ templ Base(content templ.Component, metadata Metadata, stylesheets []string, sup
 
             // Stylesheets
             <link rel="stylesheet" href="/public/styles/index.css"/>
+            <link rel="stylesheet" href="/public/styles/header.css"/>
+            <link rel="stylesheet" href="/public/styles/footer.css"/>
             for _, stylesheet := range stylesheets {
                 <link rel="stylesheet" href={stylesheet}/>
             }
