@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .footer {
     @apply border-t-2 border-zinc-900 bg-zinc-900 py-12;
     @apply grid grid-cols-3;
