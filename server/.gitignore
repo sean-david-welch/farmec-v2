@@ -13,3 +13,4 @@ service-account.json
 /.env
 node_modules
 /public/styles/*.css
+/public/styles/**/*.css
