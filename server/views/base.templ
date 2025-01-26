@@ -15,7 +15,7 @@ type Metadata struct {
     CanonicalUrl    string
 }
 
-templ Base(content templ.Component, metadata Metadata, suppliers []types.Supplier) {
+templ Base(content templ.Component, metadata Metadata, stylesheets []string, suppliers []types.Supplier) {
     <!DOCTYPE html>
     <html lang="en">
         <head>
@@ -32,6 +32,9 @@ templ Base(content templ.Component, metadata Metadata, suppliers []types.Supplie
             <meta name="twitter:image" content={metadata.TwitterImage}/>
             <link rel="canonical" href={metadata.CanonicalUrl}/>
             <link rel="stylesheet" href="/public/index.css"/>
+            for _, stylesheet := range stylesheets {
+                <link rel="stylesheet" href={stylesheet}/>
+            }
             <link rel="icon" href="/public/favicon.svg" type="image/svg+xml">
             <script src="/public/htmx.min.js"></script>
             <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.3/dist/cdn.min.js"></script>
