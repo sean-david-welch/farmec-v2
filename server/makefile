@@ -14,8 +14,8 @@ run: build
 test:
 	@go test -v ./tests/...
 
-dev:
-	ENV=development PORT=8000 air
+dev: | templ tailwind
+    ENV=development PORT=8000 air
 
 database-down:
 	scp -i ~/.ssh/farmec.pem -r ${REMOTE_HOST}:/home/seanwelch/server/bin/database/* ./database/
