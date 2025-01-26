@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .machineCard {
     @apply grid grid-cols-1 my-2 mx-52;
     @apply md:mx-5;
