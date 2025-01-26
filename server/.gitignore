@@ -12,4 +12,4 @@ service-account.json
 /.env.production
 /.env
 node_modules
-/public/index.css
+/public/*.css
