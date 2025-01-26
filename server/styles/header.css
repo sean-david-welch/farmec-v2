@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .navbar {
     @apply my-auto flex w-screen flex-row justify-center;
     @apply bg-zinc-900 py-5 text-gray-200;
