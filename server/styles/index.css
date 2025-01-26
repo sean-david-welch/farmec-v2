@@ -23,7 +23,7 @@
 }
 
 .icon {
-    @apply fill-white-500 stroke-white;
+    @apply fill-white stroke-white;
     @apply stroke-[1];
     @apply w-8 h-8;
 }
