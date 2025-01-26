@@ -45,43 +45,43 @@ func footerContent() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</a></div></div><div class=\"footerNav\"><ul class=\"navLinks\"><li class=\"btnFooter\"><a href=\"/about\"><span>Home</span>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</a></div></div><div class=\"footerNav\"><ul class=\"navLinks\"><li class=\"btnFooter\"><a href=\"/about\">Home")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Icon("right-bracket.svg", 64, 64).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Icon("right-bracket.svg", 18, 18).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</a></li><li class=\"btnFooter\"><a href=\"/about\"><span>About</span>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</a></li><li class=\"btnFooter\"><a href=\"/about\">About")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Icon("right-bracket.svg", 64, 64).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Icon("right-bracket.svg", 18, 18).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</a></li><li class=\"btnFooter\"><a href=\"/suppliers\"><span>Suppliers</span>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</a></li><li class=\"btnFooter\"><a href=\"/suppliers\">Suppliers")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Icon("right-bracket.svg", 64, 64).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Icon("right-bracket.svg", 18, 18).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</a></li><li class=\"btnFooter\"><a href=\"/spareparts\"><span>Spare Parts</span>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</a></li><li class=\"btnFooter\"><a href=\"/spareparts\">Spare Par")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Icon("right-bracket.svg", 64, 64).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Icon("right-bracket.svg", 18, 18).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</a></li><li class=\"btnFooter\"><a href=\"/blog\"><span>Blog</span>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</a></li><li class=\"btnFooter\"><a href=\"/blog\">Blog")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Icon("right-bracket.svg", 64, 64).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Icon("right-bracket.svg", 18, 18).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
