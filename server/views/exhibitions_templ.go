@@ -10,6 +10,21 @@ import templruntime "github.com/a-h/templ/runtime"
 
 import "github.com/sean-david-welch/farmec-v2/server/types"
 
+func getExhibitionsMetadata() Metadata {
+	return Metadata{
+		Title:         "Farmec Ireland - Exhibitions",
+		Description:   "Check out the upcoming exhibitions where Farmec will showcase its latest machinery. Don't miss the chance to see our products in action.",
+		OgTitle:       "Exhibitions - Farmec Ireland",
+		OgDescription: "Check out the upcoming exhibitions where Farmec will showcase its latest machinery. Don't miss the chance to see our products in action.",
+		OgImage:       "https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp",
+		OgUrl:         "https://www.farmec.ie/exhibitions",
+		TwitterTitle:  "Exhibitions - Farmec Ireland",
+		TwitterDesc:   "Check out the upcoming exhibitions where Farmec will showcase its latest machinery. Don't miss the chance to see our products in action.",
+		TwitterImage:  "https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp",
+		CanonicalUrl:  "https://www.farmec.ie/exhibitions",
+	}
+}
+
 func exhibitionsContent(isAdmin bool, isLoading bool, isError bool, exhibitions []types.Exhibition) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
@@ -43,7 +58,7 @@ func exhibitionsContent(isAdmin bool, isLoading bool, isError bool, exhibitions 
 			var templ_7745c5c3_Var2 string
 			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(exhibition.Title)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/exhibitions.templ`, Line: 12, Col: 61}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/exhibitions.templ`, Line: 27, Col: 61}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 			if templ_7745c5c3_Err != nil {
@@ -56,7 +71,7 @@ func exhibitionsContent(isAdmin bool, isLoading bool, isError bool, exhibitions 
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(exhibition.Date)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/exhibitions.templ`, Line: 13, Col: 57}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/exhibitions.templ`, Line: 28, Col: 57}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -69,7 +84,7 @@ func exhibitionsContent(isAdmin bool, isLoading bool, isError bool, exhibitions 
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(exhibition.Location)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/exhibitions.templ`, Line: 14, Col: 61}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/exhibitions.templ`, Line: 29, Col: 61}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -82,7 +97,7 @@ func exhibitionsContent(isAdmin bool, isLoading bool, isError bool, exhibitions 
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(exhibition.Info)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/exhibitions.templ`, Line: 15, Col: 57}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/exhibitions.templ`, Line: 30, Col: 57}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
@@ -124,18 +139,8 @@ func Exhibitions(isAdmin bool, isLoading bool, isError bool, exhibitions []types
 		ctx = templ.ClearChildren(ctx)
 		templ_7745c5c3_Err = Base(
 			exhibitionsContent(isAdmin, isLoading, isError, exhibitions),
-			Metadata{
-				Title:         "Farmec Ireland - Exhibitions",
-				Description:   "Check out the upcoming exhibitions where Farmec will showcase its latest machinery. Don't miss the chance to see our products in action.",
-				OgTitle:       "Exhibitions - Farmec Ireland",
-				OgDescription: "Check out the upcoming exhibitions where Farmec will showcase its latest machinery. Don't miss the chance to see our products in action.",
-				OgImage:       "https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp",
-				OgUrl:         "https://www.farmec.ie/exhibitions",
-				TwitterTitle:  "Exhibitions - Farmec Ireland",
-				TwitterDesc:   "Check out the upcoming exhibitions where Farmec will showcase its latest machinery. Don't miss the chance to see our products in action.",
-				TwitterImage:  "https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp",
-				CanonicalUrl:  "https://www.farmec.ie/exhibitions",
-			},
+			getExhibitionsMetadata(),
+			nil,
 			suppliers,
 		).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
