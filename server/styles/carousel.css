@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .heroContainer {
     @apply relative h-screen w-screen overflow-hidden;
 }
