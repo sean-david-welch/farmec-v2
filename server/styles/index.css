@@ -23,8 +23,8 @@
 }
 
 .icon {
-    @apply fill-blue-500 stroke-black;  /* fill and stroke colors */
-    @apply stroke-[1];                  /* stroke width */
-    @apply w-8 h-8;                     /* width and height (32px) */
+    @apply fill-white-500 stroke-white;
+    @apply stroke-[1];
+    @apply w-8 h-8;
 }
 
