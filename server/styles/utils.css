@@ -1,7 +1,3 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 /* Misc */
 .container {
 	@apply mx-auto my-28 min-h-screen max-w-full overflow-x-hidden p-20 text-center;
