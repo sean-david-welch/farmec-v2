@@ -2,6 +2,21 @@ package views
 
 import "github.com/sean-david-welch/farmec-v2/server/types"
 
+func getExhibitionsMetadata() Metadata {
+    return Metadata{
+        Title:          "Farmec Ireland - Exhibitions",
+        Description:    "Check out the upcoming exhibitions where Farmec will showcase its latest machinery. Don't miss the chance to see our products in action.",
+        OgTitle:        "Exhibitions - Farmec Ireland",
+        OgDescription:  "Check out the upcoming exhibitions where Farmec will showcase its latest machinery. Don't miss the chance to see our products in action.",
+        OgImage:        "https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp",
+        OgUrl:          "https://www.farmec.ie/exhibitions",
+        TwitterTitle:   "Exhibitions - Farmec Ireland",
+        TwitterDesc:    "Check out the upcoming exhibitions where Farmec will showcase its latest machinery. Don't miss the chance to see our products in action.",
+        TwitterImage:   "https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp",
+        CanonicalUrl:   "https://www.farmec.ie/exhibitions",
+    }
+}
+
 templ exhibitionsContent(isAdmin bool, isLoading bool, isError bool, exhibitions []types.Exhibition) {
     <section id="exhibitions">
         <h1 class="sectionHeading">Exhibitions:</h1>
@@ -22,18 +37,8 @@ templ exhibitionsContent(isAdmin bool, isLoading bool, isError bool, exhibitions
 templ Exhibitions(isAdmin bool, isLoading bool, isError bool, exhibitions []types.Exhibition, suppliers []types.Supplier) {
     @Base(
         exhibitionsContent(isAdmin, isLoading, isError, exhibitions),
-        Metadata{
-            Title: "Farmec Ireland - Exhibitions",
-            Description: "Check out the upcoming exhibitions where Farmec will showcase its latest machinery. Don't miss the chance to see our products in action.",
-            OgTitle: "Exhibitions - Farmec Ireland",
-            OgDescription: "Check out the upcoming exhibitions where Farmec will showcase its latest machinery. Don't miss the chance to see our products in action.",
-            OgImage: "https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp",
-            OgUrl: "https://www.farmec.ie/exhibitions",
-            TwitterTitle: "Exhibitions - Farmec Ireland",
-            TwitterDesc: "Check out the upcoming exhibitions where Farmec will showcase its latest machinery. Don't miss the chance to see our products in action.",
-            TwitterImage: "https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp",
-            CanonicalUrl: "https://www.farmec.ie/exhibitions",
-        },
+        getExhibitionsMetadata(),
         suppliers,
+        []
     )
 }
