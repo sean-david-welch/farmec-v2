@@ -30,7 +30,7 @@ sqlc:
 	cd sql && sqlc generate
 
 CSS_FILES := $(wildcard styles/*.css)
-CSS_OUTPUT := $(patsubst styles/%.css,public/%.css,$(CSS_FILES))
+CSS_OUTPUT := $(patsubst styles/%.css,public/styles/%.css,$(CSS_FILES))
 
 tailwind: $(CSS_OUTPUT)
 
