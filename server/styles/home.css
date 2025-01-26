@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* Contact form */
 .contactSection {
     @apply mx-10 mb-10 grid p-4;
