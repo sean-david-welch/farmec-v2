@@ -29,5 +29,10 @@ templ:
 sqlc:
 	cd sql && sqlc generate
 
-tailwind:
-	@tailwindcss -i styles/index.css -o public/index.css
+CSS_FILES := $(wildcard styles/*.css)
+CSS_OUTPUT := $(patsubst styles/%.css,public/%.css,$(CSS_FILES))
+
+tailwind: $(CSS_OUTPUT)
+
+public/%.css: styles/%.css
+	@tailwindcss -i $< -o $@
