@@ -5,7 +5,7 @@ import (
 )
 
 templ Icon(path string, width int, height int) {
-    <svg class="icon" width={fmt.Sprintf("%d", width)} height={fmt.Sprintf("%d", height)}>
-        <use href={"/public/icons/" + path + "#icon"}></use>
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="icon" width={fmt.Sprintf("%d", width)} height={fmt.Sprintf("%d", height)}>
+        <use xlink:href={"/public/icons/" + path + "#icon"}></use>
     </svg>
 }
