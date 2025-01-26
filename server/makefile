@@ -34,5 +34,6 @@ CSS_OUTPUT := $(patsubst styles/%.css,public/styles/%.css,$(CSS_FILES))
 
 tailwind: $(CSS_OUTPUT)
 
-public/%.css: styles/%.css
+public/styles/%.css: styles/%.css
+	@mkdir -p public/styles
 	@tailwindcss -i $< -o $@
