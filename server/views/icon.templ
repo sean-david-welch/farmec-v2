@@ -5,5 +5,5 @@ import (
 )
 
 templ Icon(path string, width int) {
-    <img src={"/public/icons/" + path} class="icon" width={fmt.Sprintf("%d", width)} alt="icon" />
+    <img src={"/public/icons/" + path} class="icon" class={fmt.Sprintf("icon w-[%dpx]", width)} alt="icon" />
 }
