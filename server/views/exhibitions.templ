@@ -38,7 +38,7 @@ templ Exhibitions(isAdmin bool, isLoading bool, isError bool, exhibitions []type
     @Base(
         exhibitionsContent(isAdmin, isLoading, isError, exhibitions),
         getExhibitionsMetadata(),
-        nil,
+        []string{"/public/styles/blogs.css"},
         suppliers,
     )
 }
