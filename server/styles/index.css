@@ -1,15 +1,3 @@
-@import "about.css";
-@import "account.css";
-@import "blogs.css";
-@import "carousel.css";
-@import "footer.css";
-@import "header.css";
-@import "home.css";
-@import "info.css";
-@import "machines.css";
-@import "sidebar.css";
-@import "spareparts.css";
-@import "suppliers.css";
 @import "utils.css";
 
 @tailwind base;
