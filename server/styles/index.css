@@ -22,10 +22,3 @@
     @apply mx-auto my-0 min-h-screen max-w-full items-center text-center;
 }
 
-.icon {
-    @apply fill-white stroke-white;
-    @apply bg-red-600;
-    @apply stroke-[1];
-    @apply w-8 h-8;
-}
-
