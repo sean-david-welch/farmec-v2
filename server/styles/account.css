@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .accountMap {
     @apply grid grid-cols-1;
     @apply rounded-2xl border-4 border-zinc-800 bg-zinc-800;
