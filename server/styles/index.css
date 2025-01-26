@@ -22,3 +22,6 @@
     @apply mx-auto my-0 min-h-screen max-w-full items-center text-center;
 }
 
+.icon {
+    @apply brightness-0 invert;
+}
