@@ -45,7 +45,7 @@ func footerContent() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</a></div></div><div class=\"footerNav\"><ul class=\"navLinks\"><li class=\"btnFooter\"><a href=\"/about\">Home <i class=\"fa-solid fa-right-to-bracket\"></i></a></li><li class=\"btnFooter\"><a href=\"/about\">About <i class=\"fa-solid fa-right-to-bracket\"></i></a></li><li class=\"btnFooter\"><a href=\"/suppliers\">Suppliers <i class=\"fa-solid fa-right-to-bracket\"></i></a></li><li class=\"btnFooter\"><a href=\"/spareparts\">Spare Parts <i class=\"fa-solid fa-right-to-bracket\"></i></a></li><li class=\"btnFooter\"><a href=\"/blog\">Blog <i class=\"fa-solid fa-right-to-bracket\"></i></a></li></ul></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</a></div></div><div class=\"footerNav\"><ul class=\"navLinks\"><li class=\"btnFooter\"><a href=\"/about\">Home @Icon(\"right-bracket.svg\", 64, 64)</a></li><li class=\"btnFooter\"><a href=\"/about\">About @Icon(\"right-bracket.svg\", 64, 64)</a></li><li class=\"btnFooter\"><a href=\"/suppliers\">Suppliers @Icon(\"right-bracket.svg\", 64, 64)</a></li><li class=\"btnFooter\"><a href=\"/spareparts\">Spare Parts @Icon(\"right-bracket.svg\", 64, 64)</a></li><li class=\"btnFooter\"><a href=\"/blog\">Blog @Icon(\"right-bracket.svg\", 64, 64)</a></li></ul></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -82,7 +82,15 @@ func toTopButton() templ.Component {
 			templ_7745c5c3_Var2 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<button class=\"toTopButton\"><i class=\"fa-solid fa-arrow-up\"></i></button>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<button class=\"toTopButton\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = Icon("arrow-up.svg", 64, 64).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</button>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
