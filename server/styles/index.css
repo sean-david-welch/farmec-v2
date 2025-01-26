@@ -22,10 +22,9 @@
     @apply mx-auto my-0 min-h-screen max-w-full items-center text-center;
 }
 
-.icon use path {
-    fill: #007bff; /* Change the fill color */
-    stroke: #000;  /* Optional: add a stroke */
-    stroke-width: 1; /* Optional: set stroke width */
-    width: 32px; /* Set width */
-    height: 32px; /* Set height */
+.icon {
+    @apply fill-blue-500 stroke-black;  /* fill and stroke colors */
+    @apply stroke-[1];                  /* stroke width */
+    @apply w-8 h-8;                     /* width and height (32px) */
 }
+
