@@ -173,7 +173,7 @@ func Exhibitions(isAdmin bool, isLoading bool, isError bool, exhibitions []types
 		templ_7745c5c3_Err = views.Base(
 			exhibitionsContent(isAdmin, isLoading, isError, exhibitions),
 			getExhibitionsMetadata(),
-			[]string{"/public/styles/blogs.css"},
+			[]string{"blogs.css"},
 			suppliers,
 		).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
