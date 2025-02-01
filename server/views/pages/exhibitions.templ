@@ -55,7 +55,7 @@ templ Exhibitions(isAdmin bool, isLoading bool, isError bool, exhibitions []type
 	@views.Base(
 		exhibitionsContent(isAdmin, isLoading, isError, exhibitions),
 		getExhibitionsMetadata(),
-		[]string{"/public/static/styles/blogs.css"},
+		[]string{"blogs.css"},
 		suppliers,
 	)
 }
