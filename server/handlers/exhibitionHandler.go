@@ -4,7 +4,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
 	"github.com/sean-david-welch/farmec-v2/server/types"
-	"github.com/sean-david-welch/farmec-v2/server/views"
+	"github.com/sean-david-welch/farmec-v2/server/views/pages"
 	"log"
 	"net/http"
 
@@ -31,7 +31,7 @@ func (handler *ExhibitionHandler) ExhibitionsView(context *gin.Context) {
 		return
 	}
 	suppliers := middleware.GetSuppliersFromContext(context)
-	component := views.Exhibitions(true, false, false, exhibitions, suppliers)
+	component := pages.Exhibitions(true, false, false, exhibitions, suppliers)
 	if err = component.Render(context.Request.Context(), context.Writer); err != nil {
 		log.Printf("error rendering template: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while rendering the page"})
