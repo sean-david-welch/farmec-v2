@@ -17,10 +17,12 @@ func InitRoutes(
 	adminMiddleware *middleware.AdminMiddleware, authMiddleware *middleware.AuthMiddleware, supplierCache *middleware.SupplierCache,
 ) {
 	// instantiate supplier resouces and middleware
-	repo := repository.NewSupplierRepo(database)
-	supplierService := services.NewSupplierService(repo, s3Client, "Suppliers")
+	supplierRepository := repository.NewSupplierRepo(database)
+	supplierService := services.NewSupplierService(supplierRepository, s3Client, "Suppliers")
+	supplierHandler := handlers.NewSupplierContoller(supplierService)
+
+	// define supplier middleware
 	router.Use(middleware.WithSupplierCache(supplierCache, supplierService))
-	handler := handlers.NewSupplierContoller(supplierService)
 
 	// default routes
 	router.GET("/", func(c *gin.Context) {
@@ -49,7 +51,7 @@ func InitRoutes(
 	})
 
 	// Supplier Module Resources
-	SupplierRoutes(router, handler, adminMiddleware)
+	SupplierRoutes(router, supplierHandler, adminMiddleware)
 	InitParts(router, database, s3Client, adminMiddleware)
 	InitVideos(router, database, secrets, adminMiddleware)
 	InitProduct(router, database, s3Client, adminMiddleware)
