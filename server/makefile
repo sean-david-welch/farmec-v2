@@ -29,6 +29,9 @@ templ:
 sqlc:
 	cd sql && sqlc generate
 
+js:
+	@cp ./static/js/*.js ./public/static/js/
+
 CSS_FILES := $(wildcard static/styles/*.css)
 CSS_OUTPUT := $(patsubst static/styles/%.css,public/static/styles/%.css,$(CSS_FILES))
 
