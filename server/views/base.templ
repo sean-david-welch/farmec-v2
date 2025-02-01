@@ -1,6 +1,9 @@
 package views
 
-import "github.com/sean-david-welch/farmec-v2/server/types"
+import  (
+    "github.com/sean-david-welch/farmec-v2/server/types"
+    "github.com/sean-david-welch/farmec-v2/server/views/layout"
+)
 
 type Metadata struct {
     Title           string
@@ -58,9 +61,9 @@ templ Base(content templ.Component, metadata Metadata, stylesheets []string, sup
             <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.3/dist/cdn.min.js"></script>
         </head>
         <body class="app">
-            @Header(suppliers)
+            @layout.Header(suppliers)
             @content
-            @Footer()
+            @layout.Footer()
         </body>
     </html>
 }
