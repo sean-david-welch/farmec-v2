@@ -1,0 +1,10 @@
+package forms
+
+import ("github.com/sean-david-welch/farmec-v2/server/views/components")
+
+templ FormDialog(content templ.Component) {
+    <dialog :class="dialog" x-data="{ isOpen: false }" @open-modal.window="isOpen = true" @close-modal.window="isOpen = false" x-bind:open="isOpen" x-transition>
+        @content
+        <button class="dialog-btn" formmethod="dialog" @click="isOpen = false">@components.Icon("x.svg", 24)</button>
+    </dialog>
+}
