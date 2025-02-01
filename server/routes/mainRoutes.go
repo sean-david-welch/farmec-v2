@@ -13,9 +13,8 @@ import (
 )
 
 func InitRoutes(
-	router *gin.Engine, database *sql.DB, secrets *lib.Secrets, s3Client lib.S3Client,
-	adminMiddleware *middleware.AdminMiddleware, authMiddleware *middleware.AuthMiddleware,
-	firebase *lib.Firebase, smtp *lib.SMTPClientImpl, supplierCache *middleware.SupplierCache,
+	router *gin.Engine, database *sql.DB, secrets *lib.Secrets, s3Client lib.S3Client, firebase *lib.Firebase, smtp *lib.SMTPClientImpl,
+	adminMiddleware *middleware.AdminMiddleware, authMiddleware *middleware.AuthMiddleware, supplierCache *middleware.SupplierCache,
 ) {
 	// instantiate supplier resouces and middleware
 	repo := repository.NewSupplierRepo(database)

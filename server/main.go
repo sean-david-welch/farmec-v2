@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"embed"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/mattn/go-sqlite3"
@@ -9,9 +10,13 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
 	"github.com/sean-david-welch/farmec-v2/server/routes"
 	"log"
+	"net/http"
 	"os"
 	"time"
 )
+
+//go:embed public/*
+var embeddedFiles embed.FS
 
 func main() {
 	env := os.Getenv("ENV")
@@ -70,8 +75,8 @@ func main() {
 	supplierMiddleware := middleware.NewSupplierCache(2 * time.Hour)
 
 	router.Use(gin.Logger(), gin.Recovery(), cors.New(corsConfig))
-	router.Static("/public", "./public")
-	routes.InitRoutes(router, database, secrets, s3Client, adminMiddleware, authMiddleware, firebase, smtp, supplierMiddleware)
+	router.StaticFS("/public", http.FS(embeddedFiles))
+	routes.InitRoutes(router, database, secrets, s3Client, firebase, smtp, adminMiddleware, authMiddleware, supplierMiddleware)
 
 	if env == "production" {
 		gin.SetMode(gin.ReleaseMode)
