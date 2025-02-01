@@ -7,7 +7,7 @@
     "test": "tests"
   },
   "scripts": {
-    "build:css": "postcss src/styles.css -o public/styles.css"
+    "build:css": "postcss src/styles.css -o public/static/styles.css"
   },
   "keywords": [],
   "author": "",

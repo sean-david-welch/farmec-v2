@@ -1,6 +1,7 @@
 package views
 
 import  (
+    "fmt"
     "github.com/sean-david-welch/farmec-v2/server/types"
     "github.com/sean-david-welch/farmec-v2/server/views/layout"
 )
@@ -46,11 +47,11 @@ templ Base(content templ.Component, metadata Metadata, stylesheets []string, sup
             <link rel="canonical" href={metadata.CanonicalUrl}/>
 
             // Stylesheets
-            <link rel="stylesheet" href="/public/styles/index.css"/>
-            <link rel="stylesheet" href="/public/styles/header.css"/>
-            <link rel="stylesheet" href="/public/styles/footer.css"/>
+            <link rel="stylesheet" href="/public/static/styles/index.css"/>
+            <link rel="stylesheet" href="/public/static/styles/header.css"/>
+            <link rel="stylesheet" href="/public/static/styles/footer.css"/>
             for _, stylesheet := range stylesheets {
-                <link rel="stylesheet" href={stylesheet}/>
+                <link rel="stylesheet" href=fmt.Sprint/>
             }
 
             // Favicon

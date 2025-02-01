@@ -30,10 +30,10 @@ sqlc:
 	cd sql && sqlc generate
 
 CSS_FILES := $(wildcard static/styles/*.css)
-CSS_OUTPUT := $(patsubst static/styles/%.css,public/styles/%.css,$(CSS_FILES))
+CSS_OUTPUT := $(patsubst static/styles/%.css,public/static/styles/%.css,$(CSS_FILES))
 
 tailwind: $(CSS_OUTPUT)
 
-public/styles/%.css: static/styles/%.css
-	@mkdir -p public/styles
+public/static/styles/%.css: static/styles/%.css
+	@mkdir -p public/static/styles
 	@tailwindcss -i $< -o $@
