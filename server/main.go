@@ -75,17 +75,18 @@ func main() {
 	supplierMiddleware := middleware.NewSupplierCache(2 * time.Hour)
 
 	router.Use(gin.Logger(), gin.Recovery(), cors.New(corsConfig))
-	router.StaticFS("/public", http.FS(embeddedFiles))
 	routes.InitRoutes(router, database, secrets, s3Client, firebase, smtp, adminMiddleware, authMiddleware, supplierMiddleware)
 
 	if env == "production" {
 		gin.SetMode(gin.ReleaseMode)
+		router.StaticFS("/public", http.FS(embeddedFiles))
 		err := router.Run("0.0.0.0:" + port)
 		if err != nil {
 			return
 		}
 	} else {
 		gin.SetMode(gin.DebugMode)
+		router.Static("/public", "./public")
 		err := router.Run("localhost:8000")
 		if err != nil {
 			return
