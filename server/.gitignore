@@ -12,6 +12,7 @@ service-account.json
 /.env.production
 /.env
 node_modules
+/public/static
 /public/static/styles/
 /public/static/styles/*.css
 /public/static/styles/**/*.css
