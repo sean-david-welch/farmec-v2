@@ -16,17 +16,3 @@ type Timeline struct {
 	Body    string `json:"body"`
 	Created string `json:"created"`
 }
-
-type Privacy struct {
-	ID      string `json:"id"`
-	Title   string `json:"title"`
-	Body    string `json:"body"`
-	Created string `json:"created"`
-}
-
-type Terms struct {
-	ID      string `json:"id"`
-	Title   string `json:"title"`
-	Body    string `json:"body"`
-	Created string `json:"created"`
-}
