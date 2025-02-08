@@ -126,15 +126,6 @@ func SerializePartsRequired(parts db.PartsRequired) types.PartsRequired {
 	}
 }
 
-func SerializePrivacy(privacy db.Privacy) types.Privacy {
-	return types.Privacy{
-		ID:      privacy.ID,
-		Title:   privacy.Title,
-		Body:    privacy.Body.String,
-		Created: privacy.Created.String,
-	}
-}
-
 func SerializeProduct(product db.Product) types.Product {
 	return types.Product{
 		ID:           product.ID,
@@ -153,15 +144,6 @@ func SerializeSparePart(sparePart db.SparePart) types.Sparepart {
 		Name:           sparePart.Name,
 		PartsImage:     sparePart.PartsImage.String,
 		SparePartsLink: sparePart.SparePartsLink.String,
-	}
-}
-
-func SerializeTerm(term db.Term) types.Terms {
-	return types.Terms{
-		ID:      term.ID,
-		Title:   term.Title,
-		Body:    term.Body.String,
-		Created: term.Created.String,
 	}
 }
 

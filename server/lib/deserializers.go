@@ -128,15 +128,6 @@ func DeserializePartsRequired(parts types.PartsRequired) db.PartsRequired {
 	}
 }
 
-func DeserializePrivacy(privacy types.Privacy) db.Privacy {
-	return db.Privacy{
-		ID:      privacy.ID,
-		Title:   privacy.Title,
-		Body:    sql.NullString{String: privacy.Body, Valid: privacy.Body != ""},
-		Created: sql.NullString{String: privacy.Created, Valid: privacy.Created != ""},
-	}
-}
-
 func DeserializeProduct(product types.Product) db.Product {
 	return db.Product{
 		ID:           product.ID,
@@ -155,15 +146,6 @@ func DeserializeSparePart(sparePart types.Sparepart) db.SparePart {
 		Name:           sparePart.Name,
 		PartsImage:     sql.NullString{String: sparePart.PartsImage, Valid: sparePart.PartsImage != ""},
 		SparePartsLink: sql.NullString{String: sparePart.SparePartsLink, Valid: sparePart.SparePartsLink != ""},
-	}
-}
-
-func DeserializeTerm(term types.Terms) db.Term {
-	return db.Term{
-		ID:      term.ID,
-		Title:   term.Title,
-		Body:    sql.NullString{String: term.Body, Valid: term.Body != ""},
-		Created: sql.NullString{String: term.Created, Valid: term.Created != ""},
 	}
 }
 
