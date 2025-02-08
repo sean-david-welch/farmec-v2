@@ -13,12 +13,13 @@ import (
 )
 
 type ExhibitionHandler struct {
-	service       services.ExhibitionService
-	supplierCache *middleware.SupplierCache
+	service         services.ExhibitionService
+	adminMiddleware *middleware.AdminMiddleware
+	supplierCache   *middleware.SupplierCache
 }
 
 func NewExhibitionHandler(service services.ExhibitionService, adminMiddleware *middleware.AdminMiddleware, supplierCache *middleware.SupplierCache) *ExhibitionHandler {
-	return &ExhibitionHandler{service: service, supplierCache: supplierCache}
+	return &ExhibitionHandler{service: service, adminMiddleware: adminMiddleware, supplierCache: supplierCache}
 }
 
 func (handler *ExhibitionHandler) ExhibitionsView(context *gin.Context) {
