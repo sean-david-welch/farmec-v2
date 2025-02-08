@@ -1,14 +1,15 @@
 package routes
 
 import (
+	"embed"
 	"github.com/gin-gonic/gin"
 	"github.com/sean-david-welch/farmec-v2/server/handlers"
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
 	"github.com/sean-david-welch/farmec-v2/server/services"
 )
 
-func InitPdfRenderer(router *gin.Engine, adminMiddleware *middleware.AuthMiddlewareImpl) {
-	service := services.NewPdfService()
+func InitPdfRenderer(router *gin.Engine, adminMiddleware *middleware.AuthMiddlewareImpl, files embed.FS) {
+	service := services.NewPdfService(files)
 	handler := handlers.NewPdfHandler(service)
 
 	PdfRenderRoutes(router, handler, adminMiddleware)
