@@ -1,4 +1,4 @@
-function initDialog(id) {
+const initDialog = id => {
     const dialog = document.getElementById(id);
     const closeBtn = dialog.querySelector('.dialog-btn');
 
@@ -17,7 +17,7 @@ function initDialog(id) {
             dialog.close();
         }
     });
-}
+};
 
 // Initialize all dialogs on page load
 document.addEventListener('DOMContentLoaded', () => {
