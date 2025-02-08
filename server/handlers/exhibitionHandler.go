@@ -17,7 +17,7 @@ type ExhibitionHandler struct {
 	supplierCache *middleware.SupplierCache
 }
 
-func NewExhibitionHandler(service services.ExhibitionService, supplierCache *middleware.SupplierCache) *ExhibitionHandler {
+func NewExhibitionHandler(service services.ExhibitionService, adminMiddleware *middleware.AdminMiddleware, supplierCache *middleware.SupplierCache) *ExhibitionHandler {
 	return &ExhibitionHandler{service: service, supplierCache: supplierCache}
 }
 
