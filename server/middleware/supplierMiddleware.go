@@ -40,6 +40,15 @@ func (sc *SupplierCache) Set(suppliers []types.Supplier) {
 	sc.lastFetch = time.Now()
 }
 
+func GetSuppliersFromContext(context *gin.Context) []types.Supplier {
+	if suppliers, exists := context.Get("suppliers"); exists {
+		if supplierList, ok := suppliers.([]types.Supplier); ok {
+			return supplierList
+		}
+	}
+	return []types.Supplier{}
+}
+
 func WithSupplierCache(cache *SupplierCache, service services.SupplierService) gin.HandlerFunc {
 	return func(context *gin.Context) {
 		// Check cache first
@@ -63,13 +72,4 @@ func WithSupplierCache(cache *SupplierCache, service services.SupplierService) g
 		context.Set("suppliers", suppliers)
 		context.Next()
 	}
-}
-
-func GetSuppliersFromContext(context *gin.Context) []types.Supplier {
-	if suppliers, exists := context.Get("suppliers"); exists {
-		if supplierList, ok := suppliers.([]types.Supplier); ok {
-			return supplierList
-		}
-	}
-	return []types.Supplier{}
 }
