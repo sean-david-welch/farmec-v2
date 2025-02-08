@@ -15,21 +15,22 @@ import (
 type PdfService interface {
 	RenderRegistrationPdf(registration *types.MachineRegistration) ([]byte, error)
 	RenderWarrantyClaimPdf(warranty *types.WarranrtyParts) ([]byte, error)
-	InitPdf(model string) (*gopdf.GoPdf, error)
+	InitPdf(model string, files embed.FS) (*gopdf.GoPdf, error)
 	WrapText(text string) []string
 	RenderStruct(pdf *gopdf.GoPdf, data interface{}, startY float64, startX float64) error
 	RenderSlice(pdf *gopdf.GoPdf, data interface{}, startY float64, startX float64) error
 }
 
 type PdfServiceImpl struct {
+	files embed.FS
 }
 
-func NewPdfService() *PdfServiceImpl {
-	return &PdfServiceImpl{}
+func NewPdfService(files embed.FS) *PdfServiceImpl {
+	return &PdfServiceImpl{files: files}
 }
 
 func (service *PdfServiceImpl) RenderRegistrationPdf(registration *types.MachineRegistration) ([]byte, error) {
-	pdf, err := service.InitPdf("Registration Form " + "-- " + registration.OwnerName)
+	pdf, err := service.InitPdf("Registration Form "+"-- "+registration.OwnerName, service.files)
 
 	if err != nil {
 		return nil, err
@@ -73,7 +74,7 @@ func (service *PdfServiceImpl) RenderWarrantyClaimPdf(warranty *types.WarranrtyP
 	if warranty.Warranty.OwnerName != nil {
 		ownerName = *warranty.Warranty.OwnerName
 	}
-	pdf, err := service.InitPdf("Warranty Claim " + "-- " + ownerName)
+	pdf, err := service.InitPdf("Warranty Claim "+"-- "+ownerName, service.files)
 	if err != nil {
 		return nil, err
 	}
@@ -124,12 +125,12 @@ func (service *PdfServiceImpl) RenderWarrantyClaimPdf(warranty *types.WarranrtyP
 	return buf.Bytes(), nil
 }
 
-func (service *PdfServiceImpl) InitPdf(model string, embeddedFiles embed.FS) (*gopdf.GoPdf, error) {
+func (service *PdfServiceImpl) InitPdf(model string, files embed.FS) (*gopdf.GoPdf, error) {
 	pdf := &gopdf.GoPdf{}
 	pdf.Start(gopdf.Config{PageSize: *gopdf.PageSizeA4})
 	pdf.AddPage()
 
-	fontBytes, err := embeddedFiles.ReadFile("public/fonts/opensans.ttf")
+	fontBytes, err := files.ReadFile("public/fonts/opensans.ttf")
 	if err != nil {
 		log.Printf("error reading font file: %v", err)
 		return nil, err
