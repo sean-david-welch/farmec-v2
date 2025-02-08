@@ -7,14 +7,14 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/services"
 )
 
-func InitPdfRenderer(router *gin.Engine, adminMiddleware *middleware.AdminMiddleware) {
+func InitPdfRenderer(router *gin.Engine, adminMiddleware *middleware.AuthMiddleware) {
 	service := services.NewPdfService()
 	handler := handlers.NewPdfHandler(service)
 
 	PdfRenderRoutes(router, handler, adminMiddleware)
 }
 
-func PdfRenderRoutes(router *gin.Engine, handler *handlers.PdfHandler, adminMiddleware *middleware.AdminMiddleware) {
+func PdfRenderRoutes(router *gin.Engine, handler *handlers.PdfHandler, adminMiddleware *middleware.AuthMiddleware) {
 	pdfGroup := router.Group("/api/pdf")
 	protected := pdfGroup.Group("").Use(adminMiddleware.RouteMiddleware())
 	{

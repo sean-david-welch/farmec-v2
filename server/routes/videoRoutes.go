@@ -15,7 +15,7 @@ import (
 	"google.golang.org/api/youtube/v3"
 )
 
-func InitVideos(router *gin.Engine, database *sql.DB, secrets *lib.Secrets, adminMiddleware *middleware.AdminMiddleware) {
+func InitVideos(router *gin.Engine, database *sql.DB, secrets *lib.Secrets, adminMiddleware *middleware.AuthMiddleware) {
 	yt, err := youtube.NewService(context.Background(), option.WithAPIKey(secrets.YoutubeApiKey))
 	if err != nil {
 		log.Fatal("error calling YouTube API: ", err)
@@ -28,7 +28,7 @@ func InitVideos(router *gin.Engine, database *sql.DB, secrets *lib.Secrets, admi
 	VideoRoutes(router, handler, adminMiddleware)
 }
 
-func VideoRoutes(router *gin.Engine, handler *handlers.VideoHandler, adminMiddleware *middleware.AdminMiddleware) {
+func VideoRoutes(router *gin.Engine, handler *handlers.VideoHandler, adminMiddleware *middleware.AuthMiddleware) {
 	videoGroup := router.Group("/api/videos")
 
 	videoGroup.GET("/:id", handler.GetVideos)

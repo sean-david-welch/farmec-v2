@@ -10,7 +10,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/services"
 )
 
-func InitPrivacy(router *gin.Engine, database *sql.DB, adminMiddleware *middleware.AdminMiddleware) {
+func InitPrivacy(router *gin.Engine, database *sql.DB, adminMiddleware *middleware.AuthMiddleware) {
 	repo := repository.NewPrivacyRepo(database)
 	service := services.NewPrivacyService(repo)
 	handler := handlers.NewPrivacyHandler(service)
@@ -18,7 +18,7 @@ func InitPrivacy(router *gin.Engine, database *sql.DB, adminMiddleware *middlewa
 	PrivacyRoutes(router, handler, adminMiddleware)
 }
 
-func PrivacyRoutes(router *gin.Engine, handler *handlers.PrivacyHandler, adminMiddleware *middleware.AdminMiddleware) {
+func PrivacyRoutes(router *gin.Engine, handler *handlers.PrivacyHandler, adminMiddleware *middleware.AuthMiddleware) {
 	privacyGroup := router.Group("/api/privacy")
 
 	privacyGroup.GET("", handler.GetPrivacys)

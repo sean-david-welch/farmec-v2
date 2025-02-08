@@ -11,7 +11,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/services"
 )
 
-func InitProduct(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, adminMiddleware *middleware.AdminMiddleware) {
+func InitProduct(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, adminMiddleware *middleware.AuthMiddleware) {
 	repo := repository.NewProductRepo(database)
 	service := services.NewProductService(repo, s3Client, "Products")
 	handler := handlers.NewProductHandler(service)
@@ -19,7 +19,7 @@ func InitProduct(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, ad
 	ProductRoutes(router, handler, adminMiddleware)
 }
 
-func ProductRoutes(router *gin.Engine, handler *handlers.ProductHandler, adminMiddleware *middleware.AdminMiddleware) {
+func ProductRoutes(router *gin.Engine, handler *handlers.ProductHandler, adminMiddleware *middleware.AuthMiddleware) {
 	productGroup := router.Group("/api/products")
 
 	productGroup.GET("/:id", handler.GetProducts)

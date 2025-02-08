@@ -14,17 +14,17 @@ type AdminAuthenticator interface {
 	GetIsAuthenticated(context *gin.Context) bool
 }
 
-type AdminMiddleware struct {
+type AuthMiddleware struct {
 	firebase *lib.Firebase
 }
 
-func NewAdminMiddleware(firebase *lib.Firebase) *AdminMiddleware {
-	return &AdminMiddleware{
+func NewAdminMiddleware(firebase *lib.Firebase) *AuthMiddleware {
+	return &AuthMiddleware{
 		firebase: firebase,
 	}
 }
 
-func (middleware *AdminMiddleware) RouteMiddleware() gin.HandlerFunc {
+func (middleware *AuthMiddleware) RouteMiddleware() gin.HandlerFunc {
 	return func(context *gin.Context) {
 		cookie, err := context.Cookie("access_token")
 		if err != nil {
@@ -58,7 +58,7 @@ func (middleware *AdminMiddleware) RouteMiddleware() gin.HandlerFunc {
 	}
 }
 
-func (middleware *AdminMiddleware) ViewMiddleware() gin.HandlerFunc {
+func (middleware *AuthMiddleware) ViewMiddleware() gin.HandlerFunc {
 	return func(context *gin.Context) {
 		cookie, err := context.Cookie("access_token")
 		if err != nil {
@@ -75,7 +75,7 @@ func (middleware *AdminMiddleware) ViewMiddleware() gin.HandlerFunc {
 	}
 }
 
-func (middleware *AdminMiddleware) GetIsAdmin(context *gin.Context) bool {
+func (middleware *AuthMiddleware) GetIsAdmin(context *gin.Context) bool {
 	isAdmin, exists := context.Get("isAdmin")
 	if !exists {
 		return false
@@ -83,7 +83,7 @@ func (middleware *AdminMiddleware) GetIsAdmin(context *gin.Context) bool {
 	return isAdmin.(bool)
 }
 
-func (middleware *AdminMiddleware) GetIsAuthenticated(context *gin.Context) bool {
+func (middleware *AuthMiddleware) GetIsAuthenticated(context *gin.Context) bool {
 	isAuthenticated, exists := context.Get("isAuthenticated")
 	if !exists {
 		return false

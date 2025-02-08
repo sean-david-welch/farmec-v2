@@ -11,7 +11,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/services"
 )
 
-func InitBlogs(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, adminMiddleware *middleware.AdminMiddleware) {
+func InitBlogs(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, adminMiddleware *middleware.AuthMiddleware) {
 	repo := repository.NewBlogRepo(database)
 	service := services.NewBlogService(repo, s3Client, "Blogs")
 	handler := handlers.NewBlogHandler(service)
@@ -19,7 +19,7 @@ func InitBlogs(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, admi
 	BlogRoutes(router, handler, adminMiddleware)
 }
 
-func BlogRoutes(router *gin.Engine, handler *handlers.BlogHandler, adminMiddleware *middleware.AdminMiddleware) {
+func BlogRoutes(router *gin.Engine, handler *handlers.BlogHandler, adminMiddleware *middleware.AuthMiddleware) {
 	blogGroup := router.Group("/api/blogs")
 
 	blogGroup.GET("", handler.GetBlogs)
