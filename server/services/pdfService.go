@@ -2,6 +2,7 @@ package services
 
 import (
 	"bytes"
+	"embed"
 	"fmt"
 	"log"
 	"reflect"
@@ -123,13 +124,20 @@ func (service *PdfServiceImpl) RenderWarrantyClaimPdf(warranty *types.WarranrtyP
 	return buf.Bytes(), nil
 }
 
-func (service *PdfServiceImpl) InitPdf(model string) (*gopdf.GoPdf, error) {
+func (service *PdfServiceImpl) InitPdf(model string, embeddedFiles embed.FS) (*gopdf.GoPdf, error) {
 	pdf := &gopdf.GoPdf{}
 	pdf.Start(gopdf.Config{PageSize: *gopdf.PageSizeA4})
 	pdf.AddPage()
 
-	if err := pdf.AddTTFFont("OpenSans", "./fonts/opensans.ttf"); err != nil {
-		log.Printf("error adding font %v", err)
+	fontBytes, err := embeddedFiles.ReadFile("public/fonts/opensans.ttf")
+	if err != nil {
+		log.Printf("error reading font file: %v", err)
+		return nil, err
+	}
+
+	// Add the font using the bytes
+	if err := pdf.AddTTFFontData("OpenSans", fontBytes); err != nil {
+		log.Printf("error adding font: %v", err)
 		return nil, err
 	}
 
