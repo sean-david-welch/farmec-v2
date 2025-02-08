@@ -16,7 +16,7 @@ func InitPdfRenderer(router *gin.Engine, adminMiddleware *middleware.AuthMiddlew
 
 func PdfRenderRoutes(router *gin.Engine, handler *handlers.PdfHandler, adminMiddleware *middleware.AuthMiddlewareImpl) {
 	pdfGroup := router.Group("/api/pdf")
-	protected := pdfGroup.Group("").Use(adminMiddleware.RouteMiddleware())
+	protected := pdfGroup.Group("").Use(adminMiddleware.AdminRouteMiddleware())
 	{
 		protected.POST("/registration", handler.RenderRegistrationPdf)
 		protected.POST("/warranty", handler.RenderWarrantyClaimPdf)

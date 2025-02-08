@@ -25,7 +25,7 @@ func LineItemRoutes(router *gin.Engine, handler *handlers.LineItemHandler, admin
 	lineItemGroup.GET("", handler.GetLineItems)
 	lineItemGroup.GET("/:id", handler.GetLineItemById)
 
-	protecteed := lineItemGroup.Group("").Use(adminMiddleware.RouteMiddleware())
+	protecteed := lineItemGroup.Group("").Use(adminMiddleware.AdminRouteMiddleware())
 	{
 		protecteed.POST("", handler.CreateLineItem)
 		protecteed.PUT("/:id", handler.UpdateLineItem)

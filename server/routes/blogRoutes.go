@@ -25,7 +25,7 @@ func BlogRoutes(router *gin.Engine, handler *handlers.BlogHandler, adminMiddlewa
 	blogGroup.GET("", handler.GetBlogs)
 	blogGroup.GET("/:id", handler.GetBlogByID)
 
-	protected := blogGroup.Group("").Use(adminMiddleware.RouteMiddleware())
+	protected := blogGroup.Group("").Use(adminMiddleware.AdminRouteMiddleware())
 	{
 		protected.POST("", handler.CreateBlog)
 		protected.PUT("/:id", handler.UpdateBlog)

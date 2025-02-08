@@ -13,7 +13,7 @@ func SupplierRoutes(router *gin.Engine, handler *handlers.SupplierHandler, admin
 	supplierGroup.GET("", handler.GetSuppliers)
 	supplierGroup.GET("/:id", handler.GetSupplierByID)
 
-	protected := supplierGroup.Group("").Use(adminMiddleware.RouteMiddleware())
+	protected := supplierGroup.Group("").Use(adminMiddleware.AdminRouteMiddleware())
 	{
 		protected.POST("", handler.CreateSupplier)
 		protected.PUT("/:id", handler.UpdateSupplier)

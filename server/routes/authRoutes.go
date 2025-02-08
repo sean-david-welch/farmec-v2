@@ -21,7 +21,7 @@ func AuthRoutes(router *gin.Engine, handler *handlers.AuthHandler, adminMiddlewa
 	authGroup.GET("/logout", handler.Logout)
 	authGroup.GET("/login", handler.Login)
 
-	protected := authGroup.Group("").Use(adminMiddleware.RouteMiddleware())
+	protected := authGroup.Group("").Use(adminMiddleware.AdminRouteMiddleware())
 	{
 		protected.GET("/users", handler.GetUsers)
 		protected.POST("/users", handler.Register)

@@ -24,7 +24,7 @@ func EmployeeRoutes(router *gin.Engine, handler *handlers.EmployeeHandler, middl
 
 	employeeGroup.GET("", handler.GetEmployees)
 
-	protected := employeeGroup.Group("").Use(middleware.RouteMiddleware())
+	protected := employeeGroup.Group("").Use(middleware.AdminRouteMiddleware())
 	{
 		protected.POST("", handler.CreateEmployee)
 		protected.PUT("/:id", handler.UpdateEmployee)
