@@ -23,7 +23,7 @@ func TimelineRoutes(router *gin.Engine, handler *handlers.TimelineHandler, admin
 
 	timelineGroup.GET("", handler.GetTimelines)
 
-	protected := timelineGroup.Group("").Use(adminMiddleware.Middleware())
+	protected := timelineGroup.Group("").Use(adminMiddleware.RouteMiddleware())
 	{
 		protected.POST("", handler.CreateTimeline)
 		protected.PUT("/:id", handler.UpdateTimeline)

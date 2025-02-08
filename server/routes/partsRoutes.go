@@ -24,7 +24,7 @@ func PartsRoutes(router *gin.Engine, handler *handlers.PartsHandler, adminMiddle
 
 	partsGroup.GET("/:id", handler.GetParts)
 
-	protected := partsGroup.Group("").Use(adminMiddleware.Middleware())
+	protected := partsGroup.Group("").Use(adminMiddleware.RouteMiddleware())
 	{
 		protected.POST("", handler.CreateParts)
 		protected.PUT("/:id", handler.UpdateParts)

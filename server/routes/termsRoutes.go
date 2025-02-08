@@ -23,7 +23,7 @@ func TermsRoutes(router *gin.Engine, handler *handlers.TermsHandler, adminMiddle
 
 	termsGroup.GET("", handler.GetTerms)
 
-	protected := termsGroup.Group("").Use(adminMiddleware.Middleware())
+	protected := termsGroup.Group("").Use(adminMiddleware.RouteMiddleware())
 	{
 		protected.POST("", handler.CreateTerm)
 		protected.PUT("/:id", handler.UpdateTerm)

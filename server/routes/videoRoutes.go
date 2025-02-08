@@ -33,7 +33,7 @@ func VideoRoutes(router *gin.Engine, handler *handlers.VideoHandler, adminMiddle
 
 	videoGroup.GET("/:id", handler.GetVideos)
 
-	protected := videoGroup.Group("").Use(adminMiddleware.Middleware())
+	protected := videoGroup.Group("").Use(adminMiddleware.RouteMiddleware())
 	{
 		protected.POST("", handler.CreateVideo)
 		protected.PUT("/:id", handler.UpdateVideo)

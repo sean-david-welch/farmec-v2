@@ -25,7 +25,7 @@ func MachineRoutes(router *gin.Engine, handler *handlers.MachineHandler, adminMi
 	machineGroup.GET("/:id", handler.GetMachineById)
 	machineGroup.GET("/suppliers/:id", handler.GetMachines)
 
-	protected := machineGroup.Group("").Use(adminMiddleware.Middleware())
+	protected := machineGroup.Group("").Use(adminMiddleware.RouteMiddleware())
 	{
 		protected.POST("", handler.CreateMachine)
 		protected.PUT("/:id", handler.UpdateMachine)

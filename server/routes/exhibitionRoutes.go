@@ -21,7 +21,7 @@ func InitExhibitions(router *gin.Engine, database *sql.DB, adminMiddleware *midd
 func ExhibitionRoutes(router *gin.Engine, handler *handlers.ExhibitionHandler, adminMiddleware *middleware.AdminMiddleware) {
 	router.GET("/exhibitions", adminMiddleware.ViewMiddleware(), handler.ExhibitionsView)
 	exhibitionGroup := router.Group("/api/exhibitions")
-	protected := exhibitionGroup.Group("").Use(adminMiddleware.Middleware())
+	protected := exhibitionGroup.Group("").Use(adminMiddleware.RouteMiddleware())
 	{
 		exhibitionGroup.GET("", handler.GetExhibitions)
 		protected.POST("", handler.CreateExhibition)

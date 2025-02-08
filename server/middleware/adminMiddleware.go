@@ -8,7 +8,7 @@ import (
 )
 
 type AdminAuthenticator interface {
-	Middleware() gin.HandlerFunc
+	RouteMiddleware() gin.HandlerFunc
 	ViewMiddleware() gin.HandlerFunc
 	GetIsAdmin(context *gin.Context) bool
 	GetIsAuthenticated(context *gin.Context) bool
@@ -24,7 +24,7 @@ func NewAdminMiddleware(firebase *lib.Firebase) *AdminMiddleware {
 	}
 }
 
-func (middleware *AdminMiddleware) Middleware() gin.HandlerFunc {
+func (middleware *AdminMiddleware) RouteMiddleware() gin.HandlerFunc {
 	return func(context *gin.Context) {
 		cookie, err := context.Cookie("access_token")
 		if err != nil {

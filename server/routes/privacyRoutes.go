@@ -23,7 +23,7 @@ func PrivacyRoutes(router *gin.Engine, handler *handlers.PrivacyHandler, adminMi
 
 	privacyGroup.GET("", handler.GetPrivacys)
 
-	protected := privacyGroup.Group("").Use(adminMiddleware.Middleware())
+	protected := privacyGroup.Group("").Use(adminMiddleware.RouteMiddleware())
 	{
 		protected.POST("", handler.CreatePrivacy)
 		protected.PUT("/:id", handler.UpdatePrivacy)
