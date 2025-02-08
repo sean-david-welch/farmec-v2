@@ -2,6 +2,7 @@ package routes
 
 import (
 	"database/sql"
+	"embed"
 	"github.com/sean-david-welch/farmec-v2/server/handlers"
 	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/services"
@@ -14,7 +15,7 @@ import (
 
 func InitRoutes(
 	router *gin.Engine, database *sql.DB, secrets *lib.Secrets,
-	s3Client lib.S3Client, firebase *lib.Firebase, smtp *lib.SMTPClientImpl,
+	s3Client lib.S3Client, files embed.FS, firebase *lib.Firebase, smtp *lib.SMTPClientImpl,
 	adminMiddleware *middleware.AuthMiddlewareImpl, supplierCache *middleware.SupplierCache,
 ) {
 	// instantiate supplier resouces and middleware
@@ -75,7 +76,7 @@ func InitRoutes(
 	// Util Resources
 	InitContact(router, smtp)
 	InitCheckout(router, database, secrets)
-	InitPdfRenderer(router, adminMiddleware)
+	InitPdfRenderer(router, adminMiddleware, files)
 	InitAuth(router, firebase, adminMiddleware)
 
 	router.NoRoute(func(c *gin.Context) {
