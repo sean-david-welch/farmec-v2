@@ -18,7 +18,7 @@ type RegistrationService interface {
 }
 
 type RegistrationServiceImpl struct {
-	smtpClient lib.SMTPClient
+	smtpClient lib.SMTPClientImpl
 	repo       repository.RegistrationRepo
 }
 
@@ -35,7 +35,7 @@ func (service *RegistrationServiceImpl) sendRegistrationEmail(registration *db.M
 	}
 }
 
-func NewRegistrationService(repo repository.RegistrationRepo, smtpClient lib.SMTPClient) *RegistrationServiceImpl {
+func NewRegistrationService(repo repository.RegistrationRepo, smtpClient lib.SMTPClientImpl) *RegistrationServiceImpl {
 	return &RegistrationServiceImpl{repo: repo, smtpClient: smtpClient}
 }
 

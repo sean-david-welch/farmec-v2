@@ -1,11 +1,9 @@
 package lib
 
 import (
-	"crypto/tls"
 	"fmt"
 	"github.com/sean-david-welch/farmec-v2/server/types"
-	"io"
-	"net"
+	"net/mail"
 	"net/smtp"
 	"time"
 )
@@ -118,4 +116,12 @@ func (service *SMTPClientImpl) SendFormNotification(data *types.EmailData, form 
 	}
 
 	return nil
+}
+
+func (service *SMTPClientImpl) SendFormNotification(data *types.EmailData, form string) error {
+	to := []string{service.secrets.EmailUser}
+	subject := fmt.Sprintf("New %s Form from %s", form, data.Name)
+	body := fmt.Sprintf("From: %s\nEmail: %s\n\nMessage:\n%s", data.Name, data.Email, data.Message)
+
+	return service.SendEmail(to, subject, body)
 }

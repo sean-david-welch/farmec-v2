@@ -25,12 +25,12 @@ func (handler *ContactHandler) SendEmail(context *gin.Context) {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "error in request format"})
 		return
 	}
+	go func() {
+		err := handler.service.SendContactEmail(data)
+		if err != nil {
+			return
+		}
+	}()
 
-	if err := handler.service.SendContactEmail(data); err != nil {
-		log.Printf("internal server error: %v", err)
-		context.JSON(http.StatusInternalServerError, gin.H{"error": "internal server error"})
-		return
-	}
-
-	context.JSON(http.StatusOK, gin.H{"message": "email sent successfully"})
+	context.JSON(http.StatusOK, gin.H{"message": "email was sent successfully"})
 }

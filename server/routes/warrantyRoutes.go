@@ -11,9 +11,9 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/services"
 )
 
-func InitWarranty(router *gin.Engine, database *sql.DB, authMiddleware *middleware.AuthMiddleware, smtp lib.SMTPClient) {
+func InitWarranty(router *gin.Engine, database *sql.DB, authMiddleware *middleware.AuthMiddleware, smtp *lib.SMTPClientImpl) {
 	repo := repository.NewWarrantyRepo(database)
-	service := services.NewWarrantyService(repo, smtp)
+	service := services.NewWarrantyService(repo, *smtp)
 	handler := handlers.NewWarrantyHandler(service)
 
 	WarrantyRoutes(router, handler, authMiddleware)
