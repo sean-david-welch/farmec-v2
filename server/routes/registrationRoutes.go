@@ -26,7 +26,7 @@ func RegistrationRoutes(router *gin.Engine, handler *handlers.RegistrationHandle
 	registrationGroup.GET("/:id", handler.GetRegistrationById)
 	registrationGroup.POST("", handler.CreateRegistration)
 
-	protected := registrationGroup.Group("").Use(adminMiddleware.RouteMiddleware())
+	protected := registrationGroup.Group("").Use(adminMiddleware.AuthRouteMiddleware())
 	{
 		protected.PUT("/:id", handler.UpdateRegistration)
 		protected.DELETE("/:id", handler.DeleteRegistration)

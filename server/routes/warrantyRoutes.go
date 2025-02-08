@@ -26,7 +26,7 @@ func WarrantyRoutes(router *gin.Engine, handler *handlers.WarrantyHandler, admin
 	warrantyGroup.GET("/:id", handler.GetWarrantyById)
 	warrantyGroup.POST("", handler.CreateWarranty)
 
-	protected := warrantyGroup.Group("").Use(adminMiddleware.RouteMiddleware())
+	protected := warrantyGroup.Group("").Use(adminMiddleware.AuthRouteMiddleware())
 	{
 		protected.PUT("/:id", handler.UpdateWarranty)
 		protected.DELETE("/:id", handler.DeleteWarranty)
