@@ -24,16 +24,21 @@ func NewExhibitionHandler(service services.ExhibitionService, adminMiddleware *m
 
 func (handler *ExhibitionHandler) ExhibitionsView(context *gin.Context) {
 	ctx := context.Request.Context()
+	isAdmin := handler.adminMiddleware.IsAdmin(context)
+	suppliers := middleware.GetSuppliersFromContext(context)
 
 	exhibitions, err := handler.service.GetExhibitions(ctx)
 	if err != nil {
 		log.Printf("error getting exhibitions: %v", err)
-		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while getting exhibitions"})
+		component := pages.Exhibitions(isAdmin, false, true, nil, suppliers)
+		if renderErr := component.Render(ctx, context.Writer); renderErr != nil {
+			log.Printf("error rendering template: %v", renderErr)
+			context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while rendering the page"})
+			return
+		}
 		return
 	}
 
-	isAdmin := handler.adminMiddleware.IsAdmin(context)
-	suppliers := middleware.GetSuppliersFromContext(context)
 	component := pages.Exhibitions(isAdmin, false, false, exhibitions, suppliers)
 	if err = component.Render(context.Request.Context(), context.Writer); err != nil {
 		log.Printf("error rendering template: %v", err)
