@@ -20,14 +20,12 @@ func getExhibitionsMetadata() views.Metadata {
 	}
 }
 
-templ exhibitionsContent(isAdmin bool, isLoading bool, isError bool, exhibitions []types.Exhibition) {
+templ exhibitionsContent(isAdmin bool, isError bool, exhibitions []types.Exhibition) {
     <section id="exhibitions">
         <h1 class="sectionHeading">Exhibitions:</h1>
         <h1 class="subHeading">Check out upcoming events related to Farmec</h1>
 
-        if isLoading {
-            <div class="loading">Loading exhibitions...</div>
-        } else if isError {
+        if isError {
             <div class="error">Error loading exhibitions</div>
         } else {
             <div class="exhibitions">
@@ -51,9 +49,9 @@ templ exhibitionsContent(isAdmin bool, isLoading bool, isError bool, exhibitions
     </section>
 }
 
-templ Exhibitions(isAdmin bool, isLoading bool, isError bool, exhibitions []types.Exhibition, suppliers []types.Supplier) {
+templ Exhibitions(isAdmin bool, isError bool, exhibitions []types.Exhibition, suppliers []types.Supplier) {
 	@views.Base(
-		exhibitionsContent(isAdmin, isLoading, isError, exhibitions),
+		exhibitionsContent(isAdmin, isError, exhibitions),
 		getExhibitionsMetadata(),
 		[]string{"blogs.css"},
 		suppliers,
