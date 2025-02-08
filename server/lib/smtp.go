@@ -11,20 +11,20 @@ type EmailClient interface {
 	SendFormNotification(data *types.EmailData, form string) error
 }
 
-type SendGridClient struct {
+type EmailClientImpl struct {
 	secrets *Secrets
 	client  *sendgrid.Client
 }
 
-func NewEmailClient(secrets *Secrets) *SendGridClient {
+func NewEmailClient(secrets *Secrets) *EmailClientImpl {
 	client := sendgrid.NewSendClient(secrets.SendGridAPIKey)
-	return &SendGridClient{
+	return &EmailClientImpl{
 		secrets: secrets,
 		client:  client,
 	}
 }
 
-func (service *SendGridClient) SendFormNotification(data *types.EmailData, form string) error {
+func (service *EmailClientImpl) SendFormNotification(data *types.EmailData, form string) error {
 	from := mail.NewEmail("Farmec Ireland Ltd", service.secrets.EmailUser)
 	to := mail.NewEmail("Admin", service.secrets.EmailUser)
 	subject := fmt.Sprintf("New %s Form from %s--%s", form, data.Name, data.Email)
