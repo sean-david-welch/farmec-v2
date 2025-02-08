@@ -11,7 +11,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/services"
 )
 
-func InitLineItems(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, adminMiddleware *middleware.AuthMiddleware) {
+func InitLineItems(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, adminMiddleware *middleware.AuthMiddlewareImpl) {
 	repo := repository.NewLineItemRepo(database)
 	service := services.NewLineItemService(repo, s3Client, "Lineitems")
 	handler := handlers.NewLineItemHandler(service)
@@ -19,7 +19,7 @@ func InitLineItems(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, 
 	LineItemRoutes(router, handler, adminMiddleware)
 }
 
-func LineItemRoutes(router *gin.Engine, handler *handlers.LineItemHandler, adminMiddleware *middleware.AuthMiddleware) {
+func LineItemRoutes(router *gin.Engine, handler *handlers.LineItemHandler, adminMiddleware *middleware.AuthMiddlewareImpl) {
 	lineItemGroup := router.Group("/api/lineitems")
 
 	lineItemGroup.GET("", handler.GetLineItems)

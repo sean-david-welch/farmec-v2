@@ -10,7 +10,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/services"
 )
 
-func InitTerms(router *gin.Engine, database *sql.DB, adminMiddleware *middleware.AuthMiddleware) {
+func InitTerms(router *gin.Engine, database *sql.DB, adminMiddleware *middleware.AuthMiddlewareImpl) {
 	repo := repository.NewTermsRepo(database)
 	service := services.NewTermsService(repo)
 	handler := handlers.NewTermsHandler(service)
@@ -18,7 +18,7 @@ func InitTerms(router *gin.Engine, database *sql.DB, adminMiddleware *middleware
 	TermsRoutes(router, handler, adminMiddleware)
 }
 
-func TermsRoutes(router *gin.Engine, handler *handlers.TermsHandler, adminMiddleware *middleware.AuthMiddleware) {
+func TermsRoutes(router *gin.Engine, handler *handlers.TermsHandler, adminMiddleware *middleware.AuthMiddlewareImpl) {
 	termsGroup := router.Group("/api/terms")
 
 	termsGroup.GET("", handler.GetTerms)

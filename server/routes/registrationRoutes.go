@@ -11,7 +11,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/services"
 )
 
-func InitRegistrations(router *gin.Engine, database *sql.DB, adminMiddleware *middleware.AuthMiddleware, smtp *lib.SMTPClientImpl) {
+func InitRegistrations(router *gin.Engine, database *sql.DB, adminMiddleware *middleware.AuthMiddlewareImpl, smtp *lib.SMTPClientImpl) {
 	repo := repository.NewRegistrationRepo(database)
 	service := services.NewRegistrationService(repo, *smtp)
 	handler := handlers.NewRegistrationHandler(service)
@@ -19,7 +19,7 @@ func InitRegistrations(router *gin.Engine, database *sql.DB, adminMiddleware *mi
 	RegistrationRoutes(router, handler, adminMiddleware)
 }
 
-func RegistrationRoutes(router *gin.Engine, handler *handlers.RegistrationHandler, adminMiddleware *middleware.AuthMiddleware) {
+func RegistrationRoutes(router *gin.Engine, handler *handlers.RegistrationHandler, adminMiddleware *middleware.AuthMiddlewareImpl) {
 	registrationGroup := router.Group("/api/registrations")
 
 	registrationGroup.GET("", handler.GetRegistrations)

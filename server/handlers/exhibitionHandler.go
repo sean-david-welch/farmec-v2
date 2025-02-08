@@ -14,11 +14,11 @@ import (
 
 type ExhibitionHandler struct {
 	service         services.ExhibitionService
-	adminMiddleware *middleware.AuthMiddleware
+	adminMiddleware *middleware.AuthMiddlewareImpl
 	supplierCache   *middleware.SupplierCache
 }
 
-func NewExhibitionHandler(service services.ExhibitionService, adminMiddleware *middleware.AuthMiddleware, supplierCache *middleware.SupplierCache) *ExhibitionHandler {
+func NewExhibitionHandler(service services.ExhibitionService, adminMiddleware *middleware.AuthMiddlewareImpl, supplierCache *middleware.SupplierCache) *ExhibitionHandler {
 	return &ExhibitionHandler{service: service, adminMiddleware: adminMiddleware, supplierCache: supplierCache}
 }
 

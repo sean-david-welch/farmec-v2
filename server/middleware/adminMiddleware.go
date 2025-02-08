@@ -7,24 +7,24 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/lib"
 )
 
-type AdminAuthenticator interface {
+type AdminMiddleware interface {
 	RouteMiddleware() gin.HandlerFunc
 	ViewMiddleware() gin.HandlerFunc
 	GetIsAdmin(context *gin.Context) bool
 	GetIsAuthenticated(context *gin.Context) bool
 }
 
-type AuthMiddleware struct {
+type AuthMiddlewareImpl struct {
 	firebase *lib.Firebase
 }
 
-func NewAdminMiddleware(firebase *lib.Firebase) *AuthMiddleware {
-	return &AuthMiddleware{
+func NewAdminMiddleware(firebase *lib.Firebase) *AuthMiddlewareImpl {
+	return &AuthMiddlewareImpl{
 		firebase: firebase,
 	}
 }
 
-func (middleware *AuthMiddleware) RouteMiddleware() gin.HandlerFunc {
+func (middleware *AuthMiddlewareImpl) RouteMiddleware() gin.HandlerFunc {
 	return func(context *gin.Context) {
 		cookie, err := context.Cookie("access_token")
 		if err != nil {
@@ -58,7 +58,7 @@ func (middleware *AuthMiddleware) RouteMiddleware() gin.HandlerFunc {
 	}
 }
 
-func (middleware *AuthMiddleware) ViewMiddleware() gin.HandlerFunc {
+func (middleware *AuthMiddlewareImpl) ViewMiddleware() gin.HandlerFunc {
 	return func(context *gin.Context) {
 		cookie, err := context.Cookie("access_token")
 		if err != nil {
@@ -75,7 +75,7 @@ func (middleware *AuthMiddleware) ViewMiddleware() gin.HandlerFunc {
 	}
 }
 
-func (middleware *AuthMiddleware) GetIsAdmin(context *gin.Context) bool {
+func (middleware *AuthMiddlewareImpl) GetIsAdmin(context *gin.Context) bool {
 	isAdmin, exists := context.Get("isAdmin")
 	if !exists {
 		return false
@@ -83,7 +83,7 @@ func (middleware *AuthMiddleware) GetIsAdmin(context *gin.Context) bool {
 	return isAdmin.(bool)
 }
 
-func (middleware *AuthMiddleware) GetIsAuthenticated(context *gin.Context) bool {
+func (middleware *AuthMiddlewareImpl) GetIsAuthenticated(context *gin.Context) bool {
 	isAuthenticated, exists := context.Get("isAuthenticated")
 	if !exists {
 		return false

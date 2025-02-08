@@ -11,7 +11,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/services"
 )
 
-func InitCarousel(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, adminMiddleare *middleware.AuthMiddleware) {
+func InitCarousel(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, adminMiddleare *middleware.AuthMiddlewareImpl) {
 	repo := repository.NewCarouselRepo(database)
 	service := services.NewCarouselService(repo, s3Client, "Carousels")
 	handler := handlers.NewCarouselHandler(service)
@@ -19,7 +19,7 @@ func InitCarousel(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, a
 	CarouselRoutes(router, handler, adminMiddleare)
 }
 
-func CarouselRoutes(router *gin.Engine, handler *handlers.CarouselHandler, adminMiddleware *middleware.AuthMiddleware) {
+func CarouselRoutes(router *gin.Engine, handler *handlers.CarouselHandler, adminMiddleware *middleware.AuthMiddlewareImpl) {
 	carouselGroup := router.Group("/api/carousels")
 
 	carouselGroup.GET("", handler.GetCarousels)
