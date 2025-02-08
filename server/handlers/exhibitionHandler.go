@@ -33,7 +33,7 @@ func (handler *ExhibitionHandler) ExhibitionsView(context *gin.Context) {
 	}
 
 	isError := err != nil
-	component := pages.Exhibitions(isAdmin, false, isError, exhibitions, suppliers)
+	component := pages.Exhibitions(isAdmin, isError, exhibitions, suppliers)
 	if err := component.Render(ctx, context.Writer); err != nil {
 		log.Printf("error rendering template: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while rendering the page"})
