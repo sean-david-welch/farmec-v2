@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sean-david-welch/farmec-v2/server/services"
 	"github.com/sean-david-welch/farmec-v2/server/types"
+	"net/http"
 	"sync"
 	"time"
 )
@@ -40,34 +41,34 @@ func (sc *SupplierCache) Set(suppliers []types.Supplier) {
 }
 
 func WithSupplierCache(cache *SupplierCache, service services.SupplierService) gin.HandlerFunc {
-	return func(c *gin.Context) {
-		// Try to get suppliers from cache
+	return func(context *gin.Context) {
+		// Check cache first
 		if suppliers, ok := cache.Get(); ok {
-			c.Set("suppliers", suppliers)
-			c.Next()
+			context.Set("suppliers", suppliers)
+			context.Next()
 			return
 		}
 
-		// If not in cache, fetch from database
-		ctx := c.Request.Context()
+		// Fetch from database
+		ctx := context.Request.Context()
 		suppliers, err := service.GetSuppliers(ctx)
 		if err != nil {
-			c.JSON(500, gin.H{"error": "Failed to fetch suppliers"})
-			c.Abort()
+			context.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch suppliers"})
+			context.Abort()
 			return
 		}
 
 		// Update cache
 		cache.Set(suppliers)
-		c.Set("suppliers", suppliers)
-		c.Next()
+		context.Set("suppliers", suppliers)
+		context.Next()
 	}
 }
 
-func GetSuppliersFromContext(c *gin.Context) []types.Supplier {
-	if suppliers, exists := c.Get("suppliers"); exists {
-		if s, ok := suppliers.([]types.Supplier); ok {
-			return s
+func GetSuppliersFromContext(context *gin.Context) []types.Supplier {
+	if suppliers, exists := context.Get("suppliers"); exists {
+		if supplierList, ok := suppliers.([]types.Supplier); ok {
+			return supplierList
 		}
 	}
 	return []types.Supplier{}
