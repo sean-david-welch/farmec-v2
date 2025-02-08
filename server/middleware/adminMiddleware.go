@@ -7,6 +7,13 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/lib"
 )
 
+type AdminAuthenticator interface {
+	Middleware() gin.HandlerFunc
+	ViewMiddleware() gin.HandlerFunc
+	GetIsAdmin(context *gin.Context) bool
+	GetIsAuthenticated(context *gin.Context) bool
+}
+
 type AdminMiddleware struct {
 	firebase *lib.Firebase
 }
