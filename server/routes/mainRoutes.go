@@ -13,8 +13,9 @@ import (
 )
 
 func InitRoutes(
-	router *gin.Engine, database *sql.DB, secrets *lib.Secrets, s3Client lib.S3Client, firebase *lib.Firebase, smtp *lib.SMTPClientImpl,
-	adminMiddleware *middleware.AdminMiddleware, authMiddleware *middleware.AuthMiddleware, supplierCache *middleware.SupplierCache,
+	router *gin.Engine, database *sql.DB, secrets *lib.Secrets,
+	s3Client lib.S3Client, firebase *lib.Firebase, smtp *lib.SMTPClientImpl,
+	adminMiddleware *middleware.AdminMiddleware, supplierCache *middleware.SupplierCache,
 ) {
 	// instantiate supplier resouces and middleware
 	supplierRepository := repository.NewSupplierRepo(database)
@@ -68,8 +69,8 @@ func InitRoutes(
 	InitBlogs(router, database, s3Client, adminMiddleware)
 
 	// Misc Resources
-	InitWarranty(router, database, authMiddleware, smtp)
-	InitRegistrations(router, database, authMiddleware, smtp)
+	InitWarranty(router, database, adminMiddleware, smtp)
+	InitRegistrations(router, database, adminMiddleware, smtp)
 	InitLineItems(router, database, s3Client, adminMiddleware)
 	InitCarousel(router, database, s3Client, adminMiddleware)
 
