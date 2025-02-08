@@ -41,20 +41,18 @@ func (middleware *AdminMiddleware) Middleware() gin.HandlerFunc {
 	}
 }
 
-func (middleware *AdminMiddleware) IsAuthenticated(context *gin.Context) bool {
-	cookie, err := context.Cookie("access_token")
-	if err != nil {
+func (middleware *AdminMiddleware) GetIsAdmin(context *gin.Context) bool {
+	isAdmin, exists := context.Get("isAdmin")
+	if !exists {
 		return false
 	}
-	_, _, err = middleware.firebase.VerifyToken(cookie)
-	return err == nil
+	return isAdmin.(bool)
 }
 
-func (middleware *AdminMiddleware) IsAdmin(context *gin.Context) bool {
-	cookie, err := context.Cookie("access_token")
-	if err != nil {
+func (middleware *AdminMiddleware) GetIsAuthenticated(context *gin.Context) bool {
+	isAuthenticated, exists := context.Get("isAuthenticated")
+	if !exists {
 		return false
 	}
-	_, isAdmin, err := middleware.firebase.VerifyToken(cookie)
-	return err == nil && isAdmin
+	return isAuthenticated.(bool)
 }
