@@ -25,7 +25,7 @@ func (sc *SupplierCache) Get() ([]types.Supplier, bool) {
 	sc.mutex.RLock()
 	defer sc.mutex.RUnlock()
 
-	if time.Since(sc.lastFetch) > sc.ttl {
+	if expired := time.Since(sc.lastFetch) > sc.ttl; expired {
 		return nil, false
 	}
 	return sc.suppliers, true
