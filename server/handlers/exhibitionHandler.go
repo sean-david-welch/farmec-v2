@@ -31,8 +31,10 @@ func (handler *ExhibitionHandler) ExhibitionsView(context *gin.Context) {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while getting exhibitions"})
 		return
 	}
+
+	isAdmin := handler.adminMiddleware.IsAdmin(context)
 	suppliers := middleware.GetSuppliersFromContext(context)
-	component := pages.Exhibitions(true, false, false, exhibitions, suppliers)
+	component := pages.Exhibitions(isAdmin, false, false, exhibitions, suppliers)
 	if err = component.Render(context.Request.Context(), context.Writer); err != nil {
 		log.Printf("error rendering template: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while rendering the page"})
