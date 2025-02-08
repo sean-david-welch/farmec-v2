@@ -25,7 +25,7 @@ func NewEmailClient(secrets *Secrets) *SendGridClient {
 }
 
 func (service *SendGridClient) SendFormNotification(data *types.EmailData, form string) error {
-	from := mail.NewEmail("Farmec Website", service.secrets.EmailUser)
+	from := mail.NewEmail("Farmec Ireland Ltd", service.secrets.EmailUser)
 	to := mail.NewEmail("Admin", service.secrets.EmailUser)
 	subject := fmt.Sprintf("New %s Form from %s--%s", form, data.Name, data.Email)
 
