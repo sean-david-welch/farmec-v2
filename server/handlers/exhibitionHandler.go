@@ -24,7 +24,7 @@ func NewExhibitionHandler(service services.ExhibitionService, adminMiddleware *m
 
 func (handler *ExhibitionHandler) ExhibitionsView(context *gin.Context) {
 	ctx := context.Request.Context()
-	isAdmin := handler.adminMiddleware.IsAdmin(context)
+	isAdmin := handler.adminMiddleware.GetIsAdmin(context)
 	suppliers := middleware.GetSuppliersFromContext(context)
 
 	exhibitions, err := handler.service.GetExhibitions(ctx)
