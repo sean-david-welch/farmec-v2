@@ -30,6 +30,7 @@ type Secrets struct {
 	EmailPass               string
 	EmailUser               string
 	EmailPort               string
+	SendGridAPIKey          string
 }
 
 func NewSecrets() (*Secrets, error) {
@@ -65,9 +66,10 @@ func NewSecrets() (*Secrets, error) {
 		StripeSecretKey:     os.Getenv("STRIPE_SECRET_KEY"),
 		StripeSecretKeyTest: os.Getenv("TEST_SECRET_KEY"),
 		// Email
-		EmailHost: os.Getenv("EMAIL_HOST"),
-		EmailPass: os.Getenv("EMAIL_PASSWORD"),
-		EmailUser: os.Getenv("EMAIL_USER"),
-		EmailPort: os.Getenv("EMAIL_PORT"),
+		EmailHost:      os.Getenv("EMAIL_HOST"),
+		EmailPass:      os.Getenv("EMAIL_PASSWORD"),
+		EmailUser:      os.Getenv("EMAIL_USER"),
+		EmailPort:      os.Getenv("EMAIL_PORT"),
+		SendGridAPIKey: os.Getenv("SENDGRID_API_KEY"),
 	}, nil
 }
