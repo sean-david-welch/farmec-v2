@@ -30,21 +30,17 @@ func (handler *ExhibitionHandler) ExhibitionsView(context *gin.Context) {
 	exhibitions, err := handler.service.GetExhibitions(ctx)
 	if err != nil {
 		log.Printf("error getting exhibitions: %v", err)
-		component := pages.Exhibitions(isAdmin, false, true, nil, suppliers)
-		if renderErr := component.Render(ctx, context.Writer); renderErr != nil {
-			log.Printf("error rendering template: %v", renderErr)
-			context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while rendering the page"})
-			return
-		}
-		return
 	}
 
-	component := pages.Exhibitions(isAdmin, false, false, exhibitions, suppliers)
-	if err = component.Render(context.Request.Context(), context.Writer); err != nil {
+	isError := err != nil
+	component := pages.Exhibitions(isAdmin, false, isError, exhibitions, suppliers)
+
+	if err := component.Render(ctx, context.Writer); err != nil {
 		log.Printf("error rendering template: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while rendering the page"})
 		return
 	}
+
 	context.Header("Content-Type", "text/html")
 }
 
