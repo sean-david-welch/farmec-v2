@@ -8,7 +8,8 @@ import (
 )
 
 type AdminMiddleware interface {
-	RouteMiddleware() gin.HandlerFunc
+	AdminRouteMiddleware() gin.HandlerFunc
+	AuthRouteMiddleware() gin.HandlerFunc
 	ViewMiddleware() gin.HandlerFunc
 	GetIsAdmin(context *gin.Context) bool
 	GetIsAuthenticated(context *gin.Context) bool
@@ -24,7 +25,7 @@ func NewAdminMiddleware(firebase *lib.Firebase) *AuthMiddlewareImpl {
 	}
 }
 
-func (middleware *AuthMiddlewareImpl) RouteMiddleware() gin.HandlerFunc {
+func (middleware *AuthMiddlewareImpl) AdminRouteMiddleware() gin.HandlerFunc {
 	return func(context *gin.Context) {
 		cookie, err := context.Cookie("access_token")
 		if err != nil {
@@ -53,6 +54,31 @@ func (middleware *AuthMiddlewareImpl) RouteMiddleware() gin.HandlerFunc {
 			return
 		}
 
+		context.Set("decodedToken", decodedToken)
+		context.Next()
+	}
+}
+
+func (middleware *AuthMiddlewareImpl) AuthRouteMiddleware() gin.HandlerFunc {
+	return func(context *gin.Context) {
+		cookie, err := context.Cookie("access_token")
+		if err != nil {
+			context.Set("isAuthenticated", false)
+			context.Set("isAdmin", false)
+			context.AbortWithStatusJSON(401, gin.H{"error": "Unauthorized, No token provided"})
+			return
+		}
+
+		decodedToken, isAdmin, err := middleware.firebase.VerifyToken(cookie)
+		if err != nil {
+			context.Set("isAuthenticated", false)
+			context.Set("isAdmin", false)
+			context.AbortWithStatusJSON(401, gin.H{"error": "Unauthorized, Invalid Token"})
+			return
+		}
+
+		context.Set("isAuthenticated", true)
+		context.Set("isAdmin", isAdmin)
 		context.Set("decodedToken", decodedToken)
 		context.Next()
 	}
