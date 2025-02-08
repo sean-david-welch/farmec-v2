@@ -31,6 +31,7 @@ sqlc:
 
 js:
 	@cp ./static/js/*.js ./public/static/js/
+	@cp ./static/fonts/* ./public/static/fonts/
 
 CSS_FILES := $(wildcard static/styles/*.css)
 CSS_OUTPUT := $(patsubst static/styles/%.css,public/static/styles/%.css,$(CSS_FILES))
