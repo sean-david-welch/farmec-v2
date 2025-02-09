@@ -1,7 +1,6 @@
-.env.production
+.env-production
 .tmp
 .env-development
-.env-production
 service-account.json
 /database
 /database/database.db
@@ -9,6 +8,6 @@ service-account.json
 /database/database.db-wal
 /tmp/main
 /tmp
-/.env.production
+/.env-production
 /.env
 node_modules
