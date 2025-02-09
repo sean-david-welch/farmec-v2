@@ -5,6 +5,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"github.com/sendgrid/sendgrid-go"
 	"github.com/sendgrid/sendgrid-go/helpers/mail"
+	"log"
 )
 
 type EmailClient interface {
@@ -17,6 +18,7 @@ type EmailClientImpl struct {
 }
 
 func NewEmailClient(secrets *Secrets) *EmailClientImpl {
+	log.Printf("Initializing email client with API key: %s", secrets.SendGridAPIKey)
 	client := sendgrid.NewSendClient(secrets.SendGridAPIKey)
 	return &EmailClientImpl{
 		secrets: secrets,
@@ -25,12 +27,12 @@ func NewEmailClient(secrets *Secrets) *EmailClientImpl {
 }
 
 func (service *EmailClientImpl) SendFormNotification(data *types.EmailData, form string) error {
-	fmt.Println("=== START EMAIL SENDING ===")
-	fmt.Printf("Form type: %s\n", form)
-	fmt.Printf("From email: %s\n", service.secrets.EmailUser)
-	fmt.Printf("To email: %s\n", service.secrets.EmailUser)
-	fmt.Printf("Sender name: %s\n", data.Name)
-	fmt.Printf("Sender email: %s\n", data.Email)
+	log.Println("=== START EMAIL SENDING ===")
+	log.Printf("Form type: %s", form)
+	log.Printf("From email: %s", service.secrets.EmailUser)
+	log.Printf("To email: %s", service.secrets.EmailUser)
+	log.Printf("Sender name: %s", data.Name)
+	log.Printf("Sender email: %s", data.Email)
 
 	from := mail.NewEmail("Farmec Ireland Ltd", service.secrets.EmailUser)
 	to := mail.NewEmail("Admin", service.secrets.EmailUser)
@@ -41,19 +43,19 @@ func (service *EmailClientImpl) SendFormNotification(data *types.EmailData, form
 
 	message := mail.NewSingleEmail(from, subject, to, plainContent, htmlContent)
 
-	fmt.Printf("Sending email with subject: %s\n", subject)
+	log.Printf("Sending email with subject: %s", subject)
 	response, err := service.client.Send(message)
 
 	if err != nil {
-		fmt.Printf("SendGrid ERROR: %v\n", err)
+		log.Printf("SendGrid ERROR: %v", err)
 		return fmt.Errorf("failed to send email: %w", err)
 	}
 
-	fmt.Printf("Email sent successfully. StatusCode: %d\n", response.StatusCode)
+	log.Printf("Email sent successfully. StatusCode: %d", response.StatusCode)
 	if response.Body != "" {
-		fmt.Printf("Response body: %s\n", response.Body)
+		log.Printf("Response body: %s", response.Body)
 	}
-	fmt.Println("=== END EMAIL SENDING ===")
+	log.Println("=== END EMAIL SENDING ===")
 
 	return nil
 }
