@@ -21,16 +21,24 @@ func (handler *ContactHandler) SendEmail(context *gin.Context) {
 	var data *types.EmailData
 
 	if err := context.ShouldBindJSON(&data); err != nil {
-		log.Printf("error in data - bad request: %v", err)
-		context.JSON(http.StatusBadRequest, gin.H{"error": "error in request format"})
+		log.Printf("Failed to parse request body: %v", err)
+		context.JSON(http.StatusBadRequest, gin.H{
+			"error":   "Invalid request format",
+			"details": err.Error(),
+		})
 		return
 	}
-	go func() {
-		err := handler.service.SendContactEmail(data)
-		if err != nil {
-			return
-		}
-	}()
 
-	context.JSON(http.StatusOK, gin.H{"message": "email was sent successfully"})
+	if err := handler.service.SendContactEmail(data); err != nil {
+		log.Printf("Failed to send email: %v", err)
+		context.JSON(http.StatusInternalServerError, gin.H{
+			"error":   "Failed to send email",
+			"message": "Please try again later or contact support",
+		})
+		return
+	}
+
+	context.JSON(http.StatusOK, gin.H{
+		"message": "Email sent successfully",
+	})
 }
