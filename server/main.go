@@ -69,12 +69,14 @@ func main() {
 	corsConfig.AllowCredentials = true
 
 	router := gin.Default()
-	smtp := lib.NewSTMPClient(secrets)
+	emailClient := lib.NewEmailClient(secrets)
+	authMiddleware := middleware.NewAuthMiddleware(firebase)
 	adminMiddleware := middleware.NewAdminMiddleware(firebase)
 	supplierMiddleware := middleware.NewSupplierCache(2 * time.Hour)
 
 	router.Use(gin.Logger(), gin.Recovery(), cors.New(corsConfig))
 	routes.InitRoutes(router, database, secrets, s3Client, embeddedFiles, firebase, smtp, adminMiddleware, supplierMiddleware)
+	routes.InitRoutes(router, database, secrets, s3Client, adminMiddleware, authMiddleware, firebase, emailClient)
 
 	if env == "production" {
 		gin.SetMode(gin.ReleaseMode)

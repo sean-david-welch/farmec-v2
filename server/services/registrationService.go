@@ -18,8 +18,12 @@ type RegistrationService interface {
 }
 
 type RegistrationServiceImpl struct {
-	smtpClient lib.SMTPClientImpl
-	repo       repository.RegistrationRepo
+	repo        repository.RegistrationRepo
+	emailClient *lib.EmailClientImpl
+}
+
+func NewRegistrationService(repo repository.RegistrationRepo, emailClient *lib.EmailClientImpl) *RegistrationServiceImpl {
+	return &RegistrationServiceImpl{repo: repo, emailClient: emailClient}
 }
 
 func (service *RegistrationServiceImpl) sendRegistrationEmail(registration *db.MachineRegistration) {
@@ -29,14 +33,10 @@ func (service *RegistrationServiceImpl) sendRegistrationEmail(registration *db.M
 		Message: registration.MachineModel,
 	}
 
-	if err := service.smtpClient.SendFormNotification(data, "Machine Registration"); err != nil {
+	if err := service.emailClient.SendFormNotification(data, "Machine Registration"); err != nil {
 		log.Printf("Failed to send registration email: %v", err)
 		return
 	}
-}
-
-func NewRegistrationService(repo repository.RegistrationRepo, smtpClient lib.SMTPClientImpl) *RegistrationServiceImpl {
-	return &RegistrationServiceImpl{repo: repo, smtpClient: smtpClient}
 }
 
 func (service *RegistrationServiceImpl) GetRegistrations(ctx context.Context) ([]types.MachineRegistration, error) {

@@ -7,15 +7,9 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/services"
 )
 
-func InitContact(router *gin.Engine, smtp *lib.SMTPClientImpl) {
-	service := services.NewContactService(smtp)
+func InitContact(router *gin.Engine, email *lib.EmailClientImpl) {
+	service := services.NewContactService(email)
 	handler := handlers.NewContactHandler(service)
 
-	ContactRoutes(router, handler)
-}
-
-func ContactRoutes(router *gin.Engine, handler *handlers.ContactHandler) {
-	contactGroup := router.Group("/api/contact")
-
-	contactGroup.POST("", handler.SendEmail)
+	router.POST("/api/contact", handler.SendEmail)
 }

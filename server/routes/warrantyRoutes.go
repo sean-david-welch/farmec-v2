@@ -12,8 +12,9 @@ import (
 )
 
 func InitWarranty(router *gin.Engine, database *sql.DB, adminMiddleware *middleware.AuthMiddlewareImpl, smtp *lib.SMTPClientImpl) {
+func InitWarranty(router *gin.Engine, database *sql.DB, authMiddleware *middleware.AuthMiddleware, emailClient *lib.EmailClientImpl) {
 	repo := repository.NewWarrantyRepo(database)
-	service := services.NewWarrantyService(repo, *smtp)
+	service := services.NewWarrantyService(repo, emailClient)
 	handler := handlers.NewWarrantyHandler(service)
 
 	WarrantyRoutes(router, handler, adminMiddleware)

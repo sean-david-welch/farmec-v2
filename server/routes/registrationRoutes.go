@@ -12,8 +12,9 @@ import (
 )
 
 func InitRegistrations(router *gin.Engine, database *sql.DB, adminMiddleware *middleware.AuthMiddlewareImpl, smtp *lib.SMTPClientImpl) {
+func InitRegistrations(router *gin.Engine, database *sql.DB, authMiddleware *middleware.AuthMiddleware, emailClient *lib.EmailClientImpl) {
 	repo := repository.NewRegistrationRepo(database)
-	service := services.NewRegistrationService(repo, *smtp)
+	service := services.NewRegistrationService(repo, emailClient)
 	handler := handlers.NewRegistrationHandler(service)
 
 	RegistrationRoutes(router, handler, adminMiddleware)
