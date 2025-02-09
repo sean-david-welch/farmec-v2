@@ -15,7 +15,7 @@ import (
 	"time"
 )
 
-//go:embed public/*
+//go:embed public/**/*
 var embeddedFiles embed.FS
 
 func main() {
