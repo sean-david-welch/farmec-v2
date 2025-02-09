@@ -1,9 +1,9 @@
 package services
 
 import (
+	"fmt"
 	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"github.com/sean-david-welch/farmec-v2/server/types"
-	"log"
 )
 
 type ContactService interface {
@@ -21,11 +21,12 @@ func NewContactService(smtpClient *lib.EmailClientImpl) *ContactServiceImpl {
 }
 
 func (service *ContactServiceImpl) SendContactEmail(data *types.EmailData) error {
-	if err := service.smtpClient.SendFormNotification(data, "Contact"); err != nil {
-		log.Printf("Failed to send email: %v", err)
-	} else {
-		log.Printf("Email sent successfully")
+	fmt.Println("ContactService: Starting email send")
+	err := service.smtpClient.SendFormNotification(data, "Contact")
+	if err != nil {
+		fmt.Printf("ContactService: Failed to send email: %v\n", err)
+		return err
 	}
-
+	fmt.Println("ContactService: Email sent successfully")
 	return nil
 }
