@@ -3,6 +3,7 @@ package services
 import (
 	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"github.com/sean-david-welch/farmec-v2/server/types"
+	"log"
 )
 
 type ContactService interface {
@@ -21,10 +22,12 @@ func NewContactService(smtpClient *lib.EmailClientImpl) *ContactServiceImpl {
 
 func (service *ContactServiceImpl) SendContactEmail(data *types.EmailData) error {
 	go func() {
-		err := service.smtpClient.SendFormNotification(data, "Contact")
-		if err != nil {
-			return
+		if err := service.smtpClient.SendFormNotification(data, "Contact"); err != nil {
+			log.Printf("Failed to send email: %v", err)
+		} else {
+			log.Printf("Email sent successfully")
 		}
 	}()
+
 	return nil
 }
