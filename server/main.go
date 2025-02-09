@@ -70,7 +70,7 @@ func main() {
 
 	router := gin.Default()
 	emailClient := lib.NewEmailClient(secrets)
-	adminMiddleware := middleware.NewAdminMiddleware(firebase)
+	adminMiddleware := middleware.NewAuthMiddleware(firebase)
 	supplierMiddleware := middleware.NewSupplierCache(2 * time.Hour)
 
 	router.Use(gin.Logger(), gin.Recovery(), cors.New(corsConfig))

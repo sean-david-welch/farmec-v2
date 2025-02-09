@@ -19,7 +19,7 @@ type AuthMiddlewareImpl struct {
 	firebase *lib.Firebase
 }
 
-func NewAdminMiddleware(firebase *lib.Firebase) *AuthMiddlewareImpl {
+func NewAuthMiddleware(firebase *lib.Firebase) *AuthMiddlewareImpl {
 	return &AuthMiddlewareImpl{
 		firebase: firebase,
 	}
