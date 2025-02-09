@@ -11,7 +11,7 @@ import (
 
 func InitRoutes(
 	router *gin.Engine, database *sql.DB, secrets *lib.Secrets, s3Client lib.S3Client, adminMiddleware *middleware.AdminMiddleware,
-	authMiddleware *middleware.AuthMiddleware, firebase *lib.Firebase, smtp *lib.EmailClientImpl,
+	authMiddleware *middleware.AuthMiddleware, firebase *lib.Firebase, emailClient *lib.EmailClientImpl,
 ) {
 	router.GET("/", func(c *gin.Context) {
 		c.JSON(200, gin.H{
@@ -56,13 +56,13 @@ func InitRoutes(
 	InitBlogs(router, database, s3Client, adminMiddleware)
 
 	// Misc Resources
-	InitWarranty(router, database, authMiddleware, smtp)
-	InitRegistrations(router, database, authMiddleware, smtp)
+	InitWarranty(router, database, authMiddleware, emailClient)
+	InitRegistrations(router, database, authMiddleware, emailClient)
 	InitLineItems(router, database, s3Client, adminMiddleware)
 	InitCarousel(router, database, s3Client, adminMiddleware)
 
 	// Util Resources
-	InitContact(router, smtp)
+	InitContact(router, emailClient)
 	InitCheckout(router, database, secrets)
 	InitPdfRenderer(router, adminMiddleware)
 	InitAuth(router, firebase, adminMiddleware)
