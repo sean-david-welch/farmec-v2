@@ -21,13 +21,11 @@ func NewContactService(smtpClient *lib.EmailClientImpl) *ContactServiceImpl {
 }
 
 func (service *ContactServiceImpl) SendContactEmail(data *types.EmailData) error {
-	go func() {
-		if err := service.smtpClient.SendFormNotification(data, "Contact"); err != nil {
-			log.Printf("Failed to send email: %v", err)
-		} else {
-			log.Printf("Email sent successfully")
-		}
-	}()
+	if err := service.smtpClient.SendFormNotification(data, "Contact"); err != nil {
+		log.Printf("Failed to send email: %v", err)
+	} else {
+		log.Printf("Email sent successfully")
+	}
 
 	return nil
 }
