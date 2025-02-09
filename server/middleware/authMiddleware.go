@@ -7,7 +7,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/lib"
 )
 
-type AdminMiddleware interface {
+type AuthMiddleware interface {
 	AdminRouteMiddleware() gin.HandlerFunc
 	AuthRouteMiddleware() gin.HandlerFunc
 	ViewMiddleware() gin.HandlerFunc
