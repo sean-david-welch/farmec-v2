@@ -6,7 +6,6 @@ toolchain go1.23.2
 
 require (
 	firebase.google.com/go v3.13.0+incompatible
-	github.com/DATA-DOG/go-sqlmock v1.5.2
 	github.com/aws/aws-sdk-go-v2 v1.32.2
 	github.com/aws/aws-sdk-go-v2/config v1.28.0
 	github.com/aws/aws-sdk-go-v2/credentials v1.17.41
@@ -19,7 +18,6 @@ require (
 	github.com/mattn/go-sqlite3 v1.14.24
 	github.com/sendgrid/sendgrid-go v3.16.0+incompatible
 	github.com/signintech/gopdf v0.28.0
-	github.com/stretchr/testify v1.9.0
 	github.com/stripe/stripe-go/v76 v76.25.0
 	google.golang.org/api v0.201.0
 )
@@ -58,7 +56,6 @@ require (
 	github.com/cloudwego/base64x v0.1.4 // indirect
 	github.com/cloudwego/iasm v0.2.0 // indirect
 	github.com/cncf/xds/go v0.0.0-20240905190251-b4127c9b8d78 // indirect
-	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/envoyproxy/go-control-plane v0.13.1 // indirect
 	github.com/envoyproxy/protoc-gen-validate v1.1.0 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
@@ -85,7 +82,6 @@ require (
 	github.com/phpdave11/gofpdi v1.0.14-0.20211212211723-1f10f9844311 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/planetscale/vtprotobuf v0.6.1-0.20240319094008-0393e58bdf10 // indirect
-	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/sendgrid/rest v2.6.9+incompatible // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.12 // indirect
