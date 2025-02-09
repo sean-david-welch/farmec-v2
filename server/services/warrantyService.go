@@ -18,12 +18,12 @@ type WarrantyService interface {
 }
 
 type WarrantyServiceImpl struct {
-	repo       repository.WarrantyRepo
-	smtpClient *lib.EmailClientImpl
+	repo        repository.WarrantyRepo
+	emailClient *lib.EmailClientImpl
 }
 
-func NewWarrantyService(repo repository.WarrantyRepo, smtpClient *lib.EmailClientImpl) *WarrantyServiceImpl {
-	return &WarrantyServiceImpl{repo: repo, smtpClient: smtpClient}
+func NewWarrantyService(repo repository.WarrantyRepo, emailClient *lib.EmailClientImpl) *WarrantyServiceImpl {
+	return &WarrantyServiceImpl{repo: repo, emailClient: emailClient}
 }
 
 func (service *WarrantyServiceImpl) sendWarrantyEmail(warranty *db.WarrantyClaim) {
@@ -33,7 +33,7 @@ func (service *WarrantyServiceImpl) sendWarrantyEmail(warranty *db.WarrantyClaim
 		Message: warranty.MachineModel,
 	}
 
-	if err := service.smtpClient.SendFormNotification(data, "Warranty"); err != nil {
+	if err := service.emailClient.SendFormNotification(data, "Warranty"); err != nil {
 		log.Printf("Failed to send warranty email: %v", err)
 		return
 	}
