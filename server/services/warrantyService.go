@@ -18,11 +18,11 @@ type WarrantyService interface {
 }
 
 type WarrantyServiceImpl struct {
-	smtpClient lib.EmailClientImpl
 	repo       repository.WarrantyRepo
+	smtpClient *lib.EmailClientImpl
 }
 
-func NewWarrantyService(repo repository.WarrantyRepo, smtpClient lib.EmailClientImpl) *WarrantyServiceImpl {
+func NewWarrantyService(repo repository.WarrantyRepo, smtpClient *lib.EmailClientImpl) *WarrantyServiceImpl {
 	return &WarrantyServiceImpl{repo: repo, smtpClient: smtpClient}
 }
 
