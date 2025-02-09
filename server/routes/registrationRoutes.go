@@ -11,8 +11,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/services"
 )
 
-func InitRegistrations(router *gin.Engine, database *sql.DB, adminMiddleware *middleware.AuthMiddlewareImpl, smtp *lib.SMTPClientImpl) {
-func InitRegistrations(router *gin.Engine, database *sql.DB, authMiddleware *middleware.AuthMiddleware, emailClient *lib.EmailClientImpl) {
+func InitRegistrations(router *gin.Engine, database *sql.DB, adminMiddleware *middleware.AuthMiddlewareImpl, emailClient *lib.EmailClientImpl) {
 	repo := repository.NewRegistrationRepo(database)
 	service := services.NewRegistrationService(repo, emailClient)
 	handler := handlers.NewRegistrationHandler(service)
