@@ -11,13 +11,12 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/services"
 )
 
-func InitWarranty(router *gin.Engine, database *sql.DB, adminMiddleware *middleware.AuthMiddlewareImpl, smtp *lib.SMTPClientImpl) {
-func InitWarranty(router *gin.Engine, database *sql.DB, authMiddleware *middleware.AuthMiddleware, emailClient *lib.EmailClientImpl) {
+func InitWarranty(router *gin.Engine, database *sql.DB, authMiddleware *middleware.AuthMiddlewareImpl, emailClient *lib.EmailClientImpl) {
 	repo := repository.NewWarrantyRepo(database)
 	service := services.NewWarrantyService(repo, emailClient)
 	handler := handlers.NewWarrantyHandler(service)
 
-	WarrantyRoutes(router, handler, adminMiddleware)
+	WarrantyRoutes(router, handler, authMiddleware)
 }
 
 func WarrantyRoutes(router *gin.Engine, handler *handlers.WarrantyHandler, adminMiddleware *middleware.AuthMiddlewareImpl) {
