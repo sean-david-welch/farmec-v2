@@ -11,11 +11,5 @@ func InitContact(router *gin.Engine, smtp *lib.EmailClientImpl) {
 	service := services.NewContactService(smtp)
 	handler := handlers.NewContactHandler(service)
 
-	ContactRoutes(router, handler)
-}
-
-func ContactRoutes(router *gin.Engine, handler *handlers.ContactHandler) {
-	contactGroup := router.Group("/api/contact")
-
-	contactGroup.POST("", handler.SendEmail)
+	router.POST("/api/contact", handler.SendEmail)
 }
