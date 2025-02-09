@@ -11,18 +11,18 @@ type ContactService interface {
 }
 
 type ContactServiceImpl struct {
-	emialClient *lib.EmailClientImpl
+	emailClient *lib.EmailClientImpl
 }
 
-func NewContactService(emialClient *lib.EmailClientImpl) *ContactServiceImpl {
+func NewContactService(emailClient *lib.EmailClientImpl) *ContactServiceImpl {
 	return &ContactServiceImpl{
-		emialClient: emialClient,
+		emailClient: emailClient,
 	}
 }
 
 func (service *ContactServiceImpl) SendContactEmail(data *types.EmailData) error {
 	fmt.Println("ContactService: Starting email send")
-	err := service.emialClient.SendFormNotification(data, "Contact")
+	err := service.emailClient.SendFormNotification(data, "Contact")
 	if err != nil {
 		fmt.Printf("ContactService: Failed to send email: %v\n", err)
 		return err
