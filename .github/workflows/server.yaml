@@ -13,10 +13,10 @@ jobs:
 
         steps:
             - name: Checkout code
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
 
             - name: Set up Go
-              uses: actions/setup-go@v3
+              uses: actions/setup-go@v5
               with:
                   go-version: '1.23.2'
 
@@ -33,7 +33,7 @@ jobs:
                   CGO_ENABLED: '1'
 
             - name: Upload artifact
-              uses: actions/upload-artifact@v3
+              uses: actions/upload-artifact@v4
               with:
                   name: go-binary
                   path: server/main
@@ -44,7 +44,7 @@ jobs:
 
         steps:
             - name: Download artifact
-              uses: actions/download-artifact@v3
+              uses: actions/download-artifact@v4
               with:
                   name: go-binary
 
