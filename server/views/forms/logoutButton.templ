@@ -1,0 +1,39 @@
+package forms
+
+script handleLogout() {
+    async function handleLogout(event) {
+        event.preventDefault();
+        try {
+            const response = await fetch('/api/auth/logout', {
+                credentials: 'include',
+            });
+            if (response.ok) {
+                window.location.href = '/';
+            }
+        } catch (error) {
+            console.error('Error logging out:', error);
+        }
+    }
+}
+
+templ LogoutButton(mode string) {
+    if mode == "button" {
+        <button
+            class="btnForm"
+            onclick={ handleLogout() }
+            hx-post="/api/auth/logout"
+            hx-redirect="/"
+        >
+            Logout
+        </button>
+    } else if mode == "listItem" {
+        <button
+            class="navDropItem"
+            onclick={ handleLogout() }
+            hx-post="/api/auth/logout"
+            hx-redirect="/"
+        >
+            Logout
+        </button>
+    }
+}
