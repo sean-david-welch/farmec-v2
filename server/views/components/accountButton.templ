@@ -1,0 +1,57 @@
+package components
+
+import "github.com/sean-david-welch/farmec-v2/server/types"
+
+templ accountButtonContent(isAuthenticated bool, isAdmin bool, lineItem *types.LineItem) {
+    <li class="navItem">
+        if isAuthenticated {
+            <p class="navListItem">Account</p>
+        } else {
+            <a href="/login" class="navListItem">Login</a>
+        }
+
+        <ul class="navDrop">
+            if isAdmin {
+                <li class="navDropItem">
+                    <a href="/users">Users</a>
+                </li>
+                <li class="navDropItem">
+                    <a href="/carousels">Carousels</a>
+                </li>
+                <li class="navDropItem">
+                    <a href="/line-items">Line Items</a>
+                </li>
+                <li class="navDropItem">
+                    <a href="/warranty">Warranty</a>
+                </li>
+                <li class="navDropItem">
+                    <a href="/registrations">Registrations</a>
+                </li>
+                if lineItem != nil {
+                    <li class="navDropItem">
+                        <a href={ templ.SafeURL("/checkout/" + lineItem.ID) }>Checkout</a>
+                    </li>
+                }
+                @LogoutButton("listItem")
+            } else if isAuthenticated {
+                <li class="navDropItem">
+                    <a href="/warranty">Warranty Claims</a>
+                </li>
+                <li class="navDropItem">
+                    <a href="/registrations">Registrations</a>
+                </li>
+                if lineItem != nil {
+                    <li class="navDropItem">
+                        <a href={ templ.SafeURL("/checkout/" + lineItem.ID) }>Checkout</a>
+                    </li>
+                }
+                @LogoutButton("listItem")
+            }
+        </ul>
+    </li>
+}
+
+// Main component that can be imported and used
+templ AccountButton(isAuthenticated bool, isAdmin bool, lineItem *types.LineItem) {
+    @accountButtonContent(isAuthenticated, isAdmin, lineItem)
+}
