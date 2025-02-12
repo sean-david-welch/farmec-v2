@@ -1,20 +1,19 @@
 package tem
 
-import "github.com/sean-david-welch/farmec-v2/server/views/forms"
 import "github.com/sean-david-welch/farmec-v2/server/views/components"
 import "github.com/sean-david-welch/farmec-v2/server/types"
 import "github.com/sean-david-welch/farmec-v2/server/views/layout"
 
 templ Timelines(timelines []types.Timeline, isAdmin bool, isError bool) {
-    if isError {
-        @layout.ErrorComponent()
-    } else {
-        <section id="timeline">
-            <div class="timeline">
-                for _, timeline := range timelines {
-                    @components.TimelineCard(isAdmin, timeline)
-                }
-            </div>
-        </section>
-    }
+	if isError {
+		@layout.ErrorComponent()
+	} else {
+		<section id="timeline">
+			<div class="timeline">
+				for _, timeline := range timelines {
+					@components.TimelineCard(isAdmin, timeline)
+				}
+			</div>
+		</section>
+	}
 }
