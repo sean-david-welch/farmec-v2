@@ -1,0 +1,45 @@
+package templates
+
+import "github.com/sean-david-welch/farmec-v2/server/views/forms"
+import "github.com/sean-david-welch/farmec-v2/server/views/components"
+
+type Employee struct {
+    ID           string
+    Name         string
+    Role         string
+    Email        string
+    ProfileImage string
+}
+
+templ Employees(employees []Employee, isAdmin bool) {
+    <section id="employees">
+        if isAdmin {
+            // @forms.EmployeeForm()
+        }
+        <div class="employees">
+            for _, employee := range employees {
+                <div class="employeeCard" key={ employee.ID }>
+                    <img
+                        src={ employee.ProfileImage }
+                        alt="/default.jpg"
+                        width="100"
+                        height="100"
+                    />
+                    <div class="employeeInfo">
+                        <h1 class="mainHeading">{ employee.Name }</h1>
+                        <p class="paragraph">{ employee.Role }</p>
+                    </div>
+                    <div class="employeeContact">
+                        <p class="paragraph">Email: { employee.Email }</p>
+                    </div>
+                    if isAdmin && employee.ID != "" {
+                        <div class="optionsBtn">
+                            // @forms.EmployeeForm(employee.ID, employee)
+                            @components.DeleteButton(employee.ID, "employees")
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </section>
+}
