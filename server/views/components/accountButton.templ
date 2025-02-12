@@ -2,7 +2,6 @@ package components
 
 import (
     "github.com/sean-david-welch/farmec-v2/server/types"
-    "github.com/sean-david-welch/farmec-v2/server/views/forms"
 )
 
 templ accountButtonContent(isAuthenticated bool, isAdmin bool, lineItem *types.LineItem) {
@@ -35,7 +34,7 @@ templ accountButtonContent(isAuthenticated bool, isAdmin bool, lineItem *types.L
                         <a href={ templ.SafeURL("/checkout/" + lineItem.ID) }>Checkout</a>
                     </li>
                 }
-                @forms.LogoutButton("listItem")
+                @LogoutButton("listItem")
             } else if isAuthenticated {
                 <li class="navDropItem">
                     <a href="/warranty">Warranty Claims</a>
@@ -48,7 +47,7 @@ templ accountButtonContent(isAuthenticated bool, isAdmin bool, lineItem *types.L
                         <a href={ templ.SafeURL("/checkout/" + lineItem.ID) }>Checkout</a>
                     </li>
                 }
-                @forms.LogoutButton("listItem")
+                @LogoutButton("listItem")
             }
         </ul>
     </li>
