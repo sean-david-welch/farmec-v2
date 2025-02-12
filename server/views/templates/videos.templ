@@ -1,42 +1,39 @@
 package templates
 
 import (
-    "github.com/sean-david-welch/farmec-v2/server/types"
-    "github.com/sean-david-welch/farmec-v2/server/views/components"
+	"github.com/sean-david-welch/farmec-v2/server/types"
+	"github.com/sean-david-welch/farmec-v2/server/views/components"
 )
 
 type Video struct {
-    ID      string
-    Title   string
-    VideoID string `db:"video_id"`
+	ID      string
+	Title   string
+	VideoID string `db:"video_id"`
 }
 
 templ Videos(videos []Video, isAdmin bool, suppliers []types.Supplier) {
-    <section id="videos">
-        <h1 class="sectionHeading">Videos</h1>
-
-        if isAdmin {
-        }
-
-        <div class="videoGrid">
-            for _, video := range videos {
-                <div class="videoCard" id={ video.Title }>
-                    <h1 class="mainHeading">{ video.Title }</h1>
-                    <iframe
-                        width="425"
-                        height="315"
-                        class="video"
-                        src={ templ.SafeURL("https://www.youtube.com/embed/" + video.VideoID) }
-                        allowfullscreen
-                    />
-
-                    if isAdmin && video.ID != "" {
-                        <div class="optionsBtn">
-                            @components.DeleteButton(video.ID, "videos")
-                        </div>
-                    }
-                </div>
-            }
-        </div>
-    </section>
+	<section id="videos">
+		<h1 class="sectionHeading">Videos</h1>
+		if isAdmin {
+		}
+		<div class="videoGrid">
+			for _, video := range videos {
+				<div class="videoCard" id={ video.Title }>
+					<h1 class="mainHeading">{ video.Title }</h1>
+					<iframe
+						width="425"
+						height="315"
+						class="video"
+						src={ templ.SafeURL("https://www.youtube.com/embed/" + video.VideoID) }
+						allowfullscreen
+					></iframe>
+					if isAdmin && video.ID != "" {
+						<div class="optionsBtn">
+							@components.DeleteButton(video.ID, "videos")
+						</div>
+					}
+				</div>
+			}
+		</div>
+	</section>
 }
