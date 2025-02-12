@@ -1,44 +1,40 @@
 package templates
 
-import "github.com/sean-david-welch/farmec-v2/server/views/forms"
 import "github.com/sean-david-welch/farmec-v2/server/views/components"
 import "github.com/sean-david-welch/farmec-v2/server/types"
 
 templ Machines(machines []types.Machine, suppliers []types.Supplier, isAdmin bool) {
-    <section id="machines">
-        <h1 class="sectionHeading">Machinery</h1>
-
-        for _, machine := range machines {
-            <div class="machineCard" id={ machine.Name }>
-                <div class="machineGrid">
-                    <img
-                        src={ machine.MachineImage }
-                        alt={ (machine.Name + " or Default Image") }
-                        class="machineImage"
-                        width="600"
-                        height="600"
-                    />
-                    <div class="machineInfo">
-                        <h1 class="mainHeading">{ machine.Name }</h1>
-                        <p class="paragraph">{ *machine.Description }</p>
-                        <a href={ templ.SafeURL("/machines/" + machine.ID) } class="btn">
-                            View Products
-                            <img src="/public/icons/right-to-bracket.svg" alt="View" class="icon"/>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            if isAdmin && machine.ID != "" {
-                <div class="optionsBtn">
-                    // @forms.MachineForm(machine.ID, machine, suppliers)
-                    @components.DeleteButton(machine.ID, "machines")
-                </div>
-            }
-        }
-
-        if isAdmin {
-            // @forms.MachineForm("", nil, suppliers)
-        }
-    </section>
+	<section id="machines">
+		<h1 class="sectionHeading">Machinery</h1>
+		for _, machine := range machines {
+			<div class="machineCard" id={ machine.Name }>
+				<div class="machineGrid">
+					<img
+						src={ machine.MachineImage }
+						alt={ (machine.Name + " or Default Image") }
+						class="machineImage"
+						width="600"
+						height="600"
+					/>
+					<div class="machineInfo">
+						<h1 class="mainHeading">{ machine.Name }</h1>
+						<p class="paragraph">{ *machine.Description }</p>
+						<a href={ templ.SafeURL("/machines/" + machine.ID) } class="btn">
+							View Products
+							<img src="/public/icons/right-to-bracket.svg" alt="View" class="icon"/>
+						</a>
+					</div>
+				</div>
+			</div>
+			if isAdmin && machine.ID != "" {
+				<div class="optionsBtn">
+					// @forms.MachineForm(machine.ID, machine, suppliers)
+					@components.DeleteButton(machine.ID, "machines")
+				</div>
+			}
+		}
+		if isAdmin {
+			// @forms.MachineForm("", nil, suppliers)
+		}
+	</section>
 }
