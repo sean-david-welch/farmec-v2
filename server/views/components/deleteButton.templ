@@ -18,13 +18,13 @@ script deleteResource(id string, resourceKey string) {
 }
 
 templ DeleteButton(id string, resourceKey string) {
-    <button
-        class="btnDelete"
-        onclick={ deleteResource(id, resourceKey) }
-        hx-delete={ "/api/" + resourceKey + "/" + id }
-        hx-trigger="click"
-        hx-confirm="Are you sure you want to delete this item?"
-    >
-        Delete
-    </button>
+	<button
+		class="btnDelete"
+		onclick={ deleteResource(id, resourceKey) }
+		hx-delete={ "/api/" + resourceKey + "/" + id }
+		hx-trigger="click"
+		hx-confirm="Are you sure you want to delete this item?"
+	>
+		Delete
+	</button>
 }
