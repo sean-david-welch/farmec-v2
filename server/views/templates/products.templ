@@ -1,0 +1,46 @@
+package templates
+
+import "github.com/sean-david-welch/farmec-v2/server/views/forms"
+import "github.com/sean-david-welch/farmec-v2/server/views/components"
+import "github.com/sean-david-welch/farmec-v2/server/types"
+
+templ Products(id string, isAdmin bool, products []types.Product, machine *types.Machine) {
+	<section id="products">
+		<div class="productGrid">
+			for _, product := range products {
+				<div class="productCard" id={ product.Name }>
+					<h1 class="mainHeading">{ product.Name }</h1>
+					if product.ProductLink != nil {
+						<a href={ product.ProductLink } target="_blank" rel="noopener noreferrer">
+							<img
+								src={ product.ProductImage }
+								alt="/default.jpg"
+								class="productImage"
+								width="500"
+								height="500"
+							/>
+						</a>
+					} else {
+						<a href="#" target="_blank" rel="noopener noreferrer">
+							<img
+								src={ *product.ProductImage }
+								alt="/default.jpg"
+								class="productImage"
+								width="500"
+								height="500"
+								onError={ handleImageError }
+							/>
+						</a>
+					}
+					<p class="paragraph">{ *product.Description }</p>
+					if isAdmin && *product.ID != "" {
+						<div class="optionsBtn">
+							@forms.ProductForm(*product.ID, product, machine)
+							@components.DeleteButton(*product.ID, "products")
+						</div>
+					}
+				</div>
+			}
+		</div>
+	</section>
+}
