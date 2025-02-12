@@ -3,6 +3,7 @@ package pages
 import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"github.com/sean-david-welch/farmec-v2/server/views"
+	"github.com/sean-david-welch/farmec-v2/server/views/layout"
 )
 
 func getExhibitionsMetadata() views.Metadata {
@@ -26,7 +27,7 @@ templ exhibitionsContent(isAdmin bool, isError bool, exhibitions []types.Exhibit
         <h1 class="subHeading">Check out upcoming events related to Farmec</h1>
 
         if isError {
-            <div class="error">Error loading exhibitions</div>
+            @layout.ErrorComponent()
         } else {
             <div class="exhibitions">
                 for _, exhibition := range exhibitions {
