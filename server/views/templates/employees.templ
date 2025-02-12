@@ -1,16 +1,9 @@
 package templates
 
+import "github.com/sean-david-welch/farmec-v2/server/types"
 import "github.com/sean-david-welch/farmec-v2/server/views/components"
 
-type Employee struct {
-	ID           string
-	Name         string
-	Role         string
-	Email        string
-	ProfileImage string
-}
-
-templ Employees(employees []Employee, isAdmin bool) {
+templ Employees(employees []types.Employee, isAdmin bool) {
 	<section id="employees">
 		if isAdmin {
 			// @forms.EmployeeForm()
