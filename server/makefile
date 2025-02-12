@@ -14,7 +14,7 @@ run: build
 test:
 	@go test -v ./tests/...
 
-dev:
+dev: js tailwind templ
 	ENV=development PORT=8000 air
 
 database-down:
