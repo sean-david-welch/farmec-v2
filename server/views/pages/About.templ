@@ -38,9 +38,7 @@ templ aboutContent(isAdmin bool, isError bool, employees []types.Employee, timel
 				increased contribution to the Irish Economy.
 			</p>
 		</div>
-		if isAdmin {
-			// @templates.TimelineForm()
-		}
+		// if isAdmin { @templates.TimelineForm() }
 		@templates.Timelines(timelines, isAdmin, isError)
 	</section>
 }
