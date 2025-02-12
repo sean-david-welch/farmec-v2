@@ -1,0 +1,70 @@
+package templates
+
+import "github.com/sean-david-welch/farmec-v2/server/views/forms"
+import "github.com/sean-david-welch/farmec-v2/server/views/components"
+
+templ Contact() {
+    <section id="contact">
+        <h1 class="sectionHeading">Contact Us:</h1>
+        <div class="contactSection">
+            // contact form here
+            @components.Map("api key")
+            <div class="infoSection">
+                <h1 class="subHeading">Business Information:</h1>
+                <div class="info">
+                    <div class="infoItem">
+                        Opening Hours:
+                        <br/>
+                        <span class="infoItemText">Monday - Friday: 9am - 5:30pm</span>
+                    </div>
+                    <div class="infoItem">
+                        Telephone:
+                        <br/>
+                        <span class="infoItemText">
+                            <a href="tel:01 825 9289">01 825 9289</a>
+                        </span>
+                    </div>
+                    <div class="infoItem">
+                        International:
+                        <br/>
+                        <span class="infoItemText">
+                            <a href="tel:+353 1 825 9289">+353 1 825 9289</a>
+                        </span>
+                    </div>
+                    <div class="infoItem">
+                        Email:
+                        <br/>
+                        <span class="infoItemText">Info@farmec.ie</span>
+                    </div>
+                    <div class="infoItem">
+                        Address:
+                        <br/>
+                        <span class="infoItemText">Clonross, Drumree, Co. Meath, A85PK30</span>
+                    </div>
+                    <div class="infoItem">
+                        <div class="socialLinks">
+                            <a
+                                class="socials"
+                                href="https://www.facebook.com/FarmecIreland/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label="Visit our Facebook page"
+                            >
+                                <img src="/public/icons/facebook.svg" alt="Facebook" class="icon"/>
+                            </a>
+                            <a
+                                class="socials"
+                                href="https://twitter.com/farmec1?lang=en"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label="Visit our Twitter page"
+                            >
+                                <img src="/public/icons/twitter.svg" alt="Twitter" class="icon"/>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
