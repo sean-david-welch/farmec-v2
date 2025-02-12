@@ -3,19 +3,18 @@ package components
 import "github.com/sean-david-welch/farmec-v2/server/types"
 
 templ TimelineCard(isAdmin bool, timeline types.Timeline) {
-    <div class="timelineCard">
-        <h1 class="mainHeading">{ timeline.Title }</h1>
-        <h1 class="paragraph">
-            <img src="/public/icons/clock.svg" alt="Clock" class="clockIcon"/>
-            -{ timeline.Date }
-        </h1>
-        <p class="paragraph">{ timeline.Body }</p>
-
-        if isAdmin && timeline.ID != "" {
-            <div class="optionsBtn">
-                // @forms.TimelineForm(timeline.ID, timeline)
-                @DeleteButton(timeline.ID, "timelines")
-            </div>
-        }
-    </div>
+	<div class="timelineCard">
+		<h1 class="mainHeading">{ timeline.Title }</h1>
+		<h1 class="paragraph">
+			<img src="/public/icons/clock.svg" alt="Clock" class="clockIcon"/>
+			-{ timeline.Date }
+		</h1>
+		<p class="paragraph">{ timeline.Body }</p>
+		if isAdmin && timeline.ID != "" {
+			<div class="optionsBtn">
+				// @forms.TimelineForm(timeline.ID, timeline)
+				@DeleteButton(timeline.ID, "timelines")
+			</div>
+		}
+	</div>
 }
