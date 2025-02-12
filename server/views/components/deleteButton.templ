@@ -1,0 +1,30 @@
+package components
+
+script deleteResource(id string, resourceKey string) {
+    async function handleDelete() {
+        try {
+            const response = await fetch(`/api/${resourceKey}/${id}`, {
+                method: 'DELETE',
+                credentials: 'include',
+            });
+
+            if (response.ok) {
+                window.location.reload();
+            }
+        } catch (error) {
+            console.error('Error deleting resource:', error);
+        }
+    }
+}
+
+templ DeleteButton(id string, resourceKey string) {
+    <button
+        class="btnDelete"
+        onclick={ deleteResource(id, resourceKey) }
+        hx-delete={ "/api/" + resourceKey + "/" + id }
+        hx-trigger="click"
+        hx-confirm="Are you sure you want to delete this item?"
+    >
+        Delete
+    </button>
+}
