@@ -8,7 +8,7 @@ package templates
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-import "github.com/sean-david-welch/farmec-v2/server/views/forms"
+// import "github.com/sean-david-welch/farmec-v2/server/views/forms"
 import "github.com/sean-david-welch/farmec-v2/server/views/components"
 
 func Contact() templ.Component {
