@@ -1,0 +1,100 @@
+package pages
+
+import (
+    "github.com/sean-david-welch/farmec-v2/server/types"
+    "github.com/sean-david-welch/farmec-v2/server/views"
+    "github.com/sean-david-welch/farmec-v2/server/views/templates"
+)
+
+func getSuppliersMetadata() views.Metadata {
+    return views.Metadata{
+        Title:         "Suppliers - Farmec Ireland",
+        Description:   "Browse our Suppliers and learn more about the machines we offer.",
+        OgTitle:       "Suppliers - Farmec Ireland",
+        OgDescription: "Browse our Suppliers and learn more about the machines we offer.",
+        OgImage:       "https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp",
+        OgUrl:         "https://www.farmec.ie/suppliers",
+        TwitterTitle:  "Suppliers - Farmec Ireland",
+        TwitterDesc:   "Browse our Suppliers and learn more about the machines we offer.",
+        TwitterImage:  "https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp",
+        CanonicalUrl:  "https://www.farmec.ie/suppliers",
+    }
+}
+
+templ suppliersContent(isAdmin bool, suppliers []types.Supplier) {
+    <section id="suppliers">
+        <h1 class="sectionHeading">Suppliers</h1>
+
+        if isAdmin {
+            @templates.SupplierForm()
+        }
+
+        if len(suppliers) > 0 {
+            <div class="index">
+                <h1 class="indexHeading">Suppliers:</h1>
+                for _, supplier := range suppliers {
+                    <a href={ templ.SafeURL("#" + supplier.Name) }>
+                        <h1 class="indexItem">{ supplier.Name }</h1>
+                    </a>
+                }
+            </div>
+        }
+
+        for _, supplier := range suppliers {
+            <div class="supplierCard" id={ supplier.Name }>
+                <div class="supplierGrid">
+                    <div class="supplierHead">
+                        <h1 class="mainHeading">{ supplier.Name }</h1>
+                        <img
+                            src={ supplier.LogoImage }
+                            alt="Supplier logo"
+                            class="supplierLogo"
+                            width="200"
+                            height="200"
+                            onerror="this.src='/default.jpg'"
+                        />
+
+                        @templates.SocialLinks(
+                            supplier.SocialFacebook,
+                            supplier.SocialTwitter,
+                            supplier.SocialInstagram,
+                            supplier.SocialLinkedin,
+                            supplier.SocialWebsite,
+                            supplier.SocialYoutube,
+                        )
+                    </div>
+                    <img
+                        src={ supplier.MarketingImage }
+                        alt="Marketing"
+                        class="supplierImage"
+                        width="550"
+                        height="550"
+                        onerror="this.src='/default.jpg'"
+                    />
+                </div>
+                <div class="supplierInfo">
+                    <p class="supplierDescription">{ supplier.Description }</p>
+                    <a href={ templ.SafeURL("/suppliers/" + supplier.ID) } class="btn">
+                        Learn More
+                    </a>
+                </div>
+            </div>
+
+            if isAdmin && supplier.ID != "" {
+                <div class="optionsBtn">
+                    @templates.SupplierForm(supplier.ID, supplier)
+                    @templates.DeleteButton(supplier.ID, "suppliers")
+                </div>
+            }
+        }
+    </section>
+}
+
+templ Suppliers(isAdmin bool, suppliers []types.Supplier) {
+    @views.Base(
+        suppliersContent(isAdmin, suppliers),
+        getSuppliersMetadata(),
+        []string{"suppliers.css"},
+        suppliers,
+    )
+}
