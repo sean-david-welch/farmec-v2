@@ -1,0 +1,84 @@
+package pages
+
+import (
+    "github.com/sean-david-welch/farmec-v2/server/types"
+    "github.com/sean-david-welch/farmec-v2/server/views"
+	"github.com/sean-david-welch/farmec-v2/server/views/components"
+)
+
+func getBlogsMetadata() views.Metadata {
+    return views.Metadata{
+        Title:         "Latest Blog Posts - Farmec Ireland",
+        Description:   "Check out the latest blog posts from Farmec Ireland. Stay up to date with our latest news and insights.",
+        OgTitle:       "Latest Blog Posts - Farmec Ireland",
+        OgDescription: "Check out the latest blog posts from Farmec Ireland. Stay up to date with our latest news and insights.",
+        OgImage:       "https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp",
+        OgUrl:         "https://www.farmec.ie/blogs",
+        TwitterTitle:  "Latest Blog Posts - Farmec Ireland",
+        TwitterDesc:   "Check out the latest blog posts from Farmec Ireland. Stay up to date with our latest news and insights.",
+        TwitterImage:  "https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp",
+        CanonicalUrl:  "https://www.farmec.ie/blogs",
+    }
+}
+
+templ blogsContent(isAdmin bool, blogs []types.Blog) {
+    <section id="blog">
+        <h1 class="sectionHeading">Check out our Latest Blog Posts</h1>
+        <p class="subHeading">Read our latest news</p>
+
+        if isAdmin {
+            // @templates.BlogForm()
+        }
+
+        if len(blogs) > 0 {
+            <div class="index">
+                <h1 class="indexHeading">Blogs</h1>
+                for _, blog := range blogs {
+                    <a href={ templ.SafeURL("#" + blog.Title) }>
+                        <h1 class="indexItem">{ blog.Title }</h1>
+                    </a>
+                }
+            </div>
+        }
+
+        for _, blog := range blogs {
+            <div class="blogGrid" id={ blog.Title }>
+                <div class="blogCard">
+                    <img
+                        class="blogImage"
+                        src={ blog.MainImage }
+                        alt="Blog image"
+                        width="300"
+                        height="300"
+                        onerror="this.src='/default.jpg'"
+                    />
+                    <div class="blogLink">
+                        <h1 class="mainHeading">{ blog.Title }</h1>
+                        <p class="paragraph">{ blog.Subheading }</p>
+                        <p class="paragraph">{ blog.Body }</p>
+                        <a href={ templ.SafeURL("/blogs/" + blog.ID) } class="btnForm">
+                            Read More
+                            <i class="fas fa-right-to-bracket"></i>
+                        </a>
+                    </div>
+                </div>
+
+                if isAdmin && blog.ID != "" {
+                    <div class="optionsBtn">
+                        // @templates.BlogForm(blog.ID, blog)
+                        @components.DeleteButton(blog.ID, "blogs")
+                    </div>
+                }
+            </div>
+        }
+    </section>
+}
+
+templ Blogs(isAdmin bool, blogs []types.Blog, suppliers []types.Supplier) {
+    @views.Base(
+        blogsContent(isAdmin, blogs),
+        getBlogsMetadata(),
+        []string{"blogs.css"},
+        suppliers,
+    )
+}
