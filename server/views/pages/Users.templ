@@ -25,7 +25,7 @@ templ usersContent(isAdmin bool, users []types.User) {
                         </h1>
                         <div class="optionsBtn">
                             // @templates.RegisterForm(user.RawID)
-                            @components.DeleteButton(user.RawID, "users")
+                            @components.DeleteButton(user.RawId, "users")
                         </div>
                     </div>
                 }
