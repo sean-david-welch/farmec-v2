@@ -1,0 +1,47 @@
+package pages
+
+import (
+    "github.com/sean-david-welch/farmec-v2/server/types"
+    "github.com/sean-david-welch/farmec-v2/server/views"
+	"github.com/sean-david-welch/farmec-v2/server/views/components"
+)
+
+templ usersContent(isAdmin bool, users []types.User) {
+    <section id="users">
+        <div class="usersSection">
+            <h1 class="sectionHeading">Users</h1>
+            // @templates.RegisterForm()
+
+            if isAdmin {
+                for _, user := range users {
+                    <div class="productView">
+                        <h1 class="mainHeading">
+                            { user.Email } --
+                            if user.CustomClaims.Admin {
+                                Admin
+                            } else {
+                                Not Admin
+                            }
+                        </h1>
+                        <div class="optionsBtn">
+                            // @templates.RegisterForm(user.RawID)
+                            @components.DeleteButton(user.RawID, "users")
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </section>
+}
+
+templ Users(isAdmin bool, users []types.User, suppliers []types.Supplier) {
+    @views.Base(
+        usersContent(isAdmin, users),
+        views.Metadata{
+            Title: "User Management - Farmec Ireland",
+            Description: "Manage user accounts and permissions",
+        },
+        []string{"account.css"},
+        suppliers,
+    )
+}
