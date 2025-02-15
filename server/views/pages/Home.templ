@@ -1,0 +1,50 @@
+package pages
+
+import (
+    "github.com/sean-david-welch/farmec-v2/server/types"
+    "github.com/sean-david-welch/farmec-v2/server/views"
+    "github.com/sean-david-welch/farmec-v2/server/views/templates"
+)
+
+func getHomeMetadata() views.Metadata {
+    return views.Metadata{
+        Title:         "Home - Farmec Ireland",
+        Description:   "Welcome to Farmec Ireland Ltd. Importers and Distributors of High quality Farm and Amenity Machinery",
+        OgTitle:       "Home - Farmec Ireland",
+        OgDescription: "Discover Farmec's staff, history, and vision for the future.",
+        OgImage:       "https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp",
+        OgUrl:         "https://www.farmec.ie",
+        TwitterTitle:  "Home - Farmec Ireland",
+        TwitterDesc:   "Welcome to Farmec Ireland Ltd. Importers and Distributors of High quality Farm and Amenity Machinery",
+        TwitterImage:  "https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp",
+        CanonicalUrl:  "https://www.farmec.ie",
+    }
+}
+
+templ homeContent(carousels []types.Carousel) {
+    <section id="Home">
+        <div class="home">
+            @templates.Carousel(getCarouselImages(carousels))
+            @templates.Displays()
+            @templates.Contact()
+        </div>
+    </section>
+}
+
+templ Home(carousels []types.Carousel, suppliers []types.Supplier) {
+    @views.Base(
+        homeContent(carousels),
+        getHomeMetadata(),
+        []string{"home.css"},
+        suppliers,
+    )
+}
+
+// Helper function to extract images from carousels
+func getCarouselImages(carousels []types.Carousel) []string {
+    images := make([]string, len(carousels))
+    for i, carousel := range carousels {
+        images[i] = carousel.Image
+    }
+    return images
+}
