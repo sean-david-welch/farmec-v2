@@ -26,12 +26,12 @@ templ sparePartsContent(isAdmin bool, suppliers []types.Supplier) {
         <h1 class="sectionHeading">Spare-Parts</h1>
 
         if isAdmin && len(suppliers) > 0 {
-            @templates.SparePartForm(suppliers)
+            // @templates.SparePartForm(suppliers)
         }
 
         <div class="optionsBtn">
-            @templates.WarrantyForm()
-            @templates.RegistrationForm()
+            // @templates.WarrantyForm()
+            // @templates.RegistrationForm()
         </div>
 
         if len(suppliers) > 0 {
