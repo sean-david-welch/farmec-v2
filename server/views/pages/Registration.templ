@@ -1,0 +1,45 @@
+package pages
+
+import (
+    "github.com/sean-david-welch/farmec-v2/server/types"
+    "github.com/sean-david-welch/farmec-v2/server/views"
+    "github.com/sean-david-welch/farmec-v2/server/views/templates"
+)
+
+templ registrationsContent(isAdmin bool, isAuthenticated bool, registrations []types.MachineRegistration) {
+    <section id="registrations">
+        if isAuthenticated {
+            <h1 class="sectionHeading">Machine Registration:</h1>
+            // @templates.RegistrationForm()
+
+            if isAdmin && len(registrations) > 0 {
+                for _, registration := range registrations {
+                    <div class="warrantyView">
+                        <h1 class="mainHeading">
+                            { registration.DealerName } -- { registration.OwnerName }
+                        </h1>
+                        <a href={ templ.SafeURL("/registration/" + registration.ID) } class="btnForm">
+                            View Claim
+                        </a>
+                    </div>
+                }
+            }
+        } else {
+            <div class="loginSection">
+                // @templates.LoginForm()
+            </div>
+        }
+    </section>
+}
+
+templ Registrations(isAdmin bool, isAuthenticated bool, registrations []types.MachineRegistration, suppliers []types.Supplier) {
+    @views.Base(
+        registrationsContent(isAdmin, isAuthenticated, registrations),
+        views.Metadata{
+            Title: "Machine Registrations - Farmec Ireland",
+            Description: "Register your machine and view registrations",
+        },
+        []string{"account.css"},
+        suppliers,
+    )
+}
