@@ -35,7 +35,15 @@ type LoginAuth struct {
 	Password string `json:"password"`
 }
 
+type CustomClaims struct {
+	Admin bool `json:"admin"`
+}
+
 type User struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
+	Username     string       `json:"username"`
+	Password     string       `json:"password"`
+	Email        string       `json:"email"`
+	RawId        string       `json:"rawId"`
+	ProviderId   string       `json:"ProviderId"`
+	CustomClaims CustomClaims `json:"customClaim"`
 }
