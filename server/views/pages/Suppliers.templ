@@ -4,6 +4,7 @@ import (
     "github.com/sean-david-welch/farmec-v2/server/types"
     "github.com/sean-david-welch/farmec-v2/server/views"
     "github.com/sean-david-welch/farmec-v2/server/views/templates"
+	"github.com/sean-david-welch/farmec-v2/server/views/components"
 )
 
 func getSuppliersMetadata() views.Metadata {
@@ -25,9 +26,7 @@ templ suppliersContent(isAdmin bool, suppliers []types.Supplier) {
     <section id="suppliers">
         <h1 class="sectionHeading">Suppliers</h1>
 
-        if isAdmin {
-            @templates.SupplierForm()
-        }
+        // if isAdmin { @templates.SupplierForm() }
 
         if len(suppliers) > 0 {
             <div class="index">
@@ -54,14 +53,7 @@ templ suppliersContent(isAdmin bool, suppliers []types.Supplier) {
                             onerror="this.src='/default.jpg'"
                         />
 
-                        @templates.SocialLinks(
-                            supplier.SocialFacebook,
-                            supplier.SocialTwitter,
-                            supplier.SocialInstagram,
-                            supplier.SocialLinkedin,
-                            supplier.SocialWebsite,
-                            supplier.SocialYoutube,
-                        )
+                         // @templates.SocialLinks( supplier.SocialFacebook, supplier.SocialTwitter, supplier.SocialInstagram, supplier.SocialLinkedin, supplier.SocialWebsite, supplier.SocialYoutube )
                     </div>
                     <img
                         src={ supplier.MarketingImage }
@@ -82,8 +74,8 @@ templ suppliersContent(isAdmin bool, suppliers []types.Supplier) {
 
             if isAdmin && supplier.ID != "" {
                 <div class="optionsBtn">
-                    @templates.SupplierForm(supplier.ID, supplier)
-                    @templates.DeleteButton(supplier.ID, "suppliers")
+                    // @templates.SupplierForm(supplier.ID, supplier)
+                    @components.DeleteButton(supplier.ID, "suppliers")
                 </div>
             }
         }
