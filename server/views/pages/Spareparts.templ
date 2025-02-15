@@ -1,0 +1,82 @@
+package pages
+
+import (
+    "github.com/sean-david-welch/farmec-v2/server/types"
+    "github.com/sean-david-welch/farmec-v2/server/views"
+    "github.com/sean-david-welch/farmec-v2/server/views/templates"
+)
+
+func getSparePartsMetadata() views.Metadata {
+    return views.Metadata{
+        Title:         "Spare Parts - Farmec Ireland",
+        Description:   "Browse spare parts from various suppliers and ensure your machines are always operational. Farmec offers a wide range of spare parts for agricultural machinery.",
+        OgTitle:       "Spare Parts - Farmec Ireland",
+        OgDescription: "Browse spare parts from various suppliers and ensure your machines are always operational. Farmec offers a wide range of spare parts for agricultural machinery.",
+        OgImage:       "https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp",
+        OgUrl:         "https://www.farmec.ie/spareparts",
+        TwitterTitle:  "Spare Parts - Farmec Ireland",
+        TwitterDesc:   "Browse spare parts from various suppliers and ensure your machines are always operational. Farmec offers a wide range of spare parts for agricultural machinery.",
+        TwitterImage:  "https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp",
+        CanonicalUrl:  "https://www.farmec.ie/spareparts",
+    }
+}
+
+templ sparePartsContent(isAdmin bool, suppliers []types.Supplier) {
+    <section id="SpareParts">
+        <h1 class="sectionHeading">Spare-Parts</h1>
+
+        if isAdmin && len(suppliers) > 0 {
+            @templates.SparePartForm(suppliers)
+        }
+
+        <div class="optionsBtn">
+            @templates.WarrantyForm()
+            @templates.RegistrationForm()
+        </div>
+
+        if len(suppliers) > 0 {
+            <div class="index">
+                <h1 class="indexHeading">Suppliers</h1>
+                for _, supplier := range suppliers {
+                    <a href={ templ.SafeURL("#" + supplier.Name) }>
+                        <h1 class="indexItem">{ supplier.Name }</h1>
+                    </a>
+                }
+            </div>
+        }
+
+        for _, supplier := range suppliers {
+            <div class="supplierCard" id={ supplier.Name }>
+                <h1 class="mainHeading">{ supplier.Name }</h1>
+                <img
+                    src={ defaultImage(supplier.LogoImage, "/default.jpg") }
+                    class="partsImage"
+                    alt="Supplier logo"
+                    width="200"
+                    height="200"
+                />
+                <a href={ templ.SafeURL("/spareparts/" + supplier.ID) } class="btn">
+                    Spare-Parts
+                    <i class="fas fa-right-to-bracket"></i>
+                </a>
+            </div>
+        }
+    </section>
+}
+
+// Helper function to handle default image
+func defaultImage(image string, defaultImg string) string {
+    if image == "" {
+        return defaultImg
+    }
+    return image
+}
+
+templ SpareParts(isAdmin bool, suppliers []types.Supplier) {
+    @views.Base(
+        sparePartsContent(isAdmin, suppliers),
+        getSparePartsMetadata(),
+        []string{"suppliers.css"},
+        suppliers,
+    )
+}
