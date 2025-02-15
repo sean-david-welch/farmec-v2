@@ -1,0 +1,53 @@
+package pages
+
+import (
+    "github.com/sean-david-welch/farmec-v2/server/types"
+    "github.com/sean-david-welch/farmec-v2/server/views"
+	"github.com/sean-david-welch/farmec-v2/server/views/components"
+)
+
+templ carouselAdminContent(isAdmin bool, carousels []types.Carousel) {
+    <section id="carousel">
+        if len(carousels) == 0 {
+            <h1>No models found</h1>
+            if isAdmin {
+               // @templates.CarouselForm()
+            }
+        } else {
+            <h1 class="sectionHeading">Carousels:</h1>
+            // @templates.CarouselForm()
+
+            if isAdmin {
+                for _, carousel := range carousels {
+                    <div class="carouselAdmin">
+                        <h1 class="mainHeading">{ carousel.Name }</h1>
+                        <img
+                            src={ carousel.Image }
+                            alt="carousel image"
+                            width="400"
+                        />
+
+                        if isAdmin && carousel.ID != "" {
+                            <div class="optionsBtn">
+                                // @templates.CarouselForm(carousel.ID, carousel)
+                                @components.DeleteButton(carousel.ID, "carousels")
+                            </div>
+                        }
+                    </div>
+                }
+            }
+        }
+    </section>
+}
+
+templ CarouselAdmin(isAdmin bool, carousels []types.Carousel, suppliers []types.Supplier) {
+    @views.Base(
+        carouselAdminContent(isAdmin, carousels),
+        views.Metadata{
+            Title: "Carousel Admin - Farmec Ireland",
+            Description: "Admin panel for managing carousel images",
+        },
+        []string{"account.css"},
+        suppliers,
+    )
+}
