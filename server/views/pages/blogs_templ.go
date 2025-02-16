@@ -12,6 +12,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"github.com/sean-david-welch/farmec-v2/server/views"
 	"github.com/sean-david-welch/farmec-v2/server/views/components"
+	"github.com/sean-david-welch/farmec-v2/server/views/layout"
 )
 
 func getBlogsMetadata() views.Metadata {
@@ -29,7 +30,7 @@ func getBlogsMetadata() views.Metadata {
 	}
 }
 
-func blogsContent(isAdmin bool, blogs []types.Blog) templ.Component {
+func blogsContent(isAdmin bool, isError bool, blogs []types.Blog) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -56,6 +57,12 @@ func blogsContent(isAdmin bool, blogs []types.Blog) templ.Component {
 		}
 		if isAdmin {
 		}
+		if isError {
+			templ_7745c5c3_Err = layout.ErrorComponent().Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
 		if len(blogs) > 0 {
 			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"index\"><h1 class=\"indexHeading\">Blogs</h1>")
 			if templ_7745c5c3_Err != nil {
@@ -78,7 +85,7 @@ func blogsContent(isAdmin bool, blogs []types.Blog) templ.Component {
 				var templ_7745c5c3_Var3 string
 				templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(blog.Title)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/blogs.templ`, Line: 38, Col: 58}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/blogs.templ`, Line: 43, Col: 58}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 				if templ_7745c5c3_Err != nil {
@@ -102,7 +109,7 @@ func blogsContent(isAdmin bool, blogs []types.Blog) templ.Component {
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(blog.Title)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/blogs.templ`, Line: 45, Col: 49}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/blogs.templ`, Line: 50, Col: 49}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -115,7 +122,7 @@ func blogsContent(isAdmin bool, blogs []types.Blog) templ.Component {
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(blog.MainImage)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/blogs.templ`, Line: 49, Col: 44}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/blogs.templ`, Line: 54, Col: 44}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
@@ -128,7 +135,7 @@ func blogsContent(isAdmin bool, blogs []types.Blog) templ.Component {
 			var templ_7745c5c3_Var6 string
 			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(blog.Title)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/blogs.templ`, Line: 56, Col: 60}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/blogs.templ`, Line: 61, Col: 60}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 			if templ_7745c5c3_Err != nil {
@@ -141,7 +148,7 @@ func blogsContent(isAdmin bool, blogs []types.Blog) templ.Component {
 			var templ_7745c5c3_Var7 string
 			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(blog.Subheading)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/blogs.templ`, Line: 57, Col: 62}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/blogs.templ`, Line: 62, Col: 62}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 			if templ_7745c5c3_Err != nil {
@@ -154,7 +161,7 @@ func blogsContent(isAdmin bool, blogs []types.Blog) templ.Component {
 			var templ_7745c5c3_Var8 string
 			templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(blog.Body)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/blogs.templ`, Line: 58, Col: 56}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/blogs.templ`, Line: 63, Col: 56}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 			if templ_7745c5c3_Err != nil {
@@ -200,7 +207,7 @@ func blogsContent(isAdmin bool, blogs []types.Blog) templ.Component {
 	})
 }
 
-func Blogs(isAdmin bool, blogs []types.Blog, suppliers []types.Supplier) templ.Component {
+func Blogs(isAdmin bool, isError bool, blogs []types.Blog, suppliers []types.Supplier) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -222,7 +229,7 @@ func Blogs(isAdmin bool, blogs []types.Blog, suppliers []types.Supplier) templ.C
 		}
 		ctx = templ.ClearChildren(ctx)
 		templ_7745c5c3_Err = views.Base(
-			blogsContent(isAdmin, blogs),
+			blogsContent(isAdmin, isError, blogs),
 			getBlogsMetadata(),
 			[]string{"blogs.css"},
 			suppliers,
