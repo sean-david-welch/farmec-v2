@@ -16,7 +16,7 @@ import (
 func InitRoutes(
 	router *gin.Engine, database *sql.DB, secrets *lib.Secrets,
 	s3Client lib.S3Client, files embed.FS, firebase *lib.Firebase, emailClient *lib.EmailClientImpl,
-	adminMiddleware *middleware.AuthMiddlewareImpl, supplierCache *middleware.SupplierCache,
+	authMiddleware *middleware.AuthMiddlewareImpl, supplierCache *middleware.SupplierCache,
 ) {
 	// instantiate supplier resouces and middleware
 	supplierRepository := repository.NewSupplierRepo(database)
@@ -52,32 +52,34 @@ func InitRoutes(
 		})
 	})
 
+	// main routes
+	SupplierRoutes(router, supplierHandler, authMiddleware)
+
 	// Supplier Module Resources
-	SupplierRoutes(router, supplierHandler, adminMiddleware)
-	InitParts(router, database, s3Client, adminMiddleware)
-	InitVideos(router, database, secrets, adminMiddleware)
-	InitProduct(router, database, s3Client, adminMiddleware)
-	InitMachines(router, database, s3Client, adminMiddleware)
+	InitParts(router, database, s3Client, authMiddleware)
+	InitVideos(router, database, secrets, authMiddleware)
+	InitProduct(router, database, s3Client, authMiddleware)
+	InitMachines(router, database, s3Client, authMiddleware)
 
 	// About Module Resources
-	InitTimelines(router, database, adminMiddleware)
-	InitializeEmployee(router, database, s3Client, adminMiddleware)
+	InitTimelines(router, database, authMiddleware)
+	InitializeEmployee(router, database, s3Client, authMiddleware)
 
 	// Blog Module Resources
-	InitExhibitions(router, database, adminMiddleware, supplierCache)
-	InitBlogs(router, database, s3Client, adminMiddleware, supplierCache)
+	InitExhibitions(router, database, authMiddleware, supplierCache)
+	InitBlogs(router, database, s3Client, authMiddleware, supplierCache)
 
 	// Misc Resources
-	InitWarranty(router, database, adminMiddleware, emailClient)
-	InitRegistrations(router, database, adminMiddleware, emailClient)
-	InitLineItems(router, database, s3Client, adminMiddleware)
-	InitCarousel(router, database, s3Client, adminMiddleware, supplierCache)
+	InitWarranty(router, database, authMiddleware, emailClient)
+	InitRegistrations(router, database, authMiddleware, emailClient)
+	InitLineItems(router, database, s3Client, authMiddleware)
+	InitCarousel(router, database, s3Client, authMiddleware, supplierCache)
 
 	// Util Resources
 	InitContact(router, emailClient)
 	InitCheckout(router, database, secrets)
-	InitPdfRenderer(router, adminMiddleware, files)
-	InitAuth(router, firebase, adminMiddleware)
+	InitPdfRenderer(router, authMiddleware, files)
+	InitAuth(router, firebase, authMiddleware)
 
 	router.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{
