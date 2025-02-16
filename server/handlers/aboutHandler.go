@@ -16,14 +16,14 @@ type AboutHandler struct {
 	supplierCache   *middleware.SupplierCache
 }
 
-func NewAboutHandler(employeeService services.EmployeeService, timelineService services.TimelineService, authMiddleware *middleware.AuthMiddlewareImpl) *AboutHandler {
-	return &AboutHandler{employeeService: employeeService, timelineService: timelineService, authMiddleware: authMiddleware}
+func NewAboutHandler(employeeService services.EmployeeService, timelineService services.TimelineService, authMiddleware *middleware.AuthMiddlewareImpl, supplierCache *middleware.SupplierCache) *AboutHandler {
+	return &AboutHandler{employeeService: employeeService, timelineService: timelineService, authMiddleware: authMiddleware, supplierCache: supplierCache}
 }
 
 func (handler *AboutHandler) AboutView(context *gin.Context) {
 	request := context.Request.Context()
 	isAdmin := handler.authMiddleware.GetIsAdmin(context)
-	suppliers := middleware.GetSuppliersFromContext(context)
+	suppliers := handler.supplierCache.GetSuppliersFromContext(context)
 
 	employees, err := handler.employeeService.GetEmployees(request)
 	if err != nil {
