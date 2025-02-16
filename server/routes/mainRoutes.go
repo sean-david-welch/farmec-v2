@@ -40,21 +40,6 @@ func InitRoutes(
 		})
 	})
 
-	// Redirect /api requests without a valid route to /api root
-	router.NoRoute(func(c *gin.Context) {
-		// Return 404 for non-existent API routes
-		if c.Request.URL.Path[:4] == "/api" {
-			c.JSON(http.StatusNotFound, gin.H{
-				"message": "API route not found",
-			})
-			return
-		}
-		// Handle other non-API requests (which should go to the frontend)
-		c.JSON(http.StatusNotFound, gin.H{
-			"message": "Page not found",
-		})
-	})
-
 	// main routes
 	SupplierRoutes(router, resourcesMap.SupplierHandler, authMiddleware)
 	ViewRoutes(router, resourcesMap.ViewHandler, authMiddleware, supplierCache)
@@ -82,4 +67,10 @@ func InitRoutes(
 	InitCheckout(router, database, secrets)
 	InitPdfRenderer(router, authMiddleware, files)
 	InitAuth(router, firebase, authMiddleware)
+
+	router.NoRoute(func(c *gin.Context) {
+		c.JSON(http.StatusNotFound, gin.H{
+			"message": "Page not found",
+		})
+	})
 }
