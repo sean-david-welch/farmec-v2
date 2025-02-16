@@ -63,6 +63,7 @@ func InitRoutes(
 
 	// main routes
 	SupplierRoutes(router, supplierHandler, authMiddleware)
+	InitCarousel(router, database, s3Client, authMiddleware, supplierCache)
 
 	// Supplier Module Resources
 	InitParts(router, database, s3Client, authMiddleware)
@@ -80,7 +81,6 @@ func InitRoutes(
 	InitWarranty(router, database, authMiddleware, emailClient)
 	InitRegistrations(router, database, authMiddleware, emailClient)
 	InitLineItems(router, database, s3Client, authMiddleware)
-	InitCarousel(router, database, s3Client, authMiddleware, supplierCache)
 
 	// Util Resources
 	InitContact(router, emailClient)
