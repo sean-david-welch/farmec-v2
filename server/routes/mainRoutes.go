@@ -87,10 +87,4 @@ func InitRoutes(
 	InitCheckout(router, database, secrets)
 	InitPdfRenderer(router, authMiddleware, files)
 	InitAuth(router, firebase, authMiddleware)
-
-	router.NoRoute(func(c *gin.Context) {
-		c.JSON(http.StatusNotFound, gin.H{
-			"message": "Page not found",
-		})
-	})
 }
