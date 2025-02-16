@@ -2,7 +2,9 @@ package handlers
 
 import (
 	"github.com/sean-david-welch/farmec-v2/server/lib"
+	"github.com/sean-david-welch/farmec-v2/server/middleware"
 	"github.com/sean-david-welch/farmec-v2/server/types"
+	"github.com/sean-david-welch/farmec-v2/server/views/pages"
 	"log"
 	"net/http"
 
@@ -11,15 +13,33 @@ import (
 )
 
 type BlogHandler struct {
-	service services.BlogService
+	service         services.BlogService
+	adminMiddleware *middleware.AuthMiddlewareImpl
+	supplierCache   *middleware.SupplierCache
 }
 
-func NewBlogHandler(service services.BlogService) *BlogHandler {
-	return &BlogHandler{service: service}
+func NewBlogHandler(service services.BlogService, adminMiddleware *middleware.AuthMiddlewareImpl, supplierCache *middleware.SupplierCache) *BlogHandler {
+	return &BlogHandler{service: service, adminMiddleware: adminMiddleware, supplierCache: supplierCache}
 }
 
 func (handler *BlogHandler) BlogsView(context *gin.Context) {
+	request := context.Request.Context()
+	isAdmin := handler.adminMiddleware.GetIsAdmin(context)
+	suppliers := middleware.GetSuppliersFromContext(context)
 
+	blogs, err := handler.service.GetBlogs(request)
+	if err != nil {
+		log.Printf("Error getting blogs: %v\n", err)
+	}
+
+	isError := err != nil
+	component := pages.Blogs(isAdmin, isError, blogs, suppliers)
+	if err := component.Render(request, context.Writer); err != nil {
+		log.Printf("Error rendering blogs: %v\n", err)
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while rendering the page"})
+		return
+	}
+	context.Header("Content-Type", "text/html; charset=utf-8")
 }
 
 func (handler *BlogHandler) GetBlogs(context *gin.Context) {
