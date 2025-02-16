@@ -19,10 +19,10 @@ func NewProductHandler(service services.ProductService) *ProductHandler {
 }
 
 func (handler *ProductHandler) GetProducts(context *gin.Context) {
-	ctx := context.Request.Context()
+	request := context.Request.Context()
 	id := context.Param("id")
 
-	products, err := handler.service.GetProducts(ctx, id)
+	products, err := handler.service.GetProducts(request, id)
 	if err != nil {
 		log.Printf("Error getting machines: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occured while getting products"})
@@ -33,7 +33,7 @@ func (handler *ProductHandler) GetProducts(context *gin.Context) {
 }
 
 func (handler *ProductHandler) CreateProduct(context *gin.Context) {
-	ctx := context.Request.Context()
+	request := context.Request.Context()
 	var product types.Product
 
 	if err := context.ShouldBindJSON(&product); err != nil {
@@ -46,7 +46,7 @@ func (handler *ProductHandler) CreateProduct(context *gin.Context) {
 	}
 
 	dbProduct := lib.DeserializeProduct(product)
-	result, err := handler.service.CreateProduct(ctx, &dbProduct)
+	result, err := handler.service.CreateProduct(request, &dbProduct)
 	if err != nil {
 		log.Printf("Error creating product: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while creating product", "details": err.Error()})
@@ -63,7 +63,7 @@ func (handler *ProductHandler) CreateProduct(context *gin.Context) {
 }
 
 func (handler *ProductHandler) UpdateProduct(context *gin.Context) {
-	ctx := context.Request.Context()
+	request := context.Request.Context()
 	id := context.Param("id")
 
 	var product types.Product
@@ -77,7 +77,7 @@ func (handler *ProductHandler) UpdateProduct(context *gin.Context) {
 	}
 
 	dbProduct := lib.DeserializeProduct(product)
-	result, err := handler.service.UpdateProduct(ctx, id, &dbProduct)
+	result, err := handler.service.UpdateProduct(request, id, &dbProduct)
 	if err != nil {
 		log.Printf("Error updating product: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while updating machine", "details": err.Error()})
@@ -94,10 +94,10 @@ func (handler *ProductHandler) UpdateProduct(context *gin.Context) {
 }
 
 func (handler *ProductHandler) DeleteProduct(context *gin.Context) {
-	ctx := context.Request.Context()
+	request := context.Request.Context()
 	id := context.Param("id")
 
-	if err := handler.service.DeleteProduct(ctx, id); err != nil {
+	if err := handler.service.DeleteProduct(request, id); err != nil {
 		log.Printf("Error deleting machine: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while deleting machine", "details": err.Error()})
 		return

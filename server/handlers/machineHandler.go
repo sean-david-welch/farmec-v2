@@ -19,10 +19,10 @@ func NewMachineHandler(service services.MachineService) *MachineHandler {
 }
 
 func (handler *MachineHandler) GetMachines(context *gin.Context) {
-	ctx := context.Request.Context()
+	request := context.Request.Context()
 	id := context.Param("id")
 
-	machines, err := handler.service.GetMachines(ctx, id)
+	machines, err := handler.service.GetMachines(request, id)
 	if err != nil {
 		log.Printf("Error getting machines: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while getting machines"})
@@ -33,10 +33,10 @@ func (handler *MachineHandler) GetMachines(context *gin.Context) {
 }
 
 func (handler *MachineHandler) GetMachineById(context *gin.Context) {
-	ctx := context.Request.Context()
+	request := context.Request.Context()
 	id := context.Param("id")
 
-	machine, err := handler.service.GetMachineById(ctx, id)
+	machine, err := handler.service.GetMachineById(request, id)
 	if err != nil {
 		log.Printf("Error getting machine: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while getting machine"})
@@ -47,7 +47,7 @@ func (handler *MachineHandler) GetMachineById(context *gin.Context) {
 }
 
 func (handler *MachineHandler) CreateMachine(context *gin.Context) {
-	ctx := context.Request.Context()
+	request := context.Request.Context()
 	var machine types.Machine
 
 	if err := context.ShouldBindJSON(&machine); err != nil {
@@ -60,7 +60,7 @@ func (handler *MachineHandler) CreateMachine(context *gin.Context) {
 	}
 
 	dbMachine := lib.DeserializeMachine(machine)
-	result, err := handler.service.CreateMachine(ctx, &dbMachine)
+	result, err := handler.service.CreateMachine(request, &dbMachine)
 	if err != nil {
 		log.Printf("Error creating machine: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while creating machine", "details": err.Error()})
@@ -77,7 +77,7 @@ func (handler *MachineHandler) CreateMachine(context *gin.Context) {
 }
 
 func (handler *MachineHandler) UpdateMachine(context *gin.Context) {
-	ctx := context.Request.Context()
+	request := context.Request.Context()
 	id := context.Param("id")
 
 	var machine types.Machine
@@ -91,7 +91,7 @@ func (handler *MachineHandler) UpdateMachine(context *gin.Context) {
 	}
 
 	dbMachine := lib.DeserializeMachine(machine)
-	result, err := handler.service.UpdateMachine(ctx, id, &dbMachine)
+	result, err := handler.service.UpdateMachine(request, id, &dbMachine)
 	if err != nil {
 		log.Printf("Error updating machine: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while updating machine", "details": err.Error()})
@@ -108,10 +108,10 @@ func (handler *MachineHandler) UpdateMachine(context *gin.Context) {
 }
 
 func (handler *MachineHandler) DeleteMachine(context *gin.Context) {
-	ctx := context.Request.Context()
+	request := context.Request.Context()
 	id := context.Param("id")
 
-	if err := handler.service.DeleteMachine(ctx, id); err != nil {
+	if err := handler.service.DeleteMachine(request, id); err != nil {
 		log.Printf("Error deleting machine: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while deleting machine", "details": err.Error()})
 		return

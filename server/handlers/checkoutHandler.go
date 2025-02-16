@@ -17,10 +17,10 @@ func NewCheckoutHandler(service services.CheckoutService) *CheckoutHandler {
 }
 
 func (handler *CheckoutHandler) CreateCheckoutSession(context *gin.Context) {
-	ctx := context.Request.Context()
+	request := context.Request.Context()
 	id := context.Param("id")
 
-	sess, err := handler.service.CreateCheckoutSession(ctx, id)
+	sess, err := handler.service.CreateCheckoutSession(request, id)
 	if err != nil {
 		log.Printf("error occurred in checkout service: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred when trying to create checkout session"})

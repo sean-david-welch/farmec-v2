@@ -19,8 +19,8 @@ func NewEmployeeHandler(service services.EmployeeService) *EmployeeHandler {
 }
 
 func (handler *EmployeeHandler) GetEmployees(context *gin.Context) {
-	ctx := context.Request.Context()
-	employees, err := handler.service.GetEmployees(ctx)
+	request := context.Request.Context()
+	employees, err := handler.service.GetEmployees(request)
 	if err != nil {
 		log.Printf("error getting employees: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while getting employees"})
@@ -31,7 +31,7 @@ func (handler *EmployeeHandler) GetEmployees(context *gin.Context) {
 }
 
 func (handler *EmployeeHandler) CreateEmployee(context *gin.Context) {
-	ctx := context.Request.Context()
+	request := context.Request.Context()
 	var employee types.Employee
 
 	if err := context.ShouldBindJSON(&employee); err != nil {
@@ -41,7 +41,7 @@ func (handler *EmployeeHandler) CreateEmployee(context *gin.Context) {
 	}
 
 	dbEmployee := lib.DeserializeEmployee(employee)
-	result, err := handler.service.CreateEmployee(ctx, &dbEmployee)
+	result, err := handler.service.CreateEmployee(request, &dbEmployee)
 	if err != nil {
 		log.Printf("Error creating employee: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while creating employee", "details": err.Error()})
@@ -58,7 +58,7 @@ func (handler *EmployeeHandler) CreateEmployee(context *gin.Context) {
 }
 
 func (handler *EmployeeHandler) UpdateEmployee(context *gin.Context) {
-	ctx := context.Request.Context()
+	request := context.Request.Context()
 	id := context.Param("id")
 
 	var employee types.Employee
@@ -69,7 +69,7 @@ func (handler *EmployeeHandler) UpdateEmployee(context *gin.Context) {
 	}
 
 	dbEmployee := lib.DeserializeEmployee(employee)
-	result, err := handler.service.UpdateEmployee(ctx, id, &dbEmployee)
+	result, err := handler.service.UpdateEmployee(request, id, &dbEmployee)
 	if err != nil {
 		log.Printf("Error creating employee: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while creating employee", "details": err.Error()})
@@ -86,10 +86,10 @@ func (handler *EmployeeHandler) UpdateEmployee(context *gin.Context) {
 }
 
 func (handler *EmployeeHandler) DeleteEmployee(context *gin.Context) {
-	ctx := context.Request.Context()
+	request := context.Request.Context()
 	id := context.Param("id")
 
-	if err := handler.service.DeleteEmployee(ctx, id); err != nil {
+	if err := handler.service.DeleteEmployee(request, id); err != nil {
 		log.Printf("Error deleting employee: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while deleting employee", "details": err.Error()})
 		return
