@@ -42,7 +42,7 @@ func InitRoutes(
 
 	// main routes
 	SupplierRoutes(router, resourcesMap.SupplierHandler, authMiddleware)
-	ViewRoutes(router, resourcesMap.ViewHandler, authMiddleware, supplierCache)
+	ViewRoutes(router, resourcesMap.ViewHandler, authMiddleware)
 	CarouselRoutes(router, resourcesMap.CarouselHandler, authMiddleware)
 
 	// Supplier Module Resources
