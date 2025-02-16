@@ -23,12 +23,12 @@ func (handler *ViewHandler) HomeView(c *gin.Context) {
 
 }
 
-func (handler *CarouselHandler) CarouselAdminView(context *gin.Context) {
+func (handler *ViewHandler) CarouselAdminView(context *gin.Context) {
 	request := context.Request.Context()
 	isAdmin := handler.authMiddleware.GetIsAdmin(context)
 	suppliers := handler.supplierCache.GetSuppliersFromContext(context)
 
-	carousels, err := handler.service.GetCarousels(request)
+	carousels, err := handler.carouselService.GetCarousels(request)
 	if err != nil {
 		log.Printf("Error getting carousels: %v\n", err)
 	}
