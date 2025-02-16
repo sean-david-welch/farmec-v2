@@ -79,9 +79,9 @@ templ blogsContent(isAdmin bool, isError bool, blogs []types.Blog) {
     </section>
 }
 
-templ Blogs(isAdmin bool, blogs []types.Blog, suppliers []types.Supplier) {
+templ Blogs(isAdmin bool, isError bool, blogs []types.Blog, suppliers []types.Supplier) {
     @views.Base(
-        blogsContent(isAdmin, blogs),
+        blogsContent(isAdmin, isError, blogs),
         getBlogsMetadata(),
         []string{"blogs.css"},
         suppliers,
