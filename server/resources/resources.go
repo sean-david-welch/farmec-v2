@@ -1,8 +1,9 @@
-package lib
+package resources
 
 import (
 	"database/sql"
 	"github.com/sean-david-welch/farmec-v2/server/handlers"
+	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
 	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/services"
@@ -17,7 +18,7 @@ type Resources struct {
 }
 
 func NewResources(
-	db *sql.DB, s3Client S3Client, authMiddleware *middleware.AuthMiddlewareImpl, supplierCache *middleware.SupplierCache,
+	db *sql.DB, s3Client lib.S3Client, authMiddleware *middleware.AuthMiddlewareImpl, supplierCache *middleware.SupplierCache,
 ) *Resources {
 	// Initialize repositories
 	supplierRepo := repository.NewSupplierRepo(db)
