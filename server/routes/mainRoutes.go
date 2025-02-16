@@ -65,7 +65,7 @@ func InitRoutes(
 
 	// Blog Module Resources
 	InitExhibitions(router, database, adminMiddleware, supplierCache)
-	InitBlogs(router, database, s3Client, adminMiddleware)
+	InitBlogs(router, database, s3Client, adminMiddleware, supplierCache)
 
 	// Misc Resources
 	InitWarranty(router, database, adminMiddleware, emailClient)
