@@ -4,6 +4,7 @@ import (
     "github.com/sean-david-welch/farmec-v2/server/types"
     "github.com/sean-david-welch/farmec-v2/server/views"
 	"github.com/sean-david-welch/farmec-v2/server/views/components"
+	"github.com/sean-david-welch/farmec-v2/server/views/layout"
 )
 
 func getBlogsMetadata() views.Metadata {
@@ -21,13 +22,17 @@ func getBlogsMetadata() views.Metadata {
     }
 }
 
-templ blogsContent(isAdmin bool, blogs []types.Blog) {
+templ blogsContent(isAdmin bool, isError bool, blogs []types.Blog) {
     <section id="blog">
         <h1 class="sectionHeading">Check out our Latest Blog Posts</h1>
         <p class="subHeading">Read our latest news</p>
 
         if isAdmin {
             // @templates.BlogForm()
+        }
+
+        if isError {
+            @layout.ErrorComponent()
         }
 
         if len(blogs) > 0 {
