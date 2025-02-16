@@ -14,7 +14,7 @@ type SupplierHandler struct {
 	service services.SupplierService
 }
 
-func NewSupplierContoller(service services.SupplierService) *SupplierHandler {
+func NewSupplierHandler(service services.SupplierService) *SupplierHandler {
 	return &SupplierHandler{service: service}
 }
 

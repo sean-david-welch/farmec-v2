@@ -24,7 +24,7 @@ func InitRoutes(
 	// instantiate supplier resouces and middleware
 	supplierRepository := repository.NewSupplierRepo(database)
 	supplierService := services.NewSupplierService(supplierRepository, s3Client, "Suppliers")
-	supplierHandler := handlers.NewSupplierContoller(supplierService)
+	supplierHandler := handlers.NewSupplierHandler(supplierService)
 
 	// instantiate carousel resources
 	carouselRepository := repository.NewCarouselRepo(database)
