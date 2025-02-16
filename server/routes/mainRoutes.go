@@ -71,7 +71,7 @@ func InitRoutes(
 	InitWarranty(router, database, adminMiddleware, emailClient)
 	InitRegistrations(router, database, adminMiddleware, emailClient)
 	InitLineItems(router, database, s3Client, adminMiddleware)
-	InitCarousel(router, database, s3Client, adminMiddleware)
+	InitCarousel(router, database, s3Client, adminMiddleware, supplierCache)
 
 	// Util Resources
 	InitContact(router, emailClient)
