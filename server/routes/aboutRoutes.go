@@ -11,49 +11,46 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/services"
 )
 
-func InitializeEmployee(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, authMiddleware *middleware.AuthMiddlewareImpl) {
-	repo := repository.NewEmployeeRepo(database)
-	service := services.NewEmployeeService(repo, s3Client, "Employees")
-	handler := handlers.NewEmployeeHandler(service)
+func InitializeResources(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, authMiddleware *middleware.AuthMiddlewareImpl) {
+	// Initialize Employee resources
+	employeeRepo := repository.NewEmployeeRepo(database)
+	employeeService := services.NewEmployeeService(employeeRepo, s3Client, "Employees")
+	employeeHandler := handlers.NewEmployeeHandler(employeeService)
 
-	EmployeeRoutes(router, handler, authMiddleware)
+	// Initialize Timeline resources
+	timelineRepo := repository.NewTimelineRepo(database)
+	timelineService := services.NewTimelineService(timelineRepo)
+	timelineHandler := handlers.NewTimelineHandler(timelineService)
+
+	// Setup routes for both resources
+	SetupRoutes(router, employeeHandler, timelineHandler, authMiddleware)
 }
 
-func EmployeeRoutes(router *gin.Engine, handler *handlers.EmployeeHandler, middleware *middleware.AuthMiddlewareImpl) {
+func SetupRoutes(
+	router *gin.Engine,
+	employeeHandler *handlers.EmployeeHandler,
+	timelineHandler *handlers.TimelineHandler,
+	middleware *middleware.AuthMiddlewareImpl,
+) {
+	// Employee routes
 	employeeGroup := router.Group("/api/employees")
+	employeeGroup.GET("", employeeHandler.GetEmployees)
 
-	employeeGroup.GET("", handler.GetEmployees)
-
-	protected := employeeGroup.Group("").Use(middleware.AdminRouteMiddleware())
+	protectedEmployeeRoutes := employeeGroup.Group("").Use(middleware.AdminRouteMiddleware())
 	{
-		protected.POST("", handler.CreateEmployee)
-		protected.PUT("/:id", handler.UpdateEmployee)
-		protected.DELETE("/:id", handler.DeleteEmployee)
+		protectedEmployeeRoutes.POST("", employeeHandler.CreateEmployee)
+		protectedEmployeeRoutes.PUT("/:id", employeeHandler.UpdateEmployee)
+		protectedEmployeeRoutes.DELETE("/:id", employeeHandler.DeleteEmployee)
 	}
-}
 
-func InitTimelines(router *gin.Engine, database *sql.DB, authMiddleware *middleware.AuthMiddlewareImpl) {
-	repo := repository.NewTimelineRepo(database)
-	service := services.NewTimelineService(repo)
-	handler := handlers.NewTimelineHandler(service)
-
-	TimelineRoutes(router, handler, authMiddleware)
-}
-
-func TimelineRoutes(router *gin.Engine, handler *handlers.TimelineHandler, authMiddleware *middleware.AuthMiddlewareImpl) {
+	// Timeline routes
 	timelineGroup := router.Group("/api/timeline")
+	timelineGroup.GET("", timelineHandler.GetTimelines)
 
-	timelineGroup.GET("", handler.GetTimelines)
-
-	protected := timelineGroup.Group("").Use(authMiddleware.AdminRouteMiddleware())
+	protectedTimelineRoutes := timelineGroup.Group("").Use(middleware.AdminRouteMiddleware())
 	{
-		protected.POST("", handler.CreateTimeline)
-		protected.PUT("/:id", handler.UpdateTimeline)
-		protected.DELETE("/:id", handler.DeleteTimeline)
+		protectedTimelineRoutes.POST("", timelineHandler.CreateTimeline)
+		protectedTimelineRoutes.PUT("/:id", timelineHandler.UpdateTimeline)
+		protectedTimelineRoutes.DELETE("/:id", timelineHandler.DeleteTimeline)
 	}
-}
-
-func InitAbout(router *gin.Engine, database *sql.DB, authMiddleware *middleware.AuthMiddlewareImpl) {}
-
-func AboutRoutes(router *gin.Engine, handler *handlers.AboutHandler, middleware *middleware.AuthMiddlewareImpl) {
 }
