@@ -10,11 +10,11 @@ import (
 )
 
 type RegistrationService interface {
-	GetRegistrations(reqContext context.Context) ([]types.MachineRegistration, error)
-	GetRegistrationById(reqContext context.Context, id string) (*types.MachineRegistration, error)
-	CreateRegistration(reqContext context.Context, registration *db.MachineRegistration) error
-	UpdateRegistration(reqContext context.Context, id string, registration *db.MachineRegistration) error
-	DeleteRegistration(reqContext context.Context, id string) error
+	GetRegistrations(request context.Context) ([]types.MachineRegistration, error)
+	GetRegistrationById(request context.Context, id string) (*types.MachineRegistration, error)
+	CreateRegistration(request context.Context, registration *db.MachineRegistration) error
+	UpdateRegistration(request context.Context, id string, registration *db.MachineRegistration) error
+	DeleteRegistration(request context.Context, id string) error
 }
 
 type RegistrationServiceImpl struct {
@@ -39,8 +39,8 @@ func (service *RegistrationServiceImpl) sendRegistrationEmail(registration *db.M
 	}
 }
 
-func (service *RegistrationServiceImpl) GetRegistrations(reqContext context.Context) ([]types.MachineRegistration, error) {
-	registrations, err := service.repo.GetRegistrations(reqContext)
+func (service *RegistrationServiceImpl) GetRegistrations(request context.Context) ([]types.MachineRegistration, error) {
+	registrations, err := service.repo.GetRegistrations(request)
 	if err != nil {
 		return nil, err
 	}
@@ -51,8 +51,8 @@ func (service *RegistrationServiceImpl) GetRegistrations(reqContext context.Cont
 	return result, nil
 }
 
-func (service *RegistrationServiceImpl) GetRegistrationById(reqContext context.Context, id string) (*types.MachineRegistration, error) {
-	registration, err := service.repo.GetRegistrationById(reqContext, id)
+func (service *RegistrationServiceImpl) GetRegistrationById(request context.Context, id string) (*types.MachineRegistration, error) {
+	registration, err := service.repo.GetRegistrationById(request, id)
 	if err != nil {
 		return nil, err
 	}
@@ -60,8 +60,8 @@ func (service *RegistrationServiceImpl) GetRegistrationById(reqContext context.C
 	return &result, nil
 }
 
-func (service *RegistrationServiceImpl) CreateRegistration(reqContext context.Context, registration *db.MachineRegistration) error {
-	if err := service.repo.CreateRegistration(reqContext, registration); err != nil {
+func (service *RegistrationServiceImpl) CreateRegistration(request context.Context, registration *db.MachineRegistration) error {
+	if err := service.repo.CreateRegistration(request, registration); err != nil {
 		return err
 	}
 
@@ -70,8 +70,8 @@ func (service *RegistrationServiceImpl) CreateRegistration(reqContext context.Co
 	return nil
 }
 
-func (service *RegistrationServiceImpl) UpdateRegistration(reqContext context.Context, id string, registration *db.MachineRegistration) error {
-	if err := service.repo.UpdateRegistration(reqContext, id, registration); err != nil {
+func (service *RegistrationServiceImpl) UpdateRegistration(request context.Context, id string, registration *db.MachineRegistration) error {
+	if err := service.repo.UpdateRegistration(request, id, registration); err != nil {
 		return err
 	}
 
@@ -80,8 +80,8 @@ func (service *RegistrationServiceImpl) UpdateRegistration(reqContext context.Co
 	return nil
 }
 
-func (service *RegistrationServiceImpl) DeleteRegistration(reqContext context.Context, id string) error {
-	if err := service.repo.DeleteRegistration(reqContext, id); err != nil {
+func (service *RegistrationServiceImpl) DeleteRegistration(request context.Context, id string) error {
+	if err := service.repo.DeleteRegistration(request, id); err != nil {
 		return err
 	}
 

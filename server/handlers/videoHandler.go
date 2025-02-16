@@ -19,10 +19,10 @@ func NewVideoHandler(service services.VideoService) *VideoHandler {
 }
 
 func (handler *VideoHandler) GetVideos(context *gin.Context) {
-	reqContext := context.Request.Context()
+	request := context.Request.Context()
 	id := context.Param("id")
 
-	videos, err := handler.service.GetVideos(reqContext, id)
+	videos, err := handler.service.GetVideos(request, id)
 	if err != nil {
 		log.Printf("Error getting suppliers: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while getting suppliers"})
@@ -33,7 +33,7 @@ func (handler *VideoHandler) GetVideos(context *gin.Context) {
 }
 
 func (handler *VideoHandler) CreateVideo(context *gin.Context) {
-	reqContext := context.Request.Context()
+	request := context.Request.Context()
 	var video types.VideoRequest
 
 	if err := context.ShouldBindJSON(&video); err != nil {
@@ -41,7 +41,7 @@ func (handler *VideoHandler) CreateVideo(context *gin.Context) {
 		return
 	}
 	dbVideo := lib.DeserializeVideo(video)
-	if err := handler.service.CreateVideo(reqContext, &dbVideo); err != nil {
+	if err := handler.service.CreateVideo(request, &dbVideo); err != nil {
 		log.Printf("Error creating video: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while creating video", "details": err.Error()})
 		return
@@ -51,7 +51,7 @@ func (handler *VideoHandler) CreateVideo(context *gin.Context) {
 }
 
 func (handler *VideoHandler) UpdateVideo(context *gin.Context) {
-	reqContext := context.Request.Context()
+	request := context.Request.Context()
 	id := context.Param("id")
 
 	var video types.VideoRequest
@@ -61,7 +61,7 @@ func (handler *VideoHandler) UpdateVideo(context *gin.Context) {
 	}
 
 	dbVideo := lib.DeserializeVideo(video)
-	if err := handler.service.UpdateVideo(reqContext, id, &dbVideo); err != nil {
+	if err := handler.service.UpdateVideo(request, id, &dbVideo); err != nil {
 		log.Printf("Error updating video: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while updating video", "details": err.Error()})
 		return
@@ -71,10 +71,10 @@ func (handler *VideoHandler) UpdateVideo(context *gin.Context) {
 }
 
 func (handler *VideoHandler) DeleteVideo(context *gin.Context) {
-	reqContext := context.Request.Context()
+	request := context.Request.Context()
 	id := context.Param("id")
 
-	if err := handler.service.DeleteVideo(reqContext, id); err != nil {
+	if err := handler.service.DeleteVideo(request, id); err != nil {
 		log.Printf("Error deleting video: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Erropr occurred while deleting supplier", "details": err.Error()})
 		return

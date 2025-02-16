@@ -13,11 +13,11 @@ import (
 )
 
 type VideoService interface {
-	TransformData(reqContext context.Context, video *db.Video) (*db.Video, error)
-	GetVideos(reqContext context.Context, id string) ([]types.Video, error)
-	CreateVideo(reqContext context.Context, video *db.Video) error
-	UpdateVideo(reqContext context.Context, id string, video *db.Video) error
-	DeleteVideo(reqContext context.Context, id string) error
+	TransformData(request context.Context, video *db.Video) (*db.Video, error)
+	GetVideos(request context.Context, id string) ([]types.Video, error)
+	CreateVideo(request context.Context, video *db.Video) error
+	UpdateVideo(request context.Context, id string, video *db.Video) error
+	DeleteVideo(request context.Context, id string) error
 }
 
 type VideoServiceImpl struct {
@@ -41,7 +41,7 @@ func extractVideoID(urlStr string) (string, error) {
 	return "", fmt.Errorf("invalid YouTube URL")
 }
 
-func (service *VideoServiceImpl) TransformData(reqContext context.Context, video *db.Video) (*db.Video, error) {
+func (service *VideoServiceImpl) TransformData(request context.Context, video *db.Video) (*db.Video, error) {
 	if !video.WebUrl.Valid {
 		return nil, fmt.Errorf("web_url is invalid")
 	}
@@ -52,7 +52,7 @@ func (service *VideoServiceImpl) TransformData(reqContext context.Context, video
 	}
 
 	call := service.service.Videos.List([]string{"id", "snippet"}).Id(videoId)
-	response, err := call.Context(reqContext).Do()
+	response, err := call.Context(request).Do()
 	if err != nil {
 		return nil, fmt.Errorf("error calling YouTube API: %w", err)
 	}
@@ -95,8 +95,8 @@ func (service *VideoServiceImpl) TransformData(reqContext context.Context, video
 	return videoData, nil
 }
 
-func (service *VideoServiceImpl) GetVideos(reqContext context.Context, id string) ([]types.Video, error) {
-	videos, err := service.repo.GetVideos(reqContext, id)
+func (service *VideoServiceImpl) GetVideos(request context.Context, id string) ([]types.Video, error) {
+	videos, err := service.repo.GetVideos(request, id)
 	if err != nil {
 		return nil, err
 	}
@@ -107,21 +107,21 @@ func (service *VideoServiceImpl) GetVideos(reqContext context.Context, id string
 	return result, nil
 }
 
-func (service *VideoServiceImpl) CreateVideo(reqContext context.Context, video *db.Video) error {
-	videoData, err := service.TransformData(reqContext, video)
+func (service *VideoServiceImpl) CreateVideo(request context.Context, video *db.Video) error {
+	videoData, err := service.TransformData(request, video)
 	if err != nil {
 		return err
 	}
-	return service.repo.CreateVideo(reqContext, videoData)
+	return service.repo.CreateVideo(request, videoData)
 }
 
-func (service *VideoServiceImpl) UpdateVideo(reqContext context.Context, id string, video *db.Video) error {
-	videoData, err := service.TransformData(reqContext, video)
+func (service *VideoServiceImpl) UpdateVideo(request context.Context, id string, video *db.Video) error {
+	videoData, err := service.TransformData(request, video)
 	if err != nil {
 		return err
 	}
 
-	err = service.repo.UpdateVideo(reqContext, id, videoData)
+	err = service.repo.UpdateVideo(request, id, videoData)
 	if err != nil {
 		return err
 	}
@@ -129,8 +129,8 @@ func (service *VideoServiceImpl) UpdateVideo(reqContext context.Context, id stri
 	return nil
 }
 
-func (service *VideoServiceImpl) DeleteVideo(reqContext context.Context, id string) error {
-	err := service.repo.DeleteVideo(reqContext, id)
+func (service *VideoServiceImpl) DeleteVideo(request context.Context, id string) error {
+	err := service.repo.DeleteVideo(request, id)
 	if err != nil {
 		return err
 	}
