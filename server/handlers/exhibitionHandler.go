@@ -25,7 +25,7 @@ func NewExhibitionHandler(service services.ExhibitionService, authMiddleware *mi
 func (handler *ExhibitionHandler) ExhibitionsView(context *gin.Context) {
 	request := context.Request.Context()
 	isAdmin := handler.authMiddleware.GetIsAdmin(context)
-	suppliers := middleware.GetSuppliersFromContext(context)
+	suppliers := handler.supplierCache.GetSuppliersFromContext(context)
 
 	exhibitions, err := handler.service.GetExhibitions(request)
 	if err != nil {
