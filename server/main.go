@@ -70,11 +70,11 @@ func main() {
 
 	router := gin.Default()
 	emailClient := lib.NewEmailClient(secrets)
-	adminMiddleware := middleware.NewAuthMiddleware(firebase)
+	authMiddleware := middleware.NewAuthMiddleware(firebase)
 	supplierMiddleware := middleware.NewSupplierCache(2 * time.Hour)
 
 	router.Use(gin.Logger(), gin.Recovery(), cors.New(corsConfig))
-	routes.InitRoutes(router, database, secrets, s3Client, embeddedFiles, firebase, emailClient, adminMiddleware, supplierMiddleware)
+	routes.InitRoutes(router, database, secrets, s3Client, embeddedFiles, firebase, emailClient, authMiddleware, supplierMiddleware)
 
 	if env == "production" {
 		gin.SetMode(gin.ReleaseMode)

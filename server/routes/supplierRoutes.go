@@ -7,13 +7,13 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
 )
 
-func SupplierRoutes(router *gin.Engine, handler *handlers.SupplierHandler, adminMiddleware *middleware.AuthMiddlewareImpl) {
+func SupplierRoutes(router *gin.Engine, handler *handlers.SupplierHandler, authMiddleware *middleware.AuthMiddlewareImpl) {
 	supplierGroup := router.Group("/api/suppliers")
 
 	supplierGroup.GET("", handler.GetSuppliers)
 	supplierGroup.GET("/:id", handler.GetSupplierByID)
 
-	protected := supplierGroup.Group("").Use(adminMiddleware.AdminRouteMiddleware())
+	protected := supplierGroup.Group("").Use(authMiddleware.AdminRouteMiddleware())
 	{
 		protected.POST("", handler.CreateSupplier)
 		protected.PUT("/:id", handler.UpdateSupplier)

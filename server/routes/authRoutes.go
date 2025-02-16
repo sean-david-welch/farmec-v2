@@ -8,20 +8,20 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/services"
 )
 
-func InitAuth(router *gin.Engine, firebase *lib.Firebase, adminMiddleware *middleware.AuthMiddlewareImpl) {
+func InitAuth(router *gin.Engine, firebase *lib.Firebase, authMiddleware *middleware.AuthMiddlewareImpl) {
 	service := services.NewAuthService(firebase)
 	handler := handlers.NewAuthHandler(service)
 
-	AuthRoutes(router, handler, adminMiddleware)
+	AuthRoutes(router, handler, authMiddleware)
 }
 
-func AuthRoutes(router *gin.Engine, handler *handlers.AuthHandler, adminMiddleware *middleware.AuthMiddlewareImpl) {
+func AuthRoutes(router *gin.Engine, handler *handlers.AuthHandler, authMiddleware *middleware.AuthMiddlewareImpl) {
 	authGroup := router.Group("/api/auth")
 
 	authGroup.GET("/logout", handler.Logout)
 	authGroup.GET("/login", handler.Login)
 
-	protected := authGroup.Group("").Use(adminMiddleware.AdminRouteMiddleware())
+	protected := authGroup.Group("").Use(authMiddleware.AdminRouteMiddleware())
 	{
 		protected.GET("/users", handler.GetUsers)
 		protected.POST("/users", handler.Register)

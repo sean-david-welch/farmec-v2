@@ -13,18 +13,18 @@ import (
 )
 
 type BlogHandler struct {
-	service         services.BlogService
-	adminMiddleware *middleware.AuthMiddlewareImpl
-	supplierCache   *middleware.SupplierCache
+	service        services.BlogService
+	authMiddleware *middleware.AuthMiddlewareImpl
+	supplierCache  *middleware.SupplierCache
 }
 
-func NewBlogHandler(service services.BlogService, adminMiddleware *middleware.AuthMiddlewareImpl, supplierCache *middleware.SupplierCache) *BlogHandler {
-	return &BlogHandler{service: service, adminMiddleware: adminMiddleware, supplierCache: supplierCache}
+func NewBlogHandler(service services.BlogService, authMiddleware *middleware.AuthMiddlewareImpl, supplierCache *middleware.SupplierCache) *BlogHandler {
+	return &BlogHandler{service: service, authMiddleware: authMiddleware, supplierCache: supplierCache}
 }
 
 func (handler *BlogHandler) BlogsView(context *gin.Context) {
 	request := context.Request.Context()
-	isAdmin := handler.adminMiddleware.GetIsAdmin(context)
+	isAdmin := handler.authMiddleware.GetIsAdmin(context)
 	suppliers := middleware.GetSuppliersFromContext(context)
 
 	blogs, err := handler.service.GetBlogs(request)

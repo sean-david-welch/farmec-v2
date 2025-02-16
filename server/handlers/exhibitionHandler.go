@@ -13,18 +13,18 @@ import (
 )
 
 type ExhibitionHandler struct {
-	service         services.ExhibitionService
-	adminMiddleware *middleware.AuthMiddlewareImpl
-	supplierCache   *middleware.SupplierCache
+	service        services.ExhibitionService
+	authMiddleware *middleware.AuthMiddlewareImpl
+	supplierCache  *middleware.SupplierCache
 }
 
-func NewExhibitionHandler(service services.ExhibitionService, adminMiddleware *middleware.AuthMiddlewareImpl, supplierCache *middleware.SupplierCache) *ExhibitionHandler {
-	return &ExhibitionHandler{service: service, adminMiddleware: adminMiddleware, supplierCache: supplierCache}
+func NewExhibitionHandler(service services.ExhibitionService, authMiddleware *middleware.AuthMiddlewareImpl, supplierCache *middleware.SupplierCache) *ExhibitionHandler {
+	return &ExhibitionHandler{service: service, authMiddleware: authMiddleware, supplierCache: supplierCache}
 }
 
 func (handler *ExhibitionHandler) ExhibitionsView(context *gin.Context) {
 	request := context.Request.Context()
-	isAdmin := handler.adminMiddleware.GetIsAdmin(context)
+	isAdmin := handler.authMiddleware.GetIsAdmin(context)
 	suppliers := middleware.GetSuppliersFromContext(context)
 
 	exhibitions, err := handler.service.GetExhibitions(request)

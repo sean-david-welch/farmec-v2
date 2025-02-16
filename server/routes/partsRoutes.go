@@ -11,20 +11,20 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/services"
 )
 
-func InitParts(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, adminMiddleware *middleware.AuthMiddlewareImpl) {
+func InitParts(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, authMiddleware *middleware.AuthMiddlewareImpl) {
 	repo := repository.NewPartsRepo(database)
 	service := services.NewPartsService(repo, s3Client, "Spareparts")
 	handler := handlers.NewPartsHandler(service)
 
-	PartsRoutes(router, handler, adminMiddleware)
+	PartsRoutes(router, handler, authMiddleware)
 }
 
-func PartsRoutes(router *gin.Engine, handler *handlers.PartsHandler, adminMiddleware *middleware.AuthMiddlewareImpl) {
+func PartsRoutes(router *gin.Engine, handler *handlers.PartsHandler, authMiddleware *middleware.AuthMiddlewareImpl) {
 	partsGroup := router.Group("/api/spareparts")
 
 	partsGroup.GET("/:id", handler.GetParts)
 
-	protected := partsGroup.Group("").Use(adminMiddleware.AdminRouteMiddleware())
+	protected := partsGroup.Group("").Use(authMiddleware.AdminRouteMiddleware())
 	{
 		protected.POST("", handler.CreateParts)
 		protected.PUT("/:id", handler.UpdateParts)

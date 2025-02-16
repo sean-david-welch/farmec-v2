@@ -13,18 +13,18 @@ import (
 )
 
 type CarouselHandler struct {
-	service         services.CarouselService
-	adminMiddleware *middleware.AuthMiddlewareImpl
-	supplierCache   *middleware.SupplierCache
+	service        services.CarouselService
+	authMiddleware *middleware.AuthMiddlewareImpl
+	supplierCache  *middleware.SupplierCache
 }
 
-func NewCarouselHandler(service services.CarouselService, adminMiddleware *middleware.AuthMiddlewareImpl, supplierCache *middleware.SupplierCache) *CarouselHandler {
-	return &CarouselHandler{service: service, adminMiddleware: adminMiddleware, supplierCache: supplierCache}
+func NewCarouselHandler(service services.CarouselService, authMiddleware *middleware.AuthMiddlewareImpl, supplierCache *middleware.SupplierCache) *CarouselHandler {
+	return &CarouselHandler{service: service, authMiddleware: authMiddleware, supplierCache: supplierCache}
 }
 
 func (handler *CarouselHandler) CarouselAdminView(context *gin.Context) {
 	request := context.Request.Context()
-	isAdmin := handler.adminMiddleware.GetIsAdmin(context)
+	isAdmin := handler.authMiddleware.GetIsAdmin(context)
 	suppliers := middleware.GetSuppliersFromContext(context)
 
 	carousels, err := handler.service.GetCarousels(request)

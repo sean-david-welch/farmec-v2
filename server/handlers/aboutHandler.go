@@ -12,17 +12,17 @@ import (
 type AboutHandler struct {
 	employeeService services.EmployeeServiceImpl
 	timelineService services.TimelineServiceImpl
-	adminMiddleware *middleware.AuthMiddlewareImpl
+	authMiddleware  *middleware.AuthMiddlewareImpl
 	supplierCache   *middleware.SupplierCache
 }
 
-func NewAboutHandler(employeeService services.EmployeeServiceImpl, timelineService services.TimelineServiceImpl, adminMiddleware *middleware.AuthMiddlewareImpl) *AboutHandler {
-	return &AboutHandler{employeeService: employeeService, timelineService: timelineService, adminMiddleware: adminMiddleware}
+func NewAboutHandler(employeeService services.EmployeeServiceImpl, timelineService services.TimelineServiceImpl, authMiddleware *middleware.AuthMiddlewareImpl) *AboutHandler {
+	return &AboutHandler{employeeService: employeeService, timelineService: timelineService, authMiddleware: authMiddleware}
 }
 
 func (handler *AboutHandler) AboutView(context *gin.Context) {
 	request := context.Request.Context()
-	isAdmin := handler.adminMiddleware.GetIsAdmin(context)
+	isAdmin := handler.authMiddleware.GetIsAdmin(context)
 	suppliers := middleware.GetSuppliersFromContext(context)
 
 	employees, err := handler.employeeService.GetEmployees(request)

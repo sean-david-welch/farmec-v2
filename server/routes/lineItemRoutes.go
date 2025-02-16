@@ -11,21 +11,21 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/services"
 )
 
-func InitLineItems(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, adminMiddleware *middleware.AuthMiddlewareImpl) {
+func InitLineItems(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, authMiddleware *middleware.AuthMiddlewareImpl) {
 	repo := repository.NewLineItemRepo(database)
 	service := services.NewLineItemService(repo, s3Client, "Lineitems")
 	handler := handlers.NewLineItemHandler(service)
 
-	LineItemRoutes(router, handler, adminMiddleware)
+	LineItemRoutes(router, handler, authMiddleware)
 }
 
-func LineItemRoutes(router *gin.Engine, handler *handlers.LineItemHandler, adminMiddleware *middleware.AuthMiddlewareImpl) {
+func LineItemRoutes(router *gin.Engine, handler *handlers.LineItemHandler, authMiddleware *middleware.AuthMiddlewareImpl) {
 	lineItemGroup := router.Group("/api/lineitems")
 
 	lineItemGroup.GET("", handler.GetLineItems)
 	lineItemGroup.GET("/:id", handler.GetLineItemById)
 
-	protecteed := lineItemGroup.Group("").Use(adminMiddleware.AdminRouteMiddleware())
+	protecteed := lineItemGroup.Group("").Use(authMiddleware.AdminRouteMiddleware())
 	{
 		protecteed.POST("", handler.CreateLineItem)
 		protecteed.PUT("/:id", handler.UpdateLineItem)

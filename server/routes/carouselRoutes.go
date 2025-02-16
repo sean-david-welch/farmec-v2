@@ -19,12 +19,12 @@ func InitCarousel(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, a
 	CarouselRoutes(router, handler, adminMiddleare)
 }
 
-func CarouselRoutes(router *gin.Engine, handler *handlers.CarouselHandler, adminMiddleware *middleware.AuthMiddlewareImpl) {
-	router.GET("/carousel-admin", adminMiddleware.ViewMiddleware(), handler.CarouselAdminView)
+func CarouselRoutes(router *gin.Engine, handler *handlers.CarouselHandler, authMiddleware *middleware.AuthMiddlewareImpl) {
+	router.GET("/carousel-admin", authMiddleware.ViewMiddleware(), handler.CarouselAdminView)
 
 	carouselGroup := router.Group("/api/carousels")
 	carouselGroup.GET("", handler.GetCarousels)
-	protected := carouselGroup.Group("").Use(adminMiddleware.AdminRouteMiddleware())
+	protected := carouselGroup.Group("").Use(authMiddleware.AdminRouteMiddleware())
 	{
 		protected.POST("", handler.CreateCarousel)
 		protected.PUT("/:id", handler.UpdateCarousel)
