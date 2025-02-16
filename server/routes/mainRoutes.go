@@ -62,8 +62,7 @@ func InitRoutes(
 	InitMachines(router, database, s3Client, authMiddleware)
 
 	// About Module Resources
-	InitTimelines(router, database, authMiddleware)
-	InitializeEmployee(router, database, s3Client, authMiddleware)
+	InitAbout(router, database, s3Client, authMiddleware)
 
 	// Blog Module Resources
 	InitExhibitions(router, database, authMiddleware, supplierCache)
