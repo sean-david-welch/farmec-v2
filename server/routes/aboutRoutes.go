@@ -19,14 +19,13 @@ func InitAbout(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, auth
 	// Initialize Timeline resources
 	timelineRepo := repository.NewTimelineRepo(database)
 	timelineService := services.NewTimelineService(timelineRepo)
-	timelineHandler := handlers.NewTimelineHandler(timelineService)
 
 	// init routes
 	aboutHandler := handlers.NewAboutHandler(employeeService, timelineService, authMiddleware, supplierCache)
-	AboutRoutes(router, aboutHandler, employeeHandler, timelineHandler, authMiddleware)
+	AboutRoutes(router, aboutHandler, employeeHandler, authMiddleware)
 }
 
-func AboutRoutes(router *gin.Engine, aboutHandler *handlers.AboutHandler, employeeHandler *handlers.EmployeeHandler, timelineHandler *handlers.TimelineHandler, authMiddleware *middleware.AuthMiddlewareImpl) {
+func AboutRoutes(router *gin.Engine, aboutHandler *handlers.AboutHandler, employeeHandler *handlers.EmployeeHandler, authMiddleware *middleware.AuthMiddlewareImpl) {
 	router.GET("/about", authMiddleware.ViewMiddleware(), aboutHandler.AboutView)
 	// Employee routes
 	employeeGroup := router.Group("/api/employees")
@@ -40,12 +39,12 @@ func AboutRoutes(router *gin.Engine, aboutHandler *handlers.AboutHandler, employ
 
 	// Timeline routes
 	timelineGroup := router.Group("/api/timeline")
-	timelineGroup.GET("", timelineHandler.GetTimelines)
+	timelineGroup.GET("", aboutHandler.GetTimelines)
 
 	protectedTimelineRoutes := timelineGroup.Group("").Use(authMiddleware.AdminRouteMiddleware())
 	{
-		protectedTimelineRoutes.POST("", timelineHandler.CreateTimeline)
-		protectedTimelineRoutes.PUT("/:id", timelineHandler.UpdateTimeline)
-		protectedTimelineRoutes.DELETE("/:id", timelineHandler.DeleteTimeline)
+		protectedTimelineRoutes.POST("", aboutHandler.CreateTimeline)
+		protectedTimelineRoutes.PUT("/:id", aboutHandler.UpdateTimeline)
+		protectedTimelineRoutes.DELETE("/:id", aboutHandler.DeleteTimeline)
 	}
 }
