@@ -4,7 +4,6 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
 	"github.com/sean-david-welch/farmec-v2/server/types"
-	"github.com/sean-david-welch/farmec-v2/server/views/pages"
 	"log"
 	"net/http"
 
@@ -20,26 +19,6 @@ type CarouselHandler struct {
 
 func NewCarouselHandler(service services.CarouselService, authMiddleware *middleware.AuthMiddlewareImpl, supplierCache *middleware.SupplierCache) *CarouselHandler {
 	return &CarouselHandler{service: service, authMiddleware: authMiddleware, supplierCache: supplierCache}
-}
-
-func (handler *CarouselHandler) CarouselAdminView(context *gin.Context) {
-	request := context.Request.Context()
-	isAdmin := handler.authMiddleware.GetIsAdmin(context)
-	suppliers := handler.supplierCache.GetSuppliersFromContext(context)
-
-	carousels, err := handler.service.GetCarousels(request)
-	if err != nil {
-		log.Printf("Error getting carousels: %v\n", err)
-	}
-
-	isError := err != nil
-	component := pages.CarouselAdmin(isAdmin, isError, carousels, suppliers)
-	if err := component.Render(request, context.Writer); err != nil {
-		log.Printf("Error rendering carousels: %v\n", err)
-		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while rendering the page"})
-		return
-	}
-	context.Header("Content-Type", "text/html; charset=utf-8")
 }
 
 func (handler *CarouselHandler) GetCarousels(context *gin.Context) {
