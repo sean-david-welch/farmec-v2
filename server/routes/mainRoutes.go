@@ -6,6 +6,9 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/handlers"
 	"github.com/sean-david-welch/farmec-v2/server/repository"
 	"github.com/sean-david-welch/farmec-v2/server/services"
+	"github.com/sean-david-welch/farmec-v2/server/types"
+	"github.com/sean-david-welch/farmec-v2/server/views/pages"
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -28,13 +31,19 @@ func InitRoutes(
 
 	// default routes
 	router.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "Welcome to Farmec Ireland's API Service.",
-		})
+		component := pages.Home([]types.Carousel{}, supplierCache.GetSuppliersFromContext(c))
+		if err := component.Render(c.Request.Context(), c.Writer); err != nil {
+			log.Printf("Error rendering view: %v", err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while rendering view"})
+			return
+		}
+		c.Header("Content-Type", "text/html; charset=utf-8")
 	})
 
 	router.GET("/api", func(c *gin.Context) {
-		c.Redirect(http.StatusMovedPermanently, "/")
+		c.JSON(200, gin.H{
+			"message": "Welcome to Farmec Ireland's API Service.",
+		})
 	})
 
 	// Redirect /api requests without a valid route to /api root
