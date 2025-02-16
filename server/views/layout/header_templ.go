@@ -31,7 +31,7 @@ func headerContent(suppliers []types.Supplier) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<nav x-data=\"{ isHomepage: window.location.pathname === &#39;/&#39; }\" :class=\"isHomepage ? &#39;transparentNav&#39; : &#39;navbar&#39;\"><a href=\"/\" aria-label=\"logo button\"><img src=\"https://www.farmec.ie/farmec_images/farmeclogo.webp\" alt=\"Logo\" width=\"250\" height=\"250\"></a><ul class=\"navList\"><li class=\"navItem\"><a href=\"/about\" class=\"navListItem\">About Us</a><ul class=\"navDrop\"><li class=\"navDropItem\"><a href=\"/about\">Staff & Management</a></li><li class=\"navDropItem\"><a href=\"/about#timeline\">Company History</a></li><li class=\"navDropItem\"><a href=\"/about/policies\">Terms of Use</a></li></ul></li><li class=\"navItem\"><a href=\"/suppliers\" class=\"navListItem\">Suppliers</a> ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<nav x-data=\"{ isHomepage: window.location.pathname === &#39;/&#39; }\" :class=\"isHomepage ? &#39;transparentNav&#39; : &#39;navbar&#39;\"><a href=\"/\" aria-label=\"logo button\"><img src=\"https://www.farmec.ie/farmec_images/farmeclogo.webp\" alt=\"Logo\" width=\"250\" height=\"250\"></a><ul class=\"navList\"><li class=\"navItem\"><a href=\"/about\" class=\"navListItem\">About Us</a><ul class=\"navDrop\"><li class=\"navDropItem\"><a href=\"/about\">Staff & Management</a></li><li class=\"navDropItem\"><a href=\"/about#timeline\">Company History</a></li></ul></li><li clas=\"navItem\"><a href=\"/suppliers\" class=\"navListItem\">Suppliers</a> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -57,7 +57,7 @@ func headerContent(suppliers []types.Supplier) templ.Component {
 				var templ_7745c5c3_Var3 string
 				templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(supplier.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/layout/header.templ`, Line: 39, Col: 51}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/layout/header.templ`, Line: 36, Col: 51}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 				if templ_7745c5c3_Err != nil {
@@ -99,7 +99,7 @@ func headerContent(suppliers []types.Supplier) templ.Component {
 				var templ_7745c5c3_Var5 string
 				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(supplier.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/layout/header.templ`, Line: 54, Col: 51}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/layout/header.templ`, Line: 51, Col: 51}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 				if templ_7745c5c3_Err != nil {
@@ -115,7 +115,7 @@ func headerContent(suppliers []types.Supplier) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</li><li class=\"navItem\"><a href=\"/blogs\" class=\"navListItem\">Blog</a><ul class=\"navDrop\"><li class=\"navDropItem\"><a href=\"/blogs\">Latest Posts</a></li><li class=\"navDropItem\"><a href=\"/blog/exhibitions\">Exhibition Information</a></li></ul></li><li class=\"navItem\"><a href=\"/#contact\" class=\"navListItem\">Contact</a></li>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</li><li class=\"navItem\"><a href=\"/blogs\" class=\"navListItem\">Blog</a></li><li class=\"navItem\"><a href=\"/#contact\" class=\"navListItem\">Contact</a></li>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
