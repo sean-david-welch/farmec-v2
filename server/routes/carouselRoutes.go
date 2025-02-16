@@ -20,6 +20,8 @@ func InitCarousel(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, a
 }
 
 func CarouselRoutes(router *gin.Engine, handler *handlers.CarouselHandler, adminMiddleware *middleware.AuthMiddlewareImpl) {
+	router.GET("/carousel-admin", adminMiddleware.ViewMiddleware(), handler.CarouselAdminView)
+
 	carouselGroup := router.Group("/api/carousels")
 	carouselGroup.GET("", handler.GetCarousels)
 	protected := carouselGroup.Group("").Use(adminMiddleware.AdminRouteMiddleware())
