@@ -31,7 +31,7 @@ func headerContent(suppliers []types.Supplier) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<nav x-data=\"{ isHomepage: window.location.pathname === &#39;/&#39; }\" :class=\"isHomepage ? &#39;transparentNav&#39; : &#39;navbar&#39;\"><a href=\"/\" aria-label=\"logo button\"><img src=\"https://www.farmec.ie/farmec_images/farmeclogo.webp\" alt=\"Logo\" width=\"250\" height=\"250\"></a><ul class=\"navList\"><li class=\"navItem\"><a href=\"/about\" class=\"navListItem\">About Us</a><ul class=\"navDrop\"><li class=\"navDropItem\"><a href=\"/about\">Staff & Management</a></li><li class=\"navDropItem\"><a href=\"/about#timeline\">Company History</a></li></ul></li><li clas=\"navItem\"><a href=\"/suppliers\" class=\"navListItem\">Suppliers</a> ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<nav x-data=\"{ isHomepage: window.location.pathname === &#39;/&#39; }\" :class=\"isHomepage ? &#39;transparentNav&#39; : &#39;navbar&#39;\"><a href=\"/\" aria-label=\"logo button\"><img src=\"https://www.farmec.ie/farmec_images/farmeclogo.webp\" alt=\"Logo\" width=\"250\" height=\"250\"></a><ul class=\"navList\"><li class=\"navItem\"><a href=\"/about\" class=\"navListItem\">About Us</a><ul class=\"navDrop\"><li class=\"navDropItem\"><a href=\"/about\">Staff & Management</a></li><li class=\"navDropItem\"><a href=\"/about#timeline\">Company History</a></li></ul></li><li class=\"navItem\"><a href=\"/suppliers\" class=\"navListItem\">Suppliers</a> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

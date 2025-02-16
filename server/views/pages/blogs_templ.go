@@ -55,8 +55,6 @@ func blogsContent(isAdmin bool, isError bool, blogs []types.Blog) templ.Componen
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		if isAdmin {
-		}
 		if isError {
 			templ_7745c5c3_Err = layout.ErrorComponent().Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
@@ -85,7 +83,7 @@ func blogsContent(isAdmin bool, isError bool, blogs []types.Blog) templ.Componen
 				var templ_7745c5c3_Var3 string
 				templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(blog.Title)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/blogs.templ`, Line: 43, Col: 58}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/blogs.templ`, Line: 41, Col: 58}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 				if templ_7745c5c3_Err != nil {
@@ -109,7 +107,7 @@ func blogsContent(isAdmin bool, isError bool, blogs []types.Blog) templ.Componen
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(blog.Title)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/blogs.templ`, Line: 50, Col: 49}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/blogs.templ`, Line: 48, Col: 49}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -122,20 +120,20 @@ func blogsContent(isAdmin bool, isError bool, blogs []types.Blog) templ.Componen
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(blog.MainImage)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/blogs.templ`, Line: 54, Col: 44}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/blogs.templ`, Line: 52, Col: 44}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "\" alt=\"Blog image\" width=\"300\" height=\"300\" onerror=\"this.src=&#39;/default.jpg&#39;\"><div class=\"blogLink\"><h1 class=\"mainHeading\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "\" alt=\"Blog image\" width=\"300\" height=\"300\" onerror=\"this.src=&#39;/public/default.jpg&#39;\"><div class=\"blogLink\"><h1 class=\"mainHeading\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var6 string
 			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(blog.Title)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/blogs.templ`, Line: 61, Col: 60}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/blogs.templ`, Line: 59, Col: 60}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 			if templ_7745c5c3_Err != nil {
@@ -148,7 +146,7 @@ func blogsContent(isAdmin bool, isError bool, blogs []types.Blog) templ.Componen
 			var templ_7745c5c3_Var7 string
 			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(blog.Subheading)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/blogs.templ`, Line: 62, Col: 62}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/blogs.templ`, Line: 60, Col: 62}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 			if templ_7745c5c3_Err != nil {
@@ -161,7 +159,7 @@ func blogsContent(isAdmin bool, isError bool, blogs []types.Blog) templ.Componen
 			var templ_7745c5c3_Var8 string
 			templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(blog.Body)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/blogs.templ`, Line: 63, Col: 56}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/blogs.templ`, Line: 61, Col: 56}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 			if templ_7745c5c3_Err != nil {

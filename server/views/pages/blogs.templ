@@ -27,9 +27,7 @@ templ blogsContent(isAdmin bool, isError bool, blogs []types.Blog) {
         <h1 class="sectionHeading">Check out our Latest Blog Posts</h1>
         <p class="subHeading">Read our latest news</p>
 
-        if isAdmin {
-            // @templates.BlogForm()
-        }
+        // if isAdmin { @templates.BlogForm() }
 
         if isError {
             @layout.ErrorComponent()
@@ -55,7 +53,7 @@ templ blogsContent(isAdmin bool, isError bool, blogs []types.Blog) {
                         alt="Blog image"
                         width="300"
                         height="300"
-                        onerror="this.src='/default.jpg'"
+                        onerror="this.src='/public/default.jpg'"
                     />
                     <div class="blogLink">
                         <h1 class="mainHeading">{ blog.Title }</h1>
