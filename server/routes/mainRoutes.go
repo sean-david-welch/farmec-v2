@@ -19,7 +19,7 @@ func InitRoutes(
 	s3Client lib.S3Client, files embed.FS, firebase *lib.Firebase, emailClient *lib.EmailClientImpl,
 	authMiddleware *middleware.AuthMiddlewareImpl, supplierCache *middleware.SupplierCache,
 ) {
-	resourcesMap := resources.NewResources(database, s3Client, authMiddleware, supplierCache)
+	resourcesMap := resources.NewResources(database, secrets, firebase, files, s3Client, emailClient, authMiddleware, supplierCache)
 	// define supplier middleware
 	router.Use(middleware.WithSupplierCache(supplierCache, resourcesMap.SupplierService))
 

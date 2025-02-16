@@ -35,6 +35,7 @@ type Resources struct {
 
 	// Handlers
 	AuthHandler         *handlers.AuthHandler
+	ViewHandler         *handlers.ViewHandler
 	BlogHandler         *handlers.BlogHandler
 	CarouselHandler     *handlers.CarouselHandler
 	CheckoutHandler     *handlers.CheckoutHandler
@@ -111,6 +112,7 @@ func NewResources(
 
 		// Handlers
 		AuthHandler:         handlers.NewAuthHandler(authService),
+		ViewHandler:         handlers.NewViewHandler(carouselService, authMiddleware, supplierCache),
 		BlogHandler:         handlers.NewBlogHandler(blogService, authMiddleware, supplierCache),
 		CarouselHandler:     handlers.NewCarouselHandler(carouselService, authMiddleware, supplierCache),
 		CheckoutHandler:     handlers.NewCheckoutHandler(checkoutService),
