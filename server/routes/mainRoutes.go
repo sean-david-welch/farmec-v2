@@ -3,9 +3,6 @@ package routes
 import (
 	"database/sql"
 	"embed"
-	"github.com/sean-david-welch/farmec-v2/server/handlers"
-	"github.com/sean-david-welch/farmec-v2/server/repository"
-	"github.com/sean-david-welch/farmec-v2/server/services"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"github.com/sean-david-welch/farmec-v2/server/views/pages"
 	"log"
@@ -21,19 +18,9 @@ func InitRoutes(
 	s3Client lib.S3Client, files embed.FS, firebase *lib.Firebase, emailClient *lib.EmailClientImpl,
 	authMiddleware *middleware.AuthMiddlewareImpl, supplierCache *middleware.SupplierCache,
 ) {
-	// instantiate supplier resouces and middleware
-	supplierRepository := repository.NewSupplierRepo(database)
-	supplierService := services.NewSupplierService(supplierRepository, s3Client, "Suppliers")
-	supplierHandler := handlers.NewSupplierHandler(supplierService)
-
-	// instantiate carousel resources
-	carouselRepository := repository.NewCarouselRepo(database)
-	carouselService := services.NewCarouselService(carouselRepository, s3Client, "Carousels")
-	carouselHandler := handlers.NewCarouselHandler(carouselService, authMiddleware, supplierCache)
-	viewHandler := handlers.NewViewHandler(carouselService, authMiddleware, supplierCache)
-
+	resources := lib.NewResources(database, s3Client, authMiddleware, supplierCache)
 	// define supplier middleware
-	router.Use(middleware.WithSupplierCache(supplierCache, supplierService))
+	router.Use(middleware.WithSupplierCache(supplierCache, resources.SupplierService))
 
 	// default routes
 	router.GET("/", func(c *gin.Context) {
@@ -68,9 +55,9 @@ func InitRoutes(
 	})
 
 	// main routes
-	SupplierRoutes(router, supplierHandler, authMiddleware)
-	ViewRoutes(router, viewHandler, authMiddleware, supplierCache)
-	CarouselRoutes(router, carouselHandler, authMiddleware)
+	SupplierRoutes(router, resources.SupplierHandler, authMiddleware)
+	ViewRoutes(router, resources.ViewHandler, authMiddleware, supplierCache)
+	CarouselRoutes(router, resources.CarouselHandler, authMiddleware)
 
 	// Supplier Module Resources
 	InitParts(router, database, s3Client, authMiddleware)
