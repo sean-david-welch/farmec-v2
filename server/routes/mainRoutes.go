@@ -26,6 +26,12 @@ func InitRoutes(
 	supplierService := services.NewSupplierService(supplierRepository, s3Client, "Suppliers")
 	supplierHandler := handlers.NewSupplierContoller(supplierService)
 
+	// instantiate carousel resources
+	carouselRepository := repository.NewCarouselRepo(database)
+	carouselService := services.NewCarouselService(carouselRepository, s3Client, "Carousels")
+	carouselHandler := handlers.NewCarouselHandler(carouselService, authMiddleware, supplierCache)
+	viewHandler := handlers.NewViewHandler(carouselService, authMiddleware, supplierCache)
+
 	// define supplier middleware
 	router.Use(middleware.WithSupplierCache(supplierCache, supplierService))
 
@@ -63,7 +69,8 @@ func InitRoutes(
 
 	// main routes
 	SupplierRoutes(router, supplierHandler, authMiddleware)
-	InitCarousel(router, database, s3Client, authMiddleware, supplierCache)
+	ViewRoutes(router, viewHandler, authMiddleware, supplierCache)
+	CarouselRoutes(router, carouselHandler, authMiddleware)
 
 	// Supplier Module Resources
 	InitParts(router, database, s3Client, authMiddleware)
