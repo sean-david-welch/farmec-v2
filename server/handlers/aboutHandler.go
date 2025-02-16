@@ -10,13 +10,13 @@ import (
 )
 
 type AboutHandler struct {
-	employeeService services.EmployeeServiceImpl
-	timelineService services.TimelineServiceImpl
+	employeeService services.EmployeeService
+	timelineService services.TimelineService
 	authMiddleware  *middleware.AuthMiddlewareImpl
 	supplierCache   *middleware.SupplierCache
 }
 
-func NewAboutHandler(employeeService services.EmployeeServiceImpl, timelineService services.TimelineServiceImpl, authMiddleware *middleware.AuthMiddlewareImpl) *AboutHandler {
+func NewAboutHandler(employeeService services.EmployeeService, timelineService services.TimelineService, authMiddleware *middleware.AuthMiddlewareImpl) *AboutHandler {
 	return &AboutHandler{employeeService: employeeService, timelineService: timelineService, authMiddleware: authMiddleware}
 }
 
