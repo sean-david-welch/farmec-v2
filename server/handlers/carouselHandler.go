@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"github.com/sean-david-welch/farmec-v2/server/lib"
+	"github.com/sean-david-welch/farmec-v2/server/middleware"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"log"
 	"net/http"
@@ -11,11 +12,13 @@ import (
 )
 
 type CarouselHandler struct {
-	service services.CarouselService
+	service         services.CarouselService
+	adminMiddleware *middleware.AuthMiddlewareImpl
+	supplierCache   *middleware.SupplierCache
 }
 
-func NewCarouselHandler(service services.CarouselService) *CarouselHandler {
-	return &CarouselHandler{service: service}
+func NewCarouselHandler(service services.CarouselService, adminMiddleware *middleware.AuthMiddlewareImpl, supplierCache *middleware.SupplierCache) *CarouselHandler {
+	return &CarouselHandler{service: service, adminMiddleware: adminMiddleware, supplierCache: supplierCache}
 }
 
 func (handler *CarouselHandler) GetCarousels(context *gin.Context) {
