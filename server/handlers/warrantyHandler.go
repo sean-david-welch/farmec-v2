@@ -20,8 +20,8 @@ func NewWarrantyHandler(service services.WarrantyService) *WarrantyHandler {
 }
 
 func (handler *WarrantyHandler) GetWarranties(context *gin.Context) {
-	ctx := context.Request.Context()
-	warranties, err := handler.service.GetWarranties(ctx)
+	reqContext := context.Request.Context()
+	warranties, err := handler.service.GetWarranties(reqContext)
 	if err != nil {
 		log.Printf("error occurred while getting warranties: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while getting warranties"})
@@ -32,10 +32,10 @@ func (handler *WarrantyHandler) GetWarranties(context *gin.Context) {
 }
 
 func (handler *WarrantyHandler) GetWarrantyById(context *gin.Context) {
-	ctx := context.Request.Context()
+	reqContext := context.Request.Context()
 	id := context.Param("id")
 
-	warranty, parts, err := handler.service.GetWarrantyById(ctx, id)
+	warranty, parts, err := handler.service.GetWarrantyById(reqContext, id)
 	if err != nil {
 		log.Printf("error occurred while getting warranty and adjoining parts: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while getting warrantiy and adjoining parts"})
@@ -51,7 +51,7 @@ func (handler *WarrantyHandler) GetWarrantyById(context *gin.Context) {
 }
 
 func (handler *WarrantyHandler) CreateWarranty(context *gin.Context) {
-	ctx := context.Request.Context()
+	reqContext := context.Request.Context()
 
 	var warrantyParts types.WarranrtyParts
 	if err := context.ShouldBindJSON(&warrantyParts); err != nil {
@@ -66,7 +66,7 @@ func (handler *WarrantyHandler) CreateWarranty(context *gin.Context) {
 	}
 
 	warranty := lib.DeserializeWarrantyClaim(*warrantyParts.Warranty)
-	if err := handler.service.CreateWarranty(ctx, &warranty, parts); err != nil {
+	if err := handler.service.CreateWarranty(reqContext, &warranty, parts); err != nil {
 		log.Printf("error occurred while creating warranty: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while creating warranty claim"})
 		return
@@ -76,7 +76,7 @@ func (handler *WarrantyHandler) CreateWarranty(context *gin.Context) {
 }
 
 func (handler *WarrantyHandler) UpdateWarranty(context *gin.Context) {
-	ctx := context.Request.Context()
+	reqContext := context.Request.Context()
 	id := context.Param("id")
 
 	var warrantyParts types.WarranrtyParts
@@ -92,7 +92,7 @@ func (handler *WarrantyHandler) UpdateWarranty(context *gin.Context) {
 	}
 
 	warranty := lib.DeserializeWarrantyClaim(*warrantyParts.Warranty)
-	if err := handler.service.UpdateWarranty(ctx, id, &warranty, parts); err != nil {
+	if err := handler.service.UpdateWarranty(reqContext, id, &warranty, parts); err != nil {
 		log.Printf("error occurred while updating warranty: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while updating warranty claim"})
 		return
@@ -102,10 +102,10 @@ func (handler *WarrantyHandler) UpdateWarranty(context *gin.Context) {
 }
 
 func (handler *WarrantyHandler) DeleteWarranty(context *gin.Context) {
-	ctx := context.Request.Context()
+	reqContext := context.Request.Context()
 	id := context.Param("id")
 
-	if err := handler.service.DeleteWarranty(ctx, id); err != nil {
+	if err := handler.service.DeleteWarranty(reqContext, id); err != nil {
 		log.Printf("error occurred while deleting warranty: %v", err)
 		context.JSON(http.StatusBadRequest, gin.H{"error": "error occurred while deleting warranty"})
 		return

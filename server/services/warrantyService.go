@@ -10,11 +10,11 @@ import (
 )
 
 type WarrantyService interface {
-	GetWarranties(ctx context.Context) ([]types.DealerOwnerInfo, error)
-	GetWarrantyById(ctx context.Context, id string) (*types.WarrantyClaim, []types.PartsRequired, error)
-	CreateWarranty(ctx context.Context, warranty *db.WarrantyClaim, parts []db.PartsRequired) error
-	UpdateWarranty(ctx context.Context, id string, warranty *db.WarrantyClaim, parts []db.PartsRequired) error
-	DeleteWarranty(ctx context.Context, id string) error
+	GetWarranties(reqContext context.Context) ([]types.DealerOwnerInfo, error)
+	GetWarrantyById(reqContext context.Context, id string) (*types.WarrantyClaim, []types.PartsRequired, error)
+	CreateWarranty(reqContext context.Context, warranty *db.WarrantyClaim, parts []db.PartsRequired) error
+	UpdateWarranty(reqContext context.Context, id string, warranty *db.WarrantyClaim, parts []db.PartsRequired) error
+	DeleteWarranty(reqContext context.Context, id string) error
 }
 
 type WarrantyServiceImpl struct {
@@ -39,8 +39,8 @@ func (service *WarrantyServiceImpl) sendWarrantyEmail(warranty *db.WarrantyClaim
 	}
 }
 
-func (service *WarrantyServiceImpl) GetWarranties(ctx context.Context) ([]types.DealerOwnerInfo, error) {
-	warranties, err := service.repo.GetWarranties(ctx)
+func (service *WarrantyServiceImpl) GetWarranties(reqContext context.Context) ([]types.DealerOwnerInfo, error) {
+	warranties, err := service.repo.GetWarranties(reqContext)
 	if err != nil {
 		return nil, err
 	}
@@ -48,8 +48,8 @@ func (service *WarrantyServiceImpl) GetWarranties(ctx context.Context) ([]types.
 	return warranties, nil
 }
 
-func (service *WarrantyServiceImpl) GetWarrantyById(ctx context.Context, id string) (*types.WarrantyClaim, []types.PartsRequired, error) {
-	warranty, partsRequired, err := service.repo.GetWarrantyById(ctx, id)
+func (service *WarrantyServiceImpl) GetWarrantyById(reqContext context.Context, id string) (*types.WarrantyClaim, []types.PartsRequired, error) {
+	warranty, partsRequired, err := service.repo.GetWarrantyById(reqContext, id)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -61,8 +61,8 @@ func (service *WarrantyServiceImpl) GetWarrantyById(ctx context.Context, id stri
 	return &warrantyClaim, result, nil
 }
 
-func (service *WarrantyServiceImpl) CreateWarranty(ctx context.Context, warranty *db.WarrantyClaim, parts []db.PartsRequired) error {
-	if err := service.repo.CreateWarranty(ctx, warranty, parts); err != nil {
+func (service *WarrantyServiceImpl) CreateWarranty(reqContext context.Context, warranty *db.WarrantyClaim, parts []db.PartsRequired) error {
+	if err := service.repo.CreateWarranty(reqContext, warranty, parts); err != nil {
 		return err
 	}
 
@@ -71,8 +71,8 @@ func (service *WarrantyServiceImpl) CreateWarranty(ctx context.Context, warranty
 	return nil
 }
 
-func (service *WarrantyServiceImpl) UpdateWarranty(ctx context.Context, id string, warranty *db.WarrantyClaim, parts []db.PartsRequired) error {
-	if err := service.repo.UpdateWarranty(ctx, id, warranty, parts); err != nil {
+func (service *WarrantyServiceImpl) UpdateWarranty(reqContext context.Context, id string, warranty *db.WarrantyClaim, parts []db.PartsRequired) error {
+	if err := service.repo.UpdateWarranty(reqContext, id, warranty, parts); err != nil {
 		return err
 	}
 
@@ -81,8 +81,8 @@ func (service *WarrantyServiceImpl) UpdateWarranty(ctx context.Context, id strin
 	return nil
 }
 
-func (service *WarrantyServiceImpl) DeleteWarranty(ctx context.Context, id string) error {
-	if err := service.repo.DeleteWarranty(ctx, id); err != nil {
+func (service *WarrantyServiceImpl) DeleteWarranty(reqContext context.Context, id string) error {
+	if err := service.repo.DeleteWarranty(reqContext, id); err != nil {
 		return err
 	}
 
