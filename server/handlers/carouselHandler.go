@@ -25,7 +25,7 @@ func NewCarouselHandler(service services.CarouselService, authMiddleware *middle
 func (handler *CarouselHandler) CarouselAdminView(context *gin.Context) {
 	request := context.Request.Context()
 	isAdmin := handler.authMiddleware.GetIsAdmin(context)
-	suppliers := middleware.GetSuppliersFromContext(context)
+	suppliers := handler.supplierCache.GetSuppliersFromContext(context)
 
 	carousels, err := handler.service.GetCarousels(request)
 	if err != nil {

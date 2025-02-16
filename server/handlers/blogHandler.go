@@ -25,7 +25,7 @@ func NewBlogHandler(service services.BlogService, authMiddleware *middleware.Aut
 func (handler *BlogHandler) BlogsView(context *gin.Context) {
 	request := context.Request.Context()
 	isAdmin := handler.authMiddleware.GetIsAdmin(context)
-	suppliers := middleware.GetSuppliersFromContext(context)
+	suppliers := handler.supplierCache.GetSuppliersFromContext(context)
 
 	blogs, err := handler.service.GetBlogs(request)
 	if err != nil {
