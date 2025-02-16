@@ -31,7 +31,6 @@ func AboutRoutes(router *gin.Engine, aboutHandler *handlers.AboutHandler, employ
 	// Employee routes
 	employeeGroup := router.Group("/api/employees")
 	employeeGroup.GET("", employeeHandler.GetEmployees)
-
 	protectedEmployeeRoutes := employeeGroup.Group("").Use(authMiddleware.AdminRouteMiddleware())
 	{
 		protectedEmployeeRoutes.POST("", employeeHandler.CreateEmployee)
