@@ -40,7 +40,7 @@ func (sc *SupplierCache) Set(suppliers []types.Supplier) {
 	sc.lastFetch = time.Now()
 }
 
-func GetSuppliersFromContext(context *gin.Context) []types.Supplier {
+func (sc *SupplierCache) GetSuppliersFromContext(context *gin.Context) []types.Supplier {
 	if suppliers, exists := context.Get("suppliers"); exists {
 		if supplierList, ok := suppliers.([]types.Supplier); ok {
 			return supplierList
