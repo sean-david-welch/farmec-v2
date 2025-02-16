@@ -11,7 +11,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/services"
 )
 
-func InitializeResources(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, authMiddleware *middleware.AuthMiddlewareImpl) {
+func InitAbout(router *gin.Engine, database *sql.DB, s3Client lib.S3Client, authMiddleware *middleware.AuthMiddlewareImpl) {
 	// Initialize Employee resources
 	employeeRepo := repository.NewEmployeeRepo(database)
 	employeeService := services.NewEmployeeService(employeeRepo, s3Client, "Employees")
@@ -23,10 +23,10 @@ func InitializeResources(router *gin.Engine, database *sql.DB, s3Client lib.S3Cl
 	timelineHandler := handlers.NewTimelineHandler(timelineService)
 
 	// Setup routes for both resources
-	SetupRoutes(router, employeeHandler, timelineHandler, authMiddleware)
+	AboutRoutes(router, employeeHandler, timelineHandler, authMiddleware)
 }
 
-func SetupRoutes(
+func AboutRoutes(
 	router *gin.Engine,
 	employeeHandler *handlers.EmployeeHandler,
 	timelineHandler *handlers.TimelineHandler,
