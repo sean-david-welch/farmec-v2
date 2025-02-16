@@ -4,10 +4,14 @@ import (
     "github.com/sean-david-welch/farmec-v2/server/types"
     "github.com/sean-david-welch/farmec-v2/server/views"
 	"github.com/sean-david-welch/farmec-v2/server/views/components"
+	"github.com/sean-david-welch/farmec-v2/server/views/layout"
 )
 
-templ carouselAdminContent(isAdmin bool, carousels []types.Carousel) {
+templ carouselAdminContent(isAdmin bool, isError bool, carousels []types.Carousel) {
     <section id="carousel">
+        if (isError) {
+            @layout.ErrorComponent()
+        }
         if len(carousels) == 0 {
             <h1>No models found</h1>
             if isAdmin {
@@ -40,9 +44,9 @@ templ carouselAdminContent(isAdmin bool, carousels []types.Carousel) {
     </section>
 }
 
-templ CarouselAdmin(isAdmin bool, carousels []types.Carousel, suppliers []types.Supplier) {
+templ CarouselAdmin(isAdmin bool, isError bool, carousels []types.Carousel, suppliers []types.Supplier) {
     @views.Base(
-        carouselAdminContent(isAdmin, carousels),
+        carouselAdminContent(isAdmin, isError, carousels),
         views.Metadata{
             Title: "Carousel Admin - Farmec Ireland",
             Description: "Admin panel for managing carousel images",

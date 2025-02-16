@@ -12,9 +12,10 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"github.com/sean-david-welch/farmec-v2/server/views"
 	"github.com/sean-david-welch/farmec-v2/server/views/components"
+	"github.com/sean-david-welch/farmec-v2/server/views/layout"
 )
 
-func carouselAdminContent(isAdmin bool, carousels []types.Carousel) templ.Component {
+func carouselAdminContent(isAdmin bool, isError bool, carousels []types.Carousel) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -39,6 +40,12 @@ func carouselAdminContent(isAdmin bool, carousels []types.Carousel) templ.Compon
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
+		if isError {
+			templ_7745c5c3_Err = layout.ErrorComponent().Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
 		if len(carousels) == 0 {
 			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<h1>No models found</h1>")
 			if templ_7745c5c3_Err != nil {
@@ -60,7 +67,7 @@ func carouselAdminContent(isAdmin bool, carousels []types.Carousel) templ.Compon
 					var templ_7745c5c3_Var2 string
 					templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(carousel.Name)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/carouselAdmin.templ`, Line: 23, Col: 63}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/carouselAdmin.templ`, Line: 27, Col: 63}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 					if templ_7745c5c3_Err != nil {
@@ -73,7 +80,7 @@ func carouselAdminContent(isAdmin bool, carousels []types.Carousel) templ.Compon
 					var templ_7745c5c3_Var3 string
 					templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(carousel.Image)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/carouselAdmin.templ`, Line: 25, Col: 48}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/carouselAdmin.templ`, Line: 29, Col: 48}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 					if templ_7745c5c3_Err != nil {
@@ -112,7 +119,7 @@ func carouselAdminContent(isAdmin bool, carousels []types.Carousel) templ.Compon
 	})
 }
 
-func CarouselAdmin(isAdmin bool, carousels []types.Carousel, suppliers []types.Supplier) templ.Component {
+func CarouselAdmin(isAdmin bool, isError bool, carousels []types.Carousel, suppliers []types.Supplier) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -134,7 +141,7 @@ func CarouselAdmin(isAdmin bool, carousels []types.Carousel, suppliers []types.S
 		}
 		ctx = templ.ClearChildren(ctx)
 		templ_7745c5c3_Err = views.Base(
-			carouselAdminContent(isAdmin, carousels),
+			carouselAdminContent(isAdmin, isError, carousels),
 			views.Metadata{
 				Title:       "Carousel Admin - Farmec Ireland",
 				Description: "Admin panel for managing carousel images",

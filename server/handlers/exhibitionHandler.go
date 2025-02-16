@@ -39,7 +39,7 @@ func (handler *ExhibitionHandler) ExhibitionsView(context *gin.Context) {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while rendering the page"})
 		return
 	}
-	context.Header("Content-Type", "text/html")
+	context.Header("Content-Type", "text/html; charset=utf-8")
 }
 
 func (handler *ExhibitionHandler) GetExhibitions(context *gin.Context) {
