@@ -46,8 +46,88 @@ func (handler *AboutHandler) AboutView(context *gin.Context) {
 	context.Header("Content-Type", "text/html; charset=utf-8")
 }
 
-// Timeline Routes
+// Employee Hanlders
+func (handler *AboutHandler) GetEmployees(context *gin.Context) {
+	request := context.Request.Context()
+	employees, err := handler.employeeService.GetEmployees(request)
+	if err != nil {
+		log.Printf("error getting employees: %v", err)
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while getting employees"})
+		return
+	}
 
+	context.JSON(http.StatusOK, employees)
+}
+
+func (handler *AboutHandler) CreateEmployee(context *gin.Context) {
+	request := context.Request.Context()
+	var employee types.Employee
+
+	if err := context.ShouldBindJSON(&employee); err != nil {
+		log.Printf("Error creating employee: %v", err)
+		context.JSON(http.StatusBadRequest, gin.H{"error": "invalid request body", "details": err.Error()})
+		return
+	}
+
+	dbEmployee := lib.DeserializeEmployee(employee)
+	result, err := handler.employeeService.CreateEmployee(request, &dbEmployee)
+	if err != nil {
+		log.Printf("Error creating employee: %v", err)
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while creating employee", "details": err.Error()})
+		return
+	}
+
+	response := gin.H{
+		"employee":     employee,
+		"presignedUrl": result.PresignedUrl,
+		"imageUrl":     result.ImageUrl,
+	}
+
+	context.JSON(http.StatusCreated, response)
+}
+
+func (handler *AboutHandler) UpdateEmployee(context *gin.Context) {
+	request := context.Request.Context()
+	id := context.Param("id")
+
+	var employee types.Employee
+	if err := context.ShouldBindJSON(&employee); err != nil {
+		log.Printf("Error creating employee: %v", err)
+		context.JSON(http.StatusBadRequest, gin.H{"error": "invalid request body", "details": err.Error()})
+		return
+	}
+
+	dbEmployee := lib.DeserializeEmployee(employee)
+	result, err := handler.employeeService.UpdateEmployee(request, id, &dbEmployee)
+	if err != nil {
+		log.Printf("Error creating employee: %v", err)
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while creating employee", "details": err.Error()})
+		return
+	}
+
+	response := gin.H{
+		"employee":     employee,
+		"presignedUrl": result.PresignedUrl,
+		"imageUrl":     result.ImageUrl,
+	}
+
+	context.JSON(http.StatusAccepted, response)
+}
+
+func (handler *AboutHandler) DeleteEmployee(context *gin.Context) {
+	request := context.Request.Context()
+	id := context.Param("id")
+
+	if err := handler.employeeService.DeleteEmployee(request, id); err != nil {
+		log.Printf("Error deleting employee: %v", err)
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while deleting employee", "details": err.Error()})
+		return
+	}
+
+	context.JSON(http.StatusOK, gin.H{"message": "employee deleted successfully", "id": id})
+}
+
+// Timeline Hanlders
 func (handler *AboutHandler) GetTimelines(context *gin.Context) {
 	request := context.Request.Context()
 	timelines, err := handler.timelineService.GetTimelines(request)
