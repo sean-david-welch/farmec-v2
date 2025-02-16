@@ -3,6 +3,7 @@ package routes
 import (
 	"database/sql"
 	"embed"
+	"github.com/sean-david-welch/farmec-v2/server/resources"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"github.com/sean-david-welch/farmec-v2/server/views/pages"
 	"log"
@@ -18,9 +19,9 @@ func InitRoutes(
 	s3Client lib.S3Client, files embed.FS, firebase *lib.Firebase, emailClient *lib.EmailClientImpl,
 	authMiddleware *middleware.AuthMiddlewareImpl, supplierCache *middleware.SupplierCache,
 ) {
-	resources := lib.NewResources(database, s3Client, authMiddleware, supplierCache)
+	resourcesMap := resources.NewResources(database, s3Client, authMiddleware, supplierCache)
 	// define supplier middleware
-	router.Use(middleware.WithSupplierCache(supplierCache, resources.SupplierService))
+	router.Use(middleware.WithSupplierCache(supplierCache, resourcesMap.SupplierService))
 
 	// default routes
 	router.GET("/", func(c *gin.Context) {
@@ -55,9 +56,9 @@ func InitRoutes(
 	})
 
 	// main routes
-	SupplierRoutes(router, resources.SupplierHandler, authMiddleware)
-	ViewRoutes(router, resources.ViewHandler, authMiddleware, supplierCache)
-	CarouselRoutes(router, resources.CarouselHandler, authMiddleware)
+	SupplierRoutes(router, resourcesMap.SupplierHandler, authMiddleware)
+	ViewRoutes(router, resourcesMap.ViewHandler, authMiddleware, supplierCache)
+	CarouselRoutes(router, resourcesMap.CarouselHandler, authMiddleware)
 
 	// Supplier Module Resources
 	InitParts(router, database, s3Client, authMiddleware)
