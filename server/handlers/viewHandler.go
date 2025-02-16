@@ -19,8 +19,20 @@ func NewViewHandler(carouselService services.CarouselService, authMiddleware *mi
 	return &ViewHandler{carouselService, authMiddleware, supplierCahce}
 }
 
-func (handler *ViewHandler) HomeView(c *gin.Context) {
-
+func (handler *ViewHandler) HomeView(context *gin.Context) {
+	request := context.Request.Context()
+	suppliers := handler.supplierCache.GetSuppliersFromContext(context)
+	carousels, err := handler.carouselService.GetCarousels(request)
+	if err != nil {
+		log.Printf("Error getting carousels: %v\n", err)
+	}
+	component := pages.Home(carousels, suppliers)
+	if err := component.Render(request, context.Writer); err != nil {
+		log.Printf("Error rendering carousels: %v\n", err)
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while rendering the page"})
+		return
+	}
+	context.Header("Content-Type", "text/html; charset=utf-8")
 }
 
 func (handler *ViewHandler) CarouselAdminView(context *gin.Context) {
