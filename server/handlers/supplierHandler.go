@@ -27,14 +27,7 @@ func (handler *SupplierHandler) SupplierView(context *gin.Context) {
 	isAdmin := handler.authMiddleware.GetIsAdmin(context)
 	suppliers := handler.supplierCache.GetSuppliersFromContext(context)
 
-	if len(suppliers) == 0 {
-		suppliers, err := handler.service.GetSuppliers(context)
-		if err != nil {
-			log.Printf("Error getting suppliers: %v", err)
-		}
-	}
-	isError := err != nil
-	component := pages.Suppliers(isAdmin, isError, suppliers)
+	component := pages.Suppliers(isAdmin, false, suppliers)
 	if err := component.Render(request, context.Writer); err != nil {
 		log.Printf("Error rendering suppliers: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while rendering suppliers"})
