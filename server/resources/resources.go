@@ -35,6 +35,7 @@ type Resources struct {
 
 	// Handlers
 	AuthHandler         *handlers.AuthHandler
+	AboutHandler        *handlers.AboutHandler
 	ViewHandler         *handlers.ViewHandler
 	BlogHandler         *handlers.BlogHandler
 	CarouselHandler     *handlers.CarouselHandler
@@ -111,17 +112,18 @@ func NewResources(
 
 		// Handlers
 		AuthHandler:         handlers.NewAuthHandler(authService),
+		AboutHandler:        handlers.NewAboutHandler(employeeService, timelineService, authMiddleware, supplierCache),
 		ViewHandler:         handlers.NewViewHandler(carouselService, contactService, authMiddleware, supplierCache),
 		BlogHandler:         handlers.NewBlogHandler(blogService, authMiddleware, supplierCache),
 		CarouselHandler:     handlers.NewCarouselHandler(carouselService, authMiddleware, supplierCache),
 		CheckoutHandler:     handlers.NewCheckoutHandler(checkoutService),
 		LineItemHandler:     handlers.NewLineItemHandler(lineItemService),
-		MachineHandler:      handlers.NewMachineHandler(machineService),
+		MachineHandler:      handlers.NewMachineHandler(machineService, authMiddleware, supplierCache),
 		PartsHandler:        handlers.NewPartsHandler(partsService),
 		PdfHandler:          handlers.NewPdfHandler(pdfService),
 		ProductHandler:      handlers.NewProductHandler(productService),
 		RegistrationHandler: handlers.NewRegistrationHandler(registrationService),
-		SupplierHandler:     handlers.NewSupplierHandler(supplierService),
+		SupplierHandler:     handlers.NewSupplierHandler(supplierService, authMiddleware, supplierCache),
 		VideoHandler:        handlers.NewVideoHandler(videoService),
 		WarrantyHandler:     handlers.NewWarrantyHandler(warrantyService),
 	}
