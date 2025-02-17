@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"github.com/sean-david-welch/farmec-v2/server/lib"
+	"github.com/sean-david-welch/farmec-v2/server/middleware"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"log"
 	"net/http"
@@ -11,13 +12,28 @@ import (
 )
 
 type MachineHandler struct {
-	service services.MachineService
+	service        services.MachineService
+	authMiddleware *middleware.AuthMiddlewareImpl
+	supplierCache  *middleware.SupplierCache
 }
 
-func NewMachineHandler(service services.MachineService) *MachineHandler {
-	return &MachineHandler{service: service}
+func NewMachineHandler(service services.MachineService, authMiddleware *middleware.AuthMiddlewareImpl, supplierCache *middleware.SupplierCache) *MachineHandler {
+	return &MachineHandler{service: service, authMiddleware: authMiddleware, supplierCache: supplierCache}
 }
 
+//	func (handler *MachineHandler) MachineView(context *gin.Context) {
+//		request := context.Request.Context()
+//		isAdmin := handler.authMiddleware.GetIsAdmin(context)
+//		id := context.Param("id")
+//
+//		machines, err := handler.service.GetMachines(context, id)
+//		if err != nil {
+//			log.Printf("Error getting machines: %v\n", err)
+//		}
+//
+//		isError := err != nil
+//		component := pag
+//	}
 func (handler *MachineHandler) GetMachines(context *gin.Context) {
 	request := context.Request.Context()
 	id := context.Param("id")
