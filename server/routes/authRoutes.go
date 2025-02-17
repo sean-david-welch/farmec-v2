@@ -3,17 +3,8 @@ package routes
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/sean-david-welch/farmec-v2/server/handlers"
-	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
-	"github.com/sean-david-welch/farmec-v2/server/services"
 )
-
-func InitAuth(router *gin.Engine, firebase *lib.Firebase, authMiddleware *middleware.AuthMiddlewareImpl) {
-	service := services.NewAuthService(firebase)
-	handler := handlers.NewAuthHandler(service)
-
-	AuthRoutes(router, handler, authMiddleware)
-}
 
 func AuthRoutes(router *gin.Engine, handler *handlers.AuthHandler, authMiddleware *middleware.AuthMiddlewareImpl) {
 	authGroup := router.Group("/api/auth")
