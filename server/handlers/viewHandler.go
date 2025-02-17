@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
 	"github.com/sean-david-welch/farmec-v2/server/services"
+	"github.com/sean-david-welch/farmec-v2/server/types"
 	"github.com/sean-david-welch/farmec-v2/server/views/pages"
 	"log"
 	"net/http"
@@ -11,12 +12,13 @@ import (
 
 type ViewHandler struct {
 	carouselService services.CarouselService
+	contactService  services.ContactService
 	authMiddleware  *middleware.AuthMiddlewareImpl
 	supplierCache   *middleware.SupplierCache
 }
 
-func NewViewHandler(carouselService services.CarouselService, authMiddleware *middleware.AuthMiddlewareImpl, supplierCahce *middleware.SupplierCache) *ViewHandler {
-	return &ViewHandler{carouselService, authMiddleware, supplierCahce}
+func NewViewHandler(carouselService services.CarouselService, contactService services.ContactService, authMiddleware *middleware.AuthMiddlewareImpl, supplierCahce *middleware.SupplierCache) *ViewHandler {
+	return &ViewHandler{carouselService, contactService, authMiddleware, supplierCahce}
 }
 
 func (handler *ViewHandler) HomeView(context *gin.Context) {
@@ -53,4 +55,30 @@ func (handler *ViewHandler) CarouselAdminView(context *gin.Context) {
 		return
 	}
 	context.Header("Content-Type", "text/html; charset=utf-8")
+}
+
+func (handler *ViewHandler) SendEmail(context *gin.Context) {
+	var data *types.EmailData
+
+	if err := context.ShouldBindJSON(&data); err != nil {
+		log.Printf("Failed to parse request body: %v", err)
+		context.JSON(http.StatusBadRequest, gin.H{
+			"error":   "Invalid request format",
+			"details": err.Error(),
+		})
+		return
+	}
+
+	if err := handler.contactService.SendContactEmail(data); err != nil {
+		log.Printf("Failed to send email: %v", err)
+		context.JSON(http.StatusInternalServerError, gin.H{
+			"error":   "Failed to send email",
+			"message": "Please try again later or contact support",
+		})
+		return
+	}
+
+	context.JSON(http.StatusOK, gin.H{
+		"message": "Email sent successfully",
+	})
 }
