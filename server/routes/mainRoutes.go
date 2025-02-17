@@ -46,27 +46,27 @@ func InitRoutes(
 	CarouselRoutes(router, resourcesMap.CarouselHandler, authMiddleware)
 
 	// Supplier Module Resources
-	InitParts(router, database, s3Client, authMiddleware)
-	InitVideos(router, database, secrets, authMiddleware)
-	InitProduct(router, database, s3Client, authMiddleware)
-	InitMachines(router, database, s3Client, authMiddleware)
+	PartsRoutes(router, resourcesMap.PartsHandler, authMiddleware)
+	VideoRoutes(router, resourcesMap.VideoHandler, authMiddleware)
+	ProductRoutes(router, resourcesMap.ProductHandler, authMiddleware)
+	MachineRoutes(router, resourcesMap.MachineHandler, authMiddleware)
 
 	// About Module Resources
-	InitAbout(router, database, s3Client, authMiddleware, supplierCache)
+	AboutRoutes(router, resourcesMap.AboutHandler, authMiddleware)
 
 	// Blog Module Resources
-	InitBlogs(router, database, s3Client, authMiddleware, supplierCache)
+	BlogRoutes(router, resourcesMap.BlogHandler, authMiddleware)
 
 	// Misc Resources
-	InitWarranty(router, database, authMiddleware, emailClient)
-	InitRegistrations(router, database, authMiddleware, emailClient)
-	InitLineItems(router, database, s3Client, authMiddleware)
+	WarrantyRoutes(router, resourcesMap.WarrantyHandler, authMiddleware)
+	RegistrationRoutes(router, resourcesMap.RegistrationHandler, authMiddleware)
+	LineItemRoutes(router, resourcesMap.LineItemHandler, authMiddleware)
 
 	// Util Resources
-	InitContact(router, emailClient)
-	InitCheckout(router, database, secrets)
-	InitPdfRenderer(router, authMiddleware, files)
-	InitAuth(router, firebase, authMiddleware)
+	CheckoutRoutes(router, resourcesMap.CheckoutHandler)
+
+	PdfRenderRoutes(router, resourcesMap.PdfHandler, authMiddleware)
+	AuthRoutes(router, resourcesMap.AuthHandler, authMiddleware)
 
 	router.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{
