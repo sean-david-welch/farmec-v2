@@ -64,7 +64,6 @@ func InitRoutes(
 
 	// Util Resources
 	CheckoutRoutes(router, resourcesMap.CheckoutHandler)
-
 	PdfRenderRoutes(router, resourcesMap.PdfHandler, authMiddleware)
 	AuthRoutes(router, resourcesMap.AuthHandler, authMiddleware)
 
