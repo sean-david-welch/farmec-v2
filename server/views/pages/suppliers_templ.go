@@ -12,6 +12,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"github.com/sean-david-welch/farmec-v2/server/views"
 	"github.com/sean-david-welch/farmec-v2/server/views/components"
+	"github.com/sean-david-welch/farmec-v2/server/views/layout"
 )
 
 func getSuppliersMetadata() views.Metadata {
@@ -29,7 +30,7 @@ func getSuppliersMetadata() views.Metadata {
 	}
 }
 
-func suppliersContent(isAdmin bool, suppliers []types.Supplier) templ.Component {
+func suppliersContent(isAdmin bool, isError bool, suppliers []types.Supplier) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -54,6 +55,12 @@ func suppliersContent(isAdmin bool, suppliers []types.Supplier) templ.Component 
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
+		if isError {
+			templ_7745c5c3_Err = layout.ErrorComponent().Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
 		if len(suppliers) > 0 {
 			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"index\"><h1 class=\"indexHeading\">Suppliers:</h1>")
 			if templ_7745c5c3_Err != nil {
@@ -76,7 +83,7 @@ func suppliersContent(isAdmin bool, suppliers []types.Supplier) templ.Component 
 				var templ_7745c5c3_Var3 string
 				templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(supplier.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/suppliers.templ`, Line: 35, Col: 61}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/suppliers.templ`, Line: 39, Col: 61}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 				if templ_7745c5c3_Err != nil {
@@ -100,7 +107,7 @@ func suppliersContent(isAdmin bool, suppliers []types.Supplier) templ.Component 
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(supplier.Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/suppliers.templ`, Line: 42, Col: 56}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/suppliers.templ`, Line: 46, Col: 56}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -113,7 +120,7 @@ func suppliersContent(isAdmin bool, suppliers []types.Supplier) templ.Component 
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(supplier.Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/suppliers.templ`, Line: 45, Col: 63}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/suppliers.templ`, Line: 49, Col: 63}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
@@ -126,7 +133,7 @@ func suppliersContent(isAdmin bool, suppliers []types.Supplier) templ.Component 
 			var templ_7745c5c3_Var6 string
 			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(supplier.LogoImage)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/suppliers.templ`, Line: 47, Col: 52}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/suppliers.templ`, Line: 51, Col: 52}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 			if templ_7745c5c3_Err != nil {
@@ -139,7 +146,7 @@ func suppliersContent(isAdmin bool, suppliers []types.Supplier) templ.Component 
 			var templ_7745c5c3_Var7 string
 			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(supplier.MarketingImage)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/suppliers.templ`, Line: 58, Col: 53}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/suppliers.templ`, Line: 62, Col: 53}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 			if templ_7745c5c3_Err != nil {
@@ -152,7 +159,7 @@ func suppliersContent(isAdmin bool, suppliers []types.Supplier) templ.Component 
 			var templ_7745c5c3_Var8 string
 			templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(supplier.Description)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/suppliers.templ`, Line: 67, Col: 73}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/suppliers.templ`, Line: 71, Col: 73}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 			if templ_7745c5c3_Err != nil {
@@ -194,7 +201,7 @@ func suppliersContent(isAdmin bool, suppliers []types.Supplier) templ.Component 
 	})
 }
 
-func Suppliers(isAdmin bool, suppliers []types.Supplier) templ.Component {
+func Suppliers(isAdmin bool, isError bool, suppliers []types.Supplier) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -216,7 +223,7 @@ func Suppliers(isAdmin bool, suppliers []types.Supplier) templ.Component {
 		}
 		ctx = templ.ClearChildren(ctx)
 		templ_7745c5c3_Err = views.Base(
-			suppliersContent(isAdmin, suppliers),
+			suppliersContent(isAdmin, isError, suppliers),
 			getSuppliersMetadata(),
 			[]string{"suppliers.css"},
 			suppliers,
