@@ -2,7 +2,9 @@ package handlers
 
 import (
 	"github.com/sean-david-welch/farmec-v2/server/lib"
+	"github.com/sean-david-welch/farmec-v2/server/middleware"
 	"github.com/sean-david-welch/farmec-v2/server/types"
+	"github.com/sean-david-welch/farmec-v2/server/views/pages"
 	"log"
 	"net/http"
 
@@ -11,11 +13,34 @@ import (
 )
 
 type SupplierHandler struct {
-	service services.SupplierService
+	service        services.SupplierService
+	authMiddleware *middleware.AuthMiddlewareImpl
+	supplierCache  *middleware.SupplierCache
 }
 
-func NewSupplierHandler(service services.SupplierService) *SupplierHandler {
-	return &SupplierHandler{service: service}
+func NewSupplierHandler(service services.SupplierService, authMiddleware *middleware.AuthMiddlewareImpl, supplierCache *middleware.SupplierCache) *SupplierHandler {
+	return &SupplierHandler{service: service, authMiddleware: authMiddleware, supplierCache: supplierCache}
+}
+
+func (handler *SupplierHandler) SupplierView(context *gin.Context) {
+	request := context.Request.Context()
+	isAdmin := handler.authMiddleware.GetIsAdmin(context)
+	suppliers := handler.supplierCache.GetSuppliersFromContext(context)
+
+	if len(suppliers) == 0 {
+		suppliers, err := handler.service.GetSuppliers(context)
+		if err != nil {
+			log.Printf("Error getting suppliers: %v", err)
+		}
+	}
+	isError := err != nil
+	component := pages.Suppliers(isAdmin, isError, suppliers)
+	if err := component.Render(request, context.Writer); err != nil {
+		log.Printf("Error rendering suppliers: %v", err)
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while rendering suppliers"})
+		return
+	}
+	context.Header("Content-Type", "text/html; charset=utf-8")
 }
 
 func (handler *SupplierHandler) GetSuppliers(context *gin.Context) {
