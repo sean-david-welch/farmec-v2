@@ -4,6 +4,7 @@ import (
     "github.com/sean-david-welch/farmec-v2/server/types"
     "github.com/sean-david-welch/farmec-v2/server/views"
 	"github.com/sean-david-welch/farmec-v2/server/views/components"
+	"github.com/sean-david-welch/farmec-v2/server/views/layout"
 )
 
 func getSuppliersMetadata() views.Metadata {
@@ -21,11 +22,14 @@ func getSuppliersMetadata() views.Metadata {
     }
 }
 
-templ suppliersContent(isAdmin bool, suppliers []types.Supplier) {
+templ suppliersContent(isAdmin bool, isError bool, suppliers []types.Supplier) {
     <section id="suppliers">
         <h1 class="sectionHeading">Suppliers</h1>
 
         // if isAdmin { @templates.SupplierForm() }
+        if (isError) {
+            @layout.ErrorComponent()
+        }
 
         if len(suppliers) > 0 {
             <div class="index">
@@ -81,9 +85,9 @@ templ suppliersContent(isAdmin bool, suppliers []types.Supplier) {
     </section>
 }
 
-templ Suppliers(isAdmin bool, suppliers []types.Supplier) {
+templ Suppliers(isAdmin bool, isError bool, suppliers []types.Supplier) {
     @views.Base(
-        suppliersContent(isAdmin, suppliers),
+        suppliersContent(isAdmin, isError, suppliers),
         getSuppliersMetadata(),
         []string{"suppliers.css"},
         suppliers,
