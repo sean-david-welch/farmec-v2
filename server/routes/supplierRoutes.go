@@ -8,6 +8,7 @@ import (
 )
 
 func SupplierRoutes(router *gin.Engine, handler *handlers.SupplierHandler, authMiddleware *middleware.AuthMiddlewareImpl) {
+	router.GET("/suppliers", authMiddleware.ViewMiddleware(), handler.SupplierView)
 	supplierGroup := router.Group("/api/suppliers")
 
 	supplierGroup.GET("", handler.GetSuppliers)
