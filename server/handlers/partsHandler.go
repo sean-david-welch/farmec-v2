@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"github.com/sean-david-welch/farmec-v2/server/lib"
+	"github.com/sean-david-welch/farmec-v2/server/middleware"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"log"
 	"net/http"
@@ -11,15 +12,19 @@ import (
 )
 
 type PartsHandler struct {
-	service services.PartsService
+	service        services.PartsService
+	authMiddleware *middleware.AuthMiddlewareImpl
+	supplierCache  *middleware.SupplierCache
 }
 
-func NewPartsHandler(service services.PartsService) *PartsHandler {
-	return &PartsHandler{service: service}
+func NewPartsHandler(service services.PartsService, authMiddleware *middleware.AuthMiddlewareImpl, supplierCache *middleware.SupplierCache) *PartsHandler {
+	return &PartsHandler{service: service, authMiddleware: authMiddleware, supplierCache: supplierCache}
 }
 
 func (handler *PartsHandler) PartsListView(context *gin.Context) {
 	request := context.Request.Context()
+	isAdmin := handler.auth
+
 }
 
 func (handler *PartsHandler) PartsDetailView(context *gin.Context) {}
