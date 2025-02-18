@@ -1,0 +1,25 @@
+package details
+
+import "github.com/sean-david-welch/farmec-v2/server/views"
+import "github.com/sean-david-welch/farmec-v2/server/types"
+import "fmt"
+
+func getBlogsDetailMetadata(blog types.Blog) views.Metadata {
+    return views.Metadata{
+        Title:         fmt.Sprintf("%v - Farmec Blog", blog.Title),
+        Description:   fmt.Sprintf("%v", blog.Subheading),
+        OgTitle:       "Latest Blog Posts - Farmec Ireland",
+        OgDescription: "Check out the latest blog posts from Farmec Ireland. Stay up to date with our latest news and insights.",
+        OgImage:       "https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp",
+        OgUrl:         "https://www.farmec.ie/blogs",
+        TwitterTitle:  "Latest Blog Posts - Farmec Ireland",
+        TwitterDesc:   "Check out the latest blog posts from Farmec Ireland. Stay up to date with our latest news and insights.",
+        TwitterImage:  "https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp",
+        CanonicalUrl:  "https://www.farmec.ie/blogs",
+    }
+}
+
+templ blogsDetailContent(isAdmin bool, isError bool, blog types.Blog) {
+
+
+}
