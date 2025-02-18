@@ -4,6 +4,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
 	"github.com/sean-david-welch/farmec-v2/server/types"
+	"github.com/sean-david-welch/farmec-v2/server/views/pages"
 	"log"
 	"net/http"
 
@@ -23,8 +24,16 @@ func NewPartsHandler(service services.PartsService, authMiddleware *middleware.A
 
 func (handler *PartsHandler) PartsListView(context *gin.Context) {
 	request := context.Request.Context()
-	isAdmin := handler.auth
+	isAdmin := handler.authMiddleware.GetIsAdmin(context)
+	suppliers := handler.supplierCache.GetSuppliersFromContext(context)
 
+	component := pages.Suppliers(isAdmin, false, suppliers)
+	if err := component.Render(request, context.Writer); err != nil {
+		log.Println("Error rendering template:", err)
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while rendering template"})
+		return
+	}
+	context.Header("Content-Type", "text/html; charset=utf-8")
 }
 
 func (handler *PartsHandler) PartsDetailView(context *gin.Context) {}
