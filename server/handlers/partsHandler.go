@@ -18,6 +18,12 @@ func NewPartsHandler(service services.PartsService) *PartsHandler {
 	return &PartsHandler{service: service}
 }
 
+func (handler *PartsHandler) PartsListView(context *gin.Context) {
+	request := context.Request.Context()
+}
+
+func (handler *PartsHandler) PartsDetailView(context *gin.Context) {}
+
 func (handler *PartsHandler) GetParts(context *gin.Context) {
 	request := context.Request.Context()
 	id := context.Param("id")
