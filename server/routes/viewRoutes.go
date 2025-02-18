@@ -9,6 +9,6 @@ import (
 func ViewRoutes(router *gin.Engine, handler *handlers.ViewHandler, authMiddleware *middleware.AuthMiddlewareImpl) {
 	router.GET("/", authMiddleware.ViewMiddleware(), handler.HomeView)
 	router.GET("/carousel-admin", authMiddleware.ViewMiddleware(), handler.CarouselAdminView)
-	router.POST("/api/contact", handler.SendEmail)
+	router.POST("/contact", handler.SendEmail)
 
 }
