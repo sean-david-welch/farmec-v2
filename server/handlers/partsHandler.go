@@ -27,7 +27,7 @@ func (handler *PartsHandler) PartsListView(context *gin.Context) {
 	isAdmin := handler.authMiddleware.GetIsAdmin(context)
 	suppliers := handler.supplierCache.GetSuppliersFromContext(context)
 
-	component := pages.Suppliers(isAdmin, false, suppliers)
+	component := pages.SpareParts(isAdmin, false, suppliers)
 	if err := component.Render(request, context.Writer); err != nil {
 		log.Println("Error rendering template:", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while rendering template"})
