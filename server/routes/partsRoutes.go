@@ -8,6 +8,7 @@ import (
 
 func PartsRoutes(router *gin.Engine, handler *handlers.PartsHandler, authMiddleware *middleware.AuthMiddlewareImpl) {
 	router.GET("/spareparts", authMiddleware.ViewMiddleware(), handler.PartsListView)
+	router.GET("/spareparts/:id", authMiddleware.ViewMiddleware(), handler.PartsDetailView)
 
 	partsGroup := router.Group("/api/spareparts")
 	partsGroup.GET("/:id", handler.GetParts)
