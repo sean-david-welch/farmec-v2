@@ -76,9 +76,9 @@ func defaultImage(image string, defaultImg string) string {
     return image
 }
 
-templ SpareParts(isAdmin bool, suppliers []types.Supplier) {
+templ SpareParts(isAdmin bool, isError bool, suppliers []types.Supplier) {
     @views.Base(
-        sparePartsContent(isAdmin, suppliers),
+        sparePartsContent(isAdmin, isError, suppliers),
         getSparePartsMetadata(),
         []string{"suppliers.css"},
         suppliers,
