@@ -3,6 +3,7 @@ package pages
 import (
     "github.com/sean-david-welch/farmec-v2/server/types"
     "github.com/sean-david-welch/farmec-v2/server/views"
+	"github.com/sean-david-welch/farmec-v2/server/views/layout"
 )
 
 func getSparePartsMetadata() views.Metadata {
@@ -20,12 +21,16 @@ func getSparePartsMetadata() views.Metadata {
     }
 }
 
-templ sparePartsContent(isAdmin bool, suppliers []types.Supplier) {
+templ sparePartsContent(isAdmin bool, isError bool, suppliers []types.Supplier) {
     <section id="SpareParts">
         <h1 class="sectionHeading">Spare-Parts</h1>
 
         if isAdmin && len(suppliers) > 0 {
             // @templates.SparePartForm(suppliers)
+        }
+
+        if isError {
+            @layout.ErrorComponent()
         }
 
         <div class="optionsBtn">
