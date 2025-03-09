@@ -5,6 +5,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"github.com/sean-david-welch/farmec-v2/server/views/pages"
+	"github.com/sean-david-welch/farmec-v2/server/views/pages/details"
 	"log"
 	"net/http"
 
@@ -28,6 +29,27 @@ func (handler *SupplierHandler) SupplierView(context *gin.Context) {
 	suppliers := handler.supplierCache.GetSuppliersFromContext(context)
 
 	component := pages.Suppliers(isAdmin, false, suppliers)
+	if err := component.Render(request, context.Writer); err != nil {
+		log.Printf("Error rendering suppliers: %v", err)
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while rendering suppliers"})
+		return
+	}
+	context.Header("Content-Type", "text/html; charset=utf-8")
+}
+
+func (handler *SupplierHandler) SupplierDetailView(context *gin.Context) {
+	request := context.Request.Context()
+	isAdmin := handler.authMiddleware.GetIsAdmin(context)
+	suppliers := handler.supplierCache.GetSuppliersFromContext(context)
+
+	id := context.Param("id")
+	supplier, err := handler.service.GetSupplierById(request, id)
+	if err != nil {
+		log.Printf("Error getting supplier: %v", err)
+	}
+
+	isError := err != nil
+	component := details.SupplierDetail(isAdmin, isError, supplier, machines, videos, suppliers)
 	if err := component.Render(request, context.Writer); err != nil {
 		log.Printf("Error rendering suppliers: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while rendering suppliers"})
