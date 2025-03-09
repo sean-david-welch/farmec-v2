@@ -52,7 +52,7 @@ func (service *PartsServiceImpl) GetPartsSupplier(ctx context.Context, id string
 	if err != nil {
 		return nil, err
 	}
-	result := lib.SerializeSupplier(supplier)
+	result := lib.SerializeSupplier(*supplier)
 	return &result, nil
 }
 
