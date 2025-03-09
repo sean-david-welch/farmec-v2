@@ -61,6 +61,43 @@ func (q *Queries) DeleteSupplier(ctx context.Context, id string) error {
 	return err
 }
 
+const getMachinesBySupplierID = `-- name: GetMachinesBySupplierID :many
+SELECT id, supplier_id, name, machine_image, description, machine_link, created
+FROM Machine
+WHERE supplier_id = ?
+`
+
+func (q *Queries) GetMachinesBySupplierID(ctx context.Context, supplierID string) ([]Machine, error) {
+	rows, err := q.db.QueryContext(ctx, getMachinesBySupplierID, supplierID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Machine
+	for rows.Next() {
+		var i Machine
+		if err := rows.Scan(
+			&i.ID,
+			&i.SupplierID,
+			&i.Name,
+			&i.MachineImage,
+			&i.Description,
+			&i.MachineLink,
+			&i.Created,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getSupplierByID = `-- name: GetSupplierByID :one
 select id,
        name,
@@ -166,6 +203,51 @@ func (q *Queries) GetSuppliers(ctx context.Context) ([]GetSuppliersRow, error) {
 			&i.SocialTwitter,
 			&i.SocialYoutube,
 			&i.SocialWebsite,
+			&i.Created,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getVideosBySupplierID = `-- name: GetVideosBySupplierID :many
+SELECT id,
+       supplier_id,
+       web_url,
+       title,
+       description,
+       video_id,
+       thumbnail_url,
+       created
+FROM Video
+WHERE supplier_id = ?
+`
+
+func (q *Queries) GetVideosBySupplierID(ctx context.Context, supplierID string) ([]Video, error) {
+	rows, err := q.db.QueryContext(ctx, getVideosBySupplierID, supplierID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Video
+	for rows.Next() {
+		var i Video
+		if err := rows.Scan(
+			&i.ID,
+			&i.SupplierID,
+			&i.WebUrl,
+			&i.Title,
+			&i.Description,
+			&i.VideoID,
+			&i.ThumbnailUrl,
 			&i.Created,
 		); err != nil {
 			return nil, err
