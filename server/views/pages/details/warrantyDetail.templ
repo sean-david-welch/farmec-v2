@@ -10,18 +10,28 @@ import (
 // Function to get warranty detail mapping
 func getWarrantyDetailsMap(warranty types.WarrantyClaim) map[string]interface{} {
     return map[string]interface{}{
-        "dealer":          warranty.Dealer,
-        "owner_name":      warranty.OwnerName,
-        "machine_model":   warranty.MachineModel,
-        // Add other relevant fields as needed
+        "dealer":           &warranty.Dealer,
+        "dealer_contact":   warranty.DealerContact,
+        "owner_name":       warranty.OwnerName,
+        "machine_model":    warranty.MachineModel,
+        "serial_number":    warranty.SerialNumber,
+        "install_date":     warranty.InstallDate,
+        "failure_date":     warranty.FailureDate,
+        "repair_date":      warranty.RepairDate,
+        "failure_details":  warranty.FailureDetails,
+        "repair_details":   warranty.RepairDetails,
+        "labour_hours":     warranty.LabourHours,
+        "completed_by":     warranty.CompletedBy,
     }
 }
 
 // Function to get warranty part details mapping
 func getWarrantyPartDetailsMap(part types.PartsRequired) map[string]interface{} {
     return map[string]interface{}{
-        "quantity":      part.QuantityNeeded,
-        // Add other relevant part fields as needed
+        "part_number":      &part.PartNumber,
+        "quantity_needed":  &part.QuantityNeeded,
+        "invoice_number":   &part.InvoiceNumber,
+        "description":      &part.Description,
     }
 }
 
