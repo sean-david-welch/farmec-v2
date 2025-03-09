@@ -1,8 +1,11 @@
 package details
 
-import "github.com/sean-david-welch/farmec-v2/server/views"
-import "fmt"
-import "github.com/sean-david-welch/farmec-v2/server/types"
+import (
+	"fmt"
+	"github.com/sean-david-welch/farmec-v2/server/types"
+	"github.com/sean-david-welch/farmec-v2/server/views"
+	"github.com/sean-david-welch/farmec-v2/server/views/components"
+)
 
 func getMachineDetailMetadata(machine types.Machine) views.Metadata {
 	return views.Metadata{
@@ -20,15 +23,33 @@ func getMachineDetailMetadata(machine types.Machine) views.Metadata {
 }
 
 templ machineDetailContent(isAdmin bool, isError bool, machine types.Machine, products []types.Product) {
-    <section>
-    </section>
+	<section id="machineDetail">
+		<h1 class="sectionHeading">Products</h1>
+		if isAdmin {
+			// product form
+		}
+		if len(products) > 0 {
+			<div class="index">
+				<h1 class="indexHeading">Products:</h1>
+				for _, product := range products {
+					<a href={ templ.SafeURL("#" + product.Name) }>
+						<h1 class="indexItem">{ product.Name }</h1>
+					</a>
+				}
+			</div>
+			<button class="btn">
+				<a href={ templ.SafeURL(*machine.MachineLink) } target="_blank" rel="noopener noreferrer">Supplier Website</a>
+				@components.Icon("right-bracket.svg", 8)
+			</button>
+		}
+	</section>
 }
 
 templ MachineDetail(isAdmin bool, isError bool, machine types.Machine, products []types.Product, suppliers []types.Supplier) {
-    @views.Base(
-        machineDetailContent(isAdmin, isError, machine, products),
-        getMachineDetailMetadata(machine),
-        []string{"suppliers.css"},
-        suppliers,
-    )
+	@views.Base(
+		machineDetailContent(isAdmin, isError, machine, products),
+		getMachineDetailMetadata(machine),
+		[]string{"suppliers.css"},
+		suppliers,
+	)
 }
