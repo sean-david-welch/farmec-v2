@@ -53,30 +53,31 @@ templ registrationDetailContent(isAdmin bool, isError bool, registration types.M
 	<section id="warranty-detail">
 		if (isError) {
 			@layout.ErrorComponent()
+		} else {
+            <h1 class="sectionHeading">
+                { fmt.Sprintf("Machine Registration: %v -- %v", registration.DealerName, registration.OwnerName) }
+            </h1>
+            <div class="warrantyDetail">
+                for key, value := range getMachineRegistrationDetailsMap(registration) {
+                    <div class="warrantyGrid">
+                        <div class="label">{ key }</div>
+                        <div class="value">{ fmt.Sprintf("%v", value) }</div>
+                    </div>
+                }
+                <div class="warrantyGrid">
+                    // need to map the structd label to their values
+                    <div class="label"></div>
+                    <div class="value"></div>
+                </div>
+                if (isAdmin) {
+                    <div class="optionsBtn">
+                        // reg from
+                        @components.DeleteButton(registration.ID, "registrations")
+                    </div>
+                }
+                // download button
+            </div>
 		}
-		<h1 class="sectionHeading">
-			{ fmt.Sprintf("Machine Registration: %v -- %v", registration.DealerName, registration.OwnerName) }
-		</h1>
-		<div class="warrantyDetail">
-			for key, value := range getMachineRegistrationDetailsMap(registration) {
-				<div class="warrantyGrid">
-					<div class="label">{ key }</div>
-					<div class="value">{ fmt.Sprintf("%v", value) }</div>
-				</div>
-			}
-			<div class="warrantyGrid">
-				// need to map the structd label to their values
-				<div class="label"></div>
-				<div class="value"></div>
-			</div>
-			if (isAdmin) {
-				<div class="optionsBtn">
-					// reg from
-					@components.DeleteButton(registration.ID, "registrations")
-				</div>
-			}
-			// download button
-		</div>
 	</section>
 }
 
