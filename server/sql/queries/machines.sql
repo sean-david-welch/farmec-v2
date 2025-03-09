@@ -8,6 +8,11 @@ select id, supplier_id, name, machine_image, description, machine_link, created
 from Machine
 where id = ?;
 
+-- name :GetMachineProducts :many
+select id, machine_id, name, product_image, description, product_link
+from Product
+where machine_id = ?;
+
 -- name: CreateMachine :exec
 insert into Machine (id, supplier_id, name, machine_image, description, machine_link, created)
 values (?, ?, ?, ?, ?, ?, ?);
