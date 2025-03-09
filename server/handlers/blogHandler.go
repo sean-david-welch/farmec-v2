@@ -43,7 +43,7 @@ func (handler *BlogHandler) BlogsView(context *gin.Context) {
 	context.Header("Content-Type", "text/html; charset=utf-8")
 }
 
-func (handler *BlogHandler) GetBlog(context *gin.Context) {
+func (handler *BlogHandler) BlogDetailView(context *gin.Context) {
 	request := context.Request.Context()
 	isAdmin := handler.authMiddleware.GetIsAdmin(context)
 	suppliers := handler.supplierCache.GetSuppliersFromContext(context)
