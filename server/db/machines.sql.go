@@ -70,6 +70,42 @@ func (q *Queries) GetMachineByID(ctx context.Context, id string) (Machine, error
 	return i, err
 }
 
+const getMachineProducts = `-- name: GetMachineProducts :many
+select id, machine_id, name, product_image, description, product_link
+from Product
+where machine_id = ?
+`
+
+func (q *Queries) GetMachineProducts(ctx context.Context, machineID string) ([]Product, error) {
+	rows, err := q.db.QueryContext(ctx, getMachineProducts, machineID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Product
+	for rows.Next() {
+		var i Product
+		if err := rows.Scan(
+			&i.ID,
+			&i.MachineID,
+			&i.Name,
+			&i.ProductImage,
+			&i.Description,
+			&i.ProductLink,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getMachines = `-- name: GetMachines :many
 select id, supplier_id, name, machine_image, description, machine_link, created
 from Machine
