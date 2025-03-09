@@ -1,21 +1,81 @@
 package details
 
-import "github.com/sean-david-welch/farmec-v2/server/types"
-import "github.com/sean-david-welch/farmec-v2/server/views"
+import (
+    "fmt"
+    "github.com/sean-david-welch/farmec-v2/server/types"
+    "github.com/sean-david-welch/farmec-v2/server/views"
+	"github.com/sean-david-welch/farmec-v2/server/views/components"
+	*string
+)
 
-func getWarrantyDetailMetadata(warranty types.WarranrtyParts) views.Metadata {
+// Function to get warranty detail mapping
+func getWarrantyDetailsMap(warranty types.WarrantyClaim) map[string]interface{} {
+    return map[string]interface{}{
+        "dealer":          warranty.Dealer,
+        "owner_name":      warranty.OwnerName,
+        "machine_model":   warranty.MachineModel,
+        "machine_serial":  warranty.MachineSerial,
+        // Add other relevant fields as needed
+    }
+}
+
+// Function to get warranty part details mapping
+func getWarrantyPartDetailsMap(part types.WarrantyParts) map[string]interface{} {
+    return map[string]interface{}{
+        "part_name":     part.PartName,
+        "part_number":   part.PartNumber,
+        "quantity":      part.Quantity,
+        // Add other relevant part fields as needed
+    }
+}
+
+func getWarrantyDetailMetadata(warranty types.WarrantyClaim) views.Metadata {
     return views.Metadata{}
 }
 
-templ warrantyDetailContent(isAdmin bool, isError bool, warrantyParts types.WarranrtyParts) {
-    <section></section>
+templ WarrantyDetailContent(isAdmin bool, warranty types.WarrantyClaim, parts []types.WarrantyParts) {
+    <section id="warranty-detail">
+        <h1 class="section-heading">
+            Warranty Claim: {warranty.Dealer} - {warranty.OwnerName}
+        </h1>
+
+        <div class="warranty-detail">
+            // Render warranty details
+            for key, value := range getWarrantyDetailsMap(warranty) {
+                <div class="warranty-grid">
+                    <div class="label">{key}</div>
+                    <div class="value">{fmt.Sprintf("%v", value)}</div>
+                </div>
+            }
+
+            // Render parts details
+            for _, part := range parts {
+                for key, value := range getWarrantyPartDetailsMap(part) {
+                    <div class="warranty-grid">
+                        <div class="label">{key}</div>
+                        <div class="value">{fmt.Sprintf("%v", value)}</div>
+                    </div>
+                }
+            }
+
+            // Admin options
+            if isAdmin && warranty.ID != 0 {
+                <div class="options-btn">
+                    // @WarrantyForm(warranty.ID, warranty)
+                    @components.DeleteButton(warranty.ID, "warranty")
+                </div>
+            }
+        </div>
+
+        // @DownloadPdfButton(warranty, parts)
+    </section>
 }
 
-templ WarrantyDetail(isAdmin bool, isError bool, warrantyParts types.WarranrtyParts, suppliers []types.Supplier) {
+templ WarrantyDetail(isAdmin bool, isError bool, warrantyParts types.WarrantyParts, suppliers []types.Supplier) {
     @views.Base(
-        warrantyDetailContent(),
+        warrantyDetailContent(isAdmin, isError),
         getBlogsDetailMetadata(),
-        []string{"account.css"}
-        suppliers
+        []string{"account.css"},
+        suppliers,
     )
 }
