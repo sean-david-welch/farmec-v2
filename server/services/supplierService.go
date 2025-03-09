@@ -14,7 +14,7 @@ import (
 
 type SupplierService interface {
 	GetSuppliers(ctx context.Context) ([]types.Supplier, error)
-	GetSupplierWithResources(ctx context.Context, id string) (types.SupplierWithResources, error)
+	GetSupplierWithResources(ctx context.Context, id string) (*types.SupplierWithResources, error)
 	GetSupplierById(ctx context.Context, id string) (*types.Supplier, error)
 	CreateSupplier(ctx context.Context, supplier db.Supplier) (*types.SupplierResult, error)
 	UpdateSupplier(ctx context.Context, id string, supplier *db.Supplier) (*types.SupplierResult, error)

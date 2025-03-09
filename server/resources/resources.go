@@ -119,12 +119,12 @@ func NewResources(
 		CheckoutHandler:     handlers.NewCheckoutHandler(checkoutService),
 		LineItemHandler:     handlers.NewLineItemHandler(lineItemService),
 		MachineHandler:      handlers.NewMachineHandler(machineService, authMiddleware, supplierCache),
-		PartsHandler:        handlers.NewPartsHandler(partsService),
+		PartsHandler:        handlers.NewPartsHandler(partsService, authMiddleware, supplierCache),
 		PdfHandler:          handlers.NewPdfHandler(pdfService),
 		ProductHandler:      handlers.NewProductHandler(productService),
-		RegistrationHandler: handlers.NewRegistrationHandler(registrationService),
+		RegistrationHandler: handlers.NewRegistrationHandler(registrationService, authMiddleware, supplierCache),
 		SupplierHandler:     handlers.NewSupplierHandler(supplierService, authMiddleware, supplierCache),
 		VideoHandler:        handlers.NewVideoHandler(videoService),
-		WarrantyHandler:     handlers.NewWarrantyHandler(warrantyService),
+		WarrantyHandler:     handlers.NewWarrantyHandler(warrantyService, authMiddleware, supplierCache),
 	}
 }

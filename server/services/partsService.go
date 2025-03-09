@@ -15,7 +15,7 @@ import (
 
 type PartsService interface {
 	GetParts(ctx context.Context, id string) ([]types.Sparepart, error)
-	GetPartsSupplier(ctx context.Context, id string) (types.Supplier, error)
+	GetPartsSupplier(ctx context.Context, id string) (*types.Supplier, error)
 	CreatePart(ctx context.Context, part *db.SparePart) (*types.PartsModelResult, error)
 	UpdatePart(ctx context.Context, id string, part *db.SparePart) (*types.PartsModelResult, error)
 	DeletePart(ctx context.Context, id string) error

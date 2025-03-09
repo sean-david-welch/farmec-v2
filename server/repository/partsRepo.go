@@ -11,7 +11,7 @@ import (
 type PartsRepo interface {
 	GetParts(ctx context.Context, id string) ([]db.SparePart, error)
 	GetPartById(ctx context.Context, id string) (*db.SparePart, error)
-	GetPartsSupplier(ctx context.Context, id string) (db.Supplier, error)
+	GetPartsSupplier(ctx context.Context, id string) (*db.Supplier, error)
 	CreatePart(ctx context.Context, part *db.SparePart) error
 	UpdatePart(ctx context.Context, id string, part *db.SparePart) error
 	DeletePart(ctx context.Context, id string) error
