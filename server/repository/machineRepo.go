@@ -12,6 +12,7 @@ import (
 
 type MachineRepo interface {
 	GetMachines(ctx context.Context, id string) ([]db.Machine, error)
+	GetMachineProducts(ctx context.Context, id string) ([]db.Product, error)
 	GetMachineById(ctx context.Context, id string) (*db.Machine, error)
 	CreateMachine(ctx context.Context, machine *db.Machine) error
 	UpdateMachine(ctx context.Context, id string, machine *db.Machine) error
@@ -32,7 +33,6 @@ func (repo *MachineRepoImpl) GetMachines(ctx context.Context, id string) ([]db.M
 	if err != nil {
 		return nil, fmt.Errorf("error occurred while querying the database for machines: %w", err)
 	}
-
 	var result []db.Machine
 	for _, machine := range machines {
 		result = append(result, db.Machine{
@@ -45,7 +45,25 @@ func (repo *MachineRepoImpl) GetMachines(ctx context.Context, id string) ([]db.M
 			Created:      machine.Created,
 		})
 	}
+	return result, nil
+}
 
+func (repo *MachineRepoImpl) GetMachineProducts(ctx context.Context, id string) ([]db.Product, error) {
+	products, err := repo.queries.GetMachineProducts(ctx, id)
+	if err != nil {
+		return nil, fmt.Errorf("error occurred while querying the database for products: %w", err)
+	}
+	var result []db.Product
+	for _, product := range products {
+		result = append(result, db.Product{
+			ID:           product.ID,
+			MachineID:    product.MachineID,
+			Name:         product.Name,
+			ProductImage: product.ProductImage,
+			Description:  product.Description,
+			ProductLink:  product.ProductLink,
+		})
+	}
 	return result, nil
 }
 
