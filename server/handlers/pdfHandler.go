@@ -50,7 +50,7 @@ func (handler *PdfHandler) RenderRegistrationPdf(context *gin.Context) {
 }
 
 func (handler *PdfHandler) RenderWarrantyClaimPdf(context *gin.Context) {
-	var warranty types.WarranrtyParts
+	var warranty types.WarrantyParts
 
 	if err := context.ShouldBindJSON(&warranty); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "invalid request body", "details": err.Error()})

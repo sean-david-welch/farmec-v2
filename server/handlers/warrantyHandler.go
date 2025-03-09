@@ -53,7 +53,7 @@ func (handler *WarrantyHandler) GetWarrantyById(context *gin.Context) {
 func (handler *WarrantyHandler) CreateWarranty(context *gin.Context) {
 	request := context.Request.Context()
 
-	var warrantyParts types.WarranrtyParts
+	var warrantyParts types.WarrantyParts
 	if err := context.ShouldBindJSON(&warrantyParts); err != nil {
 		log.Printf("error occurred - bad request: %v", err)
 		context.JSON(http.StatusBadRequest, gin.H{"error": "error occurred bad request"})
@@ -79,7 +79,7 @@ func (handler *WarrantyHandler) UpdateWarranty(context *gin.Context) {
 	request := context.Request.Context()
 	id := context.Param("id")
 
-	var warrantyParts types.WarranrtyParts
+	var warrantyParts types.WarrantyParts
 	if err := context.ShouldBindJSON(&warrantyParts); err != nil {
 		log.Printf("error occurred - bad request: %v", err)
 		context.JSON(http.StatusBadRequest, gin.H{"error": "error occurred bad request"})

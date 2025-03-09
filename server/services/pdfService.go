@@ -14,7 +14,7 @@ import (
 
 type PdfService interface {
 	RenderRegistrationPdf(registration *types.MachineRegistration) ([]byte, error)
-	RenderWarrantyClaimPdf(warranty *types.WarranrtyParts) ([]byte, error)
+	RenderWarrantyClaimPdf(warranty *types.WarrantyParts) ([]byte, error)
 	InitPdf(model string, files embed.FS) (*gopdf.GoPdf, error)
 	WrapText(text string) []string
 	RenderStruct(pdf *gopdf.GoPdf, data interface{}, startY float64, startX float64) error
@@ -69,7 +69,7 @@ func (service *PdfServiceImpl) RenderRegistrationPdf(registration *types.Machine
 	return buf.Bytes(), nil
 }
 
-func (service *PdfServiceImpl) RenderWarrantyClaimPdf(warranty *types.WarranrtyParts) ([]byte, error) {
+func (service *PdfServiceImpl) RenderWarrantyClaimPdf(warranty *types.WarrantyParts) ([]byte, error) {
 	ownerName := ""
 	if warranty.Warranty.OwnerName != nil {
 		ownerName = *warranty.Warranty.OwnerName

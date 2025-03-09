@@ -43,11 +43,11 @@ type PartsRequired struct {
 	Description    string `json:"description"`
 }
 
-type WarranrtyParts struct {
+type WarrantyParts struct {
 	Warranty *WarrantyClaim
 	Parts    []PartsRequired
 }
-type WarranrtyPartsDB struct {
+type WarrantyPartsDB struct {
 	Warranty *db.WarrantyClaim
 	Parts    []db.PartsRequired
 }
