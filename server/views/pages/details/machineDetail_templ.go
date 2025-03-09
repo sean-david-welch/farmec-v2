@@ -12,19 +12,82 @@ import "github.com/sean-david-welch/farmec-v2/server/views"
 import "fmt"
 import "github.com/sean-david-welch/farmec-v2/server/types"
 
-func getMachineMetadata(machine types.Machine) views.Metadata {
+func getMachineDetailMetadata(machine types.Machine) views.Metadata {
 	return views.Metadata{
 		Title:         fmt.Sprintf("%v", machine.Name),
-		Description:   "Check out the latest blog posts from Farmec Ireland. Stay up to date with our latest news and insights.",
-		OgTitle:       "Latest Blog Posts - Farmec Ireland",
-		OgDescription: "Check out the latest blog posts from Farmec Ireland. Stay up to date with our latest news and insights.",
-		OgImage:       "https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp",
-		OgUrl:         "https://www.farmec.ie/blogs",
+		Description:   fmt.Sprintf("%v", machine.Description),
+		OgTitle:       fmt.Sprintf("%v", machine.Name),
+		OgDescription: fmt.Sprintf("%v", machine.Description),
+		OgImage:       fmt.Sprintf("%v", machine.MachineImage),
+		OgUrl:         fmt.Sprintf("https://www.farmec.ie/machines/%v", machine.ID),
 		TwitterTitle:  "Latest Blog Posts - Farmec Ireland",
 		TwitterDesc:   "Check out the latest blog posts from Farmec Ireland. Stay up to date with our latest news and insights.",
 		TwitterImage:  "https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp",
 		CanonicalUrl:  "https://www.farmec.ie/blogs",
 	}
+}
+
+func machineDetailContent(isAdmin bool, isError bool, machine types.Machine, products []types.Product) templ.Component {
+	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
+			return templ_7745c5c3_CtxErr
+		}
+		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+		if !templ_7745c5c3_IsBuffer {
+			defer func() {
+				templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err == nil {
+					templ_7745c5c3_Err = templ_7745c5c3_BufErr
+				}
+			}()
+		}
+		ctx = templ.InitializeContext(ctx)
+		templ_7745c5c3_Var1 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var1 == nil {
+			templ_7745c5c3_Var1 = templ.NopComponent
+		}
+		ctx = templ.ClearChildren(ctx)
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<section></section>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		return nil
+	})
+}
+
+func MachineDetail(isAdmin bool, isError bool, machine types.Machine, products []types.Product, suppliers []types.Supplier) templ.Component {
+	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
+			return templ_7745c5c3_CtxErr
+		}
+		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+		if !templ_7745c5c3_IsBuffer {
+			defer func() {
+				templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err == nil {
+					templ_7745c5c3_Err = templ_7745c5c3_BufErr
+				}
+			}()
+		}
+		ctx = templ.InitializeContext(ctx)
+		templ_7745c5c3_Var2 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var2 == nil {
+			templ_7745c5c3_Var2 = templ.NopComponent
+		}
+		ctx = templ.ClearChildren(ctx)
+		templ_7745c5c3_Err = views.Base(
+			machineDetailContent(isAdmin, isError, machine, products),
+			getMachineDetailMetadata(machine),
+			[]string{"suppliers.css"},
+			suppliers,
+		).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		return nil
+	})
 }
 
 var _ = templruntime.GeneratedTemplate
