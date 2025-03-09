@@ -43,13 +43,13 @@ func (handler *SupplierHandler) SupplierDetailView(context *gin.Context) {
 	suppliers := handler.supplierCache.GetSuppliersFromContext(context)
 
 	id := context.Param("id")
-	supplier, err := handler.service.GetSupplierById(request, id)
+	supplierWithResources, err := handler.service.GetSupplierWithResources(request, id)
 	if err != nil {
 		log.Printf("Error getting supplier: %v", err)
 	}
 
 	isError := err != nil
-	component := details.SupplierDetail(isAdmin, isError, supplier, machines, videos, suppliers)
+	component := details.SupplierDetail(isAdmin, isError, supplierWithResources.Supplier, supplierWithResources.Machines, supplierWithResources.Videos, suppliers)
 	if err := component.Render(request, context.Writer); err != nil {
 		log.Printf("Error rendering suppliers: %v", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while rendering suppliers"})
