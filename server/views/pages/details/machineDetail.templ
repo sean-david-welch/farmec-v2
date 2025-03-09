@@ -26,10 +26,10 @@ func getMachineDetailMetadata(machine types.Machine) views.Metadata {
 templ machineDetailContent(isAdmin bool, isError bool, machine types.Machine, products []types.Product) {
 	<section id="machineDetail">
 		<h1 class="sectionHeading">Products</h1>
-		if isAdmin {
+		if (isAdmin){
 			// product form
 		}
-		if len(products) > 0 {
+		if (len(products)) > 0 {
 			<div class="index">
 				<h1 class="indexHeading">Products:</h1>
 				for _, product := range products {
