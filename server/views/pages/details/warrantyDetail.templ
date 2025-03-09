@@ -47,11 +47,11 @@ func getWarrantyDetailMetadata(warranty types.WarrantyClaim) views.Metadata {
         Description:   description,
         OgTitle:       title,
         OgDescription: description,
-        OgImage:       "", // No image for warranty claims
+        OgImage:       "",
         OgUrl:         fmt.Sprintf("https://www.farmec.ie/warranty/%s", warranty.ID),
         TwitterTitle:  title,
         TwitterDesc:   description,
-        TwitterImage:  "", // No image for warranty claims
+        TwitterImage:  "",
         CanonicalUrl:  fmt.Sprintf("https://www.farmec.ie/warranty/%s", warranty.ID),
     }
 }
