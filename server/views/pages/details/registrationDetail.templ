@@ -23,6 +23,27 @@ func getRegistrationDetailMetadata(registration types.MachineRegistration) views
 	}
 }
 
+func getMachineRegistrationDetailsMap(registration types.MachineRegistration) map[string]interface{} {
+    return map[string]interface{}{
+        "dealer_name":        &registration.DealerName,
+        "dealer_address":     &registration.DealerAddress,
+        "owner_name":         &registration.OwnerName,
+        "owner_address":      &registration.OwnerAddress,
+        "machine_model":      &registration.MachineModel,
+        "serial_number":      &registration.SerialNumber,
+        "install_date":       &registration.InstallDate,
+        "invoice_number":     &registration.InvoiceNumber,
+        "complete_supply":    &registration.CompleteSupply,
+        "pdi_complete":       &registration.PdiComplete,
+        "pto_correct":        &registration.PtoCorrect,
+        "machine_test_run":   &registration.MachineTestRun,
+        "safety_induction":   &registration.SafetyInduction,
+        "operator_handbook":  &registration.OperatorHandbook,
+        "date":               &registration.Date,
+        "completed_by":       &registration.CompletedBy,
+    }
+}
+
 templ registrationDetailContent(isAdmin bool, isError bool, registration types.MachineRegistration) {
 	<section id="warranty-detail">
 		if (isError) {
