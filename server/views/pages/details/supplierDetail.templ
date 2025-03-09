@@ -1,0 +1,32 @@
+package details
+
+import "github.com/sean-david-welch/farmec-v2/server/types"
+import "github.com/sean-david-welch/farmec-v2/server/views"
+
+func getSupplierDetailMetadata(supplier types.Supplier) views.Metadata {
+    return views.Metadata{
+        Title:         "Suppliers - Farmec Ireland",
+        Description:   "Browse our Suppliers and learn more about the machines we offer.",
+        OgTitle:       "Suppliers - Farmec Ireland",
+        OgDescription: "Browse our Suppliers and learn more about the machines we offer.",
+        OgImage:       "https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp",
+        OgUrl:         "https://www.farmec.ie/suppliers",
+        TwitterTitle:  "Suppliers - Farmec Ireland",
+        TwitterDesc:   "Browse our Suppliers and learn more about the machines we offer.",
+        TwitterImage:  "https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp",
+        CanonicalUrl:  "https://www.farmec.ie/suppliers",
+    }
+}
+
+templ supplierDetailContent(isAdmin bool, isError bool, supplier types.Supplier, suppliers []types.Supplier) {
+    <section></section>
+}
+
+templ SupplierDetail(isAdmin bool, isError bool, supplier types.Supplier, suppliers []types.Supplier) {
+    @views.Base(
+        supplierDetailContent(isAdmin, isError, supplier, suppliers),
+        getSupplierDetailMetadata(supplier),
+        []string{"suppliers.css"},
+        suppliers
+    )
+}
