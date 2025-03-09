@@ -5,6 +5,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"github.com/sean-david-welch/farmec-v2/server/views"
 	"github.com/sean-david-welch/farmec-v2/server/views/layout"
+	"github.com/sean-david-welch/farmec-v2/server/views/components"
 )
 
 func getSparePartsDetailMetadata(supplier types.Supplier) views.Metadata {
@@ -36,6 +37,30 @@ templ partsDetailContent(isAdmin bool, isError bool, parts []types.Sparepart) {
 						</a>
 					}
 				</div>
+				for _, part := range parts {
+                    <div class="partsColumn">
+                        <div class="sparepartsGrid">
+                            <div class="sparepartsCard">
+                                <div class="sparepartsGrid">
+                                    <div class="sparepartsInfo">
+                                        <h1 class="mainHeading">{part.Name}</h1>
+                                        <button class="btn">
+                                            <a href={templ.SafeURL(part.SparePartsLink)} target="_blank">Parts Catalogue</a>
+                                            @components.Icon("right-bracket.svg", 8)
+                                        </button>
+                                    </div>
+                                    <img src={fmt.Sprintf("%v", part.PartsImage)}  alt="/public/default.jpg"/>
+                                </div>
+                            </div>
+                            if (isAdmin) {
+                                <div class="optionsBtn">
+                                    // parts form
+                                    @components.DeleteButton(part.ID, "spareparts")
+                                </div>
+                            }
+                        </div>
+                    </div>
+				}
 			}
 		</section>
 	}
