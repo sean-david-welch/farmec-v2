@@ -16,18 +16,23 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/views/layout"
 )
 
-func getRegistrationDetailMetadata(registration types.MachineRegistration) views.Metadata {
+func getMachineRegistrationDetailMetadata(registration types.MachineRegistration) views.Metadata {
+	title := fmt.Sprintf("Machine Registration: %s - %s", registration.DealerName, registration.OwnerName)
+	description := fmt.Sprintf("Machine registration for %s model with serial number %s",
+		registration.MachineModel,
+		registration.SerialNumber)
+
 	return views.Metadata{
-		Title:         fmt.Sprintf("%v - Farmec Blog", registration.OwnerName),
-		Description:   fmt.Sprintf("%v", registration.SerialNumber),
-		OgTitle:       "Latest Blog Posts - Farmec Ireland",
-		OgDescription: "Check out the latest blog posts from Farmec Ireland. Stay up to date with our latest news and insights.",
-		OgImage:       "https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp",
-		OgUrl:         "https://www.farmec.ie/blogs",
-		TwitterTitle:  "Latest Blog Posts - Farmec Ireland",
-		TwitterDesc:   "Check out the latest blog posts from Farmec Ireland. Stay up to date with our latest news and insights.",
-		TwitterImage:  "https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp",
-		CanonicalUrl:  "https://www.farmec.ie/blogs",
+		Title:         title,
+		Description:   description,
+		OgTitle:       title,
+		OgDescription: description,
+		OgImage:       "", // No image for machine registrations
+		OgUrl:         fmt.Sprintf("https://www.farmec.ie/registrations/%s", registration.ID),
+		TwitterTitle:  title,
+		TwitterDesc:   description,
+		TwitterImage:  "", // No image for machine registrations
+		CanonicalUrl:  fmt.Sprintf("https://www.farmec.ie/registrations/%s", registration.ID),
 	}
 }
 
@@ -90,7 +95,7 @@ func registrationDetailContent(isAdmin bool, isError bool, registration types.Ma
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("Machine Registration: %v -- %v", registration.DealerName, registration.OwnerName))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/details/registrationDetail.templ`, Line: 53, Col: 99}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/details/registrationDetail.templ`, Line: 58, Col: 99}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
@@ -108,7 +113,7 @@ func registrationDetailContent(isAdmin bool, isError bool, registration types.Ma
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(key)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/details/registrationDetail.templ`, Line: 58, Col: 29}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/details/registrationDetail.templ`, Line: 63, Col: 29}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -121,7 +126,7 @@ func registrationDetailContent(isAdmin bool, isError bool, registration types.Ma
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%v", value))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/details/registrationDetail.templ`, Line: 59, Col: 50}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/details/registrationDetail.templ`, Line: 64, Col: 50}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
