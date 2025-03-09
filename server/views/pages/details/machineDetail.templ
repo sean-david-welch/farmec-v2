@@ -19,15 +19,15 @@ func getMachineDetailMetadata(machine types.Machine) views.Metadata {
 	}
 }
 
-templ machineDetailContent(isAdmin bool, isError bool, machines types.Machine, products []types.Product) {
+templ machineDetailContent(isAdmin bool, isError bool, machine types.Machine, products []types.Product) {
     <section>
     </section>
 }
 
 templ MachineDetail(isAdmin bool, isError bool, machine types.Machine, products []types.Product, suppliers []types.Supplier) {
     @views.Base(
-        machineDetailContent(isAdmin, isError, products)
-        getMachineDetailMetadata(),
+        machineDetailContent(isAdmin, isError, machine, products),
+        getMachineDetailMetadata(machine),
         []string{"suppliers.css"},
         suppliers,
     )
