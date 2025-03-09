@@ -5,7 +5,6 @@ import (
     "github.com/sean-david-welch/farmec-v2/server/types"
     "github.com/sean-david-welch/farmec-v2/server/views"
 	"github.com/sean-david-welch/farmec-v2/server/views/components"
-	*string
 )
 
 // Function to get warranty detail mapping
@@ -14,17 +13,14 @@ func getWarrantyDetailsMap(warranty types.WarrantyClaim) map[string]interface{} 
         "dealer":          warranty.Dealer,
         "owner_name":      warranty.OwnerName,
         "machine_model":   warranty.MachineModel,
-        "machine_serial":  warranty.MachineSerial,
         // Add other relevant fields as needed
     }
 }
 
 // Function to get warranty part details mapping
-func getWarrantyPartDetailsMap(part types.WarrantyParts) map[string]interface{} {
+func getWarrantyPartDetailsMap(part types.PartsRequired) map[string]interface{} {
     return map[string]interface{}{
-        "part_name":     part.PartName,
-        "part_number":   part.PartNumber,
-        "quantity":      part.Quantity,
+        "quantity":      part.QuantityNeeded,
         // Add other relevant part fields as needed
     }
 }
@@ -33,10 +29,10 @@ func getWarrantyDetailMetadata(warranty types.WarrantyClaim) views.Metadata {
     return views.Metadata{}
 }
 
-templ WarrantyDetailContent(isAdmin bool, warranty types.WarrantyClaim, parts []types.WarrantyParts) {
+templ warrantyDetailContent(isAdmin bool, isError bool, warranty types.WarrantyClaim, parts []types.PartsRequired) {
     <section id="warranty-detail">
         <h1 class="section-heading">
-            Warranty Claim: {warranty.Dealer} - {warranty.OwnerName}
+            Warranty Claim: {warranty.Dealer} - {*warranty.OwnerName}
         </h1>
 
         <div class="warranty-detail">
@@ -59,7 +55,7 @@ templ WarrantyDetailContent(isAdmin bool, warranty types.WarrantyClaim, parts []
             }
 
             // Admin options
-            if isAdmin && warranty.ID != 0 {
+            if (isAdmin) {
                 <div class="options-btn">
                     // @WarrantyForm(warranty.ID, warranty)
                     @components.DeleteButton(warranty.ID, "warranty")
@@ -71,10 +67,10 @@ templ WarrantyDetailContent(isAdmin bool, warranty types.WarrantyClaim, parts []
     </section>
 }
 
-templ WarrantyDetail(isAdmin bool, isError bool, warrantyParts types.WarrantyParts, suppliers []types.Supplier) {
+templ WarrantyDetail(isAdmin bool, isError bool, warranty types.WarrantyClaim, parts []types.PartsRequired, suppliers []types.Supplier) {
     @views.Base(
-        warrantyDetailContent(isAdmin, isError),
-        getBlogsDetailMetadata(),
+        warrantyDetailContent(isAdmin, isError, warranty, parts),
+        getWarrantyDetailMetadata(warranty),
         []string{"account.css"},
         suppliers,
     )
