@@ -9,10 +9,12 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 import "github.com/sean-david-welch/farmec-v2/server/views"
+import "fmt"
+import "github.com/sean-david-welch/farmec-v2/server/types"
 
-func getMachineMetadata() views.Metadata {
+func getMachineMetadata(machine types.Machine) views.Metadata {
 	return views.Metadata{
-		Title:         "",
+		Title:         fmt.Sprintf("%v", machine.Name),
 		Description:   "Check out the latest blog posts from Farmec Ireland. Stay up to date with our latest news and insights.",
 		OgTitle:       "Latest Blog Posts - Farmec Ireland",
 		OgDescription: "Check out the latest blog posts from Farmec Ireland. Stay up to date with our latest news and insights.",
