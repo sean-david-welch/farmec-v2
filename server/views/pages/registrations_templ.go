@@ -52,7 +52,7 @@ func registrationsContent(isAdmin bool, isAuthenticated bool, registrations []ty
 					var templ_7745c5c3_Var2 string
 					templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(registration.DealerName)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/registration.templ`, Line: 18, Col: 53}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/registrations.templ`, Line: 18, Col: 53}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 					if templ_7745c5c3_Err != nil {
@@ -65,7 +65,7 @@ func registrationsContent(isAdmin bool, isAuthenticated bool, registrations []ty
 					var templ_7745c5c3_Var3 string
 					templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(registration.OwnerName)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/registration.templ`, Line: 18, Col: 83}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/registrations.templ`, Line: 18, Col: 83}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 					if templ_7745c5c3_Err != nil {

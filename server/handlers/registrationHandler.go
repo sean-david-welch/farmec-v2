@@ -18,6 +18,8 @@ func NewRegistrationHandler(service services.RegistrationService) *RegistrationH
 	return &RegistrationHandler{service: service}
 }
 
+//func (handler *RegistrationHandler) (context *gin.Context) {}
+
 func (handler *RegistrationHandler) GetRegistrations(context *gin.Context) {
 	request := context.Request.Context()
 	registrations, err := handler.service.GetRegistrations(request)
