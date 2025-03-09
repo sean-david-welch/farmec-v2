@@ -52,7 +52,7 @@ func (handler *PartsHandler) PartsDetailView(context *gin.Context) {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
 	}
 	isError := err != nil
-	component := details.PartsDetail(isAdmin, isError, parts, supplier, suppliers)
+	component := details.PartsDetail(isAdmin, isError, parts, *supplier, suppliers)
 	if err := component.Render(request, context.Writer); err != nil {
 		log.Println("Error rendering template:", err)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while rendering template"})
