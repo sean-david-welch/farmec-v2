@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"github.com/sean-david-welch/farmec-v2/server/views"
+	"github.com/sean-david-welch/farmec-v2/server/views/components"
+	"github.com/sean-david-welch/farmec-v2/server/views/layout"
 )
 
 func getRegistrationDetailMetadata(registration types.MachineRegistration) views.Metadata {
@@ -22,7 +24,11 @@ func getRegistrationDetailMetadata(registration types.MachineRegistration) views
 }
 
 templ registrationDetailContent(isAdmin bool, isError bool, registration types.MachineRegistration) {
-	<section></section>
+	<section id="warranty-detail">
+	    if (isError) {
+	        @layout.ErrorComponent()
+	    }
+	</section>
 }
 
 templ ReigstrationDetail(isAdmin bool, isError bool, registration types.MachineRegistration, suppliers []types.Supplier) {
@@ -32,4 +38,5 @@ templ ReigstrationDetail(isAdmin bool, isError bool, registration types.MachineR
         []string{"account.css"},
         suppliers,
     )
+
 }

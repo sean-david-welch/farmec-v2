@@ -31,7 +31,7 @@ templ suppliersContent(isAdmin bool, isError bool, suppliers []types.Supplier) {
             @layout.ErrorComponent()
         }
 
-        if len(suppliers) > 0 {
+        if (len(suppliers)) > 0 {
             <div class="index">
                 <h1 class="indexHeading">Suppliers:</h1>
                 for _, supplier := range suppliers {

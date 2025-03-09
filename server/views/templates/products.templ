@@ -10,7 +10,7 @@ templ Products(id string, isAdmin bool, products []types.Product, machine types.
 			for _, product := range products {
 				<div class="productCard" id={ product.Name }>
 					<h1 class="mainHeading">{ product.Name }</h1>
-					if product.ProductLink != "" {
+					if (product.ProductLink != "") {
 						<a href={ templ.SafeURL(product.ProductLink) } target="_blank" rel="noopener noreferrer">
 							<img
 								src={ product.ProductImage }
@@ -32,7 +32,7 @@ templ Products(id string, isAdmin bool, products []types.Product, machine types.
 						</a>
 					}
 					<p class="paragraph">{ product.Description }</p>
-					if isAdmin && product.ID != "" {
+					if (isAdmin) {
 						<div class="optionsBtn">
 							// @forms.ProductForm(product.ID, product, machine)
 							@components.DeleteButton(product.ID, "products")

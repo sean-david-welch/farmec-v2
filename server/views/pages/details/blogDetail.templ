@@ -32,7 +32,7 @@ templ blogsDetailContent(isAdmin bool, isError bool, blog types.Blog) {
 				<p class="paragraph">{blog.Body}</p>
 			</div>
 		</div>
-        if isAdmin {
+        if  (isAdmin) {
             // blog form
             @components.DeleteButton(blog.ID, "blogs")
         }
