@@ -78,6 +78,24 @@ func (repo *SupplierRepoImpl) GetSupplierVidoes(ctx context.Context, id string) 
 }
 
 func (repo *SupplierRepoImpl) GetSupplierMachines(ctx context.Context, id string) ([]db.Machine, error) {
+	machines, err := repo.queries.GetMachinesBySupplierID(ctx, id)
+	if err != nil {
+		return nil, fmt.Errorf("error occurred while getting machines from the db: %w", err)
+	}
+
+	var result []db.Machine
+	for _, machine := range machines {
+		result = append(result, db.Machine{
+			ID:           machine.ID,
+			SupplierID:   machine.SupplierID,
+			Name:         machine.Name,
+			MachineImage: machine.MachineImage,
+			Description:  machine.Description,
+			MachineLink:  machine.MachineLink,
+			Created:      machine.Created,
+		})
+	}
+	return result, nil
 }
 
 func (repo *SupplierRepoImpl) GetSupplierById(ctx context.Context, id string) (*db.Supplier, error) {
