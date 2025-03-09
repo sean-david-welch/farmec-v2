@@ -11,6 +11,7 @@ import (
 type PartsRepo interface {
 	GetParts(ctx context.Context, id string) ([]db.SparePart, error)
 	GetPartById(ctx context.Context, id string) (*db.SparePart, error)
+	GetPartsSupplier(ctx context.Context, id string) (db.Supplier, error)
 	CreatePart(ctx context.Context, part *db.SparePart) error
 	UpdatePart(ctx context.Context, id string, part *db.SparePart) error
 	DeletePart(ctx context.Context, id string) error
@@ -49,6 +50,14 @@ func (repo *PartsRepoImpl) GetPartById(ctx context.Context, id string) (*db.Spar
 		return nil, fmt.Errorf("error occurred while getting part from the db: %w", err)
 	}
 	return &part, err
+}
+
+func (repo *PartsRepoImpl) GetPartsSupplier(ctx context.Context, id string) (*db.Supplier, error) {
+	supplier, err := repo.queries.GetPartsSupplier(ctx, id)
+	if err != nil {
+		return nil, fmt.Errorf("error occurred while getting supplier from the db: %w", err)
+	}
+	return &supplier, err
 }
 
 func (repo *PartsRepoImpl) CreatePart(ctx context.Context, part *db.SparePart) error {
