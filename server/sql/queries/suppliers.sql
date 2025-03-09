@@ -14,20 +14,6 @@ select id,
 from Supplier
 order by created desc;
 
--- name: GetSuppliers :many
-SELECT id, name, logo_image, marketing_image, description, social_facebook, social_twitter, social_instagram, social_youtube, social_linkedin, social_website, created
-FROM Supplier
-ORDER BY created DESC;
-
--- name: GetVideosBySupplierID :many
-SELECT id, supplier_id, web_url, title, description, video_id, thumbnail_url, created
-FROM Video
-WHERE supplier_id = ?;
-
--- name: GetMachinesBySupplierID :many
-SELECT id, supplier_id, name, machine_image, description, machine_link, created
-FROM Machine
-WHERE supplier_id = ?;
 -- name: GetSupplierByID :one
 select id,
        name,
@@ -43,6 +29,16 @@ select id,
        created
 from Supplier
 where id = ?;
+
+-- name: GetVideosBySupplierID :many
+SELECT id, supplier_id, web_url, title, description, video_id, thumbnail_url, created
+FROM Video
+WHERE supplier_id = ?;
+
+-- name: GetMachinesBySupplierID :many
+SELECT id, supplier_id, name, machine_image, description, machine_link, created
+FROM Machine
+WHERE supplier_id = ?;
 
 -- name: CreateSupplier :exec
 insert into Supplier (id, name, logo_image, marketing_image, description,
