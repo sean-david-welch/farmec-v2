@@ -99,6 +99,32 @@ func (q *Queries) GetParts(ctx context.Context, supplierID string) ([]SparePart,
 	return items, nil
 }
 
+const getPartsSupplier = `-- name: GetPartsSupplier :one
+select id, name, logo_image, marketing_image, description, social_facebook, social_twitter, social_instagram, social_youtube, social_linkedin, social_website, created
+from Supplier
+where id = ?
+`
+
+func (q *Queries) GetPartsSupplier(ctx context.Context, id string) (Supplier, error) {
+	row := q.db.QueryRowContext(ctx, getPartsSupplier, id)
+	var i Supplier
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.LogoImage,
+		&i.MarketingImage,
+		&i.Description,
+		&i.SocialFacebook,
+		&i.SocialTwitter,
+		&i.SocialInstagram,
+		&i.SocialYoutube,
+		&i.SocialLinkedin,
+		&i.SocialWebsite,
+		&i.Created,
+	)
+	return i, err
+}
+
 const updateSparePart = `-- name: UpdateSparePart :exec
 update SpareParts
 set supplier_id      = ?,
