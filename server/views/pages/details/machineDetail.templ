@@ -9,7 +9,7 @@ func getMachineDetailMetadata(machine types.Machine) views.Metadata {
 		Title:         fmt.Sprintf("%v", machine.Name),
 		Description:   fmt.Sprintf("%v", machine.Description),
 		OgTitle:       fmt.Sprintf("%v", machine.Name),
-		OgDescription: fmt.Sprintf("%v", machine.Description)
+		OgDescription: fmt.Sprintf("%v", machine.Description),
 		OgImage:       fmt.Sprintf("%v", machine.MachineImage),
 		OgUrl:         fmt.Sprintf("https://www.farmec.ie/machines/%v", machine.ID),
 		TwitterTitle:  "Latest Blog Posts - Farmec Ireland",
