@@ -4,6 +4,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
 	"github.com/sean-david-welch/farmec-v2/server/types"
+	"github.com/sean-david-welch/farmec-v2/server/views/pages/details"
 	"log"
 	"net/http"
 
@@ -21,19 +22,31 @@ func NewMachineHandler(service services.MachineService, authMiddleware *middlewa
 	return &MachineHandler{service: service, authMiddleware: authMiddleware, supplierCache: supplierCache}
 }
 
-//	func (handler *MachineHandler) MachineView(context *gin.Context) {
-//		request := context.Request.Context()
-//		isAdmin := handler.authMiddleware.GetIsAdmin(context)
-//		id := context.Param("id")
-//
-//		machines, err := handler.service.GetMachines(context, id)
-//		if err != nil {
-//			log.Printf("Error getting machines: %v\n", err)
-//		}
-//
-//		isError := err != nil
-//		component := pag
-//	}
+func (handler *MachineHandler) MachineView(context *gin.Context) {
+	request := context.Request.Context()
+	isAdmin := handler.authMiddleware.GetIsAdmin(context)
+	suppliers := handler.supplierCache.GetSuppliersFromContext(context)
+
+	id := context.Param("id")
+	machine, err := handler.service.GetMachineById(request, id)
+	if err != nil {
+		log.Printf("Error getting machine by id: %v", err)
+	}
+	products, err := handler.service.GetMachineProducts(request, id)
+	if err != nil {
+		log.Printf("Error getting machine products: %v\n", err)
+	}
+
+	isError := err != nil
+	component := details.MachineDetail(isAdmin, isError, *machine, products, suppliers)
+	if err := component.Render(request, context.Writer); err != nil {
+		log.Printf("Error rendering component: %v\n", err)
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while rendering the page"})
+		return
+	}
+	context.Header("Content-Type", "text/html; charset=utf-8")
+}
+
 func (handler *MachineHandler) GetMachines(context *gin.Context) {
 	request := context.Request.Context()
 	id := context.Param("id")
