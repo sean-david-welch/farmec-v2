@@ -18,18 +18,28 @@ import (
 // Function to get warranty detail mapping
 func getWarrantyDetailsMap(warranty types.WarrantyClaim) map[string]interface{} {
 	return map[string]interface{}{
-		"dealer":        warranty.Dealer,
-		"owner_name":    warranty.OwnerName,
-		"machine_model": warranty.MachineModel,
-		// Add other relevant fields as needed
+		"dealer":          &warranty.Dealer,
+		"dealer_contact":  warranty.DealerContact,
+		"owner_name":      warranty.OwnerName,
+		"machine_model":   warranty.MachineModel,
+		"serial_number":   warranty.SerialNumber,
+		"install_date":    warranty.InstallDate,
+		"failure_date":    warranty.FailureDate,
+		"repair_date":     warranty.RepairDate,
+		"failure_details": warranty.FailureDetails,
+		"repair_details":  warranty.RepairDetails,
+		"labour_hours":    warranty.LabourHours,
+		"completed_by":    warranty.CompletedBy,
 	}
 }
 
 // Function to get warranty part details mapping
 func getWarrantyPartDetailsMap(part types.PartsRequired) map[string]interface{} {
 	return map[string]interface{}{
-		"quantity": part.QuantityNeeded,
-		// Add other relevant part fields as needed
+		"part_number":     &part.PartNumber,
+		"quantity_needed": &part.QuantityNeeded,
+		"invoice_number":  &part.InvoiceNumber,
+		"description":     &part.Description,
 	}
 }
 
@@ -65,7 +75,7 @@ func warrantyDetailContent(isAdmin bool, isError bool, warranty types.WarrantyCl
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(warranty.Dealer)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/details/warrantyDetail.templ`, Line: 35, Col: 44}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/details/warrantyDetail.templ`, Line: 45, Col: 44}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
@@ -78,7 +88,7 @@ func warrantyDetailContent(isAdmin bool, isError bool, warranty types.WarrantyCl
 		var templ_7745c5c3_Var3 string
 		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(*warranty.OwnerName)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/details/warrantyDetail.templ`, Line: 35, Col: 68}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/details/warrantyDetail.templ`, Line: 45, Col: 68}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
@@ -96,7 +106,7 @@ func warrantyDetailContent(isAdmin bool, isError bool, warranty types.WarrantyCl
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(key)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/details/warrantyDetail.templ`, Line: 42, Col: 43}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/details/warrantyDetail.templ`, Line: 52, Col: 43}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -109,7 +119,7 @@ func warrantyDetailContent(isAdmin bool, isError bool, warranty types.WarrantyCl
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%v", value))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/details/warrantyDetail.templ`, Line: 43, Col: 64}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/details/warrantyDetail.templ`, Line: 53, Col: 64}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
@@ -129,7 +139,7 @@ func warrantyDetailContent(isAdmin bool, isError bool, warranty types.WarrantyCl
 				var templ_7745c5c3_Var6 string
 				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(key)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/details/warrantyDetail.templ`, Line: 51, Col: 47}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/details/warrantyDetail.templ`, Line: 61, Col: 47}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 				if templ_7745c5c3_Err != nil {
@@ -142,7 +152,7 @@ func warrantyDetailContent(isAdmin bool, isError bool, warranty types.WarrantyCl
 				var templ_7745c5c3_Var7 string
 				templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%v", value))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/details/warrantyDetail.templ`, Line: 52, Col: 68}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/details/warrantyDetail.templ`, Line: 62, Col: 68}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 				if templ_7745c5c3_Err != nil {
