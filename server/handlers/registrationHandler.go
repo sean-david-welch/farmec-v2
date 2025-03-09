@@ -5,6 +5,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"github.com/sean-david-welch/farmec-v2/server/views/pages"
+	"github.com/sean-david-welch/farmec-v2/server/views/pages/details"
 	"log"
 	"net/http"
 
@@ -41,7 +42,26 @@ func (handler *RegistrationHandler) RegistrationsView(context *gin.Context) {
 	context.Header("Content-Type", "text/html; charset=utf-8")
 }
 
-func (handler *RegistrationHandler) RegistrationsDetailView(context *gin.Context) {}
+func (handler *RegistrationHandler) RegistrationsDetailView(context *gin.Context) {
+	request := context.Request.Context()
+	isAdmin := handler.authMiddleware.GetIsAdmin(context)
+	suppliers := handler.supplierCache.GetSuppliersFromContext(context)
+
+	id := context.Param("id")
+	registration, err := handler.service.GetRegistrationById(request, id)
+	if err != nil {
+		log.Printf("Error getting registration: %v\n", err)
+	}
+
+	isError := err != nil
+	component := details.ReigstrationDetail(isAdmin, isError, *registration, suppliers)
+	if err := component.Render(request, context.Writer); err != nil {
+		log.Printf("Error rendering registrations: %v\n", err)
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while rendering the page"})
+		return
+	}
+	context.Header("Content-Type", "text/html; charset=utf-8")
+}
 
 func (handler *RegistrationHandler) GetRegistrations(context *gin.Context) {
 	request := context.Request.Context()
