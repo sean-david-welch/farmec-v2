@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"github.com/sean-david-welch/farmec-v2/server/views"
-	"github.com/sean-david-welch/farmec-v2/server/views/layout"
 	"github.com/sean-david-welch/farmec-v2/server/views/components"
+	"github.com/sean-david-welch/farmec-v2/server/views/layout"
 )
 
 func getRegistrationDetailMetadata(registration types.MachineRegistration) views.Metadata {
@@ -24,24 +24,24 @@ func getRegistrationDetailMetadata(registration types.MachineRegistration) views
 }
 
 func getMachineRegistrationDetailsMap(registration types.MachineRegistration) map[string]interface{} {
-    return map[string]interface{}{
-        "dealer_name":        &registration.DealerName,
-        "dealer_address":     &registration.DealerAddress,
-        "owner_name":         &registration.OwnerName,
-        "owner_address":      &registration.OwnerAddress,
-        "machine_model":      &registration.MachineModel,
-        "serial_number":      &registration.SerialNumber,
-        "install_date":       &registration.InstallDate,
-        "invoice_number":     &registration.InvoiceNumber,
-        "complete_supply":    &registration.CompleteSupply,
-        "pdi_complete":       &registration.PdiComplete,
-        "pto_correct":        &registration.PtoCorrect,
-        "machine_test_run":   &registration.MachineTestRun,
-        "safety_induction":   &registration.SafetyInduction,
-        "operator_handbook":  &registration.OperatorHandbook,
-        "date":               &registration.Date,
-        "completed_by":       &registration.CompletedBy,
-    }
+	return map[string]interface{}{
+		"dealer_name":       &registration.DealerName,
+		"dealer_address":    &registration.DealerAddress,
+		"owner_name":        &registration.OwnerName,
+		"owner_address":     &registration.OwnerAddress,
+		"machine_model":     &registration.MachineModel,
+		"serial_number":     &registration.SerialNumber,
+		"install_date":      &registration.InstallDate,
+		"invoice_number":    &registration.InvoiceNumber,
+		"complete_supply":   &registration.CompleteSupply,
+		"pdi_complete":      &registration.PdiComplete,
+		"pto_correct":       &registration.PtoCorrect,
+		"machine_test_run":  &registration.MachineTestRun,
+		"safety_induction":  &registration.SafetyInduction,
+		"operator_handbook": &registration.OperatorHandbook,
+		"date":              &registration.Date,
+		"completed_by":      &registration.CompletedBy,
+	}
 }
 
 templ registrationDetailContent(isAdmin bool, isError bool, registration types.MachineRegistration) {
@@ -52,22 +52,25 @@ templ registrationDetailContent(isAdmin bool, isError bool, registration types.M
 		<h1 class="sectionHeading">
 			{ fmt.Sprintf("Machine Registration: %v -- %v", registration.DealerName, registration.OwnerName) }
 		</h1>
-
 		<div class="warrantyDetail">
-            <div class="warrantyGrid">
-                // need to map the structd label to their values
-                <div class="label"></div>
-                <div class="value"></div>
-            </div>
-
-            if (isAdmin) {
-                <div class="optionsBtn">
-                    // reg from
-                    @components.DeleteButton(registration.ID, "registrations")
-                </div>
-            }
-
-            // download button
+			for key, value := range getMachineRegistrationDetailsMap(registration) {
+				<div class="warrantyGrid">
+					<div class="label">{ key }</div>
+					<div class="value">{ fmt.Sprintf("%v", value) }</div>
+				</div>
+			}
+			<div class="warrantyGrid">
+				// need to map the structd label to their values
+				<div class="label"></div>
+				<div class="value"></div>
+			</div>
+			if (isAdmin) {
+				<div class="optionsBtn">
+					// reg from
+					@components.DeleteButton(registration.ID, "registrations")
+				</div>
+			}
+			// download button
 		</div>
 	</section>
 }
