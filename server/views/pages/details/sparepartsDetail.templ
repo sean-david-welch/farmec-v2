@@ -4,12 +4,13 @@ import (
 	"fmt"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"github.com/sean-david-welch/farmec-v2/server/views"
+	"github.com/sean-david-welch/farmec-v2/server/views/layout"
 )
 
-func getSparePartsDetailMetadata(part types.Sparepart) views.Metadata {
+func getSparePartsDetailMetadata(supplier types.Supplier) views.Metadata {
 	return views.Metadata{
-		Title:         fmt.Sprintf("%v - Farmec Blog", part.Name),
-		Description:   fmt.Sprintf("%v", fmt.Sprintf("Explore spare parrs for %v", part.Name)),
+		Title:         fmt.Sprintf("%v - Farmec Blog", supplier.Name),
+		Description:   fmt.Sprintf("%v", fmt.Sprintf("Explore spare parrs for %v", supplier.Name)),
 		OgTitle:       "Latest Blog Posts - Farmec Ireland",
 		OgDescription: "Check out the latest blog posts from Farmec Ireland. Stay up to date with our latest news and insights.",
 		OgImage:       "https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp",
@@ -21,15 +22,20 @@ func getSparePartsDetailMetadata(part types.Sparepart) views.Metadata {
 	}
 }
 
-templ partsDetailContent(isAdmin bool, isError bool, part types.Sparepart) {
-    <section id="warranty-detail"></section>
+templ partsDetailContent(isAdmin bool, isError bool, parts []types.Sparepart) {
+	if (isError) {
+		@layout.ErrorComponent()
+	} else {
+		<section id="partsDetail">
+		</section>
+	}
 }
 
-templ PartsDetail(isAdmin bool, isError bool, part types.Sparepart, suppliers []types.Supplier) {
-    @views.Base(
-        partsDetailContent(isAdmin, isError, part),
-        getSparePartsDetailMetadata(part),
-        []string{"suppliers.css"},
-        suppliers,
-    )
+templ PartsDetail(isAdmin bool, isError bool, parts []types.Sparepart, supplier types.Supplier, suppliers []types.Supplier) {
+	@views.Base(
+		partsDetailContent(isAdmin, isError, parts),
+		getSparePartsDetailMetadata(supplier),
+		[]string{"suppliers.css"},
+		suppliers,
+	)
 }
