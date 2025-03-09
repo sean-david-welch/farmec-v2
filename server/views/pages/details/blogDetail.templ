@@ -38,3 +38,12 @@ templ blogsDetailContent(isAdmin bool, isError bool, blog types.Blog) {
         }
 	</section>
 }
+
+templ BlogDetail(isAdmin bool, isError bool, blog types.Blog, suppliers []types.Supplier) {
+    @views.Base(
+        blogsDetailContent(isAdmin, isError, blog),
+        getBlogsDetailMetadata(blog),
+        []string{"blogs.css"},
+        suppliers
+    )
+}
