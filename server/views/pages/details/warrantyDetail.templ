@@ -37,7 +37,23 @@ func getWarrantyPartDetailsMap(part types.PartsRequired) map[string]interface{} 
 }
 
 func getWarrantyDetailMetadata(warranty types.WarrantyClaim) views.Metadata {
-	return views.Metadata{}
+    title := fmt.Sprintf("Warranty Claim: %s - %s", warranty.Dealer, *warranty.OwnerName)
+    description := fmt.Sprintf("Warranty claim for %s by %s",
+        *warranty.MachineModel,
+        warranty.Dealer)
+
+    return views.Metadata{
+        Title:         title,
+        Description:   description,
+        OgTitle:       title,
+        OgDescription: description,
+        OgImage:       "", // No image for warranty claims
+        OgUrl:         fmt.Sprintf("https://www.farmec.ie/warranty/%s", warranty.ID),
+        TwitterTitle:  title,
+        TwitterDesc:   description,
+        TwitterImage:  "", // No image for warranty claims
+        CanonicalUrl:  fmt.Sprintf("https://www.farmec.ie/warranty/%s", warranty.ID),
+    }
 }
 
 templ warrantyDetailContent(isAdmin bool, isError bool, warranty types.WarrantyClaim, parts []types.PartsRequired) {
