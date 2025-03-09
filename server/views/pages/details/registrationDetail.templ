@@ -20,3 +20,16 @@ func getRegistrationDetailMetadata(registration types.MachineRegistration) views
 		CanonicalUrl:  "https://www.farmec.ie/blogs",
 	}
 }
+
+templ registrationDetailContent(isAdmin bool, isError bool, registration types.MachineRegistration) {
+	<section></section>
+}
+
+templ ReigstrationDetail(isAdmin bool, isError bool, registration types.MachineRegistration, suppliers []types.Supplier) {
+    @views.Base(
+        registrationDetailContent(isAdmin, isError, registration),
+        getRegistrationDetailMetadata(registration),
+        []string{"account.css"},
+        suppliers,
+    )
+}
