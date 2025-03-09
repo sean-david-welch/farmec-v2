@@ -27,6 +27,16 @@ templ partsDetailContent(isAdmin bool, isError bool, parts []types.Sparepart) {
 		@layout.ErrorComponent()
 	} else {
 		<section id="partsDetail">
+			if (len(parts)) > 0 {
+				<div class="index">
+					<h1 class="indexHeading">Spare Parts:</h1>
+					for _, part := range parts {
+						<a href={ templ.SafeURL("#" + part.Name) }>
+							<h1 class="indexItem">{ part.Name }</h1>
+						</a>
+					}
+				</div>
+			}
 		</section>
 	}
 }
