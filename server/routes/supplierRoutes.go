@@ -9,11 +9,12 @@ import (
 
 func SupplierRoutes(router *gin.Engine, handler *handlers.SupplierHandler, authMiddleware *middleware.AuthMiddlewareImpl) {
 	router.GET("/suppliers", authMiddleware.ViewMiddleware(), handler.SupplierView)
+	router.GET("/suppliers/:id", authMiddleware.ViewMiddleware(), handler.SupplierDetailView)
 	supplierGroup := router.Group("/api/suppliers")
-
-	supplierGroup.GET("", handler.GetSuppliers)
-	supplierGroup.GET("/:id", handler.GetSupplierByID)
-
+	{
+		supplierGroup.GET("", handler.GetSuppliers)
+		supplierGroup.GET("/:id", handler.GetSupplierByID)
+	}
 	protected := supplierGroup.Group("").Use(authMiddleware.AdminRouteMiddleware())
 	{
 		protected.POST("", handler.CreateSupplier)
