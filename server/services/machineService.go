@@ -14,6 +14,7 @@ import (
 
 type MachineService interface {
 	GetMachines(ctx context.Context, id string) ([]types.Machine, error)
+	GetMachineProducts(ctx context.Context, id string) ([]types.Product, error)
 	GetMachineById(ctx context.Context, id string) (*types.Machine, error)
 	CreateMachine(ctx context.Context, machine *db.Machine) (*types.ModelResult, error)
 	UpdateMachine(ctx context.Context, id string, machine *db.Machine) (*types.ModelResult, error)
@@ -37,11 +38,23 @@ func NewMachineService(repo repository.MachineRepo, s3Client lib.S3Client, folde
 func (service *MachineServiceImpl) GetMachines(ctx context.Context, id string) ([]types.Machine, error) {
 	machines, err := service.repo.GetMachines(ctx, id)
 	if err != nil {
-		return nil, errors.New("machines with supplier_id not foud")
+		return nil, errors.New("machines with supplier id not foud")
 	}
 	var result []types.Machine
 	for _, machine := range machines {
 		result = append(result, lib.SerializeMachine(machine))
+	}
+	return result, nil
+}
+
+func (service *MachineServiceImpl) GetMachineProducts(ctx context.Context, id string) ([]types.Product, error) {
+	products, err := service.repo.GetMachineProducts(ctx, id)
+	if err != nil {
+		return nil, errors.New("products with machine id not foud")
+	}
+	var result []types.Product
+	for _, product := range products {
+		result = append(result, lib.SerializeProduct(product))
 	}
 	return result, nil
 }
