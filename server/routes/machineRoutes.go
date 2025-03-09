@@ -7,11 +7,11 @@ import (
 )
 
 func MachineRoutes(router *gin.Engine, handler *handlers.MachineHandler, authMiddleware *middleware.AuthMiddlewareImpl) {
-	machineGroup := router.Group("/api/machines")
+	router.GET("/machine/:id", authMiddleware.ViewMiddleware(), handler.MachineView)
 
+	machineGroup := router.Group("/api/machines")
 	machineGroup.GET("/:id", handler.GetMachineById)
 	machineGroup.GET("/suppliers/:id", handler.GetMachines)
-
 	protected := machineGroup.Group("").Use(authMiddleware.AdminRouteMiddleware())
 	{
 		protected.POST("", handler.CreateMachine)
