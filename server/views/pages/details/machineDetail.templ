@@ -27,7 +27,7 @@ templ machineDetailContent(isAdmin bool, isError bool, machines types.Machine, p
 templ MachineDetail(isAdmin bool, isError bool, machine types.Machine, products []types.Product, suppliers []types.Supplier) {
     @views.Base(
         machineDetailContent(isAdmin, isError, products)
-        getMachineDetailMetadata()
+        getMachineDetailMetadata(),
         []string{"suppliers.css"},
         suppliers,
     )
