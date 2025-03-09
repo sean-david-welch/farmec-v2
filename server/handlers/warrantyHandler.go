@@ -5,6 +5,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
 	"github.com/sean-david-welch/farmec-v2/server/views/pages"
+	"github.com/sean-david-welch/farmec-v2/server/views/pages/details"
 	"log"
 	"net/http"
 
@@ -43,7 +44,26 @@ func (handler *WarrantyHandler) WarrantyListView(context *gin.Context) {
 	context.Header("Content-Type", "text/html; charset=utf-8")
 }
 
-func (handler *WarrantyHandler) WarrantyDetailView(context *gin.Context) {}
+func (handler *WarrantyHandler) WarrantyDetailView(context *gin.Context) {
+	request := context.Request.Context()
+	isAdmin := handler.authMiddleware.GetIsAdmin(context)
+	suppliers := handler.supplierCache.GetSuppliersFromContext(context)
+
+	id := context.Param("id")
+	warranties, parts, err := handler.service.GetWarrantyById(request, id)
+	if err != nil {
+		log.Printf("Error getting warranties: %v", err)
+	}
+
+	isError := err != nil
+	component := details.WarrantyDetail(isAdmin, isError, *warranties, parts, suppliers)
+	if err := component.Render(request, context.Writer); err != nil {
+		log.Printf("Error rendering warranties: %v", err)
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while rendering warranties"})
+		return
+	}
+	context.Header("Content-Type", "text/html; charset=utf-8")
+}
 
 func (handler *WarrantyHandler) GetWarranties(context *gin.Context) {
 	request := context.Request.Context()
