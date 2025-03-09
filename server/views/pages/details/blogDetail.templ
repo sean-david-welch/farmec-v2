@@ -44,6 +44,6 @@ templ BlogDetail(isAdmin bool, isError bool, blog types.Blog, suppliers []types.
         blogsDetailContent(isAdmin, isError, blog),
         getBlogsDetailMetadata(blog),
         []string{"blogs.css"},
-        suppliers
+        suppliers,
     )
 }
