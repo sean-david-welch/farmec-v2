@@ -2,7 +2,9 @@ package handlers
 
 import (
 	"github.com/sean-david-welch/farmec-v2/server/lib"
+	"github.com/sean-david-welch/farmec-v2/server/middleware"
 	"github.com/sean-david-welch/farmec-v2/server/types"
+	"github.com/sean-david-welch/farmec-v2/server/views/pages"
 	"log"
 	"net/http"
 
@@ -11,14 +13,35 @@ import (
 )
 
 type RegistrationHandler struct {
-	service services.RegistrationService
+	service        services.RegistrationService
+	authMiddleware *middleware.AuthMiddlewareImpl
+	supplierCache  *middleware.SupplierCache
 }
 
-func NewRegistrationHandler(service services.RegistrationService) *RegistrationHandler {
-	return &RegistrationHandler{service: service}
+func NewRegistrationHandler(service services.RegistrationService, authMiddleware *middleware.AuthMiddlewareImpl, supplierCache *middleware.SupplierCache) *RegistrationHandler {
+	return &RegistrationHandler{service: service, authMiddleware: authMiddleware, supplierCache: supplierCache}
 }
 
-//func (handler *RegistrationHandler) (context *gin.Context) {}
+func (handler *RegistrationHandler) RegistrationsView(context *gin.Context) {
+	request := context.Request.Context()
+	isAdmin := handler.authMiddleware.GetIsAdmin(context)
+	isAuthenticated := handler.authMiddleware.GetIsAuthenticated(context)
+	suppliers := handler.supplierCache.GetSuppliersFromContext(context)
+
+	registrations, err := handler.service.GetRegistrations(request)
+	if err != nil {
+		log.Printf("Error getting registrations: %v\n", err)
+	}
+	component := pages.Registrations(isAdmin, isAuthenticated, registrations, suppliers)
+	if err := component.Render(request, context.Writer); err != nil {
+		log.Printf("Error rendering registrations: %v\n", err)
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while rendering the page"})
+		return
+	}
+	context.Header("Content-Type", "text/html; charset=utf-8")
+}
+
+func (handler *RegistrationHandler) RegistrationsDetailView(context *gin.Context) {}
 
 func (handler *RegistrationHandler) GetRegistrations(context *gin.Context) {
 	request := context.Request.Context()
