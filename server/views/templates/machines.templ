@@ -3,7 +3,7 @@ package templates
 import "github.com/sean-david-welch/farmec-v2/server/views/components"
 import "github.com/sean-david-welch/farmec-v2/server/types"
 
-templ Machines(machines []types.Machine, suppliers []types.Supplier, isAdmin bool) {
+templ Machines(machines []types.Machine, isAdmin bool) {
 	<section id="machines">
 		<h1 class="sectionHeading">Machinery</h1>
 		for _, machine := range machines {
@@ -28,13 +28,13 @@ templ Machines(machines []types.Machine, suppliers []types.Supplier, isAdmin boo
 			</div>
 			if isAdmin && machine.ID != "" {
 				<div class="optionsBtn">
-					// @forms.MachineForm(machine.ID, machine, suppliers)
+					// @forms.MachineForm(machine.ID, machine)
 					@components.DeleteButton(machine.ID, "machines")
 				</div>
 			}
 		}
 		if isAdmin {
-			// @forms.MachineForm("", nil, suppliers)
+			// @forms.MachineForm("", nil)
 		}
 	</section>
 }
