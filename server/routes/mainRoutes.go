@@ -4,9 +4,6 @@ import (
 	"database/sql"
 	"embed"
 	"github.com/sean-david-welch/farmec-v2/server/resources"
-	"github.com/sean-david-welch/farmec-v2/server/types"
-	"github.com/sean-david-welch/farmec-v2/server/views/pages"
-	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -22,17 +19,6 @@ func InitRoutes(
 	resourcesMap := resources.NewResources(database, secrets, firebase, files, s3Client, emailClient, authMiddleware, supplierCache)
 	// define supplier middleware
 	router.Use(middleware.WithSupplierCache(supplierCache, resourcesMap.SupplierService))
-
-	// default routes
-	router.GET("/", func(c *gin.Context) {
-		component := pages.Home([]types.Carousel{}, supplierCache.GetSuppliersFromContext(c))
-		if err := component.Render(c.Request.Context(), c.Writer); err != nil {
-			log.Printf("Error rendering view: %v", err)
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while rendering view"})
-			return
-		}
-		c.Header("Content-Type", "text/html; charset=utf-8")
-	})
 
 	router.GET("/api", func(c *gin.Context) {
 		c.JSON(200, gin.H{
