@@ -186,7 +186,7 @@ func ReigstrationDetail(isAdmin bool, isError bool, registration types.MachineRe
 		ctx = templ.ClearChildren(ctx)
 		templ_7745c5c3_Err = views.Base(
 			registrationDetailContent(isAdmin, isError, registration),
-			getRegistrationDetailMetadata(registration),
+			getMachineRegistrationDetailMetadata(registration),
 			[]string{"account.css"},
 			suppliers,
 		).Render(ctx, templ_7745c5c3_Buffer)

@@ -83,7 +83,7 @@ templ registrationDetailContent(isAdmin bool, isError bool, registration types.M
 templ ReigstrationDetail(isAdmin bool, isError bool, registration types.MachineRegistration, suppliers []types.Supplier) {
 	@views.Base(
 		registrationDetailContent(isAdmin, isError, registration),
-		getRegistrationDetailMetadata(registration),
+		getMachineRegistrationDetailMetadata(registration),
 		[]string{"account.css"},
 		suppliers,
 	)
