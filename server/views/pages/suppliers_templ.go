@@ -61,7 +61,7 @@ func suppliersContent(isAdmin bool, isError bool, suppliers []types.Supplier) te
 				return templ_7745c5c3_Err
 			}
 		}
-		if len(suppliers) > 0 {
+		if (len(suppliers)) > 0 {
 			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"index\"><h1 class=\"indexHeading\">Suppliers:</h1>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err

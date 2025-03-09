@@ -131,7 +131,7 @@ func Products(id string, isAdmin bool, products []types.Product, machine types.M
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			if isAdmin && product.ID != "" {
+			if isAdmin {
 				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "<div class=\"optionsBtn\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err

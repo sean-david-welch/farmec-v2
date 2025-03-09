@@ -58,7 +58,7 @@ func machineDetailContent(isAdmin bool, isError bool, machine types.Machine, pro
 		}
 		if isAdmin {
 		}
-		if len(products) > 0 {
+		if (len(products)) > 0 {
 			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"index\"><h1 class=\"indexHeading\">Products:</h1>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
