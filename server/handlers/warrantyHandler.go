@@ -3,6 +3,8 @@ package handlers
 import (
 	"github.com/sean-david-welch/farmec-v2/server/db"
 	"github.com/sean-david-welch/farmec-v2/server/lib"
+	"github.com/sean-david-welch/farmec-v2/server/middleware"
+	"github.com/sean-david-welch/farmec-v2/server/views/pages"
 	"log"
 	"net/http"
 
@@ -12,12 +14,36 @@ import (
 )
 
 type WarrantyHandler struct {
-	service services.WarrantyService
+	service        services.WarrantyService
+	authMiddleware *middleware.AuthMiddlewareImpl
+	supplierCache  *middleware.SupplierCache
 }
 
-func NewWarrantyHandler(service services.WarrantyService) *WarrantyHandler {
-	return &WarrantyHandler{service: service}
+func NewWarrantyHandler(service services.WarrantyService, authMiddleware *middleware.AuthMiddlewareImpl, supplierCache *middleware.SupplierCache) *WarrantyHandler {
+	return &WarrantyHandler{service: service, authMiddleware: authMiddleware, supplierCache: supplierCache}
 }
+
+func (handler *WarrantyHandler) WarrantyListView(context *gin.Context) {
+	request := context.Request.Context()
+	isAdmin := handler.authMiddleware.GetIsAdmin(context)
+	suppliers := handler.supplierCache.GetSuppliersFromContext(context)
+
+	warranties, err := handler.service.GetWarranties(request)
+	if err != nil {
+		log.Printf("Error getting warranties: %v", err)
+	}
+
+	isError := err != nil
+	component := pages.Warranties(isAdmin, isError, warranties, suppliers)
+	if err := component.Render(request, context.Writer); err != nil {
+		log.Printf("Error rendering warranties: %v", err)
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while rendering warranties"})
+		return
+	}
+	context.Header("Content-Type", "text/html; charset=utf-8")
+}
+
+func (handler *WarrantyHandler) WarrantyDetailView(context *gin.Context) {}
 
 func (handler *WarrantyHandler) GetWarranties(context *gin.Context) {
 	request := context.Request.Context()
