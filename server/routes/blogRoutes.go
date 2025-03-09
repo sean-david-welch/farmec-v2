@@ -8,6 +8,7 @@ import (
 
 func BlogRoutes(router *gin.Engine, handler *handlers.BlogHandler, authMiddleware *middleware.AuthMiddlewareImpl) {
 	router.GET("/blogs", authMiddleware.ViewMiddleware(), handler.BlogsView)
+	router.GET("/blogs/:id", authMiddleware.ViewMiddleware(), handler.BlogDetailView)
 
 	blogGroup := router.Group("/api/blogs")
 	blogGroup.GET("", handler.GetBlogs)
