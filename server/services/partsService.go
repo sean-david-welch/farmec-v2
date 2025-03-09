@@ -15,6 +15,7 @@ import (
 
 type PartsService interface {
 	GetParts(ctx context.Context, id string) ([]types.Sparepart, error)
+	GetPartsSupplier(ctx context.Context, id string) (types.Supplier, error)
 	CreatePart(ctx context.Context, part *db.SparePart) (*types.PartsModelResult, error)
 	UpdatePart(ctx context.Context, id string, part *db.SparePart) (*types.PartsModelResult, error)
 	DeletePart(ctx context.Context, id string) error
@@ -44,6 +45,15 @@ func (service *PartsServiceImpl) GetParts(ctx context.Context, id string) ([]typ
 		result = append(result, lib.SerializeSparePart(part))
 	}
 	return result, nil
+}
+
+func (service *PartsServiceImpl) GetPartsSupplier(ctx context.Context, id string) (*types.Supplier, error) {
+	supplier, err := service.repo.GetPartsSupplier(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	result := lib.SerializeSupplier(supplier)
+	return &result, nil
 }
 
 func (service *PartsServiceImpl) CreatePart(ctx context.Context, part *db.SparePart) (*types.PartsModelResult, error) {
