@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"github.com/sean-david-welch/farmec-v2/server/views"
-	"github.com/sean-david-welch/farmec-v2/server/views/layout"
-	"github.com/sean-david-welch/farmec-v2/server/views/components"
 )
 
 func getSparePartsDetailMetadata(part types.Sparepart) views.Metadata {
@@ -21,4 +19,17 @@ func getSparePartsDetailMetadata(part types.Sparepart) views.Metadata {
 		TwitterImage:  "https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp",
 		CanonicalUrl:  "https://www.farmec.ie/blogs",
 	}
+}
+
+templ partsDetailContent(isAdmin bool, isError bool, part types.Sparepart) {
+    <section id="warranty-detail"></section>
+}
+
+templ PartsDetail(isAdmin bool, isError bool, part types.Sparepart, suppliers []types.Supplier) {
+    @views.Base(
+        registrationDetailContent(isAdmin, isError, part),
+        getSparePartsDetailMetadata(part),
+        []string{"suppliers.css"},
+        suppliers,
+    )
 }
