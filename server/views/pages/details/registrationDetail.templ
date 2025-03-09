@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"github.com/sean-david-welch/farmec-v2/server/views"
-	"github.com/sean-david-welch/farmec-v2/server/views/components"
 	"github.com/sean-david-welch/farmec-v2/server/views/layout"
+	"github.com/sean-david-welch/farmec-v2/server/views/components"
 )
 
 func getRegistrationDetailMetadata(registration types.MachineRegistration) views.Metadata {
@@ -25,18 +25,36 @@ func getRegistrationDetailMetadata(registration types.MachineRegistration) views
 
 templ registrationDetailContent(isAdmin bool, isError bool, registration types.MachineRegistration) {
 	<section id="warranty-detail">
-	    if (isError) {
-	        @layout.ErrorComponent()
-	    }
+		if (isError) {
+			@layout.ErrorComponent()
+		}
+		<h1 class="sectionHeading">
+			{ fmt.Sprintf("Machine Registration: %v -- %v", registration.DealerName, registration.OwnerName) }
+		</h1>
+
+		<div class="warrantyDetail">
+            <div class="warrantyGrid">
+                <div class="label"></div>
+                <div class="value"></div>
+            </div>
+
+            if (isAdmin) {
+                <div class="optionsBtn">
+                    // reg from
+                    @components.DeleteButton(registration.ID, "registrations")
+                </div>
+            }
+
+            // download button
+		</div>
 	</section>
 }
 
 templ ReigstrationDetail(isAdmin bool, isError bool, registration types.MachineRegistration, suppliers []types.Supplier) {
-    @views.Base(
-        registrationDetailContent(isAdmin, isError, registration),
-        getRegistrationDetailMetadata(registration),
-        []string{"account.css"},
-        suppliers,
-    )
-
+	@views.Base(
+		registrationDetailContent(isAdmin, isError, registration),
+		getRegistrationDetailMetadata(registration),
+		[]string{"account.css"},
+		suppliers,
+	)
 }
