@@ -7,12 +7,14 @@ import (
 )
 
 func WarrantyRoutes(router *gin.Engine, handler *handlers.WarrantyHandler, authMiddleware *middleware.AuthMiddlewareImpl) {
+	router.GET("/warranty", authMiddleware.ViewMiddleware(), handler.WarrantyListView)
+	router.GET("/warranty/:id", authMiddleware.ViewMiddleware(), handler.WarrantyDetailView)
 	warrantyGroup := router.Group("/api/warranty")
-
-	warrantyGroup.GET("", handler.GetWarranties)
-	warrantyGroup.GET("/:id", handler.GetWarrantyById)
-	warrantyGroup.POST("", handler.CreateWarranty)
-
+	{
+		warrantyGroup.GET("", handler.GetWarranties)
+		warrantyGroup.GET("/:id", handler.GetWarrantyById)
+		warrantyGroup.POST("", handler.CreateWarranty)
+	}
 	protected := warrantyGroup.Group("").Use(authMiddleware.AuthRouteMiddleware())
 	{
 		protected.PUT("/:id", handler.UpdateWarranty)
