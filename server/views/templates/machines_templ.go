@@ -11,7 +11,7 @@ import templruntime "github.com/a-h/templ/runtime"
 import "github.com/sean-david-welch/farmec-v2/server/views/components"
 import "github.com/sean-david-welch/farmec-v2/server/types"
 
-func Machines(machines []types.Machine, suppliers []types.Supplier, isAdmin bool) templ.Component {
+func Machines(machines []types.Machine, isAdmin bool) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {

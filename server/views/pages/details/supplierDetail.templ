@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"github.com/sean-david-welch/farmec-v2/server/views"
+	"github.com/sean-david-welch/farmec-v2/server/views/templates"
 )
 
 func getSupplierDetailMetadata(supplier types.Supplier) views.Metadata {
@@ -21,13 +22,15 @@ func getSupplierDetailMetadata(supplier types.Supplier) views.Metadata {
 	}
 }
 
-templ supplierDetailContent(isAdmin bool, isError bool, supplier types.Supplier, suppliers []types.Supplier) {
-	<section id="supplierDetail"></section>
+templ supplierDetailContent(isAdmin bool, isError bool, supplier types.Supplier, machines []types.Machine, videos []types.Video) {
+	<section id="supplierDetail">
+	    @templates.Machines(machines, isAdmin)
+	</section>
 }
 
-templ SupplierDetail(isAdmin bool, isError bool, supplier types.Supplier, suppliers []types.Supplier) {
+templ SupplierDetail(isAdmin bool, isError bool, supplier types.Supplier, machines []types.Machine, videos []types.Video, suppliers []types.Supplier) {
 	@views.Base(
-		supplierDetailContent(isAdmin, isError, supplier, suppliers),
+		supplierDetailContent(isAdmin, isError, supplier, machines, videos),
 		getSupplierDetailMetadata(supplier),
 		[]string{"suppliers.css"},
 		suppliers,

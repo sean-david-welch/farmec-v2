@@ -8,25 +8,29 @@ package details
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-import "github.com/sean-david-welch/farmec-v2/server/types"
-import "github.com/sean-david-welch/farmec-v2/server/views"
+import (
+	"fmt"
+	"github.com/sean-david-welch/farmec-v2/server/types"
+	"github.com/sean-david-welch/farmec-v2/server/views"
+	"github.com/sean-david-welch/farmec-v2/server/views/templates"
+)
 
 func getSupplierDetailMetadata(supplier types.Supplier) views.Metadata {
 	return views.Metadata{
-		Title:         "Suppliers - Farmec Ireland",
-		Description:   "Browse our Suppliers and learn more about the machines we offer.",
-		OgTitle:       "Suppliers - Farmec Ireland",
-		OgDescription: "Browse our Suppliers and learn more about the machines we offer.",
-		OgImage:       "https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp",
-		OgUrl:         "https://www.farmec.ie/suppliers",
-		TwitterTitle:  "Suppliers - Farmec Ireland",
-		TwitterDesc:   "Browse our Suppliers and learn more about the machines we offer.",
-		TwitterImage:  "https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp",
-		CanonicalUrl:  "https://www.farmec.ie/suppliers",
+		Title:         fmt.Sprintf("%s - Farmec Ireland", supplier.Name),
+		Description:   supplier.Description,
+		OgTitle:       fmt.Sprintf("%s - Farmec Ireland", supplier.Name),
+		OgDescription: supplier.Description,
+		OgImage:       supplier.MarketingImage,
+		OgUrl:         fmt.Sprintf("https://www.farmec.ie/suppliers/%d", supplier.ID),
+		TwitterTitle:  fmt.Sprintf("%s - Farmec Ireland", supplier.Name),
+		TwitterDesc:   supplier.Description,
+		TwitterImage:  supplier.MarketingImage,
+		CanonicalUrl:  fmt.Sprintf("https://www.farmec.ie/suppliers/%d", supplier.ID),
 	}
 }
 
-func supplierDetailContent(isAdmin bool, isError bool, supplier types.Supplier, suppliers []types.Supplier) templ.Component {
+func supplierDetailContent(isAdmin bool, isError bool, supplier types.Supplier, machines []types.Machine, videos []types.Video) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -47,7 +51,15 @@ func supplierDetailContent(isAdmin bool, isError bool, supplier types.Supplier, 
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<section></section>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<section id=\"supplierDetail\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templates.Machines(machines, isAdmin).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</section>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -55,7 +67,7 @@ func supplierDetailContent(isAdmin bool, isError bool, supplier types.Supplier, 
 	})
 }
 
-func SupplierDetail(isAdmin bool, isError bool, supplier types.Supplier, suppliers []types.Supplier) templ.Component {
+func SupplierDetail(isAdmin bool, isError bool, supplier types.Supplier, machines []types.Machine, videos []types.Video, suppliers []types.Supplier) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -77,7 +89,7 @@ func SupplierDetail(isAdmin bool, isError bool, supplier types.Supplier, supplie
 		}
 		ctx = templ.ClearChildren(ctx)
 		templ_7745c5c3_Err = views.Base(
-			supplierDetailContent(isAdmin, isError, supplier, suppliers),
+			supplierDetailContent(isAdmin, isError, supplier, machines, videos),
 			getSupplierDetailMetadata(supplier),
 			[]string{"suppliers.css"},
 			suppliers,
