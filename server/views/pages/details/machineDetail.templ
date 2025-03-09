@@ -4,7 +4,7 @@ import "github.com/sean-david-welch/farmec-v2/server/views"
 import "fmt"
 import "github.com/sean-david-welch/farmec-v2/server/types"
 
-func getMachineMetadata(machine types.Machine) views.Metadata {
+func getMachineDetailMetadata(machine types.Machine) views.Metadata {
 	return views.Metadata{
 		Title:         fmt.Sprintf("%v", machine.Name),
 		Description:   fmt.Sprintf("%v", machine.Description)
@@ -19,7 +19,16 @@ func getMachineMetadata(machine types.Machine) views.Metadata {
 	}
 }
 
-templ machineDetailContent(isAdmin bool, isError bool, products []types.Product) {
+templ machineDetailContent(isAdmin bool, isError bool, machines types.Machine, products []types.Product) {
     <section>
     </section>
+}
+
+templ MachineDetail(isAdmin bool, isError bool, machine types.Machine, products []types.Product, suppliers []types.Supplier) {
+    @views.Base(
+        machineDetailContent(isAdmin, isError, products)
+        getMachineDetailMetadata()
+        []string{"suppliers.css"},
+        suppliers,
+    )
 }
