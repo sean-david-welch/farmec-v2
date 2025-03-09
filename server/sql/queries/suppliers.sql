@@ -31,7 +31,14 @@ from Supplier
 where id = ?;
 
 -- name: GetVideosBySupplierID :many
-SELECT id, supplier_id, web_url, title, description, video_id, thumbnail_url, created
+SELECT id,
+       supplier_id,
+       web_url,
+       title,
+       description,
+       video_id,
+       thumbnail_url,
+       created
 FROM Video
 WHERE supplier_id = ?;
 
