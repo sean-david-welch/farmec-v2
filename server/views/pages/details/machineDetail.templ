@@ -5,6 +5,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"github.com/sean-david-welch/farmec-v2/server/views"
 	"github.com/sean-david-welch/farmec-v2/server/views/components"
+	"github.com/sean-david-welch/farmec-v2/server/views/templates"
 )
 
 func getMachineDetailMetadata(machine types.Machine) views.Metadata {
@@ -42,6 +43,7 @@ templ machineDetailContent(isAdmin bool, isError bool, machine types.Machine, pr
 				@components.Icon("right-bracket.svg", 8)
 			</button>
 		}
+		@templates.Products(machine.ID, isAdmin, products, machine)
 	</section>
 }
 

@@ -4,7 +4,7 @@ package templates
 import "github.com/sean-david-welch/farmec-v2/server/views/components"
 import "github.com/sean-david-welch/farmec-v2/server/types"
 
-templ Products(id string, isAdmin bool, products []types.Product, machine *types.Machine) {
+templ Products(id string, isAdmin bool, products []types.Product, machine types.Machine) {
 	<section id="products">
 		<div class="productGrid">
 			for _, product := range products {
