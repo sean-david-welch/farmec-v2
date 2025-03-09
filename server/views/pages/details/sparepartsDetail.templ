@@ -27,7 +27,7 @@ templ partsDetailContent(isAdmin bool, isError bool, part types.Sparepart) {
 
 templ PartsDetail(isAdmin bool, isError bool, part types.Sparepart, suppliers []types.Supplier) {
     @views.Base(
-        registrationDetailContent(isAdmin, isError, part),
+        partsDetailContent(isAdmin, isError, part),
         getSparePartsDetailMetadata(part),
         []string{"suppliers.css"},
         suppliers,
