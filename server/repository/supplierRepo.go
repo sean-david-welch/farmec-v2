@@ -12,8 +12,10 @@ import (
 
 type SupplierRepo interface {
 	GetSuppliers(ctx context.Context) ([]db.Supplier, error)
-	CreateSupplier(ctx context.Context, supplier *db.Supplier) error
+	GetSupplierVidoes(ctx context.Context, id string) ([]db.Video, error)
+	GetSupplierMachines(ctx context.Context, id string) ([]db.Machine, error)
 	GetSupplierById(ctx context.Context, id string) (*db.Supplier, error)
+	CreateSupplier(ctx context.Context, supplier *db.Supplier) error
 	UpdateSupplier(ctx context.Context, id string, supplier *db.Supplier) error
 	DeleteSupplier(ctx context.Context, id string) error
 }
@@ -51,6 +53,31 @@ func (repo *SupplierRepoImpl) GetSuppliers(ctx context.Context) ([]db.Supplier, 
 		})
 	}
 	return result, nil
+}
+
+func (repo *SupplierRepoImpl) GetSupplierVidoes(ctx context.Context, id string) ([]db.Video, error) {
+	videos, err := repo.queries.GetVideosBySupplierID(ctx, id)
+	if err != nil {
+		return nil, fmt.Errorf("error occurred while getting video from the db: %w", err)
+	}
+
+	var result []db.Video
+	for _, video := range videos {
+		result = append(result, db.Video{
+			ID:           video.ID,
+			SupplierID:   video.SupplierID,
+			WebUrl:       video.WebUrl,
+			Title:        video.Title,
+			Description:  video.Description,
+			VideoID:      video.VideoID,
+			ThumbnailUrl: video.ThumbnailUrl,
+			Created:      video.Created,
+		})
+	}
+	return result, nil
+}
+
+func (repo *SupplierRepoImpl) GetSupplierMachines(ctx context.Context, id string) ([]db.Machine, error) {
 }
 
 func (repo *SupplierRepoImpl) GetSupplierById(ctx context.Context, id string) (*db.Supplier, error) {
