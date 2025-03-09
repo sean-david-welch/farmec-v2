@@ -8,19 +8,33 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/views/components"
 )
 
-func getSparePartsDetailMetadata(supplier types.Supplier) views.Metadata {
-	return views.Metadata{
-		Title:         fmt.Sprintf("%v - Farmec Blog", supplier.Name),
-		Description:   fmt.Sprintf("%v", fmt.Sprintf("Explore spare parrs for %v", supplier.Name)),
-		OgTitle:       "Latest Blog Posts - Farmec Ireland",
-		OgDescription: "Check out the latest blog posts from Farmec Ireland. Stay up to date with our latest news and insights.",
-		OgImage:       "https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp",
-		OgUrl:         "https://www.farmec.ie/blogs",
-		TwitterTitle:  "Latest Blog Posts - Farmec Ireland",
-		TwitterDesc:   "Check out the latest blog posts from Farmec Ireland. Stay up to date with our latest news and insights.",
-		TwitterImage:  "https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp",
-		CanonicalUrl:  "https://www.farmec.ie/blogs",
-	}
+func getSparePartsDetailMetadata(supplier *types.Supplier) views.Metadata {
+    var title, description, ogTitle, ogDescription string
+
+    if supplier != nil {
+        title = fmt.Sprintf("%s Spare Parts - Farmec Ireland", supplier.Name)
+        description = fmt.Sprintf("Explore spare parts for %s. Farmec offers top-quality spare parts for your agricultural machinery.", supplier.Name)
+        ogTitle = fmt.Sprintf("%s Spare Parts - Farmec Ireland", supplier.Name)
+        ogDescription = fmt.Sprintf("Explore spare parts for %s. Farmec offers top-quality spare parts for your agricultural machinery.", supplier.Name)
+    } else {
+        title = "Spare Parts - Farmec Ireland"
+        description = "Browse spare parts from various suppliers to ensure your machines are always operational."
+        ogTitle = "Spare Parts - Farmec Ireland"
+        ogDescription = "Browse spare parts from various suppliers to ensure your machines are always operational."
+    }
+
+    return views.Metadata{
+        Title:         title,
+        Description:   description,
+        OgTitle:       ogTitle,
+        OgDescription: ogDescription,
+        OgImage:       "https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp",
+        OgUrl:         "https://www.farmec.ie/spareparts",
+        TwitterTitle:  title,
+        TwitterDesc:   description,
+        TwitterImage:  "https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp",
+        CanonicalUrl:  "https://www.farmec.ie/spareparts",
+    }
 }
 
 templ partsDetailContent(isAdmin bool, isError bool, parts []types.Sparepart) {
@@ -69,7 +83,7 @@ templ partsDetailContent(isAdmin bool, isError bool, parts []types.Sparepart) {
 templ PartsDetail(isAdmin bool, isError bool, parts []types.Sparepart, supplier types.Supplier, suppliers []types.Supplier) {
 	@views.Base(
 		partsDetailContent(isAdmin, isError, parts),
-		getSparePartsDetailMetadata(supplier),
+		getSparePartsDetailMetadata(&supplier),
 		[]string{"suppliers.css"},
 		suppliers,
 	)
