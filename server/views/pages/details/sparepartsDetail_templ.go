@@ -16,18 +16,32 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/views/layout"
 )
 
-func getSparePartsDetailMetadata(supplier types.Supplier) views.Metadata {
+func getSparePartsDetailMetadata(supplier *types.Supplier) views.Metadata {
+	var title, description, ogTitle, ogDescription string
+
+	if supplier != nil {
+		title = fmt.Sprintf("%s Spare Parts - Farmec Ireland", supplier.Name)
+		description = fmt.Sprintf("Explore spare parts for %s. Farmec offers top-quality spare parts for your agricultural machinery.", supplier.Name)
+		ogTitle = fmt.Sprintf("%s Spare Parts - Farmec Ireland", supplier.Name)
+		ogDescription = fmt.Sprintf("Explore spare parts for %s. Farmec offers top-quality spare parts for your agricultural machinery.", supplier.Name)
+	} else {
+		title = "Spare Parts - Farmec Ireland"
+		description = "Browse spare parts from various suppliers to ensure your machines are always operational."
+		ogTitle = "Spare Parts - Farmec Ireland"
+		ogDescription = "Browse spare parts from various suppliers to ensure your machines are always operational."
+	}
+
 	return views.Metadata{
-		Title:         fmt.Sprintf("%v - Farmec Blog", supplier.Name),
-		Description:   fmt.Sprintf("%v", fmt.Sprintf("Explore spare parrs for %v", supplier.Name)),
-		OgTitle:       "Latest Blog Posts - Farmec Ireland",
-		OgDescription: "Check out the latest blog posts from Farmec Ireland. Stay up to date with our latest news and insights.",
+		Title:         title,
+		Description:   description,
+		OgTitle:       ogTitle,
+		OgDescription: ogDescription,
 		OgImage:       "https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp",
-		OgUrl:         "https://www.farmec.ie/blogs",
-		TwitterTitle:  "Latest Blog Posts - Farmec Ireland",
-		TwitterDesc:   "Check out the latest blog posts from Farmec Ireland. Stay up to date with our latest news and insights.",
+		OgUrl:         "https://www.farmec.ie/spareparts",
+		TwitterTitle:  title,
+		TwitterDesc:   description,
 		TwitterImage:  "https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp",
-		CanonicalUrl:  "https://www.farmec.ie/blogs",
+		CanonicalUrl:  "https://www.farmec.ie/spareparts",
 	}
 }
 
@@ -84,7 +98,7 @@ func partsDetailContent(isAdmin bool, isError bool, parts []types.Sparepart) tem
 					var templ_7745c5c3_Var3 string
 					templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(part.Name)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/details/sparepartsDetail.templ`, Line: 36, Col: 40}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/details/sparepartsDetail.templ`, Line: 50, Col: 40}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 					if templ_7745c5c3_Err != nil {
@@ -107,7 +121,7 @@ func partsDetailContent(isAdmin bool, isError bool, parts []types.Sparepart) tem
 					var templ_7745c5c3_Var4 string
 					templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(part.Name)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/details/sparepartsDetail.templ`, Line: 46, Col: 74}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/details/sparepartsDetail.templ`, Line: 60, Col: 74}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 					if templ_7745c5c3_Err != nil {
@@ -137,7 +151,7 @@ func partsDetailContent(isAdmin bool, isError bool, parts []types.Sparepart) tem
 					var templ_7745c5c3_Var6 string
 					templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%v", part.PartsImage))
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/details/sparepartsDetail.templ`, Line: 52, Col: 80}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/details/sparepartsDetail.templ`, Line: 66, Col: 80}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 					if templ_7745c5c3_Err != nil {
@@ -199,7 +213,7 @@ func PartsDetail(isAdmin bool, isError bool, parts []types.Sparepart, supplier t
 		ctx = templ.ClearChildren(ctx)
 		templ_7745c5c3_Err = views.Base(
 			partsDetailContent(isAdmin, isError, parts),
-			getSparePartsDetailMetadata(supplier),
+			getSparePartsDetailMetadata(&supplier),
 			[]string{"suppliers.css"},
 			suppliers,
 		).Render(ctx, templ_7745c5c3_Buffer)
