@@ -14,6 +14,7 @@ import (
 
 type SupplierService interface {
 	GetSuppliers(ctx context.Context) ([]types.Supplier, error)
+	GetSupplierWithResources(ctx context.Context, id string) (types.SupplierWithResources, error)
 	GetSupplierById(ctx context.Context, id string) (*types.Supplier, error)
 	CreateSupplier(ctx context.Context, supplier db.Supplier) (*types.SupplierResult, error)
 	UpdateSupplier(ctx context.Context, id string, supplier *db.Supplier) (*types.SupplierResult, error)
@@ -45,6 +46,36 @@ func (service *SupplierServiceImpl) GetSuppliers(ctx context.Context) ([]types.S
 		result = append(result, lib.SerializeSupplier(supplier))
 	}
 	return result, nil
+}
+
+func (service *SupplierServiceImpl) GetSupplierWithResources(ctx context.Context, id string) (*types.SupplierWithResources, error) {
+	supplier, err := service.repo.GetSupplierById(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	supplierResult := lib.SerializeSupplier(*supplier)
+	vidoes, err := service.repo.GetSupplierVidoes(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	var videoResult []types.Video
+	for _, video := range vidoes {
+		videoResult = append(videoResult, lib.SerializeVideo(video))
+	}
+	machines, err := service.repo.GetSupplierMachines(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	var machineResult []types.Machine
+	for _, machine := range machines {
+		machineResult = append(machineResult, lib.SerializeMachine(machine))
+	}
+	supplierWithResources := types.SupplierWithResources{
+		Supplier: supplierResult,
+		Videos:   videoResult,
+		Machines: machineResult,
+	}
+	return &supplierWithResources, nil
 }
 
 func (service *SupplierServiceImpl) GetSupplierById(ctx context.Context, id string) (*types.Supplier, error) {
