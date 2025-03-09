@@ -57,3 +57,9 @@ type VideoRequest struct {
 	SupplierID string `json:"supplier_id"`
 	WebURL     string `json:"web_url"`
 }
+
+type SupplierWithResources struct {
+	Supplier Supplier  `json:"supplier"`
+	Videos   []Video   `json:"videos"`
+	Machines []Machine `json:"machines"`
+}
