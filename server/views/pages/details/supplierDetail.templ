@@ -25,6 +25,7 @@ func getSupplierDetailMetadata(supplier types.Supplier) views.Metadata {
 templ supplierDetailContent(isAdmin bool, isError bool, supplier types.Supplier, machines []types.Machine, videos []types.Video) {
 	<section id="supplierDetail">
 	    @templates.Machines(machines, isAdmin)
+	    @templates.Videos(videos, isAdmin)
 	</section>
 }
 
