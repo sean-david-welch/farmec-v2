@@ -13,7 +13,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/views"
 )
 
-func warrantiesContent(isAdmin bool, isAuthenticated bool, warranties []types.WarrantyClaim) templ.Component {
+func warrantiesContent(isAdmin bool, isAuthenticated bool, warranties []types.DealerOwnerInfo) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -63,9 +63,9 @@ func warrantiesContent(isAdmin bool, isAuthenticated bool, warranties []types.Wa
 						return templ_7745c5c3_Err
 					}
 					var templ_7745c5c3_Var3 string
-					templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(*warranty.OwnerName)
+					templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(warranty.OwnerName)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/warranties.templ`, Line: 18, Col: 72}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/pages/warranties.templ`, Line: 18, Col: 71}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 					if templ_7745c5c3_Err != nil {
@@ -100,7 +100,7 @@ func warrantiesContent(isAdmin bool, isAuthenticated bool, warranties []types.Wa
 	})
 }
 
-func Warranties(isAdmin bool, isAuthenticated bool, warranties []types.WarrantyClaim, suppliers []types.Supplier) templ.Component {
+func Warranties(isAdmin bool, isAuthenticated bool, warranties []types.DealerOwnerInfo, suppliers []types.Supplier) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
