@@ -5,6 +5,7 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
 	"github.com/sean-david-welch/farmec-v2/server/types"
 	"github.com/sean-david-welch/farmec-v2/server/views/pages"
+	"github.com/sean-david-welch/farmec-v2/server/views/pages/details"
 	"log"
 	"net/http"
 
@@ -36,7 +37,29 @@ func (handler *PartsHandler) PartsListView(context *gin.Context) {
 	context.Header("Content-Type", "text/html; charset=utf-8")
 }
 
-func (handler *PartsHandler) PartsDetailView(context *gin.Context) {}
+func (handler *PartsHandler) PartsDetailView(context *gin.Context) {
+	request := context.Request.Context()
+	isAdmin := handler.authMiddleware.GetIsAdmin(context)
+	suppliers := handler.supplierCache.GetSuppliersFromContext(context)
+
+	id := context.Param("id")
+	supplier, err := handler.service.GetPartsSupplier(request, id)
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while getting supplier from db"})
+	}
+	parts, err := handler.service.GetParts(context, id)
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
+	}
+	isError := err != nil
+	component := details.PartsDetail(isAdmin, isError, parts, supplier, suppliers)
+	if err := component.Render(request, context.Writer); err != nil {
+		log.Println("Error rendering template:", err)
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while rendering template"})
+		return
+	}
+	context.Header("Content-Type", "text/html; charset=utf-8")
+}
 
 func (handler *PartsHandler) GetParts(context *gin.Context) {
 	request := context.Request.Context()
