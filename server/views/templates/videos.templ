@@ -11,7 +11,7 @@ type Video struct {
     VideoID string `db:"video_id"`
 }
 
-templ Videos(videos []Video, isAdmin bool, suppliers []types.Supplier) {
+templ Videos(videos []Video, isAdmin bool) {
     <section id="videos">
         <h1 class="sectionHeading">Videos</h1>
 
