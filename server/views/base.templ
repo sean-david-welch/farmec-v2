@@ -43,9 +43,6 @@ templ Base(content templ.Component, metadata Metadata, stylesheets []string, sup
 			<link rel="canonical" href={ metadata.CanonicalUrl }/>
 			// Stylesheets
 			<link rel="stylesheet" href="/public/static/styles/index.css"/>
-			<link rel="stylesheet" href="/public/static/styles/utils.css"/>
-			<link rel="stylesheet" href="/public/static/styles/header.css"/>
-			<link rel="stylesheet" href="/public/static/styles/footer.css"/>
 			for _, stylesheet := range stylesheets {
 				<link rel="stylesheet" href={ fmt.Sprintf("public/static/styles/%s", stylesheet) }/>
 			}
