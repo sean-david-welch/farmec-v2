@@ -1,25 +1,15 @@
-// public/js/carousel.js
-class Carousel {
-    constructor() {
-        this.currentIndex = 0;
-        this.slides = document.querySelectorAll('.slides');
-        this.prevButton = document.getElementById('prevSlide');
-        this.nextButton = document.getElementById('nextSlide');
-        this.typewriterText = document.getElementById('typewriterText');
+document.addEventListener('DOMContentLoaded', () => {
+    // State
+    let currentIndex = 0;
+    const slides = document.querySelectorAll('.slides');
+    const prevButton = document.getElementById('prevSlide');
+    const nextButton = document.getElementById('nextSlide');
+    const typewriterText = document.getElementById('typewriterText');
 
-        this.init();
-    }
-
-    init() {
-        // Set initial state
-        this.updateSlides();
-        this.setupEventListeners();
-        this.initTypewriter();
-    }
-
-    updateSlides() {
-        this.slides.forEach((slide, index) => {
-            if (index === this.currentIndex) {
+    // Functions
+    function updateSlides() {
+        slides.forEach((slide, index) => {
+            if (index === currentIndex) {
                 slide.classList.add('fadeIn');
                 slide.classList.remove('fadeOut');
             } else {
@@ -29,46 +19,46 @@ class Carousel {
         });
     }
 
-    nextStep() {
-        this.currentIndex = this.currentIndex === this.slides.length - 1 ? 0 : this.currentIndex + 1;
-        this.updateSlides();
+    function nextStep() {
+        currentIndex = currentIndex === slides.length - 1 ? 0 : currentIndex + 1;
+        updateSlides();
     }
 
-    prevStep() {
-        this.currentIndex = this.currentIndex === 0 ? this.slides.length - 1 : this.currentIndex - 1;
-        this.updateSlides();
+    function prevStep() {
+        currentIndex = currentIndex === 0 ? slides.length - 1 : currentIndex - 1;
+        updateSlides();
     }
 
-    setupEventListeners() {
-        this.prevButton.addEventListener('click', () => this.prevStep());
-        this.nextButton.addEventListener('click', () => this.nextStep());
+    function setupEventListeners() {
+        prevButton.addEventListener('click', prevStep);
+        nextButton.addEventListener('click', nextStep);
 
         // Handle image errors
-        this.slides.forEach(slide => {
+        slides.forEach(slide => {
             slide.addEventListener('error', (e) => {
                 e.target.src = '/default.jpg';
             });
         });
     }
 
-    initTypewriter() {
+    function initTypewriter() {
         const text = 'Importers & Distributors of Quality Agricultural Machinery';
         let index = 0;
         const speed = 50;
 
-        const type = () => {
+        function type() {
             if (index < text.length) {
-                this.typewriterText.textContent += text.charAt(index);
+                typewriterText.textContent += text.charAt(index);
                 index++;
                 setTimeout(type, speed);
             }
-        };
+        }
 
         type();
     }
-}
 
-// Initialize carousel when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    new Carousel();
+    // Initialize
+    updateSlides();
+    setupEventListeners();
+    initTypewriter();
 });
