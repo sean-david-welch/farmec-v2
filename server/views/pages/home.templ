@@ -35,7 +35,7 @@ templ Home(carousels []types.Carousel, suppliers []types.Supplier) {
     @views.Base(
         homeContent(carousels),
         getHomeMetadata(),
-        []string{"home.css"},
+        []string{"home.css", "info.css", "carousel.css"},
         suppliers,
     )
 }

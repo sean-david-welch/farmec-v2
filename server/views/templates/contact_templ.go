@@ -9,6 +9,7 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 // import "github.com/sean-david-welch/farmec-v2/server/views/forms"
+import "os"
 import "github.com/sean-david-welch/farmec-v2/server/views/components"
 
 func Contact() templ.Component {
@@ -36,7 +37,7 @@ func Contact() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = components.Map("api key").Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = components.Map(os.Getenv("GOOGLE_MAPS_API_KEY")).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

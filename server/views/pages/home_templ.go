@@ -98,7 +98,7 @@ func Home(carousels []types.Carousel, suppliers []types.Supplier) templ.Componen
 		templ_7745c5c3_Err = views.Base(
 			homeContent(carousels),
 			getHomeMetadata(),
-			[]string{"home.css"},
+			[]string{"home.css", "info.css", "carousel.css"},
 			suppliers,
 		).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
