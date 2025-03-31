@@ -68,7 +68,8 @@ func main() {
 	emailClient := lib.NewEmailClient(secrets)
 	authMiddleware := middleware.NewAuthMiddleware(firebase)
 	adminMiddleware := middleware.NewAdminMiddleware(firebase)
-	router.Use(gin.Logger(), gin.Recovery(), cors.New(corsConfig))
+	prerenderMiddleware := middleware.NewPrerenderMiddleware(secrets.PrerenderToken)
+	router.Use(gin.Logger(), gin.Recovery(), cors.New(corsConfig), prerenderMiddleware.Middleware())
 	routes.InitRoutes(router, database, secrets, s3Client, adminMiddleware, authMiddleware, firebase, emailClient)
 
 	if env == "production" {
