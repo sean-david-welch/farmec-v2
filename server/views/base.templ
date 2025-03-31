@@ -1,73 +1,68 @@
 package views
 
-import  (
-    "fmt"
-    "github.com/sean-david-welch/farmec-v2/server/types"
-    "github.com/sean-david-welch/farmec-v2/server/views/layout"
+import (
+	"fmt"
+	"github.com/sean-david-welch/farmec-v2/server/types"
+	"github.com/sean-david-welch/farmec-v2/server/views/layout"
 )
 
 type Metadata struct {
-    Title           string
-    Description     string
-    OgTitle         string
-    OgDescription   string
-    OgImage         string
-    OgUrl           string
-    TwitterTitle    string
-    TwitterDesc     string
-    TwitterImage    string
-    CanonicalUrl    string
+	Title         string
+	Description   string
+	OgTitle       string
+	OgDescription string
+	OgImage       string
+	OgUrl         string
+	TwitterTitle  string
+	TwitterDesc   string
+	TwitterImage  string
+	CanonicalUrl  string
 }
 
 templ Base(content templ.Component, metadata Metadata, stylesheets []string, suppliers []types.Supplier) {
-    <!DOCTYPE html>
-    <html lang="en">
-        <head>
-            <meta charset="UTF-8"/>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-            // Primary Meta Tags
-            <title>{metadata.Title}</title>
-            <meta name="description" content={metadata.Description}/>
-
-            // Open Graph Meta Tags
-            <meta property="og:title" content={metadata.OgTitle}/>
-            <meta property="og:description" content={metadata.OgDescription}/>
-            <meta property="og:image" content={metadata.OgImage}/>
-            <meta property="og:url" content={metadata.OgUrl}/>
-            <meta property="og:type" content="website"/>
-
-            // Twitter Meta Tags
-            <meta name="twitter:card" content="summary_large_image"/>
-            <meta name="twitter:title" content={metadata.TwitterTitle}/>
-            <meta name="twitter:description" content={metadata.TwitterDesc}/>
-            <meta name="twitter:image" content={metadata.TwitterImage}/>
-
-            // Canonical URL
-            <link rel="canonical" href={metadata.CanonicalUrl}/>
-
-            // Stylesheets
-            <link rel="stylesheet" href="/public/static/styles/index.css"/>
-            <link rel="stylesheet" href="/public/static/styles/utils.css"/>
-            <link rel="stylesheet" href="/public/static/styles/header.css"/>
-            <link rel="stylesheet" href="/public/static/styles/footer.css"/>
-            for _, stylesheet := range stylesheets {
-                <link rel="stylesheet" href={fmt.Sprintf("public/static/styles/%s", stylesheet)}/>
-            }
-
-            // Favicon
-            <link rel="icon" href="/public/favicon.svg" type="image/svg+xml"/>
-
-            // Scripts
-            <script src="/public/htmx.min.js"></script>
-            <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.3/dist/cdn.min.js"></script>
-            <script async src="https://www.googletagmanager.com/gtag/js?id=G-5J4GB3RZ0N"></script>
-            <script src="/public/static/js/google.js"></script>
-        </head>
-            <body class="bg-zinc-300 text-gray-200 mx-auto my-0 min-h-screen max-w-full items-center text-center">
-                @layout.Header(suppliers)
-                   @content
-                @layout.Footer()
-            </body>
-    </html>
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			// Primary Meta Tags
+			<title>{ metadata.Title }</title>
+			<meta name="description" content={ metadata.Description }/>
+			// Open Graph Meta Tags
+			<meta property="og:title" content={ metadata.OgTitle }/>
+			<meta property="og:description" content={ metadata.OgDescription }/>
+			<meta property="og:image" content={ metadata.OgImage }/>
+			<meta property="og:url" content={ metadata.OgUrl }/>
+			<meta property="og:type" content="website"/>
+			// Twitter Meta Tags
+			<meta name="twitter:card" content="summary_large_image"/>
+			<meta name="twitter:title" content={ metadata.TwitterTitle }/>
+			<meta name="twitter:description" content={ metadata.TwitterDesc }/>
+			<meta name="twitter:image" content={ metadata.TwitterImage }/>
+			// Canonical URL
+			<link rel="canonical" href={ metadata.CanonicalUrl }/>
+			// Stylesheets
+			<link rel="stylesheet" href="/public/static/styles/index.css"/>
+			<link rel="stylesheet" href="/public/static/styles/utils.css"/>
+			<link rel="stylesheet" href="/public/static/styles/header.css"/>
+			<link rel="stylesheet" href="/public/static/styles/footer.css"/>
+			for _, stylesheet := range stylesheets {
+				<link rel="stylesheet" href={ fmt.Sprintf("public/static/styles/%s", stylesheet) }/>
+			}
+			// Favicon
+			<link rel="icon" href="/public/favicon.svg" type="image/svg+xml"/>
+			// Scripts
+			<script src="/public/htmx.min.js"></script>
+			<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.3/dist/cdn.min.js"></script>
+			<script async src="https://www.googletagmanager.com/gtag/js?id=G-5J4GB3RZ0N"></script>
+			<script src="/public/static/js/google.js"></script>
+		</head>
+		<body>
+			@layout.Header(suppliers)
+			    <main class="app">
+                    @content
+			    </main>
+			@layout.Footer()
+		</body>
+	</html>
 }

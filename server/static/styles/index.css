@@ -4,6 +4,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 * {
     margin: 0;
     padding: 0;
@@ -39,4 +40,9 @@ html::-webkit-scrollbar-track {
 button[type='submit'] {
     background-color: #b91c1c !important;
     background-image: none !important;
+}
+
+.app {
+    @apply bg-zinc-300 text-gray-200;
+    @apply mx-auto my-0 min-h-screen max-w-full items-center text-center;
 }
