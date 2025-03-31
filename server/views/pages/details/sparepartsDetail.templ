@@ -60,7 +60,7 @@ templ partsDetailContent(isAdmin bool, isError bool, parts []types.Sparepart) {
                                         <h1 class="mainHeading">{part.Name}</h1>
                                         <button class="btn">
                                             <a href={templ.SafeURL(part.SparePartsLink)} target="_blank">Parts Catalogue</a>
-                                            @components.Icon("right-bracket.svg", 8)
+                                            @components.Icon("right-bracket.svg", 8, true)
                                         </button>
                                     </div>
                                     <img src={fmt.Sprintf("%v", part.PartsImage)}  alt="/public/default.jpg"/>

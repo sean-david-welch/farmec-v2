@@ -104,7 +104,7 @@ func machineDetailContent(isAdmin bool, isError bool, machine types.Machine, pro
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = components.Icon("right-bracket.svg", 8).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = components.Icon("right-bracket.svg", 8, true).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

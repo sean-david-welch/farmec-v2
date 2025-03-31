@@ -40,7 +40,7 @@ templ machineDetailContent(isAdmin bool, isError bool, machine types.Machine, pr
 			</div>
 			<button class="btn">
 				<a href={ templ.SafeURL(*machine.MachineLink) } target="_blank" rel="noopener noreferrer">Supplier Website</a>
-				@components.Icon("right-bracket.svg", 8)
+				@components.Icon("right-bracket.svg", 8, true)
 			</button>
 		}
 		@templates.Products(machine.ID, isAdmin, products, machine)

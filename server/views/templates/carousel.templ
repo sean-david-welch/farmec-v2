@@ -16,10 +16,10 @@ templ Carousel(images []string) {
 					/>
 				}
 				<button class="prevButton" id="prevSlide" aria-label="last slide">
-					@components.Icon("chevron-left.svg", 24)
+					@components.Icon("chevron-left.svg", 24, true)
 				</button>
 				<button class="nextButton" id="nextSlide" aria-label="next slide">
-					@components.Icon("chevron-right.svg", 24)
+					@components.Icon("chevron-right.svg", 24, true)
 				</button>
 			</div>
 		</div>
@@ -28,7 +28,7 @@ templ Carousel(images []string) {
 			<a href="#Info" class="btn btnMain">
 				Find Out More:
 				<span class="ml-2">
-                    @components.Icon("chevron-circle-down.svg", 18)
+                    @components.Icon("chevron-circle-down.svg", 18, true)
 				</span>
 			</a>
 		</div>

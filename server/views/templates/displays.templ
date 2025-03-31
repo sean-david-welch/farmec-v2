@@ -20,7 +20,7 @@ templ DisplayContent(statsItems []lib.StatsItem, specialsItems []lib.SpecialsIte
                         <ul class="statList">
                             <li class="statListItem">{item.Title}</li>
                             <li class="statListItem">
-                                @components.Icon(item.Icon, 80)
+                                @components.Icon(item.Icon, 80, true)
                             </li>
                             <li class="statListItem">{item.Description}</li>
                         </ul>
@@ -39,7 +39,7 @@ templ DisplayContent(statsItems []lib.StatsItem, specialsItems []lib.SpecialsIte
                         <ul class="specialList">
                             <li class="specialListItem">{item.Title}</li>
                             <li class="specialListItem">
-                                @components.Icon(item.Icon, 80)
+                                @components.Icon(item.Icon, 80, true)
                             </li>
                             <li class="specialListItem">{item.Description}</li>
                         </ul>

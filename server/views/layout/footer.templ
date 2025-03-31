@@ -31,11 +31,11 @@ templ footerContent() {
 
             <div class="socialLinks">
                 <a class="socials" href="https://www.facebook.com/FarmecIreland/" target="_blank" rel="noopener noreferrer" aria-label="Visit our Facebook page">
-                    @components.Icon("facebook.svg", 40)
+                    @components.Icon("facebook.svg", 40, true)
                 </a>
                 <a
                     class="socials" href="https://twitter.com/farmec1?lang=en" target="_blank" rel="noopener noreferrer" aria-label="Visit our Twitter page">
-                    @components.Icon("twitter.svg", 40)
+                    @components.Icon("twitter.svg", 40, true)
                 </a>
             </div>
         </div>
@@ -44,22 +44,22 @@ templ footerContent() {
             <ul class="navLinks">
                 <li class="btnFooter">
                     <a href="/about">About
-                        @components.Icon("right-bracket.svg", 20)
+                        @components.Icon("right-bracket.svg", 20, true)
                     </a>
                 </li>
                 <li class="btnFooter">
                     <a href="/suppliers">Suppliers
-                        @components.Icon("right-bracket.svg", 20)
+                        @components.Icon("right-bracket.svg", 20, true)
                     </a>
                 </li>
                 <li class="btnFooter">
                     <a href="/spareparts">Spare Parts
-                        @components.Icon("right-bracket.svg", 20)
+                        @components.Icon("right-bracket.svg", 20, true)
                     </a>
                 </li>
                 <li class="btnFooter">
                     <a href="/blog">Blog
-                        @components.Icon("right-bracket.svg", 20)
+                        @components.Icon("right-bracket.svg", 20, true)
                     </a>
                 </li>
             </ul>
@@ -71,7 +71,7 @@ templ footerContent() {
 
 templ toTopButton() {
     <button class="toTopButton">
-        @components.Icon("arrow-up.svg", 12)
+        @components.Icon("arrow-up.svg", 12, true)
     </button>
 }
 

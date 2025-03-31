@@ -49,3 +49,7 @@ button[type='submit'] {
     @apply bg-red-700 !important;
     @apply bg-none !important;
 }
+
+.icon-light {
+  filter: invert(1) brightness(0);
+}

@@ -8,7 +8,7 @@ templ FormDialog(id string, content templ.Component) {
     <dialog id={id} class="dialog">
         @content
         <button class="dialog-btn" formmethod="dialog">
-            @components.Icon("x.svg", 24)
+            @components.Icon("x.svg", 24, false)
         </button>
     </dialog>
 
