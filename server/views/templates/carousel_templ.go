@@ -72,7 +72,7 @@ func Carousel(images []string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = components.Icon("chevron-left.svg", 10).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = components.Icon("chevron-left.svg", 34).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -80,7 +80,7 @@ func Carousel(images []string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = components.Icon("chevron-right.svg", 10).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = components.Icon("chevron-right.svg", 34).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -88,7 +88,7 @@ func Carousel(images []string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = components.Icon("chevron-circle-down.svg", 8).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = components.Icon("chevron-circle-down.svg", 22).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
