@@ -58,5 +58,5 @@
 }
 
 .btnMain {
-    @apply mx-64;
+    @apply mx-auto w-48;
 }
