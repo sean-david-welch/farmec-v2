@@ -4,9 +4,9 @@
 
 /* Contact form */
 .contactSection {
-    @apply mx-10 mb-10 grid p-4;
+    @apply mx-auto mb-10 grid p-4;
     @apply rounded-lg bg-zinc-800;
-    grid-template-columns: 1fr 2fr 1fr;
+    @apply flex flex-col;
     @apply md:grid-cols-1;
 }
 

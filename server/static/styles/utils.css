@@ -8,7 +8,7 @@
 }
 
 .home {
-	@apply flex flex-col items-center justify-center text-center text-gray-800;
+	@apply flex flex-col items-center mx-auto justify-center text-center text-gray-800;
 }
 
 .sectionHeading {
