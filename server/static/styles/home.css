@@ -6,7 +6,7 @@
 .contactSection {
     @apply mx-auto mb-10 grid p-4;
     @apply rounded-lg bg-zinc-800;
-    @apply flex flex-col;
+    @apply grid;
     @apply md:grid-cols-1;
 }
 
