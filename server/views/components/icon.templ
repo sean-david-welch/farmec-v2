@@ -4,6 +4,20 @@ import (
     "fmt"
 )
 
-templ Icon(path string, width int) {
-    <img src={"/public/icons/" + path} class="mainIcon" width={fmt.Sprintf("%d", width)} alt="icon" />
+templ Icon(path string, width int, light bool) {
+    if light {
+        <img
+            src={"/public/icons/" + path}
+            class="mainIcon invert brightness-0"
+            width={fmt.Sprintf("%d", width)}
+            alt="icon"
+        />
+    } else {
+        <img
+            src={"/public/icons/" + path}
+            class="mainIcon"
+            width={fmt.Sprintf("%d", width)}
+            alt="icon"
+        />
+    }
 }
