@@ -19,25 +19,25 @@ func GetDisplayData() ([]StatsItem, []SpecialsItem) {
 		{
 			Title:       "Quality Stock",
 			Description: "Farmec is committed to the importation and distribution of only quality brands of unique farm machinery. We guarantee that all our suppliers are committed to providing farmers with durable and superior stock",
-			Icon:        "/public/icons/tractor.svg",
+			Icon:        "tractor.svg",
 			Link:        "/suppliers",
 		},
 		{
 			Title:       "Assemably",
 			Description: "Farmec have a team of qualified and experienced staff that ensure abundant care is taken during the assembly process; we make sure that a quality supply chain is maintained from manufacturer to customer",
-			Icon:        "/public/icons/toolbox.svg",
+			Icon:        "toolbox.svg",
 			Link:        "/suppliers",
 		},
 		{
 			Title:       "Spare Parts",
 			Description: "Farmec offers a diverse and complete range of spare parts for all its machinery. Quality stock control and industry expertise ensures parts finds their way to you efficiently",
-			Icon:        "/public/icons/gears.svg",
+			Icon:        "gears.svg",
 			Link:        "/spareparts",
 		},
 		{
 			Title:       "Customer Service",
 			Description: "Farmec is a family run company, we make sure we extend the ethos of a small community to our customers. We build established relationships with our dealers that provide them and the farmers with extensive guidance",
-			Icon:        "/public/icons/user-plus.svg",
+			Icon:        "user-plus.svg",
 			Link:        "/contact",
 		},
 	}
@@ -46,25 +46,25 @@ func GetDisplayData() ([]StatsItem, []SpecialsItem) {
 		{
 			Title:       "Large Network",
 			Description: "50+ Dealers Nationwide",
-			Icon:        "/public/icons/users.svg",
+			Icon:        "people.svg",
 			Link:        "/suppliers",
 		},
 		{
 			Title:       "Experience",
 			Description: "25+ Years in Business",
-			Icon:        "/public/icons/business-time.svg",
+			Icon:        "business-time.svg",
 			Link:        "/about",
 		},
 		{
 			Title:       "Diverse Range",
 			Description: "10+ Quality Suppliers",
-			Icon:        "/public/icons/handshake.svg",
+			Icon:        "handshake.svg",
 			Link:        "/suppliers",
 		},
 		{
 			Title:       "Committment",
 			Description: "Warranty Guarentee",
-			Icon:        "/public/icons/wrench.svg",
+			Icon:        "wrench.svg",
 			Link:        "/spareparts",
 		},
 	}

@@ -1,6 +1,7 @@
 package templates
 
 import "fmt"
+import "github.com/sean-david-welch/farmec-v2/server/views/components"
 
 templ Carousel(images []string) {
 	<section id="Hero">
@@ -15,10 +16,10 @@ templ Carousel(images []string) {
 					/>
 				}
 				<button class="prevButton" id="prevSlide" aria-label="last slide">
-					<img src="/public/icons/chevron-left.svg" alt="Previous"/>
+					@components.Icon("chevron-left.svg", 10)
 				</button>
 				<button class="nextButton" id="nextSlide" aria-label="next slide">
-					<img src="/public/icons/chevron-right.svg" alt="Next"/>
+					@components.Icon("chevron-right.svg", 10)
 				</button>
 			</div>
 		</div>

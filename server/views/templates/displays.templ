@@ -1,6 +1,7 @@
 package templates
 
 import "github.com/sean-david-welch/farmec-v2/server/lib"
+import "github.com/sean-david-welch/farmec-v2/server/views/components"
 
 templ Displays() {
     @DisplayContent(lib.GetDisplayData())
@@ -19,7 +20,7 @@ templ DisplayContent(statsItems []lib.StatsItem, specialsItems []lib.SpecialsIte
                         <ul class="stat-list">
                             <li class="stat-list-item">{item.Title}</li>
                             <li class="stat-list-item">
-                                <img src={item.Icon} alt={item.Title} class="icon"/>
+                                @components.Icon(item.Icon, 6)
                             </li>
                             <li class="stat-list-item">{item.Description}</li>
                         </ul>
@@ -38,7 +39,7 @@ templ DisplayContent(statsItems []lib.StatsItem, specialsItems []lib.SpecialsIte
                         <ul class="special-list">
                             <li class="special-list-item">{item.Title}</li>
                             <li class="special-list-item">
-                                <img src={item.Icon} alt={item.Title} class="icon"/>
+                                @components.Icon(item.Icon, 6)
                             </li>
                             <li class="special-list-item">{item.Description}</li>
                         </ul>
