@@ -8,7 +8,7 @@
 
 .infoSection {
     @apply flex flex-col items-center;
-    @apply rounded-lg bg-zinc-300;
+    @apply rounded-lg;
     @apply mx-auto w-[80vw];
     @apply md:w-[80vw];
 }
