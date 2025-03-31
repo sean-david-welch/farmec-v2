@@ -7,42 +7,45 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  * {
-    @apply m-0 p-0 box-border font-['Dosis',_sans-serif];
-  }
-
-  html {
-    @apply scroll-smooth overflow-x-hidden max-w-full;
-  }
-
-  body {
-    @apply h-screen;
-  }
-
-  html::-webkit-scrollbar {
-    @apply w-[0.3vw];
-  }
-
-  html::-webkit-scrollbar-thumb {
-    @apply bg-neutral-800 rounded-[10px];
-  }
-
-  html::-webkit-scrollbar-track {
-    @apply bg-neutral-800;
-  }
+* {
+    @apply m-0 p-0 box-border;
+    font-family: 'Dosis', sans-serif;
 }
 
-@layer components {
-  .form .btn,
-  .loginForm .btn,
-  button[type='submit'] {
-    @apply bg-red-700 !important;
-    @apply bg-none !important;
-  }
+html {
+    @apply scroll-smooth overflow-x-hidden max-w-full;
+}
 
-  .app {
+body {
+    @apply h-screen;
+}
+
+html::-webkit-scrollbar {
+    @apply w-[0.3vw];
+}
+
+html::-webkit-scrollbar-thumb {
+    @apply bg-neutral-800 rounded-[10px];
+}
+
+html::-webkit-scrollbar-track {
+    @apply bg-neutral-800;
+}
+
+.home-app {
     @apply bg-zinc-300 text-gray-200;
     @apply mx-auto my-0 min-h-screen max-w-full items-center text-center;
-  }
+}
+
+.app {
+    @apply bg-zinc-300 text-gray-200;
+    @apply mx-auto min-h-screen max-w-full items-center text-center;
+    @apply py-40;
+}
+
+.form .btn,
+.loginForm .btn,
+button[type='submit'] {
+    @apply bg-red-700 !important;
+    @apply bg-none !important;
 }

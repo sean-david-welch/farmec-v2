@@ -56,9 +56,9 @@ templ Base(content templ.Component, metadata Metadata, stylesheets []string, sup
 		</head>
 		<body>
 			@layout.Header(suppliers)
-			    <main class="app">
-                    @content
-			    </main>
+			<main x-data="{ isHomepage: window.location.pathname === '/' }" :class="isHomepage ? 'home-app' : 'app'">
+				@content
+			</main>
 			@layout.Footer()
 		</body>
 	</html>
