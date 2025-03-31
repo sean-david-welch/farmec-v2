@@ -178,7 +178,7 @@ func Base(content templ.Component, metadata Metadata, stylesheets []string, supp
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "\"><link rel=\"stylesheet\" href=\"/public/static/styles/index.css\"><link rel=\"stylesheet\" href=\"/public/static/styles/header.css\"><link rel=\"stylesheet\" href=\"/public/static/styles/footer.css\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "\"><link rel=\"stylesheet\" href=\"/public/static/styles/index.css\"><link rel=\"stylesheet\" href=\"/public/static/styles/utils.css\"><link rel=\"stylesheet\" href=\"/public/static/styles/header.css\"><link rel=\"stylesheet\" href=\"/public/static/styles/footer.css\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -190,7 +190,7 @@ func Base(content templ.Component, metadata Metadata, stylesheets []string, supp
 			var templ_7745c5c3_Var12 string
 			templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("public/static/styles/%s", stylesheet))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/base.templ`, Line: 54, Col: 95}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/base.templ`, Line: 55, Col: 95}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 			if templ_7745c5c3_Err != nil {
@@ -209,7 +209,7 @@ func Base(content templ.Component, metadata Metadata, stylesheets []string, supp
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "<main class=\"app\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "<main class=\"bg-zinc-300 text-gray-200 mx-auto my-0 min-h-screen max-w-full items-center text-center\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

@@ -1,19 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Dosis:wght@200;300;400;500;600&display=swap');
-@import "utils.css";
-
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-.app {
-    @apply bg-zinc-300 text-gray-200;
-    @apply mx-auto my-0 min-h-screen max-w-full items-center text-center;
-}
-
-.icon {
-    @apply brightness-0 invert;
-}
 
 * {
     margin: 0;

@@ -48,6 +48,7 @@ templ Base(content templ.Component, metadata Metadata, stylesheets []string, sup
 
             // Stylesheets
             <link rel="stylesheet" href="/public/static/styles/index.css"/>
+            <link rel="stylesheet" href="/public/static/styles/utils.css"/>
             <link rel="stylesheet" href="/public/static/styles/header.css"/>
             <link rel="stylesheet" href="/public/static/styles/footer.css"/>
             for _, stylesheet := range stylesheets {
@@ -65,9 +66,9 @@ templ Base(content templ.Component, metadata Metadata, stylesheets []string, sup
         </head>
         <body>
             @layout.Header(suppliers)
-            <main class="app">
-               @content
-            </main>
+                <main class="bg-zinc-300 text-gray-200 mx-auto my-0 min-h-screen max-w-full items-center text-center">
+                   @content
+                </main>
             @layout.Footer()
         </body>
     </html>
