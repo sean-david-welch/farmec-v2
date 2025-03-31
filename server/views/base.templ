@@ -64,12 +64,10 @@ templ Base(content templ.Component, metadata Metadata, stylesheets []string, sup
             <script async src="https://www.googletagmanager.com/gtag/js?id=G-5J4GB3RZ0N"></script>
             <script src="/public/static/js/google.js"></script>
         </head>
-        <body>
-            @layout.Header(suppliers)
-                <main class="bg-zinc-300 text-gray-200 mx-auto my-0 min-h-screen max-w-full items-center text-center">
+            <body class="bg-zinc-300 text-gray-200 mx-auto my-0 min-h-screen max-w-full items-center text-center">
+                @layout.Header(suppliers)
                    @content
-                </main>
-            @layout.Footer()
-        </body>
+                @layout.Footer()
+            </body>
     </html>
 }
