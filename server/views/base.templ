@@ -61,9 +61,11 @@ templ Base(content templ.Component, metadata Metadata, stylesheets []string, sup
             <script src="/public/htmx.min.js"></script>
             <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.3/dist/cdn.min.js"></script>
         </head>
-        <body class="app">
+        <body>
             @layout.Header(suppliers)
-            @content
+            <main class="app">
+               @content
+            </main>
             @layout.Footer()
         </body>
     </html>
