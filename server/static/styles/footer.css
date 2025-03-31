@@ -69,15 +69,3 @@
     @apply my-2;
 }
 
-.toTopButton {
-    @apply fixed bottom-5 right-5 z-30 cursor-pointer rounded-full border-2 border-zinc-800 bg-gray-800 px-3 py-5 transition-all duration-300 ease-in-out;
-}
-
-.toTopButton:hover,
-.toTopButton:hover svg path {
-    @apply border-2 border-red-800 bg-zinc-700 fill-red-800;
-}
-
-.toTopButton svg path {
-    @apply fill-red-800;
-}
