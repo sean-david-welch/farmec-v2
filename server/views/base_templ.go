@@ -201,7 +201,7 @@ func Base(content templ.Component, metadata Metadata, stylesheets []string, supp
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "<link rel=\"icon\" href=\"/public/favicon.svg\" type=\"image/svg+xml\"><script src=\"/public/htmx.min.js\"></script><script defer src=\"https://cdn.jsdelivr.net/npm/alpinejs@3.14.3/dist/cdn.min.js\"></script></head><body>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "<link rel=\"icon\" href=\"/public/favicon.svg\" type=\"image/svg+xml\"><script src=\"/public/htmx.min.js\"></script><script defer src=\"https://cdn.jsdelivr.net/npm/alpinejs@3.14.3/dist/cdn.min.js\"></script><script async src=\"https://www.googletagmanager.com/gtag/js?id=G-5J4GB3RZ0N\"></script><script src=\"/public/static/js/google.js\"></script></head><body>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

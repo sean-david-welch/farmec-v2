@@ -84,7 +84,15 @@ func Carousel(images []string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</button></div></div><div class=\"typewriter\"><h1 id=\"typewriterText\"></h1><a href=\"#Info\" class=\"btn\">Find Out More: <img src=\"/public/icons/chevron-circle-down.svg\" alt=\"Down\" class=\"icon\"></a></div><script src=\"/public/static/js/carousel.js\"></script></section>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</button></div></div><div class=\"typewriter\"><h1 id=\"typewriterText\"></h1><a href=\"#Info\" class=\"btn\">Find Out More:")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = components.Icon("chevron-circle-down.svg", 8).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</a></div><script src=\"/public/static/js/carousel.js\"></script></section>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
