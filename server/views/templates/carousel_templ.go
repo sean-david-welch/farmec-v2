@@ -72,7 +72,7 @@ func Carousel(images []string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = components.Icon("chevron-left.svg", 34).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = components.Icon("chevron-left.svg", 24).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -80,19 +80,19 @@ func Carousel(images []string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = components.Icon("chevron-right.svg", 34).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = components.Icon("chevron-right.svg", 24).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</button></div></div><div class=\"typewriter\"><h1 id=\"typewriterText\"></h1><a href=\"#Info\" class=\"btn\">Find Out More:")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</button></div></div><div class=\"typewriter\"><h1 id=\"typewriterText\"></h1><a href=\"#Info\" class=\"btn btnMain\">Find Out More: <span class=\"ml-2\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = components.Icon("chevron-circle-down.svg", 22).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = components.Icon("chevron-circle-down.svg", 18).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</a></div><script src=\"/public/static/js/carousel.js\"></script></section>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</span></a></div><script src=\"/public/static/js/carousel.js\"></script></section>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

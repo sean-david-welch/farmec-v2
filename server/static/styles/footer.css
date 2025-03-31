@@ -75,9 +75,9 @@
 
 .toTopButton:hover,
 .toTopButton:hover svg path {
-    @apply border-2 border-indigo-800 bg-zinc-700 fill-indigo-800;
+    @apply border-2 border-red-800 bg-zinc-700 fill-red-800;
 }
 
 .toTopButton svg path {
-    @apply fill-indigo-800;
+    @apply fill-red-800;
 }

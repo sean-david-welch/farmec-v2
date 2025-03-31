@@ -9,39 +9,39 @@ templ Displays() {
 
 templ DisplayContent(statsItems []lib.StatsItem, specialsItems []lib.SpecialsItem) {
     <section id="Info">
-        <div class="info-section">
-            <h1 class="section-heading">Farmec At A Glance:</h1>
-            <p class="sub-heading">
+        <div class="infoSection">
+            <h1 class="sectionHeading">Farmec At A Glance:</h1>
+            <p class="subHeading">
                 This is a Quick Look at what Separates us from our Competitors
             </p>
             <div class="stats">
                 for _, item := range statsItems {
                     <a href={templ.SafeURL(item.Link)}>
-                        <ul class="stat-list">
-                            <li class="stat-list-item">{item.Title}</li>
-                            <li class="stat-list-item">
+                        <ul class="statList">
+                            <li class="statListItem">{item.Title}</li>
+                            <li class="statListItem">
                                 @components.Icon(item.Icon, 80)
                             </li>
-                            <li class="stat-list-item">{item.Description}</li>
+                            <li class="statListItem">{item.Description}</li>
                         </ul>
                     </a>
                 }
             </div>
         </div>
-        <div class="info-section">
-            <h1 class="section-heading">What Can We Offer:</h1>
-            <p class="sub-heading">
+        <div class="infoSection">
+            <h1 class="sectionHeading">What Can We Offer:</h1>
+            <p class="subHeading">
                 Farmec is committed to its customers and gaurentees the following
             </p>
             <div class="specials">
                 for _, item := range specialsItems {
                     <a href={templ.SafeURL(item.Link)}>
-                        <ul class="special-list">
-                            <li class="special-list-item">{item.Title}</li>
-                            <li class="special-list-item">
+                        <ul class="specialList">
+                            <li class="specialListItem">{item.Title}</li>
+                            <li class="specialListItem">
                                 @components.Icon(item.Icon, 80)
                             </li>
-                            <li class="special-list-item">{item.Description}</li>
+                            <li class="specialListItem">{item.Description}</li>
                         </ul>
                     </a>
                 }
