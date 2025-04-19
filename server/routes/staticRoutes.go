@@ -74,7 +74,6 @@ func staticRoutes(router *gin.Engine, reactApp fs.FS) {
 		}
 	})
 
-	// Serve other static files directly with correct MIME types
 	router.GET("/favicon.svg", func(c *gin.Context) {
 		c.Header("Content-Type", "image/svg+xml")
 		serveStaticFile("favicon.svg", reactApp)(c)
@@ -95,7 +94,6 @@ func staticRoutes(router *gin.Engine, reactApp fs.FS) {
 		serveStaticFile("default.jpg", reactApp)(c)
 	})
 
-	// NoRoute handler for SPA routing - serve index.html for all unmatched routes except API
 	router.NoRoute(func(c *gin.Context) {
 		path := c.Request.URL.Path
 
