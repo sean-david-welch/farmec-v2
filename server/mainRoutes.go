@@ -1,8 +1,9 @@
-package routes
+package main
 
 import (
 	"database/sql"
 	"embed"
+	"github.com/sean-david-welch/farmec-v2/server/routes"
 	"io/fs"
 	"log"
 	"net/http"
@@ -17,7 +18,7 @@ func InitRoutes(
 	reactApp embed.FS, router *gin.Engine, database *sql.DB, secrets *lib.Secrets, s3Client lib.S3Client,
 	adminMiddleware *middleware.AdminMiddleware, authMiddleware *middleware.AuthMiddleware, firebase *lib.Firebase, emailClient *lib.EmailClientImpl,
 ) {
-	reactFS, err := fs.Sub(reactApp, "../client/dist")
+	reactFS, err := fs.Sub(reactApp, "client/dist")
 	if err != nil {
 		log.Fatal("Failed to create sub filesystem:", err)
 	}
@@ -48,30 +49,31 @@ func InitRoutes(
 			})
 			return
 		}
+		c.Header("Content-Type", "text/html")
 		c.FileFromFS("index.html", http.FS(reactFS))
 	})
 	// Supplier Module Resources
-	InitParts(router, database, s3Client, adminMiddleware)
-	InitVideos(router, database, secrets, adminMiddleware)
-	InitProduct(router, database, s3Client, adminMiddleware)
-	InitMachines(router, database, s3Client, adminMiddleware)
-	InitSuppliers(router, database, s3Client, adminMiddleware)
+	routes.InitParts(router, database, s3Client, adminMiddleware)
+	routes.InitVideos(router, database, secrets, adminMiddleware)
+	routes.InitProduct(router, database, s3Client, adminMiddleware)
+	routes.InitMachines(router, database, s3Client, adminMiddleware)
+	routes.InitSuppliers(router, database, s3Client, adminMiddleware)
 	// About Module Resources
-	InitTerms(router, database, adminMiddleware)
-	InitPrivacy(router, database, adminMiddleware)
-	InitTimelines(router, database, adminMiddleware)
-	InitializeEmployee(router, database, s3Client, adminMiddleware)
+	routes.InitTerms(router, database, adminMiddleware)
+	routes.InitPrivacy(router, database, adminMiddleware)
+	routes.InitTimelines(router, database, adminMiddleware)
+	routes.InitializeEmployee(router, database, s3Client, adminMiddleware)
 	// Blog Module Resources
-	InitExhibitions(router, database, adminMiddleware)
-	InitBlogs(router, database, s3Client, adminMiddleware)
+	routes.InitExhibitions(router, database, adminMiddleware)
+	routes.InitBlogs(router, database, s3Client, adminMiddleware)
 	// Misc Resources
-	InitWarranty(router, database, authMiddleware, emailClient)
-	InitRegistrations(router, database, authMiddleware, emailClient)
-	InitLineItems(router, database, s3Client, adminMiddleware)
-	InitCarousel(router, database, s3Client, adminMiddleware)
+	routes.InitWarranty(router, database, authMiddleware, emailClient)
+	routes.InitRegistrations(router, database, authMiddleware, emailClient)
+	routes.InitLineItems(router, database, s3Client, adminMiddleware)
+	routes.InitCarousel(router, database, s3Client, adminMiddleware)
 	// Util Resources
-	InitContact(router, emailClient)
-	InitCheckout(router, database, secrets)
-	InitPdfRenderer(router, adminMiddleware)
-	InitAuth(router, firebase, adminMiddleware)
+	routes.InitContact(router, emailClient)
+	routes.InitCheckout(router, database, secrets)
+	routes.InitPdfRenderer(router, adminMiddleware)
+	routes.InitAuth(router, firebase, adminMiddleware)
 }
