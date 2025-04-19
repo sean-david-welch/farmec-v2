@@ -26,7 +26,6 @@ func main() {
 	if err != nil {
 		log.Fatal("Failed to create sub filesystem:", err)
 	}
-
 	secrets, err := lib.NewSecrets()
 	if err != nil {
 		log.Fatal("Error loading configuration: ", err)
@@ -67,6 +66,7 @@ func main() {
 	} else {
 		corsConfig.AllowOrigins = []string{
 			"http://localhost:5173",
+			"http://localhost:8000",
 		}
 	}
 	corsConfig.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
@@ -74,6 +74,8 @@ func main() {
 	corsConfig.AllowCredentials = true
 
 	router := gin.Default()
+	router.RedirectTrailingSlash = false
+	router.RedirectFixedPath = false
 	emailClient := lib.NewEmailClient(secrets)
 	authMiddleware := middleware.NewAuthMiddleware(firebase)
 	adminMiddleware := middleware.NewAdminMiddleware(firebase)
