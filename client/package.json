@@ -6,6 +6,7 @@
     "scripts": {
         "dev": "vite && VITE_ENVIRONMENT=development",
         "build": "tsc && vite build",
+        "embed": "tsc && vite build && cp dist ../server/client/dist",
         "sync": "aws s3 sync ./dist s3://farmec.ie/",
         "invalidate": "aws cloudfront create-invalidation --distribution-id EGIJU0OVG257E --paths '/*'",
         "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
