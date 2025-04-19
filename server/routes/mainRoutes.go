@@ -1,8 +1,7 @@
-package main
+package routes
 
 import (
 	"database/sql"
-	"github.com/sean-david-welch/farmec-v2/server/routes"
 	"io/fs"
 	"net/http"
 	"strings"
@@ -51,27 +50,27 @@ func InitRoutes(
 		c.FileFromFS("index.html", http.FS(reactApp))
 	})
 	// Supplier Module Resources
-	routes.InitParts(router, database, s3Client, adminMiddleware)
-	routes.InitVideos(router, database, secrets, adminMiddleware)
-	routes.InitProduct(router, database, s3Client, adminMiddleware)
-	routes.InitMachines(router, database, s3Client, adminMiddleware)
-	routes.InitSuppliers(router, database, s3Client, adminMiddleware)
+	InitParts(router, database, s3Client, adminMiddleware)
+	InitVideos(router, database, secrets, adminMiddleware)
+	InitProduct(router, database, s3Client, adminMiddleware)
+	InitMachines(router, database, s3Client, adminMiddleware)
+	InitSuppliers(router, database, s3Client, adminMiddleware)
 	// About Module Resources
-	routes.InitTerms(router, database, adminMiddleware)
-	routes.InitPrivacy(router, database, adminMiddleware)
-	routes.InitTimelines(router, database, adminMiddleware)
-	routes.InitializeEmployee(router, database, s3Client, adminMiddleware)
+	InitTerms(router, database, adminMiddleware)
+	InitPrivacy(router, database, adminMiddleware)
+	InitTimelines(router, database, adminMiddleware)
+	InitializeEmployee(router, database, s3Client, adminMiddleware)
 	// Blog Module Resources
-	routes.InitExhibitions(router, database, adminMiddleware)
-	routes.InitBlogs(router, database, s3Client, adminMiddleware)
+	InitExhibitions(router, database, adminMiddleware)
+	InitBlogs(router, database, s3Client, adminMiddleware)
 	// Misc Resources
-	routes.InitWarranty(router, database, authMiddleware, emailClient)
-	routes.InitRegistrations(router, database, authMiddleware, emailClient)
-	routes.InitLineItems(router, database, s3Client, adminMiddleware)
-	routes.InitCarousel(router, database, s3Client, adminMiddleware)
+	InitWarranty(router, database, authMiddleware, emailClient)
+	InitRegistrations(router, database, authMiddleware, emailClient)
+	InitLineItems(router, database, s3Client, adminMiddleware)
+	InitCarousel(router, database, s3Client, adminMiddleware)
 	// Util Resources
-	routes.InitContact(router, emailClient)
-	routes.InitCheckout(router, database, secrets)
-	routes.InitPdfRenderer(router, adminMiddleware)
-	routes.InitAuth(router, firebase, adminMiddleware)
+	InitContact(router, emailClient)
+	InitCheckout(router, database, secrets)
+	InitPdfRenderer(router, adminMiddleware)
+	InitAuth(router, firebase, adminMiddleware)
 }
