@@ -25,23 +25,14 @@ func staticRoutes(router *gin.Engine, reactApp fs.FS) {
 		}
 		c.Abort()
 	})
-	// Custom static file server with correct MIME types
 	router.GET("/assets/*filepath", func(c *gin.Context) {
-		// The path parameter includes the leading slash, so we need to adjust
 		path := c.Param("filepath")
-
-		// Skip requests to just "/assets/" without a specific file
 		if path == "/" {
 			c.Status(http.StatusNotFound)
 			return
 		}
-
-		// Remove the leading slash for fs.Open
 		path = strings.TrimPrefix(path, "/")
 
-		log.Printf("Requesting asset: %s", path)
-
-		// Set correct MIME type based on file extension
 		if strings.HasSuffix(path, ".js") {
 			c.Header("Content-Type", "application/javascript")
 		} else if strings.HasSuffix(path, ".css") {
@@ -54,7 +45,6 @@ func staticRoutes(router *gin.Engine, reactApp fs.FS) {
 			c.Header("Content-Type", "image/jpeg")
 		}
 
-		// Construct the path correctly for the embedded filesystem
 		assetPath := "assets/" + path
 		log.Printf("Looking for file at: %s", assetPath)
 
@@ -64,7 +54,12 @@ func staticRoutes(router *gin.Engine, reactApp fs.FS) {
 			c.Status(http.StatusNotFound)
 			return
 		}
-		defer file.Close()
+		defer func(file fs.File) {
+			err := file.Close()
+			if err != nil {
+				log.Printf("Error closing asset: %v", err)
+			}
+		}(file)
 
 		content, err := io.ReadAll(file)
 		if err != nil {
@@ -73,7 +68,10 @@ func staticRoutes(router *gin.Engine, reactApp fs.FS) {
 			return
 		}
 
-		c.Writer.Write(content)
+		_, err = c.Writer.Write(content)
+		if err != nil {
+			return
+		}
 	})
 
 	// Serve other static files directly with correct MIME types
@@ -124,14 +122,19 @@ func staticRoutes(router *gin.Engine, reactApp fs.FS) {
 
 }
 
-func serveStaticFile(filename string, fs fs.FS) gin.HandlerFunc {
+func serveStaticFile(filename string, file fs.FS) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		file, err := fs.Open(filename)
+		file, err := file.Open(filename)
 		if err != nil {
 			c.Status(http.StatusNotFound)
 			return
 		}
-		defer file.Close()
+		defer func(file fs.File) {
+			err := file.Close()
+			if err != nil {
+				log.Printf("Error closing asset: %v", err)
+			}
+		}(file)
 
 		content, err := io.ReadAll(file)
 		if err != nil {
