@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"embed"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"log"
@@ -13,6 +14,9 @@ import (
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
 	"github.com/sean-david-welch/farmec-v2/server/routes"
 )
+
+//go:embed client/dist
+var reactApp embed.FS
 
 func main() {
 	env := os.Getenv("ENV")
@@ -70,7 +74,7 @@ func main() {
 	adminMiddleware := middleware.NewAdminMiddleware(firebase)
 	prerenderMiddleware := middleware.NewPrerenderMiddleware(secrets.PrerenderToken)
 	router.Use(gin.Logger(), gin.Recovery(), cors.New(corsConfig), prerenderMiddleware.Middleware())
-	routes.InitRoutes(router, database, secrets, s3Client, adminMiddleware, authMiddleware, firebase, emailClient)
+	routes.InitRoutes(reactApp, router, database, secrets, s3Client, adminMiddleware, authMiddleware, firebase, emailClient)
 
 	if env == "production" {
 		gin.SetMode(gin.ReleaseMode)
