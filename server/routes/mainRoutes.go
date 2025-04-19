@@ -6,6 +6,7 @@ import (
 	"io/fs"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sean-david-welch/farmec-v2/server/lib"
@@ -41,7 +42,7 @@ func InitRoutes(
 		})
 	})
 	router.NoRoute(func(c *gin.Context) {
-		if c.Request.URL.Path[:4] == "/api" {
+		if strings.HasPrefix(c.Request.URL.Path, "/api") {
 			c.JSON(http.StatusNotFound, gin.H{
 				"message": "API route not found",
 			})
