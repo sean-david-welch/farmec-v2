@@ -1,33 +1,4 @@
-# Allow all search engines to index public pages
 User-agent: *
-Disallow: /admin
-Disallow: /login
-Disallow: /forms
-Disallow: /delete
-Disallow: /account
-Disallow: /warranty
-Disallow: /warranty-form
-Disallow: /supplier-form
-Disallow: /spareparts-form
-Disallow: /blogs-form
-Disallow: /exhibition-form
-Disallow: /users
-Disallow: /settings
+Allow: /
 
-# Block query parameters (optional, but prevents potential duplicate content issues)
-Disallow: /*?
-
-# Allow search engines to crawl important sections
-Allow: /blogs
-Allow: /blogs/*
-Allow: /suppliers
-Allow: /suppliers/*
-Allow: /spareparts
-Allow: /spareparts/*
-Allow: /exhibitions
-Allow: /exhibitions/*
-Allow: /products
-Allow: /products/*
-
-# Sitemap location
 Sitemap: https://www.farmec.ie/sitemap.xml
