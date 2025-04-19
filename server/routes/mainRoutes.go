@@ -22,66 +22,46 @@ func InitRoutes(
 	}
 	// Serve static files from the embedded filesystem
 	router.StaticFS("/assets", http.FS(reactFS))
-
 	// Try to serve favicon and manifest from embedded files
 	router.GET("/favicon.svg", func(c *gin.Context) {
 		c.FileFromFS("favicon.svg", http.FS(reactFS))
 	})
-
-	// API routes
 	router.GET("/api", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "Welcome to Farmec Ireland's API Service.",
 		})
 	})
-
-	// Redirect /api requests without a valid route to /api root
 	router.NoRoute(func(c *gin.Context) {
-		// Return 404 for non-existent API routes
 		if c.Request.URL.Path[:4] == "/api" {
 			c.JSON(http.StatusNotFound, gin.H{
 				"message": "API route not found",
 			})
 			return
 		}
-		// Handle other non-API requests (which should go to the frontend)
-		c.JSON(http.StatusNotFound, gin.H{
-			"message": "Page not found",
-		})
+		c.FileFromFS("index.html", http.FS(reactFS))
 	})
-
 	// Supplier Module Resources
 	InitParts(router, database, s3Client, adminMiddleware)
 	InitVideos(router, database, secrets, adminMiddleware)
 	InitProduct(router, database, s3Client, adminMiddleware)
 	InitMachines(router, database, s3Client, adminMiddleware)
 	InitSuppliers(router, database, s3Client, adminMiddleware)
-
 	// About Module Resources
 	InitTerms(router, database, adminMiddleware)
 	InitPrivacy(router, database, adminMiddleware)
 	InitTimelines(router, database, adminMiddleware)
 	InitializeEmployee(router, database, s3Client, adminMiddleware)
-
 	// Blog Module Resources
 	InitExhibitions(router, database, adminMiddleware)
 	InitBlogs(router, database, s3Client, adminMiddleware)
-
 	// Misc Resources
 	InitWarranty(router, database, authMiddleware, emailClient)
 	InitRegistrations(router, database, authMiddleware, emailClient)
 	InitLineItems(router, database, s3Client, adminMiddleware)
 	InitCarousel(router, database, s3Client, adminMiddleware)
-
 	// Util Resources
 	InitContact(router, emailClient)
 	InitCheckout(router, database, secrets)
 	InitPdfRenderer(router, adminMiddleware)
 	InitAuth(router, firebase, adminMiddleware)
-
-	router.NoRoute(func(c *gin.Context) {
-		c.JSON(http.StatusNotFound, gin.H{
-			"message": "Page not found",
-		})
-	})
 }
