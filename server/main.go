@@ -58,6 +58,8 @@ func main() {
 	corsConfig := cors.DefaultConfig()
 	if env == "production" {
 		corsConfig.AllowOrigins = []string{
+			"http://0.0.0.0:8000",
+			"https://0.0.0.0:8000",
 			"https://farmec.ie",
 			"https://www.farmec.ie",
 			"https://d2hp5uofb6qy9a.cloudfront.net",
