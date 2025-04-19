@@ -29,5 +29,7 @@ templ:
 sqlc:
 	cd sql && sqlc generate
 
+.PHONY: client
+
 client:
 	cd ../client && npm run embed
