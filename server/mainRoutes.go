@@ -22,6 +22,10 @@ func InitRoutes(
 	if err != nil {
 		log.Fatal("Failed to create sub filesystem:", err)
 	}
+	router.GET("/", func(c *gin.Context) {
+		c.Header("Content-Type", "text/html")
+		c.FileFromFS("index.html", http.FS(reactFS))
+	})
 	// Serve static files from the embedded filesystem
 	router.StaticFS("/assets", http.FS(reactFS))
 	// Try to serve favicon and manifest from embedded files
