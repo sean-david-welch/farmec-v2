@@ -2,10 +2,8 @@ package main
 
 import (
 	"database/sql"
-	"embed"
 	"github.com/sean-david-welch/farmec-v2/server/routes"
 	"io/fs"
-	"log"
 	"net/http"
 	"strings"
 
@@ -15,31 +13,27 @@ import (
 )
 
 func InitRoutes(
-	reactApp embed.FS, router *gin.Engine, database *sql.DB, secrets *lib.Secrets, s3Client lib.S3Client,
+	reactApp fs.FS, router *gin.Engine, database *sql.DB, secrets *lib.Secrets, s3Client lib.S3Client,
 	adminMiddleware *middleware.AdminMiddleware, authMiddleware *middleware.AuthMiddleware, firebase *lib.Firebase, emailClient *lib.EmailClientImpl,
 ) {
-	reactFS, err := fs.Sub(reactApp, "client/dist")
-	if err != nil {
-		log.Fatal("Failed to create sub filesystem:", err)
-	}
 	router.GET("/", func(c *gin.Context) {
 		c.Header("Content-Type", "text/html")
-		c.FileFromFS("index.html", http.FS(reactFS))
+		c.FileFromFS("index.html", http.FS(reactApp))
 	})
 	// Serve static files from the embedded filesystem
-	router.StaticFS("/assets", http.FS(reactFS))
+	router.StaticFS("/assets", http.FS(reactApp))
 	// Try to serve favicon and manifest from embedded files
 	router.GET("/favicon.svg", func(c *gin.Context) {
-		c.FileFromFS("favicon.svg", http.FS(reactFS))
+		c.FileFromFS("favicon.svg", http.FS(reactApp))
 	})
 	router.GET("/robots.txt", func(c *gin.Context) {
-		c.FileFromFS("robots.txt", http.FS(reactFS))
+		c.FileFromFS("robots.txt", http.FS(reactApp))
 	})
 	router.GET("/sitemap.xml", func(c *gin.Context) {
-		c.FileFromFS("sitemap.xml", http.FS(reactFS))
+		c.FileFromFS("sitemap.xml", http.FS(reactApp))
 	})
 	router.GET("/default.jpg", func(c *gin.Context) {
-		c.FileFromFS("default.jpg", http.FS(reactFS))
+		c.FileFromFS("default.jpg", http.FS(reactApp))
 	})
 	router.GET("/api", func(c *gin.Context) {
 		c.JSON(200, gin.H{
@@ -54,7 +48,7 @@ func InitRoutes(
 			return
 		}
 		c.Header("Content-Type", "text/html")
-		c.FileFromFS("index.html", http.FS(reactFS))
+		c.FileFromFS("index.html", http.FS(reactApp))
 	})
 	// Supplier Module Resources
 	routes.InitParts(router, database, s3Client, adminMiddleware)

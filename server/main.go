@@ -5,6 +5,7 @@ import (
 	"embed"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"io/fs"
 	"log"
 	"os"
 
@@ -20,6 +21,10 @@ var reactApp embed.FS
 func main() {
 	env := os.Getenv("ENV")
 	port := os.Getenv("PORT")
+	reactFS, err := fs.Sub(reactApp, "client/dist")
+	if err != nil {
+		log.Fatal("Failed to create sub filesystem:", err)
+	}
 
 	secrets, err := lib.NewSecrets()
 	if err != nil {
@@ -73,7 +78,7 @@ func main() {
 	adminMiddleware := middleware.NewAdminMiddleware(firebase)
 	prerenderMiddleware := middleware.NewPrerenderMiddleware(secrets.PrerenderToken)
 	router.Use(gin.Logger(), gin.Recovery(), cors.New(corsConfig), prerenderMiddleware.Middleware())
-	InitRoutes(reactApp, router, database, secrets, s3Client, adminMiddleware, authMiddleware, firebase, emailClient)
+	InitRoutes(reactFS, router, database, secrets, s3Client, adminMiddleware, authMiddleware, firebase, emailClient)
 
 	if env == "production" {
 		gin.SetMode(gin.ReleaseMode)
