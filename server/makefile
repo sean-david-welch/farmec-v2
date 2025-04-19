@@ -28,3 +28,6 @@ templ:
 
 sqlc:
 	cd sql && sqlc generate
+
+client:
+	cd ../client && npm run embed
