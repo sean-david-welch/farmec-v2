@@ -26,6 +26,15 @@ func InitRoutes(
 	router.GET("/favicon.svg", func(c *gin.Context) {
 		c.FileFromFS("favicon.svg", http.FS(reactFS))
 	})
+	router.GET("/robots.txt", func(c *gin.Context) {
+		c.FileFromFS("robots.txt", http.FS(reactFS))
+	})
+	router.GET("/sitemap.xml", func(c *gin.Context) {
+		c.FileFromFS("sitemap.xml", http.FS(reactFS))
+	})
+	router.GET("/default.jpg", func(c *gin.Context) {
+		c.FileFromFS("default.jpg", http.FS(reactFS))
+	})
 	router.GET("/api", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "Welcome to Farmec Ireland's API Service.",
