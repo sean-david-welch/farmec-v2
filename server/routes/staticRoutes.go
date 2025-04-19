@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"io"
 	"io/fs"
+	"log"
 	"net/http"
 	"strings"
 )
@@ -24,11 +25,21 @@ func staticRoutes(router *gin.Engine, reactApp fs.FS) {
 		}
 		c.Abort()
 	})
-
-	router.StaticFS("/assets", http.FS(reactApp))
 	// Custom static file server with correct MIME types
 	router.GET("/assets/*filepath", func(c *gin.Context) {
+		// The path parameter includes the leading slash, so we need to adjust
 		path := c.Param("filepath")
+
+		// Skip requests to just "/assets/" without a specific file
+		if path == "/" {
+			c.Status(http.StatusNotFound)
+			return
+		}
+
+		// Remove the leading slash for fs.Open
+		path = strings.TrimPrefix(path, "/")
+
+		log.Printf("Requesting asset: %s", path)
 
 		// Set correct MIME type based on file extension
 		if strings.HasSuffix(path, ".js") {
@@ -43,9 +54,13 @@ func staticRoutes(router *gin.Engine, reactApp fs.FS) {
 			c.Header("Content-Type", "image/jpeg")
 		}
 
-		// Read and serve the file directly
-		file, err := reactApp.Open("assets" + path)
+		// Construct the path correctly for the embedded filesystem
+		assetPath := "assets/" + path
+		log.Printf("Looking for file at: %s", assetPath)
+
+		file, err := reactApp.Open(assetPath)
 		if err != nil {
+			log.Printf("Error opening asset: %v", err)
 			c.Status(http.StatusNotFound)
 			return
 		}
@@ -53,14 +68,12 @@ func staticRoutes(router *gin.Engine, reactApp fs.FS) {
 
 		content, err := io.ReadAll(file)
 		if err != nil {
+			log.Printf("Error reading asset: %v", err)
 			c.Status(http.StatusInternalServerError)
 			return
 		}
 
-		_, err = c.Writer.Write(content)
-		if err != nil {
-			return
-		}
+		c.Writer.Write(content)
 	})
 
 	// Serve other static files directly with correct MIME types
