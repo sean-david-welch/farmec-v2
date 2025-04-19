@@ -2,6 +2,9 @@ package routes
 
 import (
 	"database/sql"
+	"embed"
+	"io/fs"
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -10,17 +13,26 @@ import (
 )
 
 func InitRoutes(
-	router *gin.Engine, database *sql.DB, secrets *lib.Secrets, s3Client lib.S3Client, adminMiddleware *middleware.AdminMiddleware,
-	authMiddleware *middleware.AuthMiddleware, firebase *lib.Firebase, emailClient *lib.EmailClientImpl,
+	reactApp embed.FS, router *gin.Engine, database *sql.DB, secrets *lib.Secrets, s3Client lib.S3Client,
+	adminMiddleware *middleware.AdminMiddleware, authMiddleware *middleware.AuthMiddleware, firebase *lib.Firebase, emailClient *lib.EmailClientImpl,
 ) {
-	router.GET("/", func(c *gin.Context) {
+	reactFS, err := fs.Sub(reactApp, "../client/dist")
+	if err != nil {
+		log.Fatal("Failed to create sub filesystem:", err)
+	}
+	// Serve static files from the embedded filesystem
+	router.StaticFS("/assets", http.FS(reactFS))
+
+	// Try to serve favicon and manifest from embedded files
+	router.GET("/favicon.svg", func(c *gin.Context) {
+		c.FileFromFS("favicon.svg", http.FS(reactFS))
+	})
+
+	// API routes
+	router.GET("/api", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "Welcome to Farmec Ireland's API Service.",
 		})
-	})
-
-	router.GET("/api", func(c *gin.Context) {
-		c.Redirect(http.StatusMovedPermanently, "/")
 	})
 
 	// Redirect /api requests without a valid route to /api root
