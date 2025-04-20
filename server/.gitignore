@@ -11,4 +11,4 @@ service-account.json
 /.env-production
 /.env
 node_modules
-/client
+/client/*
