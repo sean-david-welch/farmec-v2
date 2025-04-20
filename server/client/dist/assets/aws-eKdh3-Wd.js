@@ -1,0 +1,1 @@
+const s=async o=>{const{imageFile:r,presignedUrl:t}=o;try{const e=await fetch(t,{method:"PUT",headers:{"Content-Type":r.type},body:r});if(!e.ok)throw new Error(`Failed to upload file: ${e.statusText}`);return{success:!0,status:e.status}}catch(e){throw console.error("Error in uploadFileToS3:",e),console.error("Failed imageData:",o),e}};export{s as u};
