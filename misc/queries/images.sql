@@ -1,0 +1,9 @@
+update Blog set main_image = replace(main_image, 'www.farmec.ie', 'static.farmec.ie') where main_image like '%www.farmec.ie%';
+update Carousel set image = replace(image, 'www.farmec.ie', 'static.farmec.ie') where image like '%www.farmec.ie%';
+update main.Employee set profile_image = replace(profile_image, 'www.farmec.ie', 'static.farmec.ie') where profile_image like '%www.farmec.ie%';
+update main.LineItems set image = replace(image, 'www.farmec.ie', 'static.farmec.ie') where image like '%www.farmec.ie%';
+update main.Machine set machine_image = replace(machine_image, 'www.farmec.ie', 'static.farmec.ie') where machine_image like '%www.farmec.ie%';
+update main.Product set product_image = replace(product_image, 'www.farmec.ie', 'static.farmec.ie') where product_image like '%www.farmec.ie%';
+update main.SpareParts set parts_image = replace(parts_image, 'www.farmec.ie', 'static.farmec.ie') where parts_image like '%www.farmec.ie%';
+update main.Supplier set logo_image = replace(logo_image, 'www.farmec.ie', 'static.farmec.ie') where logo_image like '%www.farmec.ie%';
+update main.Supplier set marketing_image = replace(marketing_image, 'www.farmec.ie', 'static.farmec.ie') where marketing_image like '%www.farmec.ie%';
