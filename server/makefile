@@ -14,7 +14,7 @@ run: build
 test:
 	@go test -v ./tests/...
 
-dev:
+dev: client
     ENV=development PORT=8000 air -c .air.toml
 
 database-down:
