@@ -26,7 +26,7 @@ const Header: React.FC = () => {
     return (
         <nav className={isHomepage() ? styles.transparentNav : styles.navbar}>
             <Link to="/" aria-label="logo button">
-                <img src="https://www.farmec.ie/farmec_images/farmeclogo.webp" alt="Logo" width="250" height="250" />
+                <img src="https://static.farmec.ie/farmec_images/farmeclogo.webp" alt="Logo" width="250" height="250" />
             </Link>
 
             <ul className={styles.navList}>
