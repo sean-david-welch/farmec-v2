@@ -15,7 +15,7 @@ test:
 	@go test -v ./tests/...
 
 dev:
-	ENV=development PORT=8000 air
+    ENV=development PORT=8000 air -c .air.toml
 
 database-down:
 	scp -i ~/.ssh/farmec.pem -r ${REMOTE_HOST}:/home/seanwelch/server/bin/database/* ./database/
