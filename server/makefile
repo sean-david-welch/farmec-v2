@@ -1,4 +1,4 @@
-.PHONY: build run test dev database
+.PHONY: build run test dev database client
 
 include .env
 export
@@ -23,13 +23,8 @@ database-down:
 database-up:
 	scp -i ~/.ssh/farmec.pem -r ./database/* ${REMOTE_HOST}:/home/seanwelch/server/bin/database/
 
-templ:
-	templ generate
-
 sqlc:
 	cd sql && sqlc generate
-
-.PHONY: client
 
 client:
 	cd ../client && npm run embed
