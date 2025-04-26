@@ -82,6 +82,32 @@ export const useMultipleResources = (id: string, resourceKeys: (keyof Resources)
     return { data, isLoading, isError, errors };
 };
 
+export const useMultipleResourcesSlug = (slug: string, resourceKeys: (keyof Resources)[]) => {
+    const queries = useQueries({
+        queries: resourceKeys.map(key => ({
+            queryKey: [key, slug],
+            queryFn: async () => {
+                const resourceEntry = resources[key];
+                const url = `${resourceEntry.endpoint}/${slug}`;
+
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            },
+        })),
+    });
+
+    const isLoading = queries.some(query => query.isLoading);
+    const isError = queries.some(query => query.isError);
+    const errors = queries.filter(query => query.error).map(query => query.error);
+
+    const data = queries.filter(query => query.status === 'success').map(query => query.data);
+
+    return { data, isLoading, isError, errors };
+};
+
 export const useMultipleResourcesWithoutId = (resourceKeys: (keyof Resources)[]) => {
     const queries = useQueries({
         queries: resourceKeys.map(key => ({
