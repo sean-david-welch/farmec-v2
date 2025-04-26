@@ -47,6 +47,7 @@ export default defineConfig({
             generateRobotsTxt: true,
             dynamicRoutes: generateRoutes(),
             exclude: [
+                '/api/*',
                 '/login',
                 '/line-items',
                 '/carousels',
