@@ -53,10 +53,13 @@ export default defineConfig({
                 '/carousels',
                 '/users',
                 '/checkout/**',
+                '/return',
                 '/warranty/**',
+                '/registrations/**',
                 '/registration/**',
                 '/registrations',
-                '/warranty'
+                '/registrations',
+                '/warranty',
             ]
         }),
     ],
