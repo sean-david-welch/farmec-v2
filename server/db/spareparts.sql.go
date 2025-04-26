@@ -51,9 +51,17 @@ from SpareParts
 where id = ?
 `
 
-func (q *Queries) GetPartByID(ctx context.Context, id string) (SparePart, error) {
+type GetPartByIDRow struct {
+	ID             string         `json:"id"`
+	SupplierID     string         `json:"supplier_id"`
+	Name           string         `json:"name"`
+	PartsImage     sql.NullString `json:"parts_image"`
+	SparePartsLink sql.NullString `json:"spare_parts_link"`
+}
+
+func (q *Queries) GetPartByID(ctx context.Context, id string) (GetPartByIDRow, error) {
 	row := q.db.QueryRowContext(ctx, getPartByID, id)
-	var i SparePart
+	var i GetPartByIDRow
 	err := row.Scan(
 		&i.ID,
 		&i.SupplierID,
@@ -70,15 +78,23 @@ from SpareParts
 where supplier_id = ?
 `
 
-func (q *Queries) GetParts(ctx context.Context, supplierID string) ([]SparePart, error) {
+type GetPartsRow struct {
+	ID             string         `json:"id"`
+	SupplierID     string         `json:"supplier_id"`
+	Name           string         `json:"name"`
+	PartsImage     sql.NullString `json:"parts_image"`
+	SparePartsLink sql.NullString `json:"spare_parts_link"`
+}
+
+func (q *Queries) GetParts(ctx context.Context, supplierID string) ([]GetPartsRow, error) {
 	rows, err := q.db.QueryContext(ctx, getParts, supplierID)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	var items []SparePart
+	var items []GetPartsRow
 	for rows.Next() {
-		var i SparePart
+		var i GetPartsRow
 		if err := rows.Scan(
 			&i.ID,
 			&i.SupplierID,

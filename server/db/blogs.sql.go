@@ -55,9 +55,19 @@ from Blog
 where id = ?
 `
 
-func (q *Queries) GetBlogByID(ctx context.Context, id string) (Blog, error) {
+type GetBlogByIDRow struct {
+	ID         string         `json:"id"`
+	Title      string         `json:"title"`
+	Date       sql.NullString `json:"date"`
+	MainImage  sql.NullString `json:"main_image"`
+	Subheading sql.NullString `json:"subheading"`
+	Body       sql.NullString `json:"body"`
+	Created    sql.NullString `json:"created"`
+}
+
+func (q *Queries) GetBlogByID(ctx context.Context, id string) (GetBlogByIDRow, error) {
 	row := q.db.QueryRowContext(ctx, getBlogByID, id)
-	var i Blog
+	var i GetBlogByIDRow
 	err := row.Scan(
 		&i.ID,
 		&i.Title,
@@ -76,15 +86,25 @@ from Blog
 order by created desc
 `
 
-func (q *Queries) GetBlogs(ctx context.Context) ([]Blog, error) {
+type GetBlogsRow struct {
+	ID         string         `json:"id"`
+	Title      string         `json:"title"`
+	Date       sql.NullString `json:"date"`
+	MainImage  sql.NullString `json:"main_image"`
+	Subheading sql.NullString `json:"subheading"`
+	Body       sql.NullString `json:"body"`
+	Created    sql.NullString `json:"created"`
+}
+
+func (q *Queries) GetBlogs(ctx context.Context) ([]GetBlogsRow, error) {
 	rows, err := q.db.QueryContext(ctx, getBlogs)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	var items []Blog
+	var items []GetBlogsRow
 	for rows.Next() {
-		var i Blog
+		var i GetBlogsRow
 		if err := rows.Scan(
 			&i.ID,
 			&i.Title,

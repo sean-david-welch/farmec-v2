@@ -55,9 +55,19 @@ from Machine
 where id = ?
 `
 
-func (q *Queries) GetMachineByID(ctx context.Context, id string) (Machine, error) {
+type GetMachineByIDRow struct {
+	ID           string         `json:"id"`
+	SupplierID   string         `json:"supplier_id"`
+	Name         string         `json:"name"`
+	MachineImage sql.NullString `json:"machine_image"`
+	Description  sql.NullString `json:"description"`
+	MachineLink  sql.NullString `json:"machine_link"`
+	Created      sql.NullString `json:"created"`
+}
+
+func (q *Queries) GetMachineByID(ctx context.Context, id string) (GetMachineByIDRow, error) {
 	row := q.db.QueryRowContext(ctx, getMachineByID, id)
-	var i Machine
+	var i GetMachineByIDRow
 	err := row.Scan(
 		&i.ID,
 		&i.SupplierID,
@@ -76,15 +86,25 @@ from Machine
 where supplier_id = ?
 `
 
-func (q *Queries) GetMachines(ctx context.Context, supplierID string) ([]Machine, error) {
+type GetMachinesRow struct {
+	ID           string         `json:"id"`
+	SupplierID   string         `json:"supplier_id"`
+	Name         string         `json:"name"`
+	MachineImage sql.NullString `json:"machine_image"`
+	Description  sql.NullString `json:"description"`
+	MachineLink  sql.NullString `json:"machine_link"`
+	Created      sql.NullString `json:"created"`
+}
+
+func (q *Queries) GetMachines(ctx context.Context, supplierID string) ([]GetMachinesRow, error) {
 	rows, err := q.db.QueryContext(ctx, getMachines, supplierID)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	var items []Machine
+	var items []GetMachinesRow
 	for rows.Next() {
-		var i Machine
+		var i GetMachinesRow
 		if err := rows.Scan(
 			&i.ID,
 			&i.SupplierID,

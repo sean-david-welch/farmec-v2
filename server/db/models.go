@@ -16,6 +16,7 @@ type Blog struct {
 	Subheading sql.NullString `json:"subheading"`
 	Body       sql.NullString `json:"body"`
 	Created    sql.NullString `json:"created"`
+	Slug       sql.NullString `json:"slug"`
 }
 
 type Carousel struct {
@@ -43,6 +44,13 @@ type Exhibition struct {
 	Created  sql.NullString `json:"created"`
 }
 
+type GooseDbVersion struct {
+	ID        int64        `json:"id"`
+	VersionID int64        `json:"version_id"`
+	IsApplied int64        `json:"is_applied"`
+	Tstamp    sql.NullTime `json:"tstamp"`
+}
+
 type LineItem struct {
 	ID    string         `json:"id"`
 	Name  string         `json:"name"`
@@ -58,6 +66,7 @@ type Machine struct {
 	Description  sql.NullString `json:"description"`
 	MachineLink  sql.NullString `json:"machine_link"`
 	Created      sql.NullString `json:"created"`
+	Slug         sql.NullString `json:"slug"`
 }
 
 type MachineRegistration struct {
@@ -104,6 +113,7 @@ type Product struct {
 	ProductImage sql.NullString `json:"product_image"`
 	Description  sql.NullString `json:"description"`
 	ProductLink  sql.NullString `json:"product_link"`
+	Slug         sql.NullString `json:"slug"`
 }
 
 type SparePart struct {
@@ -112,6 +122,12 @@ type SparePart struct {
 	Name           string         `json:"name"`
 	PartsImage     sql.NullString `json:"parts_image"`
 	SparePartsLink sql.NullString `json:"spare_parts_link"`
+	Slug           sql.NullString `json:"slug"`
+}
+
+type SqliteSequence struct {
+	Name interface{} `json:"name"`
+	Seq  interface{} `json:"seq"`
 }
 
 type Supplier struct {
@@ -127,6 +143,7 @@ type Supplier struct {
 	SocialLinkedin  sql.NullString `json:"social_linkedin"`
 	SocialWebsite   sql.NullString `json:"social_website"`
 	Created         sql.NullString `json:"created"`
+	Slug            sql.NullString `json:"slug"`
 }
 
 type Term struct {

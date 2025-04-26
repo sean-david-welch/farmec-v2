@@ -53,9 +53,18 @@ from Product
 where id = ?
 `
 
-func (q *Queries) GetProductByID(ctx context.Context, id string) (Product, error) {
+type GetProductByIDRow struct {
+	ID           string         `json:"id"`
+	MachineID    string         `json:"machine_id"`
+	Name         string         `json:"name"`
+	ProductImage sql.NullString `json:"product_image"`
+	Description  sql.NullString `json:"description"`
+	ProductLink  sql.NullString `json:"product_link"`
+}
+
+func (q *Queries) GetProductByID(ctx context.Context, id string) (GetProductByIDRow, error) {
 	row := q.db.QueryRowContext(ctx, getProductByID, id)
-	var i Product
+	var i GetProductByIDRow
 	err := row.Scan(
 		&i.ID,
 		&i.MachineID,
@@ -73,15 +82,24 @@ from Product
 where machine_id = ?
 `
 
-func (q *Queries) GetProducts(ctx context.Context, machineID string) ([]Product, error) {
+type GetProductsRow struct {
+	ID           string         `json:"id"`
+	MachineID    string         `json:"machine_id"`
+	Name         string         `json:"name"`
+	ProductImage sql.NullString `json:"product_image"`
+	Description  sql.NullString `json:"description"`
+	ProductLink  sql.NullString `json:"product_link"`
+}
+
+func (q *Queries) GetProducts(ctx context.Context, machineID string) ([]GetProductsRow, error) {
 	rows, err := q.db.QueryContext(ctx, getProducts, machineID)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	var items []Product
+	var items []GetProductsRow
 	for rows.Next() {
-		var i Product
+		var i GetProductsRow
 		if err := rows.Scan(
 			&i.ID,
 			&i.MachineID,
