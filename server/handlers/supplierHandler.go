@@ -44,6 +44,20 @@ func (handler *SupplierHandler) GetSupplierByID(context *gin.Context) {
 	context.JSON(http.StatusOK, supplier)
 }
 
+func (handler *SupplierHandler) GetSupplierBySlug(context *gin.Context) {
+	ctx := context.Request.Context()
+	slug := context.Param("slug")
+	supplier, err := handler.service.GetSupplierBySlug(ctx, slug)
+
+	if err != nil {
+		log.Printf("Error getting suppliers: %v", err)
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "Error occurred while getting suppliers"})
+		return
+	}
+
+	context.JSON(http.StatusOK, supplier)
+}
+
 func (handler *SupplierHandler) CreateSupplier(context *gin.Context) {
 	ctx := context.Request.Context()
 	var supplier types.Supplier

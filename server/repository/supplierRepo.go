@@ -14,6 +14,7 @@ type SupplierRepo interface {
 	GetSuppliers(ctx context.Context) ([]db.Supplier, error)
 	CreateSupplier(ctx context.Context, supplier *db.Supplier) error
 	GetSupplierById(ctx context.Context, id string) (*db.Supplier, error)
+	GetSupplierBySlug(ctx context.Context, slug string) (*db.Supplier, error)
 	UpdateSupplier(ctx context.Context, id string, supplier *db.Supplier) error
 	DeleteSupplier(ctx context.Context, id string) error
 }

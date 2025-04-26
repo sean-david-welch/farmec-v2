@@ -15,6 +15,7 @@ import (
 type SupplierService interface {
 	GetSuppliers(ctx context.Context) ([]types.Supplier, error)
 	GetSupplierById(ctx context.Context, id string) (*types.Supplier, error)
+	GetSupplierBySlug(ctx context.Context, slug string) (*types.Supplier, error)
 	CreateSupplier(ctx context.Context, supplier db.Supplier) (*types.SupplierResult, error)
 	UpdateSupplier(ctx context.Context, id string, supplier *db.Supplier) (*types.SupplierResult, error)
 	DeleteSupplier(ctx context.Context, id string) error
@@ -49,6 +50,15 @@ func (service *SupplierServiceImpl) GetSuppliers(ctx context.Context) ([]types.S
 
 func (service *SupplierServiceImpl) GetSupplierById(ctx context.Context, id string) (*types.Supplier, error) {
 	supplier, err := service.repo.GetSupplierById(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	result := lib.SerializeSupplier(*supplier)
+	return &result, nil
+}
+
+func (service *SupplierServiceImpl) GetSupplierBySlug(ctx context.Context, slug string) (*types.Supplier, error) {
+	supplier, err := service.repo.GetSupplierBySlug(ctx, slug)
 	if err != nil {
 		return nil, err
 	}
