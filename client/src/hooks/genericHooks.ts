@@ -1,8 +1,8 @@
 import config from '../lib/env';
 import resources from '../lib/resources';
 
-import { useMutation, useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Resources } from '../types/dataTypes';
+import {useMutation, useQueries, useQuery, useQueryClient} from '@tanstack/react-query';
+import {Resources} from '../types/dataTypes';
 
 export const useGetResource = <T>(resourceKey: keyof Resources) => {
     const { endpoint, queryKey } = resources[resourceKey];
@@ -38,6 +38,22 @@ export const useGetResourceById = <T>(resourceKey: keyof Resources, id: string) 
     });
 
     return resource;
+};
+
+export const useGetResourceBySlug = <T>(resourceKey: keyof Resources, slug: string) => {
+    const { endpoint, queryKey } = resources[resourceKey];
+
+    const url = `${endpoint}/${slug}`;
+
+    return useQuery<T, Error>({
+        queryKey: [queryKey, slug],
+        queryFn: async () => {
+            const response = await fetch(url, {credentials: 'include'});
+
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        },
+    });
 };
 
 export const useMultipleResources = (id: string, resourceKeys: (keyof Resources)[]) => {
