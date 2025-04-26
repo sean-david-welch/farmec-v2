@@ -39,3 +39,31 @@ baseline:
 
 schema:
 	sqlite3 database/database.db '.schema' > sql/current_schema.sql
+
+# Check migration status
+migrate-status:
+	goose -dir sql/migrations/ sqlite3 database/database.db status
+
+# Apply all migrations
+migrate-up:
+	goose -dir sql/migrations/ sqlite3 database/database.db up
+
+# Roll back most recent migration
+migrate-down:
+	goose -dir sql/migrations/ sqlite3 database/database.db down
+
+# Apply one migration forward
+migrate-up-one:
+	goose -dir sql/migrations/ sqlite3 database/database.db up-by-one
+
+# Create a new migration
+migrate-create:
+	goose -dir sql/migrations/ create $(name) sql
+
+# Reset database (down all migrations then up all)
+migrate-reset:
+	goose -dir sql/migrations/ sqlite3 database/database.db reset
+
+# Fix version conflicts (if needed)
+migrate-fix:
+	goose -dir sql/migrations/ sqlite3 database/database.db fix
