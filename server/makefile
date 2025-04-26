@@ -33,3 +33,6 @@ sqlc:
 
 client:
 	cd ../client && npm run embed
+
+baseline:
+	goose -dir sql/migrations/ create baseline_schema sql
