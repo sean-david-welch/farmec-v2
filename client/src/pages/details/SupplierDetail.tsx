@@ -8,7 +8,7 @@ import Machines from '../../templates/Machines';
 
 import { useParams } from 'react-router-dom';
 import { Resources } from '../../types/dataTypes';
-import { useMultipleResources } from '../../hooks/genericHooks';
+import { useMultipleResourcesSlug} from '../../hooks/genericHooks';
 import { useSupplierStore, useUserStore } from '../../lib/store';
 import {useEffect, Fragment, FC} from 'react';
 import SupplierForm from '../../forms/SupplierForm';
@@ -19,12 +19,12 @@ const SuppliersDetails: FC = () => {
 	const { isAdmin } = useUserStore();
 	const { suppliers } = useSupplierStore();
 
-	const id = useParams<{ id: string }>().id as string;
+	const slug = useParams<{ slug: string }>().slug as string;
 
 	const resourceKeys: (keyof Resources)[] = ['suppliers', 'supplierMachine', 'videos'];
-	const { data, isLoading, isError } = useMultipleResources(id, resourceKeys);
+	const { data, isLoading, isError } = useMultipleResourcesSlug(slug, resourceKeys);
 
-	useEffect(() => {}, [id]);
+	useEffect(() => {}, [slug]);
 
 	if (isError) return <ErrorPage />;
 	if (isLoading) return <Loading />;
@@ -40,7 +40,7 @@ const SuppliersDetails: FC = () => {
 				<meta property="og:title" content={supplier ? `${supplier.name} - Farmec Ireland` : 'Supplier - Farmec Ireland'} />
 				<meta property="og:description" content={supplier ? supplier.description : "Browse our Suppliers and learn more about the machines we offer."} />
 				<meta property="og:image" content={supplier?.marketing_image ? supplier.marketing_image : "https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp"} />
-				<meta property="og:url" content={`https://www.farmec.ie/suppliers/${supplier?.id}`} />
+				<meta property="og:url" content={`https://www.farmec.ie/suppliers/${supplier?.slug}`} />
 				<meta property="og:type" content="website" />
 
 				<meta name="twitter:card" content="summary_large_image" />
@@ -48,7 +48,7 @@ const SuppliersDetails: FC = () => {
 				<meta name="twitter:description" content={supplier ? supplier.description : "Browse our Suppliers and learn more about the machines we offer."} />
 				<meta name="twitter:image" content={supplier?.marketing_image ? supplier.marketing_image : "https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp"} />
 
-				<link rel="canonical" href={`https://www.farmec.ie/suppliers/${supplier?.id}`} />
+				<link rel="canonical" href={`https://www.farmec.ie/suppliers/${supplier?.slug}`} />
 			</Helmet>
 			<section id="supplierDetail">
 				{supplier ? (
