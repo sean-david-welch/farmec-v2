@@ -50,8 +50,7 @@ const AppRoutes = () => {
                         <Route path="/about/policies" element={<Policies />} />
 
                         <Route path="/suppliers" element={<Suppliers />} />
-                        <Route path="/suppliers/suppliers" element={<Navigate replace to="/suppliers" />} />
-                        <Route path="/suppliers/:id" element={<SupplierDetail />} />
+                        <Route path="/suppliers/:slug" element={<SupplierDetail />} />
                         <Route path="/machines/:id" element={<MachineDetail />} />
 
                         <Route path="/spareparts" element={<Spareparts />} />
@@ -59,7 +58,6 @@ const AppRoutes = () => {
                         <Route path="/spareparts/spare-parts" element={<Navigate replace to="/spareparts" />} />
 
                         <Route path="/blogs" element={<Blogs />} />
-                        <Route path="/blogs/blogs" element={<Navigate replace to="/blogs" />} />
                         <Route path="/blogs/:id" element={<BlogDetail />} />
                         <Route path="/blog/exhibitions" element={<Exhibitions />} />
 
@@ -69,6 +67,7 @@ const AppRoutes = () => {
                         <Route path="/checkout/:id" element={<Checkout />} />
                         <Route path="/return" element={<Return />} />
 
+                        {/* Admin Routes */}
                         <Route path="/login" element={<Login />} />
                         <Route path="/warranty" element={<Warranties />} />
                         <Route path="/registrations" element={<Registrations />} />
