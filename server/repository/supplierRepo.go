@@ -75,6 +75,28 @@ func (repo *SupplierRepoImpl) GetSupplierById(ctx context.Context, id string) (*
 	return &supplier, nil
 }
 
+func (repo *SupplierRepoImpl) GetSupplierBySlug(ctx context.Context, slug string) (*db.Supplier, error) {
+	supplierRow, err := repo.queries.GetSupplierBySlug(ctx, sql.NullString{String: slug, Valid: true})
+	if err != nil {
+		return nil, fmt.Errorf("error occurred while getting suppliers from the db: %w", err)
+	}
+	supplier := db.Supplier{
+		ID:              supplierRow.ID,
+		Name:            supplierRow.Name,
+		LogoImage:       supplierRow.LogoImage,
+		MarketingImage:  supplierRow.MarketingImage,
+		Description:     supplierRow.Description,
+		SocialFacebook:  supplierRow.SocialFacebook,
+		SocialTwitter:   supplierRow.SocialTwitter,
+		SocialInstagram: supplierRow.SocialInstagram,
+		SocialYoutube:   supplierRow.SocialYoutube,
+		SocialLinkedin:  supplierRow.SocialLinkedin,
+		SocialWebsite:   supplierRow.SocialWebsite,
+		Created:         supplierRow.Created,
+	}
+	return &supplier, nil
+}
+
 func (repo *SupplierRepoImpl) CreateSupplier(ctx context.Context, supplier *db.Supplier) error {
 	supplier.ID = uuid.NewString()
 	supplier.Created = sql.NullString{
