@@ -1,6 +1,6 @@
 -- +goose Up
 -- +goose StatementBegin
-CREATE TABLE Blog
+CREATE TABLE if not exists Blog
 (
     id         TEXT PRIMARY KEY,
     title      TEXT NOT NULL,
@@ -10,14 +10,14 @@ CREATE TABLE Blog
     body       TEXT,
     created    TEXT
 ) STRICT;
-CREATE TABLE Carousel
+CREATE TABLE if not exists Carousel
 (
     id      TEXT PRIMARY KEY,
     name    TEXT NOT NULL,
     image   TEXT,
     created TEXT
 ) STRICT;
-CREATE TABLE Employee
+CREATE TABLE if not exists Employee
 (
     id            TEXT PRIMARY KEY,
     name          TEXT NOT NULL,
@@ -26,7 +26,7 @@ CREATE TABLE Employee
     profile_image TEXT,
     created       TEXT
 ) STRICT;
-CREATE TABLE Exhibition
+CREATE TABLE if not exists Exhibition
 (
     id       TEXT PRIMARY KEY,
     title    TEXT NOT NULL,
@@ -35,14 +35,14 @@ CREATE TABLE Exhibition
     info     TEXT,
     created  TEXT
 ) STRICT;
-CREATE TABLE LineItems
+CREATE TABLE if not exists LineItems
 (
     id    TEXT PRIMARY KEY,
     name  TEXT NOT NULL,
     price REAL NOT NULL,
     image TEXT
 ) STRICT;
-CREATE TABLE Supplier
+CREATE TABLE if not exists Supplier
 (
     id               TEXT PRIMARY KEY,
     name             TEXT NOT NULL,
@@ -57,7 +57,7 @@ CREATE TABLE Supplier
     social_website   TEXT,
     created          TEXT
 ) STRICT;
-CREATE TABLE Machine
+CREATE TABLE if not exists Machine
 (
     id            TEXT PRIMARY KEY,
     supplier_id   TEXT NOT NULL,
@@ -68,7 +68,7 @@ CREATE TABLE Machine
     created       TEXT,
     FOREIGN KEY (supplier_id) REFERENCES Supplier (id) ON DELETE CASCADE
 ) STRICT;
-CREATE TABLE MachineRegistration
+CREATE TABLE if not exists MachineRegistration
 (
     id                TEXT PRIMARY KEY,
     dealer_name       TEXT NOT NULL,
@@ -89,7 +89,7 @@ CREATE TABLE MachineRegistration
     completed_by      TEXT,
     created           TEXT
 ) STRICT;
-CREATE TABLE WarrantyClaim
+CREATE TABLE if not exists WarrantyClaim
 (
     id              TEXT PRIMARY KEY,
     dealer          TEXT NOT NULL,
@@ -106,7 +106,7 @@ CREATE TABLE WarrantyClaim
     completed_by    TEXT,
     created         TEXT
 ) STRICT;
-CREATE TABLE PartsRequired
+CREATE TABLE if not exists PartsRequired
 (
     id              TEXT PRIMARY KEY,
     warranty_id     TEXT NOT NULL,
@@ -116,14 +116,14 @@ CREATE TABLE PartsRequired
     description     TEXT,
     FOREIGN KEY (warranty_id) REFERENCES WarrantyClaim (id) ON DELETE CASCADE
 ) STRICT;
-CREATE TABLE Privacy
+CREATE TABLE if not exists Privacy
 (
     id      TEXT PRIMARY KEY,
     title   TEXT NOT NULL,
     body    TEXT,
     created TEXT
 ) STRICT;
-CREATE TABLE Product
+CREATE TABLE if not exists Product
 (
     id            TEXT PRIMARY KEY,
     machine_id    TEXT NOT NULL,
@@ -133,7 +133,7 @@ CREATE TABLE Product
     product_link  TEXT,
     FOREIGN KEY (machine_id) REFERENCES Machine (id) ON DELETE CASCADE
 ) STRICT;
-CREATE TABLE SpareParts
+CREATE TABLE if not exists SpareParts
 (
     id               TEXT PRIMARY KEY,
     supplier_id      TEXT NOT NULL,
@@ -142,14 +142,14 @@ CREATE TABLE SpareParts
     spare_parts_link TEXT,
     FOREIGN KEY (supplier_id) REFERENCES Supplier (id) ON DELETE CASCADE
 ) STRICT;
-CREATE TABLE Terms
+CREATE TABLE if not exists Terms
 (
     id      TEXT PRIMARY KEY,
     title   TEXT NOT NULL,
     body    TEXT,
     created TEXT
 ) STRICT;
-CREATE TABLE Timeline
+CREATE TABLE if not exists Timeline
 (
     id      TEXT PRIMARY KEY,
     title   TEXT NOT NULL,
@@ -157,7 +157,7 @@ CREATE TABLE Timeline
     body    TEXT,
     created TEXT
 ) STRICT;
-CREATE TABLE Video
+CREATE TABLE if not exists Video
 (
     id            TEXT PRIMARY KEY,
     supplier_id   TEXT NOT NULL,
