@@ -36,3 +36,6 @@ client:
 
 baseline:
 	goose -dir sql/migrations/ create baseline_schema sql
+
+schema:
+	sqlite3 database/database.db '.schema' > current_schema.sql
