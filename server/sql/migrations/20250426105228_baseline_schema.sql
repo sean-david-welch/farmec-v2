@@ -1,5 +1,12 @@
 -- +goose Up
 -- +goose StatementBegin
+
+-- Enable foreign key constraints
+PRAGMA foreign_keys = ON;
+
+-- Set journal mode to WAL
+PRAGMA journal_mode = wal;
+
 CREATE TABLE if not exists Blog
 (
     id         TEXT PRIMARY KEY,
