@@ -6,7 +6,7 @@ CREATE TABLE Blog (
     subheading TEXT,
     body TEXT,
     created TEXT
-) STRICT;
+, slug TEXT) STRICT;
 CREATE TABLE Carousel (
     id TEXT PRIMARY KEY,
     name TEXT NOT NULL,
@@ -48,7 +48,7 @@ CREATE TABLE Supplier (
     social_linkedin TEXT,
     social_website TEXT,
     created TEXT
-) STRICT;
+, slug TEXT) STRICT;
 CREATE TABLE Machine (
     id TEXT PRIMARY KEY,
     supplier_id TEXT NOT NULL,
@@ -56,7 +56,7 @@ CREATE TABLE Machine (
     machine_image TEXT,
     description TEXT,
     machine_link TEXT,
-    created TEXT,
+    created TEXT, slug TEXT,
     FOREIGN KEY (supplier_id) REFERENCES Supplier(id) ON DELETE CASCADE
 ) STRICT;
 CREATE TABLE MachineRegistration (
@@ -116,7 +116,7 @@ CREATE TABLE Product (
     name TEXT NOT NULL,
     product_image TEXT,
     description TEXT,
-    product_link TEXT,
+    product_link TEXT, slug TEXT,
     FOREIGN KEY (machine_id) REFERENCES Machine(id) ON DELETE CASCADE
 ) STRICT;
 CREATE TABLE SpareParts (
@@ -124,7 +124,7 @@ CREATE TABLE SpareParts (
     supplier_id TEXT NOT NULL,
     name TEXT NOT NULL,
     parts_image TEXT,
-    spare_parts_link TEXT,
+    spare_parts_link TEXT, slug TEXT,
     FOREIGN KEY (supplier_id) REFERENCES Supplier(id) ON DELETE CASCADE
 ) STRICT;
 CREATE TABLE Terms (
@@ -151,3 +151,10 @@ CREATE TABLE Video (
     created TEXT,
     FOREIGN KEY (supplier_id) REFERENCES Supplier(id) ON DELETE CASCADE
 ) STRICT;
+CREATE TABLE goose_db_version (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		version_id INTEGER NOT NULL,
+		is_applied INTEGER NOT NULL,
+		tstamp TIMESTAMP DEFAULT (datetime('now'))
+	);
+CREATE TABLE sqlite_sequence(name,seq);
