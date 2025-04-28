@@ -88,7 +88,7 @@ export const useMultipleResourcesSlug = (slug: string, resourceKeys: (keyof Reso
             queryKey: [key, slug],
             queryFn: async () => {
                 const resourceEntry = resources[key];
-                const url = `${resourceEntry.endpoint}/${slug}`;
+                const url = `${resourceEntry.endpoint}/slug/${slug}`;
 
                 const response = await fetch(url);
                 if (!response.ok) {
