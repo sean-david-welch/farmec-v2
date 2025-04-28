@@ -17,13 +17,15 @@ const initialRoutes = [...staticRoutes];
 
 const loadDynamicRoutes = async () => {
     try {
-        // Fetch all dynamic routes from your dedicated endpoint
-        const response = await fetch('https://www.farmec.ie/api/sitemap-data');
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+        let response = await fetch("https://www.farmec.ie/api/sitemap-data");
+        if (response.status === 404) {
+            console.log("Production API not found, falling back to localhost");
+            response = await fetch("http://localhost:8080/api/sitemap-data");
         }
-
+        if (!response.ok) {
+            console.error(`HTTP error! Status: ${response.status}`);
+            return staticRoutes;
+        }
         const data = await response.json();
         const {suppliers, spareParts, blogPosts} = data;
 
