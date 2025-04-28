@@ -14,8 +14,8 @@ run: build
 test:
 	@go test -v ./tests/...
 
-dev: client
-    ENV=development PORT=8000 air -c .air.toml
+dev:
+	cd ../client && npm run embed && cd ../server && ENV=development PORT=8000 air -c .air.toml
 
 database-down:
 	scp -i ~/.ssh/farmec.pem -r ${REMOTE_HOST}:/home/seanwelch/server/bin/database/* ./database/
@@ -25,9 +25,6 @@ database-up:
 
 sqlc:
 	cd sql && sqlc generate
-
-client:
-	cd ../client && npm run embed
 
 baseline:
 	goose -dir sql/migrations/ create baseline_schema sql
