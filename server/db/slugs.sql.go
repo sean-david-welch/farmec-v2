@@ -10,6 +10,87 @@ import (
 	"database/sql"
 )
 
+const getAllBlogSlugs = `-- name: GetAllBlogSlugs :many
+SELECT slug FROM Blog
+`
+
+func (q *Queries) GetAllBlogSlugs(ctx context.Context) ([]sql.NullString, error) {
+	rows, err := q.db.QueryContext(ctx, getAllBlogSlugs)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []sql.NullString
+	for rows.Next() {
+		var slug sql.NullString
+		if err := rows.Scan(&slug); err != nil {
+			return nil, err
+		}
+		items = append(items, slug)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getAllSparePartsSlugs = `-- name: GetAllSparePartsSlugs :many
+SELECT slug FROM SpareParts
+`
+
+func (q *Queries) GetAllSparePartsSlugs(ctx context.Context) ([]sql.NullString, error) {
+	rows, err := q.db.QueryContext(ctx, getAllSparePartsSlugs)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []sql.NullString
+	for rows.Next() {
+		var slug sql.NullString
+		if err := rows.Scan(&slug); err != nil {
+			return nil, err
+		}
+		items = append(items, slug)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getAllSupplierSlugs = `-- name: GetAllSupplierSlugs :many
+SELECT slug FROM Supplier
+`
+
+func (q *Queries) GetAllSupplierSlugs(ctx context.Context) ([]sql.NullString, error) {
+	rows, err := q.db.QueryContext(ctx, getAllSupplierSlugs)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []sql.NullString
+	for rows.Next() {
+		var slug sql.NullString
+		if err := rows.Scan(&slug); err != nil {
+			return nil, err
+		}
+		items = append(items, slug)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getBlogBySlug = `-- name: GetBlogBySlug :one
 SELECT id,
        title,
