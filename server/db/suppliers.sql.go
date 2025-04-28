@@ -73,7 +73,8 @@ select id,
        social_twitter,
        social_youtube,
        social_website,
-       created
+       created,
+       slug
 from Supplier
 where id = ?
 `
@@ -91,6 +92,7 @@ type GetSupplierByIDRow struct {
 	SocialYoutube   sql.NullString `json:"social_youtube"`
 	SocialWebsite   sql.NullString `json:"social_website"`
 	Created         sql.NullString `json:"created"`
+	Slug            sql.NullString `json:"slug"`
 }
 
 func (q *Queries) GetSupplierByID(ctx context.Context, id string) (GetSupplierByIDRow, error) {
@@ -109,6 +111,7 @@ func (q *Queries) GetSupplierByID(ctx context.Context, id string) (GetSupplierBy
 		&i.SocialYoutube,
 		&i.SocialWebsite,
 		&i.Created,
+		&i.Slug,
 	)
 	return i, err
 }

@@ -4,7 +4,7 @@ from Machine
 where supplier_id = ?;
 
 -- name: GetMachineByID :one
-select id, supplier_id, name, machine_image, description, machine_link, created
+select id, supplier_id, name, machine_image, description, machine_link, created, slug
 from Machine
 where id = ?;
 

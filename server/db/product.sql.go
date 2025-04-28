@@ -48,23 +48,14 @@ func (q *Queries) DeleteProduct(ctx context.Context, id string) error {
 }
 
 const getProductByID = `-- name: GetProductByID :one
-select id, machine_id, name, product_image, description, product_link
+select id, machine_id, name, product_image, description, product_link, slug
 from Product
 where id = ?
 `
 
-type GetProductByIDRow struct {
-	ID           string         `json:"id"`
-	MachineID    string         `json:"machine_id"`
-	Name         string         `json:"name"`
-	ProductImage sql.NullString `json:"product_image"`
-	Description  sql.NullString `json:"description"`
-	ProductLink  sql.NullString `json:"product_link"`
-}
-
-func (q *Queries) GetProductByID(ctx context.Context, id string) (GetProductByIDRow, error) {
+func (q *Queries) GetProductByID(ctx context.Context, id string) (Product, error) {
 	row := q.db.QueryRowContext(ctx, getProductByID, id)
-	var i GetProductByIDRow
+	var i Product
 	err := row.Scan(
 		&i.ID,
 		&i.MachineID,
@@ -72,6 +63,7 @@ func (q *Queries) GetProductByID(ctx context.Context, id string) (GetProductByID
 		&i.ProductImage,
 		&i.Description,
 		&i.ProductLink,
+		&i.Slug,
 	)
 	return i, err
 }

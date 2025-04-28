@@ -50,24 +50,14 @@ func (q *Queries) DeleteBlog(ctx context.Context, id string) error {
 }
 
 const getBlogByID = `-- name: GetBlogByID :one
-select id, title, date, main_image, subheading, body, created
+select id, title, date, main_image, subheading, body, created, slug
 from Blog
 where id = ?
 `
 
-type GetBlogByIDRow struct {
-	ID         string         `json:"id"`
-	Title      string         `json:"title"`
-	Date       sql.NullString `json:"date"`
-	MainImage  sql.NullString `json:"main_image"`
-	Subheading sql.NullString `json:"subheading"`
-	Body       sql.NullString `json:"body"`
-	Created    sql.NullString `json:"created"`
-}
-
-func (q *Queries) GetBlogByID(ctx context.Context, id string) (GetBlogByIDRow, error) {
+func (q *Queries) GetBlogByID(ctx context.Context, id string) (Blog, error) {
 	row := q.db.QueryRowContext(ctx, getBlogByID, id)
-	var i GetBlogByIDRow
+	var i Blog
 	err := row.Scan(
 		&i.ID,
 		&i.Title,
@@ -76,6 +66,7 @@ func (q *Queries) GetBlogByID(ctx context.Context, id string) (GetBlogByIDRow, e
 		&i.Subheading,
 		&i.Body,
 		&i.Created,
+		&i.Slug,
 	)
 	return i, err
 }

@@ -46,28 +46,21 @@ func (q *Queries) DeleteSparePart(ctx context.Context, id string) error {
 }
 
 const getPartByID = `-- name: GetPartByID :one
-select id, supplier_id, name, parts_image, spare_parts_link
+select id, supplier_id, name, parts_image, spare_parts_link, slug
 from SpareParts
 where id = ?
 `
 
-type GetPartByIDRow struct {
-	ID             string         `json:"id"`
-	SupplierID     string         `json:"supplier_id"`
-	Name           string         `json:"name"`
-	PartsImage     sql.NullString `json:"parts_image"`
-	SparePartsLink sql.NullString `json:"spare_parts_link"`
-}
-
-func (q *Queries) GetPartByID(ctx context.Context, id string) (GetPartByIDRow, error) {
+func (q *Queries) GetPartByID(ctx context.Context, id string) (SparePart, error) {
 	row := q.db.QueryRowContext(ctx, getPartByID, id)
-	var i GetPartByIDRow
+	var i SparePart
 	err := row.Scan(
 		&i.ID,
 		&i.SupplierID,
 		&i.Name,
 		&i.PartsImage,
 		&i.SparePartsLink,
+		&i.Slug,
 	)
 	return i, err
 }

@@ -50,24 +50,14 @@ func (q *Queries) DeleteMachine(ctx context.Context, id string) error {
 }
 
 const getMachineByID = `-- name: GetMachineByID :one
-select id, supplier_id, name, machine_image, description, machine_link, created
+select id, supplier_id, name, machine_image, description, machine_link, created, slug
 from Machine
 where id = ?
 `
 
-type GetMachineByIDRow struct {
-	ID           string         `json:"id"`
-	SupplierID   string         `json:"supplier_id"`
-	Name         string         `json:"name"`
-	MachineImage sql.NullString `json:"machine_image"`
-	Description  sql.NullString `json:"description"`
-	MachineLink  sql.NullString `json:"machine_link"`
-	Created      sql.NullString `json:"created"`
-}
-
-func (q *Queries) GetMachineByID(ctx context.Context, id string) (GetMachineByIDRow, error) {
+func (q *Queries) GetMachineByID(ctx context.Context, id string) (Machine, error) {
 	row := q.db.QueryRowContext(ctx, getMachineByID, id)
-	var i GetMachineByIDRow
+	var i Machine
 	err := row.Scan(
 		&i.ID,
 		&i.SupplierID,
@@ -76,6 +66,7 @@ func (q *Queries) GetMachineByID(ctx context.Context, id string) (GetMachineByID
 		&i.Description,
 		&i.MachineLink,
 		&i.Created,
+		&i.Slug,
 	)
 	return i, err
 }

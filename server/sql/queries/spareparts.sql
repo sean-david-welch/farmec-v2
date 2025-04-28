@@ -4,7 +4,7 @@ from SpareParts
 where supplier_id = ?;
 
 -- name: GetPartByID :one
-select id, supplier_id, name, parts_image, spare_parts_link
+select id, supplier_id, name, parts_image, spare_parts_link, slug
 from SpareParts
 where id = ?;
 

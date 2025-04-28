@@ -26,7 +26,8 @@ select id,
        social_twitter,
        social_youtube,
        social_website,
-       created
+       created,
+       slug
 from Supplier
 where id = ?;
 

@@ -4,7 +4,7 @@ from Blog
 order by created desc;
 
 -- name: GetBlogByID :one
-select id, title, date, main_image, subheading, body, created
+select id, title, date, main_image, subheading, body, created, slug
 from Blog
 where id = ?;
 
