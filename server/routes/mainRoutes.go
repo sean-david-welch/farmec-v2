@@ -3,6 +3,7 @@ package routes
 import (
 	"database/sql"
 	"github.com/gin-gonic/gin"
+	"github.com/sean-david-welch/farmec-v2/server/db"
 	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"github.com/sean-david-welch/farmec-v2/server/middleware"
 	"io/fs"
@@ -12,7 +13,8 @@ func InitRoutes(
 	reactApp fs.FS, router *gin.Engine, database *sql.DB, secrets *lib.Secrets, s3Client lib.S3Client,
 	adminMiddleware *middleware.AdminMiddleware, authMiddleware *middleware.AuthMiddleware, firebase *lib.Firebase, emailClient *lib.EmailClientImpl,
 ) {
-	staticRoutes(router, reactApp)
+	queries := db.New(database)
+	staticRoutes(router, queries, reactApp)
 	// Supplier Module Resources
 	InitParts(router, database, s3Client, adminMiddleware)
 	InitVideos(router, database, secrets, adminMiddleware)
