@@ -41,12 +41,12 @@ const loadDynamicRoutes = async () => {
     }
 };
 
-let dynamicRoutes = initialRoutes;
-loadDynamicRoutes().then(routes => {
-    dynamicRoutes = routes;
-}).catch(err => {
-    console.error('Failed to preload dynamic routes:', err);
-});
+// let dynamicRoutes = initialRoutes;
+// loadDynamicRoutes().then(routes => {
+//     dynamicRoutes = routes;
+// }).catch(err => {
+//     console.error('Failed to preload dynamic routes:', err);
+// });
 
 export default defineConfig({
     plugins: [
@@ -54,7 +54,7 @@ export default defineConfig({
         Sitemap({
             hostname: 'https://www.farmec.ie',
             generateRobotsTxt: true,
-            dynamicRoutes: dynamicRoutes,
+            // dynamicRoutes: dynamicRoutes,
             exclude: [
                 '/api/*',
                 '/login',
