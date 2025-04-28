@@ -53,3 +53,12 @@ SELECT id, supplier_id, name, parts_image, spare_parts_link, slug
 FROM SpareParts
 WHERE slug = ?
 LIMIT 1;
+
+-- name: GetAllSupplierSlugs :many
+SELECT slug FROM Supplier;
+
+-- name: GetAllSparePartsSlugs :many
+SELECT slug FROM SpareParts;
+
+-- name: GetAllBlogSlugs :many
+SELECT slug FROM Blog;
