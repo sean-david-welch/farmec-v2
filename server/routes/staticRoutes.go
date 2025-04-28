@@ -2,6 +2,8 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/sean-david-welch/farmec-v2/server/db"
+	"github.com/sean-david-welch/farmec-v2/server/lib"
 	"io"
 	"io/fs"
 	"log"
@@ -9,7 +11,7 @@ import (
 	"strings"
 )
 
-func staticRoutes(router *gin.Engine, reactApp fs.FS) {
+func staticRoutes(router *gin.Engine, queries *db.Queries, reactApp fs.FS) {
 	router.GET("/", func(c *gin.Context) {
 		indexHTML, err := fs.ReadFile(reactApp, "index.html")
 		if err != nil {
@@ -92,6 +94,12 @@ func staticRoutes(router *gin.Engine, reactApp fs.FS) {
 	router.GET("/default.jpg", func(c *gin.Context) {
 		c.Header("Content-Type", "image/jpeg")
 		serveStaticFile("default.jpg", reactApp)(c)
+	})
+
+	router.GET("/api/sitemap-data", func(c *gin.Context) {
+		c.Header("Content-Type", "application/json")
+		sitemapData := lib.SitemapData(c, queries)
+		c.JSON(http.StatusOK, sitemapData)
 	})
 
 	router.NoRoute(func(c *gin.Context) {
