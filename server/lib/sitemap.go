@@ -16,9 +16,11 @@ func SitemapData(ctx context.Context, queries *db.Queries) map[string]interface{
 	// Get all supplier slugs
 	suppliers, err := queries.GetAllSupplierSlugs(ctx)
 	if err == nil {
-		supplierPaths := make([]string, len(suppliers))
-		for i, slug := range suppliers {
-			supplierPaths[i] = fmt.Sprintf("/suppliers/%s", slug)
+		var supplierPaths []string
+		for _, slugNullable := range suppliers {
+			if slugNullable.Valid {
+				supplierPaths = append(supplierPaths, fmt.Sprintf("/suppliers/%s", slugNullable.String))
+			}
 		}
 		result["suppliers"] = supplierPaths
 	}
@@ -26,9 +28,11 @@ func SitemapData(ctx context.Context, queries *db.Queries) map[string]interface{
 	// Get all spare parts slugs
 	spareParts, err := queries.GetAllSparePartsSlugs(ctx)
 	if err == nil {
-		sparePartsPaths := make([]string, len(spareParts))
-		for i, slug := range spareParts {
-			sparePartsPaths[i] = fmt.Sprintf("/spareparts/%s", slug)
+		var sparePartsPaths []string
+		for _, slugNullable := range spareParts {
+			if slugNullable.Valid {
+				sparePartsPaths = append(sparePartsPaths, fmt.Sprintf("/spareparts/%s", slugNullable.String))
+			}
 		}
 		result["spareParts"] = sparePartsPaths
 	}
@@ -36,9 +40,11 @@ func SitemapData(ctx context.Context, queries *db.Queries) map[string]interface{
 	// Get all blog slugs
 	blogs, err := queries.GetAllBlogSlugs(ctx)
 	if err == nil {
-		blogPaths := make([]string, len(blogs))
-		for i, slug := range blogs {
-			blogPaths[i] = fmt.Sprintf("/blogs/%s", slug)
+		var blogPaths []string
+		for _, slugNullable := range blogs {
+			if slugNullable.Valid {
+				blogPaths = append(blogPaths, fmt.Sprintf("/blogs/%s", slugNullable.String))
+			}
 		}
 		result["blogPosts"] = blogPaths
 	}
