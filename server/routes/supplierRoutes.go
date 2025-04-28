@@ -25,7 +25,7 @@ func SupplierRoutes(router *gin.Engine, handler *handlers.SupplierHandler, admin
 
 	supplierGroup.GET("", handler.GetSuppliers)
 	supplierGroup.GET("/:id", handler.GetSupplierByID)
-	supplierGroup.GET("/:slug", handler.GetSupplierBySlug)
+	supplierGroup.GET("/slug/:slug", handler.GetSupplierBySlug)
 
 	protected := supplierGroup.Group("").Use(adminMiddleware.Middleware())
 	{
