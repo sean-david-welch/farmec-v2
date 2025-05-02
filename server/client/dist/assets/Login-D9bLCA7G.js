@@ -1,0 +1,1 @@
+import{j as o,u as s}from"./index-Ccr6UcQ6.js";import{L as i}from"./LoginForm-Bdigi9Vm.js";import"./Blogs.module-m-DV5lDv.js";const n=()=>o.jsx("div",{className:s.loginSection,children:o.jsx(i,{})});export{n as default};
