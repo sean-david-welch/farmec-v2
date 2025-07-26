@@ -32,6 +32,7 @@ type Secrets struct {
 	EmailPort               string
 	SendGridAPIKey          string
 	PrerenderToken          string
+	ResendToken             string
 }
 
 func NewSecrets() (*Secrets, error) {
@@ -73,5 +74,6 @@ func NewSecrets() (*Secrets, error) {
 		EmailPort:      os.Getenv("EMAIL_PORT"),
 		SendGridAPIKey: os.Getenv("SENDGRID_API_KEY"),
 		PrerenderToken: os.Getenv("PRERENDER_TOKEN"),
+		ResendToken:    os.Getenv("RESEND_TOKEN"),
 	}, nil
 }
