@@ -1,4 +1,4 @@
-.PHONY: build run test dev database
+.PHONY: build run test dev database client
 
 include .env
 export
@@ -14,8 +14,8 @@ run: build
 test:
 	@go test -v ./tests/...
 
-dev: client
-    ENV=development PORT=8000 air -c .air.toml
+dev:
+	ENV=development PORT=8000 air -c .air.toml
 
 database-down:
 	scp -i ~/.ssh/farmec.pem -r ${REMOTE_HOST}:/home/seanwelch/server/bin/database/* ./database/
