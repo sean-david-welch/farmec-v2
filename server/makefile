@@ -1,4 +1,4 @@
-.PHONY: build run test dev database client client-dev
+.PHONY: build run test dev database client client-dev shell
 
 include .env
 export
