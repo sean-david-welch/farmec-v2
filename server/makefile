@@ -17,6 +17,9 @@ test:
 dev: client-dev
 	ENV=development PORT=8000 air -c .air.toml
 
+shell:
+	ssh -i ~/.ssh/farmec.pem seanwelch@${REMOTE_HOST}
+
 database-down:
 	scp -i ~/.ssh/farmec.pem -r ${REMOTE_HOST}:/home/seanwelch/server/bin/database/* ./database/
 
