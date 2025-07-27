@@ -69,6 +69,7 @@ func main() {
 		corsConfig.AllowOrigins = []string{
 			"http://localhost:5173",
 			"http://localhost:8000",
+			"http://0.0.0.0:8000",
 		}
 	}
 	corsConfig.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
