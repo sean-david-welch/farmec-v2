@@ -1,4 +1,4 @@
-.PHONY: build run test dev database client
+.PHONY: build run test dev database client client-dev shell
 
 include .env
 export
@@ -14,8 +14,11 @@ run: build
 test:
 	@go test -v ./tests/...
 
-dev:
-	cd ../client && npm run embed && cd ../server && ENV=development PORT=8000 air -c .air.toml
+dev: client-dev
+	ENV=development PORT=8000 air -c .air.toml
+
+shell:
+	ssh -i ~/.ssh/farmec.pem seanwelch@${REMOTE_HOST}
 
 database-down:
 	scp -i ~/.ssh/farmec.pem -r ${REMOTE_HOST}:/home/seanwelch/server/bin/database/* ./database/
@@ -25,6 +28,12 @@ database-up:
 
 sqlc:
 	cd sql && sqlc generate
+
+client:
+	cd ../client && npm run embed
+
+client-dev:
+	cd ../client && npm run embed-dev
 
 baseline:
 	goose -dir sql/migrations/ create baseline_schema sql

@@ -2,9 +2,8 @@ package lib
 
 import (
 	"fmt"
+	"github.com/resend/resend-go/v2"
 	"github.com/sean-david-welch/farmec-v2/server/types"
-	"github.com/sendgrid/sendgrid-go"
-	"github.com/sendgrid/sendgrid-go/helpers/mail"
 	"log"
 )
 
@@ -14,11 +13,11 @@ type EmailClient interface {
 
 type EmailClientImpl struct {
 	secrets *Secrets
-	client  *sendgrid.Client
+	client  *resend.Client
 }
 
 func NewEmailClient(secrets *Secrets) *EmailClientImpl {
-	client := sendgrid.NewSendClient(secrets.SendGridAPIKey)
+	client := resend.NewClient(secrets.ResendToken)
 	return &EmailClientImpl{
 		secrets: secrets,
 		client:  client,
@@ -26,26 +25,26 @@ func NewEmailClient(secrets *Secrets) *EmailClientImpl {
 }
 
 func (service *EmailClientImpl) SendFormNotification(data *types.EmailData, form string) error {
-	from := mail.NewEmail("Farmec Ireland Ltd", service.secrets.EmailUser)
-	to := mail.NewEmail("Admin", service.secrets.EmailUser)
 	subject := fmt.Sprintf("New %s Form from %s--%s", form, data.Name, data.Email)
-
 	plainContent := data.Message
 	htmlContent := fmt.Sprintf("<p>%s</p>", data.Message)
 
-	message := mail.NewSingleEmail(from, subject, to, plainContent, htmlContent)
+	params := &resend.SendEmailRequest{
+		From:    "Farmec Ireland Ltd <noreply@farmec.ie>",
+		To:      []string{service.secrets.EmailUser},
+		Subject: subject,
+		Text:    plainContent,
+		Html:    htmlContent,
+	}
 
 	log.Printf("Sending email with subject: %s", subject)
-	response, err := service.client.Send(message)
+	sent, err := service.client.Emails.Send(params)
 
 	if err != nil {
-		log.Printf("SendGrid ERROR: %v", err)
+		log.Printf("Resend ERROR: %v", err)
 		return fmt.Errorf("failed to send email: %w", err)
 	}
 
-	log.Printf("Email sent successfully. StatusCode: %d", response.StatusCode)
-	if response.Body != "" {
-		log.Printf("Response body: %s", response.Body)
-	}
+	log.Printf("Email sent successfully. ID: %s", sent.Id)
 	return nil
 }

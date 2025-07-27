@@ -69,6 +69,7 @@ func main() {
 		corsConfig.AllowOrigins = []string{
 			"http://localhost:5173",
 			"http://localhost:8000",
+			"http://0.0.0.0:8000",
 		}
 	}
 	corsConfig.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
@@ -93,7 +94,7 @@ func main() {
 		}
 	} else {
 		gin.SetMode(gin.DebugMode)
-		err := router.Run("0.0.0.0:8000")
+		err := router.Run("localhost:8000")
 		if err != nil {
 			return
 		}

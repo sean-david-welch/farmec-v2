@@ -4,9 +4,10 @@
     "version": "0.0.0",
     "type": "module",
     "scripts": {
-        "dev": "vite && VITE_ENVIRONMENT=development",
+        "dev": "VITE_ENVIRONMENT=development vite",
         "build": "tsc && vite build",
-        "embed": "tsc && vite build && rm -rf ../server/client/dist && mv dist ../server/client/",
+        "embed": "VITE_ENVIRONMENT=production tsc && vite build && rm -rf ../server/client/dist && mv dist ../server/client/",
+        "embed-dev": "VITE_ENVIRONMENT=development tsc && vite build && cp -r dist ../server/client/",
         "sync": "aws s3 sync ./dist s3://farmec.ie/",
         "invalidate": "aws cloudfront create-invalidation --distribution-id EGIJU0OVG257E --paths '/*'",
         "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
