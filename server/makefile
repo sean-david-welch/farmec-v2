@@ -1,4 +1,4 @@
-.PHONY: build run test dev database client
+.PHONY: build run test dev database client client-dev
 
 include .env
 export
@@ -14,7 +14,7 @@ run: build
 test:
 	@go test -v ./tests/...
 
-dev:
+dev: client-dev
 	ENV=development PORT=8000 air -c .air.toml
 
 database-down:
@@ -29,10 +29,11 @@ templ:
 sqlc:
 	cd sql && sqlc generate
 
-.PHONY: client
-
 client:
 	cd ../client && npm run embed
+
+client-dev:
+	cd ../client && npm run embed-dev
 
 baseline:
 	goose -dir sql/migrations/ create baseline_schema sql
