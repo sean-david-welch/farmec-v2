@@ -94,7 +94,7 @@ func main() {
 		}
 	} else {
 		gin.SetMode(gin.DebugMode)
-		err := router.Run("0.0.0.0:8000")
+		err := router.Run("localhost:8000")
 		if err != nil {
 			return
 		}
