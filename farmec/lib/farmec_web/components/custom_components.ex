@@ -217,4 +217,178 @@ defmodule FarmecWeb.CustomComponents do
     </div>
     """
   end
+
+  @doc """
+  Renders an image carousel with navigation controls.
+
+  ## Examples
+
+      <.carousel images={["img1.jpg", "img2.jpg"]} />
+  """
+  attr :images, :list, required: true
+  attr :class, :string, default: ""
+
+  def carousel(assigns) do
+    ~H"""
+    <section id="Hero" class={@class}>
+      <div class="hero-container">
+        <div class="slideshow" id="carousel" phx-hook="Carousel" data-images={Jason.encode!(@images)}>
+          <%= for {image, index} <- Enum.with_index(@images) do %>
+            <img
+              src={image}
+              alt="Slide"
+              class={"slides #{if index == 0, do: "fade-in", else: "fade-out"}"}
+              data-index={index}
+              onerror="this.src='/images/default.jpg'"
+            />
+          <% end %>
+          <button class="prev-button" aria-label="previous slide">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <button class="next-button" aria-label="next slide">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+      <div class="typewriter">
+        <h1>Importers & Distributors of Quality Agricultural Machinery</h1>
+        <a href="#Info" class="btn">
+          Find Out More: <i class="fa-solid fa-chevron-circle-down"></i>
+        </a>
+      </div>
+    </section>
+    """
+  end
+
+  @doc """
+  Renders the displays section with stats and specials.
+
+  ## Examples
+
+      <.displays_section stats={stats} specials={specials} />
+  """
+  attr :stats, :list, required: true
+  attr :specials, :list, required: true
+  attr :class, :string, default: ""
+
+  def displays_section(assigns) do
+    ~H"""
+    <section id="Info" class={@class}>
+      <div class="info-section">
+        <h1 class="section-heading">Farmec At A Glance:</h1>
+        <p class="sub-heading">
+          This is a Quick Look at what Separates us from our Competitors
+        </p>
+        <div class="stats">
+          <%= for item <- @stats do %>
+            <a href={item.link}>
+              <ul class="stat-list">
+                <li class="stat-list-item"><%= item.title %></li>
+                <li class="stat-list-item"><i class={item.icon}></i></li>
+                <li class="stat-list-item"><%= item.description %></li>
+              </ul>
+            </a>
+          <% end %>
+        </div>
+      </div>
+      <div class="info-section">
+        <h1 class="section-heading">What Can We Offer:</h1>
+        <p class="sub-heading">
+          Farmec is committed to its customers and guarantees the following
+        </p>
+        <div class="specials">
+          <%= for item <- @specials do %>
+            <a href={item.link}>
+              <ul class="special-list">
+                <li class="special-list-item"><%= item.title %></li>
+                <li class="special-list-item"><i class={item.icon}></i></li>
+                <li class="special-list-item"><%= item.description %></li>
+              </ul>
+            </a>
+          <% end %>
+        </div>
+      </div>
+    </section>
+    """
+  end
+
+  @doc """
+  Renders the contact section with form, map, and business info.
+
+  ## Examples
+
+      <.contact_section />
+  """
+  attr :class, :string, default: ""
+  slot :inner_block
+
+  def contact_section(assigns) do
+    ~H"""
+    <section id="contact" class={@class}>
+      <h1 class="section-heading">Contact Us:</h1>
+      <div class="contact-section">
+        <%= render_slot(@inner_block) %>
+
+        <.google_map />
+
+        <div class="info-section">
+          <h1 class="sub-heading">Business Information:</h1>
+          <div class="info">
+            <div class="info-item">
+              Opening Hours:
+              <br />
+              <span class="info-item-text">Monday - Friday: 9am - 5:30pm</span>
+            </div>
+            <div class="info-item">
+              Telephone:
+              <br />
+              <span class="info-item-text">
+                <a href="tel:018259289">01 825 9289</a>
+              </span>
+            </div>
+            <div class="info-item">
+              International:
+              <br />
+              <span class="info-item-text">
+                <a href="tel:+35318259289">+353 1 825 9289</a>
+              </span>
+            </div>
+            <div class="info-item">
+              Email:
+              <br />
+              <span class="info-item-text">Info@farmec.ie</span>
+            </div>
+            <div class="info-item">
+              Address:
+              <br />
+              <span class="info-item-text">Clonross, Drumree, Co. Meath, A85PK30</span>
+            </div>
+            <div class="info-item">
+              <div class="social-links">
+                <a
+                  class="socials"
+                  href="https://www.facebook.com/FarmecIreland/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Visit our Facebook page"
+                >
+                  <i class="fa-brands fa-facebook"></i>
+                </a>
+                <a
+                  class="socials"
+                  href="https://twitter.com/farmec1?lang=en"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Visit our Twitter page"
+                >
+                  <i class="fa-brands fa-twitter"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    """
+  end
 end
