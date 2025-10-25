@@ -1,69 +1,133 @@
 .navbar {
-    @apply my-auto flex w-screen flex-row justify-center;
-    @apply bg-zinc-900 py-5 text-gray-200;
-    @apply fixed top-0 z-50 w-screen;
-    @apply md:hidden;
+    margin-top: auto;
+    margin-bottom: auto;
+    display: flex;
+    width: 100vw;
+    flex-direction: row;
+    justify-content: center;
+    background-color: #18181b;
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+    color: #e5e7eb;
+    position: fixed;
+    top: 0;
+    z-index: 50;
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        display: none;
+    }
 }
 
 .transparentNav {
-    @apply navbar;
-    @apply bg-transparent text-zinc-900;
-    @apply md:hidden;
+    margin-top: auto;
+    margin-bottom: auto;
+    display: flex;
+    width: 100vw;
+    flex-direction: row;
+    justify-content: center;
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+    position: fixed;
+    top: 0;
+    z-index: 50;
+    background-color: transparent;
+    color: #18181b;
+}
+
+@media (max-width: 768px) {
+    .transparentNav {
+        display: none;
+    }
 }
 
 .navbar > * {
-    @apply whitespace-nowrap;
+    white-space: nowrap;
 }
 
 .navList {
-    @apply my-auto flex flex-row justify-center;
+    margin-top: auto;
+    margin-bottom: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }
 
 .navList > * {
-    @apply mx-12 my-auto;
+    margin-left: 3rem;
+    margin-right: 3rem;
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 .navItem {
-    @apply relative grid grid-cols-1;
-    @apply z-10 text-lg font-bold;
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr;
+    z-index: 10;
+    font-size: 1.125rem;
+    font-weight: 700;
 }
 
 .navListItem {
-    @apply relative z-20 cursor-pointer;
-    @apply transition-all duration-500 ease-in-out;
+    position: relative;
+    z-index: 20;
+    cursor: pointer;
+    transition: all 500ms ease-in-out;
 }
 
 .navItem:hover {
-    @apply text-red-600;
-    @apply rounded-2xl underline decoration-red-600 decoration-[3px] underline-offset-[10px];
+    color: #dc2626;
+    border-radius: 1rem;
+    text-decoration: underline;
+    text-decoration-color: #dc2626;
+    text-decoration-thickness: 3px;
+    text-underline-offset: 10px;
 }
 
 .navDrop {
-    @apply bg-zinc-900;
-    @apply mx-auto my-10 w-[10rem];
-    @apply absolute flex flex-col justify-center text-center;
-    @apply opacity-0;
-    @apply rounded-lg;
-    @apply transition-all duration-500 ease-in-out;
-    @apply collapse;
-    @apply left-1/2 -translate-x-1/2;
-    @apply transform;
+    background-color: #18181b;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+    width: 10rem;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    opacity: 0;
+    border-radius: 0.5rem;
+    transition: all 500ms ease-in-out;
+    visibility: collapse;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .navItem:hover .navDrop {
-    @apply opacity-100;
-    @apply visible;
+    opacity: 1;
+    visibility: visible;
 }
 
 .navDropItem {
-    @apply text-sm font-semibold;
-    @apply my-2 px-2 py-2;
-    @apply mx-auto w-[10rem];
-    @apply rounded-lg;
-    @apply text-gray-200;
-    @apply transition-colors duration-500 ease-in-out;
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    margin-left: auto;
+    margin-right: auto;
+    width: 10rem;
+    border-radius: 0.5rem;
+    color: #e5e7eb;
+    transition: colors 500ms ease-in-out;
 }
 
 .navDropItem:hover {
-    @apply bg-red-600;
+    background-color: #dc2626;
 }
