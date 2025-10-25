@@ -1,29 +1,64 @@
 .machineCard {
-    @apply grid grid-cols-1 my-2 mx-52;
-    @apply md:mx-5;
+    display: grid;
+    grid-template-columns: 1fr;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    margin-left: 13rem;
+    margin-right: 13rem;
+}
+
+@media (max-width: 768px) {
+    .machineCard {
+        margin-left: 1.25rem;
+        margin-right: 1.25rem;
+    }
 }
 
 .machineGrid {
-    @apply flex flex-row justify-center;
-    @apply bg-zinc-600 border-4 border-zinc-800 rounded-2xl;
-    @apply transition-all duration-700 ease-in-out;
-    @apply md:flex-col;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    background-color: #52525b;
+    border: 4px solid #27272a;
+    border-radius: 1rem;
+    transition: all 700ms ease-in-out;
+}
+
+@media (max-width: 768px) {
+    .machineGrid {
+        flex-direction: column;
+    }
 }
 
 .machineGrid:hover {
-    @apply bg-zinc-700 border-zinc-900 scale-[1.01];
+    background-color: #3f3f46;
+    border-color: #18181b;
+    transform: scale(1.01);
 }
 
 .machineGrid img {
-    @apply rounded-l-2xl border-r-4 border-zinc-800;
-    @apply md:object-cover md:border-b-4 md:border-r-0 md:rounded-t-2xl md:rounded-bl-none;
+    border-top-left-radius: 1rem;
+    border-bottom-left-radius: 1rem;
+    border-right: 4px solid #27272a;
+}
+
+@media (max-width: 768px) {
+    .machineGrid img {
+        object-fit: cover;
+        border-bottom: 4px solid;
+        border-right: 0;
+        border-top-right-radius: 1rem;
+        border-bottom-left-radius: 0;
+    }
 }
 
 .machineInfo {
-    @apply flex flex-col;
-    @apply p-4;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
 }
 
 .machineInfo > * {
-    @apply my-2;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
 }
