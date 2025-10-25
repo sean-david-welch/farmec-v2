@@ -1,110 +1,160 @@
 .info {
-    @apply py-5;
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
 }
 
 .infoSection {
-    @apply flex flex-col items-center;
-    @apply rounded-lg bg-zinc-300;
-    @apply mx-auto w-[80vw];
-    @apply md:w-[80vw];
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 0.5rem;
+    background-color: #d4d4d8;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80vw;
+}
+
+@media (max-width: 768px) {
+    .infoSection {
+        width: 80vw;
+    }
 }
 
 .infoSection > * {
-    @apply mx-auto;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .infoSection {
-    @apply mb-5 mt-10;
+    margin-bottom: 1.25rem;
+    margin-top: 2.5rem;
 }
 
 .infoSection .mainHeading {
-    @apply decoration-red-600;
+    text-decoration-color: #dc2626;
 }
+
 /* Stats */
 
 .stats {
-    @apply mx-5 mt-5 grid grid-cols-4 gap-36;
-    @apply md:grid-cols-1;
+    margin-left: 1.25rem;
+    margin-right: 1.25rem;
+    margin-top: 1.25rem;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 9rem;
+}
+
+@media (max-width: 768px) {
+    .stats {
+        grid-template-columns: 1fr;
+    }
 }
 
 .statList {
-    @apply grid grid-cols-1;
-    @apply transition-all duration-700 ease-in-out;
+    display: grid;
+    grid-template-columns: 1fr;
+    transition: all 700ms ease-in-out;
 }
 
 .statList:hover {
-    @apply scale-105;
+    transform: scale(1.05);
 }
 
 .statList:hover svg path {
-    @apply fill-red-700;
+    fill: #b91c1c;
 }
 
 .statList:hover .statListItem {
-    @apply text-red-700;
+    color: #b91c1c;
 }
 
 .statList > * {
-    @apply mx-4;
+    margin-left: 1rem;
+    margin-right: 1rem;
 }
 
 .statListItem {
-    @apply mx-5 text-xl font-semibold text-zinc-800;
+    margin-left: 1.25rem;
+    margin-right: 1.25rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #27272a;
 }
 
 .statListItem:nth-child(3) {
-    @apply text-lg font-normal;
+    font-size: 1.125rem;
+    font-weight: 400;
 }
 
 .statListItem svg {
-    @apply mx-auto h-16;
+    margin-left: auto;
+    margin-right: auto;
+    height: 4rem;
 }
 
 .statListItem svg path {
-    @apply fill-zinc-900 transition-all duration-700 ease-in-out;
+    fill: #18181b;
+    transition: all 700ms ease-in-out;
 }
 
 /* Specails */
 
 .specials {
-    @apply mb-2 grid grid-cols-4;
-    @apply md:grid-cols-1;
+    margin-bottom: 0.5rem;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 768px) {
+    .specials {
+        grid-template-columns: 1fr;
+    }
 }
 
 .specialList {
-    @apply grid grid-cols-1;
-    @apply transition-all duration-700 ease-in-out;
+    display: grid;
+    grid-template-columns: 1fr;
+    transition: all 700ms ease-in-out;
 }
 
 .specialList:hover {
-    @apply scale-105;
+    transform: scale(1.05);
 }
 
 .specialList:hover svg path {
-    @apply fill-red-700;
+    fill: #b91c1c;
 }
 
 .specialList:hover .specialListItem {
-    @apply text-red-700;
+    color: #b91c1c;
 }
 
 .specialList > * {
-    @apply mx-4;
+    margin-left: 1rem;
+    margin-right: 1rem;
 }
 
 .specialListItem {
-    @apply text-xl font-semibold text-zinc-800;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #27272a;
 }
 
 .specialListItem:nth-child(3) {
-    @apply mx-10 text-base font-normal;
+    margin-left: 2.5rem;
+    margin-right: 2.5rem;
+    font-size: 1rem;
+    font-weight: 400;
 }
 
 .specialListItem svg {
-    @apply mx-auto h-16;
+    margin-left: auto;
+    margin-right: auto;
+    height: 4rem;
 }
 
 .specialListItem svg path {
-    @apply fill-zinc-900;
-    @apply transition-all duration-700 ease-in-out;
+    fill: #18181b;
+    transition: all 700ms ease-in-out;
 }
