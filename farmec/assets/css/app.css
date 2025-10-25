@@ -3,3 +3,17 @@
 @import "tailwindcss/utilities";
 
 /* This file is for your main application CSS */
+@import "./about.css";
+@import "./account.css";
+@import "./appstyles.css";
+@import "./blogs.css";
+@import "./carousel.css";
+@import "./footer.css";
+@import "./header.css";
+@import "./home.css";
+@import "./info.css";
+@import "./machines.css";
+@import "./sidebar.css";
+@import "./spareparts.css";
+@import "./suppliers.css";
+@import "./utils.css";
