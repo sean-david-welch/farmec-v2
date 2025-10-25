@@ -1,0 +1,69 @@
+.navbar {
+    @apply my-auto flex w-screen flex-row justify-center;
+    @apply bg-zinc-900 py-5 text-gray-200;
+    @apply fixed top-0 z-50 w-screen;
+    @apply md:hidden;
+}
+
+.transparentNav {
+    @apply navbar;
+    @apply bg-transparent text-zinc-900;
+    @apply md:hidden;
+}
+
+.navbar > * {
+    @apply whitespace-nowrap;
+}
+
+.navList {
+    @apply my-auto flex flex-row justify-center;
+}
+
+.navList > * {
+    @apply mx-12 my-auto;
+}
+
+.navItem {
+    @apply relative grid grid-cols-1;
+    @apply z-10 text-lg font-bold;
+}
+
+.navListItem {
+    @apply relative z-20 cursor-pointer;
+    @apply transition-all duration-500 ease-in-out;
+}
+
+.navItem:hover {
+    @apply text-red-600;
+    @apply rounded-2xl underline decoration-red-600 decoration-[3px] underline-offset-[10px];
+}
+
+.navDrop {
+    @apply bg-zinc-900;
+    @apply mx-auto my-10 w-[10rem];
+    @apply absolute flex flex-col justify-center text-center;
+    @apply opacity-0;
+    @apply rounded-lg;
+    @apply transition-all duration-500 ease-in-out;
+    @apply collapse;
+    @apply left-1/2 -translate-x-1/2;
+    @apply transform;
+}
+
+.navItem:hover .navDrop {
+    @apply opacity-100;
+    @apply visible;
+}
+
+.navDropItem {
+    @apply text-sm font-semibold;
+    @apply my-2 px-2 py-2;
+    @apply mx-auto w-[10rem];
+    @apply rounded-lg;
+    @apply text-gray-200;
+    @apply transition-colors duration-500 ease-in-out;
+}
+
+.navDropItem:hover {
+    @apply bg-red-600;
+}
