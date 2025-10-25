@@ -1,0 +1,54 @@
+.heroContainer {
+    @apply relative h-screen w-screen overflow-hidden;
+}
+
+.slideshow {
+    @apply absolute left-0 top-0 z-0 m-auto h-screen w-full overflow-hidden;
+}
+
+.slides {
+    @apply absolute left-0 top-0 opacity-0;
+    @apply h-full w-full object-cover object-center;
+    @apply transition-all duration-200 ease-in-out;
+}
+
+.fadeIn {
+    @apply opacity-100;
+}
+
+.fadeOut {
+    @apply opacity-0;
+}
+
+.slideButton {
+    @apply flex items-center justify-center;
+}
+
+.slideButton svg {
+    @apply h-6 w-6;
+    @apply z-10 bg-zinc-900 bg-opacity-80;
+    @apply rounded-md px-1 py-2;
+}
+
+.slideButton svg path {
+    @apply z-20 fill-gray-100;
+}
+
+.prevButton {
+    @apply absolute left-1 top-[50%] -translate-y-2/4;
+    @apply slideButton whitespace-nowrap;
+}
+
+.nextButton {
+    @apply absolute right-1 top-[50%] -translate-y-2/4;
+    @apply slideButton whitespace-nowrap;
+}
+
+.typewriter {
+    @apply absolute z-10;
+    @apply py-2 text-4xl font-bold text-gray-300;
+    @apply h-[12.5vh] w-[70vw];
+    @apply bottom-2 left-1/2;
+    @apply translate-x-[-50%] transform;
+    @apply md:text-xl;
+}

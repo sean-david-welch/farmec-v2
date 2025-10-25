@@ -1,0 +1,62 @@
+.employees {
+    @apply grid grid-cols-3 gap-5;
+    @apply mt-10 mb-24 mx-36;
+    @apply md:grid-cols-1 md:mx-auto md:gap-5;
+}
+
+.employeeCard {
+    @apply bg-zinc-800 border-4 rounded-xl border-zinc-600;
+    @apply grid grid-cols-1 mx-10;
+    @apply transition-all duration-700 ease-in-out;
+}
+
+.employeeCard:hover {
+    @apply border-red-600;
+    @apply scale-[1.025];
+}
+
+.employeeCard > * {
+    @apply mb-10;
+}
+
+.employeeCard img {
+    @apply mx-auto w-full rounded-t-lg;
+}
+
+.timeline {
+    @apply flex flex-col items-center;
+}
+
+.timelineCard {
+    @apply flex flex-col text-center;
+    @apply bg-zinc-800 border-4 rounded-xl border-zinc-600;
+    @apply my-10 p-4 w-[70vw];
+    @apply transition-all duration-700 ease-in-out;
+    @apply md:w-[70vw];
+}
+
+.timelineCard > * {
+    @apply mx-auto my-2;
+    @apply flex flex-row;
+}
+
+.timelineCard:hover {
+    @apply border-red-600;
+    @apply scale-[1.025];
+}
+
+.clockIcon {
+    @apply h-8 w-8 mr-2;
+}
+
+.infoCard {
+    @apply mx-44 my-10 p-4;
+    @apply bg-zinc-800 border-4 rounded-xl border-zinc-600;
+    @apply transition-all duration-700 ease-in-out;
+    @apply md:mx-10;
+}
+
+.infoCard:hover {
+    @apply border-red-600;
+    @apply scale-[1.025];
+}
