@@ -42,7 +42,6 @@ defmodule Farmec.MixProject do
       {:floki, ">= 0.30.0", only: :test},
       {:phoenix_live_dashboard, "~> 0.8.3"},
       {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
-      {:tailwind, "~> 0.2.0", runtime: Mix.env() == :dev},
       {:heroicons,
        github: "tailwindlabs/heroicons",
        tag: "v2.1.1",
@@ -73,10 +72,9 @@ defmodule Farmec.MixProject do
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
-      "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
-      "assets.build": ["tailwind farmec", "esbuild farmec"],
+      "assets.setup": ["esbuild.install --if-missing"],
+      "assets.build": ["esbuild farmec"],
       "assets.deploy": [
-        "tailwind farmec --minify",
         "esbuild farmec --minify",
         "phx.digest"
       ]
