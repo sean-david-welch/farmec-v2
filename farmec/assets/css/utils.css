@@ -1,54 +1,132 @@
 /* Misc */
 .container {
-	@apply mx-auto my-28 min-h-screen max-w-full overflow-x-hidden p-20 text-center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 7rem;
+    margin-bottom: 7rem;
+    min-height: 100vh;
+    max-width: 100%;
+    overflow-x: hidden;
+    padding: 5rem;
+    text-align: center;
 }
 
 .home {
-	@apply flex flex-col items-center justify-center text-center text-gray-800;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #1f2937;
 }
 
 .sectionHeading {
-	@apply my-5;
-	@apply mx-auto text-3xl font-semibold;
-	@apply text-zinc-900 underline decoration-red-600 decoration-4 underline-offset-8;
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1.875rem;
+    font-weight: 600;
+    color: #18181b;
+    text-decoration: underline;
+    text-decoration-color: #dc2626;
+    text-decoration-thickness: 4px;
+    text-underline-offset: 8px;
 }
 
 .mainHeading {
-	@apply mx-auto my-2 text-2xl font-semibold underline;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-decoration: underline;
 }
 
 .subHeading {
-	@apply mx-40 mb-8 mt-2 text-center text-xl font-medium text-zinc-800;
-	@apply md:mx-5;
+    margin-left: 10rem;
+    margin-right: 10rem;
+    margin-bottom: 2rem;
+    margin-top: 0.5rem;
+    text-align: center;
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: #27272a;
+}
+
+@media (max-width: 768px) {
+    .subHeading {
+        margin-left: 1.25rem;
+        margin-right: 1.25rem;
+    }
 }
 
 .paragraph {
-	@apply mx-auto text-base font-normal;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1rem;
+    font-weight: 400;
 }
 
 .aboutHeading {
-	@apply mx-44;
-	@apply md:mx-2;
+    margin-left: 11rem;
+    margin-right: 11rem;
+}
+
+@media (max-width: 768px) {
+    .aboutHeading {
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+    }
 }
 
 /* Forms */
 .form {
-	@apply flex flex-col bg-zinc-800 p-10 text-center;
+    display: flex;
+    flex-direction: column;
+    background-color: #27272a;
+    padding: 2.5rem;
+    text-align: center;
 }
 
 .loginForm {
-	@apply flex flex-col rounded-2xl bg-zinc-800 p-10 text-center;
-	@apply md:mx-5;
+    display: flex;
+    flex-direction: column;
+    border-radius: 1rem;
+    background-color: #27272a;
+    padding: 2.5rem;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .loginForm {
+        margin-left: 1.25rem;
+        margin-right: 1.25rem;
+    }
 }
 
 .form > *,
 .loginForm > * {
-	@apply my-4;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
 
 .form label,
 .loginForm label {
-	@apply my-2 block text-lg font-medium text-gray-900 dark:text-white;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    display: block;
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: #111827;
+}
+
+@media (prefers-color-scheme: dark) {
+    .form label,
+    .loginForm label {
+        color: #ffffff;
+    }
 }
 
 .form textarea,
@@ -57,184 +135,400 @@
 .loginForm textarea,
 .loginForm input,
 .loginForm select {
-	@apply mx-auto block w-2/3 rounded-lg border-gray-300 bg-zinc-600 p-2.5 text-sm text-gray-900;
-	@apply border-zinc-600 bg-zinc-700 text-white placeholder-gray-400 focus:border-red-700 focus:ring-red-700;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 66.666667%;
+    border-radius: 0.5rem;
+    border-color: #d1d5db;
+    background-color: #52525b;
+    padding: 0.625rem;
+    font-size: 0.875rem;
+    color: #111827;
+    border-color: #52525b;
+    background-color: #3f3f46;
+    color: #ffffff;
+}
+
+.form textarea::placeholder,
+.form input::placeholder,
+.form select::placeholder,
+.loginForm textarea::placeholder,
+.loginForm input::placeholder,
+.loginForm select::placeholder {
+    color: #9ca3af;
+}
+
+.form textarea:focus,
+.form input:focus,
+.form select:focus,
+.loginForm textarea:focus,
+.loginForm input:focus,
+.loginForm select:focus {
+    border-color: #b91c1c;
+    ring-color: #b91c1c;
 }
 
 .form .btn {
-	@apply mt-4;
+    margin-top: 1rem;
 }
 
 .form .radio {
-	@apply flex justify-center items-center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .form .radio > * {
-	@apply mx-5;
+    margin-left: 1.25rem;
+    margin-right: 1.25rem;
 }
 
 /* Buttons */
 .btn {
-	@apply z-10 mx-auto my-2 hover:bg-red-600;
-	@apply flex flex-row items-center justify-center rounded-xl;
-	@apply whitespace-nowrap px-8 py-2 text-center text-base font-semibold;
-	@apply transition-all duration-700 ease-in-out;
-	@apply bg-red-700;
+    z-index: 10;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem;
+    white-space: nowrap;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 700ms ease-in-out;
+    background-color: #b91c1c;
 }
 
 .btn:hover {
-	@apply boxshadow;
+    background-color: #dc2626;
+    box-shadow: 0 0 0 2px rgba(200, 1, 1, 0.5), 0 0 0 3px rgba(200, 1, 1, 0.5), 0 0 0 4px rgba(200, 1, 1, 0.5), 0 0 0 5px rgba(200, 1, 1, 0.5);
 }
 
 .boxshadow {
-	box-shadow: 0 0 0 2px rgba(200, 1, 1, 0.5), 0 0 0 3px rgba(200, 1, 1, 0.5), 0 0 0 4px rgba(200, 1, 1, 0.5),
-		0 0 0 5px rgba(200, 1, 1, 0.5);
+    box-shadow: 0 0 0 2px rgba(200, 1, 1, 0.5), 0 0 0 3px rgba(200, 1, 1, 0.5), 0 0 0 4px rgba(200, 1, 1, 0.5), 0 0 0 5px rgba(200, 1, 1, 0.5);
 }
 
 .btn svg {
-	@apply mx-1 h-4 w-4 whitespace-nowrap;
+    margin-left: 0.25rem;
+    margin-right: 0.25rem;
+    height: 1rem;
+    width: 1rem;
+    white-space: nowrap;
 }
 
 .btnForm {
-	@apply btn mx-auto pb-4 text-zinc-100;
+    z-index: 10;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem;
+    white-space: nowrap;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 700ms ease-in-out;
+    background-color: #b91c1c;
+    padding-bottom: 1rem;
+    color: #f4f4f5;
+}
+
+.btnForm:hover {
+    background-color: #dc2626;
 }
 
 .btnFooter {
-	@apply btn w-[150px];
+    z-index: 10;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem;
+    white-space: nowrap;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 700ms ease-in-out;
+    background-color: #b91c1c;
+    width: 150px;
+}
+
+.btnFooter:hover {
+    background-color: #dc2626;
 }
 
 .updateIcon {
-	@apply mx-2 h-4 w-4;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    height: 1rem;
+    width: 1rem;
 }
 
 .optionsBtn {
-	@apply mx-auto flex flex-row justify-center;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }
 
 .optionsBtn > * {
-	@apply mx-2;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
 }
 
 /* Mics */
 .dialog {
-	@apply max-h-[90vh] w-[80vw];
-	@apply fixed left-1/2 top-1/2 z-50;
-	@apply rounded-2xl bg-zinc-900 text-gray-200 shadow-lg;
-	@apply border-4 border-zinc-600;
-	@apply -translate-x-1/2 -translate-y-1/2 transform;
-	@apply transition-all duration-700 ease-in-out;
-	@apply opacity-0;
+    max-height: 90vh;
+    width: 80vw;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    z-index: 50;
+    border-radius: 1rem;
+    background-color: #18181b;
+    color: #e5e7eb;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    border: 4px solid #52525b;
+    transform: translate(-50%, -50%);
+    transition: all 700ms ease-in-out;
+    opacity: 0;
 }
 
 .dialogVisible {
-	@apply opacity-100;
+    opacity: 1;
 }
 
 .dialogBtn {
-	@apply fixed left-5 top-5 cursor-pointer px-3 py-2;
-	@apply rounded-full border-2 border-zinc-800 bg-zinc-800;
-	@apply z-30 transition-all duration-300 ease-in-out;
+    position: fixed;
+    left: 1.25rem;
+    top: 1.25rem;
+    cursor: pointer;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-radius: 9999px;
+    border: 2px solid #27272a;
+    background-color: #27272a;
+    z-index: 30;
+    transition: all 300ms ease-in-out;
 }
 
 .dialogBtn:hover {
-	@apply border-2 border-red-700;
+    border: 2px solid #b91c1c;
 }
 
 .dialogBtn svg {
-	@apply h-4 w-4;
+    height: 1rem;
+    width: 1rem;
 }
 
 .checkout {
-	@apply mx-72 my-10 rounded-2xl bg-white p-5;
-	@apply md:mx-5;
+    margin-left: 18rem;
+    margin-right: 18rem;
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+    border-radius: 1rem;
+    background-color: #ffffff;
+    padding: 1.25rem;
+}
+
+@media (max-width: 768px) {
+    .checkout {
+        margin-left: 1.25rem;
+        margin-right: 1.25rem;
+    }
 }
 
 .loginSection {
-	@apply mx-72;
-	@apply md:mx-5;
+    margin-left: 18rem;
+    margin-right: 18rem;
 }
+
+@media (max-width: 768px) {
+    .loginSection {
+        margin-left: 1.25rem;
+        margin-right: 1.25rem;
+    }
+}
+
 /* index */
 .index {
-	@apply flex flex-col items-start;
-	@apply p-5;
-	@apply bg-zinc-800 text-gray-200;
-	@apply mx-52 my-5 rounded-xl border-4 border-zinc-600;
-	@apply md:mx-5;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.25rem;
+    background-color: #27272a;
+    color: #e5e7eb;
+    margin-left: 13rem;
+    margin-right: 13rem;
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+    border-radius: 0.75rem;
+    border: 4px solid #52525b;
+}
+
+@media (max-width: 768px) {
+    .index {
+        margin-left: 1.25rem;
+        margin-right: 1.25rem;
+    }
 }
 
 .accountIndex {
-	@apply index;
-	@apply mx-16;
-	@apply md:mx-5;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.25rem;
+    background-color: #27272a;
+    color: #e5e7eb;
+    border-radius: 0.75rem;
+    border: 4px solid #52525b;
+    margin-left: 4rem;
+    margin-right: 4rem;
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+}
+
+@media (max-width: 768px) {
+    .accountIndex {
+        margin-left: 1.25rem;
+        margin-right: 1.25rem;
+    }
 }
 
 .index > * {
-	@apply my-2;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
 .indexHeading {
-	@apply my-5;
-	@apply text-xl;
-	@apply text-gray-200 underline decoration-red-600 decoration-4 underline-offset-8;
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+    font-size: 1.25rem;
+    color: #e5e7eb;
+    text-decoration: underline;
+    text-decoration-color: #dc2626;
+    text-decoration-thickness: 4px;
+    text-underline-offset: 8px;
 }
 
 .indexItem {
-	@apply transition-all duration-700 ease-in-out hover:text-red-600;
+    transition: all 700ms ease-in-out;
+}
+
+.indexItem:hover {
+    color: #dc2626;
 }
 
 /* To Top Button */
 .toTopButton {
-	@apply fixed bottom-5 right-5 cursor-pointer;
-	@apply rounded-full border-2 border-zinc-800 bg-zinc-800 px-3 py-2;
-	@apply z-30 transition-all duration-300 ease-in-out;
+    position: fixed;
+    bottom: 1.25rem;
+    right: 1.25rem;
+    cursor: pointer;
+    border-radius: 9999px;
+    border: 2px solid #27272a;
+    background-color: #27272a;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    z-index: 30;
+    transition: all 300ms ease-in-out;
 }
 
 .toTopButton svg {
-	@apply h-6 w-6;
+    height: 1.5rem;
+    width: 1.5rem;
 }
 
 .toTopButton:hover,
 .toTopButton:hover svg path {
-	@apply border-2 border-red-700 bg-zinc-800 fill-red-700;
+    border: 2px solid #b91c1c;
+    background-color: #27272a;
+    fill: #b91c1c;
 }
 
 .toTopButton svg path {
-	@apply fill-gray-100;
-	@apply transition-all duration-150 ease-in-out;
+    fill: #f3f4f6;
+    transition: all 150ms ease-in-out;
 }
 
 .mainIcon svg {
-	@apply mx-auto h-20 w-20;
+    margin-left: auto;
+    margin-right: auto;
+    height: 5rem;
+    width: 5rem;
 }
 
 /* Loading */
 .loadingPage {
-	@apply h-screen w-screen;
+    height: 100vh;
+    width: 100vw;
 }
 
 .spinner {
-	@apply absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2;
-	@apply h-[75px] w-[75px] rounded-[50px] border-[5px] border-t-[5px] border-solid border-red-700  border-t-white;
-	animation: spin 1s linear infinite;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    height: 75px;
+    width: 75px;
+    border-radius: 50px;
+    border: 5px solid #b91c1c;
+    border-top: 5px solid #ffffff;
+    animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
-	from {
-		transform: rotate(0deg);
-	}
-	to {
-		transform: rotate(360deg);
-	}
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .error {
-	@apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .routesList {
-	@apply flex flex-row;
+    display: flex;
+    flex-direction: row;
 }
 
 .routesList > * {
-	@apply mx-2;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
 }
