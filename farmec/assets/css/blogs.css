@@ -1,73 +1,150 @@
 .blogGrid {
-    @apply grid grid-cols-1;
+    display: grid;
+    grid-template-columns: 1fr;
 }
 
 .blogCard {
-    @apply flex flex-row;
-    @apply mx-52 my-10;
-    @apply rounded-xl border-4 border-zinc-600 bg-zinc-800;
-    @apply transition-all duration-700 ease-in-out;
-    @apply md:mx-5 md:flex-col-reverse;
+    display: flex;
+    flex-direction: row;
+    margin-left: 13rem;
+    margin-right: 13rem;
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+    border-radius: 0.75rem;
+    border: 4px solid #52525b;
+    background-color: #27272a;
+    transition: all 700ms ease-in-out;
+}
+
+@media (max-width: 768px) {
+    .blogCard {
+        margin-left: 1.25rem;
+        margin-right: 1.25rem;
+        flex-direction: column-reverse;
+    }
 }
 
 .blogCard:hover {
-    @apply border-red-600;
-    @apply scale-[1.025];
+    border-color: #dc2626;
+    transform: scale(1.025);
 }
 
 .blogCard img {
-    @apply w-full max-w-[500px] rounded-l-lg border-r-4 border-r-zinc-600 object-cover;
-    @apply md:rounded-b-lg md:rounded-tl-none md:border-r-0 md:border-t-4 md:border-t-zinc-600;
+    width: 100%;
+    max-width: 500px;
+    border-top-left-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
+    border-right: 4px solid #52525b;
+    object-fit: cover;
+}
+
+@media (max-width: 768px) {
+    .blogCard img {
+        border-bottom-left-radius: 0.5rem;
+        border-bottom-right-radius: 0.5rem;
+        border-top-left-radius: 0;
+        border-right: 0;
+        border-top: 4px solid #52525b;
+    }
 }
 
 .blogLink {
-    @apply flex flex-col justify-center p-4;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem;
 }
 
 .blogLink > * {
-    @apply my-2;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
 .blogDetail {
-    @apply mx-auto flex flex-col;
-    @apply mx-72 my-10;
-    @apply md:mx-5 md:my-5;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    margin-left: 18rem;
+    margin-right: 18rem;
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+}
+
+@media (max-width: 768px) {
+    .blogDetail {
+        margin-left: 1.25rem;
+        margin-right: 1.25rem;
+        margin-top: 1.25rem;
+        margin-bottom: 1.25rem;
+    }
 }
 
 .blogDetail img {
-    @apply w-[600px];
+    width: 600px;
 }
 
 .blogDetail > * {
-    @apply my-2;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
 .blogBody {
-    @apply rounded-xl border-4 border-zinc-600 bg-zinc-800 px-24 py-8;
-    @apply transition-all duration-700 ease-in-out;
-    @apply md:px-5;
+    border-radius: 0.75rem;
+    border: 4px solid #52525b;
+    background-color: #27272a;
+    padding-left: 6rem;
+    padding-right: 6rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    transition: all 700ms ease-in-out;
+}
+
+@media (max-width: 768px) {
+    .blogBody {
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+    }
 }
 
 .blogBody:hover {
-    @apply border-red-600;
-    @apply scale-[1.005];
+    border-color: #dc2626;
+    transform: scale(1.005);
 }
 
 .blogBody img {
-    @apply mx-auto my-4 rounded-lg;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
 }
 
 .exhibitions {
-    @apply mx-52 grid grid-cols-1;
-    @apply md:mx-5;
+    margin-left: 13rem;
+    margin-right: 13rem;
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+@media (max-width: 768px) {
+    .exhibitions {
+        margin-left: 1.25rem;
+        margin-right: 1.25rem;
+    }
 }
 
 .exhibition {
-    @apply my-5 rounded-xl border-4 border-zinc-600 bg-zinc-800 p-4;
-    @apply transition-all duration-700 ease-in-out;
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+    border-radius: 0.75rem;
+    border: 4px solid #52525b;
+    background-color: #27272a;
+    padding: 1rem;
+    transition: all 700ms ease-in-out;
 }
 
 .exhibition:hover {
-    @apply border-red-600;
-    @apply scale-[1.005];
+    border-color: #dc2626;
+    transform: scale(1.005);
 }
