@@ -1,48 +1,101 @@
 .supplierCard {
-	@apply bg-zinc-800 mx-52 border-4 rounded-2xl border-zinc-600;
-	@apply flex flex-col justify-center items-center;
-	@apply p-4 my-10;
-	@apply transition-all duration-700 ease-in-out;
-	@apply md:mx-5;
+    background-color: #27272a;
+    margin-left: 13rem;
+    margin-right: 13rem;
+    border: 4px solid #52525b;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+    transition: all 700ms ease-in-out;
+}
+
+@media (max-width: 768px) {
+    .supplierCard {
+        margin-left: 1.25rem;
+        margin-right: 1.25rem;
+    }
 }
 
 .supplierCard:hover {
-	@apply border-zinc-400;
-	@apply scale-[1.025];
+    border-color: #a1a1aa;
+    transform: scale(1.025);
 }
 
 .supplierCard > * {
-	@apply my-4;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
 
 .sparepartsCard {
-	@apply bg-zinc-800 mx-52 border-4 rounded-2xl border-zinc-600;
-	@apply flex flex-col justify-center items-center;
-	@apply my-10;
-	@apply transition-all duration-700 ease-in-out;
-	@apply md:mx-5;
+    background-color: #27272a;
+    margin-left: 13rem;
+    margin-right: 13rem;
+    border: 4px solid #52525b;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+    transition: all 700ms ease-in-out;
+}
+
+@media (max-width: 768px) {
+    .sparepartsCard {
+        margin-left: 1.25rem;
+        margin-right: 1.25rem;
+    }
 }
 
 .sparepartsCard:hover {
-	@apply border-zinc-400;
-	@apply scale-[1.025];
+    border-color: #a1a1aa;
+    transform: scale(1.025);
 }
 
 .sparepartsGrid {
-	@apply grid grid-cols-2;
-	@apply md:flex md:flex-col-reverse;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+@media (max-width: 768px) {
+    .sparepartsGrid {
+        display: flex;
+        flex-direction: column-reverse;
+    }
 }
 
 .sparepartsInfo {
-	@apply flex flex-col justify-center mx-auto;
-	@apply p-4;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1rem;
 }
 
 .sparepartsGrid img {
-	@apply rounded-r-2xl border-l-4 border-zinc-600;
-	@apply md:rounded-t-xl md:border-b-4 md:rounded-br-none md:border-l-0;
+    border-top-right-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+    border-left: 4px solid #52525b;
+}
+
+@media (max-width: 768px) {
+    .sparepartsGrid img {
+        border-top-left-radius: 0.75rem;
+        border-top-right-radius: 0.75rem;
+        border-bottom: 4px solid;
+        border-bottom-right-radius: 0;
+        border-left: 0;
+    }
 }
 
 .partsColumn {
-	@apply flex flex-col-reverse;
+    display: flex;
+    flex-direction: column-reverse;
 }
