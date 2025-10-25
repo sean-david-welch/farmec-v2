@@ -1,3 +1,19 @@
+/* This file is for your main application CSS */
+/* All @import rules must come first */
+@import "./about.css";
+@import "./account.css";
+@import "./blogs.css";
+@import "./carousel.css";
+@import "./footer.css";
+@import "./header.css";
+@import "./home.css";
+@import "./info.css";
+@import "./machines.css";
+@import "./sidebar.css";
+@import "./spareparts.css";
+@import "./suppliers.css";
+@import "./utils.css";
+
 .app {
     background-color: #d4d4d8;
     color: #e5e7eb;
@@ -10,19 +26,3 @@
     align-items: center;
     text-align: center;
 }
-
-/* This file is for your main application CSS */
-@import "./about.css";
-@import "./account.css";
-@import "./appstyles.css";
-@import "./blogs.css";
-@import "./carousel.css";
-@import "./footer.css";
-@import "./header.css";
-@import "./home.css";
-@import "./info.css";
-@import "./machines.css";
-@import "./sidebar.css";
-@import "./spareparts.css";
-@import "./suppliers.css";
-@import "./utils.css";

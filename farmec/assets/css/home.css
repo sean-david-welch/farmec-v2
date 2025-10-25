@@ -68,7 +68,6 @@
 .contactForm select:focus,
 .contactForm textarea:focus {
     border-color: #b91c1c;
-    ring-color: #b91c1c;
 }
 
 .contactForm {
