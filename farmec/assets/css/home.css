@@ -1,83 +1,186 @@
 /* Contact form */
 .contactSection {
-    @apply mx-10 mb-10 grid p-4;
-    @apply rounded-lg bg-zinc-800;
+    margin-left: 2.5rem;
+    margin-right: 2.5rem;
+    margin-bottom: 2.5rem;
+    display: grid;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    background-color: #27272a;
     grid-template-columns: 1fr 2fr 1fr;
-    @apply md:grid-cols-1;
+}
+
+@media (max-width: 768px) {
+    .contactSection {
+        grid-template-columns: 1fr;
+    }
 }
 
 .contactSection > * {
-    @apply mx-8 my-2;
-    @apply md:mx-2;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .contactSection > * {
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+    }
 }
 
 .contactForm label {
-    @apply block text-2xl font-medium text-gray-900 dark:text-white;
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #111827;
+}
+
+@media (prefers-color-scheme: dark) {
+    .contactForm label {
+        color: #ffffff;
+    }
 }
 
 .contactForm input,
 .contactForm select,
 .contactForm textarea {
-    @apply my-4 rounded-xl border border-gray-300 p-2.5 text-sm text-zinc-800;
-    @apply border-zinc-600 bg-zinc-100 placeholder-zinc-800 focus:border-red-700 focus:ring-red-700;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.75rem;
+    border: 1px solid #d1d5db;
+    padding: 0.625rem;
+    font-size: 0.875rem;
+    color: #27272a;
+    border-color: #52525b;
+    background-color: #f4f4f5;
+    color: #27272a;
+}
+
+.contactForm input::placeholder,
+.contactForm select::placeholder,
+.contactForm textarea::placeholder {
+    color: #27272a;
+}
+
+.contactForm input:focus,
+.contactForm select:focus,
+.contactForm textarea:focus {
+    border-color: #b91c1c;
+    ring-color: #b91c1c;
 }
 
 .contactForm {
-    @apply mx-2 flex w-[20vw] flex-col rounded-lg bg-zinc-800 py-2 text-center;
-    @apply md:mx-2 md:w-[70vw];
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    display: flex;
+    width: 20vw;
+    flex-direction: column;
+    border-radius: 0.5rem;
+    background-color: #27272a;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .contactForm {
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+        width: 70vw;
+    }
 }
 
 .recapcha {
-    @apply mx-auto;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .map {
-    @apply flex items-center justify-center;
-    @apply mx-auto rounded-xl;
-    @apply md:w-[70vw];
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 0.75rem;
+}
+
+@media (max-width: 768px) {
+    .map {
+        width: 70vw;
+    }
 }
 
 .infoSection {
-    @apply flex w-[250px] flex-col;
-    @apply md:w-[70vw];
+    display: flex;
+    width: 250px;
+    flex-direction: column;
+}
+
+@media (max-width: 768px) {
+    .infoSection {
+        width: 70vw;
+    }
 }
 
 .subHeading {
-    @apply text-2xl text-gray-200 underline;
+    font-size: 1.5rem;
+    color: #e5e7eb;
+    text-decoration: underline;
 }
 
 .info {
-    @apply mt-4;
+    margin-top: 1rem;
 }
 
 .infoItem {
-    @apply bottom-4 rounded-lg border-zinc-950 bg-zinc-800;
-    @apply text-lg font-medium text-zinc-100;
-    @apply my-4;
+    bottom: 1rem;
+    border-radius: 0.5rem;
+    border-color: #0a0a0a;
+    background-color: #27272a;
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: #f4f4f5;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
 
 .infoItemText {
-    @apply text-lg font-medium text-zinc-100;
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: #f4f4f5;
 }
 
 .socialLinks {
-    @apply mx-auto mt-4 flex flex-row items-center justify-center text-center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 .socialLinks svg {
-    @apply m-4 h-6 rounded-lg border-2;
-    @apply cursor-pointer p-3;
-    @apply transition-all duration-700 ease-in-out;
+    margin: 1rem;
+    height: 1.5rem;
+    border-radius: 0.5rem;
+    border: 2px solid;
+    cursor: pointer;
+    padding: 0.75rem;
+    transition: all 700ms ease-in-out;
 }
 
 .socialLinks path {
-    @apply transition-all duration-700 ease-in-out;
+    transition: all 700ms ease-in-out;
 }
 
 .socialLinks svg:hover {
-    @apply border-red-700;
+    border-color: #b91c1c;
 }
 
 .socialLinks svg:hover path {
-    @apply fill-red-700;
+    fill: #b91c1c;
 }
