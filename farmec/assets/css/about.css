@@ -1,62 +1,116 @@
 .employees {
-    @apply grid grid-cols-3 gap-5;
-    @apply mt-10 mb-24 mx-36;
-    @apply md:grid-cols-1 md:mx-auto md:gap-5;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin-top: 2.5rem;
+    margin-bottom: 6rem;
+    margin-left: 9rem;
+    margin-right: 9rem;
+}
+
+@media (max-width: 768px) {
+    .employees {
+        grid-template-columns: 1fr;
+        margin-left: auto;
+        margin-right: auto;
+        gap: 1.25rem;
+    }
 }
 
 .employeeCard {
-    @apply bg-zinc-800 border-4 rounded-xl border-zinc-600;
-    @apply grid grid-cols-1 mx-10;
-    @apply transition-all duration-700 ease-in-out;
+    background-color: #27272a;
+    border: 4px solid #52525b;
+    border-radius: 0.75rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    margin-left: 2.5rem;
+    margin-right: 2.5rem;
+    transition: all 700ms ease-in-out;
 }
 
 .employeeCard:hover {
-    @apply border-red-600;
-    @apply scale-[1.025];
+    border-color: #dc2626;
+    transform: scale(1.025);
 }
 
 .employeeCard > * {
-    @apply mb-10;
+    margin-bottom: 2.5rem;
 }
 
 .employeeCard img {
-    @apply mx-auto w-full rounded-t-lg;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
 }
 
 .timeline {
-    @apply flex flex-col items-center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .timelineCard {
-    @apply flex flex-col text-center;
-    @apply bg-zinc-800 border-4 rounded-xl border-zinc-600;
-    @apply my-10 p-4 w-[70vw];
-    @apply transition-all duration-700 ease-in-out;
-    @apply md:w-[70vw];
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    background-color: #27272a;
+    border: 4px solid #52525b;
+    border-radius: 0.75rem;
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+    padding: 1rem;
+    width: 70vw;
+    transition: all 700ms ease-in-out;
+}
+
+@media (max-width: 768px) {
+    .timelineCard {
+        width: 70vw;
+    }
 }
 
 .timelineCard > * {
-    @apply mx-auto my-2;
-    @apply flex flex-row;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    flex-direction: row;
 }
 
 .timelineCard:hover {
-    @apply border-red-600;
-    @apply scale-[1.025];
+    border-color: #dc2626;
+    transform: scale(1.025);
 }
 
 .clockIcon {
-    @apply h-8 w-8 mr-2;
+    height: 2rem;
+    width: 2rem;
+    margin-right: 0.5rem;
 }
 
 .infoCard {
-    @apply mx-44 my-10 p-4;
-    @apply bg-zinc-800 border-4 rounded-xl border-zinc-600;
-    @apply transition-all duration-700 ease-in-out;
-    @apply md:mx-10;
+    margin-left: 11rem;
+    margin-right: 11rem;
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+    padding: 1rem;
+    background-color: #27272a;
+    border: 4px solid #52525b;
+    border-radius: 0.75rem;
+    transition: all 700ms ease-in-out;
+}
+
+@media (max-width: 768px) {
+    .infoCard {
+        margin-left: 2.5rem;
+        margin-right: 2.5rem;
+    }
 }
 
 .infoCard:hover {
-    @apply border-red-600;
-    @apply scale-[1.025];
+    border-color: #dc2626;
+    transform: scale(1.025);
 }
