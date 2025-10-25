@@ -6,5 +6,8 @@ defmodule FarmecWeb.PageHTML do
   """
   use FarmecWeb, :html
 
+  # Import our custom components
+  import FarmecWeb.CustomComponents
+
   embed_templates "page_html/*"
 end
