@@ -2,6 +2,11 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+.app {
+    @apply bg-zinc-300 text-gray-200;
+    @apply mx-auto my-0 min-h-screen max-w-full items-center text-center;
+}
+
 /* This file is for your main application CSS */
 @import "./about.css";
 @import "./account.css";
