@@ -1,97 +1,216 @@
 .accountMap {
-    @apply grid grid-cols-1;
-    @apply rounded-2xl border-4 border-zinc-800 bg-zinc-800;
-    @apply mx-52 my-8 p-10;
-    @apply md:mx-5 md:p-2;
+    display: grid;
+    grid-template-columns: 1fr;
+    border-radius: 1rem;
+    border: 4px solid #27272a;
+    background-color: #27272a;
+    margin-left: 13rem;
+    margin-right: 13rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    padding: 2.5rem;
+}
+
+@media (max-width: 768px) {
+    .accountMap {
+        margin-left: 1.25rem;
+        margin-right: 1.25rem;
+        padding: 0.5rem;
+    }
 }
 
 .accountSection {
-    @apply grid grid-cols-2;
-    @apply rounded-2xl border-4 border-zinc-600 bg-zinc-800;
-    @apply mx-16 my-8 p-10;
-    @apply md:mx-5 md:grid-cols-1 md:p-2;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    border-radius: 1rem;
+    border: 4px solid #52525b;
+    background-color: #27272a;
+    margin-left: 4rem;
+    margin-right: 4rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    padding: 2.5rem;
+}
+
+@media (max-width: 768px) {
+    .accountSection {
+        margin-left: 1.25rem;
+        margin-right: 1.25rem;
+        grid-template-columns: 1fr;
+        padding: 0.5rem;
+    }
 }
 
 .accountSection > * {
-    @apply flex flex-col;
-    @apply my-10;
+    display: flex;
+    flex-direction: column;
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
 }
 
 .productView {
-    @apply mx-72 my-10 flex flex-col p-4;
-    @apply justify-center rounded-2xl border-4 border-zinc-600 bg-zinc-800;
-    @apply transition-all duration-500 ease-in-out;
-    @apply md:mx-2;
+    margin-left: 18rem;
+    margin-right: 18rem;
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    justify-content: center;
+    border-radius: 1rem;
+    border: 4px solid #52525b;
+    background-color: #27272a;
+    transition: all 500ms ease-in-out;
+}
+
+@media (max-width: 768px) {
+    .productView {
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+    }
 }
 
 .productView > * {
-    @apply my-2;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
 .productView:hover {
-    @apply border-red-700;
+    border-color: #b91c1c;
 }
 
 .productView img {
-    @apply mx-auto;
-    @apply rounded-xl;
-    @apply transition-all duration-500 ease-in-out;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 0.75rem;
+    transition: all 500ms ease-in-out;
 }
 
 .carouselAdmin {
-    @apply mx-72 rounded-2xl border-4 border-zinc-600 bg-zinc-800;
-    @apply my-10 p-2;
-    @apply md:mx-2;
+    margin-left: 18rem;
+    margin-right: 18rem;
+    border-radius: 1rem;
+    border: 4px solid #52525b;
+    background-color: #27272a;
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+    padding: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .carouselAdmin {
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+    }
 }
 
 .carouselAdmin > img {
-    @apply mx-auto my-4 rounded-2xl;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 1rem;
 }
 
 .warrantyDetail {
-    @apply flex flex-col;
-    @apply mx-52 my-10 p-4;
-    @apply rounded-2xl border-4 border-zinc-600 bg-zinc-800;
-    @apply transition-all duration-500 ease-in-out;
-    @apply md:mx-5;
+    display: flex;
+    flex-direction: column;
+    margin-left: 13rem;
+    margin-right: 13rem;
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    border: 4px solid #52525b;
+    background-color: #27272a;
+    transition: all 500ms ease-in-out;
+}
+
+@media (max-width: 768px) {
+    .warrantyDetail {
+        margin-left: 1.25rem;
+        margin-right: 1.25rem;
+    }
 }
 
 .warrantyDetail:hover {
-    @apply border-red-700;
+    border-color: #b91c1c;
 }
 
 .warrantyGrid {
-    @apply grid grid-cols-2;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
 }
 
 .label {
-    @apply text-xl capitalize;
+    font-size: 1.25rem;
+    text-transform: capitalize;
 }
 
 .warrantyView {
-    @apply hover:border-red-700;
-    @apply transition-all duration-700 ease-in-out;
-    @apply rounded-2xl border-4 border-zinc-800 bg-zinc-800;
-    @apply mx-56 my-4 p-2;
-    @apply md:mx-5;
+    transition: all 700ms ease-in-out;
+    border-radius: 1rem;
+    border: 4px solid #27272a;
+    background-color: #27272a;
+    margin-left: 14rem;
+    margin-right: 14rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+}
+
+.warrantyView:hover {
+    border-color: #b91c1c;
+}
+
+@media (max-width: 768px) {
+    .warrantyView {
+        margin-left: 1.25rem;
+        margin-right: 1.25rem;
+    }
 }
 
 .userGrid {
-    @apply grid grid-cols-2;
-    @apply md:grid-cols-1;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+@media (max-width: 768px) {
+    .userGrid {
+        grid-template-columns: 1fr;
+    }
 }
 
 .userSection {
-    @apply mx-16 my-4 p-2;
-    @apply rounded-2xl border-4 border-zinc-600 bg-zinc-800;
-    @apply md:mx-2;
+    margin-left: 4rem;
+    margin-right: 4rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    border-radius: 1rem;
+    border: 4px solid #52525b;
+    background-color: #27272a;
+}
+
+@media (max-width: 768px) {
+    .userSection {
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+    }
 }
 
 .userCard {
-    @apply flex flex-col;
-    @apply md:flex-col;
+    display: flex;
+    flex-direction: column;
+}
+
+@media (max-width: 768px) {
+    .userCard {
+        flex-direction: column;
+    }
 }
 
 .userCard > * {
-    @apply my-4;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
