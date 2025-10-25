@@ -20,6 +20,63 @@ const ScrollToTop = {
 };
 
 /**
+ * Carousel Hook
+ * Handles image carousel navigation and automatic slideshow
+ * Converted from React Carousel component
+ */
+const Carousel = {
+  mounted() {
+    this.currentIndex = 0;
+    this.images = this.el.querySelectorAll('.slides');
+    this.prevButton = this.el.querySelector('.prev-button');
+    this.nextButton = this.el.querySelector('.next-button');
+
+    if (this.images.length === 0) return;
+
+    // Set up navigation button listeners
+    this.prevButton?.addEventListener('click', () => this.prevSlide());
+    this.nextButton?.addEventListener('click', () => this.nextSlide());
+
+    // Optional: Auto-advance every 5 seconds
+    this.startAutoPlay();
+  },
+
+  destroyed() {
+    // Clean up interval when component is destroyed
+    if (this.autoPlayInterval) {
+      clearInterval(this.autoPlayInterval);
+    }
+  },
+
+  nextSlide() {
+    this.images[this.currentIndex].classList.remove('fade-in');
+    this.images[this.currentIndex].classList.add('fade-out');
+
+    this.currentIndex = (this.currentIndex + 1) % this.images.length;
+
+    this.images[this.currentIndex].classList.remove('fade-out');
+    this.images[this.currentIndex].classList.add('fade-in');
+  },
+
+  prevSlide() {
+    this.images[this.currentIndex].classList.remove('fade-in');
+    this.images[this.currentIndex].classList.add('fade-out');
+
+    this.currentIndex = (this.currentIndex - 1 + this.images.length) % this.images.length;
+
+    this.images[this.currentIndex].classList.remove('fade-out');
+    this.images[this.currentIndex].classList.add('fade-in');
+  },
+
+  startAutoPlay() {
+    // Auto-advance every 5 seconds
+    this.autoPlayInterval = setInterval(() => {
+      this.nextSlide();
+    }, 5000);
+  }
+};
+
+/**
  * GoogleMap Hook
  * Initializes Google Maps for the Map component
  * Requires Google Maps API to be loaded
@@ -59,5 +116,6 @@ const GoogleMap = {
 
 export default {
   ScrollToTop,
+  Carousel,
   GoogleMap
 };
