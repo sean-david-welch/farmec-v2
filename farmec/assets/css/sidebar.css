@@ -1,58 +1,143 @@
 .sideNav {
-    @apply fixed left-0 top-0 z-20 min-h-screen w-full border-r-2;
-    @apply bg-zinc-900 text-gray-200 border-red-700 h-screen;
-    @apply transform transition-all duration-700 ease-in-out;
-    @apply lg:hidden;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 20;
+    min-height: 100vh;
+    width: 100%;
+    border-right: 2px solid;
+    background-color: #18181b;
+    color: #e5e7eb;
+    border-color: #b91c1c;
+    height: 100vh;
+    transform: translateX(0);
+    transition: all 700ms ease-in-out;
+}
+
+@media (min-width: 1024px) {
+    .sideNav {
+        display: none;
+    }
 }
 
 .sideNavOpen {
-    @apply sideNav;
-    @apply translate-x-0 opacity-100 overflow-y-hidden;
-    @apply transform transition-all duration-700 ease-in-out;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 20;
+    min-height: 100vh;
+    width: 100%;
+    border-right: 2px solid;
+    background-color: #18181b;
+    color: #e5e7eb;
+    border-color: #b91c1c;
+    height: 100vh;
+    transform: translateX(0);
+    opacity: 1;
+    overflow-y: hidden;
+    transition: all 700ms ease-in-out;
+}
+
+@media (min-width: 1024px) {
+    .sideNavOpen {
+        display: none;
+    }
 }
 
 .sideNavClosed {
-    @apply -translate-x-full opacity-0;
-    @apply transform transition-all duration-700 ease-in-out;
+    transform: translateX(-100%);
+    opacity: 0;
+    transition: all 700ms ease-in-out;
 }
 
 .backdrop {
-    @apply fixed bg-zinc-900 z-10 top-0 h-24 w-full border-b-4 border-zinc-900;
-    @apply transition-all duration-700 ease-out;
-    @apply hover:border-red-700;
+    position: fixed;
+    background-color: #18181b;
+    z-index: 10;
+    top: 0;
+    height: 6rem;
+    width: 100%;
+    border-bottom: 4px solid #18181b;
+    transition: all 700ms ease-out;
+}
+
+.backdrop:hover {
+    border-color: #b91c1c;
 }
 
 /* Navigtion */
 .navList {
-    @apply my-20 flex flex-col;
-    @apply w-full items-start;
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: flex-start;
 }
 
 .navItem {
-    @apply flex flex-row items-start;
-    @apply my-3 mx-2 text-xl;
-    @apply transition-all duration-500 ease-in-out;
-    @apply hover:text-red-700;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    font-size: 1.25rem;
+    transition: all 500ms ease-in-out;
+}
+
+.navItem:hover {
+    color: #b91c1c;
 }
 
 .navItem svg {
-    @apply h-4 mx-5 my-2;
+    height: 1rem;
+    margin-left: 1.25rem;
+    margin-right: 1.25rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
 /* buttons */
 .navIcon {
-    @apply grid grid-cols-2 gap-2;
-    @apply justify-center items-center;
-    @apply fixed bg-zinc-900;
-    @apply cursor-pointer hover:pointer-events-auto z-40;
-    @apply lg:hidden;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    background-color: #18181b;
+    cursor: pointer;
+    z-index: 40;
+}
+
+.navIcon:hover {
+    pointer-events: auto;
+}
+
+@media (min-width: 1024px) {
+    .navIcon {
+        display: none;
+    }
 }
 
 .navIcon img {
-    @apply fixed left-5 top-5 z-50;
+    position: fixed;
+    left: 1.25rem;
+    top: 1.25rem;
+    z-index: 50;
 }
 
 .navigation {
-    @apply h-7 fixed right-5 top-8;
-    @apply cursor-pointer hover:pointer-events-auto z-50;
+    height: 1.75rem;
+    position: fixed;
+    right: 1.25rem;
+    top: 2rem;
+    cursor: pointer;
+    z-index: 50;
+}
+
+.navigation:hover {
+    pointer-events: auto;
 }
