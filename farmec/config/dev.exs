@@ -2,7 +2,7 @@ import Config
 
 # Configure your database
 config :farmec, Farmec.Repo,
-  database: Path.expand("../farmec_dev.db", __DIR__),
+  database: Path.expand("../priv/database/database.db", __DIR__),
   pool_size: 5,
   stacktrace: true,
   show_sensitive_data_on_connection_error: true
@@ -22,8 +22,7 @@ config :farmec, FarmecWeb.Endpoint,
   debug_errors: true,
   secret_key_base: "PcLrNmqVvGeBlsEozTKSugxmQMzNSJo4vGoxeni0rOR7Y775FA91rkJ5N3M2aYfA",
   watchers: [
-    esbuild: {Esbuild, :install_and_run, [:farmec, ~w(--sourcemap=inline --watch)]},
-    tailwind: {Tailwind, :install_and_run, [:farmec, ~w(--watch)]}
+    esbuild: {Esbuild, :install_and_run, [:farmec, ~w(--sourcemap=inline --watch)]}
   ]
 
 # ## SSL Support
