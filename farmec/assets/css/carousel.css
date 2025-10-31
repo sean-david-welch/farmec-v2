@@ -47,18 +47,16 @@
     height: 1.5rem;
     width: 1.5rem;
     z-index: 10;
-    background-color: #18181b;
+    background-color: var(--color-bg-darker);
     opacity: 0.8;
     border-radius: 0.375rem;
-    padding-left: 0.25rem;
-    padding-right: 0.25rem;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
+    padding-inline: 0.25rem;
+    padding-block: 0.5rem 0.5rem;
 }
 
 .slide-button svg path {
     z-index: 20;
-    fill: #f3f4f6;
+    fill: var(--color-text-lighter);
 }
 
 .prev-button {
@@ -80,11 +78,10 @@
 .typewriter {
     position: absolute;
     z-index: 10;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
+    padding-block: 0.5rem 0.5rem;
     font-size: 2.25rem;
     font-weight: 700;
-    color: #d1d5db;
+    color: var(--color-border-light);
     height: 12.5vh;
     width: 70vw;
     bottom: 0.5rem;

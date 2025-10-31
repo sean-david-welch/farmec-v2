@@ -1,6 +1,5 @@
 .info {
-    padding-top: 1.25rem;
-    padding-bottom: 1.25rem;
+    padding-block: 1.25rem 1.25rem;
 }
 
 .info-section {
@@ -8,9 +7,8 @@
     flex-direction: column;
     align-items: center;
     border-radius: 0.5rem;
-    background-color: #d4d4d8;
-    margin-left: auto;
-    margin-right: auto;
+    background-color: var(--color-bg-light);
+    margin-inline: auto;
     width: 80vw;
 }
 
@@ -21,8 +19,7 @@
 }
 
 .info-section > * {
-    margin-left: auto;
-    margin-right: auto;
+    margin-inline: auto;
 }
 
 .info-section {
@@ -31,14 +28,13 @@
 }
 
 .info-section .main-heading {
-    text-decoration-color: #dc2626;
+    text-decoration-color: var(--color-primary);
 }
 
 /* Stats */
 
 .stats {
-    margin-left: 1.25rem;
-    margin-right: 1.25rem;
+    margin-inline: 1.25rem 1.25rem;
     margin-top: 1.25rem;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -62,24 +58,22 @@
 }
 
 .stat-list:hover svg path {
-    fill: #b91c1c;
+    fill: var(--color-primary-dark);
 }
 
 .stat-list:hover .stat-list-item {
-    color: #b91c1c;
+    color: var(--color-primary-dark);
 }
 
 .stat-list > * {
-    margin-left: 1rem;
-    margin-right: 1rem;
+    margin-inline: 1rem 1rem;
 }
 
 .stat-list-item {
-    margin-left: 1.25rem;
-    margin-right: 1.25rem;
+    margin-inline: 1.25rem 1.25rem;
     font-size: 1.25rem;
     font-weight: 600;
-    color: #27272a;
+    color: var(--color-bg-dark);
 }
 
 .stat-list-item:nth-child(3) {
@@ -88,13 +82,12 @@
 }
 
 .stat-list-item svg {
-    margin-left: auto;
-    margin-right: auto;
+    margin-inline: auto;
     height: 4rem;
 }
 
 .stat-list-item svg path {
-    fill: #18181b;
+    fill: var(--color-bg-darker);
     transition: all 700ms ease-in-out;
 }
 
@@ -123,38 +116,35 @@
 }
 
 .special-list:hover svg path {
-    fill: #b91c1c;
+    fill: var(--color-primary-dark);
 }
 
 .special-list:hover .special-list-item {
-    color: #b91c1c;
+    color: var(--color-primary-dark);
 }
 
 .special-list > * {
-    margin-left: 1rem;
-    margin-right: 1rem;
+    margin-inline: 1rem 1rem;
 }
 
 .special-list-item {
     font-size: 1.25rem;
     font-weight: 600;
-    color: #27272a;
+    color: var(--color-bg-dark);
 }
 
 .special-list-item:nth-child(3) {
-    margin-left: 2.5rem;
-    margin-right: 2.5rem;
+    margin-inline: 2.5rem 2.5rem;
     font-size: 1rem;
     font-weight: 400;
 }
 
 .special-list-item svg {
-    margin-left: auto;
-    margin-right: auto;
+    margin-inline: auto;
     height: 4rem;
 }
 
 .special-list-item svg path {
-    fill: #18181b;
+    fill: var(--color-bg-darker);
     transition: all 700ms ease-in-out;
 }

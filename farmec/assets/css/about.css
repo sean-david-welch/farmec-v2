@@ -2,34 +2,30 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1.25rem;
-    margin-top: 2.5rem;
-    margin-bottom: 6rem;
-    margin-left: 9rem;
-    margin-right: 9rem;
+    margin-block: 2.5rem 6rem;
+    margin-inline: 9rem 9rem;
 }
 
 @media (max-width: 768px) {
     .employees {
         grid-template-columns: 1fr;
-        margin-left: auto;
-        margin-right: auto;
+        margin-inline: auto;
         gap: 1.25rem;
     }
 }
 
 .employee-card {
-    background-color: #27272a;
-    border: 4px solid #52525b;
+    background-color: var(--color-bg-dark);
+    border: 4px solid var(--color-border-dark);
     border-radius: 0.75rem;
     display: grid;
     grid-template-columns: 1fr;
-    margin-left: 2.5rem;
-    margin-right: 2.5rem;
+    margin-inline: 2.5rem 2.5rem;
     transition: all 700ms ease-in-out;
 }
 
 .employee-card:hover {
-    border-color: #dc2626;
+    border-color: var(--color-primary);
     transform: scale(1.025);
 }
 
@@ -38,8 +34,7 @@
 }
 
 .employee-card img {
-    margin-left: auto;
-    margin-right: auto;
+    margin-inline: auto;
     width: 100%;
     border-top-left-radius: 0.5rem;
     border-top-right-radius: 0.5rem;
@@ -55,11 +50,10 @@
     display: flex;
     flex-direction: column;
     text-align: center;
-    background-color: #27272a;
-    border: 4px solid #52525b;
+    background-color: var(--color-bg-dark);
+    border: 4px solid var(--color-border-dark);
     border-radius: 0.75rem;
-    margin-top: 2.5rem;
-    margin-bottom: 2.5rem;
+    margin-block: 2.5rem 2.5rem;
     padding: 1rem;
     width: 70vw;
     transition: all 700ms ease-in-out;
@@ -72,16 +66,14 @@
 }
 
 .timeline-card > * {
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
+    margin-inline: auto;
+    margin-block: 0.5rem 0.5rem;
     display: flex;
     flex-direction: row;
 }
 
 .timeline-card:hover {
-    border-color: #dc2626;
+    border-color: var(--color-primary);
     transform: scale(1.025);
 }
 
@@ -92,25 +84,22 @@
 }
 
 .info-card {
-    margin-left: 11rem;
-    margin-right: 11rem;
-    margin-top: 2.5rem;
-    margin-bottom: 2.5rem;
+    margin-inline: 11rem 11rem;
+    margin-block: 2.5rem 2.5rem;
     padding: 1rem;
-    background-color: #27272a;
-    border: 4px solid #52525b;
+    background-color: var(--color-bg-dark);
+    border: 4px solid var(--color-border-dark);
     border-radius: 0.75rem;
     transition: all 700ms ease-in-out;
 }
 
 @media (max-width: 768px) {
     .info-card {
-        margin-left: 2.5rem;
-        margin-right: 2.5rem;
+        margin-inline: 2.5rem 2.5rem;
     }
 }
 
 .info-card:hover {
-    border-color: #dc2626;
+    border-color: var(--color-primary);
     transform: scale(1.025);
 }
