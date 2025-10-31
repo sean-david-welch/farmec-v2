@@ -114,8 +114,10 @@ const GoogleMap = {
   }
 };
 
-export default {
+const Hooks = {
   ScrollToTop,
   Carousel,
   GoogleMap
 };
+
+export default Hooks;
