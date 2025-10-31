@@ -1,0 +1,22 @@
+<section id="Home">
+  <div class="home">
+    <%!-- Carousel Section --%>
+    <.carousel images={@carousel_images} />
+
+    <%!-- Displays Section (Stats & Specials) --%>
+    <.displays_section stats={@stats} specials={@specials} />
+
+    <%!-- Contact Section --%>
+    <.contact_section>
+      <%!-- Contact Form Placeholder (implement as needed) --%>
+      <div class="contact-form">
+        <h2>Send us a message</h2>
+        <p>Contact form will go here</p>
+        <%!-- You can create a ContactForm component or use Phoenix forms --%>
+      </div>
+    </.contact_section>
+
+    <%!-- Scroll to Top Button --%>
+    <.to_top_button />
+  </div>
+</section>
