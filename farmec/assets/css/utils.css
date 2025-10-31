@@ -20,7 +20,7 @@
     color: #1f2937;
 }
 
-.sectionHeading {
+.section-heading {
     margin-top: 1.25rem;
     margin-bottom: 1.25rem;
     margin-left: auto;
@@ -34,7 +34,7 @@
     text-underline-offset: 8px;
 }
 
-.mainHeading {
+.main-heading {
     margin-left: auto;
     margin-right: auto;
     margin-top: 0.5rem;
@@ -44,7 +44,7 @@
     text-decoration: underline;
 }
 
-.subHeading {
+.sub-heading {
     margin-left: 10rem;
     margin-right: 10rem;
     margin-bottom: 2rem;
@@ -56,7 +56,7 @@
 }
 
 @media (max-width: 768px) {
-    .subHeading {
+    .sub-heading {
         margin-left: 1.25rem;
         margin-right: 1.25rem;
     }
@@ -69,13 +69,13 @@
     font-weight: 400;
 }
 
-.aboutHeading {
+.about-heading {
     margin-left: 11rem;
     margin-right: 11rem;
 }
 
 @media (max-width: 768px) {
-    .aboutHeading {
+    .about-heading {
         margin-left: 0.5rem;
         margin-right: 0.5rem;
     }
@@ -90,7 +90,7 @@
     text-align: center;
 }
 
-.loginForm {
+.login-form {
     display: flex;
     flex-direction: column;
     border-radius: 1rem;
@@ -100,20 +100,20 @@
 }
 
 @media (max-width: 768px) {
-    .loginForm {
+    .login-form {
         margin-left: 1.25rem;
         margin-right: 1.25rem;
     }
 }
 
 .form > *,
-.loginForm > * {
+.login-form > * {
     margin-top: 1rem;
     margin-bottom: 1rem;
 }
 
 .form label,
-.loginForm label {
+.login-form label {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
     display: block;
@@ -124,7 +124,7 @@
 
 @media (prefers-color-scheme: dark) {
     .form label,
-    .loginForm label {
+    .login-form label {
         color: #ffffff;
     }
 }
@@ -132,9 +132,9 @@
 .form textarea,
 .form input,
 .form select,
-.loginForm textarea,
-.loginForm input,
-.loginForm select {
+.login-form textarea,
+.login-form input,
+.login-form select {
     margin-left: auto;
     margin-right: auto;
     display: block;
@@ -153,18 +153,18 @@
 .form textarea::placeholder,
 .form input::placeholder,
 .form select::placeholder,
-.loginForm textarea::placeholder,
-.loginForm input::placeholder,
-.loginForm select::placeholder {
+.login-form textarea::placeholder,
+.login-form input::placeholder,
+.login-form select::placeholder {
     color: #9ca3af;
 }
 
 .form textarea:focus,
 .form input:focus,
 .form select:focus,
-.loginForm textarea:focus,
-.loginForm input:focus,
-.loginForm select:focus {
+.login-form textarea:focus,
+.login-form input:focus,
+.login-form select:focus {
     border-color: #b91c1c;
 }
 
@@ -232,7 +232,7 @@
     white-space: nowrap;
 }
 
-.btnForm {
+.btn-form {
     z-index: 10;
     margin-left: auto;
     margin-right: auto;
@@ -257,11 +257,11 @@
     color: #f4f4f5;
 }
 
-.btnForm:hover {
+.btn-form:hover {
     background-color: #dc2626;
 }
 
-.btnFooter {
+.btn-footer {
     z-index: 10;
     margin-left: auto;
     margin-right: auto;
@@ -285,18 +285,18 @@
     width: 150px;
 }
 
-.btnFooter:hover {
+.btn-footer:hover {
     background-color: #dc2626;
 }
 
-.updateIcon {
+.update-icon {
     margin-left: 0.5rem;
     margin-right: 0.5rem;
     height: 1rem;
     width: 1rem;
 }
 
-.optionsBtn {
+.options-btn {
     margin-left: auto;
     margin-right: auto;
     display: flex;
@@ -304,7 +304,7 @@
     justify-content: center;
 }
 
-.optionsBtn > * {
+.options-btn > * {
     margin-left: 0.5rem;
     margin-right: 0.5rem;
 }
@@ -329,11 +329,11 @@
     opacity: 0;
 }
 
-.dialogVisible {
+.dialog-visible {
     opacity: 1;
 }
 
-.dialogBtn {
+.dialog-btn {
     position: fixed;
     left: 1.25rem;
     top: 1.25rem;
@@ -349,11 +349,11 @@
     transition: all 300ms ease-in-out;
 }
 
-.dialogBtn:hover {
+.dialog-btn:hover {
     border: 2px solid #b91c1c;
 }
 
-.dialogBtn svg {
+.dialog-btn svg {
     height: 1rem;
     width: 1rem;
 }
@@ -375,13 +375,13 @@
     }
 }
 
-.loginSection {
+.login-section {
     margin-left: 18rem;
     margin-right: 18rem;
 }
 
 @media (max-width: 768px) {
-    .loginSection {
+    .login-section {
         margin-left: 1.25rem;
         margin-right: 1.25rem;
     }
@@ -410,7 +410,7 @@
     }
 }
 
-.accountIndex {
+.account-index {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -426,7 +426,7 @@
 }
 
 @media (max-width: 768px) {
-    .accountIndex {
+    .account-index {
         margin-left: 1.25rem;
         margin-right: 1.25rem;
     }
@@ -437,7 +437,7 @@
     margin-bottom: 0.5rem;
 }
 
-.indexHeading {
+.index-heading {
     margin-top: 1.25rem;
     margin-bottom: 1.25rem;
     font-size: 1.25rem;
@@ -448,16 +448,16 @@
     text-underline-offset: 8px;
 }
 
-.indexItem {
+.index-item {
     transition: all 700ms ease-in-out;
 }
 
-.indexItem:hover {
+.index-item:hover {
     color: #dc2626;
 }
 
 /* To Top Button */
-.toTopButton {
+.to-top-button {
     position: fixed;
     bottom: 1.25rem;
     right: 1.25rem;
@@ -473,24 +473,24 @@
     transition: all 300ms ease-in-out;
 }
 
-.toTopButton svg {
+.to-top-button svg {
     height: 1.5rem;
     width: 1.5rem;
 }
 
-.toTopButton:hover,
-.toTopButton:hover svg path {
+.to-top-button:hover,
+.to-top-button:hover svg path {
     border: 2px solid #b91c1c;
     background-color: #27272a;
     fill: #b91c1c;
 }
 
-.toTopButton svg path {
+.to-top-button svg path {
     fill: #f3f4f6;
     transition: all 150ms ease-in-out;
 }
 
-.mainIcon svg {
+.main-icon svg {
     margin-left: auto;
     margin-right: auto;
     height: 5rem;
@@ -498,7 +498,7 @@
 }
 
 /* Loading */
-.loadingPage {
+.loading-page {
     height: 100vh;
     width: 100vw;
 }
@@ -532,12 +532,12 @@
     transform: translate(-50%, -50%);
 }
 
-.routesList {
+.routes-list {
     display: flex;
     flex-direction: row;
 }
 
-.routesList > * {
+.routes-list > * {
     margin-left: 0.5rem;
     margin-right: 0.5rem;
 }

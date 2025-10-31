@@ -1,4 +1,4 @@
-.accountMap {
+.account-map {
     display: grid;
     grid-template-columns: 1fr;
     border-radius: 1rem;
@@ -12,14 +12,14 @@
 }
 
 @media (max-width: 768px) {
-    .accountMap {
+    .account-map {
         margin-left: 1.25rem;
         margin-right: 1.25rem;
         padding: 0.5rem;
     }
 }
 
-.accountSection {
+.account-section {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     border-radius: 1rem;
@@ -33,7 +33,7 @@
 }
 
 @media (max-width: 768px) {
-    .accountSection {
+    .account-section {
         margin-left: 1.25rem;
         margin-right: 1.25rem;
         grid-template-columns: 1fr;
@@ -41,14 +41,14 @@
     }
 }
 
-.accountSection > * {
+.account-section > * {
     display: flex;
     flex-direction: column;
     margin-top: 2.5rem;
     margin-bottom: 2.5rem;
 }
 
-.productView {
+.product-view {
     margin-left: 18rem;
     margin-right: 18rem;
     margin-top: 2.5rem;
@@ -64,29 +64,29 @@
 }
 
 @media (max-width: 768px) {
-    .productView {
+    .product-view {
         margin-left: 0.5rem;
         margin-right: 0.5rem;
     }
 }
 
-.productView > * {
+.product-view > * {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
 }
 
-.productView:hover {
+.product-view:hover {
     border-color: #b91c1c;
 }
 
-.productView img {
+.product-view img {
     margin-left: auto;
     margin-right: auto;
     border-radius: 0.75rem;
     transition: all 500ms ease-in-out;
 }
 
-.carouselAdmin {
+.carousel-admin {
     margin-left: 18rem;
     margin-right: 18rem;
     border-radius: 1rem;
@@ -98,13 +98,13 @@
 }
 
 @media (max-width: 768px) {
-    .carouselAdmin {
+    .carousel-admin {
         margin-left: 0.5rem;
         margin-right: 0.5rem;
     }
 }
 
-.carouselAdmin > img {
+.carousel-admin > img {
     margin-left: auto;
     margin-right: auto;
     margin-top: 1rem;
@@ -112,7 +112,7 @@
     border-radius: 1rem;
 }
 
-.warrantyDetail {
+.warranty-detail {
     display: flex;
     flex-direction: column;
     margin-left: 13rem;
@@ -127,17 +127,17 @@
 }
 
 @media (max-width: 768px) {
-    .warrantyDetail {
+    .warranty-detail {
         margin-left: 1.25rem;
         margin-right: 1.25rem;
     }
 }
 
-.warrantyDetail:hover {
+.warranty-detail:hover {
     border-color: #b91c1c;
 }
 
-.warrantyGrid {
+.warranty-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
 }
@@ -147,7 +147,7 @@
     text-transform: capitalize;
 }
 
-.warrantyView {
+.warranty-view {
     transition: all 700ms ease-in-out;
     border-radius: 1rem;
     border: 4px solid #27272a;
@@ -159,29 +159,29 @@
     padding: 0.5rem;
 }
 
-.warrantyView:hover {
+.warranty-view:hover {
     border-color: #b91c1c;
 }
 
 @media (max-width: 768px) {
-    .warrantyView {
+    .warranty-view {
         margin-left: 1.25rem;
         margin-right: 1.25rem;
     }
 }
 
-.userGrid {
+.user-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
 }
 
 @media (max-width: 768px) {
-    .userGrid {
+    .user-grid {
         grid-template-columns: 1fr;
     }
 }
 
-.userSection {
+.user-section {
     margin-left: 4rem;
     margin-right: 4rem;
     margin-top: 1rem;
@@ -193,24 +193,24 @@
 }
 
 @media (max-width: 768px) {
-    .userSection {
+    .user-section {
         margin-left: 0.5rem;
         margin-right: 0.5rem;
     }
 }
 
-.userCard {
+.user-card {
     display: flex;
     flex-direction: column;
 }
 
 @media (max-width: 768px) {
-    .userCard {
+    .user-card {
         flex-direction: column;
     }
 }
 
-.userCard > * {
+.user-card > * {
     margin-top: 1rem;
     margin-bottom: 1rem;
 }

@@ -1,9 +1,9 @@
-.blogGrid {
+.blog-grid {
     display: grid;
     grid-template-columns: 1fr;
 }
 
-.blogCard {
+.blog-card {
     display: flex;
     flex-direction: row;
     margin-left: 13rem;
@@ -17,19 +17,19 @@
 }
 
 @media (max-width: 768px) {
-    .blogCard {
+    .blog-card {
         margin-left: 1.25rem;
         margin-right: 1.25rem;
         flex-direction: column-reverse;
     }
 }
 
-.blogCard:hover {
+.blog-card:hover {
     border-color: #dc2626;
     transform: scale(1.025);
 }
 
-.blogCard img {
+.blog-card img {
     width: 100%;
     max-width: 500px;
     border-top-left-radius: 0.5rem;
@@ -39,7 +39,7 @@
 }
 
 @media (max-width: 768px) {
-    .blogCard img {
+    .blog-card img {
         border-bottom-left-radius: 0.5rem;
         border-bottom-right-radius: 0.5rem;
         border-top-left-radius: 0;
@@ -48,19 +48,19 @@
     }
 }
 
-.blogLink {
+.blog-link {
     display: flex;
     flex-direction: column;
     justify-content: center;
     padding: 1rem;
 }
 
-.blogLink > * {
+.blog-link > * {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
 }
 
-.blogDetail {
+.blog-detail {
     margin-left: auto;
     margin-right: auto;
     display: flex;
@@ -72,7 +72,7 @@
 }
 
 @media (max-width: 768px) {
-    .blogDetail {
+    .blog-detail {
         margin-left: 1.25rem;
         margin-right: 1.25rem;
         margin-top: 1.25rem;
@@ -80,16 +80,16 @@
     }
 }
 
-.blogDetail img {
+.blog-detail img {
     width: 600px;
 }
 
-.blogDetail > * {
+.blog-detail > * {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
 }
 
-.blogBody {
+.blog-body {
     border-radius: 0.75rem;
     border: 4px solid #52525b;
     background-color: #27272a;
@@ -101,18 +101,18 @@
 }
 
 @media (max-width: 768px) {
-    .blogBody {
+    .blog-body {
         padding-left: 1.25rem;
         padding-right: 1.25rem;
     }
 }
 
-.blogBody:hover {
+.blog-body:hover {
     border-color: #dc2626;
     transform: scale(1.005);
 }
 
-.blogBody img {
+.blog-body img {
     margin-left: auto;
     margin-right: auto;
     margin-top: 1rem;

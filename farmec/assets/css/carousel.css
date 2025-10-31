@@ -1,4 +1,4 @@
-.heroContainer {
+.hero-container {
     position: relative;
     height: 100vh;
     width: 100vw;
@@ -28,21 +28,21 @@
     transition: all 200ms ease-in-out;
 }
 
-.fadeIn {
+.fade-in {
     opacity: 1;
 }
 
-.fadeOut {
+.fade-out {
     opacity: 0;
 }
 
-.slideButton {
+.slide-button {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.slideButton svg {
+.slide-button svg {
     height: 1.5rem;
     width: 1.5rem;
     z-index: 10;
@@ -55,12 +55,12 @@
     padding-bottom: 0.5rem;
 }
 
-.slideButton svg path {
+.slide-button svg path {
     z-index: 20;
     fill: #f3f4f6;
 }
 
-.prevButton {
+.prev-button {
     position: absolute;
     left: 0.25rem;
     top: 50%;
@@ -68,7 +68,7 @@
     white-space: nowrap;
 }
 
-.nextButton {
+.next-button {
     position: absolute;
     right: 0.25rem;
     top: 50%;

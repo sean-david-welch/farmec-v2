@@ -1,4 +1,4 @@
-.sideNav {
+.side-nav {
     position: fixed;
     left: 0;
     top: 0;
@@ -15,12 +15,12 @@
 }
 
 @media (min-width: 1024px) {
-    .sideNav {
+    .side-nav {
         display: none;
     }
 }
 
-.sideNavOpen {
+.side-nav-open {
     position: fixed;
     left: 0;
     top: 0;
@@ -39,12 +39,12 @@
 }
 
 @media (min-width: 1024px) {
-    .sideNavOpen {
+    .side-nav-open {
         display: none;
     }
 }
 
-.sideNavClosed {
+.side-nav-closed {
     transform: translateX(-100%);
     opacity: 0;
     transition: all 700ms ease-in-out;
@@ -66,7 +66,7 @@
 }
 
 /* Navigtion */
-.navList {
+.nav-list {
     margin-top: 5rem;
     margin-bottom: 5rem;
     display: flex;
@@ -75,7 +75,7 @@
     align-items: flex-start;
 }
 
-.navItem {
+.nav-item {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
@@ -87,11 +87,11 @@
     transition: all 500ms ease-in-out;
 }
 
-.navItem:hover {
+.nav-item:hover {
     color: #b91c1c;
 }
 
-.navItem svg {
+.nav-item svg {
     height: 1rem;
     margin-left: 1.25rem;
     margin-right: 1.25rem;
@@ -100,7 +100,7 @@
 }
 
 /* buttons */
-.navIcon {
+.nav-icon {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 0.5rem;
@@ -112,17 +112,17 @@
     z-index: 40;
 }
 
-.navIcon:hover {
+.nav-icon:hover {
     pointer-events: auto;
 }
 
 @media (min-width: 1024px) {
-    .navIcon {
+    .nav-icon {
         display: none;
     }
 }
 
-.navIcon img {
+.nav-icon img {
     position: fixed;
     left: 1.25rem;
     top: 1.25rem;

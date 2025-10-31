@@ -1,4 +1,4 @@
-.supplierCard {
+.supplier-card {
     background-color: #27272a;
     margin-left: 13rem;
     margin-right: 13rem;
@@ -15,23 +15,23 @@
 }
 
 @media (max-width: 768px) {
-    .supplierCard {
+    .supplier-card {
         margin-left: 1.25rem;
         margin-right: 1.25rem;
     }
 }
 
-.supplierCard:hover {
+.supplier-card:hover {
     border-color: #a1a1aa;
     transform: scale(1.025);
 }
 
-.supplierCard > * {
+.supplier-card > * {
     margin-top: 1rem;
     margin-bottom: 1rem;
 }
 
-.sparepartsCard {
+.spareparts-card {
     background-color: #27272a;
     margin-left: 13rem;
     margin-right: 13rem;
@@ -47,30 +47,30 @@
 }
 
 @media (max-width: 768px) {
-    .sparepartsCard {
+    .spareparts-card {
         margin-left: 1.25rem;
         margin-right: 1.25rem;
     }
 }
 
-.sparepartsCard:hover {
+.spareparts-card:hover {
     border-color: #a1a1aa;
     transform: scale(1.025);
 }
 
-.sparepartsGrid {
+.spareparts-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
 }
 
 @media (max-width: 768px) {
-    .sparepartsGrid {
+    .spareparts-grid {
         display: flex;
         flex-direction: column-reverse;
     }
 }
 
-.sparepartsInfo {
+.spareparts-info {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -79,14 +79,14 @@
     padding: 1rem;
 }
 
-.sparepartsGrid img {
+.spareparts-grid img {
     border-top-right-radius: 1rem;
     border-bottom-right-radius: 1rem;
     border-left: 4px solid #52525b;
 }
 
 @media (max-width: 768px) {
-    .sparepartsGrid img {
+    .spareparts-grid img {
         border-top-left-radius: 0.75rem;
         border-top-right-radius: 0.75rem;
         border-bottom: 4px solid;
@@ -95,7 +95,7 @@
     }
 }
 
-.partsColumn {
+.parts-column {
     display: flex;
     flex-direction: column-reverse;
 }

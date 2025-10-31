@@ -17,7 +17,7 @@
     }
 }
 
-.employeeCard {
+.employee-card {
     background-color: #27272a;
     border: 4px solid #52525b;
     border-radius: 0.75rem;
@@ -28,16 +28,16 @@
     transition: all 700ms ease-in-out;
 }
 
-.employeeCard:hover {
+.employee-card:hover {
     border-color: #dc2626;
     transform: scale(1.025);
 }
 
-.employeeCard > * {
+.employee-card > * {
     margin-bottom: 2.5rem;
 }
 
-.employeeCard img {
+.employee-card img {
     margin-left: auto;
     margin-right: auto;
     width: 100%;
@@ -51,7 +51,7 @@
     align-items: center;
 }
 
-.timelineCard {
+.timeline-card {
     display: flex;
     flex-direction: column;
     text-align: center;
@@ -66,12 +66,12 @@
 }
 
 @media (max-width: 768px) {
-    .timelineCard {
+    .timeline-card {
         width: 70vw;
     }
 }
 
-.timelineCard > * {
+.timeline-card > * {
     margin-left: auto;
     margin-right: auto;
     margin-top: 0.5rem;
@@ -80,18 +80,18 @@
     flex-direction: row;
 }
 
-.timelineCard:hover {
+.timeline-card:hover {
     border-color: #dc2626;
     transform: scale(1.025);
 }
 
-.clockIcon {
+.clock-icon {
     height: 2rem;
     width: 2rem;
     margin-right: 0.5rem;
 }
 
-.infoCard {
+.info-card {
     margin-left: 11rem;
     margin-right: 11rem;
     margin-top: 2.5rem;
@@ -104,13 +104,13 @@
 }
 
 @media (max-width: 768px) {
-    .infoCard {
+    .info-card {
         margin-left: 2.5rem;
         margin-right: 2.5rem;
     }
 }
 
-.infoCard:hover {
+.info-card:hover {
     border-color: #dc2626;
     transform: scale(1.025);
 }
