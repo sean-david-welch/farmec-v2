@@ -1,4 +1,4 @@
-.machineCard {
+.machine-card {
     display: grid;
     grid-template-columns: 1fr;
     margin-top: 0.5rem;
@@ -8,13 +8,13 @@
 }
 
 @media (max-width: 768px) {
-    .machineCard {
+    .machine-card {
         margin-left: 1.25rem;
         margin-right: 1.25rem;
     }
 }
 
-.machineGrid {
+.machine-grid {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -25,25 +25,25 @@
 }
 
 @media (max-width: 768px) {
-    .machineGrid {
+    .machine-grid {
         flex-direction: column;
     }
 }
 
-.machineGrid:hover {
+.machine-grid:hover {
     background-color: #3f3f46;
     border-color: #18181b;
     transform: scale(1.01);
 }
 
-.machineGrid img {
+.machine-grid img {
     border-top-left-radius: 1rem;
     border-bottom-left-radius: 1rem;
     border-right: 4px solid #27272a;
 }
 
 @media (max-width: 768px) {
-    .machineGrid img {
+    .machine-grid img {
         object-fit: cover;
         border-bottom: 4px solid;
         border-right: 0;
@@ -52,13 +52,13 @@
     }
 }
 
-.machineInfo {
+.machine-info {
     display: flex;
     flex-direction: column;
     padding: 1rem;
 }
 
-.machineInfo > * {
+.machine-info > * {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
 }

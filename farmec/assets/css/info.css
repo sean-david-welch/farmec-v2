@@ -3,7 +3,7 @@
     padding-bottom: 1.25rem;
 }
 
-.infoSection {
+.info-section {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -15,22 +15,22 @@
 }
 
 @media (max-width: 768px) {
-    .infoSection {
+    .info-section {
         width: 80vw;
     }
 }
 
-.infoSection > * {
+.info-section > * {
     margin-left: auto;
     margin-right: auto;
 }
 
-.infoSection {
+.info-section {
     margin-bottom: 1.25rem;
     margin-top: 2.5rem;
 }
 
-.infoSection .mainHeading {
+.info-section .main-heading {
     text-decoration-color: #dc2626;
 }
 
@@ -51,30 +51,30 @@
     }
 }
 
-.statList {
+.stat-list {
     display: grid;
     grid-template-columns: 1fr;
     transition: all 700ms ease-in-out;
 }
 
-.statList:hover {
+.stat-list:hover {
     transform: scale(1.05);
 }
 
-.statList:hover svg path {
+.stat-list:hover svg path {
     fill: #b91c1c;
 }
 
-.statList:hover .statListItem {
+.stat-list:hover .stat-list-item {
     color: #b91c1c;
 }
 
-.statList > * {
+.stat-list > * {
     margin-left: 1rem;
     margin-right: 1rem;
 }
 
-.statListItem {
+.stat-list-item {
     margin-left: 1.25rem;
     margin-right: 1.25rem;
     font-size: 1.25rem;
@@ -82,18 +82,18 @@
     color: #27272a;
 }
 
-.statListItem:nth-child(3) {
+.stat-list-item:nth-child(3) {
     font-size: 1.125rem;
     font-weight: 400;
 }
 
-.statListItem svg {
+.stat-list-item svg {
     margin-left: auto;
     margin-right: auto;
     height: 4rem;
 }
 
-.statListItem svg path {
+.stat-list-item svg path {
     fill: #18181b;
     transition: all 700ms ease-in-out;
 }
@@ -112,49 +112,49 @@
     }
 }
 
-.specialList {
+.special-list {
     display: grid;
     grid-template-columns: 1fr;
     transition: all 700ms ease-in-out;
 }
 
-.specialList:hover {
+.special-list:hover {
     transform: scale(1.05);
 }
 
-.specialList:hover svg path {
+.special-list:hover svg path {
     fill: #b91c1c;
 }
 
-.specialList:hover .specialListItem {
+.special-list:hover .special-list-item {
     color: #b91c1c;
 }
 
-.specialList > * {
+.special-list > * {
     margin-left: 1rem;
     margin-right: 1rem;
 }
 
-.specialListItem {
+.special-list-item {
     font-size: 1.25rem;
     font-weight: 600;
     color: #27272a;
 }
 
-.specialListItem:nth-child(3) {
+.special-list-item:nth-child(3) {
     margin-left: 2.5rem;
     margin-right: 2.5rem;
     font-size: 1rem;
     font-weight: 400;
 }
 
-.specialListItem svg {
+.special-list-item svg {
     margin-left: auto;
     margin-right: auto;
     height: 4rem;
 }
 
-.specialListItem svg path {
+.special-list-item svg path {
     fill: #18181b;
     transition: all 700ms ease-in-out;
 }
