@@ -232,7 +232,7 @@ defmodule FarmecWeb.CustomComponents do
     ~H"""
     <section id="Hero" class={@class}>
       <div class="hero-container">
-        <div class="slideshow" id="carousel" phx-hook="Carousel" data-images={Jason.encode!(@images)}>
+        <div class="slideshow" id="carousel" phx-hook="Carousel">
           <%= for {image, index} <- Enum.with_index(@images) do %>
             <img
               src={image}
