@@ -4,9 +4,9 @@ defmodule FarmecWeb.PageController do
   def home(conn, _params) do
     # Mock carousel images (replace with DB query later)
     carousel_images = [
-      "/images/carousel1.jpg",
-      "/images/carousel2.jpg",
-      "/images/carousel3.jpg"
+      "/default.jpg",
+      "/default.jpg",
+      "/default.jpg"
     ]
 
     # Get display info from our static module
