@@ -1,14 +1,12 @@
 .navbar {
-    margin-top: auto;
-    margin-bottom: auto;
+    margin-block: auto auto;
     display: flex;
     width: 100%;
     flex-direction: row;
     justify-content: center;
-    background-color: #18181b;
-    padding-top: 1.25rem;
-    padding-bottom: 1.25rem;
-    color: #e5e7eb;
+    background-color: var(--color-bg-darker);
+    padding-block: 1.25rem 1.25rem;
+    color: var(--color-text-light);
     position: fixed;
     top: 0;
     z-index: 50;
@@ -21,19 +19,17 @@
 }
 
 .transparent-nav {
-    margin-top: auto;
-    margin-bottom: auto;
+    margin-block: auto auto;
     display: flex;
     width: 100%;
     flex-direction: row;
     justify-content: center;
-    padding-top: 1.25rem;
-    padding-bottom: 1.25rem;
+    padding-block: 1.25rem 1.25rem;
     position: fixed;
     top: 0;
     z-index: 50;
     background-color: transparent;
-    color: #18181b;
+    color: var(--color-bg-darker);
 }
 
 @media (max-width: 768px) {
@@ -47,18 +43,15 @@
 }
 
 .nav-list {
-    margin-top: auto;
-    margin-bottom: auto;
+    margin-block: auto auto;
     display: flex;
     flex-direction: row;
     justify-content: center;
 }
 
 .nav-list > * {
-    margin-left: 3rem;
-    margin-right: 3rem;
-    margin-top: auto;
-    margin-bottom: auto;
+    margin-inline: 3rem 3rem;
+    margin-block: auto auto;
 }
 
 .nav-item {
@@ -78,20 +71,18 @@
 }
 
 .nav-item:hover {
-    color: #dc2626;
+    color: var(--color-primary);
     border-radius: 1rem;
     text-decoration: underline;
-    text-decoration-color: #dc2626;
+    text-decoration-color: var(--color-primary);
     text-decoration-thickness: 3px;
     text-underline-offset: 10px;
 }
 
 .nav-drop {
-    background-color: #18181b;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 2.5rem;
-    margin-bottom: 2.5rem;
+    background-color: var(--color-bg-darker);
+    margin-inline: auto;
+    margin-block: 2.5rem 2.5rem;
     width: 10rem;
     position: absolute;
     display: flex;
@@ -114,20 +105,16 @@
 .nav-drop-item {
     font-size: 0.875rem;
     font-weight: 600;
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-    margin-left: auto;
-    margin-right: auto;
+    margin-block: 0.5rem 0.5rem;
+    padding-inline: 0.5rem;
+    padding-block: 0.5rem 0.5rem;
+    margin-inline: auto;
     width: 10rem;
     border-radius: 0.5rem;
-    color: #e5e7eb;
+    color: var(--color-text-light);
     transition: colors 500ms ease-in-out;
 }
 
 .nav-drop-item:hover {
-    background-color: #dc2626;
+    background-color: var(--color-primary);
 }
