@@ -17,7 +17,7 @@ defmodule FarmecWeb do
   those modules here.
   """
 
-  def static_paths, do: ~w(assets fonts images favicon.ico robots.txt)
+  def static_paths, do: ~w(assets fonts images favicon.ico favicon.svg robots.txt sitemap.xml default.jpg farmeclogo.ico google84e27e46e4dcaee4.html)
 
   def router do
     quote do
