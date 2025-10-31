@@ -73,11 +73,13 @@ defmodule Farmec.MixProject do
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
       "assets.setup": ["esbuild.install --if-missing"],
-      "assets.build": ["esbuild farmec"],
+      "assets.build": ["copy_static", "esbuild farmec"],
       "assets.deploy": [
+        "copy_static",
         "esbuild farmec --minify",
         "phx.digest"
-      ]
+      ],
+      copy_static: ["cmd cp -r assets/static/. priv/static/"]
     ]
   end
 end
