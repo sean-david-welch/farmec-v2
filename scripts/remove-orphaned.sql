@@ -2,34 +2,34 @@
 PRAGMA foreign_keys = OFF;
 
 -- Find orphaned Videos
-SELECT id, supplier_id FROM Video WHERE supplier_id NOT IN (SELECT id FROM Supplier);
+SELECT id, supplier FROM Video WHERE supplier NOT IN (SELECT id FROM Supplier) AND supplier IS NOT NULL;
 
 -- Delete orphaned Videos
-DELETE FROM Video WHERE supplier_id NOT IN (SELECT id FROM Supplier);
+DELETE FROM Video WHERE supplier NOT IN (SELECT id FROM Supplier) AND supplier IS NOT NULL;
 
 -- Find orphaned Products
-SELECT id, machine_id FROM Product WHERE machine_id NOT IN (SELECT id FROM Machine);
+SELECT id, machine FROM Product WHERE machine NOT IN (SELECT id FROM Machine) AND machine IS NOT NULL;
 
 -- Delete orphaned Products
-DELETE FROM Product WHERE machine_id NOT IN (SELECT id FROM Machine);
+DELETE FROM Product WHERE machine NOT IN (SELECT id FROM Machine) AND machine IS NOT NULL;
 
 -- Find orphaned PartsRequired
-SELECT id, warranty_id FROM PartsRequired WHERE warranty_id NOT IN (SELECT id FROM WarrantyClaim);
+SELECT id, warranty FROM PartsRequired WHERE warranty NOT IN (SELECT id FROM WarrantyClaim) AND warranty IS NOT NULL;
 
 -- Delete orphaned PartsRequired
-DELETE FROM PartsRequired WHERE warranty_id NOT IN (SELECT id FROM WarrantyClaim);
+DELETE FROM PartsRequired WHERE warranty NOT IN (SELECT id FROM WarrantyClaim) AND warranty IS NOT NULL;
 
 -- Find orphaned SpareParts
-SELECT id, supplier_id FROM SpareParts WHERE supplier_id NOT IN (SELECT id FROM Supplier);
+SELECT id, supplier FROM SpareParts WHERE supplier NOT IN (SELECT id FROM Supplier) AND supplier IS NOT NULL;
 
 -- Delete orphaned SpareParts
-DELETE FROM SpareParts WHERE supplier_id NOT IN (SELECT id FROM Supplier);
+DELETE FROM SpareParts WHERE supplier NOT IN (SELECT id FROM Supplier) AND supplier IS NOT NULL;
 
 -- Find orphaned Machine
-SELECT id, supplier_id FROM Machine WHERE supplier_id NOT IN (SELECT id FROM Supplier);
+SELECT id, supplier FROM Machine WHERE supplier NOT IN (SELECT id FROM Supplier) AND supplier IS NOT NULL;
 
 -- Delete orphaned Machine
-DELETE FROM Machine WHERE supplier_id NOT IN (SELECT id FROM Supplier);
+DELETE FROM Machine WHERE supplier NOT IN (SELECT id FROM Supplier) AND supplier IS NOT NULL;
 
 -- Re-enable foreign key constraints
 PRAGMA foreign_keys = ON;
