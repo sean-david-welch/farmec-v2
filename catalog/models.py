@@ -27,7 +27,7 @@ class Supplier(BaseModel):
 
 class Machine(BaseModel):
     id = models.TextField(primary_key=True, verbose_name=_('ID'))
-    supplier = models.TextField(blank=True, null=True, verbose_name=_('supplier'), help_text=_('Reference to Supplier ID'))
+    supplier = models.ForeignKey('Supplier', on_delete=models.CASCADE, blank=True, null=True, verbose_name=_('supplier'), help_text=_('Supplier that manufactures this machine'))
     name = models.CharField(max_length=255, verbose_name=_('name'), help_text=_('Machine model name or title'))
     machine_image = models.URLField(blank=True, null=True, verbose_name=_('image'), help_text=_('URL to machine product image'))
     description = models.TextField(blank=True, null=True, verbose_name=_('description'), help_text=_('Detailed machine specifications and features'))
@@ -44,7 +44,7 @@ class Machine(BaseModel):
 
 class Product(BaseModel):
     id = models.TextField(primary_key=True, verbose_name=_('ID'))
-    machine = models.TextField(blank=True, null=True, verbose_name=_('machine'), help_text=_('Reference to Machine ID this product belongs to'))
+    machine = models.ForeignKey('Machine', on_delete=models.CASCADE, blank=True, null=True, verbose_name=_('machine'), help_text=_('Machine this product is associated with'))
     name = models.CharField(max_length=255, verbose_name=_('name'), help_text=_('Product name or part name'))
     product_image = models.URLField(blank=True, null=True, verbose_name=_('image'), help_text=_('URL to product image'))
     description = models.TextField(blank=True, null=True, verbose_name=_('description'), help_text=_('Product description and details'))
@@ -61,7 +61,7 @@ class Product(BaseModel):
 
 class Spareparts(BaseModel):
     id = models.TextField(primary_key=True, verbose_name=_('ID'))
-    supplier = models.TextField(blank=True, null=True, verbose_name=_('supplier'), help_text=_('Reference to Supplier ID'))
+    supplier = models.ForeignKey('Supplier', on_delete=models.CASCADE, blank=True, null=True, verbose_name=_('supplier'), help_text=_('Supplier that provides this spare part'))
     name = models.CharField(max_length=255, verbose_name=_('name'), help_text=_('Spare part name or description'))
     parts_image = models.URLField(blank=True, null=True, verbose_name=_('image'), help_text=_('URL to spare part image'))
     spare_parts_link = models.URLField(blank=True, null=True, verbose_name=_('link'), help_text=_('URL to spare part datasheet or ordering page'))
@@ -91,7 +91,7 @@ class Lineitems(BaseModel):
 
 class Video(BaseModel):
     id = models.TextField(primary_key=True, verbose_name=_('ID'))
-    supplier = models.TextField(blank=True, null=True, verbose_name=_('supplier'), help_text=_('Reference to Supplier ID'))
+    supplier = models.ForeignKey('Supplier', on_delete=models.CASCADE, blank=True, null=True, verbose_name=_('supplier'), help_text=_('Supplier associated with this video'))
     web_url = models.URLField(blank=True, null=True, verbose_name=_('URL'), help_text=_('URL to video page or hosting platform'))
     title = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('title'), help_text=_('Video title or name'))
     description = models.TextField(blank=True, null=True, verbose_name=_('description'), help_text=_('Video description and content info'))

@@ -28,7 +28,7 @@ class Warrantyclaim(BaseModel):
 
 class Partsrequired(BaseModel):
     id = models.TextField(primary_key=True, verbose_name=_('ID'))
-    warranty = models.TextField(blank=True, null=True, verbose_name=_('warranty'), help_text=_('Reference to Warrantyclaim ID'))
+    warranty = models.ForeignKey('Warrantyclaim', on_delete=models.CASCADE, blank=True, null=True, verbose_name=_('warranty claim'), help_text=_('Warranty claim this part is required for'))
     part_number = models.CharField(max_length=100, blank=True, null=True, db_index=True, verbose_name=_('part number'), help_text=_('Supplier part number or SKU'))
     quantity_needed = models.PositiveIntegerField(verbose_name=_('quantity needed'), help_text=_('Number of units required'))
     invoice_number = models.CharField(max_length=100, blank=True, null=True, verbose_name=_('invoice number'), help_text=_('Supplier invoice reference'))
