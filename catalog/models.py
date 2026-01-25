@@ -1,7 +1,8 @@
 from django.db import models
+from base_model import BaseModel
 
 
-class Supplier(models.Model):
+class Supplier(BaseModel):
     id = models.TextField(primary_key=True)
     name = models.TextField()
     logo_image = models.TextField(blank=True, null=True)
@@ -21,7 +22,7 @@ class Supplier(models.Model):
         db_table = 'Supplier'
 
 
-class Machine(models.Model):
+class Machine(BaseModel):
     id = models.TextField(primary_key=True)
     supplier = models.TextField(blank=True, null=True)
     name = models.TextField()
@@ -36,7 +37,7 @@ class Machine(models.Model):
         db_table = 'Machine'
 
 
-class Product(models.Model):
+class Product(BaseModel):
     id = models.TextField(primary_key=True)
     machine = models.TextField(blank=True, null=True)
     name = models.TextField()
@@ -50,7 +51,7 @@ class Product(models.Model):
         db_table = 'Product'
 
 
-class Spareparts(models.Model):
+class Spareparts(BaseModel):
     id = models.TextField(primary_key=True)
     supplier = models.TextField(blank=True, null=True)
     name = models.TextField()
@@ -63,7 +64,7 @@ class Spareparts(models.Model):
         db_table = 'SpareParts'
 
 
-class Lineitems(models.Model):
+class Lineitems(BaseModel):
     id = models.TextField(primary_key=True)
     name = models.TextField()
     price = models.FloatField()
@@ -74,7 +75,7 @@ class Lineitems(models.Model):
         db_table = 'LineItems'
 
 
-class Video(models.Model):
+class Video(BaseModel):
     id = models.TextField(primary_key=True)
     supplier = models.TextField(blank=True, null=True)
     web_url = models.TextField(blank=True, null=True)

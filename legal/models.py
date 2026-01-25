@@ -1,7 +1,8 @@
 from django.db import models
+from base_model import BaseModel
 
 
-class Privacy(models.Model):
+class Privacy(BaseModel):
     id = models.TextField(primary_key=True)
     title = models.TextField()
     body = models.TextField(blank=True, null=True)
@@ -12,7 +13,7 @@ class Privacy(models.Model):
         db_table = 'Privacy'
 
 
-class Terms(models.Model):
+class Terms(BaseModel):
     id = models.TextField(primary_key=True)
     title = models.TextField()
     body = models.TextField(blank=True, null=True)

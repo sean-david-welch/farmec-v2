@@ -1,7 +1,8 @@
 from django.db import models
+from base_model import BaseModel
 
 
-class Employee(models.Model):
+class Employee(BaseModel):
     id = models.TextField(primary_key=True)
     name = models.TextField()
     email = models.TextField()
