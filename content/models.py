@@ -1,8 +1,7 @@
 from django.db import models
-from base_model import BaseModel
 
 
-class Blog(BaseModel):
+class Blog(models.Model):
     id = models.TextField(primary_key=True)
     title = models.TextField()
     date = models.TextField(blank=True, null=True)
@@ -17,7 +16,7 @@ class Blog(BaseModel):
         db_table = 'Blog'
 
 
-class Carousel(BaseModel):
+class Carousel(models.Model):
     id = models.TextField(primary_key=True)
     name = models.TextField()
     image = models.TextField(blank=True, null=True)
@@ -28,7 +27,7 @@ class Carousel(BaseModel):
         db_table = 'Carousel'
 
 
-class Exhibition(BaseModel):
+class Exhibition(models.Model):
     id = models.TextField(primary_key=True)
     title = models.TextField()
     date = models.TextField(blank=True, null=True)
@@ -41,7 +40,7 @@ class Exhibition(BaseModel):
         db_table = 'Exhibition'
 
 
-class Timeline(BaseModel):
+class Timeline(models.Model):
     id = models.TextField(primary_key=True)
     title = models.TextField()
     date = models.TextField(blank=True, null=True)

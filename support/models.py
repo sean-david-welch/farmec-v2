@@ -1,8 +1,7 @@
 from django.db import models
-from base_model import BaseModel
 
 
-class Warrantyclaim(BaseModel):
+class Warrantyclaim(models.Model):
     id = models.TextField(primary_key=True)
     dealer = models.TextField()
     dealer_contact = models.TextField(blank=True, null=True)
@@ -23,7 +22,7 @@ class Warrantyclaim(BaseModel):
         db_table = 'WarrantyClaim'
 
 
-class Partsrequired(BaseModel):
+class Partsrequired(models.Model):
     id = models.TextField(primary_key=True)
     warranty = models.TextField(blank=True, null=True)
     part_number = models.TextField(blank=True, null=True)
@@ -36,7 +35,7 @@ class Partsrequired(BaseModel):
         db_table = 'PartsRequired'
 
 
-class Machineregistration(BaseModel):
+class Machineregistration(models.Model):
     id = models.TextField(primary_key=True)
     dealer_name = models.TextField()
     dealer_address = models.TextField(blank=True, null=True)
