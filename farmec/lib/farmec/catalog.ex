@@ -5,7 +5,7 @@ defmodule Farmec.Catalog do
 
   import Ecto.Query, warn: false
   alias Farmec.Repo
-  alias Farmec.Catalog.{Supplier, Machine}
+  alias Farmec.Catalog.{Supplier, Machine, Product, SparePart}
 
   ## Suppliers
 
@@ -224,5 +224,135 @@ defmodule Farmec.Catalog do
   """
   def change_machine(%Machine{} = machine, attrs \\ %{}) do
     Machine.changeset(machine, attrs)
+  end
+
+  ## Products
+
+  @doc """
+  Returns the list of products.
+  """
+  def list_products do
+    Repo.all(Product)
+  end
+
+  @doc """
+  Returns products for a specific machine.
+  """
+  def list_products_by_machine(machine_id) do
+    Product
+    |> where([p], p.machine_id == ^machine_id)
+    |> Repo.all()
+  end
+
+  @doc """
+  Gets a single product.
+  Raises `Ecto.NoResultsError` if the Product does not exist.
+  """
+  def get_product!(id), do: Repo.get!(Product, id)
+
+  @doc """
+  Gets a product with preloaded machine.
+  """
+  def get_product_with_machine(id) do
+    Product
+    |> Repo.get!(id)
+    |> Repo.preload(:machine)
+  end
+
+  @doc """
+  Creates a product.
+  """
+  def create_product(attrs \\ %{}) do
+    %Product{}
+    |> Product.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a product.
+  """
+  def update_product(%Product{} = product, attrs) do
+    product
+    |> Product.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a product.
+  """
+  def delete_product(%Product{} = product) do
+    Repo.delete(product)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking product changes.
+  """
+  def change_product(%Product{} = product, attrs \\ %{}) do
+    Product.changeset(product, attrs)
+  end
+
+  ## Spare Parts
+
+  @doc """
+  Returns the list of spare parts.
+  """
+  def list_spare_parts do
+    Repo.all(SparePart)
+  end
+
+  @doc """
+  Returns spare parts for a specific supplier.
+  """
+  def list_spare_parts_by_supplier(supplier_id) do
+    SparePart
+    |> where([sp], sp.supplier_id == ^supplier_id)
+    |> Repo.all()
+  end
+
+  @doc """
+  Gets a single spare part.
+  Raises `Ecto.NoResultsError` if the SparePart does not exist.
+  """
+  def get_spare_part!(id), do: Repo.get!(SparePart, id)
+
+  @doc """
+  Gets a spare part with preloaded supplier.
+  """
+  def get_spare_part_with_supplier(id) do
+    SparePart
+    |> Repo.get!(id)
+    |> Repo.preload(:supplier)
+  end
+
+  @doc """
+  Creates a spare part.
+  """
+  def create_spare_part(attrs \\ %{}) do
+    %SparePart{}
+    |> SparePart.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a spare part.
+  """
+  def update_spare_part(%SparePart{} = spare_part, attrs) do
+    spare_part
+    |> SparePart.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a spare part.
+  """
+  def delete_spare_part(%SparePart{} = spare_part) do
+    Repo.delete(spare_part)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking spare part changes.
+  """
+  def change_spare_part(%SparePart{} = spare_part, attrs \\ %{}) do
+    SparePart.changeset(spare_part, attrs)
   end
 end
