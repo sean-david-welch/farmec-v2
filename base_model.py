@@ -1,3 +1,4 @@
+import uuid
 from typing import Self
 
 from django.db import models
@@ -19,3 +20,6 @@ class BaseModel(models.Model):
     modified = ModificationDateTimeField(verbose_name=_('modification time'))
 
     objects = BaseQuerySet.as_manager()
+
+    class Meta:
+        abstract = True
