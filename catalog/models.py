@@ -1,20 +1,21 @@
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 from base_model import BaseModel
 
 
 class Supplier(BaseModel):
-    id = models.TextField(primary_key=True)
-    name = models.CharField(max_length=255, verbose_name='name')
-    logo_image = models.URLField(blank=True, null=True, verbose_name='logo image')
-    marketing_image = models.URLField(blank=True, null=True, verbose_name='marketing image')
-    description = models.TextField(blank=True, null=True, verbose_name='description')
-    social_facebook = models.URLField(blank=True, null=True, verbose_name='facebook')
-    social_twitter = models.URLField(blank=True, null=True, verbose_name='twitter')
-    social_instagram = models.URLField(blank=True, null=True, verbose_name='instagram')
-    social_youtube = models.URLField(blank=True, null=True, verbose_name='youtube')
-    social_linkedin = models.URLField(blank=True, null=True, verbose_name='linkedin')
-    social_website = models.URLField(blank=True, null=True, verbose_name='website')
-    slug = models.SlugField(max_length=255, blank=True, null=True, db_index=True, verbose_name='slug')
+    id = models.TextField(primary_key=True, verbose_name=_('ID'))
+    name = models.CharField(max_length=255, verbose_name=_('name'), help_text=_('Supplier business name'))
+    logo_image = models.URLField(blank=True, null=True, verbose_name=_('logo image'), help_text=_('URL to supplier logo'))
+    marketing_image = models.URLField(blank=True, null=True, verbose_name=_('marketing image'), help_text=_('URL to marketing/promotional image'))
+    description = models.TextField(blank=True, null=True, verbose_name=_('description'), help_text=_('Supplier description and information'))
+    social_facebook = models.URLField(blank=True, null=True, verbose_name=_('facebook'), help_text=_('Facebook page URL'))
+    social_twitter = models.URLField(blank=True, null=True, verbose_name=_('twitter'), help_text=_('Twitter profile URL'))
+    social_instagram = models.URLField(blank=True, null=True, verbose_name=_('instagram'), help_text=_('Instagram profile URL'))
+    social_youtube = models.URLField(blank=True, null=True, verbose_name=_('youtube'), help_text=_('YouTube channel URL'))
+    social_linkedin = models.URLField(blank=True, null=True, verbose_name=_('linkedin'), help_text=_('LinkedIn company URL'))
+    social_website = models.URLField(blank=True, null=True, verbose_name=_('website'), help_text=_('Company website URL'))
+    slug = models.SlugField(max_length=255, blank=True, null=True, db_index=True, verbose_name=_('slug'), help_text=_('URL-friendly identifier for this supplier'))
 
     class Meta:
         managed = True
@@ -25,13 +26,13 @@ class Supplier(BaseModel):
 
 
 class Machine(BaseModel):
-    id = models.TextField(primary_key=True)
-    supplier = models.TextField(blank=True, null=True, verbose_name='supplier id')
-    name = models.CharField(max_length=255, verbose_name='name')
-    machine_image = models.URLField(blank=True, null=True, verbose_name='image')
-    description = models.TextField(blank=True, null=True, verbose_name='description')
-    machine_link = models.URLField(blank=True, null=True, verbose_name='link')
-    slug = models.SlugField(max_length=255, blank=True, null=True, db_index=True, verbose_name='slug')
+    id = models.TextField(primary_key=True, verbose_name=_('ID'))
+    supplier = models.TextField(blank=True, null=True, verbose_name=_('supplier'), help_text=_('Reference to Supplier ID'))
+    name = models.CharField(max_length=255, verbose_name=_('name'), help_text=_('Machine model name or title'))
+    machine_image = models.URLField(blank=True, null=True, verbose_name=_('image'), help_text=_('URL to machine product image'))
+    description = models.TextField(blank=True, null=True, verbose_name=_('description'), help_text=_('Detailed machine specifications and features'))
+    machine_link = models.URLField(blank=True, null=True, verbose_name=_('link'), help_text=_('URL to machine product page'))
+    slug = models.SlugField(max_length=255, blank=True, null=True, db_index=True, verbose_name=_('slug'), help_text=_('URL-friendly identifier'))
 
     class Meta:
         managed = True
@@ -42,13 +43,13 @@ class Machine(BaseModel):
 
 
 class Product(BaseModel):
-    id = models.TextField(primary_key=True)
-    machine = models.TextField(blank=True, null=True, verbose_name='machine id')
-    name = models.CharField(max_length=255, verbose_name='name')
-    product_image = models.URLField(blank=True, null=True, verbose_name='image')
-    description = models.TextField(blank=True, null=True, verbose_name='description')
-    product_link = models.URLField(blank=True, null=True, verbose_name='link')
-    slug = models.SlugField(max_length=255, blank=True, null=True, db_index=True, verbose_name='slug')
+    id = models.TextField(primary_key=True, verbose_name=_('ID'))
+    machine = models.TextField(blank=True, null=True, verbose_name=_('machine'), help_text=_('Reference to Machine ID this product belongs to'))
+    name = models.CharField(max_length=255, verbose_name=_('name'), help_text=_('Product name or part name'))
+    product_image = models.URLField(blank=True, null=True, verbose_name=_('image'), help_text=_('URL to product image'))
+    description = models.TextField(blank=True, null=True, verbose_name=_('description'), help_text=_('Product description and details'))
+    product_link = models.URLField(blank=True, null=True, verbose_name=_('link'), help_text=_('URL to product page or datasheet'))
+    slug = models.SlugField(max_length=255, blank=True, null=True, db_index=True, verbose_name=_('slug'), help_text=_('URL-friendly identifier'))
 
     class Meta:
         managed = True
@@ -59,12 +60,12 @@ class Product(BaseModel):
 
 
 class Spareparts(BaseModel):
-    id = models.TextField(primary_key=True)
-    supplier = models.TextField(blank=True, null=True, verbose_name='supplier id')
-    name = models.CharField(max_length=255, verbose_name='name')
-    parts_image = models.URLField(blank=True, null=True, verbose_name='image')
-    spare_parts_link = models.URLField(blank=True, null=True, verbose_name='link')
-    slug = models.SlugField(max_length=255, blank=True, null=True, db_index=True, verbose_name='slug')
+    id = models.TextField(primary_key=True, verbose_name=_('ID'))
+    supplier = models.TextField(blank=True, null=True, verbose_name=_('supplier'), help_text=_('Reference to Supplier ID'))
+    name = models.CharField(max_length=255, verbose_name=_('name'), help_text=_('Spare part name or description'))
+    parts_image = models.URLField(blank=True, null=True, verbose_name=_('image'), help_text=_('URL to spare part image'))
+    spare_parts_link = models.URLField(blank=True, null=True, verbose_name=_('link'), help_text=_('URL to spare part datasheet or ordering page'))
+    slug = models.SlugField(max_length=255, blank=True, null=True, db_index=True, verbose_name=_('slug'), help_text=_('URL-friendly identifier'))
 
     class Meta:
         managed = True
@@ -75,10 +76,10 @@ class Spareparts(BaseModel):
 
 
 class Lineitems(BaseModel):
-    id = models.TextField(primary_key=True)
-    name = models.CharField(max_length=255, verbose_name='name')
-    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='price')
-    image = models.URLField(blank=True, null=True, verbose_name='image')
+    id = models.TextField(primary_key=True, verbose_name=_('ID'))
+    name = models.CharField(max_length=255, verbose_name=_('name'), help_text=_('Product or item name for line item'))
+    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_('price'), help_text=_('Price in currency units'))
+    image = models.URLField(blank=True, null=True, verbose_name=_('image'), help_text=_('URL to item image'))
 
     class Meta:
         managed = True
@@ -89,13 +90,13 @@ class Lineitems(BaseModel):
 
 
 class Video(BaseModel):
-    id = models.TextField(primary_key=True)
-    supplier = models.TextField(blank=True, null=True, verbose_name='supplier id')
-    web_url = models.URLField(blank=True, null=True, verbose_name='url')
-    title = models.CharField(max_length=255, blank=True, null=True, verbose_name='title')
-    description = models.TextField(blank=True, null=True, verbose_name='description')
-    video_id = models.CharField(max_length=100, blank=True, null=True, verbose_name='video id')
-    thumbnail_url = models.URLField(blank=True, null=True, verbose_name='thumbnail')
+    id = models.TextField(primary_key=True, verbose_name=_('ID'))
+    supplier = models.TextField(blank=True, null=True, verbose_name=_('supplier'), help_text=_('Reference to Supplier ID'))
+    web_url = models.URLField(blank=True, null=True, verbose_name=_('URL'), help_text=_('URL to video page or hosting platform'))
+    title = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('title'), help_text=_('Video title or name'))
+    description = models.TextField(blank=True, null=True, verbose_name=_('description'), help_text=_('Video description and content info'))
+    video_id = models.CharField(max_length=100, blank=True, null=True, verbose_name=_('video ID'), help_text=_('Video ID from hosting platform (e.g., YouTube ID)'))
+    thumbnail_url = models.URLField(blank=True, null=True, verbose_name=_('thumbnail'), help_text=_('URL to video thumbnail image'))
 
     class Meta:
         managed = True
