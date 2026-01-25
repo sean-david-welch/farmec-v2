@@ -24,7 +24,7 @@ class Warrantyclaim(models.Model):
 
 class Partsrequired(models.Model):
     id = models.TextField(primary_key=True)
-    warranty = models.ForeignKey(Warrantyclaim, models.DO_NOTHING)
+    warranty = models.TextField(blank=True, null=True)
     part_number = models.TextField(blank=True, null=True)
     quantity_needed = models.TextField()
     invoice_number = models.TextField(blank=True, null=True)

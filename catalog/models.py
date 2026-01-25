@@ -23,7 +23,7 @@ class Supplier(models.Model):
 
 class Machine(models.Model):
     id = models.TextField(primary_key=True)
-    supplier = models.ForeignKey(Supplier, models.DO_NOTHING)
+    supplier = models.TextField(blank=True, null=True)
     name = models.TextField()
     machine_image = models.TextField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
@@ -38,7 +38,7 @@ class Machine(models.Model):
 
 class Product(models.Model):
     id = models.TextField(primary_key=True)
-    machine = models.ForeignKey(Machine, models.DO_NOTHING)
+    machine = models.TextField(blank=True, null=True)
     name = models.TextField()
     product_image = models.TextField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
@@ -52,7 +52,7 @@ class Product(models.Model):
 
 class Spareparts(models.Model):
     id = models.TextField(primary_key=True)
-    supplier = models.ForeignKey(Supplier, models.DO_NOTHING)
+    supplier = models.TextField(blank=True, null=True)
     name = models.TextField()
     parts_image = models.TextField(blank=True, null=True)
     spare_parts_link = models.TextField(blank=True, null=True)
@@ -76,7 +76,7 @@ class Lineitems(models.Model):
 
 class Video(models.Model):
     id = models.TextField(primary_key=True)
-    supplier = models.ForeignKey(Supplier, models.DO_NOTHING)
+    supplier = models.TextField(blank=True, null=True)
     web_url = models.TextField(blank=True, null=True)
     title = models.TextField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
