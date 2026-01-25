@@ -18,7 +18,7 @@ class Supplier(BaseModel):
     slug = models.TextField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'Supplier'
 
 
@@ -33,7 +33,7 @@ class Machine(BaseModel):
     slug = models.TextField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'Machine'
 
 
@@ -47,7 +47,7 @@ class Product(BaseModel):
     slug = models.TextField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'Product'
 
 
@@ -60,7 +60,7 @@ class Spareparts(BaseModel):
     slug = models.TextField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'SpareParts'
 
 
@@ -71,7 +71,7 @@ class Lineitems(BaseModel):
     image = models.TextField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'LineItems'
 
 
@@ -86,5 +86,5 @@ class Video(BaseModel):
     created = models.TextField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'Video'

@@ -19,7 +19,7 @@ class Warrantyclaim(BaseModel):
     created = models.TextField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'WarrantyClaim'
 
 
@@ -32,7 +32,7 @@ class Partsrequired(BaseModel):
     description = models.TextField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'PartsRequired'
 
 
@@ -57,5 +57,5 @@ class Machineregistration(BaseModel):
     created = models.TextField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'MachineRegistration'

@@ -13,7 +13,7 @@ class Blog(BaseModel):
     slug = models.TextField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'Blog'
 
 
@@ -24,7 +24,7 @@ class Carousel(BaseModel):
     created = models.TextField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'Carousel'
 
 
@@ -37,7 +37,7 @@ class Exhibition(BaseModel):
     created = models.TextField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'Exhibition'
 
 
@@ -49,5 +49,5 @@ class Timeline(BaseModel):
     created = models.TextField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'Timeline'
