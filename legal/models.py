@@ -1,11 +1,12 @@
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 from base_model import BaseModel
 
 
 class Privacy(BaseModel):
-    id = models.TextField(primary_key=True)
-    title = models.CharField(max_length=255, verbose_name='title')
-    body = models.TextField(blank=True, null=True, verbose_name='body', help_text='Legal privacy policy text')
+    id = models.TextField(primary_key=True, verbose_name=_('ID'))
+    title = models.CharField(max_length=255, verbose_name=_('title'), help_text=_('Page title'))
+    body = models.TextField(blank=True, null=True, verbose_name=_('body'), help_text=_('Legal privacy policy text'))
 
     class Meta:
         managed = True
@@ -16,9 +17,9 @@ class Privacy(BaseModel):
 
 
 class Terms(BaseModel):
-    id = models.TextField(primary_key=True)
-    title = models.CharField(max_length=255, verbose_name='title')
-    body = models.TextField(blank=True, null=True, verbose_name='body', help_text='Legal terms and conditions text')
+    id = models.TextField(primary_key=True, verbose_name=_('ID'))
+    title = models.CharField(max_length=255, verbose_name=_('title'), help_text=_('Page title'))
+    body = models.TextField(blank=True, null=True, verbose_name=_('body'), help_text=_('Legal terms and conditions text'))
 
     class Meta:
         managed = True
