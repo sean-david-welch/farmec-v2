@@ -1,7 +1,8 @@
 from django.db import models
+from base_model import BaseModel
 
 
-class Warrantyclaim(models.Model):
+class Warrantyclaim(BaseModel):
     id = models.TextField(primary_key=True)
     dealer = models.TextField()
     dealer_contact = models.TextField(blank=True, null=True)
@@ -15,14 +16,13 @@ class Warrantyclaim(models.Model):
     repair_details = models.TextField(blank=True, null=True)
     labour_hours = models.TextField(blank=True, null=True)
     completed_by = models.TextField(blank=True, null=True)
-    created = models.TextField(blank=True, null=True)
 
     class Meta:
         managed = True
         db_table = 'WarrantyClaim'
 
 
-class Partsrequired(models.Model):
+class Partsrequired(BaseModel):
     id = models.TextField(primary_key=True)
     warranty = models.TextField(blank=True, null=True)
     part_number = models.TextField(blank=True, null=True)
@@ -35,7 +35,7 @@ class Partsrequired(models.Model):
         db_table = 'PartsRequired'
 
 
-class Machineregistration(models.Model):
+class Machineregistration(BaseModel):
     id = models.TextField(primary_key=True)
     dealer_name = models.TextField()
     dealer_address = models.TextField(blank=True, null=True)
@@ -53,7 +53,6 @@ class Machineregistration(models.Model):
     operator_handbook = models.IntegerField(blank=True, null=True)
     date = models.TextField(blank=True, null=True)
     completed_by = models.TextField(blank=True, null=True)
-    created = models.TextField(blank=True, null=True)
 
     class Meta:
         managed = True
