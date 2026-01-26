@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Downloaded applications
     'tailwind',
+    'theme'
     # Model apps
     'catalog',
     'content',
