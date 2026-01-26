@@ -15,7 +15,7 @@ class Supplier(BaseModel):
     social_youtube = models.URLField(blank=True, null=True, verbose_name=_('youtube'), help_text=_('YouTube channel URL'))
     social_linkedin = models.URLField(blank=True, null=True, verbose_name=_('linkedin'), help_text=_('LinkedIn company URL'))
     social_website = models.URLField(blank=True, null=True, verbose_name=_('website'), help_text=_('Company website URL'))
-    slug = models.SlugField(max_length=255, blank=True, null=True, db_index=True, verbose_name=_('slug'), help_text=_('URL-friendly identifier for this supplier'))
+    slug = models.SlugField(max_length=255, blank=True, null=True, verbose_name=_('slug'), help_text=_('URL-friendly identifier for this supplier'))
 
     class Meta:
         managed = True
@@ -32,7 +32,7 @@ class Machine(BaseModel):
     machine_image = models.URLField(blank=True, null=True, verbose_name=_('image'), help_text=_('URL to machine product image'))
     description = models.TextField(blank=True, null=True, verbose_name=_('description'), help_text=_('Detailed machine specifications and features'))
     machine_link = models.URLField(blank=True, null=True, verbose_name=_('link'), help_text=_('URL to machine product page'))
-    slug = models.SlugField(max_length=255, blank=True, null=True, db_index=True, verbose_name=_('slug'), help_text=_('URL-friendly identifier'))
+    slug = models.SlugField(max_length=255, blank=True, null=True, verbose_name=_('slug'), help_text=_('URL-friendly identifier'))
 
     class Meta:
         managed = True
@@ -49,7 +49,7 @@ class Product(BaseModel):
     product_image = models.URLField(blank=True, null=True, verbose_name=_('image'), help_text=_('URL to product image'))
     description = models.TextField(blank=True, null=True, verbose_name=_('description'), help_text=_('Product description and details'))
     product_link = models.URLField(blank=True, null=True, verbose_name=_('link'), help_text=_('URL to product page or datasheet'))
-    slug = models.SlugField(max_length=255, blank=True, null=True, db_index=True, verbose_name=_('slug'), help_text=_('URL-friendly identifier'))
+    slug = models.SlugField(max_length=255, blank=True, null=True, verbose_name=_('slug'), help_text=_('URL-friendly identifier'))
 
     class Meta:
         managed = True
@@ -65,7 +65,7 @@ class Spareparts(BaseModel):
     name = models.CharField(max_length=255, verbose_name=_('name'), help_text=_('Spare part name or description'))
     parts_image = models.URLField(blank=True, null=True, verbose_name=_('image'), help_text=_('URL to spare part image'))
     spare_parts_link = models.URLField(blank=True, null=True, verbose_name=_('link'), help_text=_('URL to spare part datasheet or ordering page'))
-    slug = models.SlugField(max_length=255, blank=True, null=True, db_index=True, verbose_name=_('slug'), help_text=_('URL-friendly identifier'))
+    slug = models.SlugField(max_length=255, blank=True, null=True, verbose_name=_('slug'), help_text=_('URL-friendly identifier'))
 
     class Meta:
         managed = True
