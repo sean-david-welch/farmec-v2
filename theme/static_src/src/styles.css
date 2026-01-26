@@ -1,20 +1,5 @@
 @import "tailwindcss";
 
-@import "App.module.css";
-@import "About.module.css";
-@import "Account.module.css";
-@import "Blogs.module.css";
-@import "Carousel.module.css";
-@import "Footer.module.css";
-@import "Header.module.css";
-@import "Home.module.css";
-@import "Info.module.css";
-@import "Machines.module.css";
-@import "Sidebar.module.css";
-@import "Spareparts.module.css";
-@import "Suppliers.module.css";
-@import "Utils.module.css";
-
 /**
   * A catch-all path to Django template files, JavaScript, and Python files
   * that contain Tailwind CSS classes and will be scanned by Tailwind to generate the final CSS file.
@@ -22,4 +7,4 @@
   * If your final CSS file is not being updated after code changes, you may want to broaden or narrow
   * the scope of this path.
   */
-@source "../../../**/*.{html,py,js}";
+@source "../../../**/*.{html,py,js,css}";
