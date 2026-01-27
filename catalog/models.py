@@ -1,6 +1,10 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from base_model import BaseModel
+from base_model import BaseModel, BaseQuerySet
+
+
+class SupplierQuerySet(BaseQuerySet):
+    pass
 
 
 class Supplier(BaseModel):
@@ -17,12 +21,18 @@ class Supplier(BaseModel):
     social_website = models.URLField(blank=True, null=True, verbose_name=_('website'), help_text=_('Company website URL'))
     slug = models.SlugField(max_length=255, blank=True, null=True, verbose_name=_('slug'), help_text=_('URL-friendly identifier for this supplier'))
 
+    objects = SupplierQuerySet.as_manager()
+
     class Meta:
         managed = True
         db_table = 'Supplier'
 
     def __str__(self):
         return self.name
+
+
+class MachineQuerySet(BaseQuerySet):
+    pass
 
 
 class Machine(BaseModel):
@@ -34,12 +44,18 @@ class Machine(BaseModel):
     machine_link = models.URLField(blank=True, null=True, verbose_name=_('link'), help_text=_('URL to machine product page'))
     slug = models.SlugField(max_length=255, blank=True, null=True, verbose_name=_('slug'), help_text=_('URL-friendly identifier'))
 
+    objects = MachineQuerySet.as_manager()
+
     class Meta:
         managed = True
         db_table = 'Machine'
 
     def __str__(self):
         return self.name
+
+
+class ProductQuerySet(BaseQuerySet):
+    pass
 
 
 class Product(BaseModel):
@@ -51,12 +67,18 @@ class Product(BaseModel):
     product_link = models.URLField(blank=True, null=True, verbose_name=_('link'), help_text=_('URL to product page or datasheet'))
     slug = models.SlugField(max_length=255, blank=True, null=True, verbose_name=_('slug'), help_text=_('URL-friendly identifier'))
 
+    objects = ProductQuerySet.as_manager()
+
     class Meta:
         managed = True
         db_table = 'Product'
 
     def __str__(self):
         return self.name
+
+
+class SparepartsQuerySet(BaseQuerySet):
+    pass
 
 
 class Spareparts(BaseModel):
@@ -67,6 +89,8 @@ class Spareparts(BaseModel):
     spare_parts_link = models.URLField(blank=True, null=True, verbose_name=_('link'), help_text=_('URL to spare part datasheet or ordering page'))
     slug = models.SlugField(max_length=255, blank=True, null=True, verbose_name=_('slug'), help_text=_('URL-friendly identifier'))
 
+    objects = SparepartsQuerySet.as_manager()
+
     class Meta:
         managed = True
         db_table = 'SpareParts'
@@ -75,11 +99,17 @@ class Spareparts(BaseModel):
         return self.name
 
 
+class LineitemsQuerySet(BaseQuerySet):
+    pass
+
+
 class Lineitems(BaseModel):
     id = models.TextField(primary_key=True, verbose_name=_('ID'))
     name = models.CharField(max_length=255, verbose_name=_('name'), help_text=_('Product or item name for line item'))
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_('price'), help_text=_('Price in currency units'))
     image = models.URLField(blank=True, null=True, verbose_name=_('image'), help_text=_('URL to item image'))
+
+    objects = LineitemsQuerySet.as_manager()
 
     class Meta:
         managed = True
@@ -87,6 +117,10 @@ class Lineitems(BaseModel):
 
     def __str__(self):
         return self.name
+
+
+class VideoQuerySet(BaseQuerySet):
+    pass
 
 
 class Video(BaseModel):
@@ -97,6 +131,8 @@ class Video(BaseModel):
     description = models.TextField(blank=True, null=True, verbose_name=_('description'), help_text=_('Video description and content info'))
     video_id = models.CharField(max_length=100, blank=True, null=True, verbose_name=_('video ID'), help_text=_('Video ID from hosting platform (e.g., YouTube ID)'))
     thumbnail_url = models.URLField(blank=True, null=True, verbose_name=_('thumbnail'), help_text=_('URL to video thumbnail image'))
+
+    objects = VideoQuerySet.as_manager()
 
     class Meta:
         managed = True

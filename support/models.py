@@ -1,6 +1,10 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from base_model import BaseModel
+from base_model import BaseModel, BaseQuerySet
+
+
+class WarrantyclaimQuerySet(BaseQuerySet):
+    pass
 
 
 class Warrantyclaim(BaseModel):
@@ -18,12 +22,18 @@ class Warrantyclaim(BaseModel):
     labour_hours = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True, verbose_name=_('labour hours'), help_text=_('Hours of labour for repair'))
     completed_by = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('completed by'), help_text=_('Technician or person who completed repair'))
 
+    objects = WarrantyclaimQuerySet.as_manager()
+
     class Meta:
         managed = True
         db_table = 'WarrantyClaim'
 
     def __str__(self):
         return f"Claim {self.id} - {self.owner_name}"
+
+
+class PartsrequiredQuerySet(BaseQuerySet):
+    pass
 
 
 class Partsrequired(BaseModel):
@@ -34,12 +44,18 @@ class Partsrequired(BaseModel):
     invoice_number = models.CharField(max_length=100, blank=True, null=True, verbose_name=_('invoice number'), help_text=_('Supplier invoice reference'))
     description = models.TextField(blank=True, null=True, verbose_name=_('description'), help_text=_('Part name and specifications'))
 
+    objects = PartsrequiredQuerySet.as_manager()
+
     class Meta:
         managed = True
         db_table = 'PartsRequired'
 
     def __str__(self):
         return f"{self.part_number} x{self.quantity_needed}"
+
+
+class MachineregistrationQuerySet(BaseQuerySet):
+    pass
 
 
 class Machineregistration(BaseModel):
@@ -60,6 +76,8 @@ class Machineregistration(BaseModel):
     operator_handbook = models.BooleanField(default=False, verbose_name=_('operator handbook'), help_text=_('Owner manual provided'))
     date = models.DateField(blank=True, null=True, verbose_name=_('date'), help_text=_('Registration completion date'))
     completed_by = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('completed by'), help_text=_('Person who completed registration'))
+
+    objects = MachineregistrationQuerySet.as_manager()
 
     class Meta:
         managed = True
