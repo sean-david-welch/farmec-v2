@@ -1,6 +1,13 @@
 from django.views.generic import ListView, DetailView
 
-from .models import Supplier, SupplierQuerySet, Machine, MachineQuerySet
+from .models import (
+    Supplier,
+    SupplierQuerySet,
+    Machine,
+    MachineQuerySet,
+    Product,
+    ProductQuerySet,
+)
 
 
 class SupplierListView(ListView):
@@ -33,3 +40,19 @@ class MachineDetailView(DetailView):
     slug_field: str = 'slug'
     slug_url_kwarg: str = 'slug'
     queryset: MachineQuerySet = Machine.objects.publish()
+
+
+class ProductListView(ListView):
+    model: type[Product] = Product
+    template_name: str = 'catalog/product_list.html'
+    context_object_name: str = 'products'
+    queryset: ProductQuerySet = Product.objects.publish().order_by('-created')
+
+
+class ProductDetailView(DetailView):
+    model: type[Product] = Product
+    template_name: str = 'catalog/product_detail.html'
+    context_object_name: str = 'product'
+    slug_field: str = 'slug'
+    slug_url_kwarg: str = 'slug'
+    queryset: ProductQuerySet = Product.objects.publish()
