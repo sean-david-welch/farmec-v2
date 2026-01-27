@@ -22,4 +22,5 @@ urlpatterns = [
     path('', include('catalog.urls')),
     path('', include('content.urls')),
     path('', include('legal.urls')),
+    path('', include('team.urls')),
 ]
