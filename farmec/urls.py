@@ -23,4 +23,5 @@ urlpatterns = [
     path('', include('content.urls')),
     path('', include('legal.urls')),
     path('', include('team.urls')),
+    path('', include('support.urls')),
 ]
