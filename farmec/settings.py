@@ -122,3 +122,20 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+# Django Storages - AWS S3 Configuration
+# https://django-storages.readthedocs.io/en/latest/backends/amazon-s3.html
+STORAGES = {
+    'default': {
+        'BACKEND': 'storages.backends.s3boto3.S3Boto3Storage',
+    },
+}
+# AWS S3 Configuration
+AWS_STORAGE_BUCKET_NAME = 'farmec.ie'
+AWS_S3_REGION_NAME = 'eu-west-1'
+AWS_S3_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY')
+AWS_S3_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+AWS_LOCATION = 'media'
+AWS_DEFAULT_ACL = 'public-read'
+AWS_QUERYSTRING_AUTH = False
