@@ -1,6 +1,4 @@
-/* ============================================
-   NAVIGATION COMPONENTS
-   ============================================ */
+/* Navigation components */
 .navbar {
     margin: auto 0;
     display: flex;
@@ -85,11 +83,9 @@
 .nav-dropdown-item {
     font-size: 0.875rem;
     font-weight: 600;
-    margin: 0.5rem 0;
     padding: 0.5rem;
     width: 10rem;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0.5rem auto;
     border-radius: 0.5rem;
     color: #d1d5db;
     transition: color 500ms ease-in-out;
@@ -109,9 +105,7 @@
     }
 }
 
-/* ============================================
-   FOOTER COMPONENTS
-   ============================================ */
+/* Footer */
 .footer {
     border-top: 2px solid #18181b;
     background-color: #18181b;
@@ -223,9 +217,7 @@
     }
 }
 
-/* ============================================
-   DIALOG / MODAL COMPONENTS
-   ============================================ */
+/* Dialog */
 .dialog {
     max-height: 90vh;
     width: 80vw;
@@ -271,9 +263,7 @@
     width: 1rem;
 }
 
-/* ============================================
-   CARD / INDEX COMPONENTS
-   ============================================ */
+/* Index / card */
 .index {
     display: flex;
     flex-direction: column;
@@ -313,9 +303,7 @@
     }
 }
 
-/* ============================================
-   CHECKOUT / SPECIAL SECTIONS
-   ============================================ */
+/* Checkout */
 .checkout {
     margin: 2.5rem 18rem;
     border-radius: 1.25rem;
@@ -337,9 +325,7 @@
     }
 }
 
-/* ============================================
-   TO TOP BUTTON
-   ============================================ */
+/* Totop */
 .to-top-btn {
     position: fixed;
     bottom: 1.25rem;
@@ -369,9 +355,7 @@
     width: 1.5rem;
 }
 
-/* ============================================
-   MISCELLANEOUS
-   ============================================ */
+/* Misc */
 .update-icon {
     margin: 0 0.5rem;
     height: 1rem;
