@@ -1,0 +1,7 @@
+<a href="#" class="btn-form pdf-download-btn"
+   data-pdf-type="{{ pdf_type }}"
+   data-warranty-claim-id="{% if warranty_claim %}{{ warranty_claim.id }}{% endif %}"
+   data-registration-id="{% if registration %}{{ registration.id }}{% endif %}"
+   aria-label="Download PDF">
+    <i class="fas fa-download"></i> Download PDF
+</a>
