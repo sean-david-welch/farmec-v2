@@ -22,9 +22,9 @@
 .btn:hover {
     background-color: #dc2626;
     box-shadow: 0 0 0 2px rgba(200, 1, 1, 0.5),
-                0 0 0 3px rgba(200, 1, 1, 0.5),
-                0 0 0 4px rgba(200, 1, 1, 0.5),
-                0 0 0 5px rgba(200, 1, 1, 0.5);
+    0 0 0 3px rgba(200, 1, 1, 0.5),
+    0 0 0 4px rgba(200, 1, 1, 0.5),
+    0 0 0 5px rgba(200, 1, 1, 0.5);
 }
 
 .btn svg {
