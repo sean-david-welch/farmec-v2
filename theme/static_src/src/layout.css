@@ -1,0 +1,15 @@
+@layer components {
+    .container-page {
+        @apply mx-auto my-28 min-h-screen max-w-full overflow-x-hidden p-20 text-center;
+    }
+
+    .home {
+        @apply flex flex-col items-center justify-center text-center text-gray-800;
+    }
+
+    @screen md {
+        .container-page {
+            @apply p-5;
+        }
+    }
+}
