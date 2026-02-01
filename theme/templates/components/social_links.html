@@ -1,0 +1,34 @@
+{% if facebook or twitter or instagram or linkedin or website or youtube %}
+<div class="social-links">
+    {% if facebook %}
+    <a href="{{ facebook }}" target="_blank" rel="noopener noreferrer" class="facebook-button" aria-label="Facebook">
+        <i class="fab fa-facebook"></i>
+    </a>
+    {% endif %}
+    {% if twitter %}
+    <a href="{{ twitter }}" target="_blank" rel="noopener noreferrer" class="twitter-button" aria-label="Twitter">
+        <i class="fab fa-twitter"></i>
+    </a>
+    {% endif %}
+    {% if instagram %}
+    <a href="{{ instagram }}" target="_blank" rel="noopener noreferrer" class="instagram-button" aria-label="Instagram">
+        <i class="fab fa-instagram"></i>
+    </a>
+    {% endif %}
+    {% if linkedin %}
+    <a href="{{ linkedin }}" target="_blank" rel="noopener noreferrer" class="linkedin-button" aria-label="LinkedIn">
+        <i class="fab fa-linkedin"></i>
+    </a>
+    {% endif %}
+    {% if website %}
+    <a href="{{ website }}" target="_blank" rel="noopener noreferrer" class="website-button" aria-label="Website">
+        <i class="fas fa-globe"></i>
+    </a>
+    {% endif %}
+    {% if youtube %}
+    <a href="{{ youtube }}" target="_blank" rel="noopener noreferrer" class="youtube-button" aria-label="YouTube">
+        <i class="fab fa-youtube"></i>
+    </a>
+    {% endif %}
+</div>
+{% endif %}
