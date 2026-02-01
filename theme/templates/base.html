@@ -13,6 +13,7 @@
     <link rel="canonical" href="{{ request.build_absolute_uri }}">
 
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3H7bstpn0Ggz149/5D5VccM7uIQrI1RNooNLibrXQwO6OLar4z1P5K6zlhJ0p/h+VvUqqstKQKww==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     {% block meta %}{% endblock %}
     {% block extra_css %}{% endblock %}
 
@@ -34,6 +35,7 @@
 <main>
     {% block content %}{% endblock %}
 </main>
+<script src="{% static 'js/components.js' %}" defer></script>
 {% block extra_js %}{% endblock %}
 </body>
 </html>
