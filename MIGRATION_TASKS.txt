@@ -1,0 +1,31 @@
+Django Migration Tasks
+======================
+
+1. Edit models to work with S3 upload
+   - Convert URLField image fields to ImageField/FileField with upload_to parameters
+   - Match S3 folder structure:
+     * Products/ for product images
+     * Machines/ for machine images
+     * Employees/ for employee images
+     * Carousels/ for carousel images
+     * Blogs/ for blog images
+     * Lineitems/ for lineitem images
+     * pdf/ for PDF files
+
+2. Convert React components to Django templates
+   - Migrate all React components from client/ directory to Django templates
+   - Update Django views to render templates instead of serving SPA
+   - Include page templates, layouts, components, and forms
+
+3. Migrate production data to Django database
+   - Dump production SQLite database from EC2
+   - Write data migration queries/scripts
+   - Transform data from Go schema to Django ORM format
+   - Validate data integrity after migration
+
+4. Deploy Django app on EC2 with Docker/Kubernetes
+   - Determine deployment approach (Docker containers, Kubernetes, or direct)
+   - Configure WSGI/ASGI server (gunicorn, etc.)
+   - Set up environment variables and secrets management
+   - Configure nginx reverse proxy if needed
+   - Test deployment and verify production readiness
