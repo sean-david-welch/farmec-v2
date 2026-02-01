@@ -1,0 +1,385 @@
+/* ============================================
+   NAVIGATION COMPONENTS
+   ============================================ */
+.navbar {
+    margin: auto 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    background-color: #18181b;
+    padding: 1.25rem;
+    color: #d1d5db;
+    position: fixed;
+    top: 0;
+    z-index: 50;
+    width: 100vw;
+}
+
+.navbar-transparent {
+    background-color: transparent;
+    color: #18181b;
+}
+
+.navbar > * {
+    white-space: nowrap;
+}
+
+.nav-list {
+    margin: auto 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.nav-list > * {
+    margin: 0 3rem;
+}
+
+.nav-item {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr;
+    z-index: 10;
+    font-size: 1.125rem;
+    font-weight: 700;
+}
+
+.nav-item-link {
+    position: relative;
+    z-index: 20;
+    cursor: pointer;
+    transition: all 500ms ease-in-out;
+}
+
+.nav-item:hover {
+    color: #dc2626;
+    border-radius: 1.25rem;
+    text-decoration: underline;
+    text-decoration-color: #dc2626;
+    text-decoration-thickness: 3px;
+    text-underline-offset: 10px;
+}
+
+.nav-dropdown {
+    background-color: #18181b;
+    margin: 2.5rem auto;
+    width: 10rem;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    opacity: 0;
+    visibility: hidden;
+    border-radius: 0.5rem;
+    transition: all 500ms ease-in-out;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.nav-item:hover .nav-dropdown {
+    opacity: 1;
+    visibility: visible;
+}
+
+.nav-dropdown-item {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+    width: 10rem;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 0.5rem;
+    color: #d1d5db;
+    transition: color 500ms ease-in-out;
+}
+
+.nav-dropdown-item:hover {
+    background-color: #dc2626;
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        display: none;
+    }
+
+    .navbar-transparent {
+        display: none;
+    }
+}
+
+/* ============================================
+   FOOTER COMPONENTS
+   ============================================ */
+.footer {
+    border-top: 2px solid #18181b;
+    background-color: #18181b;
+    padding: 3rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: center;
+    justify-items: center;
+    transition: all 700ms ease-in-out;
+}
+
+.footer:hover {
+    border-top-color: #dc2626;
+}
+
+.footer img {
+    margin: 0 auto;
+}
+
+.footer-info {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.footer-info > * {
+    margin: 0 auto;
+}
+
+.company-info {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.company-info > * {
+    margin: 0.25rem 0;
+    font-size: 1.125rem;
+    font-weight: 600;
+}
+
+.footer-links {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer-links img {
+    transition: transform 700ms ease-in-out;
+    margin: 0 auto 0 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.footer-links img:hover {
+    transform: scale(1.05);
+}
+
+.social-links {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.social-links svg {
+    margin: 1rem;
+    height: 1.75rem;
+    border-radius: 0.5rem;
+    border: 2px solid;
+    cursor: pointer;
+    padding: 0.75rem;
+    transition: all 700ms ease-in-out;
+}
+
+.social-links path {
+    transition: all 700ms ease-in-out;
+}
+
+.social-links svg:hover {
+    border-color: #991b1b;
+}
+
+.social-links svg:hover path {
+    fill: #991b1b;
+}
+
+.footer-nav-links {
+    display: flex;
+    flex-direction: column;
+}
+
+.footer-nav-links > * {
+    margin: 0.5rem 0;
+}
+
+@media (max-width: 768px) {
+    .footer {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ============================================
+   DIALOG / MODAL COMPONENTS
+   ============================================ */
+.dialog {
+    max-height: 90vh;
+    width: 80vw;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    z-index: 50;
+    border-radius: 1.25rem;
+    background-color: #18181b;
+    color: #d1d5db;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    border: 4px solid #3f3f46;
+    transform: translate(-50%, -50%);
+    transition: all 700ms ease-in-out;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.dialog-visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.dialog-close-btn {
+    position: fixed;
+    left: 1.25rem;
+    top: 1.25rem;
+    cursor: pointer;
+    padding: 0.75rem;
+    border-radius: 9999px;
+    border: 2px solid #27272a;
+    background-color: #27272a;
+    z-index: 30;
+    transition: all 300ms ease-in-out;
+}
+
+.dialog-close-btn:hover {
+    border-color: #991b1b;
+}
+
+.dialog-close-btn svg {
+    height: 1rem;
+    width: 1rem;
+}
+
+/* ============================================
+   CARD / INDEX COMPONENTS
+   ============================================ */
+.index {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.25rem;
+    background-color: #27272a;
+    color: #d1d5db;
+    margin: 1.25rem 13rem;
+    border-radius: 0.75rem;
+    border: 4px solid #3f3f46;
+}
+
+.account-index {
+    margin: 1.25rem 4rem;
+}
+
+.index > * {
+    margin: 0.5rem 0;
+}
+
+.index-item {
+    transition: all 700ms ease-in-out;
+    cursor: pointer;
+}
+
+.index-item:hover {
+    color: #dc2626;
+}
+
+@media (max-width: 768px) {
+    .index {
+        margin: 1.25rem 1.25rem;
+    }
+
+    .account-index {
+        margin: 1.25rem 1.25rem;
+    }
+}
+
+/* ============================================
+   CHECKOUT / SPECIAL SECTIONS
+   ============================================ */
+.checkout {
+    margin: 2.5rem 18rem;
+    border-radius: 1.25rem;
+    background-color: white;
+    padding: 1.25rem;
+}
+
+.login-section {
+    margin: 0 18rem;
+}
+
+@media (max-width: 768px) {
+    .checkout {
+        margin: 2.5rem 1.25rem;
+    }
+
+    .login-section {
+        margin: 0 1.25rem;
+    }
+}
+
+/* ============================================
+   TO TOP BUTTON
+   ============================================ */
+.to-top-btn {
+    position: fixed;
+    bottom: 1.25rem;
+    right: 1.25rem;
+    z-index: 30;
+    cursor: pointer;
+    border-radius: 9999px;
+    border: 2px solid #27272a;
+    background-color: #1f2937;
+    padding: 0.75rem 0.75rem;
+    transition: all 300ms ease-in-out;
+}
+
+.to-top-btn:hover,
+.to-top-btn:hover svg path {
+    border-color: #1e3a8a;
+    background-color: #27272a;
+    fill: #1e3a8a;
+}
+
+.to-top-btn svg path {
+    fill: #1e3a8a;
+}
+
+.to-top-btn svg {
+    height: 1.5rem;
+    width: 1.5rem;
+}
+
+/* ============================================
+   MISCELLANEOUS
+   ============================================ */
+.update-icon {
+    margin: 0 0.5rem;
+    height: 1rem;
+    width: 1rem;
+}
+
+.main-icon svg {
+    margin: 0 auto;
+    height: 5rem;
+    width: 5rem;
+}

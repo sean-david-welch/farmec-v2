@@ -1,0 +1,64 @@
+/* Button Styles */
+.btn {
+    z-index: 10;
+    margin: 0.5rem auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem;
+    white-space: nowrap;
+    padding: 0.5rem 2rem;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 600;
+    background-color: #b91c1c;
+    color: white;
+    transition: all 700ms ease-in-out;
+    border: none;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #dc2626;
+    box-shadow: 0 0 0 2px rgba(200, 1, 1, 0.5),
+                0 0 0 3px rgba(200, 1, 1, 0.5),
+                0 0 0 4px rgba(200, 1, 1, 0.5),
+                0 0 0 5px rgba(200, 1, 1, 0.5);
+}
+
+.btn svg {
+    margin: 0 0.25rem;
+    height: 1rem;
+    width: 1rem;
+    white-space: nowrap;
+}
+
+.btn-form {
+    margin: 0 auto;
+    padding-bottom: 1rem;
+    color: #f4f4f5;
+}
+
+.btn-footer {
+    width: 150px;
+}
+
+.options-btn {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.options-btn > * {
+    margin: 0 0.5rem;
+}
+
+/* Override form submission buttons */
+.form .btn,
+.login-form .btn,
+button[type='submit'] {
+    background-color: #b91c1c !important;
+    background-image: none !important;
+}

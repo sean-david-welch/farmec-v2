@@ -1,0 +1,89 @@
+/* Form Styles */
+.form {
+    display: flex;
+    flex-direction: column;
+    background-color: #27272a;
+    padding: 2.5rem;
+    text-align: center;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    border-radius: 1.25rem;
+    background-color: #27272a;
+    padding: 2.5rem;
+    text-align: center;
+}
+
+.form > *,
+.login-form > * {
+    margin: 1rem 0;
+}
+
+.form label,
+.login-form label {
+    margin: 0.5rem 0;
+    display: block;
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: #1f2937;
+}
+
+.form textarea,
+.form input,
+.form select,
+.login-form textarea,
+.login-form input,
+.login-form select {
+    margin: 0 auto;
+    display: block;
+    width: 66.667%;
+    border-radius: 0.5rem;
+    border: 1px solid #18181b;
+    background-color: #3f3f46;
+    padding: 0.625rem;
+    font-size: 0.875rem;
+    color: white;
+    border-color: #3f3f46;
+}
+
+.form textarea::placeholder,
+.form input::placeholder,
+.form select::placeholder,
+.login-form textarea::placeholder,
+.login-form input::placeholder,
+.login-form select::placeholder {
+    color: #9ca3af;
+}
+
+.form textarea:focus,
+.form input:focus,
+.form select:focus,
+.login-form textarea:focus,
+.login-form input:focus,
+.login-form select:focus {
+    border-color: #991b1b;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(153, 27, 27, 0.1);
+}
+
+.form .btn {
+    margin-top: 1rem;
+}
+
+.form .radio {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form .radio > * {
+    margin: 0 1.25rem;
+}
+
+@media (max-width: 768px) {
+    .login-form {
+        margin: 0 1.25rem;
+    }
+}
