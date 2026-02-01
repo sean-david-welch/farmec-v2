@@ -14,7 +14,6 @@ dependencies = [
     "django-filter>=25.2",
     "django-htmx>=1.27.0",
     "django-storages>=1.14.6",
-    "django-tailwind>=4.4.2",
     "django-unfold>=0.76.0",
     "model-bakery>=1.23.2",
     "pillow>=12.1.0",
