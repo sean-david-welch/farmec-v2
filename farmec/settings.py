@@ -37,10 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Downloaded applications
-    'tailwind',
-    'theme',
     # Model apps
+    'theme',
     'catalog',
     'content',
     'support',
@@ -124,4 +122,3 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
-TAILWIND_APP_NAME = 'theme'

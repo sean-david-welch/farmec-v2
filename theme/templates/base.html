@@ -1,4 +1,4 @@
-{% load static tailwind_tags %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,8 +12,8 @@
     <meta name="author" content="Farmec Ireland Ltd">
     <link rel="canonical" href="{{ request.build_absolute_uri }}">
 
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     {% block meta %}{% endblock %}
-    {% tailwind_css %}
     {% block extra_css %}{% endblock %}
 
     <!-- Google tag (gtag.js) -->
