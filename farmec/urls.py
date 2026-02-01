@@ -17,6 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
+from django.shortcuts import render
+
+def page_not_found(request, exception=None):
+    return render(request, '404.html', status=404)
+
+def server_error(request, exception=None):
+    return render(request, 'error.html', status=500)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,3 +35,7 @@ urlpatterns = [
     path('', include('team.urls')),
     path('', include('support.urls')),
 ]
+
+# Error handlers
+handler404 = page_not_found
+handler500 = server_error
