@@ -1,0 +1,18 @@
+<div class="timeline-card">
+    <div class="timeline-icon">
+        <i class="far fa-clock"></i>
+    </div>
+    <div class="timeline-content">
+        <h3>{{ timeline.title }}</h3>
+        <span class="timeline-date">{{ timeline.date|date:"Y" }}</span>
+        <p>{{ timeline.body }}</p>
+        {% if is_admin %}
+        <div class="timeline-actions">
+            <a href="#" class="btn-form">
+                <i class="fas fa-pen-to-square"></i> Edit
+            </a>
+            {% include "components/delete_button.html" with resource_type="timeline" resource_id=timeline.id %}
+        </div>
+        {% endif %}
+    </div>
+</div>
