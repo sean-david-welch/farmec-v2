@@ -1,0 +1,52 @@
+<button class="mobile-menu-toggle" {% if on_click %}onclick="{{ on_click }}"{% endif %}>
+    <i class="fas fa-bars"></i>
+</button>
+
+<nav class="mobile-menu" style="display: none;">
+    {% if is_authenticated %}
+        <p class="mobile-menu-title">Account</p>
+    {% else %}
+        <a href="{% url 'login' %}" class="mobile-menu-item">Login</a>
+    {% endif %}
+
+    {% if is_admin %}
+        <a href="{% url 'admin:index' %}" class="mobile-menu-item">
+            <i class="fas fa-users"></i> Users
+        </a>
+        <a href="{% url 'admin:content_carousel_changelist' %}" class="mobile-menu-item">
+            <i class="fas fa-image"></i> Carousels
+        </a>
+        <a href="{% url 'admin:catalog_lineitems_changelist' %}" class="mobile-menu-item">
+            <i class="fas fa-list"></i> Line Items
+        </a>
+        <a href="{% url 'admin:support_warrantyclaim_changelist' %}" class="mobile-menu-item">
+            <i class="fas fa-file"></i> Warranty
+        </a>
+        <a href="{% url 'admin:support_machineregistration_changelist' %}" class="mobile-menu-item">
+            <i class="fas fa-clipboard"></i> Registrations
+        </a>
+        {% if line_item %}
+            <a href="{% url 'checkout' line_item.id %}" class="mobile-menu-item">
+                <i class="fas fa-shopping-cart"></i> Checkout
+            </a>
+        {% endif %}
+        <a href="{% url 'logout' %}" class="mobile-menu-item">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+    {% elif is_authenticated %}
+        <a href="{% url 'warranty-claims-list' %}" class="mobile-menu-item">
+            <i class="fas fa-file"></i> Warranty Claims
+        </a>
+        <a href="{% url 'registrations-list' %}" class="mobile-menu-item">
+            <i class="fas fa-clipboard"></i> Registrations
+        </a>
+        {% if line_item %}
+            <a href="{% url 'checkout' line_item.id %}" class="mobile-menu-item">
+                <i class="fas fa-shopping-cart"></i> Checkout
+            </a>
+        {% endif %}
+        <a href="{% url 'logout' %}" class="mobile-menu-item">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+    {% endif %}
+</nav>
