@@ -2,13 +2,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>{% block title %}Farmec Ireland{% endblock %}</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %}Farmec Ireland Ltd{% endblock %}</title>
+
+    <link rel="icon" type="image/svg+xml" href="{% static 'favicon.svg' %}">
+    <meta name="description" content="{% block description %}Farmec Ireland Ltd specializes in providing high-quality agricultural machinery and services to enhance your farming operations. Explore our range of products and services tailored for Irish farms.{% endblock %}">
+    <meta name="author" content="Farmec Ireland Ltd">
+    <link rel="canonical" href="{{ request.build_absolute_uri }}">
+
     {% block meta %}{% endblock %}
     {% tailwind_css %}
     {% block extra_css %}{% endblock %}
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SENSREH8YD"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-SENSREH8YD');
+    </script>
 </head>
 
 <body class="bg-gray-50 text-gray-900 font-sans leading-normal tracking-normal">
