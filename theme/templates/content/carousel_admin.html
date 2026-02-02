@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Carousels - Farmec Ireland{% endblock %}
+
+{% block content %}
+<section id="carousel">
+    <h1 class="section-heading">Carousels:</h1>
+
+    {% if user.is_staff %}
+    <div class="admin-form">
+        <a href="{% url 'carousel_create' %}" class="btn">Add Carousel Image</a>
+    </div>
+
+    {% if carousels %}
+    {% for carousel in carousels %}
+    <div class="carousel-admin">
+        <h2 class="main-heading">{{ carousel.name }}</h2>
+        <img
+            src="{{ carousel.image }}"
+            alt="{{ carousel.name }}"
+            width="400"
+            onerror="this.src='{% static 'default.jpg' %}'"
+        />
+
+        {% if carousel.id %}
+        <div class="options-btn">
+            <a href="{% url 'carousel_edit' carousel.id %}" class="btn btn-edit">Edit</a>
+            <button class="btn btn-delete" data-delete-url="{% url 'carousel_delete' carousel.id %}">
+                Delete
+            </button>
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+    {% else %}
+    <p class="paragraph">No carousel images found.</p>
+    {% endif %}
+
+    {% else %}
+    <p class="paragraph">You must be an admin to manage carousels.</p>
+    {% endif %}
+</section>
+{% endblock %}
