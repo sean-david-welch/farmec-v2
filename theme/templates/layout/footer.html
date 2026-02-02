@@ -2,7 +2,7 @@
 
 <footer class="footer">
     <div class="footer-info">
-        <a href="{% url 'home' %}" aria-label="logo button">
+        <a href="{% url 'content:home' %}" aria-label="logo button">
             <img
                 src="https://www.farmec.ie/farmec_images/farmeclogo.webp"
                 alt="Farmec Logo"
@@ -18,7 +18,7 @@
             <li class="info-item">Tel: 01 - 8259289</li>
             <li class="info-item">Email: info@farmec.ie</li>
             <li class="info-item">
-                <a href="{% url 'privacy' %}">Privacy Policy | Terms of Use</a>
+                <a href="{% url 'legal:privacy_list' %}">Privacy Policy | Terms of Use</a>
             </li>
         </ul>
     </div>
@@ -57,27 +57,27 @@
     <div class="footer-nav">
         <ul class="nav-links">
             <li>
-                <a href="{% url 'home' %}" class="btn-footer">
+                <a href="{% url 'content:home' %}" class="btn-footer">
                     Home <i class="fas fa-arrow-right"></i>
                 </a>
             </li>
             <li>
-                <a href="{% url 'about' %}" class="btn-footer">
+                <a href="{% url 'team:employee_list' %}" class="btn-footer">
                     About <i class="fas fa-arrow-right"></i>
                 </a>
             </li>
             <li>
-                <a href="{% url 'suppliers-list' %}" class="btn-footer">
+                <a href="{% url 'catalog:supplier_list' %}" class="btn-footer">
                     Suppliers <i class="fas fa-arrow-right"></i>
                 </a>
             </li>
             <li>
-                <a href="{% url 'spareparts-list' %}" class="btn-footer">
+                <a href="{% url 'catalog:product_list' %}" class="btn-footer">
                     Spare Parts <i class="fas fa-arrow-right"></i>
                 </a>
             </li>
             <li>
-                <a href="{% url 'blogs-list' %}" class="btn-footer">
+                <a href="{% url 'content:blog_list' %}" class="btn-footer">
                     Blog <i class="fas fa-arrow-right"></i>
                 </a>
             </li>
