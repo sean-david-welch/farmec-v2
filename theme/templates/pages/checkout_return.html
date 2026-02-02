@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Payment Status - Farmec Ireland{% endblock %}
+
+{% block content %}
+<section id="success">
+    <div class="login-section">
+        <div class="login-form">
+            {% if status == 'complete' %}
+            <h1 class="main-heading">Payment Complete</h1>
+            <p class="paragraph">
+                We appreciate your business! A confirmation email will be sent to {{ customer_email }}.
+                If you have any questions, please email
+                <a href="mailto:info@farmec.ie">info@farmec.ie</a>.
+            </p>
+            {% elif status == 'open' %}
+            <h1 class="main-heading">Payment Pending</h1>
+            <p class="paragraph">
+                Your payment is still being processed. Please wait or
+                <a href="{% url 'checkout' %}">return to checkout</a>.
+            </p>
+            {% else %}
+            <h1 class="main-heading">Payment Status</h1>
+            <p class="paragraph">
+                Unable to determine payment status. Please contact us at
+                <a href="mailto:info@farmec.ie">info@farmec.ie</a> for assistance.
+            </p>
+            {% endif %}
+
+            <a href="{% url 'home' %}" class="btn">Return Home</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
