@@ -23,7 +23,7 @@
 
     {% if user.is_staff %}
     <div class="admin-form">
-        <a href="{% url 'supplier_create' %}" class="btn">Add New Supplier</a>
+        <a href="#" class="btn">Add New Supplier</a>
     </div>
     {% endif %}
 
@@ -67,14 +67,14 @@
 
         <div class="supplier-info">
             <p class="supplier-description">{{ supplier.description }}</p>
-            <a href="{% url 'supplier_detail' supplier.id %}" class="btn">Learn More</a>
+            <a href="{% url 'catalog:supplier_detail' supplier.slug %}" class="btn">Learn More</a>
         </div>
     </div>
 
     {% if user.is_staff and supplier.id %}
     <div class="options-btn">
-        <a href="{% url 'supplier_edit' supplier.id %}" class="btn btn-edit">Edit</a>
-        <button class="btn btn-delete" data-delete-url="{% url 'supplier_delete' supplier.id %}">
+        <a href="#" class="btn btn-edit">Edit</a>
+        <button class="btn btn-delete" data-delete-url="#">
             Delete
         </button>
     </div>

@@ -18,7 +18,7 @@
             <div class="machine-info">
                 <h2 class="main-heading">{{ machine.name }}</h2>
                 <p class="paragraph">{{ machine.description }}</p>
-                <a href="{% url 'machine_detail' machine.id %}" class="btn">
+                <a href="{% url 'catalog:machine_detail' machine.slug %}" class="btn">
                     View Products <i class="fa-solid fa-right-to-bracket"></i>
                 </a>
             </div>
@@ -27,8 +27,8 @@
 
     {% if user.is_staff and machine.id %}
     <div class="options-btn">
-        <a href="{% url 'machine_edit' machine.id %}" class="btn btn-edit">Edit</a>
-        <button class="btn btn-delete" data-delete-url="{% url 'machine_delete' machine.id %}">
+        <a href="#" class="btn btn-edit">Edit</a>
+        <button class="btn btn-delete" data-delete-url="#">
             Delete
         </button>
     </div>
@@ -39,7 +39,7 @@
 
     {% if user.is_staff %}
     <div class="admin-form">
-        <a href="{% url 'machine_create' %}" class="btn">Add New Machine</a>
+        <a href="#" class="btn">Add New Machine</a>
     </div>
     {% endif %}
 </section>
