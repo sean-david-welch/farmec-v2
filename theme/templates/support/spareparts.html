@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Spare Parts - Farmec Ireland{% endblock %}
+
+{% block meta %}
+<meta name="description" content="Browse spare parts from various suppliers and ensure your machines are always operational. Farmec offers a wide range of spare parts for agricultural machinery.">
+<meta property="og:title" content="Spare Parts - Farmec Ireland">
+<meta property="og:description" content="Browse spare parts from various suppliers and ensure your machines are always operational. Farmec offers a wide range of spare parts for agricultural machinery.">
+<meta property="og:image" content="https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp">
+<meta property="og:url" content="https://www.farmec.ie/spareparts">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Spare Parts - Farmec Ireland">
+<meta name="twitter:description" content="Browse spare parts from various suppliers and ensure your machines are always operational. Farmec offers a wide range of spare parts for agricultural machinery.">
+<meta name="twitter:image" content="https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp">
+<link rel="canonical" href="https://www.farmec.ie/spareparts">
+{% endblock %}
+
+{% block content %}
+<section id="SpareParts">
+    <h1 class="section-heading">Spare-Parts</h1>
+
+    {% if user.is_staff and suppliers %}
+    <div class="admin-form">
+        <a href="{% url 'sparepart_create' %}" class="btn">Add Spare Parts</a>
+    </div>
+    {% endif %}
+
+    <div class="options-btn">
+        <a href="{% url 'warranty_list' %}" class="btn">Warranty Claim</a>
+        <a href="{% url 'registration_list' %}" class="btn">Machine Registration</a>
+    </div>
+
+    {% if suppliers %}
+    <div class="index">
+        <h2 class="index-heading">Suppliers</h2>
+        {% for supplier in suppliers %}
+        <a href="#{{ supplier.name|slugify }}">
+            <span class="index-item">{{ supplier.name }}</span>
+        </a>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% for supplier in suppliers %}
+    <div class="supplier-card" id="{{ supplier.name|slugify }}">
+        <h2 class="main-heading">{{ supplier.name }}</h2>
+        <img
+            src="{{ supplier.logo_image|default_if_none:'' }}"
+            class="parts-image"
+            alt="{{ supplier.name }} logo"
+            width="200"
+            height="200"
+            onerror="this.src='{% static 'default.jpg' %}'"
+        />
+        <a href="{% url 'spareparts_detail' supplier.id %}" class="btn">
+            Spare-Parts <i class="fa-solid fa-right-to-bracket"></i>
+        </a>
+    </div>
+    {% empty %}
+    <p class="paragraph">No suppliers to display.</p>
+    {% endfor %}
+</section>
+{% endblock %}
