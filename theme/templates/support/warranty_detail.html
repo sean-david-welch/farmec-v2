@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Warranty Claim: {{ warranty.dealer }} - {{ warranty.owner_name }} - Farmec Ireland{% endblock %}
+
+{% block content %}
+<section id="warranty-detail">
+    {% if warranty %}
+    <h1 class="section-heading">
+        Warranty Claim: {{ warranty.dealer }} - {{ warranty.owner_name }}
+    </h1>
+
+    <div class="warranty-detail">
+        <div class="warranty-grid">
+            <div class="label">Dealer</div>
+            <div class="value">{{ warranty.dealer }}</div>
+        </div>
+        <div class="warranty-grid">
+            <div class="label">Owner Name</div>
+            <div class="value">{{ warranty.owner_name }}</div>
+        </div>
+        <div class="warranty-grid">
+            <div class="label">Machine</div>
+            <div class="value">{{ warranty.machine }}</div>
+        </div>
+        <div class="warranty-grid">
+            <div class="label">Serial Number</div>
+            <div class="value">{{ warranty.serial_number }}</div>
+        </div>
+        <div class="warranty-grid">
+            <div class="label">Dealer Contact</div>
+            <div class="value">{{ warranty.dealer_contact }}</div>
+        </div>
+        <div class="warranty-grid">
+            <div class="label">Owner Address</div>
+            <div class="value">{{ warranty.owner_address }}</div>
+        </div>
+        <div class="warranty-grid">
+            <div class="label">Date of Purchase</div>
+            <div class="value">{{ warranty.date_of_purchase }}</div>
+        </div>
+        <div class="warranty-grid">
+            <div class="label">Fault Description</div>
+            <div class="value">{{ warranty.fault_description }}</div>
+        </div>
+
+        {% if parts %}
+        <h2 class="main-heading">Parts Required</h2>
+        {% for part in parts %}
+        <div class="warranty-grid">
+            <div class="label">Part Number</div>
+            <div class="value">{{ part.part_number }}</div>
+        </div>
+        <div class="warranty-grid">
+            <div class="label">Quantity Required</div>
+            <div class="value">{{ part.quantity_required }}</div>
+        </div>
+        <div class="warranty-grid">
+            <div class="label">Description</div>
+            <div class="value">{{ part.description }}</div>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        {% if user.is_staff and warranty.id %}
+        <div class="options-btn">
+            <a href="{% url 'warranty_edit' warranty.id %}" class="btn btn-edit">Edit</a>
+            <button class="btn btn-delete" data-delete-url="{% url 'warranty_delete' warranty.id %}" data-redirect="{% url 'warranty_list' %}">
+                Delete
+            </button>
+        </div>
+        {% endif %}
+    </div>
+
+    {% include "components/download_pdf.html" with warranty=warranty parts=parts %}
+
+    {% else %}
+    <div class="error-message">
+        <p>Warranty claim not found</p>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}
