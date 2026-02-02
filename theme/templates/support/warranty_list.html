@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Warranty Claims - Farmec Ireland{% endblock %}
+
+{% block content %}
+<section id="warranty">
+    {% if user.is_authenticated %}
+    <h1 class="section-heading">Warranty Claims:</h1>
+
+    <div class="form-section">
+        <a href="{% url 'warranty_create' %}" class="btn">Submit Warranty Claim</a>
+    </div>
+
+    {% if user.is_staff and warranties %}
+    {% for warranty in warranties %}
+    <div class="warranty-view">
+        <h2 class="main-heading">
+            {{ warranty.dealer }} -- {{ warranty.owner_name }}
+        </h2>
+        <a href="{% url 'warranty_detail' warranty.id %}" class="btn-form">View Claim</a>
+    </div>
+    {% empty %}
+    <p class="paragraph">No warranty claims to display.</p>
+    {% endfor %}
+    {% endif %}
+
+    {% else %}
+    <div class="login-section">
+        <h1 class="section-heading">Please Log In</h1>
+        <p class="paragraph">You must be logged in to submit warranty claims.</p>
+        <a href="{% url 'login' %}" class="btn">Log In</a>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}
