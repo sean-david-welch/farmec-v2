@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 import os.path
 from pathlib import Path
 
+from django.urls import reverse_lazy
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -119,6 +121,91 @@ USE_I18N = True
 
 USE_TZ = True
 
+
+UNFOLD = {
+    "SITE_TITLE": "Farmec Admin",
+    "SITE_HEADER": "Farmec Administration",
+    "SITE_SYMBOL": "agriculture",
+    "COLORS": {
+        "primary": {
+            "50": "254 242 242",
+            "100": "254 226 226",
+            "200": "254 202 202",
+            "300": "252 165 165",
+            "400": "248 113 113",
+            "500": "220 38 38",
+            "600": "185 28 28",
+            "700": "153 27 27",
+            "800": "127 29 29",
+            "900": "127 29 29",
+            "950": "69 10 10",
+        },
+    },
+    "SIDEBAR": {
+        "show_search": True,
+        "show_all_applications": True,
+        "navigation": [
+            {
+                "title": "Catalog",
+                "separator": True,
+                "items": [
+                    {
+                        "title": "Suppliers",
+                        "icon": "factory",
+                        "link": reverse_lazy("admin:catalog_supplier_changelist"),
+                    },
+                    {
+                        "title": "Machines",
+                        "icon": "agriculture",
+                        "link": reverse_lazy("admin:catalog_machine_changelist"),
+                    },
+                    {
+                        "title": "Products",
+                        "icon": "inventory_2",
+                        "link": reverse_lazy("admin:catalog_product_changelist"),
+                    },
+                ],
+            },
+            {
+                "title": "Content",
+                "separator": True,
+                "items": [
+                    {
+                        "title": "Blog Posts",
+                        "icon": "article",
+                        "link": reverse_lazy("admin:content_blog_changelist"),
+                    },
+                    {
+                        "title": "Exhibitions",
+                        "icon": "event",
+                        "link": reverse_lazy("admin:content_exhibition_changelist"),
+                    },
+                ],
+            },
+            {
+                "title": "Support & Legal",
+                "separator": True,
+                "items": [
+                    {
+                        "title": "Warranty Claims",
+                        "icon": "gavel",
+                        "link": reverse_lazy("admin:support_warrantyclaim_changelist"),
+                    },
+                    {
+                        "title": "Machine Registrations",
+                        "icon": "app_registration",
+                        "link": reverse_lazy("admin:support_machineregistration_changelist"),
+                    },
+                    {
+                        "title": "Privacy Policy",
+                        "icon": "policy",
+                        "link": reverse_lazy("admin:legal_privacy_changelist"),
+                    },
+                ],
+            },
+        ],
+    },
+}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
