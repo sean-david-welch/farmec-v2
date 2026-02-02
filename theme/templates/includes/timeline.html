@@ -1,0 +1,9 @@
+<section id="timeline">
+    <div class="timeline">
+        {% for timeline in timelines %}
+        {% include "components/timeline_card.html" with timeline=timeline is_admin=user.is_staff %}
+        {% empty %}
+        <p class="paragraph">No timeline events to display.</p>
+        {% endfor %}
+    </div>
+</section>
