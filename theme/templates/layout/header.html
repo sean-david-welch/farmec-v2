@@ -1,4 +1,4 @@
-{% load component %}
+{% load components %}
 
 <nav class="{% if request.resolver_match.url_name == 'home' %}navbar-transparent{% else %}navbar{% endif %}">
     <a href="{% url 'home' %}" aria-label="logo button">
