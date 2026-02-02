@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ product.name|default:"Product" }} - Farmec Ireland{% endblock %}
+
+{% block meta %}
+<meta name="description" content="{{ product.description|default:'View product details and specifications.' }}">
+<meta property="og:title" content="{{ product.name|default:'Product' }} - Farmec Ireland">
+<meta property="og:description" content="{{ product.description|default:'View product details and specifications.' }}">
+<meta property="og:image" content="{{ product.product_image|default:'https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp' }}">
+<meta property="og:url" content="https://www.farmec.ie/products/{{ product.id }}">
+<meta property="og:type" content="product">
+<link rel="canonical" href="https://www.farmec.ie/products/{{ product.id }}">
+{% endblock %}
+
+{% block content %}
+<section id="productDetail">
+    {% if product %}
+    <h1 class="section-heading">{{ product.name }}</h1>
+
+    <div class="product-detail">
+        <img
+            src="{{ product.product_image }}"
+            alt="{{ product.name }}"
+            class="product-image-large"
+            onerror="this.src='{% static 'default.jpg' %}'"
+        />
+
+        <div class="product-info">
+            <p class="paragraph">{{ product.description }}</p>
+
+            {% if product.product_link %}
+            <a href="{{ product.product_link }}" target="_blank" rel="noopener noreferrer" class="btn">
+                View on Supplier Site <i class="fa-solid fa-external-link"></i>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if user.is_staff and product.id %}
+    <div class="options-btn">
+        <a href="{% url 'product_edit' product.id %}" class="btn btn-edit">Edit</a>
+        <button class="btn btn-delete" data-delete-url="{% url 'product_delete' product.id %}" data-redirect="{% url 'product_list' %}">
+            Delete
+        </button>
+    </div>
+    {% endif %}
+
+    {% else %}
+    <p class="paragraph">Product not found.</p>
+    {% endif %}
+</section>
+{% endblock %}
