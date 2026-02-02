@@ -28,9 +28,9 @@ class BlogDetailView(DetailView):
     queryset: BlogQuerySet = Blog.objects.publish()
 
 
-class CarouselListView(ListView):
+class HomeView(ListView):
     model: type[Carousel] = Carousel
-    template_name: str = 'content/carousel_list.html'
+    template_name: str = 'pages/home.html'
     context_object_name: str = 'carousels'
     queryset: CarouselQuerySet = Carousel.objects.publish().order_by('-created')
 
