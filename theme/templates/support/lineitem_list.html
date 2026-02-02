@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Line Items - Farmec Ireland{% endblock %}
+
+{% block content %}
+<section id="lineItems">
+    <h1 class="section-heading">Product Line Items:</h1>
+
+    {% if user.is_staff %}
+    <div class="admin-form">
+        <a href="{% url 'lineitem_create' %}" class="btn">Add Line Item</a>
+    </div>
+    {% endif %}
+
+    {% for lineitem in lineitems %}
+    <div class="product-view">
+        <h2 class="main-heading">
+            {{ lineitem.name }} -- {{ lineitem.price }}
+        </h2>
+        <img
+            src="{{ lineitem.image }}"
+            alt="{{ lineitem.name }}"
+            width="400"
+            height="400"
+            onerror="this.src='{% static 'default.jpg' %}'"
+        />
+
+        {% if lineitem.id %}
+        <div class="options-btn">
+            <a href="{% url 'lineitem_edit' lineitem.id %}" class="btn btn-edit">Edit</a>
+            <button class="btn btn-delete" data-delete-url="{% url 'lineitem_delete' lineitem.id %}">
+                Delete
+            </button>
+        </div>
+        {% endif %}
+    </div>
+    {% empty %}
+    <p class="paragraph">No line items found.</p>
+    {% endfor %}
+</section>
+{% endblock %}
