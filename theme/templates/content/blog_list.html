@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Latest Blog Posts - Farmec Ireland{% endblock %}
+
+{% block meta %}
+<meta name="description" content="Check out the latest blog posts from Farmec Ireland. Stay up to date with our latest news and insights.">
+<meta property="og:title" content="Latest Blog Posts - Farmec Ireland">
+<meta property="og:description" content="Check out the latest blog posts from Farmec Ireland. Stay up to date with our latest news and insights.">
+<meta property="og:image" content="https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp">
+<meta property="og:url" content="https://www.farmec.ie/blogs">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Latest Blog Posts - Farmec Ireland">
+<meta name="twitter:description" content="Check out the latest blog posts from Farmec Ireland. Stay up to date with our latest news and insights.">
+<meta name="twitter:image" content="https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp">
+<link rel="canonical" href="https://www.farmec.ie/blogs">
+{% endblock %}
+
+{% block content %}
+<section id="blog">
+    <h1 class="section-heading">Check out our Latest Blog Posts</h1>
+    <p class="sub-heading">Read our latest news</p>
+
+    {% if user.is_staff %}
+    <div class="admin-form">
+        <a href="{% url 'blog_create' %}" class="btn">Add New Blog Post</a>
+    </div>
+    {% endif %}
+
+    {% if blogs %}
+    <div class="index">
+        <h2 class="index-heading">Blogs</h2>
+        {% for blog in blogs %}
+        <a href="#{{ blog.title|slugify }}">
+            <span class="index-item">{{ blog.title }}</span>
+        </a>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% for blog in blogs %}
+    <div class="blog-grid" id="{{ blog.title|slugify }}">
+        <div class="blog-card">
+            <img
+                class="blog-image"
+                src="{{ blog.main_image }}"
+                alt="{{ blog.title }}"
+                width="300"
+                height="300"
+                onerror="this.src='{% static 'default.jpg' %}'"
+            />
+            <div class="blog-link">
+                <h2 class="main-heading">{{ blog.title }}</h2>
+                <p class="paragraph">{{ blog.subheading }}</p>
+                <p class="paragraph">{{ blog.body|truncatewords:50 }}</p>
+                <a href="{% url 'blog_detail' blog.id %}" class="btn-form">
+                    Read More <i class="fa-solid fa-right-to-bracket"></i>
+                </a>
+            </div>
+        </div>
+
+        {% if user.is_staff and blog.id %}
+        <div class="options-btn">
+            <a href="{% url 'blog_edit' blog.id %}" class="btn btn-edit">Edit</a>
+            <button class="btn btn-delete" data-delete-url="{% url 'blog_delete' blog.id %}">
+                Delete
+            </button>
+        </div>
+        {% endif %}
+    </div>
+    {% empty %}
+    <p class="paragraph">No blog posts to display.</p>
+    {% endfor %}
+</section>
+{% endblock %}
