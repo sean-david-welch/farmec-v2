@@ -32,9 +32,11 @@
 </head>
 
 <body>
+{% include 'layout/header.html' %}
 <main>
     {% block content %}{% endblock %}
 </main>
+{% include 'layout/footer.html' %}
 <script src="{% static 'js/components.js' %}" defer></script>
 {% block extra_js %}{% endblock %}
 </body>
