@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Machine Registration: {{ registration.dealer_name }} - {{ registration.owner_name }} - Farmec Ireland{% endblock %}
+
+{% block content %}
+<section id="registration-detail">
+    {% if registration %}
+    <h1 class="section-heading">
+        Machine Registration: {{ registration.dealer_name }} - {{ registration.owner_name }}
+    </h1>
+
+    <div class="warranty-detail">
+        <div class="warranty-grid">
+            <div class="label">Dealer Name</div>
+            <div class="value">{{ registration.dealer_name }}</div>
+        </div>
+        <div class="warranty-grid">
+            <div class="label">Dealer Address</div>
+            <div class="value">{{ registration.dealer_address }}</div>
+        </div>
+        <div class="warranty-grid">
+            <div class="label">Owner Name</div>
+            <div class="value">{{ registration.owner_name }}</div>
+        </div>
+        <div class="warranty-grid">
+            <div class="label">Owner Address</div>
+            <div class="value">{{ registration.owner_address }}</div>
+        </div>
+        <div class="warranty-grid">
+            <div class="label">Machine Model</div>
+            <div class="value">{{ registration.machine_model }}</div>
+        </div>
+        <div class="warranty-grid">
+            <div class="label">Serial Number</div>
+            <div class="value">{{ registration.serial_number }}</div>
+        </div>
+        <div class="warranty-grid">
+            <div class="label">Install Date</div>
+            <div class="value">{{ registration.install_date }}</div>
+        </div>
+        <div class="warranty-grid">
+            <div class="label">Invoice Number</div>
+            <div class="value">{{ registration.invoice_number }}</div>
+        </div>
+
+        {% if user.is_staff and registration.id %}
+        <div class="options-btn">
+            <a href="{% url 'registration_edit' registration.id %}" class="btn btn-edit">Edit</a>
+            <button class="btn btn-delete" data-delete-url="{% url 'registration_delete' registration.id %}" data-redirect="{% url 'registration_list' %}">
+                Delete
+            </button>
+        </div>
+        {% endif %}
+    </div>
+
+    {% include "components/download_pdf.html" with registration=registration %}
+
+    {% else %}
+    <div class="error-message">
+        <p>Registration not found</p>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}
