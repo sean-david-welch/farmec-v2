@@ -1,0 +1,41 @@
+{% load static %}
+
+<section id="products">
+    <div class="product-grid">
+        {% for product in products %}
+        <div class="product-card" id="{{ product.name|slugify }}">
+            <h2 class="main-heading">{{ product.name }}</h2>
+
+            <a href="{{ product.product_link|default:'#' }}" target="_blank" rel="noopener noreferrer">
+                <img
+                    src="{{ product.product_image }}"
+                    alt="{{ product.name|default:'Product Image' }}"
+                    class="product-image"
+                    width="500"
+                    height="500"
+                    onerror="this.src='{% static 'default.jpg' %}'"
+                />
+            </a>
+
+            <p class="paragraph">{{ product.description }}</p>
+
+            {% if user.is_staff and product.id %}
+            <div class="options-btn">
+                <a href="{% url 'product_edit' product.id %}" class="btn btn-edit">Edit</a>
+                <button class="btn btn-delete" data-delete-url="{% url 'product_delete' product.id %}">
+                    Delete
+                </button>
+            </div>
+            {% endif %}
+        </div>
+        {% empty %}
+        <p class="paragraph">No products to display.</p>
+        {% endfor %}
+    </div>
+
+    {% if user.is_staff %}
+    <div class="admin-form">
+        <a href="{% url 'product_create' %}" class="btn">Add New Product</a>
+    </div>
+    {% endif %}
+</section>
