@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Products - Farmec Ireland{% endblock %}
+
+{% block meta %}
+<meta name="description" content="Browse our range of agricultural products and equipment.">
+<meta property="og:title" content="Products - Farmec Ireland">
+<meta property="og:description" content="Browse our range of agricultural products and equipment.">
+<meta property="og:image" content="https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp">
+<meta property="og:url" content="https://www.farmec.ie/products">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://www.farmec.ie/products">
+{% endblock %}
+
+{% block content %}
+<section id="products">
+    <h1 class="section-heading">Products</h1>
+
+    {% if user.is_staff %}
+    <div class="admin-form">
+        <a href="{% url 'product_create' %}" class="btn">Add New Product</a>
+    </div>
+    {% endif %}
+
+    <div class="product-grid">
+        {% for product in products %}
+        <div class="product-card" id="{{ product.name|slugify }}">
+            <h2 class="main-heading">{{ product.name }}</h2>
+
+            <a href="{{ product.product_link|default:'#' }}" target="_blank" rel="noopener noreferrer">
+                <img
+                    src="{{ product.product_image }}"
+                    alt="{{ product.name|default:'Product Image' }}"
+                    class="product-image"
+                    width="500"
+                    height="500"
+                    onerror="this.src='{% static 'default.jpg' %}'"
+                />
+            </a>
+
+            <p class="paragraph">{{ product.description }}</p>
+
+            {% if user.is_staff and product.id %}
+            <div class="options-btn">
+                <a href="{% url 'product_edit' product.id %}" class="btn btn-edit">Edit</a>
+                <button class="btn btn-delete" data-delete-url="{% url 'product_delete' product.id %}">
+                    Delete
+                </button>
+            </div>
+            {% endif %}
+        </div>
+        {% empty %}
+        <p class="paragraph">No products to display.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
