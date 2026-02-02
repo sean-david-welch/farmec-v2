@@ -1,0 +1,45 @@
+{% load static %}
+
+<section id="employees">
+    {% if user.is_staff %}
+    <div class="admin-form">
+        {% block employee_form %}
+        <!-- Employee form placeholder for admin users -->
+        {% endblock %}
+    </div>
+    {% endif %}
+
+    <div class="employees">
+        {% for employee in employees %}
+        <div class="employee-card">
+            <img
+                src="{{ employee.profile_image }}"
+                alt="{{ employee.name }}"
+                width="100"
+                height="100"
+                onerror="this.src='{% static 'default.jpg' %}'"
+            />
+
+            <div class="employee-info">
+                <h2 class="main-heading">{{ employee.name }}</h2>
+                <p class="paragraph">{{ employee.role }}</p>
+            </div>
+
+            <div class="employee-contact">
+                <p class="paragraph">Email: {{ employee.email }}</p>
+            </div>
+
+            {% if user.is_staff and employee.id %}
+            <div class="options-btn">
+                <a href="{% url 'employee_edit' employee.id %}" class="btn btn-edit">Edit</a>
+                <button class="btn btn-delete" data-delete-url="{% url 'employee_delete' employee.id %}">
+                    Delete
+                </button>
+            </div>
+            {% endif %}
+        </div>
+        {% empty %}
+        <p class="paragraph">No employees to display.</p>
+        {% endfor %}
+    </div>
+</section>
