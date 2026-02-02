@@ -39,8 +39,8 @@
 
     {% if user.is_staff and product.id %}
     <div class="options-btn">
-        <a href="{% url 'product_edit' product.id %}" class="btn btn-edit">Edit</a>
-        <button class="btn btn-delete" data-delete-url="{% url 'product_delete' product.id %}" data-redirect="{% url 'product_list' %}">
+        <a href="#" class="btn btn-edit">Edit</a>
+        <button class="btn btn-delete" data-delete-url="#" data-redirect="{% url 'catalog:product_list' %}">
             Delete
         </button>
     </div>

@@ -3,7 +3,7 @@
 
     {% if user.is_staff %}
     <div class="admin-form">
-        <a href="{% url 'video_create' %}" class="btn">Add New Video</a>
+        <a href="#" class="btn">Add New Video</a>
     </div>
     {% endif %}
 
@@ -24,8 +24,8 @@
 
             {% if user.is_staff and video.id %}
             <div class="options-btn">
-                <a href="{% url 'video_edit' video.id %}" class="btn btn-edit">Edit</a>
-                <button class="btn btn-delete" data-delete-url="{% url 'video_delete' video.id %}">
+                <a href="#" class="btn btn-edit">Edit</a>
+                <button class="btn btn-delete" data-delete-url="#">
                     Delete
                 </button>
             </div>
