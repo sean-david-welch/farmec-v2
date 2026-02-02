@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Suppliers - Farmec Ireland{% endblock %}
+
+{% block meta %}
+<meta name="description" content="Browse our Suppliers and learn more about the machines we offer.">
+<meta property="og:title" content="Suppliers - Farmec Ireland">
+<meta property="og:description" content="Browse our Suppliers and learn more about the machines we offer.">
+<meta property="og:image" content="https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp">
+<meta property="og:url" content="https://www.farmec.ie/suppliers">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Suppliers - Farmec Ireland">
+<meta name="twitter:description" content="Browse our Suppliers and learn more about the machines we offer.">
+<meta name="twitter:image" content="https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp">
+<link rel="canonical" href="https://www.farmec.ie/suppliers">
+{% endblock %}
+
+{% block content %}
+<section id="suppliers">
+    <h1 class="section-heading">Suppliers</h1>
+
+    {% if user.is_staff %}
+    <div class="admin-form">
+        <a href="{% url 'supplier_create' %}" class="btn">Add New Supplier</a>
+    </div>
+    {% endif %}
+
+    {% if suppliers %}
+    <div class="index">
+        <h2 class="index-heading">Suppliers:</h2>
+        {% for supplier in suppliers %}
+        <a href="#{{ supplier.name|slugify }}">
+            <span class="index-item">{{ supplier.name }}</span>
+        </a>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% for supplier in suppliers %}
+    <div class="supplier-card" id="{{ supplier.name|slugify }}">
+        <div class="supplier-grid">
+            <div class="supplier-head">
+                <h2 class="main-heading">{{ supplier.name }}</h2>
+                <img
+                    src="{{ supplier.logo_image }}"
+                    alt="{{ supplier.name }} logo"
+                    class="supplier-logo"
+                    width="200"
+                    height="200"
+                    onerror="this.src='{% static 'default.jpg' %}'"
+                />
+
+                {% include "components/social_links.html" with facebook=supplier.social_facebook twitter=supplier.social_twitter instagram=supplier.social_instagram linkedin=supplier.social_linkedin website=supplier.social_website youtube=supplier.social_youtube %}
+            </div>
+
+            <img
+                src="{{ supplier.marketing_image }}"
+                alt="{{ supplier.name }} marketing"
+                class="supplier-image"
+                width="550"
+                height="550"
+                onerror="this.src='{% static 'default.jpg' %}'"
+            />
+        </div>
+
+        <div class="supplier-info">
+            <p class="supplier-description">{{ supplier.description }}</p>
+            <a href="{% url 'supplier_detail' supplier.id %}" class="btn">Learn More</a>
+        </div>
+    </div>
+
+    {% if user.is_staff and supplier.id %}
+    <div class="options-btn">
+        <a href="{% url 'supplier_edit' supplier.id %}" class="btn btn-edit">Edit</a>
+        <button class="btn btn-delete" data-delete-url="{% url 'supplier_delete' supplier.id %}">
+            Delete
+        </button>
+    </div>
+    {% endif %}
+    {% empty %}
+    <p class="paragraph">No suppliers to display.</p>
+    {% endfor %}
+</section>
+{% endblock %}
