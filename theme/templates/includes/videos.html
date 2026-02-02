@@ -1,0 +1,38 @@
+<section id="videos">
+    <h1 class="section-heading">Videos</h1>
+
+    {% if user.is_staff %}
+    <div class="admin-form">
+        <a href="{% url 'video_create' %}" class="btn">Add New Video</a>
+    </div>
+    {% endif %}
+
+    <div class="video-grid">
+        {% for video in videos %}
+        <div class="video-card" id="{{ video.title|slugify }}">
+            <h2 class="main-heading">{{ video.title }}</h2>
+
+            <iframe
+                width="425"
+                height="315"
+                class="video"
+                src="https://www.youtube.com/embed/{{ video.video_id }}"
+                allowfullscreen
+                loading="lazy"
+                title="{{ video.title }}"
+            ></iframe>
+
+            {% if user.is_staff and video.id %}
+            <div class="options-btn">
+                <a href="{% url 'video_edit' video.id %}" class="btn btn-edit">Edit</a>
+                <button class="btn btn-delete" data-delete-url="{% url 'video_delete' video.id %}">
+                    Delete
+                </button>
+            </div>
+            {% endif %}
+        </div>
+        {% empty %}
+        <p class="paragraph">No videos to display.</p>
+        {% endfor %}
+    </div>
+</section>
