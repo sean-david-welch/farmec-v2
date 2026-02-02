@@ -1,0 +1,45 @@
+{% load static %}
+
+<section id="machines">
+    <h1 class="section-heading">Machinery</h1>
+
+    {% for machine in machines %}
+    <div class="machine-card" id="{{ machine.name|slugify }}">
+        <div class="machine-grid">
+            <img
+                src="{{ machine.machine_image }}"
+                alt="{{ machine.name|default:'Default Image' }}"
+                class="machine-image"
+                width="600"
+                height="600"
+                onerror="this.src='{% static 'default.jpg' %}'"
+            />
+
+            <div class="machine-info">
+                <h2 class="main-heading">{{ machine.name }}</h2>
+                <p class="paragraph">{{ machine.description }}</p>
+                <a href="{% url 'machine_detail' machine.id %}" class="btn">
+                    View Products <i class="fa-solid fa-right-to-bracket"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    {% if user.is_staff and machine.id %}
+    <div class="options-btn">
+        <a href="{% url 'machine_edit' machine.id %}" class="btn btn-edit">Edit</a>
+        <button class="btn btn-delete" data-delete-url="{% url 'machine_delete' machine.id %}">
+            Delete
+        </button>
+    </div>
+    {% endif %}
+    {% empty %}
+    <p class="paragraph">No machines to display.</p>
+    {% endfor %}
+
+    {% if user.is_staff %}
+    <div class="admin-form">
+        <a href="{% url 'machine_create' %}" class="btn">Add New Machine</a>
+    </div>
+    {% endif %}
+</section>
