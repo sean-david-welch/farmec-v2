@@ -12,6 +12,13 @@ from .models import (
 )
 
 
+class HomeView(ListView):
+    model: type[Carousel] = Carousel
+    template_name: str = 'pages/home.html'
+    context_object_name: str = 'carousels'
+    queryset: CarouselQuerySet = Carousel.objects.publish().order_by('-created')
+
+
 class BlogListView(ListView):
     model: type[Blog] = Blog
     template_name: str = 'content/blog_list.html'
@@ -26,13 +33,6 @@ class BlogDetailView(DetailView):
     slug_field: str = 'slug'
     slug_url_kwarg: str = 'slug'
     queryset: BlogQuerySet = Blog.objects.publish()
-
-
-class HomeView(ListView):
-    model: type[Carousel] = Carousel
-    template_name: str = 'pages/home.html'
-    context_object_name: str = 'carousels'
-    queryset: CarouselQuerySet = Carousel.objects.publish().order_by('-created')
 
 
 class ExhibitionListView(ListView):
