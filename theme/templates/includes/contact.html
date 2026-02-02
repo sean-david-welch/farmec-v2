@@ -1,0 +1,79 @@
+<section id="contact">
+    <h1 class="section-heading">Contact Us:</h1>
+
+    <div class="contact-section">
+        <!-- Contact Form Placeholder -->
+        <div class="contact-form">
+            {% block contact_form %}
+            <form method="post" action="{% url 'contact' %}">
+                {% csrf_token %}
+                <!-- Form fields will be added later -->
+                <p>Contact form coming soon</p>
+            </form>
+            {% endblock %}
+        </div>
+
+        {% include "components/map.html" %}
+
+        <div class="info-section">
+            <h2 class="sub-heading">Business Information:</h2>
+
+            <div class="info">
+                <div class="info-item">
+                    Opening Hours:
+                    <br />
+                    <span class="info-item-text">Monday - Friday: 9am - 5:30pm</span>
+                </div>
+
+                <div class="info-item">
+                    Telephone:
+                    <br />
+                    <span class="info-item-text">
+                        <a href="tel:018259289">01 825 9289</a>
+                    </span>
+                </div>
+
+                <div class="info-item">
+                    International:
+                    <br />
+                    <span class="info-item-text">
+                        <a href="tel:+35318259289">+353 1 825 9289</a>
+                    </span>
+                </div>
+
+                <div class="info-item">
+                    Email:
+                    <br />
+                    <span class="info-item-text">
+                        <a href="mailto:Info@farmec.ie">Info@farmec.ie</a>
+                    </span>
+                </div>
+
+                <div class="info-item">
+                    Address:
+                    <br />
+                    <span class="info-item-text">Clonross, Drumree, Co. Meath, A85PK30</span>
+                </div>
+
+                <div class="info-item">
+                    <div class="social-links">
+                        <a class="social-link"
+                           href="https://www.facebook.com/FarmecIreland/"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           aria-label="Visit our Facebook page">
+                            <i class="fa-brands fa-facebook"></i>
+                        </a>
+                        <a class="social-link"
+                           href="https://twitter.com/farmec1?lang=en"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           aria-label="Visit our Twitter page">
+                            <i class="fa-brands fa-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
