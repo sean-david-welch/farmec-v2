@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ supplier.name|default:"Supplier" }} - Farmec Ireland{% endblock %}
+
+{% block meta %}
+<meta name="description" content="{{ supplier.description|default:'Browse our Suppliers and learn more about the machines we offer.' }}">
+<meta property="og:title" content="{{ supplier.name|default:'Supplier' }} - Farmec Ireland">
+<meta property="og:description" content="{{ supplier.description|default:'Browse our Suppliers and learn more about the machines we offer.' }}">
+<meta property="og:image" content="{{ supplier.marketing_image|default:'https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp' }}">
+<meta property="og:url" content="https://www.farmec.ie/suppliers/{{ supplier.id }}">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ supplier.name|default:'Supplier' }} - Farmec Ireland">
+<meta name="twitter:description" content="{{ supplier.description|default:'Browse our Suppliers and learn more about the machines we offer.' }}">
+<meta name="twitter:image" content="{{ supplier.marketing_image|default:'https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp' }}">
+<link rel="canonical" href="https://www.farmec.ie/suppliers/{{ supplier.id }}">
+{% endblock %}
+
+{% block content %}
+<section id="supplierDetail">
+    {% if supplier %}
+    <div class="supplier-heading">
+        <h1 class="section-heading">{{ supplier.name }}</h1>
+
+        {% if user.is_staff and supplier.id %}
+        <div class="options-btn">
+            <a href="{% url 'supplier_edit' supplier.id %}" class="btn btn-edit">Edit</a>
+            <button class="btn btn-delete" data-delete-url="{% url 'supplier_delete' supplier.id %}">
+                Delete
+            </button>
+        </div>
+        {% endif %}
+    </div>
+
+    {% if machines %}
+    <div class="index">
+        <h2 class="index-heading">Machines</h2>
+        {% for machine in machines %}
+        <a href="#{{ machine.name|slugify }}">
+            <span class="index-item">{{ machine.name }}</span>
+        </a>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="supplier-detail">
+        <img
+            src="{{ supplier.marketing_image|default_if_none:'' }}"
+            alt="{{ supplier.name }}"
+            class="supplier-image"
+            width="750"
+            height="750"
+            onerror="this.src='{% static 'default.jpg' %}'"
+        />
+        <p class="supplier-description">{{ supplier.description }}</p>
+    </div>
+    {% endif %}
+
+    {% if machines %}
+    {% include "includes/machines.html" with machines=machines %}
+    {% endif %}
+
+    {% if videos %}
+    {% include "includes/videos.html" with videos=videos %}
+    {% endif %}
+</section>
+{% endblock %}
