@@ -35,15 +35,6 @@
             <p class="paragraph">{{ blog.body|linebreaks }}</p>
         </div>
     </div>
-
-    {% if user.is_staff and blog.id %}
-    <div class="options-btn">
-        <a href="{% url 'blog_edit' blog.id %}" class="btn btn-edit">Edit</a>
-        <button class="btn btn-delete" data-delete-url="{% url 'blog_delete' blog.id %}" data-redirect="{% url 'blog_list' %}">
-            Delete
-        </button>
-    </div>
-    {% endif %}
     {% endif %}
 </section>
 {% endblock %}

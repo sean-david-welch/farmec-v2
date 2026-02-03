@@ -22,15 +22,6 @@
     {% if supplier %}
     <div class="supplier-heading">
         <h1 class="section-heading">{{ supplier.name }}</h1>
-
-        {% if user.is_staff and supplier.id %}
-        <div class="options-btn">
-            <a href="#" class="btn btn-edit">Edit</a>
-            <button class="btn btn-delete" data-delete-url="#">
-                Delete
-            </button>
-        </div>
-        {% endif %}
     </div>
 
     {% if machines %}

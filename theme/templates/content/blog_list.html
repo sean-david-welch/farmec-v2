@@ -22,12 +22,6 @@
     <h1 class="section-heading">Check out our Latest Blog Posts</h1>
     <p class="sub-heading">Read our latest news</p>
 
-    {% if user.is_staff %}
-    <div class="admin-form">
-        <a href="{% url 'blog_create' %}" class="btn">Add New Blog Post</a>
-    </div>
-    {% endif %}
-
     {% if blogs %}
     <div class="index">
         <h2 class="index-heading">Blogs</h2>
@@ -59,15 +53,6 @@
                 </a>
             </div>
         </div>
-
-        {% if user.is_staff and blog.id %}
-        <div class="options-btn">
-            <a href="{% url 'blog_edit' blog.id %}" class="btn btn-edit">Edit</a>
-            <button class="btn btn-delete" data-delete-url="{% url 'blog_delete' blog.id %}">
-                Delete
-            </button>
-        </div>
-        {% endif %}
     </div>
     {% empty %}
     <p class="paragraph">No blog posts to display.</p>

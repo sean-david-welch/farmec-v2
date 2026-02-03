@@ -8,30 +8,7 @@
     <div class="users-section">
         <h1 class="section-heading">Users</h1>
 
-        {% if user.is_staff %}
-        <div class="admin-form">
-            <a href="{% url 'user_create' %}" class="btn">Add User</a>
-        </div>
-
-        {% for u in users %}
-        <div class="product-view">
-            <h2 class="main-heading">
-                {{ u.email }} -- {% if u.is_staff %}Admin{% else %}Not Admin{% endif %}
-            </h2>
-            <div class="options-btn">
-                <a href="{% url 'user_edit' u.id %}" class="btn btn-edit">Edit</a>
-                <button class="btn btn-delete" data-delete-url="{% url 'user_delete' u.id %}">
-                    Delete
-                </button>
-            </div>
-        </div>
-        {% empty %}
-        <p class="paragraph">No users found.</p>
-        {% endfor %}
-
-        {% else %}
         <p class="paragraph">You must be an admin to view users.</p>
-        {% endif %}
     </div>
 </section>
 {% endblock %}

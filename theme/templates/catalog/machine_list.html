@@ -17,12 +17,6 @@
 <section id="machines">
     <h1 class="section-heading">Machinery</h1>
 
-    {% if user.is_staff %}
-    <div class="admin-form">
-        <a href="#" class="btn">Add New Machine</a>
-    </div>
-    {% endif %}
-
     {% if machines %}
     <div class="index">
         <h2 class="index-heading">Machines:</h2>
@@ -55,15 +49,6 @@
             </div>
         </div>
     </div>
-
-    {% if user.is_staff and machine.id %}
-    <div class="options-btn">
-        <a href="#" class="btn btn-edit">Edit</a>
-        <button class="btn btn-delete" data-delete-url="#">
-            Delete
-        </button>
-    </div>
-    {% endif %}
     {% empty %}
     <p class="paragraph">No machines to display.</p>
     {% endfor %}

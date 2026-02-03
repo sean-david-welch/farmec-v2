@@ -61,15 +61,6 @@
         </div>
         {% endfor %}
         {% endif %}
-
-        {% if user.is_staff and warranty.id %}
-        <div class="options-btn">
-            <a href="{% url 'warranty_edit' warranty.id %}" class="btn btn-edit">Edit</a>
-            <button class="btn btn-delete" data-delete-url="{% url 'warranty_delete' warranty.id %}" data-redirect="{% url 'warranty_list' %}">
-                Delete
-            </button>
-        </div>
-        {% endif %}
     </div>
 
     {% include "components/download_pdf.html" with warranty=warranty parts=parts %}

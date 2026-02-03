@@ -18,24 +18,9 @@
             </a>
 
             <p class="paragraph">{{ product.description }}</p>
-
-            {% if user.is_staff and product.id %}
-            <div class="options-btn">
-                <a href="#" class="btn btn-edit">Edit</a>
-                <button class="btn btn-delete" data-delete-url="#">
-                    Delete
-                </button>
-            </div>
-            {% endif %}
         </div>
         {% empty %}
         <p class="paragraph">No products to display.</p>
         {% endfor %}
     </div>
-
-    {% if user.is_staff %}
-    <div class="admin-form">
-        <a href="#" class="btn">Add New Product</a>
-    </div>
-    {% endif %}
 </section>

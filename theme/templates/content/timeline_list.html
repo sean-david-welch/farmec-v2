@@ -11,12 +11,6 @@
     <h1 class="section-heading">Our Story</h1>
     <p class="sub-heading">A timeline of Farmec's journey</p>
 
-    {% if user.is_staff %}
-    <div class="admin-form">
-        <a href="{% url 'timeline_create' %}" class="btn">Add Timeline Event</a>
-    </div>
-    {% endif %}
-
     {% include "includes/timeline.html" with timelines=timelines %}
 </section>
 {% endblock %}

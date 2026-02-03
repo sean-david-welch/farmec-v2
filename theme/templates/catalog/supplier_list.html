@@ -21,12 +21,6 @@
 <section id="suppliers">
     <h1 class="section-heading">Suppliers</h1>
 
-    {% if user.is_staff %}
-    <div class="admin-form">
-        <a href="#" class="btn">Add New Supplier</a>
-    </div>
-    {% endif %}
-
     {% if suppliers %}
     <div class="index">
         <h2 class="index-heading">Suppliers:</h2>
@@ -70,15 +64,6 @@
             <a href="{% url 'catalog:supplier_detail' supplier.slug %}" class="btn">Learn More</a>
         </div>
     </div>
-
-    {% if user.is_staff and supplier.id %}
-    <div class="options-btn">
-        <a href="#" class="btn btn-edit">Edit</a>
-        <button class="btn btn-delete" data-delete-url="#">
-            Delete
-        </button>
-    </div>
-    {% endif %}
     {% empty %}
     <p class="paragraph">No suppliers to display.</p>
     {% endfor %}

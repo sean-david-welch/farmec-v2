@@ -37,15 +37,6 @@
         </div>
     </div>
 
-    {% if user.is_staff and product.id %}
-    <div class="options-btn">
-        <a href="#" class="btn btn-edit">Edit</a>
-        <button class="btn btn-delete" data-delete-url="#" data-redirect="{% url 'catalog:product_list' %}">
-            Delete
-        </button>
-    </div>
-    {% endif %}
-
     {% else %}
     <p class="paragraph">Product not found.</p>
     {% endif %}

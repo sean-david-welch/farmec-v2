@@ -1,14 +1,6 @@
 {% load static %}
 
 <section id="employees">
-    {% if user.is_staff %}
-    <div class="admin-form">
-        {% block employee_form %}
-        <!-- Employee form placeholder for admin users -->
-        {% endblock %}
-    </div>
-    {% endif %}
-
     <div class="employees">
         {% for employee in employees %}
         <div class="employee-card">
@@ -28,15 +20,6 @@
             <div class="employee-contact">
                 <p class="paragraph">Email: {{ employee.email }}</p>
             </div>
-
-            {% if user.is_staff and employee.id %}
-            <div class="options-btn">
-                <a href="{% url 'employee_edit' employee.id %}" class="btn btn-edit">Edit</a>
-                <button class="btn btn-delete" data-delete-url="{% url 'employee_delete' employee.id %}">
-                    Delete
-                </button>
-            </div>
-            {% endif %}
         </div>
         {% empty %}
         <p class="paragraph">No employees to display.</p>

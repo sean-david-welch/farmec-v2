@@ -22,12 +22,6 @@
     <h1 class="section-heading">Exhibitions:</h1>
     <p class="sub-heading">Check out upcoming events related to Farmec</p>
 
-    {% if user.is_staff %}
-    <div class="admin-form">
-        <a href="{% url 'exhibition_create' %}" class="btn">Add Exhibition</a>
-    </div>
-    {% endif %}
-
     {% if exhibitions %}
     <div class="exhibitions">
         {% for exhibition in exhibitions %}
@@ -36,15 +30,6 @@
             <p class="paragraph">{{ exhibition.date }}</p>
             <p class="paragraph">{{ exhibition.location }}</p>
             <p class="paragraph">{{ exhibition.info }}</p>
-
-            {% if user.is_staff and exhibition.id %}
-            <div class="options-btn">
-                <a href="{% url 'exhibition_edit' exhibition.id %}" class="btn btn-edit">Edit</a>
-                <button class="btn btn-delete" data-delete-url="{% url 'exhibition_delete' exhibition.id %}">
-                    Delete
-                </button>
-            </div>
-            {% endif %}
         </div>
         {% endfor %}
     </div>

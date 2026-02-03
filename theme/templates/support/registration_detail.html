@@ -43,15 +43,6 @@
             <div class="label">Invoice Number</div>
             <div class="value">{{ registration.invoice_number }}</div>
         </div>
-
-        {% if user.is_staff and registration.id %}
-        <div class="options-btn">
-            <a href="{% url 'registration_edit' registration.id %}" class="btn btn-edit">Edit</a>
-            <button class="btn btn-delete" data-delete-url="{% url 'registration_delete' registration.id %}" data-redirect="{% url 'registration_list' %}">
-                Delete
-            </button>
-        </div>
-        {% endif %}
     </div>
 
     {% include "components/download_pdf.html" with registration=registration %}

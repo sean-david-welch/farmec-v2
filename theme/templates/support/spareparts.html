@@ -21,12 +21,6 @@
 <section id="SpareParts">
     <h1 class="section-heading">Spare-Parts</h1>
 
-    {% if user.is_staff and suppliers %}
-    <div class="admin-form">
-        <a href="{% url 'sparepart_create' %}" class="btn">Add Spare Parts</a>
-    </div>
-    {% endif %}
-
     <div class="options-btn">
         <a href="{% url 'warranty_list' %}" class="btn">Warranty Claim</a>
         <a href="{% url 'registration_list' %}" class="btn">Machine Registration</a>

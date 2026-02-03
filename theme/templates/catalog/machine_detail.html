@@ -21,12 +21,6 @@
 <section id="machineDetail">
     <h1 class="section-heading">Products</h1>
 
-    {% if user.is_staff %}
-    <div class="admin-form">
-        <a href="#" class="btn">Add New Product</a>
-    </div>
-    {% endif %}
-
     {% if products %}
     <div class="index">
         <h2 class="index-heading">Products:</h2>

@@ -1,12 +1,6 @@
 <section id="videos">
     <h1 class="section-heading">Videos</h1>
 
-    {% if user.is_staff %}
-    <div class="admin-form">
-        <a href="#" class="btn">Add New Video</a>
-    </div>
-    {% endif %}
-
     <div class="video-grid">
         {% for video in videos %}
         <div class="video-card" id="{{ video.title|slugify }}">
@@ -21,15 +15,6 @@
                 loading="lazy"
                 title="{{ video.title }}"
             ></iframe>
-
-            {% if user.is_staff and video.id %}
-            <div class="options-btn">
-                <a href="#" class="btn btn-edit">Edit</a>
-                <button class="btn btn-delete" data-delete-url="#">
-                    Delete
-                </button>
-            </div>
-            {% endif %}
         </div>
         {% empty %}
         <p class="paragraph">No videos to display.</p>

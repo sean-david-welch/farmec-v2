@@ -24,22 +24,7 @@
             </div>
         </div>
     </div>
-
-    {% if user.is_staff and machine.id %}
-    <div class="options-btn">
-        <a href="#" class="btn btn-edit">Edit</a>
-        <button class="btn btn-delete" data-delete-url="#">
-            Delete
-        </button>
-    </div>
-    {% endif %}
     {% empty %}
     <p class="paragraph">No machines to display.</p>
     {% endfor %}
-
-    {% if user.is_staff %}
-    <div class="admin-form">
-        <a href="#" class="btn">Add New Machine</a>
-    </div>
-    {% endif %}
 </section>

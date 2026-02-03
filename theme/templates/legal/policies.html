@@ -22,25 +22,10 @@
     <div class="terms">
         <h1 class="section-heading">Terms of Service</h1>
 
-        {% if user.is_staff %}
-        <div class="admin-form">
-            <a href="{% url 'term_create' %}" class="btn">Add Terms</a>
-        </div>
-        {% endif %}
-
         {% for term in terms %}
         <div class="info-card">
             <h2 class="main-heading">{{ term.title }}</h2>
             <p class="paragraph">{{ term.body|linebreaks }}</p>
-
-            {% if user.is_staff and term.id %}
-            <div class="options-btn">
-                <a href="{% url 'term_edit' term.id %}" class="btn btn-edit">Edit</a>
-                <button class="btn btn-delete" data-delete-url="{% url 'term_delete' term.id %}">
-                    Delete
-                </button>
-            </div>
-            {% endif %}
         </div>
         {% empty %}
         <p class="paragraph">No terms of service to display.</p>
@@ -50,25 +35,10 @@
     <div class="privacy">
         <h1 class="section-heading">Privacy Policy</h1>
 
-        {% if user.is_staff %}
-        <div class="admin-form">
-            <a href="{% url 'privacy_create' %}" class="btn">Add Privacy Policy</a>
-        </div>
-        {% endif %}
-
         {% for policy in privacies %}
         <div class="info-card">
             <h2 class="main-heading">{{ policy.title }}</h2>
             <p class="paragraph">{{ policy.body|linebreaks }}</p>
-
-            {% if user.is_staff and policy.id %}
-            <div class="options-btn">
-                <a href="{% url 'privacy_edit' policy.id %}" class="btn btn-edit">Edit</a>
-                <button class="btn btn-delete" data-delete-url="{% url 'privacy_delete' policy.id %}">
-                    Delete
-                </button>
-            </div>
-            {% endif %}
         </div>
         {% empty %}
         <p class="paragraph">No privacy policies to display.</p>
