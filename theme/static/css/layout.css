@@ -3,6 +3,10 @@ main {
     padding-top: 6rem;
 }
 
+main > section#Home {
+    margin-top: -6rem;
+}
+
 .container-page {
     margin: 0 auto;
     min-height: 100vh;
