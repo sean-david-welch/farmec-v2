@@ -2,7 +2,7 @@
 .btn {
     z-index: 10;
     margin: 0.5rem auto;
-    display: flex;
+    display: inline-flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
@@ -17,6 +17,7 @@
     transition: all 700ms ease-in-out;
     border: none;
     cursor: pointer;
+    text-decoration: none;
 }
 
 .btn:hover {
