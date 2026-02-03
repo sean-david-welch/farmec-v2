@@ -23,6 +23,24 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
 }
 
+/* Global link and button styling */
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button {
+    font-family: inherit;
+}
+
+a.btn,
+button.btn,
+input[type="submit"],
+input[type="button"] {
+    color: white;
+    text-decoration: none;
+}
+
 /* Typography Components */
 .section-heading {
     margin: 1.25rem auto;
