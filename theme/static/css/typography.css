@@ -43,7 +43,7 @@ input[type="button"] {
 
 /* Typography Components */
 .section-heading {
-    margin: 1.25rem auto;
+    margin: 1.25rem 0;
     font-size: 1.875rem;
     font-weight: 600;
     color: #18181b;
@@ -51,6 +51,7 @@ input[type="button"] {
     text-decoration-color: #dc2626;
     text-decoration-thickness: 4px;
     text-underline-offset: 8px;
+    text-align: center;
 }
 
 .main-heading {

@@ -9,11 +9,8 @@
     color: #d1d5db;
     position: fixed;
     top: 0;
-    left: 0;
-    right: 0;
     z-index: 50;
-    width: 100%;
-    box-sizing: border-box;
+    width: 100vw;
 }
 
 .navbar img {
