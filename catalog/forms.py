@@ -19,7 +19,6 @@ class SupplierForm(forms.ModelForm):
             'social_youtube',
             'social_linkedin',
             'social_website',
-            'slug',
         ]
 
 
@@ -34,7 +33,6 @@ class MachineForm(forms.ModelForm):
             'machine_image',
             'description',
             'machine_link',
-            'slug',
         ]
 
 
@@ -49,7 +47,6 @@ class ProductForm(forms.ModelForm):
             'product_image',
             'description',
             'product_link',
-            'slug',
         ]
 
 
@@ -63,7 +60,6 @@ class SparepartsForm(forms.ModelForm):
             'name',
             'parts_image',
             'spare_parts_link',
-            'slug',
         ]
 
 
