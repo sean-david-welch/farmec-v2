@@ -14,7 +14,6 @@ class BlogForm(forms.ModelForm):
             'main_image',
             'subheading',
             'body',
-            'slug',
         ]
 
 
