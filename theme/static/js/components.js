@@ -17,12 +17,12 @@ function getCookie(name) {
 const csrftoken = getCookie('csrftoken');
 
 // ===== ToTopButton Component =====
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const toTopBtn = document.getElementById('to-top-btn');
 
     if (toTopBtn) {
         // Show/hide button on scroll
-        window.addEventListener('scroll', function() {
+        window.addEventListener('scroll', function () {
             if (window.pageYOffset > 300) {
                 toTopBtn.style.display = 'block';
             } else {
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         // Scroll to top on click
-        toTopBtn.addEventListener('click', function() {
+        toTopBtn.addEventListener('click', function () {
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth'
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // ===== DeleteButton Component =====
     const deleteButtons = document.querySelectorAll('.delete-btn');
     deleteButtons.forEach(btn => {
-        btn.addEventListener('click', async function(e) {
+        btn.addEventListener('click', async function (e) {
             e.preventDefault();
 
             const resourceType = this.dataset.resourceType;
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // ===== DownloadPdf Component =====
     const pdfButtons = document.querySelectorAll('.pdf-download-btn');
     pdfButtons.forEach(btn => {
-        btn.addEventListener('click', async function(e) {
+        btn.addEventListener('click', async function (e) {
             e.preventDefault();
 
             const pdfType = this.dataset.pdfType;
@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // ===== Mobile Menu Toggle =====
     const mobileMenuToggles = document.querySelectorAll('.mobile-menu-toggle');
     mobileMenuToggles.forEach(toggle => {
-        toggle.addEventListener('click', function() {
+        toggle.addEventListener('click', function () {
             const menu = this.nextElementSibling;
             if (menu && menu.classList.contains('mobile-menu')) {
                 menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
@@ -152,23 +152,22 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // ===== Google Maps Component =====
-if (typeof google !== 'undefined' && google.maps) {
-    document.addEventListener('DOMContentLoaded', function() {
-        const mapElement = document.getElementById('google-map');
-        if (mapElement) {
-            const lat = parseFloat(mapElement.dataset.lat);
-            const lng = parseFloat(mapElement.dataset.lng);
-            const zoom = parseInt(mapElement.dataset.zoom);
+// Make initializeMap global for callback
+window.initializeMap = function () {
+    const mapElement = document.getElementById('google-map');
+    if (mapElement && typeof google !== 'undefined' && google.maps) {
+        const lat = parseFloat(mapElement.dataset.lat);
+        const lng = parseFloat(mapElement.dataset.lng);
+        const zoom = parseInt(mapElement.dataset.zoom);
 
-            const map = new google.maps.Map(mapElement, {
-                zoom: zoom,
-                center: { lat: lat, lng: lng },
-            });
+        const map = new google.maps.Map(mapElement, {
+            zoom: zoom,
+            center: {lat: lat, lng: lng},
+        });
 
-            new google.maps.Marker({
-                position: { lat: lat, lng: lng },
-                map: map,
-            });
-        }
-    });
-}
+        new google.maps.Marker({
+            position: {lat: lat, lng: lng},
+            map: map,
+        });
+    }
+};
