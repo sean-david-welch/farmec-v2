@@ -339,9 +339,11 @@
 }
 
 .index-items {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     gap: 1rem;
+    justify-content: center;
+    align-items: center;
 }
 
 .account-index {
@@ -352,6 +354,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    min-width: 220px;
     padding: 0.75rem 1rem;
     background-color: #3f3f46;
     border: 2px solid transparent;
@@ -381,8 +384,10 @@
         margin: 1.25rem 1.25rem;
     }
 
-    .index-items {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    .index-item {
+        min-width: 150px;
+        padding: 0.6rem 0.8rem;
+        font-size: 0.9rem;
     }
 
     .account-index {
