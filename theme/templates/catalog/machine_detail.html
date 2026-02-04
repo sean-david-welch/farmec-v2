@@ -24,11 +24,13 @@
     {% if products %}
     <div class="index">
         <h2 class="index-heading">Products:</h2>
-        {% for product in products %}
-        <a href="#{{ product.name|slugify }}">
-            <span class="index-item">{{ product.name }}</span>
-        </a>
-        {% endfor %}
+        <div class="index-items">
+            {% for product in products %}
+            <a href="#{{ product.name|slugify }}" class="index-item">
+                {{ product.name }}
+            </a>
+            {% endfor %}
+        </div>
 
         {% if machine.machine_link %}
         <a href="{{ machine.machine_link }}" target="_blank" rel="noopener noreferrer" class="btn">

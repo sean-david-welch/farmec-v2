@@ -25,11 +25,13 @@
     {% if blogs %}
     <div class="index">
         <h2 class="index-heading">Blogs</h2>
-        {% for blog in blogs %}
-        <a href="#{{ blog.title|slugify }}">
-            <span class="index-item">{{ blog.title }}</span>
-        </a>
-        {% endfor %}
+        <div class="index-items">
+            {% for blog in blogs %}
+            <a href="#{{ blog.title|slugify }}" class="index-item">
+                {{ blog.title }}
+            </a>
+            {% endfor %}
+        </div>
     </div>
     {% endif %}
 

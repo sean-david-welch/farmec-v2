@@ -20,11 +20,13 @@
     {% if machines %}
     <div class="index">
         <h2 class="index-heading">Machines:</h2>
-        {% for machine in machines %}
-        <a href="#{{ machine.name|slugify }}">
-            <span class="index-item">{{ machine.name }}</span>
-        </a>
-        {% endfor %}
+        <div class="index-items">
+            {% for machine in machines %}
+            <a href="#{{ machine.name|slugify }}" class="index-item">
+                {{ machine.name }}
+            </a>
+            {% endfor %}
+        </div>
     </div>
     {% endif %}
 

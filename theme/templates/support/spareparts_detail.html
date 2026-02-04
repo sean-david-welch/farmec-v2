@@ -24,11 +24,13 @@
     {% if spareparts %}
     <div class="index">
         <h2 class="index-heading">Spare Parts</h2>
-        {% for sparepart in spareparts %}
-        <a href="#{{ sparepart.name|slugify }}">
-            <span class="index-item">{{ sparepart.name }}</span>
-        </a>
-        {% endfor %}
+        <div class="index-items">
+            {% for sparepart in spareparts %}
+            <a href="#{{ sparepart.name|slugify }}" class="index-item">
+                {{ sparepart.name }}
+            </a>
+            {% endfor %}
+        </div>
     </div>
 
     <div class="parts-column">
