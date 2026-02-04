@@ -323,31 +323,52 @@
 .index {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    gap: 1.5rem;
     padding: 1.25rem;
     background-color: #27272a;
     color: #d1d5db;
     margin: 1.25rem 13rem;
     border-radius: 0.75rem;
     border: 4px solid #3f3f46;
-    list-style: none;
+}
+
+.index-heading {
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 700;
+}
+
+.index-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
 }
 
 .account-index {
     margin: 1.25rem 4rem;
 }
 
-.index > * {
-    margin: 0.5rem 0;
-}
-
 .index-item {
-    transition: all 700ms ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1rem;
+    background-color: #3f3f46;
+    border: 2px solid transparent;
+    border-radius: 0.5rem;
+    color: #d1d5db;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 300ms ease-in-out;
     cursor: pointer;
+    text-align: center;
 }
 
 .index-item:hover {
-    color: #dc2626;
+    background-color: #dc2626;
+    color: #ffffff;
+    border-color: #991b1b;
+    transform: translateY(-2px);
 }
 
 .index a {
@@ -355,13 +376,13 @@
     text-decoration: none;
 }
 
-.index a:hover {
-    color: #dc2626;
-}
-
 @media (max-width: 768px) {
     .index {
         margin: 1.25rem 1.25rem;
+    }
+
+    .index-items {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     }
 
     .account-index {
