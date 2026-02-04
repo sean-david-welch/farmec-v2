@@ -23,12 +23,13 @@
 
     {% if suppliers %}
     <div class="index">
-        <h2 class="index-heading">Suppliers:</h2>
-        {% for supplier in suppliers %}
-        <a href="#{{ supplier.name|slugify }}">
-            <span class="index-item">{{ supplier.name }}</span>
-        </a>
-        {% endfor %}
+        <div class="index-items">
+            {% for supplier in suppliers %}
+            <a href="#{{ supplier.name|slugify }}" class="index-item">
+                {{ supplier.name }}
+            </a>
+            {% endfor %}
+        </div>
     </div>
     {% endif %}
 
