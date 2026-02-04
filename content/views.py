@@ -1,5 +1,8 @@
+import os
+
 from django.views.generic import ListView, DetailView
 
+from .forms import ContactForm
 from .models import (
     Blog,
     BlogQuerySet,
@@ -17,6 +20,12 @@ class HomeView(ListView):
     template_name: str = 'pages/home.html'
     context_object_name: str = 'carousels'
     queryset: CarouselQuerySet = Carousel.objects.publish().order_by('-created')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = ContactForm()
+        context['google_maps_api_key'] = 'REMOVED'
+        return context
 
 
 class BlogListView(ListView):
