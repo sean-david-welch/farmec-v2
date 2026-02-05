@@ -17,9 +17,6 @@
     {% block meta %}{% endblock %}
     {% block extra_css %}{% endblock %}
 
-    <!-- Google Maps API -->
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&loading=async&callback=initializeMap" async></script>
-
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-SENSREH8YD"></script>
     <script>
@@ -41,6 +38,15 @@
 </main>
 {% include 'layout/footer.html' %}
 <script src="{% static 'js/components.js' %}" defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}" async></script>
+<script>
+    // Initialize map after Google Maps API loads
+    window.addEventListener('load', function () {
+        if (typeof window.initializeMap === 'function') {
+            window.initializeMap();
+        }
+    });
+</script>
 {% block extra_js %}{% endblock %}
 </body>
 </html>

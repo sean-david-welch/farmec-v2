@@ -692,8 +692,8 @@
 .social-link {
     margin: 0 1rem;
     display: flex;
-    height: 2.75rem;
-    width: 2.75rem;
+    height: 4rem;
+    width: 4rem;
     align-items: center;
     justify-content: center;
     border-radius: 9999px;
@@ -706,7 +706,7 @@
 }
 
 .social-link i {
-    font-size: 1.25rem;
+    font-size: 2rem;
     color: #f3f4f6;
 }
 
@@ -957,12 +957,13 @@
 /* Contact Section */
 .contact-section {
     display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
-    gap: 2rem;
-    margin: 2.5rem 2.5rem;
-    padding: 1rem;
+    grid-template-columns: 1fr 2fr 0.75fr;
+    gap: 1.5rem;
+    margin: 2rem 2rem;
+    padding: 0.5rem;
     border-radius: 0.875rem;
     background-color: #27272a;
+    align-items: center;
 }
 
 .map-container {
@@ -975,7 +976,7 @@
 }
 
 .contact-section > * {
-    margin: 2rem;
+    margin: 1rem;
 }
 
 .contact-form {
@@ -987,13 +988,18 @@
 }
 
 .info-item {
-    margin: 1rem 0;
+    margin: 0.5rem 0;
     color: #d1d5db;
+    font-size: 1.25rem;
+    line-height: 1.6;
 }
 
 .info-item-text {
     color: #f3f4f6;
     font-weight: 500;
+    font-size: 1.25rem;
+    display: block;
+    margin-top: 0.5rem;
 }
 
 .info-item-text a {
@@ -1009,17 +1015,23 @@
 .info-section {
     display: flex;
     flex-direction: column;
+    text-align: center;
 }
 
 .info-section .sub-heading {
     text-decoration: underline;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #f3f4f6;
+    white-space: nowrap;
 }
 
 .info {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    text-align: center;
 }
 
 @media (max-width: 768px) {
