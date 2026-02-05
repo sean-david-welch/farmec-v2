@@ -1,5 +1,4 @@
-import os
-
+from django.conf import settings
 from django.views.generic import ListView, DetailView
 
 from .forms import ContactForm
@@ -24,7 +23,7 @@ class HomeView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = ContactForm()
-        context['google_maps_api_key'] = os.getenv('GOOGLE_MAPS_API_KEY')
+        context['google_maps_api_key'] = settings.env('GOOGLE_MAPS_API_KEY', default='')
         return context
 
 
