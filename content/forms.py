@@ -23,15 +23,6 @@ class ContactForm(forms.Form):
         }),
     )
 
-    phone = forms.CharField(
-        max_length=20,
-        required=False,
-        widget=forms.TextInput(attrs={
-            'class': 'form-input',
-            'placeholder': '+353 1 825 9289',
-        }),
-    )
-
     message = forms.CharField(
         required=True,
         widget=forms.Textarea(attrs={
