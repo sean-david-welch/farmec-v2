@@ -108,13 +108,13 @@
 }
 
 .form-input {
-    padding: 0.625rem !important;
-    background-color: #3f3f46 !important;
-    border: 1px solid #3f3f46 !important;
+    padding: 0.625rem;
+    background-color: white;
+    border: 1px solid #e5e7eb;
     border-radius: 0.75rem;
-    color: #f3f4f6 !important;
+    color: #1f2937;
     font-size: 0.95rem;
-    width: 100% !important;
+    width: 100%;
     transition: all 300ms ease-in-out;
     font-family: inherit;
 }
@@ -124,8 +124,8 @@
 }
 
 .form-input:focus {
-    background-color: #27272a !important;
-    border-color: #dc2626 !important;
+    background-color: #27272a;
+    border-color: #dc2626;
     outline: none;
     box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
 }

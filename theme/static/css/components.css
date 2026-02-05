@@ -966,8 +966,7 @@
 }
 
 .map-container {
-    width: 100% !important;
-    height: 400px !important;
+    width: 100%;
     border-radius: 0.75rem;
     overflow: hidden;
     display: flex;
@@ -1031,10 +1030,6 @@
 
     .contact-section > * {
         margin: 0.5rem;
-    }
-
-    .map-container {
-        height: 300px !important;
     }
 }
 
