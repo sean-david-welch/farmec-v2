@@ -24,7 +24,7 @@ class HomeView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = ContactForm()
-        context['google_maps_api_key'] = 'REMOVED'
+        context['google_maps_api_key'] = os.getenv('GOOGLE_MAPS_API_KEY')
         return context
 
 
