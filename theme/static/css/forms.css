@@ -101,10 +101,10 @@
 
 .form-label {
     margin: 0;
-    font-size: 1.125rem;
+    font-size: 1.375rem;
     font-weight: 600;
     color: #f3f4f6;
-    text-align: left;
+    text-align: center;
 }
 
 .form-input {
@@ -120,11 +120,11 @@
 }
 
 .form-input::placeholder {
-    color: #a1a1aa;
+    color: #9ca3af;
 }
 
 .form-input:focus {
-    background-color: #27272a;
+    background-color: #f9fafb;
     border-color: #dc2626;
     outline: none;
     box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
