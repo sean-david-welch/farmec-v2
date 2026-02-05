@@ -12,11 +12,6 @@ Django Migration Tasks
      * Lineitems/ for lineitem images
      * pdf/ for PDF files
 
-2. Convert React components to Django templates
-   - Migrate all React components from client/ directory to Django templates
-   - Update Django views to render templates instead of serving SPA
-   - Include page templates, layouts, components, and forms
-
 3. Migrate production data to Django database
    - Dump production SQLite database from EC2
    - Write data migration queries/scripts
