@@ -12,11 +12,16 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 import os.path
 from pathlib import Path
 
+import environ
 from django.urls import reverse_lazy
+
+env = environ.Env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Read environment variables from .env file
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
@@ -226,8 +231,8 @@ STORAGES = {
 # AWS S3 Configuration
 AWS_STORAGE_BUCKET_NAME = 'farmec.ie'
 AWS_S3_REGION_NAME = 'eu-west-1'
-AWS_S3_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY')
-AWS_S3_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+AWS_S3_ACCESS_KEY_ID = env('AWS_ACCESS_KEY', default='')
+AWS_S3_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY', default='')
 AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
 AWS_DEFAULT_ACL = 'public-read'
 AWS_QUERYSTRING_AUTH = False
