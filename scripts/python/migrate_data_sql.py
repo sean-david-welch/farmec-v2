@@ -20,48 +20,65 @@ import sqlite3
 import uuid
 from datetime import datetime
 from decimal import Decimal
+from sqlite3 import Cursor
 
 # Database paths
 OLD_DB = '/Users/seanwelch/Coding/farmec-v2/server/database/database.db'
 NEW_DB = '/Users/seanwelch/Coding/farmec-v2/database/database.db'
 
 
-def parse_date(date_str):
-    """Parse TEXT date to ISO date string."""
+def parse_date(date_str: str) -> datetime:
+    """
+    Parse TEXT date to ISO date string.
+
+    :param date_str: string representation of date
+    """
     if not date_str:
         return None
     try:
-        dt = datetime.fromisoformat(date_str)
+        dt: datetime = datetime.fromisoformat(date_str)
         return dt.date().isoformat()
     except (ValueError, AttributeError, TypeError):
         return None
 
 
-def parse_datetime(datetime_str):
-    """Parse TEXT datetime to ISO datetime string."""
+def parse_datetime(datetime_str: str) -> datetime:
+    """
+    Parse TEXT datetime to ISO datetime string.
+
+    :param datetime_str: string representation of datetime
+    """
     if not datetime_str:
         return datetime.now().isoformat()
     try:
-        dt = datetime.fromisoformat(datetime_str)
+        dt: datetime = datetime.fromisoformat(datetime_str)
         return dt.isoformat()
     except (ValueError, AttributeError, TypeError):
         return datetime.now().isoformat()
 
 
-def to_bool(value):
-    """Convert to boolean (0 or 1)."""
+def to_bool(value: str) -> bool:
+    """
+    Convert to boolean (0 or 1).
+
+    :param value: string value of bool
+    """
     if value is None:
         return 0
     return 1 if value else 0
 
 
-def clear_tables(cursor):
-    """Clear all application tables in reverse dependency order."""
+def clear_tables(cursor: Cursor) -> Cursor:
+    """
+    Clear all application tables in reverse dependency order.
+
+    :param cursor: SQLite cursor
+    """
     print("\n" + "=" * 60)
     print("Phase 2: Clearing existing data")
     print("=" * 60)
 
-    tables_in_order = [
+    tables_in_order: list[str] = [
         'PartsRequired',
         'Product',
         'WarrantyClaim',
@@ -79,17 +96,21 @@ def clear_tables(cursor):
         'Privacy',
         'Terms',
     ]
-
     for table in tables_in_order:
         cursor.execute(f"DELETE FROM {table}")
         print(f"  ✓ Cleared {table}")
 
 
-def get_old_data(old_cursor, table_name):
-    """Fetch all data from old database table."""
+def get_old_data(old_cursor: Cursor, table_name: str) -> list[dict[str, str]]:
+    """
+    Fetch all data from old database table.
+
+    :param old_cursor: old sqlite db cursor
+    :param table_name: string value of table name
+    """
     old_cursor.execute(f"SELECT * FROM {table_name}")
-    columns = [description[0] for description in old_cursor.description]
-    rows = []
+    columns: list[str] = [description[0] for description in old_cursor.description]
+    rows: list[dict[str, str]] = []
     for row in old_cursor.fetchall():
         rows.append(dict(zip(columns, row)))
     return rows
