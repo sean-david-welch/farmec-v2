@@ -1,29 +1,11 @@
-#!/usr/bin/env python
-"""
-SQLite Database Migration Script (Django ORM Version)
-Migrates data from old database to new Django database with schema transformation.
-
-Schema Changes:
-1. Date fields: TEXT → DateField/DateTimeField
-2. Boolean fields: INTEGER (0/1) → BooleanField
-3. REAL fields: REAL → DecimalField
-4. New BaseModel fields added: order, publish, uid, created, modified
-5. Foreign key fields: supplier_id → supplier (FK reference)
-
-Features:
-- Transactional execution (all-or-nothing atomicity)
-- Per-record error handling with detailed logging
-- Validates foreign key references before insert
-- Idempotent (uses get_or_create, safe to re-run)
-"""
-
 import os
 import sys
 import sqlite3
 import uuid
 import logging
-from datetime import datetime
+from datetime import datetime, date
 from decimal import Decimal
+from typing import Optional, Any
 
 from django.utils import timezone
 from django.db import transaction
@@ -33,19 +15,33 @@ from team.models import Employee
 from support.models import Warrantyclaim, Partsrequired, Machineregistration
 from legal.models import Privacy, Terms
 
-logger = logging.getLogger(__name__)
+logger: logging.Logger = logging.getLogger(__name__)
 
 
-def setup_django():
-    """Initialize Django before importing models."""
+def setup_django() -> None:
+    """
+    Initialize Django before importing models.
+
+    Sets up Django environment by adding the project path to sys.path,
+    configuring the Django settings module, and calling django.setup().
+
+    :raises ImportError: If Django cannot be imported or initialized
+    """
     sys.path.insert(0, '/Users/seanwelch/Coding/farmec-v2')
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
     import django
     django.setup()
 
 
-def parse_date(date_str):
-    """Parse TEXT date to date object. Handles various formats."""
+def parse_date(date_str: Optional[str]) -> Optional[date]:
+    """
+    Parse TEXT date to date object.
+
+    Handles ISO format dates (YYYY-MM-DD) and returns None for empty or invalid inputs.
+
+    :param date_str: String representation of date in ISO format
+    :return: Parsed date object or None if parsing fails
+    """
     if not date_str:
         return None
     try:
@@ -54,19 +50,37 @@ def parse_date(date_str):
         return None
 
 
-def parse_datetime(datetime_str):
-    """Parse TEXT datetime to datetime object."""
+def parse_datetime(datetime_str: Optional[str]) -> datetime:
+    """
+    Parse TEXT datetime to datetime object.
+
+    Handles ISO format datetimes and returns current time for empty or invalid inputs.
+
+    :param datetime_str: String representation of datetime in ISO format
+    :type datetime_str: Optional[str]
+    :return: Parsed datetime object or current timezone-aware datetime if parsing fails
+    :rtype: datetime
+    """
     if not datetime_str:
         return timezone.now()
     try:
-        dt = datetime.fromisoformat(datetime_str)
+        dt: datetime = datetime.fromisoformat(datetime_str)
         return dt if dt.tzinfo else timezone.make_aware(dt)
     except (ValueError, AttributeError, TypeError):
         return timezone.now()
 
 
-def to_bool(value):
-    """Convert INTEGER to boolean."""
+def to_bool(value: Optional[Any]) -> bool:
+    """
+    Convert INTEGER to boolean.
+
+    Converts integer values (0 or 1) to boolean, with None defaulting to False.
+
+    :param value: Integer value to convert
+    :type value: Optional[Any]
+    :return: Boolean representation of the value
+    :rtype: bool
+    """
     if value is None:
         return False
     try:
@@ -75,8 +89,17 @@ def to_bool(value):
         return False
 
 
-def parse_decimal(value):
-    """Convert value to Decimal with error handling."""
+def parse_decimal(value: Optional[Any]) -> Optional[Decimal]:
+    """
+    Convert value to Decimal with error handling.
+
+    Safely converts numeric values to Decimal, returning None for empty or invalid inputs.
+
+    :param value: Numeric value to convert
+    :type value: Optional[Any]
+    :return: Decimal representation or None if conversion fails
+    :rtype: Optional[Decimal]
+    """
     if not value:
         return None
     try:
@@ -85,14 +108,34 @@ def parse_decimal(value):
         return None
 
 
-def migrate_suppliers(old_conn):
-    """Migrate Supplier table."""
+def migrate_suppliers(old_conn: sqlite3.Connection) -> None:
+    """
+    Migrate Supplier table from old database to new Django database.
+
+    :param old_conn: SQLite connection to old database
+    :type old_conn: sqlite3.Connection
+    :raises Exception: If error occurs during individual supplier migration
+    """
     logger.info("Migrating Suppliers")
-    cursor = old_conn.cursor()
+    cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Supplier")
 
     for row in cursor.fetchall():
         try:
+            id_val: str
+            name: str
+            logo_image: Optional[str]
+            marketing_image: Optional[str]
+            description: Optional[str]
+            social_facebook: Optional[str]
+            social_twitter: Optional[str]
+            social_instagram: Optional[str]
+            social_youtube: Optional[str]
+            social_linkedin: Optional[str]
+            social_website: Optional[str]
+            created: Optional[str]
+            slug: Optional[str]
+
             id_val, name, logo_image, marketing_image, description, social_facebook, \
                 social_twitter, social_instagram, social_youtube, social_linkedin, \
                 social_website, created, slug = row
@@ -125,21 +168,36 @@ def migrate_suppliers(old_conn):
             logger.error(f"Error migrating supplier {id_val}: {e}")
 
 
-def migrate_machines(old_conn):
-    """Migrate Machine table."""
+def migrate_machines(old_conn: sqlite3.Connection) -> None:
+    """
+    Migrate Machine table from old database to new Django database.
+
+    :param old_conn: SQLite connection to old database
+    :type old_conn: sqlite3.Connection
+    :raises Exception: If error occurs during individual machine migration
+    """
     logger.info("Migrating Machines")
-    cursor = old_conn.cursor()
+    cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Machine")
 
     for row in cursor.fetchall():
         try:
+            id_val: str
+            supplier_id: str
+            name: str
+            machine_image: Optional[str]
+            description: Optional[str]
+            machine_link: Optional[str]
+            created: Optional[str]
+            slug: Optional[str]
+
             id_val, supplier_id, name, machine_image, description, machine_link, created, slug = row
 
             if not id_val or not name or not supplier_id:
                 continue
 
             try:
-                supplier = Supplier.objects.get(id=supplier_id)
+                supplier: Supplier = Supplier.objects.get(id=supplier_id)
             except Supplier.DoesNotExist:
                 logger.warning(f"Skipped Machine {id_val}: Supplier {supplier_id} not found")
                 continue
@@ -163,21 +221,35 @@ def migrate_machines(old_conn):
             logger.error(f"Error migrating machine {id_val}: {e}")
 
 
-def migrate_products(old_conn):
-    """Migrate Product table."""
+def migrate_products(old_conn: sqlite3.Connection) -> None:
+    """
+    Migrate Product table from old database to new Django database.
+
+    :param old_conn: SQLite connection to old database
+    :type old_conn: sqlite3.Connection
+    :raises Exception: If error occurs during individual product migration
+    """
     logger.info("Migrating Products")
-    cursor = old_conn.cursor()
+    cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Product")
 
     for row in cursor.fetchall():
         try:
+            id_val: str
+            machine_id: str
+            name: str
+            product_image: Optional[str]
+            description: Optional[str]
+            product_link: Optional[str]
+            slug: Optional[str]
+
             id_val, machine_id, name, product_image, description, product_link, slug = row
 
             if not id_val or not name or not machine_id:
                 continue
 
             try:
-                machine = Machine.objects.get(id=machine_id)
+                machine: Machine = Machine.objects.get(id=machine_id)
             except Machine.DoesNotExist:
                 logger.warning(f"Skipped Product {id_val}: Machine {machine_id} not found")
                 continue
@@ -201,21 +273,34 @@ def migrate_products(old_conn):
             logger.error(f"Error migrating product {id_val}: {e}")
 
 
-def migrate_spare_parts(old_conn):
-    """Migrate SpareParts table."""
+def migrate_spare_parts(old_conn: sqlite3.Connection) -> None:
+    """
+    Migrate SpareParts table from old database to new Django database.
+
+    :param old_conn: SQLite connection to old database
+    :type old_conn: sqlite3.Connection
+    :raises Exception: If error occurs during individual spare part migration
+    """
     logger.info("Migrating SpareParts")
-    cursor = old_conn.cursor()
+    cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM SpareParts")
 
     for row in cursor.fetchall():
         try:
+            id_val: str
+            supplier_id: str
+            name: str
+            parts_image: Optional[str]
+            spare_parts_link: Optional[str]
+            slug: Optional[str]
+
             id_val, supplier_id, name, parts_image, spare_parts_link, slug = row
 
             if not id_val or not name or not supplier_id:
                 continue
 
             try:
-                supplier = Supplier.objects.get(id=supplier_id)
+                supplier: Supplier = Supplier.objects.get(id=supplier_id)
             except Supplier.DoesNotExist:
                 logger.warning(f"Skipped SpareParts {id_val}: Supplier {supplier_id} not found")
                 continue
@@ -238,14 +323,25 @@ def migrate_spare_parts(old_conn):
             logger.error(f"Error migrating spare part {id_val}: {e}")
 
 
-def migrate_line_items(old_conn):
-    """Migrate LineItems table."""
+def migrate_line_items(old_conn: sqlite3.Connection) -> None:
+    """
+    Migrate LineItems table from old database to new Django database.
+
+    :param old_conn: SQLite connection to old database
+    :type old_conn: sqlite3.Connection
+    :raises Exception: If error occurs during individual line item migration
+    """
     logger.info("Migrating LineItems")
-    cursor = old_conn.cursor()
+    cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM LineItems")
 
     for row in cursor.fetchall():
         try:
+            id_val: str
+            name: str
+            price: float
+            image: Optional[str]
+
             id_val, name, price, image = row
 
             if not id_val or not name:
@@ -267,21 +363,36 @@ def migrate_line_items(old_conn):
             logger.error(f"Error migrating line item {id_val}: {e}")
 
 
-def migrate_videos(old_conn):
-    """Migrate Video table."""
+def migrate_videos(old_conn: sqlite3.Connection) -> None:
+    """
+    Migrate Video table from old database to new Django database.
+
+    :param old_conn: SQLite connection to old database
+    :type old_conn: sqlite3.Connection
+    :raises Exception: If error occurs during individual video migration
+    """
     logger.info("Migrating Videos")
-    cursor = old_conn.cursor()
+    cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Video")
 
     for row in cursor.fetchall():
         try:
+            id_val: str
+            supplier_id: str
+            web_url: Optional[str]
+            title: Optional[str]
+            description: Optional[str]
+            video_id: Optional[str]
+            thumbnail_url: Optional[str]
+            created: Optional[str]
+
             id_val, supplier_id, web_url, title, description, video_id, thumbnail_url, created = row
 
             if not id_val or not supplier_id:
                 continue
 
             try:
-                supplier = Supplier.objects.get(id=supplier_id)
+                supplier: Supplier = Supplier.objects.get(id=supplier_id)
             except Supplier.DoesNotExist:
                 logger.warning(f"Skipped Video {id_val}: Supplier {supplier_id} not found")
                 continue
@@ -305,15 +416,30 @@ def migrate_videos(old_conn):
             logger.error(f"Error migrating video {id_val}: {e}")
 
 
-def migrate_blogs(old_conn):
-    """Migrate Blog table."""
+def migrate_blogs(old_conn: sqlite3.Connection) -> None:
+    """
+    Migrate Blog table from old database to new Django database.
+
+    :param old_conn: SQLite connection to old database
+    :type old_conn: sqlite3.Connection
+    :raises Exception: If error occurs during individual blog migration
+    """
     logger.info("Migrating Blogs")
-    cursor = old_conn.cursor()
+    cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Blog")
 
     for row in cursor.fetchall():
         try:
-            id_val, title, date, main_image, subheading, body, created, slug = row
+            id_val: str
+            title: str
+            date_str: Optional[str]
+            main_image: Optional[str]
+            subheading: Optional[str]
+            body: Optional[str]
+            created: Optional[str]
+            slug: Optional[str]
+
+            id_val, title, date_str, main_image, subheading, body, created, slug = row
 
             if not id_val or not title:
                 continue
@@ -322,7 +448,7 @@ def migrate_blogs(old_conn):
                 id=id_val,
                 defaults={
                     'title': title,
-                    'date': parse_date(date),
+                    'date': parse_date(date_str),
                     'main_image': main_image,
                     'subheading': subheading,
                     'body': body,
@@ -337,14 +463,25 @@ def migrate_blogs(old_conn):
             logger.error(f"Error migrating blog {id_val}: {e}")
 
 
-def migrate_carousel(old_conn):
-    """Migrate Carousel table."""
+def migrate_carousel(old_conn: sqlite3.Connection) -> None:
+    """
+    Migrate Carousel table from old database to new Django database.
+
+    :param old_conn: SQLite connection to old database
+    :type old_conn: sqlite3.Connection
+    :raises Exception: If error occurs during individual carousel migration
+    """
     logger.info("Migrating Carousel")
-    cursor = old_conn.cursor()
+    cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Carousel")
 
     for row in cursor.fetchall():
         try:
+            id_val: str
+            name: str
+            image: Optional[str]
+            created: Optional[str]
+
             id_val, name, image, created = row
 
             if not id_val or not name:
@@ -365,15 +502,28 @@ def migrate_carousel(old_conn):
             logger.error(f"Error migrating carousel {id_val}: {e}")
 
 
-def migrate_exhibitions(old_conn):
-    """Migrate Exhibition table."""
+def migrate_exhibitions(old_conn: sqlite3.Connection) -> None:
+    """
+    Migrate Exhibition table from old database to new Django database.
+
+    :param old_conn: SQLite connection to old database
+    :type old_conn: sqlite3.Connection
+    :raises Exception: If error occurs during individual exhibition migration
+    """
     logger.info("Migrating Exhibitions")
-    cursor = old_conn.cursor()
+    cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Exhibition")
 
     for row in cursor.fetchall():
         try:
-            id_val, title, date, location, info, created = row
+            id_val: str
+            title: str
+            date_str: Optional[str]
+            location: Optional[str]
+            info: Optional[str]
+            created: Optional[str]
+
+            id_val, title, date_str, location, info, created = row
 
             if not id_val or not title:
                 continue
@@ -382,7 +532,7 @@ def migrate_exhibitions(old_conn):
                 id=id_val,
                 defaults={
                     'title': title,
-                    'date': parse_date(date),
+                    'date': parse_date(date_str),
                     'location': location,
                     'info': info,
                     'order': 1,
@@ -395,15 +545,27 @@ def migrate_exhibitions(old_conn):
             logger.error(f"Error migrating exhibition {id_val}: {e}")
 
 
-def migrate_timelines(old_conn):
-    """Migrate Timeline table."""
+def migrate_timelines(old_conn: sqlite3.Connection) -> None:
+    """
+    Migrate Timeline table from old database to new Django database.
+
+    :param old_conn: SQLite connection to old database
+    :type old_conn: sqlite3.Connection
+    :raises Exception: If error occurs during individual timeline migration
+    """
     logger.info("Migrating Timelines")
-    cursor = old_conn.cursor()
+    cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Timeline")
 
     for row in cursor.fetchall():
         try:
-            id_val, title, date, body, created = row
+            id_val: str
+            title: str
+            date_str: Optional[str]
+            body: Optional[str]
+            created: Optional[str]
+
+            id_val, title, date_str, body, created = row
 
             if not id_val or not title:
                 continue
@@ -412,7 +574,7 @@ def migrate_timelines(old_conn):
                 id=id_val,
                 defaults={
                     'title': title,
-                    'date': parse_date(date),
+                    'date': parse_date(date_str),
                     'body': body,
                     'order': 1,
                     'publish': True,
@@ -424,14 +586,27 @@ def migrate_timelines(old_conn):
             logger.error(f"Error migrating timeline {id_val}: {e}")
 
 
-def migrate_employees(old_conn):
-    """Migrate Employee table."""
+def migrate_employees(old_conn: sqlite3.Connection) -> None:
+    """
+    Migrate Employee table from old database to new Django database.
+
+    :param old_conn: SQLite connection to old database
+    :type old_conn: sqlite3.Connection
+    :raises Exception: If error occurs during individual employee migration
+    """
     logger.info("Migrating Employees")
-    cursor = old_conn.cursor()
+    cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Employee")
 
     for row in cursor.fetchall():
         try:
+            id_val: str
+            name: str
+            email: str
+            role: str
+            profile_image: Optional[str]
+            created: Optional[str]
+
             id_val, name, email, role, profile_image, created = row
 
             if not id_val or not name or not email:
@@ -454,14 +629,35 @@ def migrate_employees(old_conn):
             logger.error(f"Error migrating employee {id_val}: {e}")
 
 
-def migrate_warranty_claims(old_conn):
-    """Migrate WarrantyClaim table."""
+def migrate_warranty_claims(old_conn: sqlite3.Connection) -> None:
+    """
+    Migrate WarrantyClaim table from old database to new Django database.
+
+    :param old_conn: SQLite connection to old database
+    :type old_conn: sqlite3.Connection
+    :raises Exception: If error occurs during individual warranty claim migration
+    """
     logger.info("Migrating Warranty Claims")
-    cursor = old_conn.cursor()
+    cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM WarrantyClaim")
 
     for row in cursor.fetchall():
         try:
+            id_val: str
+            dealer: str
+            dealer_contact: Optional[str]
+            owner_name: str
+            machine_model: str
+            serial_number: str
+            install_date: Optional[str]
+            failure_date: Optional[str]
+            repair_date: Optional[str]
+            failure_details: Optional[str]
+            repair_details: Optional[str]
+            labour_hours: Optional[str]
+            completed_by: Optional[str]
+            created: Optional[str]
+
             id_val, dealer, dealer_contact, owner_name, machine_model, serial_number, \
                 install_date, failure_date, repair_date, failure_details, repair_details, \
                 labour_hours, completed_by, created = row
@@ -494,27 +690,40 @@ def migrate_warranty_claims(old_conn):
             logger.error(f"Error migrating warranty claim {id_val}: {e}")
 
 
-def migrate_parts_required(old_conn):
-    """Migrate PartsRequired table."""
+def migrate_parts_required(old_conn: sqlite3.Connection) -> None:
+    """
+    Migrate PartsRequired table from old database to new Django database.
+
+    :param old_conn: SQLite connection to old database
+    :type old_conn: sqlite3.Connection
+    :raises Exception: If error occurs during individual parts required migration
+    """
     logger.info("Migrating Parts Required")
-    cursor = old_conn.cursor()
+    cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM PartsRequired")
 
     for row in cursor.fetchall():
         try:
+            id_val: str
+            warranty_id: str
+            part_number: Optional[str]
+            quantity_needed: str
+            invoice_number: Optional[str]
+            description: Optional[str]
+
             id_val, warranty_id, part_number, quantity_needed, invoice_number, description = row
 
             if not id_val or not warranty_id or not quantity_needed:
                 continue
 
             try:
-                warranty = Warrantyclaim.objects.get(id=warranty_id)
+                warranty: Warrantyclaim = Warrantyclaim.objects.get(id=warranty_id)
             except Warrantyclaim.DoesNotExist:
                 logger.warning(f"Skipped PartsRequired {id_val}: Warranty {warranty_id} not found")
                 continue
 
             try:
-                quantity = int(quantity_needed)
+                quantity: int = int(quantity_needed)
                 if quantity < 0:
                     continue
             except (ValueError, TypeError):
@@ -538,17 +747,42 @@ def migrate_parts_required(old_conn):
             logger.error(f"Error migrating parts required {id_val}: {e}")
 
 
-def migrate_machine_registrations(old_conn):
-    """Migrate MachineRegistration table."""
+def migrate_machine_registrations(old_conn: sqlite3.Connection) -> None:
+    """
+    Migrate MachineRegistration table from old database to new Django database.
+
+    :param old_conn: SQLite connection to old database
+    :type old_conn: sqlite3.Connection
+    :raises Exception: If error occurs during individual machine registration migration
+    """
     logger.info("Migrating Machine Registrations")
-    cursor = old_conn.cursor()
+    cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM MachineRegistration")
 
     for row in cursor.fetchall():
         try:
+            id_val: str
+            dealer_name: str
+            dealer_address: Optional[str]
+            owner_name: str
+            owner_address: Optional[str]
+            machine_model: str
+            serial_number: str
+            install_date: Optional[str]
+            invoice_number: Optional[str]
+            complete_supply: Optional[int]
+            pdi_complete: Optional[int]
+            pto_correct: Optional[int]
+            machine_test_run: Optional[int]
+            safety_induction: Optional[int]
+            operator_handbook: Optional[int]
+            date_str: Optional[str]
+            completed_by: Optional[str]
+            created: Optional[str]
+
             id_val, dealer_name, dealer_address, owner_name, owner_address, machine_model, \
                 serial_number, install_date, invoice_number, complete_supply, pdi_complete, \
-                pto_correct, machine_test_run, safety_induction, operator_handbook, date, \
+                pto_correct, machine_test_run, safety_induction, operator_handbook, date_str, \
                 completed_by, created = row
 
             if not id_val or not dealer_name or not owner_name or not machine_model or not serial_number:
@@ -571,7 +805,7 @@ def migrate_machine_registrations(old_conn):
                     'machine_test_run': to_bool(machine_test_run),
                     'safety_induction': to_bool(safety_induction),
                     'operator_handbook': to_bool(operator_handbook),
-                    'date': parse_date(date),
+                    'date': parse_date(date_str),
                     'completed_by': completed_by,
                     'order': 1,
                     'publish': True,
@@ -583,14 +817,25 @@ def migrate_machine_registrations(old_conn):
             logger.error(f"Error migrating machine registration {id_val}: {e}")
 
 
-def migrate_privacy(old_conn):
-    """Migrate Privacy table."""
+def migrate_privacy(old_conn: sqlite3.Connection) -> None:
+    """
+    Migrate Privacy table from old database to new Django database.
+
+    :param old_conn: SQLite connection to old database
+    :type old_conn: sqlite3.Connection
+    :raises Exception: If error occurs during individual privacy migration
+    """
     logger.info("Migrating Privacy Policy")
-    cursor = old_conn.cursor()
+    cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Privacy")
 
     for row in cursor.fetchall():
         try:
+            id_val: str
+            title: str
+            body: Optional[str]
+            created: Optional[str]
+
             id_val, title, body, created = row
 
             if not id_val or not title:
@@ -611,14 +856,25 @@ def migrate_privacy(old_conn):
             logger.error(f"Error migrating privacy policy {id_val}: {e}")
 
 
-def migrate_terms(old_conn):
-    """Migrate Terms table."""
+def migrate_terms(old_conn: sqlite3.Connection) -> None:
+    """
+    Migrate Terms table from old database to new Django database.
+
+    :param old_conn: SQLite connection to old database
+    :type old_conn: sqlite3.Connection
+    :raises Exception: If error occurs during individual terms migration
+    """
     logger.info("Migrating Terms & Conditions")
-    cursor = old_conn.cursor()
+    cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Terms")
 
     for row in cursor.fetchall():
         try:
+            id_val: str
+            title: str
+            body: Optional[str]
+            created: Optional[str]
+
             id_val, title, body, created = row
 
             if not id_val or not title:
@@ -640,10 +896,18 @@ def migrate_terms(old_conn):
 
 
 @transaction.atomic
-def main():
+def main() -> None:
+    """
+    Main migration function with transactional support.
+
+    Orchestrates the migration of all tables from old to new database.
+    All operations are wrapped in a transaction for atomicity.
+
+    :raises SystemExit: If database not found or migration fails
+    """
     setup_django()
 
-    old_db_path = '/Users/seanwelch/Coding/farmec-v2/server/database/database.db'
+    old_db_path: str = '/Users/seanwelch/Coding/farmec-v2/server/database/database.db'
 
     if not os.path.exists(old_db_path):
         logger.error(f"Old database not found at {old_db_path}")
@@ -651,7 +915,7 @@ def main():
 
     logger.info("Starting migration")
 
-    old_conn = sqlite3.connect(old_db_path)
+    old_conn: sqlite3.Connection = sqlite3.connect(old_db_path)
     old_conn.row_factory = sqlite3.Row
 
     try:
