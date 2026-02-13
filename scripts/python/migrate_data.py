@@ -128,14 +128,10 @@ def migrate_suppliers(old_conn: sqlite3.Connection) -> None:
             created: Optional[str]
             slug: Optional[str]
 
-            id_val, name, logo_image, marketing_image, description, social_facebook, \
-                social_twitter, social_instagram, social_youtube, social_linkedin, \
-                social_website, created, slug = row
-
+            id_val, name, logo_image, marketing_image, description, social_facebook, social_twitter, social_instagram, social_youtube, social_linkedin, social_website, created, slug = row
             if not id_val or not name:
                 logger.warning(f"Skipped Supplier (missing required fields): {id_val}")
                 continue
-
             Supplier.objects.get_or_create(
                 id=id_val,
                 defaults={
@@ -154,7 +150,7 @@ def migrate_suppliers(old_conn: sqlite3.Connection) -> None:
                     'publish': True,
                     'uid': uuid.uuid4(),
                     'created': parse_datetime(created),
-                }
+                },
             )
         except Exception as e:
             logger.error(f"Error migrating supplier {id_val}: {e}")
@@ -169,7 +165,6 @@ def migrate_machines(old_conn: sqlite3.Connection) -> None:
     """
     cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Machine")
-
     for row in cursor.fetchall():
         try:
             id_val: str
@@ -182,10 +177,8 @@ def migrate_machines(old_conn: sqlite3.Connection) -> None:
             slug: Optional[str]
 
             id_val, supplier_id, name, machine_image, description, machine_link, created, slug = row
-
             if not id_val or not name or not supplier_id:
                 continue
-
             try:
                 supplier: Supplier = Supplier.objects.get(id=supplier_id)
             except Supplier.DoesNotExist:
@@ -205,7 +198,7 @@ def migrate_machines(old_conn: sqlite3.Connection) -> None:
                     'publish': True,
                     'uid': uuid.uuid4(),
                     'created': parse_datetime(created),
-                }
+                },
             )
         except Exception as e:
             logger.error(f"Error migrating machine {id_val}: {e}")
@@ -220,7 +213,6 @@ def migrate_products(old_conn: sqlite3.Connection) -> None:
     """
     cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Product")
-
     for row in cursor.fetchall():
         try:
             id_val: str
@@ -232,7 +224,6 @@ def migrate_products(old_conn: sqlite3.Connection) -> None:
             slug: Optional[str]
 
             id_val, machine_id, name, product_image, description, product_link, slug = row
-
             if not id_val or not name or not machine_id:
                 continue
 
@@ -255,7 +246,7 @@ def migrate_products(old_conn: sqlite3.Connection) -> None:
                     'publish': True,
                     'uid': uuid.uuid4(),
                     'created': timezone.now(),
-                }
+                },
             )
         except Exception as e:
             logger.error(f"Error migrating product {id_val}: {e}")
@@ -281,16 +272,13 @@ def migrate_spare_parts(old_conn: sqlite3.Connection) -> None:
             slug: Optional[str]
 
             id_val, supplier_id, name, parts_image, spare_parts_link, slug = row
-
             if not id_val or not name or not supplier_id:
                 continue
-
             try:
                 supplier: Supplier = Supplier.objects.get(id=supplier_id)
             except Supplier.DoesNotExist:
                 logger.warning(f"Skipped SpareParts {id_val}: Supplier {supplier_id} not found")
                 continue
-
             Spareparts.objects.get_or_create(
                 id=id_val,
                 defaults={
@@ -303,7 +291,7 @@ def migrate_spare_parts(old_conn: sqlite3.Connection) -> None:
                     'publish': True,
                     'uid': uuid.uuid4(),
                     'created': timezone.now(),
-                }
+                },
             )
         except Exception as e:
             logger.error(f"Error migrating spare part {id_val}: {e}")
@@ -341,7 +329,7 @@ def migrate_line_items(old_conn: sqlite3.Connection) -> None:
                     'publish': True,
                     'uid': uuid.uuid4(),
                     'created': timezone.now(),
-                }
+                },
             )
         except Exception as e:
             logger.error(f"Error migrating line item {id_val}: {e}")
@@ -392,7 +380,7 @@ def migrate_videos(old_conn: sqlite3.Connection) -> None:
                     'publish': True,
                     'uid': uuid.uuid4(),
                     'created': parse_datetime(created),
-                }
+                },
             )
         except Exception as e:
             logger.error(f"Error migrating video {id_val}: {e}")
@@ -437,7 +425,7 @@ def migrate_blogs(old_conn: sqlite3.Connection) -> None:
                     'publish': True,
                     'uid': uuid.uuid4(),
                     'created': parse_datetime(created),
-                }
+                },
             )
         except Exception as e:
             logger.error(f"Error migrating blog {id_val}: {e}")
@@ -474,7 +462,7 @@ def migrate_carousel(old_conn: sqlite3.Connection) -> None:
                     'publish': True,
                     'uid': uuid.uuid4(),
                     'created': parse_datetime(created),
-                }
+                },
             )
         except Exception as e:
             logger.error(f"Error migrating carousel {id_val}: {e}")
@@ -515,7 +503,7 @@ def migrate_exhibitions(old_conn: sqlite3.Connection) -> None:
                     'publish': True,
                     'uid': uuid.uuid4(),
                     'created': parse_datetime(created),
-                }
+                },
             )
         except Exception as e:
             logger.error(f"Error migrating exhibition {id_val}: {e}")
@@ -554,7 +542,7 @@ def migrate_timelines(old_conn: sqlite3.Connection) -> None:
                     'publish': True,
                     'uid': uuid.uuid4(),
                     'created': parse_datetime(created),
-                }
+                },
             )
         except Exception as e:
             logger.error(f"Error migrating timeline {id_val}: {e}")
@@ -595,7 +583,7 @@ def migrate_employees(old_conn: sqlite3.Connection) -> None:
                     'publish': True,
                     'uid': uuid.uuid4(),
                     'created': parse_datetime(created),
-                }
+                },
             )
         except Exception as e:
             logger.error(f"Error migrating employee {id_val}: {e}")
@@ -654,7 +642,7 @@ def migrate_warranty_claims(old_conn: sqlite3.Connection) -> None:
                     'publish': True,
                     'uid': uuid.uuid4(),
                     'created': parse_datetime(created),
-                }
+                },
             )
         except Exception as e:
             logger.error(f"Error migrating warranty claim {id_val}: {e}")
@@ -709,7 +697,7 @@ def migrate_parts_required(old_conn: sqlite3.Connection) -> None:
                     'publish': True,
                     'uid': uuid.uuid4(),
                     'created': timezone.now(),
-                }
+                },
             )
         except Exception as e:
             logger.error(f"Error migrating parts required {id_val}: {e}")
@@ -777,7 +765,7 @@ def migrate_machine_registrations(old_conn: sqlite3.Connection) -> None:
                     'publish': True,
                     'uid': uuid.uuid4(),
                     'created': parse_datetime(created),
-                }
+                },
             )
         except Exception as e:
             logger.error(f"Error migrating machine registration {id_val}: {e}")
@@ -814,7 +802,7 @@ def migrate_privacy(old_conn: sqlite3.Connection) -> None:
                     'publish': True,
                     'uid': uuid.uuid4(),
                     'created': parse_datetime(created),
-                }
+                },
             )
         except Exception as e:
             logger.error(f"Error migrating privacy policy {id_val}: {e}")
@@ -851,7 +839,7 @@ def migrate_terms(old_conn: sqlite3.Connection) -> None:
                     'publish': True,
                     'uid': uuid.uuid4(),
                     'created': parse_datetime(created),
-                }
+                },
             )
         except Exception as e:
             logger.error(f"Error migrating terms {id_val}: {e}")
@@ -908,8 +896,5 @@ def main() -> None:
 
 
 if __name__ == '__main__':
-    logging.basicConfig(
-        level=logging.INFO,
-        format='%(asctime)s - %(levelname)s - %(message)s'
-    )
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
     main()
