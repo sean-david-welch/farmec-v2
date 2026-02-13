@@ -15,7 +15,6 @@ Features:
 - Per-record error handling with detailed logging
 - Validates foreign key references before insert
 - Idempotent (uses get_or_create, safe to re-run)
-- Summary statistics on completion
 """
 
 import os
@@ -50,7 +49,6 @@ def parse_date(date_str):
     if not date_str:
         return None
     try:
-        # Try ISO format first (YYYY-MM-DD)
         return datetime.fromisoformat(date_str).date()
     except (ValueError, AttributeError, TypeError):
         return None
@@ -61,7 +59,6 @@ def parse_datetime(datetime_str):
     if not datetime_str:
         return timezone.now()
     try:
-        # Try ISO format
         dt = datetime.fromisoformat(datetime_str)
         return dt if dt.tzinfo else timezone.make_aware(dt)
     except (ValueError, AttributeError, TypeError):
@@ -100,12 +97,11 @@ def migrate_suppliers(old_conn):
                 social_twitter, social_instagram, social_youtube, social_linkedin, \
                 social_website, created, slug = row
 
-            # Validate required fields
             if not id_val or not name:
                 logger.warning(f"Skipped Supplier (missing required fields): {id_val}")
                 continue
 
-            supplier, created_flag = Supplier.objects.get_or_create(
+            Supplier.objects.get_or_create(
                 id=id_val,
                 defaults={
                     'name': name,
@@ -125,15 +121,13 @@ def migrate_suppliers(old_conn):
                     'created': parse_datetime(created),
                 }
             )
-            if not created_flag:
-                logger.debug(f"Supplier {id_val} already exists")
         except Exception as e:
             logger.error(f"Error migrating supplier {id_val}: {e}")
 
 
 def migrate_machines(old_conn):
     """Migrate Machine table."""
-    print("Migrating Machines...")
+    logger.info("Migrating Machines")
     cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Machine")
 
@@ -141,17 +135,16 @@ def migrate_machines(old_conn):
         try:
             id_val, supplier_id, name, machine_image, description, machine_link, created, slug = row
 
-            # Validate required fields
             if not id_val or not name or not supplier_id:
                 continue
 
             try:
                 supplier = Supplier.objects.get(id=supplier_id)
             except Supplier.DoesNotExist:
-                print(f"  ⚠ Skipping Machine {id_val}: Supplier {supplier_id} not found")
+                logger.warning(f"Skipped Machine {id_val}: Supplier {supplier_id} not found")
                 continue
 
-            machine, created_flag = Machine.objects.get_or_create(
+            Machine.objects.get_or_create(
                 id=id_val,
                 defaults={
                     'supplier': supplier,
@@ -166,17 +159,13 @@ def migrate_machines(old_conn):
                     'created': parse_datetime(created),
                 }
             )
-            if created_flag:
-                print(f"  ✓ Created: {name}")
-            else:
-                print(f"  ✓ Already exists: {name}")
         except Exception as e:
-            print(f"  ❌ Error migrating machine {id_val}: {e}")
+            logger.error(f"Error migrating machine {id_val}: {e}")
 
 
 def migrate_products(old_conn):
     """Migrate Product table."""
-    print("Migrating Products...")
+    logger.info("Migrating Products")
     cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Product")
 
@@ -184,17 +173,16 @@ def migrate_products(old_conn):
         try:
             id_val, machine_id, name, product_image, description, product_link, slug = row
 
-            # Validate required fields
             if not id_val or not name or not machine_id:
                 continue
 
             try:
                 machine = Machine.objects.get(id=machine_id)
             except Machine.DoesNotExist:
-                print(f"  ⚠ Skipping Product {id_val}: Machine {machine_id} not found")
+                logger.warning(f"Skipped Product {id_val}: Machine {machine_id} not found")
                 continue
 
-            product, created_flag = Product.objects.get_or_create(
+            Product.objects.get_or_create(
                 id=id_val,
                 defaults={
                     'machine': machine,
@@ -209,17 +197,13 @@ def migrate_products(old_conn):
                     'created': timezone.now(),
                 }
             )
-            if created_flag:
-                print(f"  ✓ Created: {name}")
-            else:
-                print(f"  ✓ Already exists: {name}")
         except Exception as e:
-            print(f"  ❌ Error migrating product {id_val}: {e}")
+            logger.error(f"Error migrating product {id_val}: {e}")
 
 
 def migrate_spare_parts(old_conn):
     """Migrate SpareParts table."""
-    print("Migrating SpareParts...", end=' ', flush=True)
+    logger.info("Migrating SpareParts")
     cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM SpareParts")
 
@@ -227,18 +211,16 @@ def migrate_spare_parts(old_conn):
         try:
             id_val, supplier_id, name, parts_image, spare_parts_link, slug = row
 
-            # Validate required fields
             if not id_val or not name or not supplier_id:
-                skipped_count += 1
                 continue
 
             try:
                 supplier = Supplier.objects.get(id=supplier_id)
             except Supplier.DoesNotExist:
-                skipped_count += 1
+                logger.warning(f"Skipped SpareParts {id_val}: Supplier {supplier_id} not found")
                 continue
 
-            part, created_flag = Spareparts.objects.get_or_create(
+            Spareparts.objects.get_or_create(
                 id=id_val,
                 defaults={
                     'supplier': supplier,
@@ -252,17 +234,13 @@ def migrate_spare_parts(old_conn):
                     'created': timezone.now(),
                 }
             )
-            if created_flag:
-                created_count += 1
-            else:
-                existing_count += 1
         except Exception as e:
-            print(f"  ❌ Error migrating spare part {id_val}: {e}")
+            logger.error(f"Error migrating spare part {id_val}: {e}")
 
 
 def migrate_line_items(old_conn):
     """Migrate LineItems table."""
-    print("Migrating LineItems...", end=' ', flush=True)
+    logger.info("Migrating LineItems")
     cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM LineItems")
 
@@ -270,12 +248,10 @@ def migrate_line_items(old_conn):
         try:
             id_val, name, price, image = row
 
-            # Validate required fields
             if not id_val or not name:
-                skipped_count += 1
                 continue
 
-            item, created_flag = Lineitems.objects.get_or_create(
+            Lineitems.objects.get_or_create(
                 id=id_val,
                 defaults={
                     'name': name,
@@ -287,17 +263,13 @@ def migrate_line_items(old_conn):
                     'created': timezone.now(),
                 }
             )
-            if created_flag:
-                print(f"  ✓ Created: {name}")
-            else:
-                print(f"  ✓ Already exists: {name}")
         except Exception as e:
-            print(f"  ❌ Error migrating line item {id_val}: {e}")
+            logger.error(f"Error migrating line item {id_val}: {e}")
 
 
 def migrate_videos(old_conn):
     """Migrate Video table."""
-    print("Migrating Videos...", end=' ', flush=True)
+    logger.info("Migrating Videos")
     cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Video")
 
@@ -305,18 +277,16 @@ def migrate_videos(old_conn):
         try:
             id_val, supplier_id, web_url, title, description, video_id, thumbnail_url, created = row
 
-            # Validate required fields
             if not id_val or not supplier_id:
-                skipped_count += 1
                 continue
 
             try:
                 supplier = Supplier.objects.get(id=supplier_id)
             except Supplier.DoesNotExist:
-                skipped_count += 1
+                logger.warning(f"Skipped Video {id_val}: Supplier {supplier_id} not found")
                 continue
 
-            video, created_flag = Video.objects.get_or_create(
+            Video.objects.get_or_create(
                 id=id_val,
                 defaults={
                     'supplier': supplier,
@@ -331,17 +301,13 @@ def migrate_videos(old_conn):
                     'created': parse_datetime(created),
                 }
             )
-            if created_flag:
-                print(f"  ✓ Created: {title or video_id}")
-            else:
-                print(f"  ✓ Already exists: {title or video_id}")
         except Exception as e:
-            print(f"  ❌ Error migrating video {id_val}: {e}")
+            logger.error(f"Error migrating video {id_val}: {e}")
 
 
 def migrate_blogs(old_conn):
     """Migrate Blog table."""
-    print("Migrating Blogs...", end=' ', flush=True)
+    logger.info("Migrating Blogs")
     cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Blog")
 
@@ -349,12 +315,10 @@ def migrate_blogs(old_conn):
         try:
             id_val, title, date, main_image, subheading, body, created, slug = row
 
-            # Validate required fields
             if not id_val or not title:
-                skipped_count += 1
                 continue
 
-            blog, created_flag = Blog.objects.get_or_create(
+            Blog.objects.get_or_create(
                 id=id_val,
                 defaults={
                     'title': title,
@@ -369,19 +333,13 @@ def migrate_blogs(old_conn):
                     'created': parse_datetime(created),
                 }
             )
-            if created_flag:
-                created_count += 1
-            else:
-                existing_count += 1
         except Exception as e:
-            print(f"\n  ❌ Error migrating blog {id_val}: {e}")
-            skipped_count += 1
-
+            logger.error(f"Error migrating blog {id_val}: {e}")
 
 
 def migrate_carousel(old_conn):
     """Migrate Carousel table."""
-    print("Migrating Carousel...", end=' ', flush=True)
+    logger.info("Migrating Carousel")
     cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Carousel")
 
@@ -389,12 +347,10 @@ def migrate_carousel(old_conn):
         try:
             id_val, name, image, created = row
 
-            # Validate required fields
             if not id_val or not name:
-                skipped_count += 1
                 continue
 
-            carousel, created_flag = Carousel.objects.get_or_create(
+            Carousel.objects.get_or_create(
                 id=id_val,
                 defaults={
                     'name': name,
@@ -405,19 +361,13 @@ def migrate_carousel(old_conn):
                     'created': parse_datetime(created),
                 }
             )
-            if created_flag:
-                created_count += 1
-            else:
-                existing_count += 1
         except Exception as e:
-            print(f"\n  ❌ Error migrating carousel {id_val}: {e}")
-            skipped_count += 1
-
+            logger.error(f"Error migrating carousel {id_val}: {e}")
 
 
 def migrate_exhibitions(old_conn):
     """Migrate Exhibition table."""
-    print("Migrating Exhibitions...", end=' ', flush=True)
+    logger.info("Migrating Exhibitions")
     cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Exhibition")
 
@@ -425,12 +375,10 @@ def migrate_exhibitions(old_conn):
         try:
             id_val, title, date, location, info, created = row
 
-            # Validate required fields
             if not id_val or not title:
-                skipped_count += 1
                 continue
 
-            exhibition, created_flag = Exhibition.objects.get_or_create(
+            Exhibition.objects.get_or_create(
                 id=id_val,
                 defaults={
                     'title': title,
@@ -443,19 +391,13 @@ def migrate_exhibitions(old_conn):
                     'created': parse_datetime(created),
                 }
             )
-            if created_flag:
-                created_count += 1
-            else:
-                existing_count += 1
         except Exception as e:
-            print(f"\n  ❌ Error migrating exhibition {id_val}: {e}")
-            skipped_count += 1
-
+            logger.error(f"Error migrating exhibition {id_val}: {e}")
 
 
 def migrate_timelines(old_conn):
     """Migrate Timeline table."""
-    print("Migrating Timelines...", end=' ', flush=True)
+    logger.info("Migrating Timelines")
     cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Timeline")
 
@@ -463,12 +405,10 @@ def migrate_timelines(old_conn):
         try:
             id_val, title, date, body, created = row
 
-            # Validate required fields
             if not id_val or not title:
-                skipped_count += 1
                 continue
 
-            timeline, created_flag = Timeline.objects.get_or_create(
+            Timeline.objects.get_or_create(
                 id=id_val,
                 defaults={
                     'title': title,
@@ -480,19 +420,13 @@ def migrate_timelines(old_conn):
                     'created': parse_datetime(created),
                 }
             )
-            if created_flag:
-                created_count += 1
-            else:
-                existing_count += 1
         except Exception as e:
-            print(f"\n  ❌ Error migrating timeline {id_val}: {e}")
-            skipped_count += 1
-
+            logger.error(f"Error migrating timeline {id_val}: {e}")
 
 
 def migrate_employees(old_conn):
     """Migrate Employee table."""
-    print("Migrating Employees...", end=' ', flush=True)
+    logger.info("Migrating Employees")
     cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Employee")
 
@@ -500,12 +434,10 @@ def migrate_employees(old_conn):
         try:
             id_val, name, email, role, profile_image, created = row
 
-            # Validate required fields
             if not id_val or not name or not email:
-                skipped_count += 1
                 continue
 
-            employee, created_flag = Employee.objects.get_or_create(
+            Employee.objects.get_or_create(
                 id=id_val,
                 defaults={
                     'name': name,
@@ -518,19 +450,13 @@ def migrate_employees(old_conn):
                     'created': parse_datetime(created),
                 }
             )
-            if created_flag:
-                created_count += 1
-            else:
-                existing_count += 1
         except Exception as e:
-            print(f"\n  ❌ Error migrating employee {id_val}: {e}")
-            skipped_count += 1
-
+            logger.error(f"Error migrating employee {id_val}: {e}")
 
 
 def migrate_warranty_claims(old_conn):
     """Migrate WarrantyClaim table."""
-    print("Migrating Warranty Claims...", end=' ', flush=True)
+    logger.info("Migrating Warranty Claims")
     cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM WarrantyClaim")
 
@@ -540,12 +466,10 @@ def migrate_warranty_claims(old_conn):
                 install_date, failure_date, repair_date, failure_details, repair_details, \
                 labour_hours, completed_by, created = row
 
-            # Validate required fields
             if not id_val or not dealer or not owner_name or not machine_model or not serial_number:
-                skipped_count += 1
                 continue
 
-            claim, created_flag = Warrantyclaim.objects.get_or_create(
+            Warrantyclaim.objects.get_or_create(
                 id=id_val,
                 defaults={
                     'dealer': dealer,
@@ -566,19 +490,13 @@ def migrate_warranty_claims(old_conn):
                     'created': parse_datetime(created),
                 }
             )
-            if created_flag:
-                created_count += 1
-            else:
-                existing_count += 1
         except Exception as e:
-            print(f"\n  ❌ Error migrating warranty claim {id_val}: {e}")
-            skipped_count += 1
-
+            logger.error(f"Error migrating warranty claim {id_val}: {e}")
 
 
 def migrate_parts_required(old_conn):
     """Migrate PartsRequired table."""
-    print("Migrating Parts Required...", end=' ', flush=True)
+    logger.info("Migrating Parts Required")
     cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM PartsRequired")
 
@@ -586,28 +504,23 @@ def migrate_parts_required(old_conn):
         try:
             id_val, warranty_id, part_number, quantity_needed, invoice_number, description = row
 
-            # Validate required fields
             if not id_val or not warranty_id or not quantity_needed:
-                skipped_count += 1
                 continue
 
             try:
                 warranty = Warrantyclaim.objects.get(id=warranty_id)
             except Warrantyclaim.DoesNotExist:
-                skipped_count += 1
+                logger.warning(f"Skipped PartsRequired {id_val}: Warranty {warranty_id} not found")
                 continue
 
-            # Validate quantity_needed conversion
             try:
                 quantity = int(quantity_needed)
                 if quantity < 0:
-                    skipped_count += 1
                     continue
             except (ValueError, TypeError):
-                skipped_count += 1
                 continue
 
-            part, created_flag = Partsrequired.objects.get_or_create(
+            Partsrequired.objects.get_or_create(
                 id=id_val,
                 defaults={
                     'warranty': warranty,
@@ -621,19 +534,13 @@ def migrate_parts_required(old_conn):
                     'created': timezone.now(),
                 }
             )
-            if created_flag:
-                created_count += 1
-            else:
-                existing_count += 1
         except Exception as e:
-            print(f"\n  ❌ Error migrating parts required {id_val}: {e}")
-            skipped_count += 1
-
+            logger.error(f"Error migrating parts required {id_val}: {e}")
 
 
 def migrate_machine_registrations(old_conn):
     """Migrate MachineRegistration table."""
-    print("Migrating Machine Registrations...", end=' ', flush=True)
+    logger.info("Migrating Machine Registrations")
     cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM MachineRegistration")
 
@@ -644,12 +551,10 @@ def migrate_machine_registrations(old_conn):
                 pto_correct, machine_test_run, safety_induction, operator_handbook, date, \
                 completed_by, created = row
 
-            # Validate required fields
             if not id_val or not dealer_name or not owner_name or not machine_model or not serial_number:
-                skipped_count += 1
                 continue
 
-            registration, created_flag = Machineregistration.objects.get_or_create(
+            Machineregistration.objects.get_or_create(
                 id=id_val,
                 defaults={
                     'dealer_name': dealer_name,
@@ -674,19 +579,13 @@ def migrate_machine_registrations(old_conn):
                     'created': parse_datetime(created),
                 }
             )
-            if created_flag:
-                created_count += 1
-            else:
-                existing_count += 1
         except Exception as e:
-            print(f"\n  ❌ Error migrating machine registration {id_val}: {e}")
-            skipped_count += 1
-
+            logger.error(f"Error migrating machine registration {id_val}: {e}")
 
 
 def migrate_privacy(old_conn):
     """Migrate Privacy table."""
-    print("Migrating Privacy Policy...", end=' ', flush=True)
+    logger.info("Migrating Privacy Policy")
     cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Privacy")
 
@@ -694,12 +593,10 @@ def migrate_privacy(old_conn):
         try:
             id_val, title, body, created = row
 
-            # Validate required fields
             if not id_val or not title:
-                skipped_count += 1
                 continue
 
-            privacy, created_flag = Privacy.objects.get_or_create(
+            Privacy.objects.get_or_create(
                 id=id_val,
                 defaults={
                     'title': title,
@@ -710,19 +607,13 @@ def migrate_privacy(old_conn):
                     'created': parse_datetime(created),
                 }
             )
-            if created_flag:
-                created_count += 1
-            else:
-                existing_count += 1
         except Exception as e:
-            print(f"\n  ❌ Error migrating privacy policy {id_val}: {e}")
-            skipped_count += 1
-
+            logger.error(f"Error migrating privacy policy {id_val}: {e}")
 
 
 def migrate_terms(old_conn):
     """Migrate Terms table."""
-    print("Migrating Terms & Conditions...", end=' ', flush=True)
+    logger.info("Migrating Terms & Conditions")
     cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Terms")
 
@@ -730,12 +621,10 @@ def migrate_terms(old_conn):
         try:
             id_val, title, body, created = row
 
-            # Validate required fields
             if not id_val or not title:
-                skipped_count += 1
                 continue
 
-            terms, created_flag = Terms.objects.get_or_create(
+            Terms.objects.get_or_create(
                 id=id_val,
                 defaults={
                     'title': title,
@@ -746,14 +635,8 @@ def migrate_terms(old_conn):
                     'created': parse_datetime(created),
                 }
             )
-            if created_flag:
-                created_count += 1
-            else:
-                existing_count += 1
         except Exception as e:
-            print(f"\n  ❌ Error migrating terms {id_val}: {e}")
-            skipped_count += 1
-
+            logger.error(f"Error migrating terms {id_val}: {e}")
 
 
 @transaction.atomic
@@ -763,19 +646,15 @@ def main():
     old_db_path = '/Users/seanwelch/Coding/farmec-v2/server/database/database.db'
 
     if not os.path.exists(old_db_path):
-        print(f"❌ Error: Old database not found at {old_db_path}")
+        logger.error(f"Old database not found at {old_db_path}")
         sys.exit(1)
 
-    print("=" * 70)
-    print("SQLite Database Migration (Django ORM)")
-    print("=" * 70)
-    print(f"\nSource: {old_db_path}\n")
+    logger.info("Starting migration")
 
     old_conn = sqlite3.connect(old_db_path)
     old_conn.row_factory = sqlite3.Row
 
     try:
-        # Migrate in order of dependencies
         migrate_suppliers(old_conn)
         migrate_machines(old_conn)
         migrate_products(old_conn)
@@ -793,17 +672,18 @@ def main():
         migrate_privacy(old_conn)
         migrate_terms(old_conn)
 
-        print("\nMigration completed successfully!")
+        logger.info("Migration completed successfully")
 
     except Exception as e:
-        print(f"\n\n❌ Migration failed: {e}")
-        import traceback
-        traceback.print_exc()
-        print("\n⚠️  Transaction rolled back due to error.")
+        logger.exception(f"Migration failed: {e}")
         sys.exit(1)
     finally:
         old_conn.close()
 
 
 if __name__ == '__main__':
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s - %(levelname)s - %(message)s'
+    )
     main()
