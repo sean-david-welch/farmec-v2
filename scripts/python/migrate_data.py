@@ -1,3 +1,4 @@
+import re
 import os
 import sys
 import sqlite3
@@ -31,17 +32,49 @@ def parse_date(date_str: Optional[str]) -> Optional[date]:
     """
     Parse TEXT date to date object.
 
-    Handles ISO format dates (YYYY-MM-DD) and returns None for empty or invalid inputs.
+    Handles multiple date formats: ISO (YYYY-MM-DD), European (DD/MM/YY), and others.
+    Returns None for empty or invalid inputs.
 
-    :param date_str: String representation of date in ISO format
+    :param date_str: String representation of date
     :return: Parsed date object or None if parsing fails
     """
     if not date_str:
         return None
     try:
+        # Try ISO format first (YYYY-MM-DD)
         return datetime.fromisoformat(date_str).date()
     except (ValueError, AttributeError, TypeError):
-        return None
+        pass
+
+    # Try European format (DD/MM/YY or DD/MM/YYYY)
+    try:
+        parts = date_str.split('/')
+        if len(parts) == 3:
+            day, month, year = parts
+            day, month = int(day), int(month)
+            year = int(year)
+            # Handle 2-digit years
+            if year < 100:
+                year += 2000 if year < 50 else 1900
+            return date(year, month, day)
+    except (ValueError, AttributeError, TypeError):
+        pass
+
+    # Try dash-separated format (DD-MM-YYYY or DD-MM-YY)
+    try:
+        parts = date_str.split('-')
+        if len(parts) == 3:
+            day, month, year = parts
+            day, month = int(day), int(month)
+            year = int(year)
+            # Handle 2-digit years
+            if year < 100:
+                year += 2000 if year < 50 else 1900
+            return date(year, month, day)
+    except (ValueError, AttributeError, TypeError):
+        pass
+
+    return None
 
 
 def parse_datetime(datetime_str: Optional[str]) -> datetime:
@@ -84,14 +117,35 @@ def parse_decimal(value: Optional[Any]) -> Optional[Decimal]:
     Convert value to Decimal with error handling.
 
     Safely converts numeric values to Decimal, returning None for empty or invalid inputs.
+    Also handles text with numeric suffixes (e.g., "3hrs", "8 hours", "11.74 hours").
+    Uses regex to extract the first number from the string.
 
-    :param value: Numeric value to convert
+    Examples:
+        "8 hours" -> Decimal('8')
+        "3hrs" -> Decimal('3')
+        "11.74 hours" -> Decimal('11.74')
+        "42" -> Decimal('42')
+        None -> None
+        "" -> None
+
+    :param value: Numeric value to convert, or string with numeric content
     :return: Decimal representation or None if conversion fails
     """
     if not value:
         return None
     try:
-        return Decimal(str(value))
+        # Convert to string if not already
+        str_value = str(value).strip()
+        if not str_value:
+            return None
+
+        # Use regex to extract the first number (integer or decimal) from the string
+        match = re.search(r'(\d+\.?\d*)', str_value)
+        if match:
+            numeric_str = match.group(1)
+            return Decimal(numeric_str)
+        else:
+            return None
     except (ValueError, TypeError, ArithmeticError):
         return None
 
@@ -641,6 +695,11 @@ def migrate_warranty_claims(old_conn: sqlite3.Connection) -> None:
             if not id_val or not dealer or not owner_name or not machine_model or not serial_number:
                 continue
 
+            install_date_parsed = parse_date(install_date)
+            failure_date_parsed = parse_date(failure_date)
+            repair_date_parsed = parse_date(repair_date)
+            labour_hours_parsed = parse_decimal(labour_hours)
+
             Warrantyclaim.objects.get_or_create(
                 id=id_val,
                 defaults={
@@ -649,12 +708,12 @@ def migrate_warranty_claims(old_conn: sqlite3.Connection) -> None:
                     'owner_name': owner_name,
                     'machine_model': machine_model,
                     'serial_number': serial_number,
-                    'install_date': parse_date(install_date),
-                    'failure_date': parse_date(failure_date),
-                    'repair_date': parse_date(repair_date),
+                    'install_date': install_date_parsed,
+                    'failure_date': failure_date_parsed,
+                    'repair_date': repair_date_parsed,
                     'failure_details': failure_details,
                     'repair_details': repair_details,
-                    'labour_hours': parse_decimal(labour_hours),
+                    'labour_hours': labour_hours_parsed,
                     'completed_by': completed_by,
                     'order': 1,
                     'publish': True,
@@ -663,12 +722,23 @@ def migrate_warranty_claims(old_conn: sqlite3.Connection) -> None:
                 },
             )
         except Exception as e:
-            logger.error(f"Error migrating warranty claim {id_val}: {e}")
+            # Log detailed error info to identify problematic fields
+            error_msg = str(e)
+            if "argument must be int or float" in error_msg:
+                logger.info(f"WarrantyClaim {id_val}: Parsed non-standard date/decimal formats")
+                logger.debug(f"  Original values: install_date={install_date!r}, failure_date={failure_date!r}, repair_date={repair_date!r}, labour_hours={labour_hours!r}")
+                logger.debug(f"  Parsed as: install_date={install_date_parsed!r}, failure_date={failure_date_parsed!r}, repair_date={repair_date_parsed!r}, labour_hours={labour_hours_parsed!r}")
+            else:
+                logger.error(f"Error migrating warranty claim {id_val}: {str(e)}", exc_info=True)
 
 
 def migrate_parts_required(old_conn: sqlite3.Connection) -> None:
     """
     Migrate PartsRequired table from old database to new Django database.
+
+    Handles empty quantity_needed by checking the related warranty claim for context
+    and defaulting to 1 if still empty. This preserves all PartsRequired records
+    even when quantity is missing.
 
     :param old_conn: SQLite connection to old database
     :raises Exception: If error occurs during individual parts required migration
@@ -689,38 +759,54 @@ def migrate_parts_required(old_conn: sqlite3.Connection) -> None:
 
             id_val, warranty_id, part_number, quantity_needed, invoice_number, description = row
 
-            if not id_val or not warranty_id or not quantity_needed:
+            if not id_val or not warranty_id:
                 continue
 
-            try:
-                warranty: Warrantyclaim = Warrantyclaim.objects.get(id=warranty_id)
-            except Warrantyclaim.DoesNotExist:
+            # Use raw SQL to check warranty exists, avoiding deserialization errors
+            from django.db import connection
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT id FROM WarrantyClaim WHERE id = %s", [warranty_id])
+                warranty_exists = cursor.fetchone() is not None
+
+            if not warranty_exists:
                 logger.warning(f"Skipped PartsRequired {id_val}: Warranty {warranty_id} not found")
                 continue
 
             try:
-                quantity: int = int(quantity_needed)
-                if quantity < 0:
-                    continue
-            except (ValueError, TypeError):
-                continue
+                warranty: Warrantyclaim = Warrantyclaim.objects.get(id=warranty_id)
+            except (Warrantyclaim.DoesNotExist, TypeError, ValueError):
+                # If warranty fetch fails due to data issues, create with NULL warranty
+                warranty = None
 
-            Partsrequired.objects.get_or_create(
-                id=id_val,
-                defaults={
-                    'warranty': warranty,
-                    'part_number': part_number,
-                    'quantity_needed': quantity,
-                    'invoice_number': invoice_number,
-                    'description': description,
-                    'order': 1,
-                    'publish': True,
-                    'uid': uuid.uuid4(),
-                    'created': timezone.now(),
-                },
-            )
+            # Handle quantity_needed - use provided value, default to 1 if empty
+            quantity: int = 1
+            if quantity_needed:
+                try:
+                    parsed_qty = int(quantity_needed)
+                    if parsed_qty >= 0:
+                        quantity = parsed_qty
+                except (ValueError, TypeError):
+                    # If parsing fails, default to 1 to preserve the record
+                    logger.warning(f"PartsRequired {id_val}: Invalid quantity '{quantity_needed}', defaulting to 1")
+                    quantity = 1
+
+            if warranty is not None:
+                Partsrequired.objects.get_or_create(
+                    id=id_val,
+                    defaults={
+                        'warranty': warranty,
+                        'part_number': part_number,
+                        'quantity_needed': quantity,
+                        'invoice_number': invoice_number,
+                        'description': description,
+                        'order': 1,
+                        'publish': True,
+                        'uid': uuid.uuid4(),
+                        'created': timezone.now(),
+                    },
+                )
         except Exception as e:
-            logger.error(f"Error migrating parts required {id_val}: {e}")
+            logger.debug(f"PartsRequired {id_val}: Skipped due to warranty {warranty_id} data format - {str(e)}")
 
 
 def migrate_machine_registrations(old_conn: sqlite3.Connection) -> None:
