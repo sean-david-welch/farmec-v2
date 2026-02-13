@@ -6,14 +6,8 @@ import logging
 from datetime import datetime, date
 from decimal import Decimal
 from typing import Optional, Any
-
 from django.utils import timezone
 from django.db import transaction
-from catalog.models import Supplier, Machine, Product, Spareparts, Lineitems, Video
-from content.models import Blog, Carousel, Exhibition, Timeline
-from team.models import Employee
-from support.models import Warrantyclaim, Partsrequired, Machineregistration
-from legal.models import Privacy, Terms
 
 logger: logging.Logger = logging.getLogger(__name__)
 
@@ -28,7 +22,7 @@ def setup_django() -> None:
     :raises ImportError: If Django cannot be imported or initialized
     """
     sys.path.insert(0, '/Users/seanwelch/Coding/farmec-v2')
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'farmec.settings')
     import django
     django.setup()
 
@@ -109,6 +103,8 @@ def migrate_suppliers(old_conn: sqlite3.Connection) -> None:
     :param old_conn: SQLite connection to old database
     :raises Exception: If error occurs during individual supplier migration
     """
+    from catalog.models import Supplier
+
     cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Supplier")
 
@@ -163,6 +159,8 @@ def migrate_machines(old_conn: sqlite3.Connection) -> None:
     :param old_conn: SQLite connection to old database
     :raises Exception: If error occurs during individual machine migration
     """
+    from catalog.models import Machine, Supplier
+
     cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Machine")
     for row in cursor.fetchall():
@@ -211,6 +209,8 @@ def migrate_products(old_conn: sqlite3.Connection) -> None:
     :param old_conn: SQLite connection to old database
     :raises Exception: If error occurs during individual product migration
     """
+    from catalog.models import Product, Machine
+
     cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Product")
     for row in cursor.fetchall():
@@ -259,6 +259,8 @@ def migrate_spare_parts(old_conn: sqlite3.Connection) -> None:
     :param old_conn: SQLite connection to old database
     :raises Exception: If error occurs during individual spare part migration
     """
+    from catalog.models import Spareparts, Supplier
+
     cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM SpareParts")
 
@@ -304,6 +306,8 @@ def migrate_line_items(old_conn: sqlite3.Connection) -> None:
     :param old_conn: SQLite connection to old database
     :raises Exception: If error occurs during individual line item migration
     """
+    from catalog.models import Lineitems
+
     cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM LineItems")
 
@@ -342,6 +346,8 @@ def migrate_videos(old_conn: sqlite3.Connection) -> None:
     :param old_conn: SQLite connection to old database
     :raises Exception: If error occurs during individual video migration
     """
+    from catalog.models import Video, Supplier
+
     cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Video")
 
@@ -393,6 +399,8 @@ def migrate_blogs(old_conn: sqlite3.Connection) -> None:
     :param old_conn: SQLite connection to old database
     :raises Exception: If error occurs during individual blog migration
     """
+    from content.models import Blog
+
     cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Blog")
 
@@ -438,6 +446,8 @@ def migrate_carousel(old_conn: sqlite3.Connection) -> None:
     :param old_conn: SQLite connection to old database
     :raises Exception: If error occurs during individual carousel migration
     """
+    from content.models import Carousel
+
     cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Carousel")
 
@@ -475,6 +485,8 @@ def migrate_exhibitions(old_conn: sqlite3.Connection) -> None:
     :param old_conn: SQLite connection to old database
     :raises Exception: If error occurs during individual exhibition migration
     """
+    from content.models import Exhibition
+
     cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Exhibition")
 
@@ -516,6 +528,8 @@ def migrate_timelines(old_conn: sqlite3.Connection) -> None:
     :param old_conn: SQLite connection to old database
     :raises Exception: If error occurs during individual timeline migration
     """
+    from content.models import Timeline
+
     cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Timeline")
 
@@ -555,6 +569,8 @@ def migrate_employees(old_conn: sqlite3.Connection) -> None:
     :param old_conn: SQLite connection to old database
     :raises Exception: If error occurs during individual employee migration
     """
+    from team.models import Employee
+
     cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Employee")
 
@@ -596,6 +612,8 @@ def migrate_warranty_claims(old_conn: sqlite3.Connection) -> None:
     :param old_conn: SQLite connection to old database
     :raises Exception: If error occurs during individual warranty claim migration
     """
+    from support.models import Warrantyclaim
+
     cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM WarrantyClaim")
 
@@ -655,6 +673,8 @@ def migrate_parts_required(old_conn: sqlite3.Connection) -> None:
     :param old_conn: SQLite connection to old database
     :raises Exception: If error occurs during individual parts required migration
     """
+    from support.models import Partsrequired, Warrantyclaim
+
     cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM PartsRequired")
 
@@ -710,6 +730,8 @@ def migrate_machine_registrations(old_conn: sqlite3.Connection) -> None:
     :param old_conn: SQLite connection to old database
     :raises Exception: If error occurs during individual machine registration migration
     """
+    from support.models import Machineregistration
+
     cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM MachineRegistration")
 
@@ -778,6 +800,8 @@ def migrate_privacy(old_conn: sqlite3.Connection) -> None:
     :param old_conn: SQLite connection to old database
     :raises Exception: If error occurs during individual privacy migration
     """
+    from legal.models import Privacy
+
     cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Privacy")
 
@@ -815,6 +839,8 @@ def migrate_terms(old_conn: sqlite3.Connection) -> None:
     :param old_conn: SQLite connection to old database
     :raises Exception: If error occurs during individual terms migration
     """
+    from legal.models import Terms
+
     cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Terms")
 
@@ -845,7 +871,6 @@ def migrate_terms(old_conn: sqlite3.Connection) -> None:
             logger.error(f"Error migrating terms {id_val}: {e}")
 
 
-@transaction.atomic
 def main() -> None:
     """
     Main migration function with transactional support.
@@ -869,24 +894,25 @@ def main() -> None:
     old_conn.row_factory = sqlite3.Row
 
     try:
-        migrate_suppliers(old_conn)
-        migrate_machines(old_conn)
-        migrate_products(old_conn)
-        migrate_spare_parts(old_conn)
-        migrate_line_items(old_conn)
-        migrate_videos(old_conn)
-        migrate_blogs(old_conn)
-        migrate_carousel(old_conn)
-        migrate_exhibitions(old_conn)
-        migrate_timelines(old_conn)
-        migrate_employees(old_conn)
-        migrate_warranty_claims(old_conn)
-        migrate_parts_required(old_conn)
-        migrate_machine_registrations(old_conn)
-        migrate_privacy(old_conn)
-        migrate_terms(old_conn)
+        with transaction.atomic():
+            migrate_suppliers(old_conn)
+            migrate_machines(old_conn)
+            migrate_products(old_conn)
+            migrate_spare_parts(old_conn)
+            migrate_line_items(old_conn)
+            migrate_videos(old_conn)
+            migrate_blogs(old_conn)
+            migrate_carousel(old_conn)
+            migrate_exhibitions(old_conn)
+            migrate_timelines(old_conn)
+            migrate_employees(old_conn)
+            migrate_warranty_claims(old_conn)
+            migrate_parts_required(old_conn)
+            migrate_machine_registrations(old_conn)
+            migrate_privacy(old_conn)
+            migrate_terms(old_conn)
 
-        logger.info("Migration completed successfully")
+            logger.info("Migration completed successfully")
 
     except Exception as e:
         logger.exception(f"Migration failed: {e}")
