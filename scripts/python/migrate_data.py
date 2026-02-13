@@ -57,9 +57,7 @@ def parse_datetime(datetime_str: Optional[str]) -> datetime:
     Handles ISO format datetimes and returns current time for empty or invalid inputs.
 
     :param datetime_str: String representation of datetime in ISO format
-    :type datetime_str: Optional[str]
     :return: Parsed datetime object or current timezone-aware datetime if parsing fails
-    :rtype: datetime
     """
     if not datetime_str:
         return timezone.now()
@@ -77,9 +75,7 @@ def to_bool(value: Optional[Any]) -> bool:
     Converts integer values (0 or 1) to boolean, with None defaulting to False.
 
     :param value: Integer value to convert
-    :type value: Optional[Any]
     :return: Boolean representation of the value
-    :rtype: bool
     """
     if value is None:
         return False
@@ -96,9 +92,7 @@ def parse_decimal(value: Optional[Any]) -> Optional[Decimal]:
     Safely converts numeric values to Decimal, returning None for empty or invalid inputs.
 
     :param value: Numeric value to convert
-    :type value: Optional[Any]
     :return: Decimal representation or None if conversion fails
-    :rtype: Optional[Decimal]
     """
     if not value:
         return None
@@ -113,7 +107,6 @@ def migrate_suppliers(old_conn: sqlite3.Connection) -> None:
     Migrate Supplier table from old database to new Django database.
 
     :param old_conn: SQLite connection to old database
-    :type old_conn: sqlite3.Connection
     :raises Exception: If error occurs during individual supplier migration
     """
     logger.info("Migrating Suppliers")
@@ -173,7 +166,6 @@ def migrate_machines(old_conn: sqlite3.Connection) -> None:
     Migrate Machine table from old database to new Django database.
 
     :param old_conn: SQLite connection to old database
-    :type old_conn: sqlite3.Connection
     :raises Exception: If error occurs during individual machine migration
     """
     logger.info("Migrating Machines")
@@ -226,7 +218,6 @@ def migrate_products(old_conn: sqlite3.Connection) -> None:
     Migrate Product table from old database to new Django database.
 
     :param old_conn: SQLite connection to old database
-    :type old_conn: sqlite3.Connection
     :raises Exception: If error occurs during individual product migration
     """
     logger.info("Migrating Products")
@@ -278,7 +269,6 @@ def migrate_spare_parts(old_conn: sqlite3.Connection) -> None:
     Migrate SpareParts table from old database to new Django database.
 
     :param old_conn: SQLite connection to old database
-    :type old_conn: sqlite3.Connection
     :raises Exception: If error occurs during individual spare part migration
     """
     logger.info("Migrating SpareParts")
@@ -328,7 +318,6 @@ def migrate_line_items(old_conn: sqlite3.Connection) -> None:
     Migrate LineItems table from old database to new Django database.
 
     :param old_conn: SQLite connection to old database
-    :type old_conn: sqlite3.Connection
     :raises Exception: If error occurs during individual line item migration
     """
     logger.info("Migrating LineItems")
@@ -368,7 +357,6 @@ def migrate_videos(old_conn: sqlite3.Connection) -> None:
     Migrate Video table from old database to new Django database.
 
     :param old_conn: SQLite connection to old database
-    :type old_conn: sqlite3.Connection
     :raises Exception: If error occurs during individual video migration
     """
     logger.info("Migrating Videos")
@@ -421,7 +409,6 @@ def migrate_blogs(old_conn: sqlite3.Connection) -> None:
     Migrate Blog table from old database to new Django database.
 
     :param old_conn: SQLite connection to old database
-    :type old_conn: sqlite3.Connection
     :raises Exception: If error occurs during individual blog migration
     """
     logger.info("Migrating Blogs")
@@ -468,7 +455,6 @@ def migrate_carousel(old_conn: sqlite3.Connection) -> None:
     Migrate Carousel table from old database to new Django database.
 
     :param old_conn: SQLite connection to old database
-    :type old_conn: sqlite3.Connection
     :raises Exception: If error occurs during individual carousel migration
     """
     logger.info("Migrating Carousel")
@@ -507,7 +493,6 @@ def migrate_exhibitions(old_conn: sqlite3.Connection) -> None:
     Migrate Exhibition table from old database to new Django database.
 
     :param old_conn: SQLite connection to old database
-    :type old_conn: sqlite3.Connection
     :raises Exception: If error occurs during individual exhibition migration
     """
     logger.info("Migrating Exhibitions")
@@ -550,7 +535,6 @@ def migrate_timelines(old_conn: sqlite3.Connection) -> None:
     Migrate Timeline table from old database to new Django database.
 
     :param old_conn: SQLite connection to old database
-    :type old_conn: sqlite3.Connection
     :raises Exception: If error occurs during individual timeline migration
     """
     logger.info("Migrating Timelines")
@@ -591,7 +575,6 @@ def migrate_employees(old_conn: sqlite3.Connection) -> None:
     Migrate Employee table from old database to new Django database.
 
     :param old_conn: SQLite connection to old database
-    :type old_conn: sqlite3.Connection
     :raises Exception: If error occurs during individual employee migration
     """
     logger.info("Migrating Employees")
@@ -634,7 +617,6 @@ def migrate_warranty_claims(old_conn: sqlite3.Connection) -> None:
     Migrate WarrantyClaim table from old database to new Django database.
 
     :param old_conn: SQLite connection to old database
-    :type old_conn: sqlite3.Connection
     :raises Exception: If error occurs during individual warranty claim migration
     """
     logger.info("Migrating Warranty Claims")
@@ -695,7 +677,6 @@ def migrate_parts_required(old_conn: sqlite3.Connection) -> None:
     Migrate PartsRequired table from old database to new Django database.
 
     :param old_conn: SQLite connection to old database
-    :type old_conn: sqlite3.Connection
     :raises Exception: If error occurs during individual parts required migration
     """
     logger.info("Migrating Parts Required")
@@ -752,7 +733,6 @@ def migrate_machine_registrations(old_conn: sqlite3.Connection) -> None:
     Migrate MachineRegistration table from old database to new Django database.
 
     :param old_conn: SQLite connection to old database
-    :type old_conn: sqlite3.Connection
     :raises Exception: If error occurs during individual machine registration migration
     """
     logger.info("Migrating Machine Registrations")
@@ -822,7 +802,6 @@ def migrate_privacy(old_conn: sqlite3.Connection) -> None:
     Migrate Privacy table from old database to new Django database.
 
     :param old_conn: SQLite connection to old database
-    :type old_conn: sqlite3.Connection
     :raises Exception: If error occurs during individual privacy migration
     """
     logger.info("Migrating Privacy Policy")
@@ -861,7 +840,6 @@ def migrate_terms(old_conn: sqlite3.Connection) -> None:
     Migrate Terms table from old database to new Django database.
 
     :param old_conn: SQLite connection to old database
-    :type old_conn: sqlite3.Connection
     :raises Exception: If error occurs during individual terms migration
     """
     logger.info("Migrating Terms & Conditions")
