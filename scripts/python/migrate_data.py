@@ -109,7 +109,6 @@ def migrate_suppliers(old_conn: sqlite3.Connection) -> None:
     :param old_conn: SQLite connection to old database
     :raises Exception: If error occurs during individual supplier migration
     """
-    logger.info("Migrating Suppliers")
     cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Supplier")
 
@@ -168,7 +167,6 @@ def migrate_machines(old_conn: sqlite3.Connection) -> None:
     :param old_conn: SQLite connection to old database
     :raises Exception: If error occurs during individual machine migration
     """
-    logger.info("Migrating Machines")
     cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Machine")
 
@@ -220,7 +218,6 @@ def migrate_products(old_conn: sqlite3.Connection) -> None:
     :param old_conn: SQLite connection to old database
     :raises Exception: If error occurs during individual product migration
     """
-    logger.info("Migrating Products")
     cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Product")
 
@@ -271,7 +268,6 @@ def migrate_spare_parts(old_conn: sqlite3.Connection) -> None:
     :param old_conn: SQLite connection to old database
     :raises Exception: If error occurs during individual spare part migration
     """
-    logger.info("Migrating SpareParts")
     cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM SpareParts")
 
@@ -320,7 +316,6 @@ def migrate_line_items(old_conn: sqlite3.Connection) -> None:
     :param old_conn: SQLite connection to old database
     :raises Exception: If error occurs during individual line item migration
     """
-    logger.info("Migrating LineItems")
     cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM LineItems")
 
@@ -359,7 +354,6 @@ def migrate_videos(old_conn: sqlite3.Connection) -> None:
     :param old_conn: SQLite connection to old database
     :raises Exception: If error occurs during individual video migration
     """
-    logger.info("Migrating Videos")
     cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Video")
 
@@ -411,7 +405,6 @@ def migrate_blogs(old_conn: sqlite3.Connection) -> None:
     :param old_conn: SQLite connection to old database
     :raises Exception: If error occurs during individual blog migration
     """
-    logger.info("Migrating Blogs")
     cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Blog")
 
@@ -457,7 +450,6 @@ def migrate_carousel(old_conn: sqlite3.Connection) -> None:
     :param old_conn: SQLite connection to old database
     :raises Exception: If error occurs during individual carousel migration
     """
-    logger.info("Migrating Carousel")
     cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Carousel")
 
@@ -495,7 +487,6 @@ def migrate_exhibitions(old_conn: sqlite3.Connection) -> None:
     :param old_conn: SQLite connection to old database
     :raises Exception: If error occurs during individual exhibition migration
     """
-    logger.info("Migrating Exhibitions")
     cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Exhibition")
 
@@ -537,7 +528,6 @@ def migrate_timelines(old_conn: sqlite3.Connection) -> None:
     :param old_conn: SQLite connection to old database
     :raises Exception: If error occurs during individual timeline migration
     """
-    logger.info("Migrating Timelines")
     cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Timeline")
 
@@ -577,7 +567,6 @@ def migrate_employees(old_conn: sqlite3.Connection) -> None:
     :param old_conn: SQLite connection to old database
     :raises Exception: If error occurs during individual employee migration
     """
-    logger.info("Migrating Employees")
     cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Employee")
 
@@ -619,7 +608,6 @@ def migrate_warranty_claims(old_conn: sqlite3.Connection) -> None:
     :param old_conn: SQLite connection to old database
     :raises Exception: If error occurs during individual warranty claim migration
     """
-    logger.info("Migrating Warranty Claims")
     cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM WarrantyClaim")
 
@@ -679,7 +667,6 @@ def migrate_parts_required(old_conn: sqlite3.Connection) -> None:
     :param old_conn: SQLite connection to old database
     :raises Exception: If error occurs during individual parts required migration
     """
-    logger.info("Migrating Parts Required")
     cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM PartsRequired")
 
@@ -735,7 +722,6 @@ def migrate_machine_registrations(old_conn: sqlite3.Connection) -> None:
     :param old_conn: SQLite connection to old database
     :raises Exception: If error occurs during individual machine registration migration
     """
-    logger.info("Migrating Machine Registrations")
     cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM MachineRegistration")
 
@@ -804,7 +790,6 @@ def migrate_privacy(old_conn: sqlite3.Connection) -> None:
     :param old_conn: SQLite connection to old database
     :raises Exception: If error occurs during individual privacy migration
     """
-    logger.info("Migrating Privacy Policy")
     cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Privacy")
 
@@ -842,7 +827,6 @@ def migrate_terms(old_conn: sqlite3.Connection) -> None:
     :param old_conn: SQLite connection to old database
     :raises Exception: If error occurs during individual terms migration
     """
-    logger.info("Migrating Terms & Conditions")
     cursor: sqlite3.Cursor = old_conn.cursor()
     cursor.execute("SELECT * FROM Terms")
 
