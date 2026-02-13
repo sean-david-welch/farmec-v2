@@ -12,6 +12,61 @@ from django.db import transaction
 
 logger: logging.Logger = logging.getLogger(__name__)
 
+# Global migration statistics
+migration_stats: dict[str, dict[str, int]] = {}
+
+
+def log_migration_summary(migrated_counts: dict[str, int], old_counts: dict[str, int]) -> None:
+    """
+    Log migration summary with before/after record counts.
+
+    :param migrated_counts: Dictionary with counts of migrated records per table
+    :param old_counts: Dictionary with original record counts from old database
+    """
+    logger.info("\n" + "=" * 70)
+    logger.info("MIGRATION SUMMARY")
+    logger.info("=" * 70)
+
+    total_old = sum(old_counts.values())
+    total_migrated = sum(migrated_counts.values())
+
+    for table in sorted(migrated_counts.keys()):
+        old_count = old_counts.get(table, 0)
+        new_count = migrated_counts.get(table, 0)
+        status = "✓" if old_count == new_count else "⚠"
+        logger.info(f"{status} {table:25} | Old: {old_count:4} | Migrated: {new_count:4}")
+
+    logger.info("-" * 70)
+    logger.info(f"  TOTAL: {total_old:4} records | Migrated: {total_migrated:4} records")
+    logger.info("=" * 70 + "\n")
+
+
+def get_old_db_record_counts(old_conn: sqlite3.Connection) -> dict[str, int]:
+    """
+    Get record counts for all tables being migrated from old database.
+
+    :param old_conn: SQLite connection to old database
+    :return: Dictionary mapping table names to record counts
+    """
+    tables = [
+        'Supplier', 'Machine', 'Product', 'SpareParts', 'LineItems', 'Video',
+        'Blog', 'Carousel', 'Exhibition', 'Timeline', 'Employee',
+        'WarrantyClaim', 'PartsRequired', 'MachineRegistration', 'Privacy', 'Terms'
+    ]
+
+    counts: dict[str, int] = {}
+    cursor: sqlite3.Cursor = old_conn.cursor()
+
+    for table in tables:
+        try:
+            cursor.execute(f"SELECT COUNT(*) FROM {table}")
+            count: int = cursor.fetchone()[0]
+            counts[table] = count
+        except sqlite3.OperationalError:
+            counts[table] = 0
+
+    return counts
+
 
 def setup_django() -> None:
     """
@@ -974,10 +1029,24 @@ def main() -> None:
         logger.error(f"Old database not found at {old_db_path}")
         sys.exit(1)
 
-    logger.info("Starting migration")
-
     old_conn: sqlite3.Connection = sqlite3.connect(old_db_path)
     old_conn.row_factory = sqlite3.Row
+
+    # Get and log record counts from old database
+    old_counts: dict[str, int] = get_old_db_record_counts(old_conn)
+    logger.info("Starting migration")
+    logger.info("\n" + "=" * 70)
+    logger.info("SOURCE DATABASE RECORD COUNTS")
+    logger.info("=" * 70)
+    total_records = 0
+    for table in sorted(old_counts.keys()):
+        count = old_counts[table]
+        if count > 0:
+            logger.info(f"  {table:25} | {count:5} records")
+            total_records += count
+    logger.info("-" * 70)
+    logger.info(f"  TOTAL: {total_records:5} records to migrate")
+    logger.info("=" * 70 + "\n")
 
     try:
         with transaction.atomic():
@@ -998,7 +1067,33 @@ def main() -> None:
             migrate_privacy(old_conn)
             migrate_terms(old_conn)
 
-            logger.info("Migration completed successfully")
+        # Get record counts from new database and log migration summary
+        from catalog.models import Supplier, Machine, Product, Spareparts, Lineitems, Video
+        from content.models import Blog, Carousel, Exhibition, Timeline
+        from team.models import Employee
+        from support.models import Warrantyclaim, Partsrequired, Machineregistration
+        from legal.models import Privacy, Terms
+
+        migrated_counts: dict[str, int] = {
+            'Supplier': Supplier.objects.count(),
+            'Machine': Machine.objects.count(),
+            'Product': Product.objects.count(),
+            'SpareParts': Spareparts.objects.count(),
+            'LineItems': Lineitems.objects.count(),
+            'Video': Video.objects.count(),
+            'Blog': Blog.objects.count(),
+            'Carousel': Carousel.objects.count(),
+            'Exhibition': Exhibition.objects.count(),
+            'Timeline': Timeline.objects.count(),
+            'Employee': Employee.objects.count(),
+            'WarrantyClaim': Warrantyclaim.objects.count(),
+            'PartsRequired': Partsrequired.objects.count(),
+            'MachineRegistration': Machineregistration.objects.count(),
+            'Privacy': Privacy.objects.count(),
+            'Terms': Terms.objects.count(),
+        }
+
+        log_migration_summary(migrated_counts, old_counts)
 
     except Exception as e:
         logger.exception(f"Migration failed: {e}")
