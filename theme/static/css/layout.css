@@ -111,22 +111,24 @@ main > section#Home {
     position: absolute;
     z-index: 10;
     padding: 0.5rem;
-    font-size: 2.25rem;
+    font-size: 2.5rem;
     font-weight: 700;
-    color: #d1d5db;
+    color: #ffffff;
     height: 12.5vh;
     width: 70vw;
     bottom: 2rem;
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .typewriter-text {
     font-size: inherit;
     font-weight: inherit;
     color: inherit;
+    margin: 0;
 }
 
 @media (max-width: 768px) {
