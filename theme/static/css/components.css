@@ -454,31 +454,29 @@
 /* Totop */
 .to-top-btn {
     position: fixed;
-    bottom: 1.25rem;
-    right: 1.25rem;
+    bottom: 2rem;
+    right: 2rem;
     z-index: 30;
     cursor: pointer;
     border-radius: 9999px;
     border: 2px solid #27272a;
-    background-color: #1f2937;
-    padding: 1.25rem 0.75rem;
+    background-color: #27272a;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.5rem;
+    height: 3.5rem;
     transition: all 300ms ease-in-out;
 }
 
-.to-top-btn:hover,
-.to-top-btn:hover svg path {
-    border-color: #1e3a8a;
-    background-color: #27272a;
-    fill: #1e3a8a;
+.to-top-btn:hover {
+    border-color: #dc2626;
 }
 
-.to-top-btn svg path {
-    fill: #1e3a8a;
-}
-
-.to-top-btn svg {
-    height: 1.5rem;
-    width: 1.5rem;
+.to-top-btn i {
+    color: #ffffff;
+    font-size: 1.5rem;
 }
 
 /* Misc */
