@@ -1012,7 +1012,7 @@
 
 .contact-section {
     display: grid;
-    grid-template-columns: 1fr 2fr 0.75fr;
+    grid-template-columns: 1fr 3fr 1fr;
     gap: 1.5rem;
     margin: 2rem 2rem;
     padding: 0.5rem;
@@ -1023,18 +1023,21 @@
 
 .map-container {
     width: 100%;
+    min-height: 500px;
     border-radius: 0.75rem;
     overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .contact-section > * {
     margin: 1rem;
 }
 
+.contact-section > .info-section {
+    width: 20vw;
+}
+
 .contact-form {
+    width: 20vw;
     padding: 0.5rem;
     background-color: transparent;
     border-radius: 0;
