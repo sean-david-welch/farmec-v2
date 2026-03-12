@@ -37,16 +37,26 @@
     {% block content %}{% endblock %}
 </main>
 {% include 'layout/footer.html' %}
-<script src="{% static 'js/components.js' %}" defer></script>
-<script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}" async></script>
 <script>
-    // Initialize map after Google Maps API loads
-    window.addEventListener('load', function () {
-        if (typeof window.initializeMap === 'function') {
-            window.initializeMap();
-        }
-    });
+window.initializeMap = function () {
+    const mapElement = document.getElementById('google-map');
+    if (mapElement && typeof google !== 'undefined' && google.maps) {
+        const lat = parseFloat(mapElement.dataset.lat);
+        const lng = parseFloat(mapElement.dataset.lng);
+        const zoom = parseInt(mapElement.dataset.zoom);
+        const map = new google.maps.Map(mapElement, {
+            zoom: zoom,
+            center: {lat: lat, lng: lng},
+        });
+        new google.maps.Marker({
+            position: {lat: lat, lng: lng},
+            map: map,
+        });
+    }
+};
 </script>
+<script src="{% static 'js/components.js' %}" defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initializeMap" async defer></script>
 {% block extra_js %}{% endblock %}
 </body>
 </html>
