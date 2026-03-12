@@ -21,14 +21,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const toTopBtn = document.getElementById('to-top-btn');
 
     if (toTopBtn) {
-        // Show/hide button on scroll
-        window.addEventListener('scroll', function () {
-            if (window.pageYOffset > 300) {
-                toTopBtn.style.display = 'block';
-            } else {
-                toTopBtn.style.display = 'none';
-            }
-        });
+        // Show button by default
+        toTopBtn.style.display = 'block';
 
         // Scroll to top on click
         toTopBtn.addEventListener('click', function () {
