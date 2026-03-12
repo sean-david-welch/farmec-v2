@@ -936,8 +936,12 @@
 }
 
 /* Info Section (Home page) */
+#info {
+    padding: 0 5rem;
+}
+
 .info-section {
-    margin: 2rem 0;
+    margin: 0.5rem 0;
     padding: 2rem;
     text-align: center;
     color: #27272a;
@@ -951,7 +955,7 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 1.5rem;
-    margin: 2rem 5rem;
+    margin: 0.5rem 5rem;
 }
 
 .stat-list, .special-list {
@@ -970,6 +974,12 @@
 .stat-list-item, .special-list-item {
     margin: 0.75rem 0;
     color: #27272a;
+    transition: all 300ms ease-in-out;
+}
+
+.stat-list:hover .stat-list-item, .special-list:hover .special-list-item {
+    color: #dc2626;
+    transform: scale(1.05);
 }
 
 .stat-list-item:first-child, .special-list-item:first-child {
@@ -996,6 +1006,10 @@
 }
 
 /* Contact Section */
+#contact {
+    padding: 0 8rem;
+}
+
 .contact-section {
     display: grid;
     grid-template-columns: 1fr 2fr 0.75fr;
@@ -1062,8 +1076,8 @@
 .info-section .sub-heading {
     text-decoration: none;
     margin-bottom: 2rem;
-    font-size: 1rem;
-    font-weight: 400;
+    font-size: 1.25rem;
+    font-weight: 600;
     color: #27272a;
     white-space: normal;
 }
