@@ -277,6 +277,8 @@
 .nav-links > li {
     display: flex;
     justify-content: center;
+    align-items: center;
+    transition: all 700ms ease-in-out;
 }
 
 .footer-nav-links {
