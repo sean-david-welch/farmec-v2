@@ -38,8 +38,7 @@ class BlogDetailView(DetailView):
     model: type[Blog] = Blog
     template_name: str = 'content/blog_detail.html'
     context_object_name: str = 'blog'
-    slug_field: str = 'slug'
-    slug_url_kwarg: str = 'slug'
+    pk_url_kwarg: str = 'id'
     queryset: BlogQuerySet = Blog.objects.publish()
 
 
