@@ -5,37 +5,19 @@ from .models import Blog, Carousel, Exhibition, Timeline
 
 class ContactForm(forms.Form):
     """Form for contact messages from website visitors."""
-
-    name = forms.CharField(
-        max_length=100,
-        required=True,
-        widget=forms.TextInput(attrs={
-            'class': 'form-input',
-            'placeholder': 'Your name',
-        }),
-    )
-
-    email = forms.EmailField(
-        required=True,
-        widget=forms.EmailInput(attrs={
-            'class': 'form-input',
-            'placeholder': 'your@email.com',
-        }),
-    )
-
-    message = forms.CharField(
-        required=True,
-        widget=forms.Textarea(attrs={
-            'class': 'form-input form-textarea',
-            'placeholder': 'Your message here...',
-            'rows': 5,
-        }),
-    )
+    name = forms.CharField(max_length=100, required=True, widget=forms.TextInput(attrs={
+        'class': 'form-input', 'placeholder': 'Your name',
+    }))
+    email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={
+        'class': 'form-input', 'placeholder': 'your@email.com',
+    }))
+    message = forms.CharField(required=True, widget=forms.Textarea(attrs={
+        'class': 'form-input form-textarea', 'placeholder': 'Your message here...', 'rows': 5,
+    }))
 
 
 class BlogForm(forms.ModelForm):
     """Form for creating and updating Blog instances."""
-
     class Meta:
         model = Blog
         fields: list[str] = [
