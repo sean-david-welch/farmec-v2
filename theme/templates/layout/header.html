@@ -38,12 +38,12 @@
 
         <!-- Spare Parts -->
         <li class="nav-item">
-            <a href="{% url 'catalog:product_list' %}" class="nav-list-item">Spare Parts</a>
+            <a href="{% url 'catalog:spareparts' %}" class="nav-list-item">Spare Parts</a>
             {% if suppliers %}
             <ul class="nav-drop">
                 {% for supplier in suppliers %}
                 <li class="nav-drop-item">
-                    <a href="{% url 'catalog:supplier_detail' supplier.slug %}">{{ supplier.name }}</a>
+                    <a href="{% url 'catalog:spareparts_detail' supplier.slug %}">{{ supplier.name }}</a>
                 </li>
                 {% endfor %}
             </ul>
