@@ -1,6 +1,7 @@
 from django.views.generic import ListView
 
-from .models import Employee, EmployeeQuerySet
+from content.models import Timeline, TimelineQuerySet
+from team.models import Employee, EmployeeQuerySet
 
 
 class EmployeeListView(ListView):
@@ -8,3 +9,8 @@ class EmployeeListView(ListView):
     template_name: str = 'pages/about.html'
     context_object_name: str = 'employees'
     queryset: EmployeeQuerySet = Employee.objects.publish().order_by('-created')
+
+    def get_context_data(self, **kwargs) -> dict[str, EmployeeQuerySet | TimelineQuerySet]:
+        context = super().get_context_data(**kwargs)
+        context['timelines'] = Timeline.objects.publish().order_by('date')
+        return context
