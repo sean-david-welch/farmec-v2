@@ -22,8 +22,8 @@
     <h1 class="section-heading">Spare-Parts</h1>
 
     <div class="options-btn">
-        <a href="{% url 'warranty_list' %}" class="btn">Warranty Claim</a>
-        <a href="{% url 'registration_list' %}" class="btn">Machine Registration</a>
+        <a href="{% url 'support:warrantyclaim_list' %}" class="btn">Warranty Claim<i class="fa-solid fa-pen-to-square"></i></a>
+        <a href="{% url 'support:machineregistration_list' %}" class="btn">Machine Registration<i class="fa-solid fa-pen-to-square"></i></a>
     </div>
 
     {% if suppliers %}
@@ -50,7 +50,7 @@
             height="200"
             onerror="this.src='{% static 'default.jpg' %}'"
         />
-        <a href="{% url 'spareparts_detail' supplier.id %}" class="btn">
+        <a href="{% url 'catalog:spareparts_detail' supplier.slug %}" class="btn">
             Spare-Parts <i class="fa-solid fa-right-to-bracket"></i>
         </a>
     </div>
