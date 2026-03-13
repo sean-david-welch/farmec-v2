@@ -62,7 +62,7 @@
 
         <div class="supplier-info">
             <p class="supplier-description">{{ supplier.description }}</p>
-            <a href="{% url 'catalog:supplier_detail' supplier.slug %}" class="btn">Learn More</a>
+            <a href="{% url 'catalog:supplier_detail' supplier.slug %}" class="btn">Learn More <i class="fas fa-arrow-right-to-bracket"></i></a>
         </div>
     </div>
     {% empty %}

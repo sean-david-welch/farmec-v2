@@ -6,6 +6,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    gap: 0.5rem;
     border-radius: 0.75rem;
     white-space: nowrap;
     padding: 0.5rem 2rem;

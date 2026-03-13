@@ -56,3 +56,8 @@ html::-webkit-scrollbar-track {
 .routes-list > * {
     margin: 0 0.5rem;
 }
+
+/* Icon Spacing */
+i {
+    margin: auto;
+}
