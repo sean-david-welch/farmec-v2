@@ -48,9 +48,13 @@
             />
             <div class="blog-link">
                 <h2 class="main-heading">{{ blog.title }}</h2>
+                {% if blog.subheading %}
                 <p class="paragraph">{{ blog.subheading }}</p>
+                {% endif %}
+                {% if blog.body %}
                 <p class="paragraph">{{ blog.body|truncatewords:50 }}</p>
-                <a href="{% url 'blog_detail' blog.id %}" class="btn-form">
+                {% endif %}
+                <a href="{% url 'content:blog_detail' blog.id %}" class="btn">
                     Read More <i class="fa-solid fa-right-to-bracket"></i>
                 </a>
             </div>

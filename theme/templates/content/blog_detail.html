@@ -31,8 +31,12 @@
                 height="600"
                 onerror="this.src='{% static 'default.jpg' %}'"
             />
+            {% if blog.subheading %}
             <h2 class="main-heading">{{ blog.subheading }}</h2>
+            {% endif %}
+            {% if blog.body %}
             <p class="paragraph">{{ blog.body|linebreaks }}</p>
+            {% endif %}
         </div>
     </div>
     {% endif %}
