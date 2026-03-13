@@ -30,9 +30,12 @@
 {#                <i class="fas fa-shopping-cart"></i> Checkout#}
 {#            </a>#}
         {% endif %}
-        <a href="{% url 'logout' %}" class="mobile-menu-item">
-            <i class="fas fa-sign-out-alt"></i> Logout
-        </a>
+        <form method="post" action="{% url 'logout' %}" style="width: 100%;">
+            {% csrf_token %}
+            <button type="submit" class="mobile-menu-item" style="width: 100%; text-align: left; background: none; border: none; cursor: pointer; padding: inherit; color: inherit; font-family: inherit;">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </form>
     {% elif is_authenticated %}
         <a href="{% url 'warranty-claims-list' %}" class="mobile-menu-item">
             <i class="fas fa-file"></i> Warranty Claims
@@ -45,8 +48,11 @@
 {#                <i class="fas fa-shopping-cart"></i> Checkout#}
 {#            </a>#}
         {% endif %}
-        <a href="{% url 'logout' %}" class="mobile-menu-item">
-            <i class="fas fa-sign-out-alt"></i> Logout
-        </a>
+        <form method="post" action="{% url 'logout' %}" style="width: 100%;">
+            {% csrf_token %}
+            <button type="submit" class="mobile-menu-item" style="width: 100%; text-align: left; background: none; border: none; cursor: pointer; padding: inherit; color: inherit; font-family: inherit;">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </form>
     {% endif %}
 </nav>
