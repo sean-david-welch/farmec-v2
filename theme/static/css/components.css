@@ -508,6 +508,10 @@
 .supplier-image {
     border-radius: 0.5rem;
     border: 2px solid #a1a1aa;
+    max-width: 100%;
+    max-height: 500px;
+    width: auto;
+    height: auto;
 }
 
 .supplier-head {
