@@ -212,12 +212,8 @@
 
 .footer-links img {
     transition: transform 700ms ease-in-out;
-    margin: 0 auto 0 1rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+    margin: 0 auto;
+    display: block;
 }
 
 .footer-links img:hover {
