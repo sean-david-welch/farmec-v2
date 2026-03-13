@@ -7,7 +7,7 @@ from .models import (
     MachineQuerySet,
     Product,
     ProductQuerySet,
-    Video,
+    Video, SparepartsQuerySet, Spareparts,
 )
 
 
@@ -54,17 +54,20 @@ class MachineDetailView(DetailView):
         return context
 
 
-class ProductListView(ListView):
-    model: type[Product] = Product
-    template_name: str = 'catalog/product_list.html'
-    context_object_name: str = 'products'
-    queryset: ProductQuerySet = Product.objects.publish().order_by('-created')
+class SparePartsIndexView(ListView):
+    model: type[Spareparts] = Spareparts
+    template_name: str = 'support/spareparts.html'
+    context_object_name: str = 'spareparts'
+    queryset: SupplierQuerySet = Supplier.objects.publish().order_by('-created')
 
 
-class ProductDetailView(DetailView):
-    model: type[Product] = Product
-    template_name: str = 'catalog/product_detail.html'
-    context_object_name: str = 'product'
-    slug_field: str = 'slug'
+class SparePartsListView(ListView):
+    model: type[Spareparts] = Spareparts
+    template_name: str = 'support/spareparts_detail.html'
+    context_object_name: str = 'spareparts'
+    slug_field: str = 'supplier__slug'
     slug_url_kwarg: str = 'slug'
-    queryset: ProductQuerySet = Product.objects.publish()
+    queryset: SparepartsQuerySet = Spareparts.objects.publish()
+
+    def get_queryset(self) -> SparepartsQuerySet:
+        return super().get_queryset().filter(supplier__slug=self.kwargs.get(self.slug_url_kwarg))
