@@ -7,6 +7,7 @@ from .models import (
     MachineQuerySet,
     Product,
     ProductQuerySet,
+    Video,
 )
 
 
@@ -24,6 +25,12 @@ class SupplierDetailView(DetailView):
     slug_field: str = 'slug'
     slug_url_kwarg: str = 'slug'
     queryset: SupplierQuerySet = Supplier.objects.publish()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['machines'] = Machine.objects.filter(supplier=self.object).publish()
+        context['videos'] = Video.objects.filter(supplier=self.object).publish()
+        return context
 
 
 class MachineListView(ListView):
