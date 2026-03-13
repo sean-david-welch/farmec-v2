@@ -1,12 +1,11 @@
 from django.views.generic import ListView, DetailView
 
-from .models import (
+from catalog.models import (
     Supplier,
     SupplierQuerySet,
     Machine,
     MachineQuerySet,
     Product,
-    ProductQuerySet,
     Video, SparepartsQuerySet, Spareparts,
 )
 
