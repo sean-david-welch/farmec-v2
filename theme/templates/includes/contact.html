@@ -1,14 +1,11 @@
 <section id="contact">
     <h1 class="section-heading">Contact Us:</h1>
-
     <div class="contact-section">
-        <!-- Contact Form -->
         <div class="contact-form">
+            <h2 class="main-heading">Get in touch:</h2>
             {% block contact_form %}
-            <h2 class="main-heading">Get in Touch</h2>
             <form method="post" class="form-grid">
                 {% csrf_token %}
-
                 {% for field in form %}
                     {% if field.name == 'message' %}
                     <div class="form-group form-group-full">
@@ -33,49 +30,38 @@
             </form>
             {% endblock %}
         </div>
-
         {% include "components/map.html" %}
-
         <div class="info-section">
             <h2 class="main-heading">Business Information:</h2>
-
             <div class="info">
                 <div class="info-item">
                     Opening Hours:
                     <br />
                     <span class="info-item-text">Monday - Friday: 9am - 5:30pm</span>
                 </div>
-
                 <div class="info-item">
-                    Telephone:
-                    <br />
+                    Telephone -
                     <span class="info-item-text">
                         <a href="tel:018259289">01 825 9289</a>
                     </span>
                 </div>
-
                 <div class="info-item">
-                    International:
-                    <br />
+                    International -
                     <span class="info-item-text">
                         <a href="tel:+35318259289">+353 1 825 9289</a>
                     </span>
                 </div>
-
                 <div class="info-item">
-                    Email:
-                    <br />
+                    Email -
                     <span class="info-item-text">
                         <a href="mailto:Info@farmec.ie">Info@farmec.ie</a>
                     </span>
                 </div>
-
                 <div class="info-item">
                     Address:
                     <br />
                     <span class="info-item-text">Clonross, Drumree, Co. Meath, A85PK30</span>
                 </div>
-
                 <div class="info-item">
                     <div class="social-links">
                         <a class="social-link"
