@@ -19,49 +19,25 @@
 
 {% block content %}
 <section id="blog">
-    <h1 class="section-heading">Check out our Latest Blog Posts</h1>
-    <p class="sub-heading">Read our latest news</p>
+    <h1 class="section-heading">Latest Blog Posts</h1>
 
-    {% if blogs %}
-    <div class="index">
-        <h2 class="index-heading">Blogs</h2>
-        <div class="index-items">
-            {% for blog in blogs %}
-            <a href="#{{ blog.title|slugify }}" class="index-item">
-                {{ blog.title }}
-            </a>
-            {% endfor %}
-        </div>
-    </div>
-    {% endif %}
-
-    {% for blog in blogs %}
-    <div class="blog-grid" id="{{ blog.title|slugify }}">
-        <div class="blog-card">
+    <div class="parts-supplier-grid">
+        {% for blog in blogs %}
+        <div class="parts-supplier-card">
+            <h2 class="main-heading">{{ blog.title }}</h2>
             <img
-                class="blog-image"
+                class="parts-image"
                 src="{{ blog.main_image }}"
                 alt="{{ blog.title }}"
-                width="300"
-                height="300"
                 onerror="this.src='{% static 'default.jpg' %}'"
             />
-            <div class="blog-link">
-                <h2 class="main-heading">{{ blog.title }}</h2>
-                {% if blog.subheading %}
-                <p class="paragraph">{{ blog.subheading }}</p>
-                {% endif %}
-                {% if blog.body %}
-                <p class="paragraph">{{ blog.body|truncatewords:50 }}</p>
-                {% endif %}
-                <a href="{% url 'content:blog_detail' blog.id %}" class="btn">
-                    Read More <i class="fa-solid fa-right-to-bracket"></i>
-                </a>
-            </div>
+            <a href="{% url 'content:blog_detail' blog.id %}" class="btn">
+                Read More <i class="fa-solid fa-right-to-bracket"></i>
+            </a>
         </div>
+        {% empty %}
+        <p class="paragraph">No blog posts to display.</p>
+        {% endfor %}
     </div>
-    {% empty %}
-    <p class="paragraph">No blog posts to display.</p>
-    {% endfor %}
 </section>
 {% endblock %}
