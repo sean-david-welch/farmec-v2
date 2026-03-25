@@ -26,21 +26,10 @@
         <a href="{% url 'support:machineregistration_list' %}" class="btn">Machine Registration<i class="fa-solid fa-pen-to-square"></i></a>
     </div>
 
-    {% if suppliers %}
-    <div class="index">
-        <h2 class="index-heading">Suppliers</h2>
-        <div class="index-items">
-            {% for supplier in suppliers %}
-            <a href="#{{ supplier.name|slugify }}" class="index-item">
-                {{ supplier.name }}
-            </a>
-            {% endfor %}
-        </div>
-    </div>
-    {% endif %}
 
+<div class="parts-supplier-grid">
     {% for supplier in suppliers %}
-    <div class="supplier-card" id="{{ supplier.name|slugify }}">
+    <div class="parts-supplier-card" id="{{ supplier.name|slugify }}">
         <h2 class="main-heading">{{ supplier.name }}</h2>
         <img
             src="{{ supplier.logo_image|default_if_none:'' }}"
@@ -57,5 +46,6 @@
     {% empty %}
     <p class="paragraph">No suppliers to display.</p>
     {% endfor %}
+    </div>
 </section>
 {% endblock %}
