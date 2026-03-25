@@ -1221,8 +1221,8 @@
 .parts-supplier-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-    margin: 1rem 0;
+    gap: 3rem;
+    margin: 3rem 12rem;
 }
 
 .parts-supplier-card {
