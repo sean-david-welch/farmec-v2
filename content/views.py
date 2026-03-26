@@ -42,7 +42,7 @@ class HomeView(HTMXViewMixin, ListView):
             message=form.cleaned_data['message'],
         )
         return self.render_htmx_response(
-            'includes/contact.html#contact_form', extra_context={'form_submitted': True},
+            'includes/contact.html#contact_form', include_base_context=False, extra_context={'form': ContactForm()},
         )
 
 
