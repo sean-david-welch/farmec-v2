@@ -44,15 +44,18 @@ class HTMXViewMixin:
         else:
             return HttpResponse(status=400)
 
-    def render_htmx_response(self, template_name: str, extra_context: dict | None = None) -> HttpResponse:
+    def render_htmx_response(self, template_name: str, include_base_context: bool = True, extra_context: dict | None = None) -> HttpResponse:
         """
-        Render a template with the view's context and return it as an HTMX partial response.
+        Render a template and return it as an HTMX partial response.
 
-        :param template_name: Path to the template to render. Supports ``#partial-name`` suffixes for django-template-partials
+        :param template_name: Path to the template to render. Supports ``#partial-name`` suffixes for django-template-partials.
+        :param include_base_context: Whether to call ``get_context_data()`` and include the view's context.
         :param extra_context: Additional context variables merged on top of the view's context.
         """
-        get_context_data = getattr(self, 'get_context_data', lambda **ctx: ctx)
-        context = get_context_data()
+        context: dict = {}
+        if include_base_context:
+            get_context_data = getattr(self, 'get_context_data', lambda **ctx: ctx)
+            context = get_context_data()
         if extra_context:
             context |= extra_context
         return render(request=self.request, template_name=template_name, context=context)
