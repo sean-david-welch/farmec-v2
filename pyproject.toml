@@ -20,6 +20,7 @@ dependencies = [
     "pillow>=12.1.1",
     "pytest-django>=4.11.1",
     "redis>=7.1.1",
+    "resend>=2.26.0",
     "ruff>=0.15.1",
     "weasyprint>=68.1",
 ]
