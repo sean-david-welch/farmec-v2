@@ -55,6 +55,7 @@ window.initializeMap = function () {
     }
 };
 </script>
+<script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js"></script>
 <script src="{% static 'js/components.js' %}" defer></script>
 <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initializeMap" async defer></script>
 {% block extra_js %}{% endblock %}
