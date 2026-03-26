@@ -1,6 +1,8 @@
+from django.http import JsonResponse
 from django.views.generic import ListView, DetailView
 
 from farmec.settings import env
+from farmec.utils import EmailClient
 from .forms import ContactForm
 from .models import (
     Blog,
@@ -25,6 +27,19 @@ class HomeView(ListView):
         context['form'] = ContactForm()
         context['google_maps_api_key'] = env('GOOGLE_MAPS_API_KEY', default='')
         return context
+
+    def post(self, request, *args, **kwargs):
+        form = ContactForm(request.POST)
+        if not form.is_valid():
+            return JsonResponse({'errors': form.errors}, status=400)
+
+        client = EmailClient()
+        client.send_contact_notification(
+            name=form.cleaned_data['name'],
+            email=form.cleaned_data['email'],
+            message=form.cleaned_data['message'],
+        )
+        return JsonResponse({'success': True})
 
 
 class BlogListView(ListView):
