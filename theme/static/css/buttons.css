@@ -43,8 +43,7 @@
 }
 
 .btn-footer {
-    width: 100%;
-    max-width: 200px;
+    width: 10rem;
     display: inline-flex;
     flex-direction: row;
     align-items: center;
@@ -63,9 +62,18 @@
     margin: 0.5rem auto;
 }
 
+.btn-footer i {
+    margin: 0;
+}
+
 .btn-footer:hover {
     transition: all 500ms ease-in-out;
     transform: scale(1.025);
+    color: white;
+}
+
+.footer .btn-footer:hover {
+    color: white;
 }
 
 .options-btn {
