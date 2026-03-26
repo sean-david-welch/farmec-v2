@@ -236,3 +236,7 @@ AWS_S3_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY', default='')
 AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
 AWS_DEFAULT_ACL = 'public-read'
 AWS_QUERYSTRING_AUTH = False
+
+# Resend email configuration
+RESEND_TOKEN = env('RESEND_TOKEN', default='')
+EMAIL_USER = env('EMAIL_USER', default='')
