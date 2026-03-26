@@ -1,6 +1,7 @@
-from django.http import JsonResponse
+from django.http import HttpRequest, HttpResponse
 from django.views.generic import ListView, DetailView
 
+from farmec.mixin import HTMXViewMixin
 from farmec.settings import env
 from farmec.utils import EmailClient
 from .forms import ContactForm
@@ -16,7 +17,7 @@ from .models import (
 )
 
 
-class HomeView(ListView):
+class HomeView(HTMXViewMixin, ListView):
     model: type[Carousel] = Carousel
     template_name: str = 'pages/home.html'
     context_object_name: str = 'carousels'
@@ -28,18 +29,21 @@ class HomeView(ListView):
         context['google_maps_api_key'] = env('GOOGLE_MAPS_API_KEY', default='')
         return context
 
-    def post(self, request, *args, **kwargs):
-        form = ContactForm(request.POST)
+    def handle_htmx(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
+        form: ContactForm = ContactForm(request.POST)
         if not form.is_valid():
-            return JsonResponse({'errors': form.errors}, status=400)
-
-        client = EmailClient()
-        client.send_contact_notification(
+            return self.render_htmx_response(
+                'includes/contact.html#contact_form',
+                extra_context={'form': form},
+            )
+        EmailClient().send_contact_notification(
             name=form.cleaned_data['name'],
             email=form.cleaned_data['email'],
             message=form.cleaned_data['message'],
         )
-        return JsonResponse({'success': True})
+        return self.render_htmx_response(
+            'includes/contact.html#contact_form', extra_context={'form_submitted': True},
+        )
 
 
 class BlogListView(ListView):
