@@ -13,6 +13,7 @@
     <link rel="canonical" href="{{ request.build_absolute_uri }}">
 
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     {% block meta %}{% endblock %}
     {% block extra_css %}{% endblock %}
@@ -55,6 +56,7 @@ window.initializeMap = function () {
     }
 };
 </script>
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js"></script>
 <script src="{% static 'js/components.js' %}" defer></script>
 <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initializeMap" async defer></script>
