@@ -7,9 +7,6 @@
             <h2 class="main-heading">Get in touch:</h2>
             {% partialdef contact_form inline=True %}
             <div id="contact-form">
-                {% if form_submitted %}
-                    <p class="form-success">Thank you for your message! We'll be in touch shortly.</p>
-                {% else %}
                 <form hx-post="{% url 'content:home' %}" hx-target="#contact-form" hx-swap="outerHTML" class="form-grid">
                     {% csrf_token %}
                     {% for field in form %}
@@ -33,7 +30,6 @@
                     {% endfor %}
                     <button type="submit" class="btn form-submit">Submit</button>
                 </form>
-                {% endif %}
             </div>
             {% endpartialdef %}
         </div>
