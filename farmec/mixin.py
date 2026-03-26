@@ -1,6 +1,6 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
-from django_htmx.http import HttpResponseClientRedirect
+from django_htmx.http import HttpResponseClientRedirect, trigger_client_event
 from django_htmx.middleware import HtmxDetails
 
 
@@ -31,6 +31,17 @@ class HTMXViewMixin:
         if url is None:
             url = self.request.path
         return HttpResponseClientRedirect(url)
+
+    def trigger_toast(self, response: HttpResponse, message: str, type: str = 'success') -> HttpResponse:
+        """
+        Attach a ``showToast`` client event to a response, triggering a Toastify notification.
+
+        :param response: The response to attach the event to.
+        :param message: The message text to display in the toast.
+        :param type: Toast type — ``'success'``, ``'error'``, or ``'info'``. Controls the colour.
+        :returns: The same response with the ``HX-Trigger`` header set.
+        """
+        return trigger_client_event(response, 'showToast', {'message': message, 'type': type})
 
     def handle_htmx(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
         """
