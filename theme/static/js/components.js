@@ -16,6 +16,25 @@ function getCookie(name) {
 
 const csrftoken = getCookie('csrftoken');
 
+// ===== Toastify HTMX Integration =====
+const TOAST_COLOURS = {
+    success: '#16a34a',
+    error:   '#b91c1c',
+    info:    '#2563eb',
+};
+
+document.addEventListener('showToast', function (e) {
+    const { message, type = 'success' } = e.detail;
+    Toastify({
+        text: message,
+        duration: 3500,
+        gravity: 'top',
+        position: 'right',
+        stopOnFocus: true,
+        style: { background: TOAST_COLOURS[type] ?? TOAST_COLOURS.success },
+    }).showToast();
+});
+
 // ===== ToTopButton Component =====
 document.addEventListener('DOMContentLoaded', function () {
     const toTopBtn = document.getElementById('to-top-btn');
