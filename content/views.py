@@ -41,10 +41,9 @@ class HomeView(HTMXViewMixin, ListView):
             email=form.cleaned_data['email'],
             message=form.cleaned_data['message'],
         )
-        response = self.render_htmx_response(
-            'includes/contact.html#contact_form', include_base_context=False, extra_context={'form': ContactForm()},
+        return self.render_htmx_response(
+            'includes/contact.html#contact_form', include_base_context=False, extra_context={'form': ContactForm()}, message="Message sent! We'll be in touch shortly.",
         )
-        return self.trigger_toast(response, "Message sent! We'll be in touch shortly.")
 
 
 class BlogListView(ListView):
