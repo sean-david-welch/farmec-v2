@@ -1,0 +1,95 @@
+<section id="warranty-form">
+    <button class="btn btn-form" type="button"
+            onclick="document.getElementById('warrantyDialog').showModal(); document.getElementById('warrantyDialog').classList.add('dialog-visible')">
+        Warranty Claim <i class="fa-solid fa-pen-to-square"></i>
+    </button>
+
+    <dialog id="warrantyDialog" class="dialog" style="overflow-y: auto; padding: 0;">
+        <button class="dialog-close-btn" type="button"
+                onclick="document.getElementById('warrantyDialog').close(); document.getElementById('warrantyDialog').classList.remove('dialog-visible')">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <form class="form" method="post" action="{% url 'support:warrantyclaim_create' %}">
+            {% csrf_token %}
+            <h1 class="main-heading">Warranty Claim Form</h1>
+
+            {% for field in form %}
+            <div>
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.errors %}
+                <ul class="form-errors">
+                    {% for error in field.errors %}
+                    <p class="error-message">{{ error }}</p>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            <div id="parts-container">
+                <div class="part-entry" data-index="0">
+                    <h2 class="main-heading">Part 1</h2>
+                    <div>
+                        <label for="part_number_0">Part Number</label>
+                        <input type="text" name="part_number_0" id="part_number_0" placeholder="Enter part number">
+                    </div>
+                    <div>
+                        <label for="quantity_needed_0">Quantity Needed</label>
+                        <input type="number" name="quantity_needed_0" id="quantity_needed_0" placeholder="Enter quantity needed">
+                    </div>
+                    <div>
+                        <label for="invoice_number_0">Invoice Number</label>
+                        <input type="text" name="invoice_number_0" id="invoice_number_0" placeholder="Enter invoice number">
+                    </div>
+                    <div>
+                        <label for="part_description_0">Part Description</label>
+                        <input type="text" name="part_description_0" id="part_description_0" placeholder="Enter description">
+                    </div>
+                </div>
+            </div>
+
+            <input type="hidden" name="part_count" id="part_count" value="1">
+
+            <button type="button" class="btn btn-form" onclick="addWarrantyPart()">
+                Add Part
+            </button>
+            <button class="btn btn-form" type="submit">Submit</button>
+        </form>
+    </dialog>
+</section>
+
+<script>
+    (function () {
+        let partCount = 1;
+
+        window.addWarrantyPart = function () {
+            const container = document.getElementById('parts-container');
+            const index = partCount;
+            const partHtml = `
+                <div class="part-entry" data-index="${index}">
+                    <h2 class="main-heading">Part ${index + 1}</h2>
+                    <div>
+                        <label for="part_number_${index}">Part Number</label>
+                        <input type="text" name="part_number_${index}" id="part_number_${index}" placeholder="Enter part number">
+                    </div>
+                    <div>
+                        <label for="quantity_needed_${index}">Quantity Needed</label>
+                        <input type="number" name="quantity_needed_${index}" id="quantity_needed_${index}" placeholder="Enter quantity needed">
+                    </div>
+                    <div>
+                        <label for="invoice_number_${index}">Invoice Number</label>
+                        <input type="text" name="invoice_number_${index}" id="invoice_number_${index}" placeholder="Enter invoice number">
+                    </div>
+                    <div>
+                        <label for="part_description_${index}">Part Description</label>
+                        <input type="text" name="part_description_${index}" id="part_description_${index}" placeholder="Enter description">
+                    </div>
+                </div>`;
+            container.insertAdjacentHTML('beforeend', partHtml);
+            partCount++;
+            document.getElementById('part_count').value = partCount;
+        };
+    })();
+</script>
