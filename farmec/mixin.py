@@ -32,17 +32,6 @@ class HTMXViewMixin:
             url = self.request.path
         return HttpResponseClientRedirect(url)
 
-    def trigger_toast(self, response: HttpResponse, message: str, status: str = 'success') -> HttpResponse:
-        """
-        Attach a ``showToast`` client event to a response, triggering a Toastify notification.
-
-        :param response: The response to attach the event to.
-        :param message: The message text to display in the toast.
-        :param status: Toast type — ``'success'``, ``'error'``, or ``'info'``. Controls the colour.
-        :returns: The same response with the ``HX-Trigger`` header set.
-        """
-        return trigger_client_event(response, 'showToast', {'message': message, 'type': status})
-
     def handle_htmx(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
         """
         Handle an incoming HTMX request. Override in subclasses to provide custom behaviour.
@@ -55,13 +44,15 @@ class HTMXViewMixin:
         else:
             return HttpResponse(status=400)
 
-    def render_htmx_response(self, template_name: str, include_base_context: bool = True, extra_context: dict | None = None) -> HttpResponse:
+    def render_htmx_response(self, template_name: str, include_base_context: bool = True, extra_context: dict | None = None, message: str | None = None, message_status: str = 'success') -> HttpResponse:
         """
         Render a template and return it as an HTMX partial response.
 
         :param template_name: Path to the template to render. Supports ``#partial-name`` suffixes for django-template-partials.
         :param include_base_context: Whether to call ``get_context_data()`` and include the view's context.
         :param extra_context: Additional context variables merged on top of the view's context.
+        :param message: If provided, attaches a ``showToast`` client event to the response.
+        :param message_status: Toast type — ``'success'``, ``'error'``, or ``'info'``. Controls the colour.
         """
         context: dict = {}
         if include_base_context:
@@ -69,7 +60,10 @@ class HTMXViewMixin:
             context = get_context_data()
         if extra_context:
             context |= extra_context
-        return render(request=self.request, template_name=template_name, context=context)
+        response = render(request=self.request, template_name=template_name, context=context)
+        if message:
+            trigger_client_event(response, 'showToast', {'message': message, 'type': message_status})
+        return response
 
     def dispatch(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
         """
