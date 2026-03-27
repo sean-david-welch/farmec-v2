@@ -29,9 +29,15 @@ document.addEventListener('showToast', function (e) {
         text: message,
         duration: 3500,
         gravity: 'top',
-        position: 'right',
+        position: 'center',
         stopOnFocus: true,
-        style: { background: TOAST_COLOURS[type] ?? TOAST_COLOURS.success },
+        style: {
+            background: TOAST_COLOURS[type] ?? TOAST_COLOURS.success,
+            padding: '16px 28px',
+            fontSize: '1.1rem',
+            minWidth: '320px',
+            borderRadius: '8px',
+        },
     }).showToast();
 });
 
