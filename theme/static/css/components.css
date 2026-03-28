@@ -550,6 +550,30 @@
     margin: 1.25rem 0;
 }
 
+.supplier-heading .social-links {
+    max-width: none;
+    justify-content: center;
+}
+
+.supplier-heading .social-links a {
+    border-color: #27272a;
+    background-color: rgba(39, 39, 42, 0.05);
+    margin: 0 0.5rem;
+}
+
+.supplier-heading .social-links i {
+    color: #27272a;
+}
+
+.supplier-heading .social-links a:hover {
+    border-color: #dc2626;
+    background-color: rgba(220, 38, 38, 0.1);
+}
+
+.supplier-heading .social-links a:hover i {
+    color: #dc2626;
+}
+
 .supplier-hero {
     position: relative;
     width: 100%;

@@ -22,6 +22,7 @@
     {% if supplier %}
     <div class="supplier-heading">
         <h1 class="section-heading">{{ supplier.name }}</h1>
+        {% include "components/social_links.html" with facebook=supplier.social_facebook twitter=supplier.social_twitter instagram=supplier.social_instagram linkedin=supplier.social_linkedin website=supplier.social_website youtube=supplier.social_youtube %}
     </div>
 
     <div class="supplier-detail">
