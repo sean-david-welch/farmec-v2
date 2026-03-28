@@ -1721,6 +1721,21 @@
     color: #b91c1c;
 }
 
+.sidebar-nav-list form {
+    margin: 0;
+    width: 100%;
+}
+
+.sidebar-nav-list button.sidebar-nav-item {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: inherit;
+    width: 100%;
+    text-align: left;
+}
+
 /* Desktop: show navbar, hide sidebar toggle */
 @media (min-width: 1024px) {
     .sidebar-toggle-btn {
