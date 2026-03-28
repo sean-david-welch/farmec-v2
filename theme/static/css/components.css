@@ -774,13 +774,15 @@
 
 /* Employee Components */
 .employees {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 2rem;
     margin: 2rem 10rem;
 }
 
 .employee-card {
+    flex: 0 1 calc(33.333% - 2rem);
     display: flex;
     flex-direction: column;
     align-items: center;
