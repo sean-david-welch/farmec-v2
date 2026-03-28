@@ -12,8 +12,8 @@ from catalog.models import (
     Product,
     Video, SparepartsQuerySet, Spareparts,
 )
-from support.forms import WarrantyclaimForm
-from support.models import Partsrequired
+from support.forms import WarrantyclaimForm, MachineregistrationForm
+from support.models import Partsrequired, Machineregistration
 
 
 class SupplierListView(ListView):
@@ -68,12 +68,15 @@ class SparePartsIndexView(HTMXViewMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = WarrantyclaimForm()
+        context['registration_form'] = MachineregistrationForm()
         return context
 
     def handle_htmx(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
         component = (request.GET if request.method == 'GET' else request.POST).get('component')
         if component == 'warranty':
             return self.handle_warranty(request)
+        if component == 'machineregistration':
+            return self.handle_machineregistration(request)
         return super().handle_htmx(request, *args, **kwargs)
 
     def handle_warranty(self, request: HttpRequest) -> HttpResponse:
@@ -115,6 +118,33 @@ class SparePartsIndexView(HTMXViewMixin, ListView):
             'support/warranty_form_dialog.html',
             include_base_context=False,
             extra_context={'form': WarrantyclaimForm()},
+        )
+
+    def handle_machineregistration(self, request: HttpRequest) -> HttpResponse:
+        if request.method == 'POST':
+            form = MachineregistrationForm(request.POST)
+            if not form.is_valid():
+                return self.render_htmx_response(
+                    'support/machineregistration_form_dialog.html',
+                    include_base_context=False,
+                    extra_context={'registration_form': form},
+                )
+
+            registration = form.save(commit=False)
+            registration.id = str(uuid.uuid4())
+            registration.save()
+
+            return self.render_htmx_response(
+                'support/machineregistration_form_dialog.html',
+                include_base_context=False,
+                extra_context={'registration_form': MachineregistrationForm()},
+                message='Machine registration submitted successfully.',
+            )
+
+        return self.render_htmx_response(
+            'support/machineregistration_form_dialog.html',
+            include_base_context=False,
+            extra_context={'registration_form': MachineregistrationForm()},
         )
 
 
