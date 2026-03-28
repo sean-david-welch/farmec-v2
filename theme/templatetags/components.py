@@ -31,16 +31,6 @@ def mobile_login(context, on_click=""):
     }
 
 
-@register.inclusion_tag('components/delete_button.html')
-def delete_button(resource_type, resource_id, navigate_back=False):
-    """Render a delete button for the specified resource."""
-    return {
-        'resource_type': resource_type,
-        'resource_id': resource_id,
-        'navigate_back': navigate_back,
-    }
-
-
 @register.inclusion_tag('components/download_pdf.html')
 def download_pdf(pdf_type, warranty_claim=None, registration=None):
     """Render a PDF download button."""
