@@ -2,6 +2,7 @@ import uuid
 
 from django.http import HttpRequest, HttpResponse
 from django.views.generic import ListView, DetailView
+from django_htmx.http import trigger_client_event
 
 from farmec.mixin import HTMXViewMixin
 from catalog.models import (
@@ -111,7 +112,7 @@ class SparePartsIndexView(HTMXViewMixin, ListView):
             return self.render_htmx_response(
                 'support/warranty_form_dialog.html',
                 include_base_context=False,
-                extra_context={'form': WarrantyclaimForm()},
+                extra_context={'form': WarrantyclaimForm(), 'dialog_submitted': True},
                 message='Warranty claim submitted successfully.',
             )
         return self.render_htmx_response(
@@ -137,7 +138,7 @@ class SparePartsIndexView(HTMXViewMixin, ListView):
             return self.render_htmx_response(
                 'support/machineregistration_form_dialog.html',
                 include_base_context=False,
-                extra_context={'registration_form': MachineregistrationForm()},
+                extra_context={'registration_form': MachineregistrationForm(), 'dialog_submitted': True},
                 message='Machine registration submitted successfully.',
             )
 
