@@ -12,7 +12,7 @@ class Employee(BaseModel):
     name = models.CharField(max_length=255, verbose_name=_('name'), help_text=_('Employee full name'))
     email = models.EmailField(verbose_name=_('email'), help_text=_('Work email address'))
     role = models.CharField(max_length=255, verbose_name=_('role'), help_text=_('Job title or position'))
-    profile_image = models.URLField(blank=True, null=True, verbose_name=_('profile image'), help_text=_('URL to employee profile photo'))
+    profile_image = models.ImageField(upload_to='farmec_images/Employees/', blank=True, null=True, verbose_name=_('profile image'), help_text=_('Employee profile photo'))
 
     objects = EmployeeQuerySet.as_manager()
 
