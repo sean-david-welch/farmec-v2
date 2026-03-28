@@ -25,7 +25,7 @@ main > section#Home {
     color: #1f2937;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1023px) {
     main {
         padding-top: 4.5rem;
     }
