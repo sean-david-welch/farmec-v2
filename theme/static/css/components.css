@@ -332,12 +332,15 @@
 .dialog {
     max-height: 75vh;
     width: 50vw;
+    overflow-y: auto;
+    padding: 1.5rem;
     position: fixed;
+    isolation: isolate;
     left: 50%;
     top: 50%;
     z-index: 50;
     border-radius: 1.25rem;
-    background-color: #18181b;
+    background-color: #27272a;
     color: #d1d5db;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
     border: 4px solid #3f3f46;
@@ -353,11 +356,11 @@
 }
 
 .dialog-close-btn {
-    position: fixed;
-    left: 1.25rem;
+    position: absolute;
+    right: 1.25rem;
     top: 1.25rem;
     cursor: pointer;
-    padding: 0.75rem;
+    padding: 0.5rem;
     border-radius: 9999px;
     border: 2px solid #27272a;
     background-color: #27272a;
@@ -369,9 +372,14 @@
     border-color: #991b1b;
 }
 
-.dialog-close-btn svg {
-    height: 1rem;
-    width: 1rem;
+.dialog-close-btn i {
+    font-size: 1.25rem;
+    color: #ffffff;
+}
+
+.dialog .form {
+    width: 100%;
+    padding: 0;
 }
 
 /* Index / card */
