@@ -6,35 +6,12 @@
     {% endif %}
 
     <ul class="nav-drop">
-        {% if is_admin %}
+        {% if is_authenticated %}
+            {% if is_admin %}
             <li class="nav-drop-item">
-                <a href="{% url 'admin:index' %}">Users</a>
+                <a href="{% url 'admin:index' %}">Admin</a>
             </li>
-            <li class="nav-drop-item">
-                <a href="{% url 'admin:content_carousel_changelist' %}">Carousels</a>
-            </li>
-            <li class="nav-drop-item">
-                <a href="{% url 'admin:catalog_lineitems_changelist' %}">Line Items</a>
-            </li>
-            <li class="nav-drop-item">
-                <a href="{% url 'admin:support_warrantyclaim_changelist' %}">Warranty</a>
-            </li>
-            <li class="nav-drop-item">
-                <a href="{% url 'admin:support_machineregistration_changelist' %}">Registrations</a>
-            </li>
-            <li class="nav-drop-item">
-                <form method="post" action="{% url 'logout' %}">
-                    {% csrf_token %}
-                    <button type="submit">Logout</button>
-                </form>
-            </li>
-        {% elif is_authenticated %}
-            <li class="nav-drop-item">
-                <a href="{% url 'warranty-claims-list' %}">Warranty Claims</a>
-            </li>
-            <li class="nav-drop-item">
-                <a href="{% url 'registrations-list' %}">Registrations</a>
-            </li>
+            {% endif %}
             <li class="nav-drop-item">
                 <form method="post" action="{% url 'logout' %}">
                     {% csrf_token %}
