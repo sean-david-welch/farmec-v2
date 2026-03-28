@@ -1,0 +1,111 @@
+{% load components %}
+
+<div id="sidebar-backdrop" class="sidebar-backdrop" style="display: none;"></div>
+
+<div id="sidebar-menu" class="sidebar-menu" style="display: none;">
+    <div class="sidebar-nav-icon">
+        <a href="{% url 'content:home' %}" aria-label="logo button">
+            <img
+                src="https://static.farmec.ie/farmec_images/farmeclogo.webp"
+                alt="Farmec Logo"
+                width="200"
+                height="200"
+            />
+        </a>
+        <button id="sidebar-close-btn" class="sidebar-close-btn">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <ul class="sidebar-nav-list">
+        <li>
+            <a href="{% url 'content:home' %}" class="sidebar-nav-item">
+                <i class="fas fa-home"></i> Home
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'team:employee_list' %}" class="sidebar-nav-item">
+                <i class="fas fa-circle-info"></i> About
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'legal:privacy_list' %}" class="sidebar-nav-item">
+                <i class="fas fa-question-circle"></i> Terms of Use
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'catalog:supplier_list' %}" class="sidebar-nav-item">
+                <i class="fas fa-industry"></i> Suppliers
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'catalog:spareparts' %}" class="sidebar-nav-item">
+                <i class="fas fa-cog"></i> Spare Parts
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'content:blog_list' %}" class="sidebar-nav-item">
+                <i class="fas fa-blog"></i> Blog
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'content:exhibition_list' %}" class="sidebar-nav-item">
+                <i class="fas fa-calendar-alt"></i> Exhibitions
+            </a>
+        </li>
+        <li>
+            {% mobile_login %}
+        </li>
+    </ul>
+</div>
+
+<button id="sidebar-toggle-btn" class="sidebar-toggle-btn">
+    <a href="{% url 'content:home' %}" aria-label="logo button" class="sidebar-logo">
+        <img
+            src="https://static.farmec.ie/farmec_images/farmeclogo.webp"
+            alt="Farmec Logo"
+            width="200"
+            height="200"
+        />
+    </a>
+    <i class="fas fa-bars"></i>
+</button>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleBtn = document.getElementById('sidebar-toggle-btn');
+    const closeBtn = document.getElementById('sidebar-close-btn');
+    const menu = document.getElementById('sidebar-menu');
+    const backdrop = document.getElementById('sidebar-backdrop');
+
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            menu.style.display = 'block';
+            backdrop.style.display = 'block';
+        });
+    }
+
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+            menu.style.display = 'none';
+            backdrop.style.display = 'none';
+        });
+    }
+
+    if (backdrop) {
+        backdrop.addEventListener('click', function() {
+            menu.style.display = 'none';
+            backdrop.style.display = 'none';
+        });
+    }
+
+    const menuItems = menu.querySelectorAll('.sidebar-nav-item');
+    menuItems.forEach(item => {
+        item.addEventListener('click', function() {
+            menu.style.display = 'none';
+            backdrop.style.display = 'none';
+        });
+    });
+});
+</script>
