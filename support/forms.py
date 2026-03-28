@@ -23,9 +23,10 @@ class WarrantyclaimForm(forms.ModelForm):
             'completed_by',
         ]
         widgets: dict = {
-            'install_date': forms.DateInput(attrs={'type': 'date'}),
-            'failure_date': forms.DateInput(attrs={'type': 'date'}),
-            'repair_date': forms.DateInput(attrs={'type': 'date'}),
+            'install_date': forms.DateInput(attrs={'type': 'date', 'onfocus': 'this.showPicker()'}),
+            'failure_date': forms.DateInput(attrs={'type': 'date', 'onfocus': 'this.showPicker()'}),
+            'repair_date': forms.DateInput(attrs={'type': 'date', 'onfocus': 'this.showPicker()'}),
+            'labour_hours': forms.NumberInput(attrs={'step': '0.5', 'min': '0'}),
         }
 
 
@@ -73,6 +74,6 @@ class MachineregistrationForm(forms.ModelForm):
             'completed_by',
         ]
         widgets: dict = {
-            'install_date': forms.DateInput(attrs={'type': 'date'}),
-            'date': forms.DateInput(attrs={'type': 'date'}),
+            'install_date': forms.DateInput(attrs={'type': 'date', 'onfocus': 'this.showPicker()'}),
+            'date': forms.DateInput(attrs={'type': 'date', 'onfocus': 'this.showPicker()'}),
         }
