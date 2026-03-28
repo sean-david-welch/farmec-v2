@@ -17,6 +17,8 @@ class Privacy(BaseModel):
     class Meta:
         managed = True
         db_table = 'Privacy'
+        verbose_name = _('privacy policy')
+        verbose_name_plural = _('privacy policy')
 
     def __str__(self):
         return self.title
@@ -36,6 +38,8 @@ class Terms(BaseModel):
     class Meta:
         managed = True
         db_table = 'Terms'
+        verbose_name = _('terms & conditions')
+        verbose_name_plural = _('terms & conditions')
 
     def __str__(self):
         return self.title

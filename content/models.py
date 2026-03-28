@@ -21,6 +21,8 @@ class Blog(BaseModel):
     class Meta:
         managed = True
         db_table = 'Blog'
+        verbose_name = _('blog post')
+        verbose_name_plural = _('blog posts')
 
     def __str__(self):
         return self.title
@@ -40,6 +42,8 @@ class Carousel(BaseModel):
     class Meta:
         managed = True
         db_table = 'Carousel'
+        verbose_name = _('carousel slide')
+        verbose_name_plural = _('carousel')
 
     def __str__(self):
         return self.name
@@ -81,6 +85,8 @@ class Timeline(BaseModel):
     class Meta:
         managed = True
         db_table = 'Timeline'
+        verbose_name = _('timeline event')
+        verbose_name_plural = _('timeline')
 
     def __str__(self):
         return self.title

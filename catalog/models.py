@@ -94,6 +94,8 @@ class Spareparts(BaseModel):
     class Meta:
         managed = True
         db_table = 'SpareParts'
+        verbose_name = _('spare part')
+        verbose_name_plural = _('spare parts')
 
     def __str__(self):
         return self.name
