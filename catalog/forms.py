@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Supplier, Machine, Product, Spareparts, Lineitems, Video
+from .models import Supplier, Machine, Product, Spareparts, Video
 
 
 class SupplierForm(forms.ModelForm):
@@ -62,17 +62,6 @@ class SparepartsForm(forms.ModelForm):
             'spare_parts_link',
         ]
 
-
-class LineitemsForm(forms.ModelForm):
-    """Form for creating and updating Lineitems instances."""
-
-    class Meta:
-        model = Lineitems
-        fields: list[str] = [
-            'name',
-            'price',
-            'image',
-        ]
 
 
 class VideoForm(forms.ModelForm):
