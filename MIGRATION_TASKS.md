@@ -2,9 +2,10 @@
 
 ## 1. Template & Code Cleanup
 - Fix template name mismatches in `support/` views (`warrantyclaim_*`, `machineregistration_*`, `partsrequired_*`)
-- Audit and remove unused templates, views, and URLs
+- Remove Stripe/payment remnants: `checkout.html`, `checkout_return.html`, and any related views/URLs
+- Audit and remove all other unused templates, views, and URLs
 - Remove unused JS and CSS (check for dead code in `components.js` and any unreferenced CSS)
-- Remove or archive legacy Go/React code once Django is confirmed live
+- Remove Go/React source code (`/server`, `/client`) once Django is confirmed live on EC2
 
 ## 2. S3 Image Uploads
 - Convert `URLField` image fields to `ImageField` across all models (`Supplier`, `Machine`, `Product`, `Spareparts`, `Blog`, `Employee`, `Carousel`, etc.)
@@ -24,16 +25,32 @@
 - Review `readonly_fields` for auto-managed fields (`uid`, `created`, `modified`)
 - Add `ordering` and `date_hierarchy` where appropriate
 
-## 5. Deployment — EC2
+## 5. Production Security Hardening
+- Run `manage.py check --deploy` and resolve all warnings before go-live
+- Ensure `DEBUG=False`, `SECRET_KEY` sourced from env, `ALLOWED_HOSTS` locked down
+- Enable `SECURE_SSL_REDIRECT`, `SECURE_HSTS_SECONDS`, `SESSION_COOKIE_SECURE`, `CSRF_COOKIE_SECURE`
+- Add rate limiting to unauthenticated POST endpoints (contact form, warranty claims, machine registration) — use `django-ratelimit` or nginx `limit_req`
+- Add a honeypot field to public forms as basic spam protection
+- Configure Django file-based error logging for production (at minimum log `ERROR` level to a file or stdout for Docker)
+
+## 6. Deployment — EC2
 - **Docker**: Containerise the Django app (`Dockerfile` + `docker-compose.yml` for local parity)
 - **Docker Compose** (production): `web` (gunicorn), `nginx` (reverse proxy + static files), optional `redis` if Celery is added later
-- **Deployment**: Use `docker compose pull && docker compose up -d` for zero-downtime-ish deploys via SSH
+- **SSL**: Set up certbot + Let's Encrypt via nginx for HTTPS
+- **Deployment**: `docker compose pull && docker compose up -d` over SSH; consider a GitHub Actions workflow for one-command deploys on push to `main`
 - **Static files**: `collectstatic` → S3 or nginx-served volume
-- **Process manager**: Let Docker restart policy handle process supervision (no need for systemd/supervisor)
-- **Secrets**: Pass via `.env` file on EC2, not committed to repo
-- **CI/CD** (optional): GitHub Actions → SSH deploy on push to `main`
+- **Secrets**: `.env` file on EC2 only, not committed to repo
+- **Cutover**: Switch nginx to route traffic to gunicorn (Django) instead of the Go binary; verify all routes before decommissioning Go
 
-## 6. Test Suite
+## 7. EC2 Cleanup (post-deployment)
+- Stop and disable the Go server process (systemd unit or whatever manages it)
+- Remove Go binary, build artifacts, and Air hot-reload config
+- Remove Node/npm and React build tooling if no longer needed
+- Remove Go runtime if not used by anything else on the instance
+- Clean up any Go-specific environment variables, cron jobs, or log files
+- Optionally snapshot the EC2 instance before cleanup as a rollback point
+
+## 8. Test Suite
 - Use `pytest-django` + `model_bakery` for all tests
 - Cover all public views (status 200, correct template, context keys)
 - Cover form submissions (valid + invalid cases) for contact, warranty, machine registration
