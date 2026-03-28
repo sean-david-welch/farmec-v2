@@ -4,9 +4,6 @@
 - Remove Go/React source code (`/server`, `/client`) once Django is confirmed live on EC2
 
 ## 2. S3 Image Uploads
-- Convert `URLField` image fields to `ImageField` across all models (`Supplier`, `Machine`, `Product`, `Spareparts`, `Blog`, `Employee`, `Carousel`, etc.)
-- Confirm `django-storages` S3 backend is correctly configured in `settings.py`
-- Write and run a data migration to populate new `ImageField` values from existing URL strings
 - Test upload flow end-to-end in admin (Unfold file picker → S3 → public URL)
 
 ## 3. Database
