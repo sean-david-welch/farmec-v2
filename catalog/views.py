@@ -71,17 +71,21 @@ class SparePartsIndexView(HTMXViewMixin, ListView):
         return context
 
     def handle_htmx(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
+        component = (request.GET if request.method == 'GET' else request.POST).get('component')
+        if component == 'warranty':
+            return self.handle_warranty(request)
+        return super().handle_htmx(request, *args, **kwargs)
+
+    def handle_warranty(self, request: HttpRequest) -> HttpResponse:
         if request.method == 'GET':
             return self.render_htmx_response(
-                'support/warranty_form_dialog.html',
-                include_base_context=False,
-                extra_context={'form': WarrantyclaimForm()},
+                'support/warranty_form_dialog.html', include_base_context=False, extra_context={'form': WarrantyclaimForm()},
             )
-
         form = WarrantyclaimForm(request.POST)
         if not form.is_valid():
             return self.render_htmx_response(
                 'support/warranty_form_dialog.html',
+                include_base_context=False,
                 extra_context={'form': form},
             )
 

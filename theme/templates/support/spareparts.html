@@ -26,6 +26,7 @@
                 hx-get="{% url 'catalog:spareparts' %}"
                 hx-target="#warranty-dialog-container"
                 hx-swap="innerHTML"
+                hx-vals='{"component": "warranty"}'
                 hx-trigger="click[!document.getElementById('warrantyDialog')]"
                 onclick="const d=document.getElementById('warrantyDialog'); if(d){ d.showModal(); d.classList.add('dialog-visible'); }">
             Warranty Claim <i class="fa-solid fa-pen-to-square"></i>
