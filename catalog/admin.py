@@ -1,8 +1,9 @@
 from django.contrib import admin
-from unfold.admin import ModelAdmin
+from admin_config.admin import ModelAdmin
+from admin_config
 
-from .forms import SupplierForm, MachineForm, ProductForm, SparepartsForm, LineitemsForm, VideoForm
-from .models import Supplier, Machine, Product, Spareparts, Lineitems, Video
+from .forms import SupplierForm, MachineForm, ProductForm, SparepartsForm, VideoForm
+from .models import Supplier, Machine, Product, Spareparts, Video
 
 
 @admin.register(Supplier)
@@ -31,13 +32,6 @@ class ProductAdmin(ModelAdmin):
 class SparepartsAdmin(ModelAdmin):
     form = SparepartsForm
     list_display = ("name", "supplier", "slug")
-    search_fields = ("name",)
-
-
-@admin.register(Lineitems)
-class LineitemsAdmin(ModelAdmin):
-    form = LineitemsForm
-    list_display = ("name", "price")
     search_fields = ("name",)
 
 
