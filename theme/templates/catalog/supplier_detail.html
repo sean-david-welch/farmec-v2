@@ -24,28 +24,29 @@
         <h1 class="section-heading">{{ supplier.name }}</h1>
     </div>
 
-    {% if machines %}
-    <div class="index">
-        <h2 class="index-heading">Machines</h2>
-        <div class="index-items">
-            {% for machine in machines %}
-            <a href="#{{ machine.name|slugify }}" class="index-item">
-                {{ machine.name }}
-            </a>
-            {% endfor %}
-        </div>
-    </div>
-    {% endif %}
-
     <div class="supplier-detail">
-        <img
-            src="{{ supplier.marketing_image|default_if_none:'' }}"
-            alt="{{ supplier.name }}"
-            class="supplier-image"
-            width="750"
-            height="750"
-            onerror="this.src='{% static 'default.jpg' %}'"
-        />
+        <div class="supplier-hero">
+            <img
+                src="{{ supplier.marketing_image|default_if_none:'' }}"
+                alt="{{ supplier.name }}"
+                class="supplier-image"
+                width="750"
+                height="750"
+                onerror="this.src='{% static 'default.jpg' %}'"
+            />
+            {% if machines %}
+            <div class="supplier-hero-index">
+                <h2 class="index-heading">Machines</h2>
+                <div class="index-items">
+                    {% for machine in machines %}
+                    <a href="#{{ machine.name|slugify }}" class="index-item">
+                        {{ machine.name }}
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
         <p class="supplier-description">{{ supplier.description }}</p>
     </div>
     {% endif %}
