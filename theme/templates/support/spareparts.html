@@ -31,9 +31,18 @@
                 onclick="const d=document.getElementById('warrantyDialog'); if(d){ d.showModal(); d.classList.add('dialog-visible'); }">
             Warranty Claim <i class="fa-solid fa-pen-to-square"></i>
         </button>
-        <a href="{% url 'support:machineregistration_list' %}" class="btn">Machine Registration<i class="fa-solid fa-pen-to-square"></i></a>
+        <button class="btn" type="button"
+                hx-get="{% url 'catalog:spareparts' %}"
+                hx-target="#machineregistration-dialog-container"
+                hx-swap="innerHTML"
+                hx-vals='{"component": "machineregistration"}'
+                hx-trigger="click[!document.getElementById('machineRegistrationDialog')]"
+                onclick="const d=document.getElementById('machineRegistrationDialog'); if(d){ d.showModal(); d.classList.add('dialog-visible'); }">
+            Machine Registration <i class="fa-solid fa-pen-to-square"></i>
+        </button>
     </div>
     <div id="warranty-dialog-container"></div>
+    <div id="machineregistration-dialog-container"></div>
 
 
 <div class="parts-supplier-grid">
