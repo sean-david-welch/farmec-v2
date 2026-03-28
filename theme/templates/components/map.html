@@ -4,3 +4,24 @@
      data-lng="{{ lng|default:'-6.5423895598058435' }}"
      data-zoom="{{ zoom|default:'10' }}">
 </div>
+
+<script>
+window.initializeMap = function () {
+    const mapElement = document.getElementById('google-map');
+    if (mapElement && typeof google !== 'undefined' && google.maps) {
+        const lat = parseFloat(mapElement.dataset.lat);
+        const lng = parseFloat(mapElement.dataset.lng);
+        const zoom = parseInt(mapElement.dataset.zoom);
+
+        const map = new google.maps.Map(mapElement, {
+            zoom: zoom,
+            center: {lat: lat, lng: lng},
+        });
+
+        new google.maps.Marker({
+            position: {lat: lat, lng: lng},
+            map: map,
+        });
+    }
+};
+</script>
