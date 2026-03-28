@@ -13,7 +13,7 @@ import os.path
 from pathlib import Path
 
 import environ
-from farmec.admin_config import UNFOLD  # noqa: F401
+from farmec.admin_config import UNFOLD
 
 env = environ.Env()
 
@@ -161,3 +161,6 @@ AWS_QUERYSTRING_AUTH = False
 # Resend email configuration
 RESEND_TOKEN = env('RESEND_TOKEN', default='')
 EMAIL_USER = env('EMAIL_USER', default='')
+
+# Admin Conifg
+UNFOLD = UNFOLD
