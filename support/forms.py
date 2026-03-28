@@ -22,6 +22,11 @@ class WarrantyclaimForm(forms.ModelForm):
             'labour_hours',
             'completed_by',
         ]
+        widgets: dict = {
+            'install_date': forms.DateInput(attrs={'type': 'date'}),
+            'failure_date': forms.DateInput(attrs={'type': 'date'}),
+            'repair_date': forms.DateInput(attrs={'type': 'date'}),
+        }
 
 
 class PartsrequiredForm(forms.ModelForm):
@@ -40,6 +45,12 @@ class PartsrequiredForm(forms.ModelForm):
 
 class MachineregistrationForm(forms.ModelForm):
     """Form for creating and updating Machineregistration instances."""
+    complete_supply = forms.BooleanField(required=False)
+    pdi_complete = forms.BooleanField(required=False)
+    pto_correct = forms.BooleanField(required=False)
+    machine_test_run = forms.BooleanField(required=False)
+    safety_induction = forms.BooleanField(required=False)
+    operator_handbook = forms.BooleanField(required=False)
 
     class Meta:
         model = Machineregistration
@@ -61,3 +72,7 @@ class MachineregistrationForm(forms.ModelForm):
             'date',
             'completed_by',
         ]
+        widgets: dict = {
+            'install_date': forms.DateInput(attrs={'type': 'date'}),
+            'date': forms.DateInput(attrs={'type': 'date'}),
+        }
