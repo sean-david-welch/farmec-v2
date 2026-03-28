@@ -31,16 +31,6 @@ def mobile_login(context, on_click=""):
     }
 
 
-@register.inclusion_tag('components/download_pdf.html')
-def download_pdf(pdf_type, warranty_claim=None, registration=None):
-    """Render a PDF download button."""
-    return {
-        'pdf_type': pdf_type,
-        'warranty_claim': warranty_claim,
-        'registration': registration,
-    }
-
-
 @register.inclusion_tag('components/map.html')
 def google_map(lat=53.49, lng=-6.54, zoom=10):
     """Render a Google Map embed."""
