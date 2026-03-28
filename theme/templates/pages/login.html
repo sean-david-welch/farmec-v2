@@ -5,10 +5,10 @@
 
 {% block content %}
 <div class="login-section">
-    <h1 class="section-heading">Login</h1>
-
     <form method="post" action="{% url 'login' %}" class="login-form">
         {% csrf_token %}
+
+        <h1 class="section-heading login-heading">Login Form:</h1>
 
         {% if form.non_field_errors %}
         <div class="form-errors">
@@ -28,11 +28,11 @@
             <input type="password" name="password" id="password" placeholder="Enter your password" required />
         </div>
 
-        <button type="submit" class="btn">Login</button>
-    </form>
+        {% if next %}
+        <input type="hidden" name="next" value="{{ next }}" />
+        {% endif %}
 
-    {% if next %}
-    <input type="hidden" name="next" value="{{ next }}" />
-    {% endif %}
+        <button type="submit" class="btn login-btn">Login <i class="fa-solid fa-right-to-bracket"></i></button>
+    </form>
 </div>
 {% endblock %}
