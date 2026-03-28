@@ -7,9 +7,7 @@
 - Test upload flow end-to-end in admin (Unfold file picker → S3 → public URL)
 
 ## 3. Database
-- Stay on SQLite unless a specific need arises (concurrent writes, full-text search, production scale)
-- If migrating: use `pgloader` or `python manage.py dumpdata` → `loaddata` into Postgres
-- Postgres benefits worth reconsidering: better concurrent writes, `ArrayField`, native full-text search, easier managed backups on RDS
+- Staying on SQLite
 
 ## 4. PDF Downloads for Warranty Claims & Machine Registrations
 - Generate a printable PDF for each `Warrantyclaim` and `Machineregistration` record from the admin panel
