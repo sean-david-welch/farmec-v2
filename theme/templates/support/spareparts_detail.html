@@ -22,37 +22,22 @@
     <h1 class="section-heading">Parts Catalogues</h1>
 
     {% if spareparts %}
-    <div class="index">
-        <h2 class="index-heading">Spare Parts</h2>
-        <div class="index-items">
-            {% for sparepart in spareparts %}
-            <a href="#{{ sparepart.name|slugify }}" class="index-item">
-                {{ sparepart.name }}
-            </a>
-            {% endfor %}
-        </div>
-    </div>
-
-    <div class="parts-column">
+    <div class="spareparts-flex">
         {% for sparepart in spareparts %}
-        <div class="sparepart-grid">
-            <div class="spareparts-card" id="{{ sparepart.name|slugify }}">
-                <div class="spareparts-grid">
-                    <div class="spareparts-info">
-                        <h2 class="main-heading">{{ sparepart.name }}</h2>
-                        <a href="{{ sparepart.spare_parts_link|default:'#' }}" target="_blank" rel="noopener noreferrer" class="btn">
-                            Parts Catalogue <i class="fa-solid fa-right-to-bracket"></i>
-                        </a>
-                    </div>
-                    <img
-                        src="{{ sparepart.parts_image }}"
-                        alt="{{ sparepart.name }}"
-                        class="spareparts-logo"
-                        width="600"
-                        height="600"
-                        onerror="this.src='{% static 'default.jpg' %}'"
-                    />
-                </div>
+        <div class="spareparts-card" id="{{ sparepart.name|slugify }}">
+            <img
+                src="{{ sparepart.parts_image }}"
+                alt="{{ sparepart.name }}"
+                class="spareparts-logo"
+                width="600"
+                height="600"
+                onerror="this.src='{% static 'default.jpg' %}'"
+            />
+            <div class="spareparts-info">
+                <h2 class="main-heading">{{ sparepart.name }}</h2>
+                <a href="{{ sparepart.spare_parts_link|default:'#' }}" target="_blank" rel="noopener noreferrer" class="btn">
+                    Parts Catalogue <i class="fa-solid fa-right-to-bracket"></i>
+                </a>
             </div>
         </div>
         {% endfor %}
