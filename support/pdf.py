@@ -6,7 +6,7 @@ from typing import Callable
 
 from django.contrib.admin import ModelAdmin
 from django.db.models import Model, QuerySet
-from django.http import HttpResponse
+from django.http import HttpRequest, HttpResponse
 from django.template.loader import render_to_string
 from weasyprint import HTML
 
@@ -32,7 +32,7 @@ class PDFDownloadAction:
         )
     """
 
-    short_description = "Download as PDF"
+    short_description: str = 'Download as PDF'
 
     def __init__(self, template: str, context_fn: Callable[[Model], dict], filename_fn: Callable[[Model], str], zip_filename: str) -> None:
         """
@@ -48,13 +48,11 @@ class PDFDownloadAction:
         :param zip_filename: Filename for the ZIP archive when multiple records
             are selected (e.g. ``'warranty_claims.zip'``).
         """
-        self.template = template
-        self.context_fn = context_fn
-        self.filename_fn = filename_fn
-        self.zip_filename = zip_filename
-        self.__name__ = (
-            f"download_{re.sub(r'[^\w]+', '_', zip_filename.replace('.zip', ''))}_pdf"
-        )
+        self.template: str = template
+        self.context_fn: Callable[[Model], dict] = context_fn
+        self.filename_fn: Callable[[Model], str] = filename_fn
+        self.zip_filename: str = zip_filename
+        self.__name__: str = f'download_{re.sub(r"[^\w]+", "_", zip_filename.replace(".zip", ""))}_pdf'
 
     def render_pdf(self, obj: Model) -> bytes:
         """
@@ -67,9 +65,9 @@ class PDFDownloadAction:
         :param obj: The model instance to render.
         :returns: Raw PDF bytes.
         """
-        context = self.context_fn(obj)
-        context["generated_date"] = date.today()
-        html_string = render_to_string(self.template, context)
+        context: dict = self.context_fn(obj)
+        context['generated_date'] = date.today()
+        html_string: str = render_to_string(self.template, context)
         return HTML(string=html_string).write_pdf()
 
     def build_filename(self, obj: Model) -> str:
@@ -82,16 +80,11 @@ class PDFDownloadAction:
         :param obj: The model instance.
         :returns: A sanitised filename string ending in ``.pdf``.
         """
-        raw = self.filename_fn(obj)
-        slug = re.sub(r"[^\w]+", "_", raw.strip()).strip("_").lower()
-        return f"{slug}.pdf"
+        raw: str = self.filename_fn(obj)
+        slug: str = re.sub(r'[^\w]+', '_', raw.strip()).strip('_').lower()
+        return f'{slug}.pdf'
 
-    def __call__(
-        self,
-        modeladmin: ModelAdmin,
-        request,
-        queryset: QuerySet,
-    ) -> HttpResponse:
+    def __call__(self, modeladmin: ModelAdmin, request: HttpRequest, queryset: QuerySet) -> HttpResponse:
         """
         Execute the admin action.
 
@@ -106,19 +99,17 @@ class PDFDownloadAction:
             attachment header.
         """
         if queryset.count() == 1:
-            obj = queryset.first()
-            pdf = self.render_pdf(obj)
-            response = HttpResponse(pdf, content_type="application/pdf")
-            response["Content-Disposition"] = (
-                f'attachment; filename="{self.build_filename(obj)}"'
-            )
+            obj: Model = queryset.first()
+            pdf: bytes = self.render_pdf(obj)
+            response: HttpResponse = HttpResponse(pdf, content_type='application/pdf')
+            response['Content-Disposition'] = f'attachment; filename="{self.build_filename(obj)}"'
             return response
 
-        buffer = io.BytesIO()
-        with zipfile.ZipFile(buffer, "w") as zf:
+        buffer: io.BytesIO = io.BytesIO()
+        with zipfile.ZipFile(buffer, 'w') as zf:
             for obj in queryset:
                 zf.writestr(self.build_filename(obj), self.render_pdf(obj))
 
-        response = HttpResponse(buffer.getvalue(), content_type="application/zip")
-        response["Content-Disposition"] = f'attachment; filename="{self.zip_filename}"'
+        response: HttpResponse = HttpResponse(buffer.getvalue(), content_type='application/zip')
+        response['Content-Disposition'] = f'attachment; filename="{self.zip_filename}"'
         return response
