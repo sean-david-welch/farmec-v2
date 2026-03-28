@@ -46,7 +46,6 @@ UNFOLD = {
                     {"title": "Products", "icon": "inventory_2", "link": reverse_lazy("admin:catalog_product_changelist")},
                     {"title": "Spare Parts", "icon": "settings_suggest", "link": reverse_lazy("admin:catalog_spareparts_changelist")},
                     {"title": "Videos", "icon": "play_circle", "link": reverse_lazy("admin:catalog_video_changelist")},
-                    {"title": "Line Items", "icon": "list_alt", "link": reverse_lazy("admin:catalog_lineitems_changelist")},
                 ],
             },
             {
