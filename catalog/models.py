@@ -99,25 +99,6 @@ class Spareparts(BaseModel):
         return self.name
 
 
-class LineitemsQuerySet(BaseQuerySet):
-    pass
-
-
-class Lineitems(BaseModel):
-    id = models.TextField(primary_key=True, verbose_name=_('ID'))
-    name = models.CharField(max_length=255, verbose_name=_('name'), help_text=_('Product or item name for line item'))
-    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_('price'), help_text=_('Price in currency units'))
-    image = models.URLField(blank=True, null=True, verbose_name=_('image'), help_text=_('URL to item image'))
-
-    objects = LineitemsQuerySet.as_manager()
-
-    class Meta:
-        managed = True
-        db_table = 'LineItems'
-
-    def __str__(self):
-        return self.name
-
 
 class VideoQuerySet(BaseQuerySet):
     pass
