@@ -17,20 +17,6 @@ def account_button(context):
     }
 
 
-@register.inclusion_tag('components/mobile_login.html', takes_context=True)
-def mobile_login(context, on_click=""):
-    """Render the mobile login/account button."""
-    user = context.get('user')
-    is_authenticated = user.is_authenticated if user else False
-    is_admin = user.is_staff if is_authenticated else False
-
-    return {
-        'is_authenticated': is_authenticated,
-        'is_admin': is_admin,
-        'on_click': on_click,
-    }
-
-
 @register.inclusion_tag('components/to_top_button.html')
 def to_top_button():
     """Render a scroll-to-top button."""
