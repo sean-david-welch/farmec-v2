@@ -50,7 +50,7 @@
     <div class="parts-supplier-card" id="{{ supplier.name|slugify }}">
         <h2 class="main-heading">{{ supplier.name }}</h2>
         <img
-            src="{{ supplier.logo_image|default_if_none:'' }}"
+            src="{% if supplier.logo_image %}{{ supplier.logo_image.url }}{% endif %}"
             class="parts-image"
             alt="{{ supplier.name }} logo"
             width="200"
