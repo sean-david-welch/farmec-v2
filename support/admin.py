@@ -1,5 +1,7 @@
 from django.contrib import admin
+from django.http import HttpRequest, HttpResponse
 from unfold.admin import ModelAdmin, TabularInline
+from unfold.decorators import action
 
 from .forms import WarrantyclaimForm, PartsrequiredForm, MachineregistrationForm
 from .models import Warrantyclaim, Partsrequired, Machineregistration
@@ -20,6 +22,7 @@ class WarrantyclaimAdmin(ModelAdmin):
     form = WarrantyclaimForm
     inlines = [PartsrequiredInline]
     actions = ['download_pdf']
+    actions_detail = ['download_pdf_detail']
     list_display = ('owner_name', 'dealer', 'machine_model', 'serial_number', 'failure_date', 'parts_count', 'completed_by')
     search_fields = ('owner_name', 'machine_model', 'serial_number', 'dealer')
     list_filter = ('dealer',)
@@ -44,8 +47,12 @@ class WarrantyclaimAdmin(ModelAdmin):
     def parts_count(self, obj: Warrantyclaim) -> int:
         return obj.partsrequired_set.count()
 
-    def get_queryset(self, request):
+    def get_queryset(self, request: HttpRequest):
         return super().get_queryset(request).prefetch_related('partsrequired_set')
+
+    @action(description='Download PDF', icon='download')
+    def download_pdf_detail(self, request: HttpRequest, object_id: str) -> HttpResponse:
+        return self.download_pdf(self, request, Warrantyclaim.objects.filter(pk=object_id))
 
 
 @admin.register(Partsrequired)
@@ -61,6 +68,7 @@ class PartsrequiredAdmin(ModelAdmin):
 class MachineregistrationAdmin(ModelAdmin):
     form = MachineregistrationForm
     actions = ['download_pdf']
+    actions_detail = ['download_pdf_detail']
     list_display = ('owner_name', 'dealer_name', 'machine_model', 'serial_number', 'date', 'completed_by')
     search_fields = ('owner_name', 'machine_model', 'serial_number', 'dealer_name')
     list_filter = ('dealer_name',)
@@ -84,3 +92,7 @@ class MachineregistrationAdmin(ModelAdmin):
         filename_fn=lambda reg: f'registration_{reg.owner_name}_{reg.machine_model}',
         zip_filename='machine_registrations.zip',
     )
+
+    @action(description='Download PDF', icon='download')
+    def download_pdf_detail(self, request: HttpRequest, object_id: str) -> HttpResponse:
+        return self.download_pdf(self, request, Machineregistration.objects.filter(pk=object_id))
