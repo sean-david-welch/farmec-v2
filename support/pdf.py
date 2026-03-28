@@ -32,15 +32,9 @@ class PDFDownloadAction:
         )
     """
 
-    short_description = 'Download as PDF'
+    short_description = "Download as PDF"
 
-    def __init__(
-        self,
-        template: str,
-        context_fn: Callable[[Model], dict],
-        filename_fn: Callable[[Model], str],
-        zip_filename: str,
-    ) -> None:
+    def __init__(self, template: str, context_fn: Callable[[Model], dict], filename_fn: Callable[[Model], str], zip_filename: str) -> None:
         """
         Initialise the action.
 
@@ -58,7 +52,9 @@ class PDFDownloadAction:
         self.context_fn = context_fn
         self.filename_fn = filename_fn
         self.zip_filename = zip_filename
-        self.__name__ = f'download_{re.sub(r"[^\w]+", "_", zip_filename.replace(".zip", ""))}_pdf'
+        self.__name__ = (
+            f"download_{re.sub(r'[^\w]+', '_', zip_filename.replace('.zip', ''))}_pdf"
+        )
 
     def render_pdf(self, obj: Model) -> bytes:
         """
@@ -72,7 +68,7 @@ class PDFDownloadAction:
         :returns: Raw PDF bytes.
         """
         context = self.context_fn(obj)
-        context['generated_date'] = date.today()
+        context["generated_date"] = date.today()
         html_string = render_to_string(self.template, context)
         return HTML(string=html_string).write_pdf()
 
@@ -87,8 +83,8 @@ class PDFDownloadAction:
         :returns: A sanitised filename string ending in ``.pdf``.
         """
         raw = self.filename_fn(obj)
-        slug = re.sub(r'[^\w]+', '_', raw.strip()).strip('_').lower()
-        return f'{slug}.pdf'
+        slug = re.sub(r"[^\w]+", "_", raw.strip()).strip("_").lower()
+        return f"{slug}.pdf"
 
     def __call__(
         self,
@@ -112,15 +108,17 @@ class PDFDownloadAction:
         if queryset.count() == 1:
             obj = queryset.first()
             pdf = self.render_pdf(obj)
-            response = HttpResponse(pdf, content_type='application/pdf')
-            response['Content-Disposition'] = f'attachment; filename="{self.build_filename(obj)}"'
+            response = HttpResponse(pdf, content_type="application/pdf")
+            response["Content-Disposition"] = (
+                f'attachment; filename="{self.build_filename(obj)}"'
+            )
             return response
 
         buffer = io.BytesIO()
-        with zipfile.ZipFile(buffer, 'w') as zf:
+        with zipfile.ZipFile(buffer, "w") as zf:
             for obj in queryset:
                 zf.writestr(self.build_filename(obj), self.render_pdf(obj))
 
-        response = HttpResponse(buffer.getvalue(), content_type='application/zip')
-        response['Content-Disposition'] = f'attachment; filename="{self.zip_filename}"'
+        response = HttpResponse(buffer.getvalue(), content_type="application/zip")
+        response["Content-Disposition"] = f'attachment; filename="{self.zip_filename}"'
         return response
