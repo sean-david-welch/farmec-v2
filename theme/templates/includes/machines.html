@@ -7,7 +7,7 @@
         {% for machine in machines %}
         <div class="machine-card" id="{{ machine.name|slugify }}">
             <img
-                src="{{ machine.machine_image }}"
+                src="{% if machine.machine_image %}{{ machine.machine_image.url }}{% endif %}"
                 alt="{{ machine.name|default:'Default Image' }}"
                 class="machine-image"
                 width="600"
