@@ -26,7 +26,7 @@
         {% for sparepart in spareparts %}
         <div class="spareparts-card" id="{{ sparepart.name|slugify }}">
             <img
-                src="{{ sparepart.parts_image }}"
+                src="{% if sparepart.parts_image %}{{ sparepart.parts_image.url }}{% endif %}"
                 alt="{{ sparepart.name }}"
                 class="spareparts-logo"
                 width="600"
