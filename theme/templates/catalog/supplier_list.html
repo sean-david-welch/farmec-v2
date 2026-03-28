@@ -27,7 +27,7 @@
         <div class="supplier-card" id="{{ supplier.name|slugify }}">
             <h2 class="main-heading">{{ supplier.name }}</h2>
             <img
-                src="{{ supplier.logo_image }}"
+                src="{% if supplier.logo_image %}{{ supplier.logo_image.url }}{% endif %}"
                 alt="{{ supplier.name }} logo"
                 class="supplier-logo"
                 width="200"
