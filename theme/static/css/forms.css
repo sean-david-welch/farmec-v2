@@ -94,6 +94,26 @@
     margin-top: 1rem;
 }
 
+.part-entry-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.part-remove-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #991b1b;
+    font-size: 1rem;
+    padding: 0.25rem;
+    transition: color 0.2s ease;
+}
+
+.part-remove-btn:hover {
+    color: #dc2626;
+}
+
 .form div:has(input[type="checkbox"]) {
     display: flex;
     flex-direction: row;
