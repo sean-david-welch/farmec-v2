@@ -1,16 +1,11 @@
 <section id="warranty-form">
-    <button class="btn btn-form" type="button"
-            onclick="document.getElementById('warrantyDialog').showModal(); document.getElementById('warrantyDialog').classList.add('dialog-visible')">
-        Warranty Claim <i class="fa-solid fa-pen-to-square"></i>
-    </button>
-
     <dialog id="warrantyDialog" class="dialog" style="overflow-y: auto; padding: 0;">
         <button class="dialog-close-btn" type="button"
                 onclick="document.getElementById('warrantyDialog').close(); document.getElementById('warrantyDialog').classList.remove('dialog-visible')">
             <i class="fa-solid fa-xmark"></i>
         </button>
 
-        <form class="form" method="post" action="{% url 'support:warrantyclaim_create' %}">
+        <form class="form" hx-post="{% url 'catalog:spareparts' %}" hx-swap="outerHTML">
             {% csrf_token %}
             <h1 class="main-heading">Warranty Claim Form</h1>
 
@@ -61,6 +56,14 @@
 </section>
 
 <script>
+    (function () {
+        const dialog = document.getElementById('warrantyDialog');
+        if (dialog && !dialog.open) {
+            dialog.showModal();
+            dialog.classList.add('dialog-visible');
+        }
+    })();
+
     (function () {
         let partCount = 1;
 
