@@ -40,20 +40,6 @@ def google_map(lat=53.49, lng=-6.54, zoom=10):
         'zoom': zoom,
     }
 
-
-@register.inclusion_tag('components/social_links.html')
-def social_links(facebook=None, twitter=None, instagram=None, linkedin=None, website=None, youtube=None):
-    """Render social media links."""
-    return {
-        'facebook': facebook,
-        'twitter': twitter,
-        'instagram': instagram,
-        'linkedin': linkedin,
-        'website': website,
-        'youtube': youtube,
-    }
-
-
 @register.inclusion_tag('components/to_top_button.html')
 def to_top_button():
     """Render a scroll-to-top button."""
