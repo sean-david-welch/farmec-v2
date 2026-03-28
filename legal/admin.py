@@ -4,14 +4,20 @@ from unfold.admin import ModelAdmin
 from .forms import PrivacyForm, TermsForm
 from .models import Privacy, Terms
 
+BASE_READONLY = ('uid', 'created', 'modified')
+
 
 @admin.register(Privacy)
 class PrivacyAdmin(ModelAdmin):
     form = PrivacyForm
-    list_display = ("title",)
+    list_display = ('title', 'publish')
+    readonly_fields = BASE_READONLY
+    ordering = ('order',)
 
 
 @admin.register(Terms)
 class TermsAdmin(ModelAdmin):
     form = TermsForm
-    list_display = ("title",)
+    list_display = ('title', 'publish')
+    readonly_fields = BASE_READONLY
+    ordering = ('order',)
