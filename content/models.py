@@ -11,7 +11,7 @@ class Blog(BaseModel):
     id = models.TextField(primary_key=True, verbose_name=_('ID'))
     title = models.CharField(max_length=500, verbose_name=_('title'), help_text=_('Blog post headline'))
     date = models.DateField(blank=True, null=True, verbose_name=_('date'), help_text=_('Publication date'))
-    main_image = models.URLField(blank=True, null=True, verbose_name=_('main image'), help_text=_('URL to featured/header image'))
+    main_image = models.ImageField(upload_to='farmec_images/Blogs/', blank=True, null=True, verbose_name=_('main image'), help_text=_('Featured/header image'))
     subheading = models.CharField(max_length=500, blank=True, null=True, verbose_name=_('subheading'), help_text=_('Optional subtitle or summary'))
     body = models.TextField(blank=True, null=True, verbose_name=_('body'), help_text=_('Blog post content'))
     slug = models.SlugField(max_length=500, blank=True, null=True, db_index=True, verbose_name=_('slug'), help_text=_('URL-friendly identifier'))
@@ -33,7 +33,7 @@ class CarouselQuerySet(BaseQuerySet):
 class Carousel(BaseModel):
     id = models.TextField(primary_key=True, verbose_name=_('ID'))
     name = models.CharField(max_length=255, verbose_name=_('name'), help_text=_('Carousel slide name or identifier'))
-    image = models.URLField(blank=True, null=True, verbose_name=_('image'), help_text=_('URL to carousel slide image'))
+    image = models.ImageField(upload_to='farmec_images/Carousels/', blank=True, null=True, verbose_name=_('image'), help_text=_('Carousel slide image'))
 
     objects = CarouselQuerySet.as_manager()
 
