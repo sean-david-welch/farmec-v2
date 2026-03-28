@@ -19,26 +19,38 @@
 
 {% block content %}
 <section id="machineDetail">
-    <h1 class="section-heading">Products</h1>
-
-    {% if products %}
-    <div class="index">
-        <h2 class="index-heading">Products:</h2>
-        <div class="index-items">
-            {% for product in products %}
-            <a href="#{{ product.name|slugify }}" class="index-item">
-                {{ product.name }}
-            </a>
-            {% endfor %}
-        </div>
-
-        {% if machine.machine_link %}
-        <a href="{{ machine.machine_link }}" target="_blank" rel="noopener noreferrer" class="btn">
-            Supplier Website <i class="fa-solid fa-right-to-bracket"></i>
-        </a>
-        {% endif %}
+    <div class="supplier-heading">
+        <h1 class="section-heading">{{ machine.name }}</h1>
     </div>
-    {% endif %}
+
+    <div class="supplier-detail">
+        <div class="supplier-hero">
+            <img
+                src="{{ machine.machine_image|default_if_none:'' }}"
+                alt="{{ machine.name }}"
+                class="supplier-image"
+                width="750"
+                height="750"
+                onerror="this.src='{% static 'default.jpg' %}'"
+            />
+            {% if products %}
+            <div class="supplier-hero-index supplier-hero-index--bottom">
+                <h2 class="index-heading">Products</h2>
+                <div class="index-items">
+                    {% for product in products %}
+                    <a href="#{{ product.name|slugify }}" class="index-item">{{ product.name }}</a>
+                    {% endfor %}
+                </div>
+                {% if machine.machine_link %}
+                <a href="{{ machine.machine_link }}" target="_blank" rel="noopener noreferrer" class="btn">
+                    Supplier Website <i class="fa-solid fa-right-to-bracket"></i>
+                </a>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+        <p class="supplier-description">{{ machine.description }}</p>
+    </div>
 
     {% if products %}
     {% include "includes/products.html" with products=products %}
