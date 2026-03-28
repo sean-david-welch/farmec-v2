@@ -1,21 +1,3 @@
-// Get CSRF token from DOM
-function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-
-const csrftoken = getCookie('csrftoken');
-
 // ===== Toastify HTMX Integration =====
 const TOAST_COLOURS = {
     success: '#16a34a',
@@ -57,62 +39,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     }
-
-    // ===== DownloadPdf Component =====
-    const pdfButtons = document.querySelectorAll('.pdf-download-btn');
-    pdfButtons.forEach(btn => {
-        btn.addEventListener('click', async function (e) {
-            e.preventDefault();
-
-            const pdfType = this.dataset.pdfType;
-            const warrantyClaimId = this.dataset.warrantyClaimId;
-            const registrationId = this.dataset.registrationId;
-
-            try {
-                // Build request body
-                const body = {
-                    pdf_type: pdfType,
-                };
-
-                if (warrantyClaimId) {
-                    body.warranty_claim_id = warrantyClaimId;
-                }
-                if (registrationId) {
-                    body.registration_id = registrationId;
-                }
-
-                // Make POST request to Go API
-                const response = await fetch(`/api/pdf/${pdfType}`, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRFToken': csrftoken,
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(body)
-                });
-
-                if (response.ok) {
-                    // Get the blob and download
-                    const blob = await response.blob();
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = `${pdfType}_document.pdf`;
-                    document.body.appendChild(a);
-                    a.click();
-                    window.URL.revokeObjectURL(url);
-                    document.body.removeChild(a);
-                } else {
-                    const errorData = await response.json();
-                    alert(`Error: ${errorData.message || 'Failed to generate PDF'}`);
-                    console.error('PDF generation error:', errorData);
-                }
-            } catch (error) {
-                console.error('Error downloading PDF:', error);
-                alert('An error occurred while generating PDF');
-            }
-        });
-    });
 
     // ===== Mobile Menu Toggle =====
     const mobileMenuToggles = document.querySelectorAll('.mobile-menu-toggle');
