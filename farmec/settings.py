@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Third-party
+    'storages',
     'debug_toolbar',
     'django_htmx',
     'template_partials',
@@ -154,9 +155,11 @@ AWS_STORAGE_BUCKET_NAME = 'farmec.ie'
 AWS_S3_REGION_NAME = 'eu-west-1'
 AWS_S3_ACCESS_KEY_ID = env('AWS_ACCESS_KEY', default='')
 AWS_S3_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY', default='')
-AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+AWS_S3_CUSTOM_DOMAIN = 'static.farmec.ie'
 AWS_DEFAULT_ACL = 'public-read'
 AWS_QUERYSTRING_AUTH = False
+
+MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
 
 # Resend email configuration
 RESEND_TOKEN = env('RESEND_TOKEN', default='')
