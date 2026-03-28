@@ -1,5 +1,9 @@
+import uuid
+
+from django.http import HttpRequest, HttpResponse
 from django.views.generic import ListView, DetailView
 
+from farmec.mixin import HTMXViewMixin
 from catalog.models import (
     Supplier,
     SupplierQuerySet,
@@ -8,6 +12,8 @@ from catalog.models import (
     Product,
     Video, SparepartsQuerySet, Spareparts,
 )
+from support.forms import WarrantyclaimForm
+from support.models import Partsrequired
 
 
 class SupplierListView(ListView):
@@ -53,11 +59,58 @@ class MachineDetailView(DetailView):
         return context
 
 
-class SparePartsIndexView(ListView):
+class SparePartsIndexView(HTMXViewMixin, ListView):
     model: type[Spareparts] = Spareparts
     template_name: str = 'support/spareparts.html'
     context_object_name: str = 'spareparts'
     queryset: SupplierQuerySet = Supplier.objects.publish().order_by('-created')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = WarrantyclaimForm()
+        return context
+
+    def handle_htmx(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
+        if request.method == 'GET':
+            return self.render_htmx_response(
+                'support/warranty_form_dialog.html',
+                include_base_context=False,
+                extra_context={'form': WarrantyclaimForm()},
+            )
+
+        form = WarrantyclaimForm(request.POST)
+        if not form.is_valid():
+            return self.render_htmx_response(
+                'support/warranty_form_dialog.html',
+                extra_context={'form': form},
+            )
+
+        claim = form.save(commit=False)
+        claim.id = str(uuid.uuid4())
+        claim.save()
+
+        part_count = int(request.POST.get('part_count', 0))
+        for i in range(part_count):
+            part_number = request.POST.get(f'part_number_{i}', '').strip()
+            quantity_needed = request.POST.get(f'quantity_needed_{i}', '').strip()
+            invoice_number = request.POST.get(f'invoice_number_{i}', '').strip()
+            description = request.POST.get(f'part_description_{i}', '').strip()
+            if part_number or quantity_needed:
+                Partsrequired.objects.create(
+                    id=str(uuid.uuid4()),
+                    warranty=claim,
+                    part_number=part_number or None,
+                    quantity_needed=int(quantity_needed) if quantity_needed else 1,
+                    invoice_number=invoice_number or None,
+                    description=description or None,
+                )
+
+        return self.render_htmx_response(
+            'support/warranty_form_dialog.html',
+            include_base_context=False,
+            extra_context={'form': WarrantyclaimForm()},
+            message='Warranty claim submitted successfully.',
+        )
 
 
 class SparePartsListView(ListView):
