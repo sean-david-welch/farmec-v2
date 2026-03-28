@@ -18,7 +18,14 @@
 - If migrating: use `pgloader` or `python manage.py dumpdata` → `loaddata` into Postgres
 - Postgres benefits worth reconsidering: better concurrent writes, `ArrayField`, native full-text search, easier managed backups on RDS
 
-## 4. Unfold Admin Cleanup
+## 4. PDF Downloads for Warranty Claims & Machine Registrations
+- Generate a printable PDF for each `Warrantyclaim` and `Machineregistration` record from the admin panel
+- Use `weasyprint` or `xhtml2pdf` to render a Django template to PDF (WeasyPrint produces cleaner output)
+- Add a custom Unfold admin action and/or a detail-view button that triggers the PDF download
+- Create dedicated print templates (`warranty_pdf.html`, `registration_pdf.html`) — clean layout with company branding, all relevant fields, and any attached images
+- Ensure the PDF is served as an attachment (`Content-Disposition: attachment`) so it downloads directly
+
+## 5. Unfold Admin Cleanup
 - Audit sidebar navigation — ensure all models are grouped logically (catalog, content, support, team, legal)
 - Add `list_display`, `search_fields`, `list_filter` to all `ModelAdmin` classes
 - Add inline support where useful (e.g. `Lineitems` inline on `Machine`, `Spareparts` inline on `Supplier`)
