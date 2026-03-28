@@ -237,7 +237,9 @@
     height: 3rem;
     width: 3rem;
     border-radius: 0.5rem;
-    border: 2px solid #d1d5db;
+    border-width: 2px;
+    border-style: solid;
+    border-color: #d1d5db;
     cursor: pointer;
     transition: all 700ms ease-in-out;
 }
