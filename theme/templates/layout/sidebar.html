@@ -1,8 +1,8 @@
 {% load components %}
 
-<div id="sidebar-backdrop" class="sidebar-backdrop" style="display: none;"></div>
+<div id="sidebar-backdrop" class="sidebar-backdrop"></div>
 
-<div id="sidebar-menu" class="sidebar-menu" style="display: none;">
+<div id="sidebar-menu" class="sidebar-menu">
     <div class="sidebar-nav-icon">
         <a href="{% url 'content:home' %}" aria-label="logo button">
             <img
@@ -76,36 +76,20 @@ document.addEventListener('DOMContentLoaded', function() {
     const toggleBtn = document.getElementById('sidebar-toggle-btn');
     const closeBtn = document.getElementById('sidebar-close-btn');
     const menu = document.getElementById('sidebar-menu');
-    const backdrop = document.getElementById('sidebar-backdrop');
 
-    if (toggleBtn) {
-        toggleBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            menu.style.display = 'block';
-            backdrop.style.display = 'block';
-        });
+    function openSidebar() {
+        menu.classList.add('sidebar-open');
     }
 
-    if (closeBtn) {
-        closeBtn.addEventListener('click', function() {
-            menu.style.display = 'none';
-            backdrop.style.display = 'none';
-        });
+    function closeSidebar() {
+        menu.classList.remove('sidebar-open');
     }
 
-    if (backdrop) {
-        backdrop.addEventListener('click', function() {
-            menu.style.display = 'none';
-            backdrop.style.display = 'none';
-        });
-    }
+    if (toggleBtn) toggleBtn.addEventListener('click', function(e) { e.preventDefault(); openSidebar(); });
+    if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
 
-    const menuItems = menu.querySelectorAll('.sidebar-nav-item');
-    menuItems.forEach(item => {
-        item.addEventListener('click', function() {
-            menu.style.display = 'none';
-            backdrop.style.display = 'none';
-        });
+    menu.querySelectorAll('.sidebar-nav-item').forEach(item => {
+        item.addEventListener('click', closeSidebar);
     });
 });
 </script>
