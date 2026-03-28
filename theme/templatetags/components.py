@@ -54,18 +54,6 @@ def social_links(facebook=None, twitter=None, instagram=None, linkedin=None, web
     }
 
 
-@register.inclusion_tag('components/timeline_card.html', takes_context=True)
-def timeline_card(context, timeline):
-    """Render a timeline card."""
-    user = context.get('user')
-    is_admin = user.is_staff if user and user.is_authenticated else False
-
-    return {
-        'timeline': timeline,
-        'is_admin': is_admin,
-    }
-
-
 @register.inclusion_tag('components/to_top_button.html')
 def to_top_button():
     """Render a scroll-to-top button."""
