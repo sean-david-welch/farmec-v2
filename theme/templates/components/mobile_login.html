@@ -16,20 +16,12 @@
         <a href="{% url 'admin:content_carousel_changelist' %}" class="mobile-menu-item">
             <i class="fas fa-image"></i> Carousels
         </a>
-        <a href="{% url 'admin:catalog_lineitems_changelist' %}" class="mobile-menu-item">
-            <i class="fas fa-list"></i> Line Items
-        </a>
         <a href="{% url 'admin:support_warrantyclaim_changelist' %}" class="mobile-menu-item">
             <i class="fas fa-file"></i> Warranty
         </a>
         <a href="{% url 'admin:support_machineregistration_changelist' %}" class="mobile-menu-item">
             <i class="fas fa-clipboard"></i> Registrations
         </a>
-        {% if line_item %}
-{#            <a href="{% url 'checkout' line_item.id %}" class="mobile-menu-item">#}
-{#                <i class="fas fa-shopping-cart"></i> Checkout#}
-{#            </a>#}
-        {% endif %}
         <form method="post" action="{% url 'logout' %}" style="width: 100%;">
             {% csrf_token %}
             <button type="submit" class="mobile-menu-item" style="width: 100%; text-align: left; background: none; border: none; cursor: pointer; padding: inherit; color: inherit; font-family: inherit;">
@@ -43,11 +35,6 @@
         <a href="{% url 'registrations-list' %}" class="mobile-menu-item">
             <i class="fas fa-clipboard"></i> Registrations
         </a>
-        {% if line_item %}
-{#            <a href="{% url 'checkout' line_item.id %}" class="mobile-menu-item">#}
-{#                <i class="fas fa-shopping-cart"></i> Checkout#}
-{#            </a>#}
-        {% endif %}
         <form method="post" action="{% url 'logout' %}" style="width: 100%;">
             {% csrf_token %}
             <button type="submit" class="mobile-menu-item" style="width: 100%; text-align: left; background: none; border: none; cursor: pointer; padding: inherit; color: inherit; font-family: inherit;">
