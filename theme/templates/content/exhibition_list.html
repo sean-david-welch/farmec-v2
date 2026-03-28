@@ -27,7 +27,7 @@
         {% for exhibition in exhibitions %}
         <div class="exhibition">
             <h2 class="main-heading">{{ exhibition.title }}</h2>
-            <p class="paragraph">{{ exhibition.date }}</p>
+            {% if exhibition.date %}<p class="paragraph">{{ exhibition.date }}</p>{% endif %}
             <p class="paragraph">{{ exhibition.location }}</p>
             <p class="paragraph">{{ exhibition.info }}</p>
         </div>
