@@ -24,14 +24,18 @@
     <div class="parts-supplier-grid">
         {% for blog in blogs %}
         <div class="parts-supplier-card">
-            <h2 class="main-heading">{{ blog.title }}</h2>
             <img
                 class="parts-image"
                 src="{{ blog.main_image }}"
                 alt="{{ blog.title }}"
                 onerror="this.src='{% static 'default.jpg' %}'"
             />
-            <a href="{% url 'content:blog_detail' blog.id %}" class="btn">
+            <div class="blog-card-content">
+                <h2 class="main-heading">{{ blog.title }}</h2>
+                {% if blog.date %}<p class="blog-date">{{ blog.date|date:"d M Y" }}</p>{% endif %}
+                {% if blog.subheading %}<p class="paragraph">{{ blog.subheading|truncatechars:100 }}</p>{% endif %}
+            </div>
+            <a href="{% url 'content:blog_detail' blog.id %}" class="btn blog-card-btn">
                 Read More <i class="fa-solid fa-right-to-bracket"></i>
             </a>
         </div>
