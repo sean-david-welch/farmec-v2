@@ -532,9 +532,10 @@
 }
 
 .supplier-description {
-    font-size: 1.05rem;
+    font-size: 1.2rem;
     line-height: 1.75;
     color: #f3f4f6;
+    padding: 0 4rem;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
@@ -619,7 +620,7 @@
     grid-template-columns: 1fr;
     align-items: center;
     justify-content: center;
-    margin: 2.5rem 13rem;
+    margin: 2.5rem 8rem;
     padding: 1.25rem;
     border-radius: 1rem;
     background-color: #27272a;
