@@ -556,7 +556,7 @@
 
 .supplier-hero .supplier-image {
     width: 100%;
-    max-height: 500px;
+    max-height: 600px;
     object-fit: cover;
     border-radius: 0.5rem;
     display: block;
@@ -564,17 +564,33 @@
 
 .supplier-hero-index {
     position: absolute;
-    bottom: 0;
     left: 0;
     right: 0;
     padding: 1.5rem;
+}
+
+.supplier-hero-index--bottom {
+    bottom: 0;
     background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 100%);
     border-radius: 0 0 0.5rem 0.5rem;
 }
 
+
 .supplier-hero-index .index-heading {
     color: #f3f4f6;
+    margin-top: 0.75rem;
     margin-bottom: 0.75rem;
+}
+
+.supplier-hero-index .index-heading:first-child {
+    margin-top: 0;
+}
+
+.supplier-hero-index .btn {
+    margin-top: 0.75rem;
+    display: table;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .supplier-hero-index .index-items {

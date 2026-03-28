@@ -34,16 +34,21 @@
                 height="750"
                 onerror="this.src='{% static 'default.jpg' %}'"
             />
-            {% if machines %}
-            <div class="supplier-hero-index">
+            {% if machines or videos %}
+            <div class="supplier-hero-index supplier-hero-index--bottom">
+                {% if machines %}
                 <h2 class="index-heading">Machines</h2>
                 <div class="index-items">
                     {% for machine in machines %}
-                    <a href="#{{ machine.name|slugify }}" class="index-item">
-                        {{ machine.name }}
-                    </a>
+                    <a href="#{{ machine.name|slugify }}" class="index-item">{{ machine.name }}</a>
                     {% endfor %}
                 </div>
+                {% endif %}
+                {% if videos %}
+                <a href="#videos" class="btn">
+                    <i class="fa-solid fa-play"></i> See {{ supplier.name }} in Action
+                </a>
+                {% endif %}
             </div>
             {% endif %}
         </div>
