@@ -42,7 +42,6 @@ UNFOLD = {
                 "separator": True,
                 "items": [
                     {"title": "Users", "icon": "person", "link": reverse_lazy("admin:auth_user_changelist")},
-                    {"title": "Groups", "icon": "group", "link": reverse_lazy("admin:auth_group_changelist")},
                 ],
             },
             {
