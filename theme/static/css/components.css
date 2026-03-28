@@ -330,8 +330,8 @@
 
 /* Dialog */
 .dialog {
-    max-height: 90vh;
-    width: 80vw;
+    max-height: 75vh;
+    width: 50vw;
     position: fixed;
     left: 50%;
     top: 50%;
