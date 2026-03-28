@@ -12,8 +12,6 @@ from .models import (
     CarouselQuerySet,
     Exhibition,
     ExhibitionQuerySet,
-    Timeline,
-    TimelineQuerySet,
 )
 
 
@@ -66,10 +64,3 @@ class ExhibitionListView(ListView):
     template_name: str = 'content/exhibition_list.html'
     context_object_name: str = 'exhibitions'
     queryset: ExhibitionQuerySet = Exhibition.objects.publish().order_by('-created')
-
-
-class TimelineListView(ListView):
-    model: type[Timeline] = Timeline
-    template_name: str = 'content/timeline_list.html'
-    context_object_name: str = 'timelines'
-    queryset: TimelineQuerySet = Timeline.objects.publish().order_by('-created')
