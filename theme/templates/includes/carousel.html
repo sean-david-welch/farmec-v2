@@ -5,7 +5,7 @@
         <div class="slideshow">
             {% for image in images %}
             <img
-                src="{{ image.image }}"
+                src="{% if image.image %}{{ image.image.url }}{% endif %}"
                 alt="Slide {{ forloop.counter }}"
                 class="slide {% if forloop.first %}fade-in{% else %}fade-out{% endif %}"
                 onerror="this.src='{% static 'default.jpg' %}'"
