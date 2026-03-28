@@ -31,15 +31,6 @@ def mobile_login(context, on_click=""):
     }
 
 
-@register.inclusion_tag('components/map.html')
-def google_map(lat=53.49, lng=-6.54, zoom=10):
-    """Render a Google Map embed."""
-    return {
-        'lat': lat,
-        'lng': lng,
-        'zoom': zoom,
-    }
-
 @register.inclusion_tag('components/to_top_button.html')
 def to_top_button():
     """Render a scroll-to-top button."""
