@@ -7,13 +7,13 @@
 <meta name="description" content="{{ supplier.description|default:'Browse our Suppliers and learn more about the machines we offer.' }}">
 <meta property="og:title" content="{{ supplier.name|default:'Supplier' }} - Farmec Ireland">
 <meta property="og:description" content="{{ supplier.description|default:'Browse our Suppliers and learn more about the machines we offer.' }}">
-<meta property="og:image" content="{{ supplier.marketing_image|default:'https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp' }}">
+<meta property="og:image" content="{% if supplier.marketing_image %}{{ supplier.marketing_image.url }}{% else %}https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp{% endif %}">
 <meta property="og:url" content="https://www.farmec.ie/suppliers/{{ supplier.id }}">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{ supplier.name|default:'Supplier' }} - Farmec Ireland">
 <meta name="twitter:description" content="{{ supplier.description|default:'Browse our Suppliers and learn more about the machines we offer.' }}">
-<meta name="twitter:image" content="{{ supplier.marketing_image|default:'https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp' }}">
+<meta name="twitter:image" content="{% if supplier.marketing_image %}{{ supplier.marketing_image.url }}{% else %}https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp{% endif %}">
 <link rel="canonical" href="https://www.farmec.ie/suppliers/{{ supplier.id }}">
 {% endblock %}
 
@@ -28,7 +28,7 @@
     <div class="supplier-detail">
         <div class="supplier-hero">
             <img
-                src="{{ supplier.marketing_image|default_if_none:'' }}"
+                src="{% if supplier.marketing_image %}{{ supplier.marketing_image.url }}{% endif %}"
                 alt="{{ supplier.name }}"
                 class="supplier-image"
                 width="750"
