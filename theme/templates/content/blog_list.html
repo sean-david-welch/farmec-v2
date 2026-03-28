@@ -21,11 +21,11 @@
 <section id="blog">
     <h1 class="section-heading">Latest Blog Posts</h1>
 
-    <div class="parts-supplier-grid">
+    <div class="blog-list-grid">
         {% for blog in blogs %}
-        <div class="parts-supplier-card">
+        <div class="blog-list-card">
             <img
-                class="parts-image"
+                class="blog-list-image"
                 src="{{ blog.main_image }}"
                 alt="{{ blog.title }}"
                 onerror="this.src='{% static 'default.jpg' %}'"

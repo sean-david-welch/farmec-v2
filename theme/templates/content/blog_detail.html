@@ -27,16 +27,18 @@
             <img
                 src="{{ blog.main_image }}"
                 alt="{{ blog.title }}"
-                width="600"
-                height="600"
+                class="blog-main-image"
                 onerror="this.src='{% static 'default.jpg' %}'"
             />
-            {% if blog.subheading %}
-            <h2 class="main-heading">{{ blog.subheading }}</h2>
-            {% endif %}
-            {% if blog.body %}
-            <p class="paragraph">{{ blog.body|linebreaks }}</p>
-            {% endif %}
+            <div class="blog-text">
+                {% if blog.date %}<p class="blog-date">{{ blog.date|date:"d M Y" }}</p>{% endif %}
+                {% if blog.subheading %}
+                <h2 class="main-heading">{{ blog.subheading }}</h2>
+                {% endif %}
+                {% if blog.body %}
+                <p class="paragraph">{{ blog.body|linebreaks }}</p>
+                {% endif %}
+            </div>
         </div>
     </div>
     {% endif %}
