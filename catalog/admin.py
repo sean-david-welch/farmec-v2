@@ -1,6 +1,5 @@
 from django.contrib import admin
-from admin_config.admin import ModelAdmin
-from admin_config
+from unfold.admin import ModelAdmin
 
 from .forms import SupplierForm, MachineForm, ProductForm, SparepartsForm, VideoForm
 from .models import Supplier, Machine, Product, Spareparts, Video
