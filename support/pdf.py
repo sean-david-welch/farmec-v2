@@ -52,7 +52,8 @@ class PDFDownloadAction:
         self.context_fn: Callable[[Model], dict] = context_fn
         self.filename_fn: Callable[[Model], str] = filename_fn
         self.zip_filename: str = zip_filename
-        self.__name__: str = f'download_{re.sub(r"[^\w]+", "_", zip_filename.replace(".zip", ""))}_pdf'
+        base: str = re.sub(r'\W+', '_', zip_filename.replace('.zip', ''))
+        self.__name__: str = f'download_{base}_pdf'
 
     def render_pdf(self, obj: Model) -> bytes:
         """
@@ -81,7 +82,7 @@ class PDFDownloadAction:
         :returns: A sanitised filename string ending in ``.pdf``.
         """
         raw: str = self.filename_fn(obj)
-        slug: str = re.sub(r'[^\w]+', '_', raw.strip()).strip('_').lower()
+        slug: str = re.sub(r'\W+', '_',raw.strip()).strip('_').lower()
         return f'{slug}.pdf'
 
     def __call__(self, modeladmin: ModelAdmin, request: HttpRequest, queryset: QuerySet) -> HttpResponse:
