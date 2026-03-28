@@ -7,13 +7,13 @@
 <meta name="description" content="{{ blog.subheading }}">
 <meta property="og:title" content="{{ blog.title }} - Farmec Blog">
 <meta property="og:description" content="{{ blog.subheading }}">
-<meta property="og:image" content="{{ blog.main_image|default:'https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp' }}">
+<meta property="og:image" content="{% if blog.main_image %}{{ blog.main_image.url }}{% else %}https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp{% endif %}">
 <meta property="og:url" content="https://www.farmec.ie/blogs/{{ blog.id }}">
 <meta property="og:type" content="article">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{ blog.title }} - Farmec Blog">
 <meta name="twitter:description" content="{{ blog.subheading }}">
-<meta name="twitter:image" content="{{ blog.main_image|default:'https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp' }}">
+<meta name="twitter:image" content="{% if blog.main_image %}{{ blog.main_image.url }}{% else %}https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp{% endif %}">
 <link rel="canonical" href="https://www.farmec.ie/blogs/{{ blog.id }}">
 {% endblock %}
 
@@ -25,7 +25,7 @@
 
         <div class="blog-body">
             <img
-                src="{{ blog.main_image }}"
+                src="{% if blog.main_image %}{{ blog.main_image.url }}{% endif %}"
                 alt="{{ blog.title }}"
                 class="blog-main-image"
                 onerror="this.src='{% static 'default.jpg' %}'"
