@@ -3,9 +3,9 @@
 <section id="machines">
     <h1 class="section-heading">Machinery</h1>
 
-    {% for machine in machines %}
-    <div class="machine-card" id="{{ machine.name|slugify }}">
-        <div class="machine-grid">
+    <div class="machine-grid">
+        {% for machine in machines %}
+        <div class="machine-card" id="{{ machine.name|slugify }}">
             <img
                 src="{{ machine.machine_image }}"
                 alt="{{ machine.name|default:'Default Image' }}"
@@ -14,7 +14,6 @@
                 height="600"
                 onerror="this.src='{% static 'default.jpg' %}'"
             />
-
             <div class="machine-info">
                 <h2 class="main-heading">{{ machine.name }}</h2>
                 <p class="paragraph">{{ machine.description }}</p>
@@ -23,8 +22,8 @@
                 </a>
             </div>
         </div>
+        {% empty %}
+        <p class="paragraph">No machines to display.</p>
+        {% endfor %}
     </div>
-    {% empty %}
-    <p class="paragraph">No machines to display.</p>
-    {% endfor %}
 </section>
