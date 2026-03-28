@@ -25,7 +25,9 @@
 
             <div id="parts-container">
                 <div class="part-entry" data-index="0">
-                    <h2 class="main-heading">Part 1</h2>
+                    <div class="part-entry-header">
+                        <h2 class="main-heading">Part 1</h2>
+                    </div>
                     <div>
                         <label for="part_number_0">Part Number</label>
                         <input type="text" name="part_number_0" id="part_number_0" placeholder="Enter part number">
@@ -51,6 +53,7 @@
                 Add Part
             </button>
             <button class="btn btn-form" type="submit">Submit</button>
+
         </form>
     </dialog>
 </section>
@@ -62,17 +65,22 @@
             dialog.showModal();
             dialog.classList.add('dialog-visible');
         }
+        document.addEventListener('closeWarrantyDialog', function () {
+            dialog.close();
+            dialog.classList.remove('dialog-visible');
+        }, { once: true });
     })();
 
     (function () {
-        let partCount = 1;
-
-        window.addWarrantyPart = function () {
-            const container = document.getElementById('parts-container');
-            const index = partCount;
-            const partHtml = `
+        function buildPartHtml(index) {
+            return `
                 <div class="part-entry" data-index="${index}">
-                    <h2 class="main-heading">Part ${index + 1}</h2>
+                    <div class="part-entry-header">
+                        <h2 class="main-heading">Part ${index + 1}</h2>
+                        <button type="button" class="part-remove-btn" onclick="removeWarrantyPart(this)">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
                     <div>
                         <label for="part_number_${index}">Part Number</label>
                         <input type="text" name="part_number_${index}" id="part_number_${index}" placeholder="Enter part number">
@@ -90,9 +98,39 @@
                         <input type="text" name="part_description_${index}" id="part_description_${index}" placeholder="Enter description">
                     </div>
                 </div>`;
-            container.insertAdjacentHTML('beforeend', partHtml);
-            partCount++;
-            document.getElementById('part_count').value = partCount;
+        }
+
+        function renumberParts() {
+            const entries = document.querySelectorAll('#parts-container .part-entry');
+            entries.forEach((entry, i) => {
+                entry.dataset.index = i;
+                entry.querySelector('h2').textContent = `Part ${i + 1}`;
+                entry.querySelector('[name^="part_number_"]').name = `part_number_${i}`;
+                entry.querySelector('[name^="part_number_"]').id = `part_number_${i}`;
+                entry.querySelector('[name^="quantity_needed_"]').name = `quantity_needed_${i}`;
+                entry.querySelector('[name^="quantity_needed_"]').id = `quantity_needed_${i}`;
+                entry.querySelector('[name^="invoice_number_"]').name = `invoice_number_${i}`;
+                entry.querySelector('[name^="invoice_number_"]').id = `invoice_number_${i}`;
+                entry.querySelector('[name^="part_description_"]').name = `part_description_${i}`;
+                entry.querySelector('[name^="part_description_"]').id = `part_description_${i}`;
+                const removeBtn = entry.querySelector('.part-remove-btn');
+                if (removeBtn) removeBtn.style.display = entries.length === 1 ? 'none' : '';
+            });
+            document.getElementById('part_count').value = entries.length;
+        }
+
+        window.addWarrantyPart = function () {
+            const container = document.getElementById('parts-container');
+            const index = container.querySelectorAll('.part-entry').length;
+            container.insertAdjacentHTML('beforeend', buildPartHtml(index));
+            renumberParts();
         };
+
+        window.removeWarrantyPart = function (btn) {
+            btn.closest('.part-entry').remove();
+            renumberParts();
+        };
+
+        renumberParts();
     })();
 </script>
