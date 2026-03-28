@@ -22,15 +22,10 @@
             <li class="nav-drop-item">
                 <a href="{% url 'admin:support_machineregistration_changelist' %}">Registrations</a>
             </li>
-            {% if line_item %}
-                <li class="nav-drop-item">
-{#                    <a href="{% url 'checkout' line_item.id %}">Checkout</a>#}
-                </li>
-            {% endif %}
             <li class="nav-drop-item">
-                <form method="post" action="{% url 'logout' %}" style="display: inline;">
+                <form method="post" action="{% url 'logout' %}">
                     {% csrf_token %}
-                    <button type="submit" style="background: none; border: none; cursor: pointer; color: inherit;">Logout</button>
+                    <button type="submit">Logout</button>
                 </form>
             </li>
         {% elif is_authenticated %}
@@ -40,15 +35,10 @@
             <li class="nav-drop-item">
                 <a href="{% url 'registrations-list' %}">Registrations</a>
             </li>
-            {% if line_item %}
-                <li class="nav-drop-item">
-{#                    <a href="{% url 'checkout' line_item.id %}">Checkout</a>#}
-                </li>
-            {% endif %}
             <li class="nav-drop-item">
-                <form method="post" action="{% url 'logout' %}" style="display: inline;">
+                <form method="post" action="{% url 'logout' %}">
                     {% csrf_token %}
-                    <button type="submit" style="background: none; border: none; cursor: pointer; color: inherit;">Logout</button>
+                    <button type="submit">Logout</button>
                 </form>
             </li>
         {% endif %}
