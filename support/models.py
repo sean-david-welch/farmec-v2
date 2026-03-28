@@ -27,6 +27,8 @@ class Warrantyclaim(BaseModel):
     class Meta:
         managed = True
         db_table = 'WarrantyClaim'
+        verbose_name = _('warranty claim')
+        verbose_name_plural = _('warranty claims')
 
     def __str__(self):
         return f"Claim {self.id} - {self.owner_name}"
@@ -49,6 +51,8 @@ class Partsrequired(BaseModel):
     class Meta:
         managed = True
         db_table = 'PartsRequired'
+        verbose_name = _('part required')
+        verbose_name_plural = _('parts required')
 
     def __str__(self):
         return f"{self.part_number} x{self.quantity_needed}"
@@ -82,6 +86,8 @@ class Machineregistration(BaseModel):
     class Meta:
         managed = True
         db_table = 'MachineRegistration'
+        verbose_name = _('machine registration')
+        verbose_name_plural = _('machine registrations')
 
     def __str__(self):
         return f"{self.owner_name} - {self.machine_model}"
