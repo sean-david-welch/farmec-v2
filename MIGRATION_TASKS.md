@@ -1,10 +1,6 @@
 # Migration Tasks
 
 ## 1. Template & Code Cleanup
-- Fix template name mismatches in `support/` views (`warrantyclaim_*`, `machineregistration_*`, `partsrequired_*`)
-- Remove Stripe/payment remnants: `checkout.html`, `checkout_return.html`, and any related views/URLs
-- Audit and remove all other unused templates, views, and URLs
-- Remove unused JS and CSS (check for dead code in `components.js` and any unreferenced CSS)
 - Remove Go/React source code (`/server`, `/client`) once Django is confirmed live on EC2
 
 ## 2. S3 Image Uploads
