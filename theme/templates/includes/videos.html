@@ -10,10 +10,12 @@
                 width="425"
                 height="315"
                 class="video"
-                src="https://www.youtube.com/embed/{{ video.video_id }}"
+                src="https://www.youtube-nocookie.com/embed/{{ video.video_id }}"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowfullscreen
                 loading="lazy"
                 title="{{ video.title }}"
+                referrerpolicy="strict-origin-when-cross-origin"
             ></iframe>
         </div>
         {% empty %}
