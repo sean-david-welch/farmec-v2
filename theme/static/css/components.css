@@ -835,7 +835,15 @@
     padding: 1.25rem;
     background-color: #27272a;
     border-radius: 0.5rem;
-    border: 2px solid #3f3f46;
+    border-width: 2px;
+    border-style: solid;
+    border-color: #3f3f46;
+    transition: border-color 500ms ease-in-out, transform 500ms ease-in-out;
+}
+
+.timeline-card:hover {
+    border-color: #dc2626;
+    transform: scale(1.015);
 }
 
 .scroll-reveal {
