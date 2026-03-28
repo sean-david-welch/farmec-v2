@@ -1,5 +1,7 @@
 {% load components %}
 
+{% include 'layout/sidebar.html' %}
+
 <nav class="{% if request.resolver_match.url_name == 'home' %}navbar-transparent{% else %}navbar{% endif %}">
     <a href="{% url 'content:home' %}" aria-label="logo button">
         <img src="https://static.farmec.ie/farmec_images/farmeclogo.webp" alt="Farmec Logo" width="250" height="250" />
