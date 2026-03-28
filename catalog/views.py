@@ -31,8 +31,8 @@ class SupplierDetailView(DetailView):
     slug_url_kwarg: str = 'slug'
     queryset: SupplierQuerySet = Supplier.objects.publish()
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    def get_context_data(self, **kwargs) -> dict:
+        context: dict = super().get_context_data(**kwargs)
         context['machines'] = Machine.objects.filter(supplier=self.object).publish()
         context['videos'] = Video.objects.filter(supplier=self.object).publish()
         return context
@@ -53,8 +53,8 @@ class MachineDetailView(DetailView):
     slug_url_kwarg: str = 'slug'
     queryset: MachineQuerySet = Machine.objects.publish()
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    def get_context_data(self, **kwargs) -> dict:
+        context: dict = super().get_context_data(**kwargs)
         context['products'] = Product.objects.filter(machine=self.object).publish()
         return context
 
@@ -65,14 +65,14 @@ class SparePartsIndexView(HTMXViewMixin, ListView):
     context_object_name: str = 'spareparts'
     queryset: SupplierQuerySet = Supplier.objects.publish().order_by('-created')
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    def get_context_data(self, **kwargs) -> dict:
+        context: dict = super().get_context_data(**kwargs)
         context['form'] = WarrantyclaimForm()
         context['registration_form'] = MachineregistrationForm()
         return context
 
     def handle_htmx(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
-        component = (request.GET if request.method == 'GET' else request.POST).get('component')
+        component: str | None = (request.GET if request.method == 'GET' else request.POST).get('component')
         if component == 'warranty':
             return self.handle_warranty(request)
         if component == 'machineregistration':
@@ -81,7 +81,7 @@ class SparePartsIndexView(HTMXViewMixin, ListView):
 
     def handle_warranty(self, request: HttpRequest) -> HttpResponse:
         if request.method == 'POST':
-            form = WarrantyclaimForm(request.POST)
+            form: WarrantyclaimForm = WarrantyclaimForm(request.POST)
             if not form.is_valid():
                 return self.render_htmx_response(
                     'support/warranty_form_dialog.html',
@@ -93,12 +93,12 @@ class SparePartsIndexView(HTMXViewMixin, ListView):
             claim.id = str(uuid.uuid4())
             claim.save()
 
-            part_count = int(request.POST.get('part_count', 0))
+            part_count: int = int(request.POST.get('part_count', 0))
             for i in range(part_count):
-                part_number = request.POST.get(f'part_number_{i}', '').strip()
-                quantity_needed = request.POST.get(f'quantity_needed_{i}', '').strip()
-                invoice_number = request.POST.get(f'invoice_number_{i}', '').strip()
-                description = request.POST.get(f'part_description_{i}', '').strip()
+                part_number: str = request.POST.get(f'part_number_{i}', '').strip()
+                quantity_needed: str = request.POST.get(f'quantity_needed_{i}', '').strip()
+                invoice_number: str = request.POST.get(f'invoice_number_{i}', '').strip()
+                description: str = request.POST.get(f'part_description_{i}', '').strip()
                 if part_number or quantity_needed:
                     Partsrequired.objects.create(
                         id=str(uuid.uuid4()),
@@ -122,7 +122,7 @@ class SparePartsIndexView(HTMXViewMixin, ListView):
 
     def handle_machineregistration(self, request: HttpRequest) -> HttpResponse:
         if request.method == 'POST':
-            form = MachineregistrationForm(request.POST)
+            form: MachineregistrationForm = MachineregistrationForm(request.POST)
             if not form.is_valid():
                 return self.render_htmx_response(
                     'support/machineregistration_form_dialog.html',
