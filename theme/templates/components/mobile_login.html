@@ -29,12 +29,6 @@
             </button>
         </form>
     {% elif is_authenticated %}
-        <a href="{% url 'warranty-claims-list' %}" class="mobile-menu-item">
-            <i class="fas fa-file"></i> Warranty Claims
-        </a>
-        <a href="{% url 'registrations-list' %}" class="mobile-menu-item">
-            <i class="fas fa-clipboard"></i> Registrations
-        </a>
         <form method="post" action="{% url 'logout' %}" style="width: 100%;">
             {% csrf_token %}
             <button type="submit" class="mobile-menu-item" style="width: 100%; text-align: left; background: none; border: none; cursor: pointer; padding: inherit; color: inherit; font-family: inherit;">
