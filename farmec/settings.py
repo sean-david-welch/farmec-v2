@@ -13,7 +13,7 @@ import os.path
 from pathlib import Path
 
 import environ
-from farmec.unfold import UNFOLD  # noqa: F401
+from farmec.admin_config import UNFOLD  # noqa: F401
 
 env = environ.Env()
 
