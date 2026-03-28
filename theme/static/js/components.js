@@ -23,6 +23,18 @@ document.addEventListener('showToast', function (e) {
     }).showToast();
 });
 
+// ===== Scroll Reveal =====
+const scrollRevealObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+            setTimeout(() => entry.target.classList.add('visible'), i * 100);
+            scrollRevealObserver.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.scroll-reveal').forEach(el => scrollRevealObserver.observe(el));
+
 // ===== ToTopButton Component =====
 document.addEventListener('DOMContentLoaded', function () {
     const toTopBtn = document.getElementById('to-top-btn');
