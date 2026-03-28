@@ -150,6 +150,25 @@
     background-color: #dc2626;
 }
 
+.nav-drop-item form {
+    margin: 0;
+    padding: 0;
+}
+
+.nav-drop-item button {
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: 0.5rem;
+    width: 100%;
+    color: #d1d5db;
+    background: none !important;
+    border: none;
+    cursor: pointer;
+    display: block;
+    text-align: center;
+    transition: color 500ms ease-in-out;
+}
+
 
 /* Footer */
 .footer {
