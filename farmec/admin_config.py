@@ -70,7 +70,6 @@ UNFOLD = {
                 "separator": True,
                 "items": [
                     {"title": "Warranty Claims", "icon": "gavel", "link": reverse_lazy("admin:support_warrantyclaim_changelist")},
-                    {"title": "Parts Required", "icon": "build", "link": reverse_lazy("admin:support_partsrequired_changelist")},
                     {"title": "Machine Registrations", "icon": "app_registration", "link": reverse_lazy("admin:support_machineregistration_changelist")},
                 ],
             },
