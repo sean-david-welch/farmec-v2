@@ -10,16 +10,9 @@ def account_button(context):
     is_authenticated = user.is_authenticated if user else False
     is_admin = user.is_staff if is_authenticated else False
 
-    # Get first line item for checkout link
-    line_item = None
-    if is_authenticated:
-        from catalog.models import Lineitems
-        line_item = Lineitems.objects.publish().first()
-
     return {
         'is_authenticated': is_authenticated,
         'is_admin': is_admin,
-        'line_item': line_item,
         'user': user,
     }
 
@@ -31,16 +24,9 @@ def mobile_login(context, on_click=""):
     is_authenticated = user.is_authenticated if user else False
     is_admin = user.is_staff if is_authenticated else False
 
-    # Get first line item for checkout link
-    line_item = None
-    if is_authenticated:
-        from catalog.models import Lineitems
-        line_item = Lineitems.objects.publish().first()
-
     return {
         'is_authenticated': is_authenticated,
         'is_admin': is_admin,
-        'line_item': line_item,
         'on_click': on_click,
     }
 
