@@ -90,8 +90,16 @@
     box-shadow: 0 0 0 3px rgba(153, 27, 27, 0.1);
 }
 
-.form .btn {
+.form-actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 0.75rem;
     margin-top: 1rem;
+}
+
+.form-actions .btn {
+    margin: 0;
 }
 
 .part-entry-header {
@@ -105,8 +113,9 @@
     border: none;
     cursor: pointer;
     color: #991b1b;
-    font-size: 1rem;
+    font-size: 1.25rem;
     padding: 0.25rem;
+    line-height: 1;
     transition: color 0.2s ease;
 }
 
