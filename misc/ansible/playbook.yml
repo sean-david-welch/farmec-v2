@@ -89,9 +89,9 @@
 
     # --- Sudoers ---
 
-    - name: Allow ubuntu to reload nginx without password
+    - name: Allow seanwelch to reload nginx without password
       copy:
-        content: "ubuntu ALL=(ALL) NOPASSWD: /usr/sbin/nginx\n"
+        content: "seanwelch ALL=(ALL) NOPASSWD: /usr/sbin/nginx\n"
         dest: /etc/sudoers.d/nginx-reload
         mode: '0440'
         validate: visudo -cf %s
