@@ -4,9 +4,9 @@
   become: true
 
   vars:
-    app_user: ubuntu
+    app_user: seanwelch
     repo_url: https://github.com/sean-david-welch/farmec-v2.git
-    repo_path: /home/ubuntu/farmec-v2
+    repo_path: /home/seanwelch/farmec-v2
 
   tasks:
     # --- System packages ---
