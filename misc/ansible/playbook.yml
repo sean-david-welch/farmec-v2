@@ -1,0 +1,106 @@
+---
+- name: Provision Farmec EC2 server
+  hosts: farmec
+  become: true
+
+  vars:
+    app_user: ubuntu
+    repo_url: https://github.com/<YOUR_GITHUB_USERNAME>/farmec-v2.git
+    repo_path: /home/ubuntu/farmec-v2
+
+  tasks:
+    # --- System packages ---
+
+    - name: Install base packages
+      apt:
+        name:
+          - nginx
+          - git
+          - curl
+        state: present
+        update_cache: true
+
+    # --- Docker ---
+
+    - name: Install Docker via official script
+      shell: curl -fsSL https://get.docker.com | sh
+      args:
+        creates: /usr/bin/docker
+
+    - name: Add ubuntu user to docker group
+      user:
+        name: "{{ app_user }}"
+        groups: docker
+        append: true
+
+    - name: Enable and start Docker
+      systemd:
+        name: docker
+        enabled: true
+        state: started
+
+    # --- Repository ---
+
+    - name: Clone farmec-v2 repo
+      git:
+        repo: "{{ repo_url }}"
+        dest: "{{ repo_path }}"
+        version: main
+        force: false
+      become_user: "{{ app_user }}"
+
+    - name: Create staticfiles directory
+      file:
+        path: "{{ repo_path }}/staticfiles"
+        state: directory
+        owner: "{{ app_user }}"
+        group: "{{ app_user }}"
+
+    - name: Create database directory
+      file:
+        path: "{{ repo_path }}/database"
+        state: directory
+        owner: "{{ app_user }}"
+        group: "{{ app_user }}"
+
+    # --- nginx ---
+
+    - name: Copy nginx config
+      copy:
+        src: ../nginx/nginx.conf
+        dest: /etc/nginx/sites-available/farmec
+
+    - name: Enable farmec nginx site
+      file:
+        src: /etc/nginx/sites-available/farmec
+        dest: /etc/nginx/sites-enabled/farmec
+        state: link
+
+    - name: Remove default nginx site
+      file:
+        path: /etc/nginx/sites-enabled/default
+        state: absent
+
+    - name: Enable and start nginx
+      systemd:
+        name: nginx
+        enabled: true
+        state: started
+
+    # --- Sudoers ---
+
+    - name: Allow ubuntu to reload nginx without password
+      copy:
+        content: "ubuntu ALL=(ALL) NOPASSWD: /usr/sbin/nginx\n"
+        dest: /etc/sudoers.d/nginx-reload
+        mode: '0440'
+        validate: visudo -cf %s
+
+    # --- Old Go service ---
+
+    - name: Stop and disable old Go service
+      systemd:
+        name: farmec.service
+        state: stopped
+        enabled: false
+      ignore_errors: true
