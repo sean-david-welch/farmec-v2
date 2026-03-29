@@ -5,7 +5,7 @@
 
   vars:
     app_user: ubuntu
-    repo_url: https://github.com/<YOUR_GITHUB_USERNAME>/farmec-v2.git
+    repo_url: https://github.com/sean-david-welch/farmec-v2.git
     repo_path: /home/ubuntu/farmec-v2
 
   tasks:
