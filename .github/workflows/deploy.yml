@@ -29,7 +29,7 @@ jobs:
                   port: ${{ secrets.SSH_PORT }}
                   envs: SECRET_KEY,DEBUG,ALLOWED_HOSTS,AWS_ACCESS_KEY,AWS_SECRET_ACCESS_KEY,RESEND_TOKEN,EMAIL_USER
                   script: |
-                      cat > /home/ubuntu/farmec-v2/.env << EOF
+                      cat > /home/seanwelch/farmec-v2/.env << EOF
                       SECRET_KEY=$SECRET_KEY
                       DEBUG=$DEBUG
                       ALLOWED_HOSTS=$ALLOWED_HOSTS
@@ -39,7 +39,7 @@ jobs:
                       EMAIL_USER=$EMAIL_USER
                       EOF
 
-                      cd /home/ubuntu/farmec-v2
+                      cd /home/seanwelch/farmec-v2
                       git pull origin main
                       docker compose build
                       docker compose run --rm web uv run python manage.py migrate --noinput
