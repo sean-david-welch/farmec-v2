@@ -26,13 +26,11 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-s^+f^9tux8*a&&^%3evn@nfradmm)k16ea$q^=8wk12cfa_1=x'
+SECRET_KEY = env('SECRET_KEY', default='django-insecure-s^+f^9tux8*a&&^%3evn@nfradmm)k16ea$q^=8wk12cfa_1=x')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool('DEBUG', default=True)
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['*'])
 
 INTERNAL_IPS = ['127.0.0.1']
 
@@ -139,6 +137,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Django Storages - AWS S3 Configuration
 # https://django-storages.readthedocs.io/en/latest/backends/amazon-s3.html
