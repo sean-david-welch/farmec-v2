@@ -25,6 +25,7 @@ dependencies = [
     "resend>=2.26.0",
     "ruff>=0.15.1",
     "weasyprint>=68.1",
+    "whitenoise>=6.12.0",
 ]
 
 [tool.pytest.ini_options]
