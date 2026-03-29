@@ -9,7 +9,7 @@ ssh:
 
 # Provision EC2 server
 provision:
-    set -a && source .env && set +a && ansible-playbook -i misc/ansible/inventory.yml misc/ansible/playbook.yml
+    set -a && source .env && set +a && ansible-playbook -i misc/ansible/inventory.yml misc/ansible/playbook.yml -K
 
 # Copy local database up to EC2
 db-push:
