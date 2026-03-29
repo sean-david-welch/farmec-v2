@@ -3,6 +3,10 @@ key := "~/.ssh/farmec.pem"
 remote_db := "/home/seanwelch/farmec-v2/database/database.db"
 local_db := "database/database.db"
 
+# SSH into EC2
+ssh:
+    ssh -i {{key}} {{ec2}}
+
 # Provision EC2 server
 provision:
     set -a && source .env && set +a && ansible-playbook -i misc/ansible/inventory.yml misc/ansible/playbook.yml
