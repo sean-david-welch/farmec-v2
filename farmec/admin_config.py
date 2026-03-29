@@ -5,7 +5,7 @@ UNFOLD = {
     "SITE_HEADER": "Farmec Administration",
     "SITE_SYMBOL": "agriculture",
     "SITE_FAVICON": lambda request: "/static/favicon.svg",
-    "SITE_LOGO": lambda request: "/static/favicon.svg",
+    "SITE_LOGO": lambda request: "/static/images/farmeclogo.webp",
     "COLORS": {
         "primary": {
             "50": "254 242 242",
