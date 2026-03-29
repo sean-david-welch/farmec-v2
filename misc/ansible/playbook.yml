@@ -81,6 +81,11 @@
         path: /etc/nginx/sites-enabled/default
         state: absent
 
+    - name: Remove old farmec.ie symlink
+      file:
+        path: /etc/nginx/sites-enabled/farmec.ie
+        state: absent
+
     - name: Enable and start nginx
       systemd:
         name: nginx
