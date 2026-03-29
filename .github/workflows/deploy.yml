@@ -29,6 +29,7 @@ jobs:
                   port: ${{ secrets.SSH_PORT }}
                   envs: SECRET_KEY,DEBUG,ALLOWED_HOSTS,AWS_ACCESS_KEY,AWS_SECRET_ACCESS_KEY,RESEND_TOKEN,EMAIL_USER
                   script: |
+                      set -e
                       printf "SECRET_KEY=%s\nDEBUG=%s\nALLOWED_HOSTS=%s\nAWS_ACCESS_KEY=%s\nAWS_SECRET_ACCESS_KEY=%s\nRESEND_TOKEN=%s\nEMAIL_USER=%s\n" \
                         "$SECRET_KEY" "$DEBUG" "$ALLOWED_HOSTS" "$AWS_ACCESS_KEY" "$AWS_SECRET_ACCESS_KEY" "$RESEND_TOKEN" "$EMAIL_USER" \
                         > /home/seanwelch/farmec-v2/.env
