@@ -3,6 +3,10 @@ key := "~/.ssh/farmec.pem"
 remote_db := "/home/seanwelch/farmec-v2/database/database.db"
 local_db := "database/database.db"
 
+# Provision EC2 server
+provision:
+    set -a && source .env && set +a && ansible-playbook -i misc/ansible/inventory.yml misc/ansible/playbook.yml
+
 # Copy local database up to EC2
 db-push:
     scp -i {{key}} {{local_db}} {{ec2}}:{{remote_db}}
