@@ -23,14 +23,6 @@ RUN uv sync --frozen --no-dev
 # Copy application code
 COPY . .
 
-# Collect static files
-RUN uv run python manage.py collectstatic --noinput
-
 EXPOSE 8000
 
-CMD ["uv", "run", "gunicorn", "farmec.wsgi:application", \
-     "--bind", "0.0.0.0:8000", \
-     "--workers", "3", \
-     "--timeout", "120", \
-     "--access-logfile", "-", \
-     "--error-logfile", "-"]
+CMD ["sh", "-c", "uv run python manage.py collectstatic --noinput && uv run gunicorn farmec.wsgi:application --bind 0.0.0.0:8000 --workers 3 --timeout 120 --access-logfile - --error-logfile -"]
