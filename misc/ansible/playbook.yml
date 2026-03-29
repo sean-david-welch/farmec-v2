@@ -41,12 +41,17 @@
 
     # --- Repository ---
 
+    - name: Remove non-git directory if present
+      file:
+        path: "{{ repo_path }}"
+        state: absent
+      when: not (repo_path + '/.git') is exists
+
     - name: Clone farmec-v2 repo
       git:
         repo: "{{ repo_url }}"
         dest: "{{ repo_path }}"
         version: main
-        force: false
       become_user: "{{ app_user }}"
 
     - name: Create staticfiles directory
