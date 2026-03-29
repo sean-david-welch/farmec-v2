@@ -1,0 +1,28 @@
+{% load static %}
+
+<section id="employees">
+    <div class="employees">
+        {% for employee in employees %}
+        <div class="employee-card">
+            <img
+                src="{% if employee.profile_image %}{{ employee.profile_image.url }}{% endif %}"
+                alt="{{ employee.name }}"
+                width="100"
+                height="100"
+                onerror="this.src='{% static 'default.jpg' %}'"
+            />
+
+            <div class="employee-info">
+                <h2 class="main-heading">{{ employee.name }}</h2>
+                <p class="paragraph">{{ employee.role }}</p>
+            </div>
+
+            <div class="employee-contact">
+                <p class="paragraph">Email: {{ employee.email }}</p>
+            </div>
+        </div>
+        {% empty %}
+        <p class="paragraph">No employees to display.</p>
+        {% endfor %}
+    </div>
+</section>

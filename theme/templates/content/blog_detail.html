@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ blog.title }} - Farmec Blog{% endblock %}
+
+{% block meta %}
+<meta name="description" content="{{ blog.subheading }}">
+<meta property="og:title" content="{{ blog.title }} - Farmec Blog">
+<meta property="og:description" content="{{ blog.subheading }}">
+<meta property="og:image" content="{% if blog.main_image %}{{ blog.main_image.url }}{% else %}https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp{% endif %}">
+<meta property="og:url" content="https://www.farmec.ie/blogs/{{ blog.id }}">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ blog.title }} - Farmec Blog">
+<meta name="twitter:description" content="{{ blog.subheading }}">
+<meta name="twitter:image" content="{% if blog.main_image %}{{ blog.main_image.url }}{% else %}https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp{% endif %}">
+<link rel="canonical" href="https://www.farmec.ie/blogs/{{ blog.id }}">
+{% endblock %}
+
+{% block content %}
+<section id="blog">
+    {% if blog %}
+    <div class="blog-detail">
+        <h1 class="section-heading">{{ blog.title }}</h1>
+
+        <div class="blog-body">
+            <img
+                src="{% if blog.main_image %}{{ blog.main_image.url }}{% endif %}"
+                alt="{{ blog.title }}"
+                class="blog-main-image"
+                onerror="this.src='{% static 'default.jpg' %}'"
+            />
+            <div class="blog-text">
+                {% if blog.date %}<p class="blog-date">{{ blog.date|date:"d M Y" }}</p>{% endif %}
+                {% if blog.subheading %}
+                <h2 class="main-heading">{{ blog.subheading }}</h2>
+                {% endif %}
+                {% if blog.body %}
+                <p class="paragraph">{{ blog.body|linebreaks }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

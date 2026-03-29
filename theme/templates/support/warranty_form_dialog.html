@@ -1,0 +1,138 @@
+<section id="warranty-form">
+    <dialog id="warrantyDialog" class="dialog">
+        <button class="dialog-close-btn" type="button"
+                onclick="document.getElementById('warrantyDialog').close(); document.getElementById('warrantyDialog').classList.remove('dialog-visible')">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <form class="form" hx-post="{% url 'catalog:spareparts' %}" hx-target="#warranty-dialog-container" hx-swap="innerHTML" hx-vals='{"component": "warranty"}'>
+            {% csrf_token %}
+            <h1 class="main-heading">Warranty Claim Form</h1>
+
+            {% for field in form %}
+            <div>
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.errors %}
+                <ul class="form-errors">
+                    {% for error in field.errors %}
+                    <p class="error-message">{{ error }}</p>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            <div id="parts-container">
+                <div class="part-entry" data-index="0">
+                    <div class="part-entry-header">
+                        <h2 class="main-heading">Part 1</h2>
+                    </div>
+                    <div>
+                        <label for="part_number_0">Part Number</label>
+                        <input type="text" name="part_number_0" id="part_number_0" placeholder="Enter part number">
+                    </div>
+                    <div>
+                        <label for="quantity_needed_0">Quantity Needed</label>
+                        <input type="number" name="quantity_needed_0" id="quantity_needed_0" placeholder="Enter quantity needed">
+                    </div>
+                    <div>
+                        <label for="invoice_number_0">Invoice Number</label>
+                        <input type="text" name="invoice_number_0" id="invoice_number_0" placeholder="Enter invoice number">
+                    </div>
+                    <div>
+                        <label for="part_description_0">Part Description</label>
+                        <input type="text" name="part_description_0" id="part_description_0" placeholder="Enter description">
+                    </div>
+                </div>
+            </div>
+
+            <input type="hidden" name="part_count" id="part_count" value="1">
+
+            <div class="form-actions">
+                <button type="button" class="btn btn-form" onclick="addWarrantyPart()">
+                    Add Part <i class="fa-solid fa-plus"></i>
+                </button>
+                <button class="btn btn-form" type="submit">
+                    Submit <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </div>
+
+        </form>
+    </dialog>
+</section>
+
+<script>
+    (function () {
+        const dialog = document.getElementById('warrantyDialog');
+        {% if not dialog_submitted %}
+        if (dialog && !dialog.open) {
+            dialog.showModal();
+            dialog.classList.add('dialog-visible');
+        }
+        {% endif %}
+    })();
+
+    (function () {
+        function buildPartHtml(index) {
+            return `
+                <div class="part-entry" data-index="${index}">
+                    <div class="part-entry-header">
+                        <h2 class="main-heading">Part ${index + 1}</h2>
+                        <button type="button" class="part-remove-btn" onclick="removeWarrantyPart(this)">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                    <div>
+                        <label for="part_number_${index}">Part Number</label>
+                        <input type="text" name="part_number_${index}" id="part_number_${index}" placeholder="Enter part number">
+                    </div>
+                    <div>
+                        <label for="quantity_needed_${index}">Quantity Needed</label>
+                        <input type="number" name="quantity_needed_${index}" id="quantity_needed_${index}" placeholder="Enter quantity needed">
+                    </div>
+                    <div>
+                        <label for="invoice_number_${index}">Invoice Number</label>
+                        <input type="text" name="invoice_number_${index}" id="invoice_number_${index}" placeholder="Enter invoice number">
+                    </div>
+                    <div>
+                        <label for="part_description_${index}">Part Description</label>
+                        <input type="text" name="part_description_${index}" id="part_description_${index}" placeholder="Enter description">
+                    </div>
+                </div>`;
+        }
+
+        function renumberParts() {
+            const entries = document.querySelectorAll('#parts-container .part-entry');
+            entries.forEach((entry, i) => {
+                entry.dataset.index = i;
+                entry.querySelector('h2').textContent = `Part ${i + 1}`;
+                entry.querySelector('[name^="part_number_"]').name = `part_number_${i}`;
+                entry.querySelector('[name^="part_number_"]').id = `part_number_${i}`;
+                entry.querySelector('[name^="quantity_needed_"]').name = `quantity_needed_${i}`;
+                entry.querySelector('[name^="quantity_needed_"]').id = `quantity_needed_${i}`;
+                entry.querySelector('[name^="invoice_number_"]').name = `invoice_number_${i}`;
+                entry.querySelector('[name^="invoice_number_"]').id = `invoice_number_${i}`;
+                entry.querySelector('[name^="part_description_"]').name = `part_description_${i}`;
+                entry.querySelector('[name^="part_description_"]').id = `part_description_${i}`;
+                const removeBtn = entry.querySelector('.part-remove-btn');
+                if (removeBtn) removeBtn.style.display = entries.length === 1 ? 'none' : '';
+            });
+            document.getElementById('part_count').value = entries.length;
+        }
+
+        window.addWarrantyPart = function () {
+            const container = document.getElementById('parts-container');
+            const index = container.querySelectorAll('.part-entry').length;
+            container.insertAdjacentHTML('beforeend', buildPartHtml(index));
+            renumberParts();
+        };
+
+        window.removeWarrantyPart = function (btn) {
+            btn.closest('.part-entry').remove();
+            renumberParts();
+        };
+
+        renumberParts();
+    })();
+</script>

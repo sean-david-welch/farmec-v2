@@ -1,0 +1,23 @@
+<li class="nav-item">
+    {% if is_authenticated %}
+        <p class="nav-list-item">Account</p>
+    {% else %}
+        <a href="{% url 'login' %}" class="nav-list-item">Login</a>
+    {% endif %}
+
+    <ul class="nav-drop">
+        {% if is_authenticated %}
+            {% if is_admin %}
+            <li class="nav-drop-item">
+                <a href="{% url 'admin:index' %}">Admin</a>
+            </li>
+            {% endif %}
+            <li class="nav-drop-item">
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit">Logout</button>
+                </form>
+            </li>
+        {% endif %}
+    </ul>
+</li>

@@ -1,0 +1,76 @@
+{% load components %}
+
+{% include 'layout/sidebar.html' %}
+
+<nav class="{% if request.resolver_match.url_name == 'home' %}navbar-transparent{% else %}navbar{% endif %}">
+    <a href="{% url 'content:home' %}" aria-label="logo button">
+        <img src="https://static.farmec.ie/farmec_images/farmeclogo.webp" alt="Farmec Logo" width="250" height="250" />
+    </a>
+
+    <ul class="nav-list">
+        <!-- About Us -->
+        <li class="nav-item">
+            <a href="{% url 'team:employee_list' %}" class="nav-list-item">About Us</a>
+            <ul class="nav-drop">
+                <li class="nav-drop-item">
+                    <a href="{% url 'team:employee_list' %}">Staff & Management</a>
+                </li>
+                <li class="nav-drop-item">
+                    <a href="{% url 'team:employee_list' %}#timeline">Company History</a>
+                </li>
+                <li class="nav-drop-item">
+                    <a href="{% url 'legal:privacy_list' %}">Terms of Use</a>
+                </li>
+            </ul>
+        </li>
+
+        <!-- Suppliers -->
+        <li class="nav-item">
+            <a href="{% url 'catalog:supplier_list' %}" class="nav-list-item">Suppliers</a>
+            {% if suppliers %}
+            <ul class="nav-drop">
+                {% for supplier in suppliers %}
+                <li class="nav-drop-item">
+                    <a href="{% url 'catalog:supplier_detail' supplier.slug %}">{{ supplier.name }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </li>
+
+        <!-- Spare Parts -->
+        <li class="nav-item">
+            <a href="{% url 'catalog:spareparts' %}" class="nav-list-item">Spare Parts</a>
+            {% if suppliers %}
+            <ul class="nav-drop">
+                {% for supplier in suppliers %}
+                <li class="nav-drop-item">
+                    <a href="{% url 'catalog:spareparts_detail' supplier.slug %}">{{ supplier.name }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </li>
+
+        <!-- Blog -->
+        <li class="nav-item">
+            <a href="{% url 'content:blog_list' %}" class="nav-list-item">Blog</a>
+            <ul class="nav-drop">
+                <li class="nav-drop-item">
+                    <a href="{% url 'content:blog_list' %}">Latest Posts</a>
+                </li>
+                <li class="nav-drop-item">
+                    <a href="{% url 'content:exhibition_list' %}">Exhibition Information</a>
+                </li>
+            </ul>
+        </li>
+
+        <!-- Contact -->
+        <li class="nav-item">
+            <a href="/#contact" class="nav-list-item">Contact</a>
+        </li>
+
+        <!-- Account Button -->
+        {% account_button %}
+    </ul>
+</nav>

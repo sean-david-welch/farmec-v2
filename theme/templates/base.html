@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %}Farmec Ireland Ltd{% endblock %}</title>
+
+    <link rel="icon" type="image/svg+xml" href="{% static 'favicon.svg' %}">
+    <meta name="description" content="{% block description %}Farmec Ireland Ltd specializes in providing high-quality agricultural machinery and services to enhance your farming operations. Explore our range of products and services tailored for Irish farms.{% endblock %}">
+    <meta name="author" content="Farmec Ireland Ltd">
+    <link rel="canonical" href="{{ request.build_absolute_uri }}">
+
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    {% block meta %}{% endblock %}
+    {% block extra_css %}{% endblock %}
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SENSREH8YD"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+        gtag('config', 'G-SENSREH8YD');
+    </script>
+</head>
+
+<body>
+{% include 'layout/header.html' %}
+<main>
+    {% block content %}{% endblock %}
+</main>
+{% include 'layout/footer.html' %}
+<script>
+window.initializeMap = function () {
+    const mapElement = document.getElementById('google-map');
+    if (mapElement && typeof google !== 'undefined' && google.maps) {
+        const lat = parseFloat(mapElement.dataset.lat);
+        const lng = parseFloat(mapElement.dataset.lng);
+        const zoom = parseInt(mapElement.dataset.zoom);
+        const map = new google.maps.Map(mapElement, {
+            zoom: zoom,
+            center: {lat: lat, lng: lng},
+        });
+        new google.maps.Marker({
+            position: {lat: lat, lng: lng},
+            map: map,
+        });
+    }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js"></script>
+<script src="{% static 'js/components.js' %}" defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initializeMap" async defer></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

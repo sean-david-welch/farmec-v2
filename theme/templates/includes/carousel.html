@@ -1,0 +1,77 @@
+{% load static %}
+
+<section id="Hero">
+    <div class="hero-container">
+        <div class="slideshow">
+            {% for image in images %}
+            <img
+                src="{% if image.image %}{{ image.image.url }}{% endif %}"
+                alt="Slide {{ forloop.counter }}"
+                class="slide {% if forloop.first %}fade-in{% else %}fade-out{% endif %}"
+                onerror="this.src='{% static 'default.jpg' %}'"
+            />
+            {% empty %}
+            <img src="{% static 'default.jpg' %}" alt="Default slide" class="slide fade-in" />
+            {% endfor %}
+
+            <button class="carousel-btn prev-btn" aria-label="Previous slide">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <button class="carousel-btn next-btn" aria-label="Next slide">
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="typewriter">
+        <h1 class="typewriter-text">Importers &amp; Distributors of Quality Agricultural Machinery</h1>
+
+        <a href="#info" class="btn">
+            Find Out More: <i class="fa-solid fa-chevron-circle-down"></i>
+        </a>
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const slides = document.querySelectorAll('.slideshow .slide');
+    const prevBtn = document.querySelector('.prev-btn');
+    const nextBtn = document.querySelector('.next-btn');
+    let currentIndex = 0;
+
+    function showSlide(index) {
+        slides.forEach((slide, i) => {
+            slide.classList.remove('fade-in', 'fade-out');
+            slide.classList.add(i === index ? 'fade-in' : 'fade-out');
+        });
+    }
+
+    if (prevBtn && nextBtn && slides.length > 0) {
+        prevBtn.addEventListener('click', function() {
+            currentIndex = currentIndex === 0 ? slides.length - 1 : currentIndex - 1;
+            showSlide(currentIndex);
+        });
+
+        nextBtn.addEventListener('click', function() {
+            currentIndex = currentIndex === slides.length - 1 ? 0 : currentIndex + 1;
+            showSlide(currentIndex);
+        });
+    }
+
+    // Simple typewriter effect
+    const typewriterEl = document.querySelector('.typewriter-text');
+    if (typewriterEl) {
+        const text = typewriterEl.textContent;
+        typewriterEl.textContent = '';
+        let i = 0;
+        function type() {
+            if (i < text.length) {
+                typewriterEl.textContent += text.charAt(i);
+                i++;
+                setTimeout(type, 50);
+            }
+        }
+        type();
+    }
+});
+</script>

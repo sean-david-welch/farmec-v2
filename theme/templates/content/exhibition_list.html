@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Exhibitions - Farmec Ireland{% endblock %}
+
+{% block meta %}
+<meta name="description" content="Check out the upcoming exhibitions where Farmec will showcase its latest machinery. Don't miss the chance to see our products in action.">
+<meta property="og:title" content="Exhibitions - Farmec Ireland">
+<meta property="og:description" content="Check out the upcoming exhibitions where Farmec will showcase its latest machinery. Don't miss the chance to see our products in action.">
+<meta property="og:image" content="https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp">
+<meta property="og:url" content="https://www.farmec.ie/exhibitions">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Exhibitions - Farmec Ireland">
+<meta name="twitter:description" content="Check out the upcoming exhibitions where Farmec will showcase its latest machinery. Don't miss the chance to see our products in action.">
+<meta name="twitter:image" content="https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp">
+<link rel="canonical" href="https://www.farmec.ie/exhibitions">
+{% endblock %}
+
+{% block content %}
+<section id="exhibitions">
+    <h1 class="section-heading">Exhibitions:</h1>
+    <p class="sub-heading">Check out upcoming events related to Farmec</p>
+
+    {% if exhibitions %}
+    <div class="exhibitions">
+        {% for exhibition in exhibitions %}
+        <div class="exhibition">
+            <h2 class="main-heading">{{ exhibition.title }}</h2>
+            {% if exhibition.date %}<p class="paragraph">{{ exhibition.date }}</p>{% endif %}
+            <p class="paragraph">{{ exhibition.location }}</p>
+            <p class="paragraph">{{ exhibition.info }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="paragraph">No upcoming exhibitions.</p>
+    {% endif %}
+</section>
+{% endblock %}

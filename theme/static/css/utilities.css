@@ -1,0 +1,63 @@
+/* Scrollbar Styling */
+html::-webkit-scrollbar {
+    width: 0.3vw;
+}
+
+html::-webkit-scrollbar-thumb {
+    background-color: #333;
+    border-radius: 10px;
+}
+
+html::-webkit-scrollbar-track {
+    background-color: #333;
+}
+
+/* Loading and Loading States */
+.loading-page {
+    height: 100vh;
+    width: 100vw;
+}
+
+.spinner {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    height: 75px;
+    width: 75px;
+    border-radius: 50px;
+    border: 5px solid #dc2626;
+    border-top: 5px solid white;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+.error {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Routes Navigation */
+.routes-list {
+    display: flex;
+    flex-direction: row;
+}
+
+.routes-list > * {
+    margin: 0 0.5rem;
+}
+
+/* Icon Spacing */
+i {
+    margin: auto;
+}

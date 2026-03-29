@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Spare Parts - Farmec Ireland{% endblock %}
+
+{% block meta %}
+<meta name="description" content="Browse spare parts from various suppliers and ensure your machines are always operational. Farmec offers a wide range of spare parts for agricultural machinery.">
+<meta property="og:title" content="Spare Parts - Farmec Ireland">
+<meta property="og:description" content="Browse spare parts from various suppliers and ensure your machines are always operational. Farmec offers a wide range of spare parts for agricultural machinery.">
+<meta property="og:image" content="https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp">
+<meta property="og:url" content="https://www.farmec.ie/spareparts">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Spare Parts - Farmec Ireland">
+<meta name="twitter:description" content="Browse spare parts from various suppliers and ensure your machines are always operational. Farmec offers a wide range of spare parts for agricultural machinery.">
+<meta name="twitter:image" content="https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp">
+<link rel="canonical" href="https://www.farmec.ie/spareparts">
+{% endblock %}
+
+{% block content %}
+<section id="SpareParts">
+    <h1 class="section-heading">Spare-Parts</h1>
+
+    <div class="options-btn">
+        <button class="btn" type="button"
+                hx-get="{% url 'catalog:spareparts' %}"
+                hx-target="#warranty-dialog-container"
+                hx-swap="innerHTML"
+                hx-vals='{"component": "warranty"}'
+                hx-trigger="click[!document.getElementById('warrantyDialog')]"
+                onclick="const d=document.getElementById('warrantyDialog'); if(d){ d.showModal(); d.classList.add('dialog-visible'); }">
+            Warranty Claim <i class="fa-solid fa-pen-to-square"></i>
+        </button>
+        <button class="btn" type="button"
+                hx-get="{% url 'catalog:spareparts' %}"
+                hx-target="#machineregistration-dialog-container"
+                hx-swap="innerHTML"
+                hx-vals='{"component": "machineregistration"}'
+                hx-trigger="click[!document.getElementById('machineRegistrationDialog')]"
+                onclick="const d=document.getElementById('machineRegistrationDialog'); if(d){ d.showModal(); d.classList.add('dialog-visible'); }">
+            Machine Registration <i class="fa-solid fa-pen-to-square"></i>
+        </button>
+    </div>
+    <div id="warranty-dialog-container"></div>
+    <div id="machineregistration-dialog-container"></div>
+
+
+<div class="parts-supplier-grid">
+    {% for supplier in suppliers %}
+    <div class="parts-supplier-card" id="{{ supplier.name|slugify }}">
+        <h2 class="main-heading">{{ supplier.name }}</h2>
+        <img
+            src="{% if supplier.logo_image %}{{ supplier.logo_image.url }}{% endif %}"
+            class="parts-image"
+            alt="{{ supplier.name }} logo"
+            width="200"
+            height="200"
+            onerror="this.src='{% static 'default.jpg' %}'"
+        />
+        <a href="{% url 'catalog:spareparts_detail' supplier.slug %}" class="btn">
+            Spare-Parts <i class="fa-solid fa-right-to-bracket"></i>
+        </a>
+    </div>
+    {% empty %}
+    <p class="paragraph">No suppliers to display.</p>
+    {% endfor %}
+    </div>
+</section>
+{% endblock %}

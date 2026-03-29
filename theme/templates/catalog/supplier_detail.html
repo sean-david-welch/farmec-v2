@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ supplier.name|default:"Supplier" }} - Farmec Ireland{% endblock %}
+
+{% block meta %}
+<meta name="description" content="{{ supplier.description|default:'Browse our Suppliers and learn more about the machines we offer.' }}">
+<meta property="og:title" content="{{ supplier.name|default:'Supplier' }} - Farmec Ireland">
+<meta property="og:description" content="{{ supplier.description|default:'Browse our Suppliers and learn more about the machines we offer.' }}">
+<meta property="og:image" content="{% if supplier.marketing_image %}{{ supplier.marketing_image.url }}{% else %}https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp{% endif %}">
+<meta property="og:url" content="https://www.farmec.ie/suppliers/{{ supplier.id }}">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ supplier.name|default:'Supplier' }} - Farmec Ireland">
+<meta name="twitter:description" content="{{ supplier.description|default:'Browse our Suppliers and learn more about the machines we offer.' }}">
+<meta name="twitter:image" content="{% if supplier.marketing_image %}{{ supplier.marketing_image.url }}{% else %}https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp{% endif %}">
+<link rel="canonical" href="https://www.farmec.ie/suppliers/{{ supplier.id }}">
+{% endblock %}
+
+{% block content %}
+<section id="supplierDetail">
+    {% if supplier %}
+    <div class="supplier-heading">
+        <h1 class="section-heading">{{ supplier.name }}</h1>
+        {% include "components/social_links.html" with facebook=supplier.social_facebook twitter=supplier.social_twitter instagram=supplier.social_instagram linkedin=supplier.social_linkedin website=supplier.social_website youtube=supplier.social_youtube %}
+    </div>
+
+    <div class="supplier-detail">
+        <div class="supplier-hero">
+            <img
+                src="{% if supplier.marketing_image %}{{ supplier.marketing_image.url }}{% endif %}"
+                alt="{{ supplier.name }}"
+                class="supplier-image"
+                width="750"
+                height="750"
+                onerror="this.src='{% static 'default.jpg' %}'"
+            />
+            {% if machines or videos %}
+            <div class="supplier-hero-index supplier-hero-index--bottom">
+                {% if machines %}
+                <h2 class="index-heading">Machines</h2>
+                <div class="index-items">
+                    {% for machine in machines %}
+                    <a href="#{{ machine.name|slugify }}" class="index-item">{{ machine.name }}</a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% if videos %}
+                <a href="#videos" class="btn">
+                    <i class="fa-solid fa-play"></i> See {{ supplier.name }} in Action
+                </a>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+        <p class="supplier-description">{{ supplier.description }}</p>
+    </div>
+    {% endif %}
+
+    {% if machines %}
+    {% include "includes/machines.html" with machines=machines %}
+    {% endif %}
+
+    {% if videos %}
+    {% include "includes/videos.html" with videos=videos %}
+    {% endif %}
+</section>
+{% endblock %}

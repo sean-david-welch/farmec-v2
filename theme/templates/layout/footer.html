@@ -1,0 +1,89 @@
+{% load components %}
+{% load static %}
+
+<footer class="footer">
+    <div class="footer-info">
+        <a href="{% url 'content:home' %}" aria-label="logo button">
+            <img
+                src="{% static 'images/farmeclogo.webp' %}"
+                alt="Farmec Logo"
+                width="180"
+                height="180"
+            />
+        </a>
+
+        <div class="company-info">
+            <p>Farmec Ireland Ltd.</p>
+            <p>Clonross, Drumree</p>
+            <p>Co. Meath, A85 PK30</p>
+            <p>Tel: <a href="tel:018259289">01 825 9289</a></p>
+            <p>Email: <a href="mailto:info@farmec.ie">info@farmec.ie</a></p>
+            <p>
+                <a href="{% url 'legal:privacy_list' %}">Privacy Policy | Terms of Use</a>
+            </p>
+        </div>
+    </div>
+
+    <div class="footer-links">
+        <h1 class="main-heading">FTMTA Accreditation</h1>
+        <a href="https://ftmta.ie/" target="_blank" rel="noopener noreferrer">
+            <img
+                src="{% static 'images/symbol-service.png' %}"
+                alt="FTMTA Logo"
+                width="180"
+                height="180"
+            />
+        </a>
+
+        <div class="social-links">
+            <a
+                class="social-icon"
+                href="https://www.facebook.com/FarmecIreland/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Visit our Facebook page">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a
+                class="social-icon"
+                href="https://twitter.com/farmec1?lang=en"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Visit our Twitter page">
+                <i class="fab fa-twitter"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="footer-nav">
+        <ul class="nav-links">
+            <li>
+                <a href="{% url 'content:home' %}" class="btn-footer">
+                    Home <i class="fas fa-arrow-right-to-bracket"></i>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'team:employee_list' %}" class="btn-footer">
+                    About <i class="fas fa-arrow-right-to-bracket"></i>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'catalog:supplier_list' %}" class="btn-footer">
+                    Suppliers <i class="fas fa-arrow-right-to-bracket"></i>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'catalog:spareparts' %}" class="btn-footer">
+                    Spare Parts <i class="fas fa-arrow-right-to-bracket"></i>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'content:blog_list' %}" class="btn-footer">
+                    Blog <i class="fas fa-arrow-right-to-bracket"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    {% to_top_button %}
+</footer>

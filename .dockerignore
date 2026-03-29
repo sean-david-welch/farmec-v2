@@ -1,0 +1,16 @@
+.env
+.git
+.gitignore
+__pycache__
+*.pyc
+*.pyo
+db.sqlite3
+database/
+staticfiles/
+node_modules/
+client/
+server/
+misc/
+old/
+*.md
+.DS_Store

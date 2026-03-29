@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Policies - Farmec Ireland{% endblock %}
+
+{% block meta %}
+<meta name="description" content="Read more about our Privacy Policy and how we use your data">
+<meta property="og:title" content="Policies - Farmec Ireland">
+<meta property="og:description" content="Read more about our Privacy Policy and how we use your data.">
+<meta property="og:image" content="https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp">
+<meta property="og:url" content="https://www.farmec.ie/policies">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Policies - Farmec Ireland">
+<meta name="twitter:description" content="Read more about our Privacy Policy and how we use your data.">
+<meta name="twitter:image" content="https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp">
+<link rel="canonical" href="https://www.farmec.ie/policies">
+{% endblock %}
+
+{% block content %}
+<section id="policies">
+    <div class="terms">
+        <h1 class="section-heading">Terms of Service</h1>
+
+        {% for term in terms %}
+        <div class="info-card">
+            <h2 class="main-heading">{{ term.title }}</h2>
+            <p class="paragraph">{{ term.body|linebreaks }}</p>
+        </div>
+        {% empty %}
+        <p class="paragraph">No terms of service to display.</p>
+        {% endfor %}
+    </div>
+
+    <div class="privacy">
+        <h1 class="section-heading">Privacy Policy</h1>
+
+        {% for policy in policies %}
+        <div class="info-card">
+            <h2 class="main-heading">{{ policy.title }}</h2>
+            <p class="paragraph">{{ policy.body|linebreaks }}</p>
+        </div>
+        {% empty %}
+        <p class="paragraph">No privacy policies to display.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

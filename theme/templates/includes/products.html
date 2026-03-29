@@ -1,0 +1,26 @@
+{% load static %}
+
+<section id="products">
+    <div class="product-grid">
+        {% for product in products %}
+        <div class="product-card" id="{{ product.name|slugify }}">
+            <h2 class="main-heading">{{ product.name }}</h2>
+
+            <a href="{{ product.product_link|default:'#' }}" target="_blank" rel="noopener noreferrer">
+                <img
+                    src="{% if product.product_image %}{{ product.product_image.url }}{% endif %}"
+                    alt="{{ product.name|default:'Product Image' }}"
+                    class="product-image"
+                    width="500"
+                    height="500"
+                    onerror="this.src='{% static 'default.jpg' %}'"
+                />
+            </a>
+
+            <p class="paragraph">{{ product.description }}</p>
+        </div>
+        {% empty %}
+        <p class="paragraph">No products to display.</p>
+        {% endfor %}
+    </div>
+</section>

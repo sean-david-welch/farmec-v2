@@ -1,0 +1,38 @@
+[project]
+name = "farmec-v2"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "boto3>=1.42.48",
+    "celery>=5.6.2",
+    "cookiecutter>=2.6.0",
+    "django>=6.0.1",
+    "django-debug-toolbar>=6.2.0",
+    "django-environ>=0.12.0",
+    "django-extensions>=4.1",
+    "django-filter>=25.2",
+    "django-htmx>=1.27.0",
+    "django-storages>=1.14.6",
+    "django-template-partials>=25.3",
+    "django-unfold>=0.79.0",
+    "gunicorn>=25.3.0",
+    "model-bakery>=1.23.2",
+    "pillow>=12.1.1",
+    "pytest-django>=4.11.1",
+    "redis>=7.1.1",
+    "resend>=2.26.0",
+    "ruff>=0.15.1",
+    "weasyprint>=68.1",
+    "whitenoise>=6.12.0",
+]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "farmec.settings"
+python_files = ["test_*.py", "conftest.py"]
+testpaths = ["test_scripts"]
+addopts = "--strict-markers --nomigrations"
+markers = [
+    "django_db: mark test as requiring database access",
+]

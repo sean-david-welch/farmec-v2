@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Latest Blog Posts - Farmec Ireland{% endblock %}
+
+{% block meta %}
+<meta name="description" content="Check out the latest blog posts from Farmec Ireland. Stay up to date with our latest news and insights.">
+<meta property="og:title" content="Latest Blog Posts - Farmec Ireland">
+<meta property="og:description" content="Check out the latest blog posts from Farmec Ireland. Stay up to date with our latest news and insights.">
+<meta property="og:image" content="https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp">
+<meta property="og:url" content="https://www.farmec.ie/blogs">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Latest Blog Posts - Farmec Ireland">
+<meta name="twitter:description" content="Check out the latest blog posts from Farmec Ireland. Stay up to date with our latest news and insights.">
+<meta name="twitter:image" content="https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp">
+<link rel="canonical" href="https://www.farmec.ie/blogs">
+{% endblock %}
+
+{% block content %}
+<section id="blog">
+    <h1 class="section-heading">Latest Blog Posts</h1>
+
+    <div class="blog-list-grid">
+        {% for blog in blogs %}
+        <div class="blog-list-card">
+            <img
+                class="blog-list-image"
+                src="{% if blog.main_image %}{{ blog.main_image.url }}{% endif %}"
+                alt="{{ blog.title }}"
+                onerror="this.src='{% static 'default.jpg' %}'"
+            />
+            <div class="blog-card-content">
+                <h2 class="main-heading">{{ blog.title }}</h2>
+                {% if blog.date %}<p class="blog-date">{{ blog.date|date:"d M Y" }}</p>{% endif %}
+                {% if blog.subheading %}<p class="paragraph">{{ blog.subheading|truncatechars:100 }}</p>{% endif %}
+            </div>
+            <a href="{% url 'content:blog_detail' blog.id %}" class="btn blog-card-btn">
+                Read More <i class="fa-solid fa-right-to-bracket"></i>
+            </a>
+        </div>
+        {% empty %}
+        <p class="paragraph">No blog posts to display.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
