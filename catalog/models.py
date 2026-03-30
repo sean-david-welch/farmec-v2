@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from base_model import BaseModel, BaseQuerySet
+from farmec.base_model import BaseModel, BaseQuerySet
 
 
 class SupplierQuerySet(BaseQuerySet):
