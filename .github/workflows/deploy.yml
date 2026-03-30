@@ -39,8 +39,8 @@ jobs:
           envs: SECRET_KEY,DEBUG,ALLOWED_HOSTS,AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,RESEND_TOKEN,EMAIL_USER,GOOGLE_MAPS_API_KEY
           script: |
             set -e
-            printf "SECRET_KEY=%s\nDEBUG=%s\nALLOWED_HOSTS=%s\nAWS_ACCESS_KEY_ID=%s\nAWS_SECRET_ACCESS_KEY=%s\nRESEND_TOKEN=%s\nEMAIL_USER=%s\n" \
-              "$SECRET_KEY" "$DEBUG" "$ALLOWED_HOSTS" "$AWS_ACCESS_KEY_ID" "$AWS_SECRET_ACCESS_KEY" "$RESEND_TOKEN" "$EMAIL_USER" \
+            printf "SECRET_KEY=%s\nDEBUG=%s\nALLOWED_HOSTS=%s\nAWS_ACCESS_KEY_ID=%s\nAWS_SECRET_ACCESS_KEY=%s\nRESEND_TOKEN=%s\nEMAIL_USER=%s\nGOOGLE_MAPS_API_KEY=%s\n" \
+              "$SECRET_KEY" "$DEBUG" "$ALLOWED_HOSTS" "$AWS_ACCESS_KEY_ID" "$AWS_SECRET_ACCESS_KEY" "$RESEND_TOKEN" "$EMAIL_USER" "$GOOGLE_MAPS_API_KEY" \
               > /home/seanwelch/farmec-v2/.env
             
             cd /home/seanwelch/farmec-v2
