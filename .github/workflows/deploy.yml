@@ -26,7 +26,7 @@ jobs:
                   SECRET_KEY: ${{ secrets.SECRET_KEY }}
                   DEBUG: ${{ secrets.DEBUG }}
                   ALLOWED_HOSTS: ${{ secrets.ALLOWED_HOSTS }}
-                  AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
+                  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
                   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
                   RESEND_TOKEN: ${{ secrets.RESEND_TOKEN }}
                   EMAIL_USER: ${{ secrets.EMAIL_USER }}
@@ -35,11 +35,11 @@ jobs:
                   username: ${{ secrets.EC2_USER }}
                   key: ${{ secrets.SSH_PRIVATE_KEY }}
                   port: ${{ secrets.SSH_PORT }}
-                  envs: SECRET_KEY,DEBUG,ALLOWED_HOSTS,AWS_ACCESS_KEY,AWS_SECRET_ACCESS_KEY,RESEND_TOKEN,EMAIL_USER
+                  envs: SECRET_KEY,DEBUG,ALLOWED_HOSTS,AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,RESEND_TOKEN,EMAIL_USER
                   script: |
                       set -e
-                      printf "SECRET_KEY=%s\nDEBUG=%s\nALLOWED_HOSTS=%s\nAWS_ACCESS_KEY=%s\nAWS_SECRET_ACCESS_KEY=%s\nRESEND_TOKEN=%s\nEMAIL_USER=%s\n" \
-                        "$SECRET_KEY" "$DEBUG" "$ALLOWED_HOSTS" "$AWS_ACCESS_KEY" "$AWS_SECRET_ACCESS_KEY" "$RESEND_TOKEN" "$EMAIL_USER" \
+                      printf "SECRET_KEY=%s\nDEBUG=%s\nALLOWED_HOSTS=%s\nAWS_ACCESS_KEY_ID=%s\nAWS_SECRET_ACCESS_KEY=%s\nRESEND_TOKEN=%s\nEMAIL_USER=%s\n" \
+                        "$SECRET_KEY" "$DEBUG" "$ALLOWED_HOSTS" "$AWS_ACCESS_KEY_ID" "$AWS_SECRET_ACCESS_KEY" "$RESEND_TOKEN" "$EMAIL_USER" \
                         > /home/seanwelch/farmec-v2/.env
 
                       cd /home/seanwelch/farmec-v2
