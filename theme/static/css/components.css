@@ -495,6 +495,24 @@
     font-size: 1.5rem;
 }
 
+@media (max-width: 640px) {
+    .stat-list,
+    .special-list {
+        padding: 0;
+    }
+
+    .to-top-btn {
+        width: 2.5rem;
+        height: 2.5rem;
+        bottom: 1rem;
+        right: 1rem;
+    }
+
+    .to-top-btn i {
+        font-size: 1.1rem;
+    }
+}
+
 /* Misc */
 .update-icon {
     margin: 0 0.5rem;
@@ -1278,6 +1296,11 @@
     .contact-section > .info-section {
         width: 100%;
     }
+
+    .map-container {
+        min-height: 300px;
+        height: 300px;
+    }
 }
 
 /* Spare Parts */
@@ -1612,26 +1635,24 @@
     margin: 0;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
     width: 100%;
 }
 
 .sidebar-nav-item {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+    display: block;
     padding: 0.75rem 1.5rem;
     margin: 0;
+    width: 100%;
     color: #e5e7eb;
     text-decoration: none;
-    font-size: 1.5rem;
+    font-size: 2rem;
     transition: color 500ms ease;
+    text-align: left;
 }
 
 .sidebar-nav-item i {
-    font-size: 1.5rem;
-    width: 1.75rem;
-    text-align: center;
+    font-size: 2rem;
+    margin-right: 1rem;
 }
 
 .sidebar-nav-item:hover {
