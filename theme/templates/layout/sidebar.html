@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', function() {
         menu.classList.remove('sidebar-open');
     }
 
-    if (toggleBtn) toggleBtn.addEventListener('click', function(e) { e.preventDefault(); openSidebar(); });
+    if (toggleBtn) toggleBtn.addEventListener('click', function(e) { e.preventDefault(); menu.classList.contains('sidebar-open') ? closeSidebar() : openSidebar(); });
     if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
 
     menu.querySelectorAll('.sidebar-nav-item').forEach(item => {
