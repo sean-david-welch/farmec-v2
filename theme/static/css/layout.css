@@ -1,6 +1,7 @@
 /* Layout Components */
 main {
     padding-top: 6rem;
+    overflow-x: hidden;
 }
 
 main > section#Home {

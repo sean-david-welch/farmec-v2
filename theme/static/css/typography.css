@@ -17,6 +17,7 @@ body {
     background-color: #d4d4d8;
     color: #d1d5db;
     min-height: 100vh;
+    overflow-x: hidden;
 }
 
 h1, h2, h3, h4, h5, h6 {
