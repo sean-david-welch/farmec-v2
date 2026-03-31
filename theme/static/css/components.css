@@ -1538,11 +1538,19 @@
     height: auto;
 }
 
-.sidebar-toggle-btn > i {
+#sidebar-toggle-btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin: 0 0 0 auto;
+    display: flex;
+    align-items: center;
+}
+
+#sidebar-toggle-btn-icon i {
     font-size: 1.5rem;
     color: #e5e7eb;
-    margin: 0;
-    margin-left: auto;
 }
 
 /* Full-screen slide-in panel */
