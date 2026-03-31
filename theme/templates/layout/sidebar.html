@@ -77,7 +77,7 @@
     </ul>
 </div>
 
-<button id="sidebar-toggle-btn" class="sidebar-toggle-btn">
+<div class="sidebar-toggle-btn">
     <a href="{% url 'content:home' %}" aria-label="logo button" class="sidebar-logo">
         <img
             src="https://static.farmec.ie/farmec_images/farmeclogo.webp"
@@ -86,12 +86,14 @@
             height="200"
         />
     </a>
-    <i class="fas fa-bars"></i>
-</button>
+    <button id="sidebar-toggle-btn-icon" aria-label="Open menu">
+        <i class="fas fa-bars"></i>
+    </button>
+</div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const toggleBtn = document.getElementById('sidebar-toggle-btn');
+    const toggleBtn = document.getElementById('sidebar-toggle-btn-icon');
     const closeBtn = document.getElementById('sidebar-close-btn');
     const menu = document.getElementById('sidebar-menu');
 
@@ -103,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function() {
         menu.classList.remove('sidebar-open');
     }
 
-    if (toggleBtn) toggleBtn.addEventListener('click', function(e) { e.preventDefault(); menu.classList.contains('sidebar-open') ? closeSidebar() : openSidebar(); });
+    if (toggleBtn) toggleBtn.addEventListener('click', function() { menu.classList.contains('sidebar-open') ? closeSidebar() : openSidebar(); });
     if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
 
     menu.querySelectorAll('.sidebar-nav-item').forEach(item => {
