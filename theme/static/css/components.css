@@ -1518,7 +1518,7 @@
     align-items: center;
     justify-content: space-between;
     background-color: #18181b;
-    padding: 0.75rem 1.25rem;
+    padding: 0.5rem 1.25rem;
     border-bottom: 4px solid #18181b;
     transition: border-color 700ms ease-out;
     cursor: pointer;
@@ -1526,6 +1526,7 @@
     border-right: none;
     border-top: none;
     width: 100%;
+    gap: 1rem;
 }
 
 .sidebar-toggle-btn:hover {
@@ -1533,13 +1534,15 @@
 }
 
 .sidebar-logo img {
-    width: 100px;
+    width: 150px;
     height: auto;
 }
 
 .sidebar-toggle-btn > i {
     font-size: 1.5rem;
     color: #e5e7eb;
+    margin: 0;
+    margin-left: auto;
 }
 
 /* Full-screen slide-in panel */
