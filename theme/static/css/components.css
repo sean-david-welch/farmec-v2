@@ -1259,13 +1259,24 @@
 }
 
 @media (max-width: 768px) {
+    #contact,
+    #info {
+        padding: 0;
+    }
+
     .contact-section {
         grid-template-columns: 1fr;
-        margin: 2rem 1rem;
+        margin: 1rem;
     }
 
     .contact-section > * {
         margin: 0.5rem;
+        max-height: none;
+    }
+
+    .contact-form,
+    .contact-section > .info-section {
+        width: 100%;
     }
 }
 
