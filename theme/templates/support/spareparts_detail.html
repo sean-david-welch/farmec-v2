@@ -8,13 +8,12 @@
 <meta property="og:title" content="{{ supplier.name|default:'' }} Spare Parts - Farmec Ireland">
 <meta property="og:description" content="{% if supplier %}Explore spare parts for {{ supplier.name }}. Farmec offers top-quality spare parts for your agricultural machinery.{% else %}Browse spare parts from various suppliers to ensure your machines are always operational.{% endif %}">
 <meta property="og:image" content="https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp">
-<meta property="og:url" content="https://www.farmec.ie/spareparts/{{ supplier.id }}">
+<meta property="og:url" content="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{ supplier.name|default:'' }} Spare Parts - Farmec Ireland">
 <meta name="twitter:description" content="{% if supplier %}Explore spare parts for {{ supplier.name }}. Farmec offers top-quality spare parts for your agricultural machinery.{% else %}Browse spare parts from various suppliers to ensure your machines are always operational.{% endif %}">
 <meta name="twitter:image" content="https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp">
-<link rel="canonical" href="https://www.farmec.ie/spareparts/{{ supplier.id }}">
 {% endblock %}
 
 {% block content %}
