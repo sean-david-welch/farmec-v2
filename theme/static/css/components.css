@@ -701,8 +701,63 @@
         flex: 0 1 100%;
     }
 
+    .supplier-description {
+        display: none;
+    }
+
     .supplier-detail {
         margin: 2.5rem 1.25rem;
+        padding: 0;
+        overflow: hidden;
+    }
+
+    .supplier-detail > * {
+        margin: 0;
+    }
+
+    .supplier-hero .supplier-image {
+        max-height: 350px;
+    }
+
+    .supplier-hero-index {
+        position: static;
+        background: #27272a;
+        border-radius: 0 0 0.5rem 0.5rem;
+        padding: 1rem;
+    }
+
+    .supplier-hero-index .index-items {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+    }
+
+    .supplier-hero-index .index-item {
+        text-align: center;
+    }
+
+    .supplier-hero-index .index-item:last-child:nth-child(odd) {
+        grid-column: 1 / -1;
+        width: 50%;
+        margin: 0 auto;
+    }
+
+    .supplier-hero-index .btn {
+        width: 100%;
+        display: block;
+        text-align: center;
+        font-size: 0.875rem;
+    }
+
+    .supplier-heading .social-links {
+        display: grid;
+        grid-template-columns: repeat(3, auto);
+        justify-content: center;
+        gap: 0.75rem;
+    }
+
+    .supplier-heading .social-links a {
+        margin: 0;
     }
 }
 
