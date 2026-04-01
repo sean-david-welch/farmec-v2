@@ -1317,9 +1317,21 @@
         padding: 1rem;
     }
 
+    .contact-form {
+        order: 1;
+    }
+
+    .contact-section > .info-section {
+        order: 2;
+    }
+
     .map-container {
-        min-height: 300px;
-        height: 300px;
+        order: 3;
+    }
+
+    .map-container {
+        min-height: 450px;
+        height: 450px;
     }
 }
 
