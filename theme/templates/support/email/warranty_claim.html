@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin:0;padding:0;background:#f4f4f4;font-family:Arial,sans-serif;font-size:11pt;color:#1a1a1a;">
+
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f4f4;padding:24px 0;">
+  <tr>
+    <td align="center">
+      <table width="620" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:4px;overflow:hidden;">
+
+        <!-- Header -->
+        <tr>
+          <td style="padding:24px 32px 16px;border-bottom:3px solid #dc2626;">
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td>
+                  <div style="font-size:20pt;font-weight:700;color:#dc2626;letter-spacing:2px;line-height:1.1;">FARMEC</div>
+                  <div style="font-size:9pt;color:#555;margin-top:2px;">Importers &amp; Distributors of Quality Agricultural Machinery</div>
+                </td>
+                <td align="right" style="vertical-align:top;">
+                  <div style="font-size:14pt;font-weight:700;color:#1a1a1a;">Warranty Claim</div>
+                  <div style="font-size:9pt;color:#666;margin-top:4px;">Ref: {{ claim.serial_number }}</div>
+                  {% if claim.failure_date %}<div style="font-size:9pt;color:#666;margin-top:2px;">Date: {{ claim.failure_date }}</div>{% endif %}
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Body -->
+        <tr>
+          <td style="padding:20px 32px;">
+
+            <!-- Dealer -->
+            <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:18px;">
+              <tr>
+                <td style="font-size:9pt;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#dc2626;border-bottom:1px solid #e5e5e5;padding-bottom:4px;margin-bottom:10px;">
+                  Dealer
+                </td>
+              </tr>
+              <tr><td style="padding-top:10px;">
+                <table width="100%" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td width="50%" style="padding-right:8px;vertical-align:top;">
+                      <div style="font-size:8pt;color:#666;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px;">Dealer Name</div>
+                      <div style="font-size:10.5pt;border-bottom:1px solid #ccc;padding-bottom:3px;min-height:20px;">{{ claim.dealer }}</div>
+                    </td>
+                    <td width="50%" style="padding-left:8px;vertical-align:top;">
+                      <div style="font-size:8pt;color:#666;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px;">Dealer Contact</div>
+                      <div style="font-size:10.5pt;border-bottom:1px solid #ccc;padding-bottom:3px;min-height:20px;">{{ claim.dealer_contact|default:'' }}</div>
+                    </td>
+                  </tr>
+                </table>
+              </td></tr>
+            </table>
+
+            <!-- Machine -->
+            <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:18px;">
+              <tr>
+                <td style="font-size:9pt;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#dc2626;border-bottom:1px solid #e5e5e5;padding-bottom:4px;">
+                  Machine
+                </td>
+              </tr>
+              <tr><td style="padding-top:10px;">
+                <table width="100%" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td width="34%" style="padding-right:8px;vertical-align:top;">
+                      <div style="font-size:8pt;color:#666;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px;">Owner Name</div>
+                      <div style="font-size:10.5pt;border-bottom:1px solid #ccc;padding-bottom:3px;min-height:20px;">{{ claim.owner_name }}</div>
+                    </td>
+                    <td width="33%" style="padding:0 8px;vertical-align:top;">
+                      <div style="font-size:8pt;color:#666;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px;">Machine Model</div>
+                      <div style="font-size:10.5pt;border-bottom:1px solid #ccc;padding-bottom:3px;min-height:20px;">{{ claim.machine_model }}</div>
+                    </td>
+                    <td width="33%" style="padding-left:8px;vertical-align:top;">
+                      <div style="font-size:8pt;color:#666;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px;">Serial Number</div>
+                      <div style="font-size:10.5pt;border-bottom:1px solid #ccc;padding-bottom:3px;min-height:20px;">{{ claim.serial_number }}</div>
+                    </td>
+                  </tr>
+                </table>
+              </td></tr>
+            </table>
+
+            <!-- Dates -->
+            <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:18px;">
+              <tr>
+                <td style="font-size:9pt;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#dc2626;border-bottom:1px solid #e5e5e5;padding-bottom:4px;">
+                  Dates
+                </td>
+              </tr>
+              <tr><td style="padding-top:10px;">
+                <table width="100%" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td width="34%" style="padding-right:8px;vertical-align:top;">
+                      <div style="font-size:8pt;color:#666;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px;">Install Date</div>
+                      <div style="font-size:10.5pt;border-bottom:1px solid #ccc;padding-bottom:3px;min-height:20px;">{{ claim.install_date|default:'' }}</div>
+                    </td>
+                    <td width="33%" style="padding:0 8px;vertical-align:top;">
+                      <div style="font-size:8pt;color:#666;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px;">Failure Date</div>
+                      <div style="font-size:10.5pt;border-bottom:1px solid #ccc;padding-bottom:3px;min-height:20px;">{{ claim.failure_date|default:'' }}</div>
+                    </td>
+                    <td width="33%" style="padding-left:8px;vertical-align:top;">
+                      <div style="font-size:8pt;color:#666;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px;">Repair Date</div>
+                      <div style="font-size:10.5pt;border-bottom:1px solid #ccc;padding-bottom:3px;min-height:20px;">{{ claim.repair_date|default:'' }}</div>
+                    </td>
+                  </tr>
+                </table>
+              </td></tr>
+            </table>
+
+            <!-- Failure Details -->
+            <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:18px;">
+              <tr>
+                <td style="font-size:9pt;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#dc2626;border-bottom:1px solid #e5e5e5;padding-bottom:4px;">
+                  Failure Details
+                </td>
+              </tr>
+              <tr><td style="padding-top:10px;">
+                <div style="font-size:10.5pt;border:1px solid #ccc;padding:6px;min-height:60px;">{{ claim.failure_details|default:'' }}</div>
+              </td></tr>
+            </table>
+
+            <!-- Repair Details -->
+            <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:18px;">
+              <tr>
+                <td style="font-size:9pt;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#dc2626;border-bottom:1px solid #e5e5e5;padding-bottom:4px;">
+                  Repair Details
+                </td>
+              </tr>
+              <tr><td style="padding-top:10px;">
+                <div style="font-size:10.5pt;border:1px solid #ccc;padding:6px;min-height:60px;">{{ claim.repair_details|default:'' }}</div>
+              </td></tr>
+            </table>
+
+            <!-- Labour -->
+            <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:18px;">
+              <tr>
+                <td style="font-size:9pt;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#dc2626;border-bottom:1px solid #e5e5e5;padding-bottom:4px;">
+                  Labour
+                </td>
+              </tr>
+              <tr><td style="padding-top:10px;">
+                <table width="100%" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td width="50%" style="padding-right:8px;vertical-align:top;">
+                      <div style="font-size:8pt;color:#666;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px;">Labour Hours</div>
+                      <div style="font-size:10.5pt;border-bottom:1px solid #ccc;padding-bottom:3px;min-height:20px;">{{ claim.labour_hours|default:'' }}</div>
+                    </td>
+                    <td width="50%" style="padding-left:8px;vertical-align:top;">
+                      <div style="font-size:8pt;color:#666;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px;">Completed By</div>
+                      <div style="font-size:10.5pt;border-bottom:1px solid #ccc;padding-bottom:3px;min-height:20px;">{{ claim.completed_by|default:'' }}</div>
+                    </td>
+                  </tr>
+                </table>
+              </td></tr>
+            </table>
+
+            <!-- Parts Required -->
+            {% if parts %}
+            <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:18px;">
+              <tr>
+                <td style="font-size:9pt;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#dc2626;border-bottom:1px solid #e5e5e5;padding-bottom:4px;">
+                  Parts Required
+                </td>
+              </tr>
+              <tr><td style="padding-top:10px;">
+                <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;font-size:10pt;">
+                  <thead>
+                    <tr>
+                      <th style="background:#1a1a1a;color:#fff;padding:6px 8px;text-align:left;font-size:9pt;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;">Part Number</th>
+                      <th style="background:#1a1a1a;color:#fff;padding:6px 8px;text-align:left;font-size:9pt;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;">Description</th>
+                      <th style="background:#1a1a1a;color:#fff;padding:6px 8px;text-align:left;font-size:9pt;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;">Qty</th>
+                      <th style="background:#1a1a1a;color:#fff;padding:6px 8px;text-align:left;font-size:9pt;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;">Invoice #</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for part in parts %}
+                    <tr style="{% if forloop.counter|divisibleby:2 %}background:#f9f9f9;{% endif %}">
+                      <td style="padding:6px 8px;border-bottom:1px solid #e5e5e5;">{{ part.part_number|default:'-' }}</td>
+                      <td style="padding:6px 8px;border-bottom:1px solid #e5e5e5;">{{ part.description|default:'-' }}</td>
+                      <td style="padding:6px 8px;border-bottom:1px solid #e5e5e5;">{{ part.quantity_needed }}</td>
+                      <td style="padding:6px 8px;border-bottom:1px solid #e5e5e5;">{{ part.invoice_number|default:'-' }}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </td></tr>
+            </table>
+            {% endif %}
+
+          </td>
+        </tr>
+
+        <!-- Footer -->
+        <tr>
+          <td style="padding:12px 32px;border-top:1px solid #e5e5e5;">
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="font-size:8pt;color:#999;">Farmec Ireland Ltd.</td>
+                <td align="right" style="font-size:8pt;color:#999;">{{ generated_date }}</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>
