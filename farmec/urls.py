@@ -53,7 +53,11 @@ urlpatterns = [
 
 if settings.DEBUG:
     import debug_toolbar
-    urlpatterns += [path('__debug__/', include(debug_toolbar.urls))]
+    urlpatterns += [
+        path('__debug__/', include(debug_toolbar.urls)),
+        path('test-404/', lambda r: page_not_found(r)),
+        path('test-500/', lambda r: server_error(r)),
+    ]
 
 # Error handlers
 handler404 = page_not_found
