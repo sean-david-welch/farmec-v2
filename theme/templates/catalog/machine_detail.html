@@ -8,13 +8,12 @@
 <meta property="og:title" content="{{ machine.name|default:'Machine' }} - Farmec Ireland">
 <meta property="og:description" content="{{ machine.description|default:'Browse our machines and products to learn more about what we offer.' }}">
 <meta property="og:image" content="{% if machine.machine_image %}{{ machine.machine_image.url }}{% else %}https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp{% endif %}">
-<meta property="og:url" content="https://www.farmec.ie/machines/{{ machine.id }}">
+<meta property="og:url" content="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{ machine.name|default:'Machine' }} - Farmec Ireland">
 <meta name="twitter:description" content="{{ machine.description|default:'Browse our machines and products to learn more about what we offer.' }}">
 <meta name="twitter:image" content="{% if machine.machine_image %}{{ machine.machine_image.url }}{% else %}https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp{% endif %}">
-<link rel="canonical" href="https://www.farmec.ie/machines/{{ machine.id }}">
 {% endblock %}
 
 {% block content %}
