@@ -1,5 +1,7 @@
 import resend
 from django.conf import settings
+from django.template.loader import render_to_string
+from django.utils import timezone
 
 
 class EmailClient:
@@ -18,23 +20,20 @@ class EmailClient:
         }
         resend.Emails.send(params)
 
-    def send_warranty_notification(self, dealer: str, owner_name: str, machine_model: str, serial_number: str) -> None:
-        subject: str = f"New Warranty Claim - {owner_name} / {machine_model}"
+    def send_warranty_notification(self, claim, parts) -> None:
+        subject: str = f"New Warranty Claim - {claim.owner_name} / {claim.machine_model}"
+        context = {
+            "claim": claim,
+            "parts": parts,
+            "generated_date": timezone.now().strftime("%d %b %Y, %H:%M"),
+        }
+        html: str = render_to_string("support/email/warranty_claim.html", context)
         text: str = (
             f"A new warranty claim has been submitted.\n\n"
-            f"Dealer: {dealer}\n"
-            f"Owner: {owner_name}\n"
-            f"Machine Model: {machine_model}\n"
-            f"Serial Number: {serial_number}\n"
-        )
-        html: str = (
-            f"<p>A new warranty claim has been submitted.</p>"
-            f"<ul>"
-            f"<li><strong>Dealer:</strong> {dealer}</li>"
-            f"<li><strong>Owner:</strong> {owner_name}</li>"
-            f"<li><strong>Machine Model:</strong> {machine_model}</li>"
-            f"<li><strong>Serial Number:</strong> {serial_number}</li>"
-            f"</ul>"
+            f"Dealer: {claim.dealer}\n"
+            f"Owner: {claim.owner_name}\n"
+            f"Machine Model: {claim.machine_model}\n"
+            f"Serial Number: {claim.serial_number}\n"
         )
         params: resend.Emails.SendParams = {
             "from": "Farmec Ireland Ltd <noreply@farmec.ie>",
@@ -45,23 +44,19 @@ class EmailClient:
         }
         resend.Emails.send(params)
 
-    def send_registration_notification(self, dealer_name: str, owner_name: str, machine_model: str, serial_number: str) -> None:
-        subject: str = f"New Machine Registration - {owner_name} / {machine_model}"
+    def send_registration_notification(self, reg) -> None:
+        subject: str = f"New Machine Registration - {reg.owner_name} / {reg.machine_model}"
+        context = {
+            "reg": reg,
+            "generated_date": timezone.now().strftime("%d %b %Y, %H:%M"),
+        }
+        html: str = render_to_string("support/email/machine_registration.html", context)
         text: str = (
             f"A new machine registration has been submitted.\n\n"
-            f"Dealer: {dealer_name}\n"
-            f"Owner: {owner_name}\n"
-            f"Machine Model: {machine_model}\n"
-            f"Serial Number: {serial_number}\n"
-        )
-        html: str = (
-            f"<p>A new machine registration has been submitted.</p>"
-            f"<ul>"
-            f"<li><strong>Dealer:</strong> {dealer_name}</li>"
-            f"<li><strong>Owner:</strong> {owner_name}</li>"
-            f"<li><strong>Machine Model:</strong> {machine_model}</li>"
-            f"<li><strong>Serial Number:</strong> {serial_number}</li>"
-            f"</ul>"
+            f"Dealer: {reg.dealer_name}\n"
+            f"Owner: {reg.owner_name}\n"
+            f"Machine Model: {reg.machine_model}\n"
+            f"Serial Number: {reg.serial_number}\n"
         )
         params: resend.Emails.SendParams = {
             "from": "Farmec Ireland Ltd <noreply@farmec.ie>",
