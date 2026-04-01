@@ -354,6 +354,13 @@
     visibility: visible;
 }
 
+@media (max-width: 640px) {
+    .dialog {
+        width: 92vw;
+        max-height: 88vh;
+    }
+}
+
 .dialog-close-btn {
     position: absolute;
     right: 1.25rem;
@@ -1590,9 +1597,10 @@
 
     .options-btn > * {
         margin: 0;
-        width: 80%;
+        width: fit-content;
         padding: 0.5rem 1rem;
         justify-content: center;
+        align-items: center;
     }
 }
 
@@ -1782,13 +1790,15 @@
 }
 
 .sidebar-nav-list button.sidebar-nav-item {
-    background: none;
+    background: none !important;
     border: none;
     cursor: pointer;
     font-family: inherit;
-    font-size: inherit;
+    font-size: 2rem;
     width: 100%;
     text-align: left;
+    color: #e5e7eb;
+    padding: 0.75rem 1.5rem;
 }
 
 /* Desktop: show navbar, hide sidebar toggle */
