@@ -10,7 +10,7 @@
     <link rel="icon" type="image/svg+xml" href="{% static 'favicon.svg' %}">
     <meta name="description" content="{% block description %}Farmec Ireland Ltd specializes in providing high-quality agricultural machinery and services to enhance your farming operations. Explore our range of products and services tailored for Irish farms.{% endblock %}">
     <meta name="author" content="Farmec Ireland Ltd">
-    <link rel="canonical" href="{{ request.build_absolute_uri }}">
+    <link rel="canonical" href="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
 
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
