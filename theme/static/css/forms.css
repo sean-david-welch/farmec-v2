@@ -102,6 +102,17 @@
     margin: 0;
 }
 
+@media (max-width: 640px) {
+    .form-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .form-actions .btn {
+        width: fit-content;
+    }
+}
+
 .part-entry-header {
     display: flex;
     align-items: center;
