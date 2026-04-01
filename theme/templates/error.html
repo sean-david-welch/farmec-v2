@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 
-{% block title %}Error - Farmec Ireland Ltd{% endblock %}
+{% block title %}Server Error - Farmec Ireland Ltd{% endblock %}
 
 {% block content %}
-<div class="error-page">
-    <h1 class="section-heading">An Error Occurred:</h1>
-    <a href="{% url 'home' %}">
-        <button class="btn">
-            Go Back <i class="fas fa-arrow-right"></i>
-        </button>
-    </a>
-</div>
+<section class="error-page">
+    <span class="error-code">500</span>
+    <h1 class="section-heading">Something Went Wrong</h1>
+    <p class="sub-heading">We're sorry — an unexpected error occurred. Please try again or go back to the homepage.</p>
+    <div class="routes-list">
+        <a href="/" class="btn">Go to Homepage <i class="fas fa-arrow-right"></i></a>
+    </div>
+</section>
 {% endblock %}
