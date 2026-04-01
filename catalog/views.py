@@ -5,6 +5,7 @@ from django.views.generic import ListView, DetailView
 from django_htmx.http import trigger_client_event
 
 from farmec.mixin import HTMXViewMixin
+from farmec.utils import EmailClient
 from catalog.models import (
     Supplier,
     SupplierQuerySet,
@@ -93,6 +94,12 @@ class SparePartsIndexView(HTMXViewMixin, ListView):
             claim = form.save(commit=False)
             claim.id = str(uuid.uuid4())
             claim.save()
+            EmailClient().send_warranty_notification(
+                dealer=claim.dealer,
+                owner_name=claim.owner_name,
+                machine_model=claim.machine_model,
+                serial_number=claim.serial_number,
+            )
 
             part_count: int = int(request.POST.get('part_count', 0))
             for i in range(part_count):
@@ -134,6 +141,12 @@ class SparePartsIndexView(HTMXViewMixin, ListView):
             registration = form.save(commit=False)
             registration.id = str(uuid.uuid4())
             registration.save()
+            EmailClient().send_registration_notification(
+                dealer_name=registration.dealer_name,
+                owner_name=registration.owner_name,
+                machine_model=registration.machine_model,
+                serial_number=registration.serial_number,
+            )
 
             return self.render_htmx_response(
                 'support/machineregistration_form_dialog.html',
