@@ -10,13 +10,20 @@ class EmailClient:
         self.recipient = settings.EMAIL_USER
 
     def send_contact_notification(self, name: str, email: str, message: str) -> None:
-        subject: str = f"New Contact Form from {name}--{email}"
+        subject: str = f"New Contact Form from {name} - {email}"
+        context = {
+            "name": name,
+            "email": email,
+            "message": message,
+            "generated_date": timezone.now().strftime("%d %b %Y, %H:%M"),
+        }
+        html: str = render_to_string("support/email/contact.html", context)
         params: resend.Emails.SendParams = {
             "from": "Farmec Ireland Ltd <noreply@farmec.ie>",
             "to": [self.recipient],
             "subject": subject,
             "text": message,
-            "html": f"<p>{message}</p>",
+            "html": html,
         }
         resend.Emails.send(params)
 
