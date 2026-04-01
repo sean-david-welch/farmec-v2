@@ -8,11 +8,20 @@ from support.models import Warrantyclaim, Partsrequired, Machineregistration
 
 
 class EmailClient:
+    """Resend-backed email client for internal notification emails."""
+
     def __init__(self) -> None:
+        """Initialise Resend API key and recipient from settings."""
         resend.api_key: str = settings.RESEND_TOKEN
         self.recipient: str = settings.EMAIL_USER
 
     def send_contact_notification(self, name: str, email: str, message: str) -> None:
+        """Send a contact form notification.
+
+        :param name: Sender's name.
+        :param email: Sender's email address.
+        :param message: Message body.
+        """
         subject: str = f"New Contact Form from {name} - {email}"
         context: dict[str, str] = {
             "name": name,
@@ -31,6 +40,11 @@ class EmailClient:
         resend.Emails.send(params)
 
     def send_warranty_notification(self, claim: Warrantyclaim, parts: QuerySet[Partsrequired]) -> None:
+        """Send a warranty claim submission notification.
+
+        :param claim: Submitted ``Warrantyclaim`` instance.
+        :param parts: Related ``Partsrequired`` queryset for the claim.
+        """
         subject: str = f"New Warranty Claim - {claim.owner_name} / {claim.machine_model}"
         context: dict[str, object] = {
             "claim": claim,
@@ -55,6 +69,10 @@ class EmailClient:
         resend.Emails.send(params)
 
     def send_registration_notification(self, reg: Machineregistration) -> None:
+        """Send a machine registration submission notification.
+
+        :param reg: Submitted ``Machineregistration`` instance.
+        """
         subject: str = f"New Machine Registration - {reg.owner_name} / {reg.machine_model}"
         context: dict[str, str] = {
             "reg": reg,
