@@ -869,6 +869,10 @@
         margin: 2.5rem 1.25rem;
     }
 
+    .product-card {
+        flex: 0 1 100%;
+    }
+
     .product-card p {
         margin: 0 0.5rem;
     }
@@ -993,6 +997,10 @@
 @media (max-width: 768px) {
     .employees {
         margin: 2rem 1.25rem;
+    }
+
+    .employee-card {
+        flex: 0 1 100%;
     }
 }
 
@@ -1573,6 +1581,20 @@
     margin: 0 0.5rem;
 }
 
+@media (max-width: 768px) {
+    .options-btn {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .options-btn > * {
+        margin: 0;
+        width: 80%;
+        padding: 0.5rem 1rem;
+        justify-content: center;
+    }
+}
 
 /* Policies/Legal */
 .terms, .privacy {
