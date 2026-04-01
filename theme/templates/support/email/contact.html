@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin:0;padding:0;background:#f4f4f4;font-family:Arial,sans-serif;font-size:11pt;color:#1a1a1a;">
+
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f4f4;padding:24px 0;">
+  <tr>
+    <td align="center">
+      <table width="620" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:4px;overflow:hidden;">
+
+        <!-- Header -->
+        <tr>
+          <td style="padding:24px 32px 16px;border-bottom:3px solid #dc2626;">
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td>
+                  <div style="font-size:20pt;font-weight:700;color:#dc2626;letter-spacing:2px;line-height:1.1;">FARMEC</div>
+                  <div style="font-size:9pt;color:#555;margin-top:2px;">Importers &amp; Distributors of Quality Agricultural Machinery</div>
+                </td>
+                <td align="right" style="vertical-align:top;">
+                  <div style="font-size:14pt;font-weight:700;color:#1a1a1a;">New Contact</div>
+                  <div style="font-size:9pt;color:#666;margin-top:4px;">{{ generated_date }}</div>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Body -->
+        <tr>
+          <td style="padding:20px 32px;">
+
+            <!-- Sender -->
+            <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:18px;">
+              <tr>
+                <td style="font-size:9pt;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#dc2626;border-bottom:1px solid #e5e5e5;padding-bottom:4px;">
+                  Sender
+                </td>
+              </tr>
+              <tr><td style="padding-top:10px;">
+                <table width="100%" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td width="50%" style="padding-right:8px;vertical-align:top;">
+                      <div style="font-size:8pt;color:#666;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px;">Name</div>
+                      <div style="font-size:10.5pt;border-bottom:1px solid #ccc;padding-bottom:3px;min-height:20px;">{{ name }}</div>
+                    </td>
+                    <td width="50%" style="padding-left:8px;vertical-align:top;">
+                      <div style="font-size:8pt;color:#666;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px;">Email</div>
+                      <div style="font-size:10.5pt;border-bottom:1px solid #ccc;padding-bottom:3px;min-height:20px;"><a href="mailto:{{ email }}" style="color:#dc2626;text-decoration:none;">{{ email }}</a></div>
+                    </td>
+                  </tr>
+                </table>
+              </td></tr>
+            </table>
+
+            <!-- Message -->
+            <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:18px;">
+              <tr>
+                <td style="font-size:9pt;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#dc2626;border-bottom:1px solid #e5e5e5;padding-bottom:4px;">
+                  Message
+                </td>
+              </tr>
+              <tr><td style="padding-top:10px;">
+                <div style="font-size:10.5pt;border:1px solid #ccc;padding:10px;min-height:80px;white-space:pre-wrap;">{{ message }}</div>
+              </td></tr>
+            </table>
+
+          </td>
+        </tr>
+
+        <!-- Footer -->
+        <tr>
+          <td style="padding:12px 32px;border-top:1px solid #e5e5e5;">
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="font-size:8pt;color:#999;">Farmec Ireland Ltd.</td>
+                <td align="right" style="font-size:8pt;color:#999;">{{ generated_date }}</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>
