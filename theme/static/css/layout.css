@@ -118,15 +118,15 @@ main > section#Home {
 
 @media (max-width: 640px) {
     #Hero {
-        height: 60vh;
+        height: 70vh;
     }
 
     .hero-container {
-        height: 60vh;
+        height: 70vh;
     }
 
     .slideshow {
-        height: 60vh;
+        height: 70vh;
     }
 
     .carousel-btn {
@@ -164,8 +164,10 @@ main > section#Home {
 
 @media (max-width: 768px) {
     .typewriter {
-        font-size: 1.25rem;
+        font-size: 1rem;
         width: 90vw;
+        bottom: 0.5rem;
+        height: auto;
     }
 
     .typewriter .btn {
