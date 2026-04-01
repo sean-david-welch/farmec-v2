@@ -1,17 +1,20 @@
 import resend
 from django.conf import settings
+from django.db.models import QuerySet
 from django.template.loader import render_to_string
 from django.utils import timezone
 
+from support.models import Warrantyclaim, Partsrequired, Machineregistration
+
 
 class EmailClient:
-    def __init__(self):
-        resend.api_key = settings.RESEND_TOKEN
-        self.recipient = settings.EMAIL_USER
+    def __init__(self) -> None:
+        resend.api_key: str = settings.RESEND_TOKEN
+        self.recipient: str = settings.EMAIL_USER
 
     def send_contact_notification(self, name: str, email: str, message: str) -> None:
         subject: str = f"New Contact Form from {name} - {email}"
-        context = {
+        context: dict[str, str] = {
             "name": name,
             "email": email,
             "message": message,
@@ -27,9 +30,9 @@ class EmailClient:
         }
         resend.Emails.send(params)
 
-    def send_warranty_notification(self, claim, parts) -> None:
+    def send_warranty_notification(self, claim: Warrantyclaim, parts: QuerySet[Partsrequired]) -> None:
         subject: str = f"New Warranty Claim - {claim.owner_name} / {claim.machine_model}"
-        context = {
+        context: dict[str, object] = {
             "claim": claim,
             "parts": parts,
             "generated_date": timezone.now().strftime("%d %b %Y, %H:%M"),
@@ -51,9 +54,9 @@ class EmailClient:
         }
         resend.Emails.send(params)
 
-    def send_registration_notification(self, reg) -> None:
+    def send_registration_notification(self, reg: Machineregistration) -> None:
         subject: str = f"New Machine Registration - {reg.owner_name} / {reg.machine_model}"
-        context = {
+        context: dict[str, str] = {
             "reg": reg,
             "generated_date": timezone.now().strftime("%d %b %Y, %H:%M"),
         }
