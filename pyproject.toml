@@ -17,6 +17,7 @@ dependencies = [
     "django-storages>=1.14.6",
     "django-template-partials>=25.3",
     "django-unfold>=0.79.0",
+    "google-api-python-client>=2.193.0",
     "gunicorn>=25.3.0",
     "model-bakery>=1.23.2",
     "pillow>=12.1.1",
