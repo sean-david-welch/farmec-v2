@@ -2,7 +2,7 @@ from django.http import HttpRequest, HttpResponse
 from django.views.generic import ListView, DetailView
 
 from farmec.mixin import HTMXViewMixin
-from farmec.settings import env
+from django.conf import settings
 from farmec.utils import EmailClient
 from .forms import ContactForm
 from .models import (
@@ -24,7 +24,7 @@ class HomeView(HTMXViewMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = ContactForm()
-        context['google_maps_api_key'] = env('GOOGLE_MAPS_API_KEY', default='')
+        context['google_maps_api_key'] = settings.GOOGLE_MAPS_API_KEY
         return context
 
     def handle_htmx(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
