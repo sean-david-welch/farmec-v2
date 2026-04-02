@@ -169,6 +169,10 @@ MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
 RESEND_TOKEN = env('RESEND_TOKEN', default='')
 EMAIL_USER = env('EMAIL_USER', default='')
 
+# Google API keys
+GOOGLE_MAPS_API_KEY = env('GOOGLE_MAPS_API_KEY', default='')
+YOUTUBE_API_KEY = env('YOUTUBE_API_KEY', default='')
+
 # Admin Conifg
 UNFOLD = UNFOLD
 
