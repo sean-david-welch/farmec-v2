@@ -31,16 +31,17 @@ jobs:
           RESEND_TOKEN: ${{ secrets.RESEND_TOKEN }}
           EMAIL_USER: ${{ secrets.EMAIL_USER }}
           GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          envs: SECRET_KEY,DEBUG,ALLOWED_HOSTS,AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,RESEND_TOKEN,EMAIL_USER,GOOGLE_MAPS_API_KEY
+          envs: SECRET_KEY,DEBUG,ALLOWED_HOSTS,AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,RESEND_TOKEN,EMAIL_USER,GOOGLE_MAPS_API_KEY,YOUTUBE_API_KEY
           script: |
             set -e
-            printf "SECRET_KEY=%s\nDEBUG=%s\nALLOWED_HOSTS=%s\nAWS_ACCESS_KEY_ID=%s\nAWS_SECRET_ACCESS_KEY=%s\nRESEND_TOKEN=%s\nEMAIL_USER=%s\nGOOGLE_MAPS_API_KEY=%s\n" \
-              "$SECRET_KEY" "$DEBUG" "$ALLOWED_HOSTS" "$AWS_ACCESS_KEY_ID" "$AWS_SECRET_ACCESS_KEY" "$RESEND_TOKEN" "$EMAIL_USER" "$GOOGLE_MAPS_API_KEY" \
+            printf "SECRET_KEY=%s\nDEBUG=%s\nALLOWED_HOSTS=%s\nAWS_ACCESS_KEY_ID=%s\nAWS_SECRET_ACCESS_KEY=%s\nRESEND_TOKEN=%s\nEMAIL_USER=%s\nGOOGLE_MAPS_API_KEY=%s\nYOUTUBE_API_KEY=%s\n" \
+              "$SECRET_KEY" "$DEBUG" "$ALLOWED_HOSTS" "$AWS_ACCESS_KEY_ID" "$AWS_SECRET_ACCESS_KEY" "$RESEND_TOKEN" "$EMAIL_USER" "$GOOGLE_MAPS_API_KEY" "$YOUTUBE_API_KEY" \
               > /home/seanwelch/farmec-v2/.env
             
             cd /home/seanwelch/farmec-v2
