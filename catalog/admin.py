@@ -9,6 +9,7 @@ class SupplierAdmin(ModelAdmin):
     form = SupplierForm
     list_display = ('name', 'slug', 'publish')
     search_fields = ('name', 'description')
+    date_hierarchy = 'created'
     ordering = ('name',)
 
 
@@ -18,6 +19,7 @@ class MachineAdmin(ModelAdmin):
     list_display = ('name', 'supplier', 'slug', 'publish')
     search_fields = ('name', 'description')
     list_filter = ('supplier',)
+    date_hierarchy = 'created'
     ordering = ('supplier__name', 'name')
 
 
@@ -27,6 +29,7 @@ class ProductAdmin(ModelAdmin):
     list_display = ('name', 'machine', 'slug', 'publish')
     search_fields = ('name', 'description')
     list_filter = ('machine__supplier', 'machine')
+    date_hierarchy = 'created'
     ordering = ('machine__name', 'name')
 
 
@@ -36,6 +39,7 @@ class SparepartsAdmin(ModelAdmin):
     list_display = ('name', 'supplier', 'slug', 'publish')
     search_fields = ('name',)
     list_filter = ('supplier',)
+    date_hierarchy = 'created'
     ordering = ('supplier__name', 'name')
 
 
@@ -45,5 +49,6 @@ class VideoAdmin(ModelAdmin):
     list_display = ('title', 'supplier', 'video_id', 'publish')
     search_fields = ('title', 'description')
     list_filter = ('supplier',)
+    date_hierarchy = 'created'
     readonly_fields = ('title', 'description', 'video_id', 'thumbnail_url')
     ordering = ('supplier__name', 'title')
