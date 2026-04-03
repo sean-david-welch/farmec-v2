@@ -63,7 +63,6 @@ class SparepartsForm(forms.ModelForm):
         ]
 
 
-
 class VideoForm(forms.ModelForm):
     """Form for creating and updating Video instances."""
 
