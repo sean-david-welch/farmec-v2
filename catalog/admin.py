@@ -52,5 +52,5 @@ class VideoAdmin(ModelAdmin):
     list_display = ('title', 'supplier', 'video_id', 'publish')
     search_fields = ('title', 'description')
     list_filter = ('supplier',)
-    readonly_fields = BASE_READONLY
+    readonly_fields = ('title', 'description', 'video_id', 'thumbnail_url')
     ordering = ('supplier__name', 'title')
