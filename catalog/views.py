@@ -1,5 +1,6 @@
 import uuid
 
+from django.db.models import Exists, OuterRef
 from django.http import HttpRequest, HttpResponse
 from django.views.generic import ListView, DetailView
 from django_htmx.http import trigger_client_event
@@ -65,7 +66,9 @@ class SparePartsIndexView(HTMXViewMixin, ListView):
     model: type[Spareparts] = Spareparts
     template_name: str = 'support/spareparts.html'
     context_object_name: str = 'spareparts'
-    queryset: SupplierQuerySet = Supplier.objects.publish().order_by('-created')
+    queryset: SupplierQuerySet = Supplier.objects.publish().filter(
+        Exists(Spareparts.objects.publish().filter(supplier=OuterRef('pk'))),
+    ).order_by('-created')
 
     def get_context_data(self, **kwargs) -> dict:
         context: dict = super().get_context_data(**kwargs)
