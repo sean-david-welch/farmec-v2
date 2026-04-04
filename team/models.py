@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from farmec.base_model import BaseModel, BaseQuerySet
@@ -8,7 +9,7 @@ class EmployeeQuerySet(BaseQuerySet):
 
 
 class Employee(BaseModel):
-    id = models.TextField(primary_key=True, verbose_name=_('ID'))
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, verbose_name=_('ID'))
     name = models.CharField(max_length=255, verbose_name=_('name'), help_text=_('Employee full name'))
     email = models.EmailField(verbose_name=_('email'), help_text=_('Work email address'))
     role = models.CharField(max_length=255, verbose_name=_('role'), help_text=_('Job title or position'))

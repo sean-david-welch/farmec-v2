@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from farmec.base_model import BaseModel, BaseQuerySet
@@ -8,7 +9,7 @@ class SupplierQuerySet(BaseQuerySet):
 
 
 class Supplier(BaseModel):
-    id = models.TextField(primary_key=True, verbose_name=_('ID'))
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, verbose_name=_('ID'))
     name = models.CharField(max_length=255, verbose_name=_('name'), help_text=_('Supplier business name'))
     logo_image = models.ImageField(upload_to='farmec_images/Suppliers/', blank=True, null=True, verbose_name=_('logo image'), help_text=_('Supplier logo'))
     marketing_image = models.ImageField(upload_to='farmec_images/Suppliers/', blank=True, null=True, verbose_name=_('marketing image'), help_text=_('Marketing/promotional image'))
@@ -36,7 +37,7 @@ class MachineQuerySet(BaseQuerySet):
 
 
 class Machine(BaseModel):
-    id = models.TextField(primary_key=True, verbose_name=_('ID'))
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, verbose_name=_('ID'))
     supplier = models.ForeignKey('Supplier', on_delete=models.CASCADE, blank=True, null=True, verbose_name=_('supplier'), help_text=_('Supplier that manufactures this machine'))
     name = models.CharField(max_length=255, verbose_name=_('name'), help_text=_('Machine model name or title'))
     machine_image = models.ImageField(upload_to='farmec_images/Machines/', blank=True, null=True, verbose_name=_('image'), help_text=_('Machine product image'))
@@ -59,7 +60,7 @@ class ProductQuerySet(BaseQuerySet):
 
 
 class Product(BaseModel):
-    id = models.TextField(primary_key=True, verbose_name=_('ID'))
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, verbose_name=_('ID'))
     machine = models.ForeignKey('Machine', on_delete=models.CASCADE, blank=True, null=True, verbose_name=_('machine'), help_text=_('Machine this product is associated with'))
     name = models.CharField(max_length=255, verbose_name=_('name'), help_text=_('Product name or part name'))
     product_image = models.ImageField(upload_to='farmec_images/Products/', blank=True, null=True, verbose_name=_('image'), help_text=_('Product image'))
@@ -82,7 +83,7 @@ class SparepartsQuerySet(BaseQuerySet):
 
 
 class Spareparts(BaseModel):
-    id = models.TextField(primary_key=True, verbose_name=_('ID'))
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, verbose_name=_('ID'))
     supplier = models.ForeignKey('Supplier', on_delete=models.CASCADE, blank=True, null=True, verbose_name=_('supplier'), help_text=_('Supplier that provides this spare part'))
     name = models.CharField(max_length=255, verbose_name=_('name'), help_text=_('Spare part name or description'))
     parts_image = models.ImageField(upload_to='farmec_images/Spareparts/', blank=True, null=True, verbose_name=_('image'), help_text=_('Spare part image'))
@@ -107,7 +108,7 @@ class VideoQuerySet(BaseQuerySet):
 
 
 class Video(BaseModel):
-    id = models.TextField(primary_key=True, verbose_name=_('ID'))
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, verbose_name=_('ID'))
     supplier = models.ForeignKey('Supplier', on_delete=models.CASCADE, blank=True, null=True, verbose_name=_('supplier'), help_text=_('Supplier associated with this video'))
     web_url = models.URLField(blank=True, null=True, verbose_name=_('URL'), help_text=_('URL to video page or hosting platform'))
     title = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('title'), help_text=_('Video title or name'))

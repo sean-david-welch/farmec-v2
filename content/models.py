@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from farmec.base_model import BaseModel, BaseQuerySet
@@ -8,7 +9,7 @@ class BlogQuerySet(BaseQuerySet):
 
 
 class Blog(BaseModel):
-    id = models.TextField(primary_key=True, verbose_name=_('ID'))
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, verbose_name=_('ID'))
     title = models.CharField(max_length=500, verbose_name=_('title'), help_text=_('Blog post headline'))
     date = models.DateField(blank=True, null=True, verbose_name=_('date'), help_text=_('Publication date'))
     main_image = models.ImageField(upload_to='farmec_images/Blogs/', blank=True, null=True, verbose_name=_('main image'), help_text=_('Featured/header image'))
@@ -33,7 +34,7 @@ class CarouselQuerySet(BaseQuerySet):
 
 
 class Carousel(BaseModel):
-    id = models.TextField(primary_key=True, verbose_name=_('ID'))
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, verbose_name=_('ID'))
     name = models.CharField(max_length=255, verbose_name=_('name'), help_text=_('Carousel slide name or identifier'))
     image = models.ImageField(upload_to='farmec_images/Carousels/', blank=True, null=True, verbose_name=_('image'), help_text=_('Carousel slide image'))
 
@@ -54,7 +55,7 @@ class ExhibitionQuerySet(BaseQuerySet):
 
 
 class Exhibition(BaseModel):
-    id = models.TextField(primary_key=True, verbose_name=_('ID'))
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, verbose_name=_('ID'))
     title = models.CharField(max_length=255, verbose_name=_('title'), help_text=_('Exhibition or event name'))
     date = models.DateField(blank=True, null=True, verbose_name=_('date'), help_text=_('Event date or start date'))
     location = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('location'), help_text=_('Venue or location name'))
@@ -75,7 +76,7 @@ class TimelineQuerySet(BaseQuerySet):
 
 
 class Timeline(BaseModel):
-    id = models.TextField(primary_key=True, verbose_name=_('ID'))
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, verbose_name=_('ID'))
     title = models.CharField(max_length=255, verbose_name=_('title'), help_text=_('Timeline event title'))
     date = models.DateField(blank=True, null=True, verbose_name=_('date'), help_text=_('Event date'))
     body = models.TextField(blank=True, null=True, verbose_name=_('body'), help_text=_('Event description and details'))

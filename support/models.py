@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from farmec.base_model import BaseModel, BaseQuerySet
@@ -8,7 +9,7 @@ class WarrantyclaimQuerySet(BaseQuerySet):
 
 
 class Warrantyclaim(BaseModel):
-    id = models.TextField(primary_key=True, verbose_name=_('ID'))
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, verbose_name=_('ID'))
     dealer = models.CharField(max_length=255, verbose_name=_('dealer'), help_text=_('Authorized dealer name'))
     dealer_contact = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('dealer contact'), help_text=_('Dealer contact person or phone'))
     owner_name = models.CharField(max_length=255, verbose_name=_('owner name'), help_text=_('Machine owner/customer name'))
@@ -39,7 +40,7 @@ class PartsrequiredQuerySet(BaseQuerySet):
 
 
 class Partsrequired(BaseModel):
-    id = models.TextField(primary_key=True, verbose_name=_('ID'))
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, verbose_name=_('ID'))
     warranty = models.ForeignKey('Warrantyclaim', on_delete=models.CASCADE, blank=True, null=True, verbose_name=_('warranty claim'), help_text=_('Warranty claim this part is required for'))
     part_number = models.CharField(max_length=100, blank=True, null=True, db_index=True, verbose_name=_('part number'), help_text=_('Supplier part number or SKU'))
     quantity_needed = models.PositiveIntegerField(verbose_name=_('quantity needed'), help_text=_('Number of units required'))
@@ -63,7 +64,7 @@ class MachineregistrationQuerySet(BaseQuerySet):
 
 
 class Machineregistration(BaseModel):
-    id = models.TextField(primary_key=True, verbose_name=_('ID'))
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, verbose_name=_('ID'))
     dealer_name = models.CharField(max_length=255, verbose_name=_('dealer name'), help_text=_('Authorized dealer business name'))
     dealer_address = models.CharField(max_length=500, blank=True, null=True, verbose_name=_('dealer address'), help_text=_('Dealer location address'))
     owner_name = models.CharField(max_length=255, verbose_name=_('owner name'), help_text=_('Machine owner/customer name'))

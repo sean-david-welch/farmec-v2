@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from farmec.base_model import BaseModel, BaseQuerySet
@@ -8,7 +9,7 @@ class PrivacyQuerySet(BaseQuerySet):
 
 
 class Privacy(BaseModel):
-    id = models.TextField(primary_key=True, verbose_name=_('ID'))
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, verbose_name=_('ID'))
     title = models.CharField(max_length=255, verbose_name=_('title'), help_text=_('Page title'))
     body = models.TextField(blank=True, null=True, verbose_name=_('body'), help_text=_('Legal privacy policy text'))
 
@@ -29,7 +30,7 @@ class TermsQuerySet(BaseQuerySet):
 
 
 class Terms(BaseModel):
-    id = models.TextField(primary_key=True, verbose_name=_('ID'))
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, verbose_name=_('ID'))
     title = models.CharField(max_length=255, verbose_name=_('title'), help_text=_('Page title'))
     body = models.TextField(blank=True, null=True, verbose_name=_('body'), help_text=_('Legal terms and conditions text'))
 
