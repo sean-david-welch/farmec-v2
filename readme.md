@@ -61,3 +61,23 @@ just db-push    # Copy local database to EC2
 just db-pull    # Copy EC2 database to local
 just provision  # Run Ansible provisioning playbook
 ```
+
+## Database Backups
+
+A cron job runs daily at 2am on EC2, backing up the SQLite database to S3. To manage or test it:
+
+```bash
+# View installed cron jobs
+crontab -l
+
+# Edit cron jobs manually
+crontab -e
+
+# Test the S3 backup manually
+set -a && source ~/farmec-v2/.env && set +a && \
+aws s3 cp ~/farmec-v2/database/database.db \
+  s3://farmec.ie/backups/database-$(date +%Y%m%d)-test.db
+
+# List backups in S3
+aws s3 ls s3://farmec.ie/backups/
+```
