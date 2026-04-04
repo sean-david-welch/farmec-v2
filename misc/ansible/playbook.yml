@@ -106,6 +106,26 @@
         mode: '0440'
         validate: visudo -cf %s
 
+    # --- AWS CLI ---
+
+    - name: Install AWS CLI
+      apt:
+        name: awscli
+        state: present
+
+    # --- Database backup cron ---
+
+    - name: Schedule daily S3 database backup
+      cron:
+        name: "farmec db backup"
+        user: "{{ app_user }}"
+        hour: "2"
+        minute: "0"
+        job: >
+          set -a && source /home/seanwelch/farmec-v2/.env && set +a &&
+          aws s3 cp /home/seanwelch/farmec-v2/database/database.db
+          s3://farmec.ie/backups/database-$(date +\%Y\%m\%d).db
+
     # --- Old Go service ---
 
     - name: Stop and disable old Go service
