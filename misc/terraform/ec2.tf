@@ -5,6 +5,11 @@ resource "aws_instance" "FarmecAPI" {
   key_name      = aws_key_pair.farmec-ec2.key_name
   vpc_security_group_ids = [aws_security_group.my_ec2_sg.id]  
 
+  root_block_device {
+    volume_size = 20
+    volume_type = "gp3"
+  }
+
   tags = {
     Name = "FarmecAPI"
   }
