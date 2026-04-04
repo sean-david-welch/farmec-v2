@@ -47,6 +47,7 @@ jobs:
             cd /home/seanwelch/farmec-v2
             git pull origin main
             docker compose build
+            cp database/database.db database/database.db.bak
             docker compose run --rm web uv run python manage.py migrate --noinput
             docker compose up -d --remove-orphans
             sudo nginx -s reload
