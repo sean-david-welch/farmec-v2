@@ -126,11 +126,3 @@
           aws s3 cp /home/seanwelch/farmec-v2/database/database.db
           s3://farmec.ie/backups/database-$(date +\%Y\%m\%d).db
 
-    # --- Old Go service ---
-
-    - name: Stop and disable old Go service
-      systemd:
-        name: farmec.service
-        state: stopped
-        enabled: false
-      ignore_errors: true
