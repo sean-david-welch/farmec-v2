@@ -8,7 +8,8 @@ from django.contrib.admin import ModelAdmin
 from django.db.models import Model, QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.template.loader import render_to_string
-from weasyprint import HTML
+from django.conf import settings
+from weasyprint import CSS, HTML
 
 
 class PDFDownloadAction:
@@ -69,7 +70,8 @@ class PDFDownloadAction:
         context: dict = self.context_fn(obj)
         context['generated_date'] = date.today()
         html_string: str = render_to_string(self.template, context)
-        return HTML(string=html_string).write_pdf()
+        css: CSS = CSS(filename=str(settings.BASE_DIR / 'theme' / 'static' / 'css' / 'pdf.css'))
+        return HTML(string=html_string).write_pdf(stylesheets=[css])
 
     def build_filename(self, obj: Model) -> str:
         """
