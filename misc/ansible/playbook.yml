@@ -118,5 +118,5 @@
         job: >
           set -a && source /home/seanwelch/farmec-v2/.env && set +a &&
           aws s3 cp /home/seanwelch/farmec-v2/database/database.db
-          s3://farmec.ie/backups/database-$(date +\%Y\%m\%d).db
+          s3://farmec-backups/database-$(date +\%Y\%m\%d).db
 
