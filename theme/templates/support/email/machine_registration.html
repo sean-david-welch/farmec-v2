@@ -3,18 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Machine Registration</title>
 </head>
 <body>
 
-<table width="100%" cellpadding="0" cellspacing="0" class="wrapper">
+<table class="wrapper">
     <tr>
-        <td align="center">
-            <table width="620" cellpadding="0" cellspacing="0" class="card">
+        <td class="td-center">
+            <table class="card">
 
                 <!-- Header -->
                 <tr>
                     <td class="header">
-                        <table width="100%" cellpadding="0" cellspacing="0">
+                        <table class="full-width">
                             <tr>
                                 <td>
                                     <div class="brand-name">FARMEC</div>
@@ -22,11 +23,10 @@
                                         Machinery
                                     </div>
                                 </td>
-                                <td align="right" class="doc-info">
+                                <td class="doc-info">
                                     <div class="doc-title">Machine Registration</div>
                                     <div class="doc-ref">Ref: {{ reg.serial_number }}</div>
-                                    {% if reg.date %}
-                                        <div class="doc-date">Date: {{ reg.date }}</div>{% endif %}
+                                    {% if reg.date %} <div class="doc-date">Date: {{ reg.date }}</div>{% endif %}
                                 </td>
                             </tr>
                         </table>
@@ -38,19 +38,19 @@
                     <td class="body">
 
                         <!-- Dealer -->
-                        <table width="100%" cellpadding="0" cellspacing="0" class="section">
+                        <table class="section full-width">
                             <tr>
                                 <td class="section-title">Dealer</td>
                             </tr>
                             <tr>
                                 <td class="section-body">
-                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                    <table class="full-width">
                                         <tr>
-                                            <td width="50%" class="field-col-left">
+                                            <td class="field-col-left col-half">
                                                 <div class="field-label">Dealer Name</div>
                                                 <div class="field-value">{{ reg.dealer_name }}</div>
                                             </td>
-                                            <td width="50%" class="field-col-right">
+                                            <td class="field-col-right col-half">
                                                 <div class="field-label">Dealer Address</div>
                                                 <div class="field-value">{{ reg.dealer_address|default:'' }}</div>
                                             </td>
@@ -61,19 +61,19 @@
                         </table>
 
                         <!-- Owner -->
-                        <table width="100%" cellpadding="0" cellspacing="0" class="section">
+                        <table class="section full-width">
                             <tr>
                                 <td class="section-title">Owner</td>
                             </tr>
                             <tr>
                                 <td class="section-body">
-                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                    <table class="full-width">
                                         <tr>
-                                            <td width="50%" class="field-col-left">
+                                            <td class="field-col-left col-half">
                                                 <div class="field-label">Owner Name</div>
                                                 <div class="field-value">{{ reg.owner_name }}</div>
                                             </td>
-                                            <td width="50%" class="field-col-right">
+                                            <td class="field-col-right col-half">
                                                 <div class="field-label">Owner Address</div>
                                                 <div class="field-value">{{ reg.owner_address|default:'' }}</div>
                                             </td>
@@ -84,29 +84,29 @@
                         </table>
 
                         <!-- Machine -->
-                        <table width="100%" cellpadding="0" cellspacing="0" class="section">
+                        <table class="section full-width">
                             <tr>
                                 <td class="section-title">Machine</td>
                             </tr>
                             <tr>
                                 <td class="section-body">
-                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                    <table class="full-width">
                                         <tr>
-                                            <td width="50%" class="field-col-left">
+                                            <td class="field-col-left col-half">
                                                 <div class="field-label">Machine Model</div>
                                                 <div class="field-value">{{ reg.machine_model }}</div>
                                             </td>
-                                            <td width="50%" class="field-col-right">
+                                            <td class="field-col-right col-half">
                                                 <div class="field-label">Serial Number</div>
                                                 <div class="field-value">{{ reg.serial_number }}</div>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td width="50%" class="field-col-left">
+                                            <td class="field-col-left col-half">
                                                 <div class="field-label">Install Date</div>
                                                 <div class="field-value">{{ reg.install_date|default:'' }}</div>
                                             </td>
-                                            <td width="50%" class="field-col-right">
+                                            <td class="field-col-right col-half">
                                                 <div class="field-label">Invoice Number</div>
                                                 <div class="field-value">{{ reg.invoice_number|default:'' }}</div>
                                             </td>
@@ -117,16 +117,16 @@
                         </table>
 
                         <!-- Pre-Delivery Checklist -->
-                        <table width="100%" cellpadding="0" cellspacing="0" class="section">
+                        <table class="section full-width">
                             <tr>
                                 <td class="section-title">Pre-Delivery Checklist</td>
                             </tr>
                             <tr>
                                 <td class="section-body">
-                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                    <table class="full-width">
                                         <tr>
-                                            <td width="50%" class="field-col-top">
-                                                <table cellpadding="0" cellspacing="0">
+                                            <td class="field-col-top col-half">
+                                                <table>
                                                     <tr>
                                                         <td class="checkbox {% if reg.complete_supply %}checked{% endif %}">
                                                             {% if reg.complete_supply %}&#10003;{% endif %}</td>
@@ -134,8 +134,8 @@
                                                     </tr>
                                                 </table>
                                             </td>
-                                            <td width="50%" class="field-col-top">
-                                                <table cellpadding="0" cellspacing="0">
+                                            <td class="field-col-top col-half">
+                                                <table>
                                                     <tr>
                                                         <td class="checkbox {% if reg.pdi_complete %}checked{% endif %}">
                                                             {% if reg.pdi_complete %}&#10003;{% endif %}</td>
@@ -145,8 +145,8 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td width="50%" class="field-col-top">
-                                                <table cellpadding="0" cellspacing="0">
+                                            <td class="field-col-top col-half">
+                                                <table>
                                                     <tr>
                                                         <td class="checkbox {% if reg.pto_correct %}checked{% endif %}">
                                                             {% if reg.pto_correct %}&#10003;{% endif %}</td>
@@ -154,8 +154,8 @@
                                                     </tr>
                                                 </table>
                                             </td>
-                                            <td width="50%" class="field-col-top">
-                                                <table cellpadding="0" cellspacing="0">
+                                            <td class="field-col-top col-half">
+                                                <table>
                                                     <tr>
                                                         <td class="checkbox {% if reg.machine_test_run %}checked{% endif %}">
                                                             {% if reg.machine_test_run %}&#10003;{% endif %}</td>
@@ -165,8 +165,8 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td width="50%" class="field-col-top">
-                                                <table cellpadding="0" cellspacing="0">
+                                            <td class="field-col-top col-half">
+                                                <table>
                                                     <tr>
                                                         <td class="checkbox {% if reg.safety_induction %}checked{% endif %}">
                                                             {% if reg.safety_induction %}&#10003;{% endif %}</td>
@@ -174,8 +174,8 @@
                                                     </tr>
                                                 </table>
                                             </td>
-                                            <td width="50%" class="field-col-top">
-                                                <table cellpadding="0" cellspacing="0">
+                                            <td class="field-col-top col-half">
+                                                <table>
                                                     <tr>
                                                         <td class="checkbox {% if reg.operator_handbook %}checked{% endif %}">
                                                             {% if reg.operator_handbook %}&#10003;{% endif %}</td>
@@ -190,19 +190,19 @@
                         </table>
 
                         <!-- Completion -->
-                        <table width="100%" cellpadding="0" cellspacing="0" class="section">
+                        <table class="section full-width">
                             <tr>
                                 <td class="section-title">Completion</td>
                             </tr>
                             <tr>
                                 <td class="section-body">
-                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                    <table class="full-width">
                                         <tr>
-                                            <td width="50%" class="field-col-left">
+                                            <td class="field-col-left col-half">
                                                 <div class="field-label">Date</div>
                                                 <div class="field-value">{{ reg.date|default:'' }}</div>
                                             </td>
-                                            <td width="50%" class="field-col-right">
+                                            <td class="field-col-right col-half">
                                                 <div class="field-label">Completed By</div>
                                                 <div class="field-value">{{ reg.completed_by|default:'' }}</div>
                                             </td>
@@ -218,10 +218,10 @@
                 <!-- Footer -->
                 <tr>
                     <td class="footer">
-                        <table width="100%" cellpadding="0" cellspacing="0">
+                        <table class="full-width">
                             <tr>
                                 <td class="footer-text">Farmec Ireland Ltd.</td>
-                                <td align="right" class="footer-text">{{ generated_date }}</td>
+                                <td class="footer-text align-right">{{ generated_date }}</td>
                             </tr>
                         </table>
                     </td>
