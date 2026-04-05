@@ -1,3 +1,4 @@
+import css_inline
 import resend
 from django.conf import settings
 from django.db.models import QuerySet
@@ -9,6 +10,8 @@ from support.models import Warrantyclaim, Partsrequired, Machineregistration
 
 class EmailClient:
     """Resend-backed email client for internal notification emails."""
+    email_css: str = (settings.BASE_DIR / 'theme' / 'static' / 'css' / 'emails.css').read_text()
+    inliner: css_inline.CSSInliner = css_inline.CSSInliner(extra_css=email_css)
 
     def __init__(self) -> None:
         """Initialise Resend API key and recipient from settings."""
@@ -29,7 +32,7 @@ class EmailClient:
             "message": message,
             "generated_date": timezone.now().strftime("%d %b %Y, %H:%M"),
         }
-        html: str = render_to_string("support/email/contact.html", context)
+        html: str = self.inliner.inline(render_to_string("support/email/contact.html", context))
         params: resend.Emails.SendParams = {
             "from": "Farmec Ireland Ltd <noreply@farmec.ie>",
             "to": [self.recipient],
@@ -51,7 +54,7 @@ class EmailClient:
             "parts": parts,
             "generated_date": timezone.now().strftime("%d %b %Y, %H:%M"),
         }
-        html: str = render_to_string("support/email/warranty_claim.html", context)
+        html: str = self.inliner.inline(render_to_string("support/email/warranty_claim.html", context))
         text: str = (
             f"A new warranty claim has been submitted.\n\n"
             f"Dealer: {claim.dealer}\n"
@@ -78,7 +81,7 @@ class EmailClient:
             "reg": reg,
             "generated_date": timezone.now().strftime("%d %b %Y, %H:%M"),
         }
-        html: str = render_to_string("support/email/machine_registration.html", context)
+        html: str = self.inliner.inline(render_to_string("support/email/machine_registration.html", context))
         text: str = (
             f"A new machine registration has been submitted.\n\n"
             f"Dealer: {reg.dealer_name}\n"
