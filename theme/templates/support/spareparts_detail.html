@@ -4,15 +4,15 @@
 {% block title %}{{ supplier.name|default:"" }} Spare Parts - Farmec Ireland{% endblock %}
 
 {% block meta %}
-<meta name="description" content="{% if supplier %}Explore spare parts for {{ supplier.name }}. Farmec offers top-quality spare parts for your agricultural machinery.{% else %}Browse spare parts from various suppliers to ensure your machines are always operational.{% endif %}">
+<meta name="description" content="{% if supplier %}Order genuine {{ supplier.name }} spare parts through Farmec Ireland Ltd, authorised importer and distributor based in Co. Meath. Parts catalogues and support available for Irish farmers.{% else %}Browse spare parts and parts catalogues from Farmec Ireland Ltd, agricultural machinery importers based in Co. Meath, serving farmers across Ireland.{% endif %}">
 <meta property="og:title" content="{{ supplier.name|default:'' }} Spare Parts - Farmec Ireland">
-<meta property="og:description" content="{% if supplier %}Explore spare parts for {{ supplier.name }}. Farmec offers top-quality spare parts for your agricultural machinery.{% else %}Browse spare parts from various suppliers to ensure your machines are always operational.{% endif %}">
+<meta property="og:description" content="{% if supplier %}Order genuine {{ supplier.name }} spare parts through Farmec Ireland Ltd, authorised importer and distributor based in Co. Meath. Parts catalogues and support available for Irish farmers.{% else %}Browse spare parts and parts catalogues from Farmec Ireland Ltd, agricultural machinery importers based in Co. Meath, serving farmers across Ireland.{% endif %}">
 <meta property="og:image" content="https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp">
 <meta property="og:url" content="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{ supplier.name|default:'' }} Spare Parts - Farmec Ireland">
-<meta name="twitter:description" content="{% if supplier %}Explore spare parts for {{ supplier.name }}. Farmec offers top-quality spare parts for your agricultural machinery.{% else %}Browse spare parts from various suppliers to ensure your machines are always operational.{% endif %}">
+<meta name="twitter:description" content="{% if supplier %}Order genuine {{ supplier.name }} spare parts through Farmec Ireland Ltd, authorised importer and distributor based in Co. Meath. Parts catalogues and support available for Irish farmers.{% else %}Browse spare parts and parts catalogues from Farmec Ireland Ltd, agricultural machinery importers based in Co. Meath, serving farmers across Ireland.{% endif %}">
 <meta name="twitter:image" content="https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp">
 {% endblock %}
 
