@@ -10,7 +10,8 @@ BASE_READONLY = ('uid', 'created', 'modified')
 @admin.register(Employee)
 class EmployeeAdmin(ModelAdmin):
     form = EmployeeForm
-    list_display = ('name', 'role', 'email', 'publish')
+    list_display = ('name', 'role', 'email', 'order', 'publish')
+    list_editable = ('order',)
     search_fields = ('name', 'role', 'email')
     readonly_fields = BASE_READONLY
-    ordering = ('name',)
+    ordering = ('order', 'name',)
