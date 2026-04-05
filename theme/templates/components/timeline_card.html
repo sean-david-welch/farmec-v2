@@ -1,9 +1,11 @@
-<div class="timeline-card scroll-reveal">
+<div class="timeline-item scroll-reveal">
     <div class="timeline-icon">
         <i class="far fa-clock"></i> {{ timeline.date|date:"Y"|default:"—" }}
     </div>
-    <div class="timeline-content">
-        <h3>{{ timeline.title }}</h3>
-        <p>{{ timeline.body }}</p>
+    <div class="timeline-card">
+        <div class="timeline-content">
+            <h3>{{ timeline.title }}</h3>
+            <p>{{ timeline.body }}</p>
+        </div>
     </div>
 </div>
