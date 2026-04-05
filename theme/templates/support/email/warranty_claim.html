@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warranty Claim</title>
 </head>
 <body>
 
-<table width="100%" cellpadding="0" cellspacing="0" class="wrapper">
+<table class="wrapper">
     <tr>
-        <td align="center">
-            <table width="620" cellpadding="0" cellspacing="0" class="card">
-
+        <td class="td-center">
+            <table class="card">
                 <!-- Header -->
                 <tr>
                     <td class="header">
-                        <table width="100%" cellpadding="0" cellspacing="0">
+                        <table class="full-width">
                             <tr>
                                 <td>
                                     <div class="brand-name">FARMEC</div>
@@ -22,35 +22,32 @@
                                         Machinery
                                     </div>
                                 </td>
-                                <td align="right" class="doc-info">
+                                <td class="doc-info">
                                     <div class="doc-title">Warranty Claim</div>
                                     <div class="doc-ref">Ref: {{ claim.serial_number }}</div>
-                                    {% if claim.failure_date %}
-                                        <div class="doc-date">Date: {{ claim.failure_date }}</div>{% endif %}
+                                    {% if claim.failure_date %}<div class="doc-date">Date: {{ claim.failure_date }}</div>{% endif %}
                                 </td>
                             </tr>
                         </table>
                     </td>
                 </tr>
-
                 <!-- Body -->
                 <tr>
                     <td class="body">
-
                         <!-- Dealer -->
-                        <table width="100%" cellpadding="0" cellspacing="0" class="section">
+                        <table class="section full-width">
                             <tr>
                                 <td class="section-title">Dealer</td>
                             </tr>
                             <tr>
                                 <td class="section-body">
-                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                    <table class="full-width">
                                         <tr>
-                                            <td width="50%" class="field-col-left">
+                                            <td class="field-col-left col-half">
                                                 <div class="field-label">Dealer Name</div>
                                                 <div class="field-value">{{ claim.dealer }}</div>
                                             </td>
-                                            <td width="50%" class="field-col-right">
+                                            <td class="field-col-right col-half">
                                                 <div class="field-label">Dealer Contact</div>
                                                 <div class="field-value">{{ claim.dealer_contact|default:'' }}</div>
                                             </td>
@@ -59,25 +56,24 @@
                                 </td>
                             </tr>
                         </table>
-
                         <!-- Machine -->
-                        <table width="100%" cellpadding="0" cellspacing="0" class="section">
+                        <table class="section full-width">
                             <tr>
                                 <td class="section-title">Machine</td>
                             </tr>
                             <tr>
                                 <td class="section-body">
-                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                    <table class="full-width">
                                         <tr>
-                                            <td width="34%" class="field-col-left">
+                                            <td class="field-col-left col-third-wide">
                                                 <div class="field-label">Owner Name</div>
                                                 <div class="field-value">{{ claim.owner_name }}</div>
                                             </td>
-                                            <td width="33%" class="field-col-mid">
+                                            <td class="field-col-mid col-third">
                                                 <div class="field-label">Machine Model</div>
                                                 <div class="field-value">{{ claim.machine_model }}</div>
                                             </td>
-                                            <td width="33%" class="field-col-right">
+                                            <td class="field-col-right col-third">
                                                 <div class="field-label">Serial Number</div>
                                                 <div class="field-value">{{ claim.serial_number }}</div>
                                             </td>
@@ -86,25 +82,24 @@
                                 </td>
                             </tr>
                         </table>
-
                         <!-- Dates -->
-                        <table width="100%" cellpadding="0" cellspacing="0" class="section">
+                        <table class="section full-width">
                             <tr>
                                 <td class="section-title">Dates</td>
                             </tr>
                             <tr>
                                 <td class="section-body">
-                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                    <table class="full-width">
                                         <tr>
-                                            <td width="34%" class="field-col-left">
+                                            <td class="field-col-left col-third-wide">
                                                 <div class="field-label">Install Date</div>
                                                 <div class="field-value">{{ claim.install_date|default:'' }}</div>
                                             </td>
-                                            <td width="33%" class="field-col-mid">
+                                            <td class="field-col-mid col-third">
                                                 <div class="field-label">Failure Date</div>
                                                 <div class="field-value">{{ claim.failure_date|default:'' }}</div>
                                             </td>
-                                            <td width="33%" class="field-col-right">
+                                            <td class="field-col-right col-third">
                                                 <div class="field-label">Repair Date</div>
                                                 <div class="field-value">{{ claim.repair_date|default:'' }}</div>
                                             </td>
@@ -113,9 +108,8 @@
                                 </td>
                             </tr>
                         </table>
-
                         <!-- Failure Details -->
-                        <table width="100%" cellpadding="0" cellspacing="0" class="section">
+                        <table class="section full-width">
                             <tr>
                                 <td class="section-title">Failure Details</td>
                             </tr>
@@ -125,9 +119,8 @@
                                 </td>
                             </tr>
                         </table>
-
                         <!-- Repair Details -->
-                        <table width="100%" cellpadding="0" cellspacing="0" class="section">
+                        <table class="section full-width">
                             <tr>
                                 <td class="section-title">Repair Details</td>
                             </tr>
@@ -137,21 +130,20 @@
                                 </td>
                             </tr>
                         </table>
-
                         <!-- Labour -->
-                        <table width="100%" cellpadding="0" cellspacing="0" class="section">
+                        <table class="section full-width">
                             <tr>
                                 <td class="section-title">Labour</td>
                             </tr>
                             <tr>
                                 <td class="section-body">
-                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                    <table class="full-width">
                                         <tr>
-                                            <td width="50%" class="field-col-left">
+                                            <td class="field-col-left col-half">
                                                 <div class="field-label">Labour Hours</div>
                                                 <div class="field-value">{{ claim.labour_hours|default:'' }}</div>
                                             </td>
-                                            <td width="50%" class="field-col-right">
+                                            <td class="field-col-right col-half">
                                                 <div class="field-label">Completed By</div>
                                                 <div class="field-value">{{ claim.completed_by|default:'' }}</div>
                                             </td>
@@ -160,16 +152,15 @@
                                 </td>
                             </tr>
                         </table>
-
                         <!-- Parts Required -->
                         {% if parts %}
-                            <table width="100%" cellpadding="0" cellspacing="0" class="section">
+                            <table class="section full-width">
                                 <tr>
                                     <td class="section-title">Parts Required</td>
                                 </tr>
                                 <tr>
                                     <td class="section-body">
-                                        <table width="100%" cellpadding="0" cellspacing="0" class="parts-table">
+                                        <table class="parts-table full-width">
                                             <thead>
                                             <tr>
                                                 <th class="parts-th">Part Number</th>
@@ -193,26 +184,22 @@
                                 </tr>
                             </table>
                         {% endif %}
-
                     </td>
                 </tr>
-
                 <!-- Footer -->
                 <tr>
                     <td class="footer">
-                        <table width="100%" cellpadding="0" cellspacing="0">
+                        <table class="full-width">
                             <tr>
                                 <td class="footer-text">Farmec Ireland Ltd.</td>
-                                <td align="right" class="footer-text">{{ generated_date }}</td>
+                                <td class="footer-text align-right">{{ generated_date }}</td>
                             </tr>
                         </table>
                     </td>
                 </tr>
-
             </table>
         </td>
     </tr>
 </table>
-
 </body>
 </html>
