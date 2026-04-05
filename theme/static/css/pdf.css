@@ -99,6 +99,8 @@ body {
     min-height: 60px;
 }
 
+.checklist { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px; }
+
 .checklist-row {
     display: flex;
     align-items: center;
