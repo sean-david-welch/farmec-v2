@@ -34,7 +34,7 @@ class EmailClient:
         }
         html: str = self.inliner.inline(render_to_string("support/email/contact.html", context))
         params: resend.Emails.SendParams = {
-            "from": "Farmec Ireland Ltd <noreply@farmec.ie>",
+            "from": "Farmec Ireland Ltd <info@farmec.ie>",
             "to": [self.recipient],
             "subject": subject,
             "text": message,
@@ -63,7 +63,7 @@ class EmailClient:
             f"Serial Number: {claim.serial_number}\n"
         )
         params: resend.Emails.SendParams = {
-            "from": "Farmec Ireland Ltd <noreply@farmec.ie>",
+            "from": "Farmec Ireland Ltd <info@farmec.ie>",
             "to": [self.recipient],
             "subject": subject,
             "text": text,
@@ -90,7 +90,7 @@ class EmailClient:
             f"Serial Number: {reg.serial_number}\n"
         )
         params: resend.Emails.SendParams = {
-            "from": "Farmec Ireland Ltd <noreply@farmec.ie>",
+            "from": "Farmec Ireland Ltd <info@farmec.ie>",
             "to": [self.recipient],
             "subject": subject,
             "text": text,
