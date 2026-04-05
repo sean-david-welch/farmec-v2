@@ -1,0 +1,195 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: #f4f4f4;
+    font-family: Arial, sans-serif;
+    font-size: 11pt;
+    color: #1a1a1a;
+}
+
+.wrapper {
+    background: #f4f4f4;
+    padding: 24px 0;
+}
+
+.card {
+    background: #ffffff;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.header {
+    padding: 24px 32px 16px;
+    border-bottom: 3px solid #dc2626;
+}
+
+.doc-info {
+    vertical-align: top;
+}
+
+.brand-name {
+    font-size: 20pt;
+    font-weight: 700;
+    color: #dc2626;
+    letter-spacing: 2px;
+    line-height: 1.1;
+}
+
+.brand-subtitle {
+    font-size: 9pt;
+    color: #555;
+    margin-top: 2px;
+}
+
+.doc-title {
+    font-size: 14pt;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+.doc-ref {
+    font-size: 9pt;
+    color: #666;
+    margin-top: 4px;
+}
+
+.doc-date {
+    font-size: 9pt;
+    color: #666;
+    margin-top: 2px;
+}
+
+.body {
+    padding: 20px 32px;
+}
+
+.section {
+    margin-bottom: 18px;
+}
+
+.section-title {
+    font-size: 9pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #dc2626;
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 4px;
+}
+
+.section-body {
+    padding-top: 10px;
+}
+
+.field-label {
+    font-size: 8pt;
+    color: #666;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+}
+
+.field-value {
+    font-size: 10.5pt;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 3px;
+    min-height: 20px;
+}
+
+.field-value-multiline {
+    font-size: 10.5pt;
+    border: 1px solid #ccc;
+    padding: 6px;
+    min-height: 60px;
+}
+
+.field-col-left {
+    padding-right: 8px;
+    vertical-align: top;
+}
+
+.field-col-right {
+    padding-left: 8px;
+    vertical-align: top;
+}
+
+.field-col-mid {
+    padding: 0 8px;
+    vertical-align: top;
+}
+
+.field-col-top {
+    padding: 4px 0;
+    vertical-align: middle;
+}
+
+.footer {
+    padding: 12px 32px;
+    border-top: 1px solid #e5e5e5;
+}
+
+.footer-text {
+    font-size: 8pt;
+    color: #999;
+}
+
+.parts-table {
+    border-collapse: collapse;
+    font-size: 10pt;
+}
+
+.parts-th {
+    background: #1a1a1a;
+    color: #fff;
+    padding: 6px 8px;
+    text-align: left;
+    font-size: 9pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.parts-td {
+    padding: 6px 8px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.parts-row-even {
+    background: #f9f9f9;
+}
+
+.checkbox {
+    width: 16px;
+    height: 16px;
+    border: 1.5px solid #555;
+    background: #fff;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 10pt;
+    color: #fff;
+    line-height: 14px;
+}
+
+.checkbox.checked {
+    border-color: #dc2626;
+    background: #dc2626;
+}
+
+.checkbox-label {
+    padding-left: 8px;
+    font-size: 10.5pt;
+}
+
+.message {
+    font-size: 10.5pt;
+    border: 1px solid #ccc;
+    padding: 10px;
+    min-height: 80px;
+    white-space: pre-wrap;
+}
+
+.email-link {
+    color: #dc2626;
+    text-decoration: none;
+}
