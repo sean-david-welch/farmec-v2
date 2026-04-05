@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Contact</title>
 </head>
 <body>
 
-<table width="100%" cellpadding="0" cellspacing="0" class="wrapper">
+<table class="wrapper">
     <tr>
-        <td align="center">
-            <table width="620" cellpadding="0" cellspacing="0" class="card">
-
+        <td class="td-center">
+            <table class="card">
                 <!-- Header -->
                 <tr>
                     <td class="header">
-                        <table width="100%" cellpadding="0" cellspacing="0">
+                        <table class="full-width">
                             <tr>
                                 <td>
                                     <div class="brand-name">FARMEC</div>
@@ -22,7 +22,7 @@
                                         Machinery
                                     </div>
                                 </td>
-                                <td align="right" class="doc-info">
+                                <td class="doc-info">
                                     <div class="doc-title">New Contact</div>
                                     <div class="doc-ref">{{ generated_date }}</div>
                                 </td>
@@ -30,25 +30,23 @@
                         </table>
                     </td>
                 </tr>
-
                 <!-- Body -->
                 <tr>
                     <td class="body">
-
                         <!-- Sender -->
-                        <table width="100%" cellpadding="0" cellspacing="0" class="section">
+                        <table class="section full-width">
                             <tr>
                                 <td class="section-title">Sender</td>
                             </tr>
                             <tr>
                                 <td class="section-body">
-                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                    <table class="full-width">
                                         <tr>
-                                            <td width="50%" class="field-col-left">
+                                            <td class="field-col-left col-half">
                                                 <div class="field-label">Name</div>
                                                 <div class="field-value">{{ name }}</div>
                                             </td>
-                                            <td width="50%" class="field-col-right">
+                                            <td class="field-col-right col-half">
                                                 <div class="field-label">Email</div>
                                                 <div class="field-value"><a href="mailto:{{ email }}"
                                                                             class="email-link">{{ email }}</a></div>
@@ -58,9 +56,8 @@
                                 </td>
                             </tr>
                         </table>
-
                         <!-- Message -->
-                        <table width="100%" cellpadding="0" cellspacing="0" class="section">
+                        <table class="section full-width">
                             <tr>
                                 <td class="section-title">Message</td>
                             </tr>
@@ -73,23 +70,20 @@
 
                     </td>
                 </tr>
-
                 <!-- Footer -->
                 <tr>
                     <td class="footer">
-                        <table width="100%" cellpadding="0" cellspacing="0">
+                        <table class="full-width">
                             <tr>
                                 <td class="footer-text">Farmec Ireland Ltd.</td>
-                                <td align="right" class="footer-text">{{ generated_date }}</td>
+                                <td class="footer-text align-right">{{ generated_date }}</td>
                             </tr>
                         </table>
                     </td>
                 </tr>
-
             </table>
         </td>
     </tr>
 </table>
-
 </body>
 </html>
