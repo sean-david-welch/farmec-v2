@@ -23,6 +23,7 @@ td, th {
 
 .card {
     width: 620px;
+    margin: 0 auto;
     background: #ffffff;
     border-radius: 4px;
     overflow: hidden;
@@ -32,9 +33,6 @@ td, th {
     width: 100%;
 }
 
-.td-center {
-    text-align: center;
-}
 
 .align-right {
     text-align: right;
