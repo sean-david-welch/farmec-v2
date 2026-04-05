@@ -5,7 +5,7 @@ from django.db.models import QuerySet
 from django.urls import reverse
 
 from catalog.models import Supplier, Machine, Spareparts
-from content.models import Blog, Exhibition
+from content.models import Blog
 
 
 class SupplierSitemap(Sitemap):
@@ -64,20 +64,6 @@ class BlogSitemap(Sitemap):
         return f'/blog/{obj.id}/'
 
 
-class ExhibitionSitemap(Sitemap):
-    changefreq: str = 'monthly'
-    priority: float = 0.6
-
-    def items(self) -> QuerySet[Exhibition]:
-        return Exhibition.objects.publish()
-
-    def lastmod(self, obj: Exhibition) -> datetime:
-        return obj.modified
-
-    def location(self, obj: Exhibition) -> str:
-        return '/exhibitions/'
-
-
 STATIC_URLS: dict[str, float] = {
     'content:home': 1.0,
     'catalog:supplier_list': 0.9,
@@ -108,6 +94,5 @@ sitemaps: dict[str, type[Sitemap]] = {
     'machines': MachineSitemap,
     'spareparts': SparePartsSitemap,
     'blog': BlogSitemap,
-    'exhibitions': ExhibitionSitemap,
     'static': StaticSitemap,
 }
