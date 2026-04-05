@@ -16,7 +16,8 @@ Including another URLconf
 """
 from django.conf import settings
 from django.contrib import admin
-from django.urls import path, include
+from django.http import HttpRequest, HttpResponse
+from django.urls import path, include, URLPattern, URLResolver
 from django.contrib.auth import views as auth_views
 from django.contrib.sitemaps.views import sitemap
 from django.shortcuts import render
@@ -24,13 +25,16 @@ from django.views.generic import RedirectView, TemplateView
 
 from farmec.sitemaps import sitemaps
 
-def page_not_found(request, exception=None):
+
+def page_not_found(request: HttpRequest, exception: Exception | None = None) -> HttpResponse:
     return render(request, '404.html', status=404)
 
-def server_error(request, exception=None):
+
+def server_error(request: HttpRequest, exception: Exception | None = None) -> HttpResponse:
     return render(request, 'error.html', status=500)
 
-urlpatterns = [
+
+urlpatterns: list[URLPattern | URLResolver] = [
     path('supplier', RedirectView.as_view(url='/suppliers/', permanent=True)),
     path('supplier/', RedirectView.as_view(url='/suppliers/', permanent=True)),
     path('about', RedirectView.as_view(url='/team/', permanent=True)),
