@@ -1015,14 +1015,17 @@
 .timeline {
     position: relative;
     margin: 2rem 10rem;
-    padding-left: 2rem;
+    padding-left: 3.5rem;
     border-left: 4px solid #dc2626;
 }
 
-.timeline-card {
+.timeline-item {
     position: relative;
     margin-bottom: 2rem;
-    padding: 1.25rem;
+}
+
+.timeline-card {
+    padding: 1rem;
     background-color: #27272a;
     border-radius: 0.5rem;
     border-width: 2px;
@@ -1047,25 +1050,25 @@
     transform: translateY(0);
 }
 
-.timeline-card::before {
-    content: '';
+.timeline-icon {
     position: absolute;
-    left: -2.5rem;
-    top: 1.5rem;
-    width: 1rem;
-    height: 1rem;
+    left: -5.5rem;
+    top: 1rem;
     background-color: #dc2626;
+    color: #f3f4f6;
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: 0.3rem 0.75rem;
     border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    white-space: nowrap;
 }
 
 .timeline-content h3 {
     color: #f3f4f6;
     margin-bottom: 0.5rem;
-}
-
-.timeline-date {
-    color: #a1a1aa;
-    font-size: 0.875rem;
 }
 
 .timeline-content p {
@@ -1076,6 +1079,13 @@
 @media (max-width: 768px) {
     .timeline {
         margin: 2rem 1.25rem;
+        padding-left: 5rem;
+    }
+
+    .timeline-icon {
+        left: -4.5rem;
+        font-size: 0.75rem;
+        padding: 0.2rem 0.5rem;
     }
 }
 
