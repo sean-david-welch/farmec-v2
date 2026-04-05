@@ -1,6 +1,6 @@
 <div class="timeline-card scroll-reveal">
     <div class="timeline-icon">
-        <i class="far fa-clock"></i> {{ timeline.date|date:"Y" }}
+        <i class="far fa-clock"></i> {{ timeline.date|date:"Y"|default:"—" }}
     </div>
     <div class="timeline-content">
         <h3>{{ timeline.title }}</h3>
