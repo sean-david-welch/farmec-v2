@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /login/
+Disallow: /logout/
+
+Sitemap: https://www.farmec.ie/sitemap.xml
