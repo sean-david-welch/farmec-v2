@@ -18,8 +18,11 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
+from django.contrib.sitemaps.views import sitemap
 from django.shortcuts import render
-from django.views.generic import RedirectView
+from django.views.generic import RedirectView, TemplateView
+
+from farmec.sitemaps import sitemaps
 
 def page_not_found(request, exception=None):
     return render(request, '404.html', status=404)
@@ -41,6 +44,8 @@ urlpatterns = [
     path('spareparts', RedirectView.as_view(url='/spareparts/', permanent=True)),
     path('suppliers', RedirectView.as_view(url='/suppliers/', permanent=True)),
 
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
+    path('robots.txt', TemplateView.as_view(template_name='robots.txt', content_type='text/plain')),
     path('favicon.ico', RedirectView.as_view(url='/static/favicon.svg', permanent=True)),
     path('admin/', admin.site.urls),
     path('login/', auth_views.LoginView.as_view(template_name='pages/login.html', next_page='/'), name='login'),
