@@ -87,7 +87,7 @@ class Spareparts(BaseModel):
     supplier = models.ForeignKey('Supplier', on_delete=models.CASCADE, blank=True, null=True, verbose_name=_('supplier'), help_text=_('Supplier that provides this spare part'))
     name = models.CharField(max_length=255, verbose_name=_('name'), help_text=_('Spare part name or description'))
     parts_image = models.ImageField(upload_to='farmec_images/Spareparts/', blank=True, null=True, verbose_name=_('image'), help_text=_('Spare part image'))
-    spare_parts_link = models.URLField(blank=True, null=True, verbose_name=_('link'), help_text=_('URL to spare part datasheet or ordering page'))
+    spare_parts_link = models.URLField(max_length=500, blank=True, null=True, verbose_name=_('link'), help_text=_('URL to spare part datasheet or ordering page'))
     slug = models.SlugField(max_length=255, blank=True, null=True, verbose_name=_('slug'), help_text=_('URL-friendly identifier'))
 
     objects = SparepartsQuerySet.as_manager()
