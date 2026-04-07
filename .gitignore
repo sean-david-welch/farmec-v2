@@ -42,6 +42,8 @@ db.sqlite3
 .env.local
 staticfiles
 
+notes/RATES.md
+
 # Terraform
 **/.terraform/
 **/.terraform.lock.hcl
