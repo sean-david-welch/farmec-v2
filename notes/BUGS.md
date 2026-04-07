@@ -22,3 +22,14 @@ Need to define the keyword set the site should rank for before any on-page or me
 - See `SEO.md` for any existing notes — expand it once the query list is agreed
 
 ---
+
+## 3. EC2 — AWS CLI Not Configured for S3 Backup
+
+Nightly backup cron (`0 2 * * *`) copies the SQLite DB to `s3://farmec-backups/` but has been silently failing since at least 2026-04-05 — AWS credentials are not configured on the server.
+
+**What's needed:**
+- Preferred: attach an IAM instance profile to the EC2 instance scoped to `s3:PutObject` on `s3://farmec-backups/*` — no credentials in `.env` required
+- Quick fix alternative: add `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` to `.env` on the server
+- Either way: add `AWS_DEFAULT_REGION=eu-west-1` to `.env` on the server (currently missing)
+
+---
