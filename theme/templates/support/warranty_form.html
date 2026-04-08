@@ -1,0 +1,203 @@
+{% extends "base.html" %}
+
+{% block title %}Warranty Claim - Farmec Ireland{% endblock %}
+
+{% block content %}
+<section class="form-page-section">
+    <form class="form" method="post" action=".">
+        {% csrf_token %}
+        <h1 class="main-heading">Warranty Claim Form</h1>
+
+        <p class="form-section-title">Dealer Information</p>
+        <div class="form-row">
+            <div>
+                {{ form.dealer.label_tag }}
+                {{ form.dealer }}
+                {% for error in form.dealer.errors %}<p class="error-message">{{ error }}</p>{% endfor %}
+            </div>
+            <div>
+                {{ form.dealer_contact.label_tag }}
+                {{ form.dealer_contact }}
+                {% for error in form.dealer_contact.errors %}<p class="error-message">{{ error }}</p>{% endfor %}
+            </div>
+        </div>
+
+        <p class="form-section-title">Machine Information</p>
+        <div class="form-row">
+            <div>
+                {{ form.owner_name.label_tag }}
+                {{ form.owner_name }}
+                {% for error in form.owner_name.errors %}<p class="error-message">{{ error }}</p>{% endfor %}
+            </div>
+            <div>
+                {{ form.machine_model.label_tag }}
+                {{ form.machine_model }}
+                {% for error in form.machine_model.errors %}<p class="error-message">{{ error }}</p>{% endfor %}
+            </div>
+            <div>
+                {{ form.serial_number.label_tag }}
+                {{ form.serial_number }}
+                {% for error in form.serial_number.errors %}<p class="error-message">{{ error }}</p>{% endfor %}
+            </div>
+        </div>
+
+        <p class="form-section-title">Dates</p>
+        <div class="form-row">
+            <div>
+                {{ form.install_date.label_tag }}
+                {{ form.install_date }}
+                {% for error in form.install_date.errors %}<p class="error-message">{{ error }}</p>{% endfor %}
+            </div>
+            <div>
+                {{ form.failure_date.label_tag }}
+                {{ form.failure_date }}
+                {% for error in form.failure_date.errors %}<p class="error-message">{{ error }}</p>{% endfor %}
+            </div>
+            <div>
+                {{ form.repair_date.label_tag }}
+                {{ form.repair_date }}
+                {% for error in form.repair_date.errors %}<p class="error-message">{{ error }}</p>{% endfor %}
+            </div>
+        </div>
+
+        <p class="form-section-title">Details</p>
+        <div>
+            {{ form.failure_details.label_tag }}
+            {{ form.failure_details }}
+            {% for error in form.failure_details.errors %}<p class="error-message">{{ error }}</p>{% endfor %}
+        </div>
+        <div>
+            {{ form.repair_details.label_tag }}
+            {{ form.repair_details }}
+            {% for error in form.repair_details.errors %}<p class="error-message">{{ error }}</p>{% endfor %}
+        </div>
+
+        <p class="form-section-title">Completion</p>
+        <div class="form-row">
+            <div>
+                {{ form.labour_hours.label_tag }}
+                {{ form.labour_hours }}
+                {% for error in form.labour_hours.errors %}<p class="error-message">{{ error }}</p>{% endfor %}
+            </div>
+            <div>
+                {{ form.completed_by.label_tag }}
+                {{ form.completed_by }}
+                {% for error in form.completed_by.errors %}<p class="error-message">{{ error }}</p>{% endfor %}
+            </div>
+        </div>
+
+        <p class="form-section-title">Parts Required</p>
+        <div id="parts-container">
+            <div class="part-entry" data-index="0">
+                <div class="part-entry-header">
+                    <h2 class="main-heading">Part 1</h2>
+                </div>
+                <div class="form-row">
+                    <div>
+                        <label for="part_number_0">Part Number</label>
+                        <input type="text" name="part_number_0" id="part_number_0" placeholder="Enter part number">
+                    </div>
+                    <div>
+                        <label for="quantity_needed_0">Quantity Needed</label>
+                        <input type="number" name="quantity_needed_0" id="quantity_needed_0" placeholder="Enter quantity needed">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div>
+                        <label for="invoice_number_0">Invoice Number</label>
+                        <input type="text" name="invoice_number_0" id="invoice_number_0" placeholder="Enter invoice number">
+                    </div>
+                    <div>
+                        <label for="part_description_0">Part Description</label>
+                        <input type="text" name="part_description_0" id="part_description_0" placeholder="Enter description">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" name="part_count" id="part_count" value="1">
+
+        <div class="form-actions">
+            <a href="{% url 'catalog:spareparts' %}" class="btn btn-form">
+                Cancel <i class="fa-solid fa-xmark"></i>
+            </a>
+            <button type="button" class="btn btn-form" onclick="addWarrantyPart()">
+                Add Part <i class="fa-solid fa-plus"></i>
+            </button>
+            <button class="btn btn-form" type="submit">
+                Submit <i class="fa-solid fa-paper-plane"></i>
+            </button>
+        </div>
+    </form>
+</section>
+
+{% block extra_js %}
+<script>
+    (function () {
+        function buildPartHtml(index) {
+            return `
+                <div class="part-entry" data-index="${index}">
+                    <div class="part-entry-header">
+                        <h2 class="main-heading">Part ${index + 1}</h2>
+                        <button type="button" class="part-remove-btn" onclick="removeWarrantyPart(this)">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                    <div class="form-row">
+                        <div>
+                            <label for="part_number_${index}">Part Number</label>
+                            <input type="text" name="part_number_${index}" id="part_number_${index}" placeholder="Enter part number">
+                        </div>
+                        <div>
+                            <label for="quantity_needed_${index}">Quantity Needed</label>
+                            <input type="number" name="quantity_needed_${index}" id="quantity_needed_${index}" placeholder="Enter quantity needed">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div>
+                            <label for="invoice_number_${index}">Invoice Number</label>
+                            <input type="text" name="invoice_number_${index}" id="invoice_number_${index}" placeholder="Enter invoice number">
+                        </div>
+                        <div>
+                            <label for="part_description_${index}">Part Description</label>
+                            <input type="text" name="part_description_${index}" id="part_description_${index}" placeholder="Enter description">
+                        </div>
+                    </div>
+                </div>`;
+        }
+
+        function renumberParts() {
+            const entries = document.querySelectorAll('#parts-container .part-entry');
+            entries.forEach((entry, i) => {
+                entry.dataset.index = i;
+                entry.querySelector('h2').textContent = `Part ${i + 1}`;
+                entry.querySelector('[name^="part_number_"]').name = `part_number_${i}`;
+                entry.querySelector('[name^="part_number_"]').id = `part_number_${i}`;
+                entry.querySelector('[name^="quantity_needed_"]').name = `quantity_needed_${i}`;
+                entry.querySelector('[name^="quantity_needed_"]').id = `quantity_needed_${i}`;
+                entry.querySelector('[name^="invoice_number_"]').name = `invoice_number_${i}`;
+                entry.querySelector('[name^="invoice_number_"]').id = `invoice_number_${i}`;
+                entry.querySelector('[name^="part_description_"]').name = `part_description_${i}`;
+                entry.querySelector('[name^="part_description_"]').id = `part_description_${i}`;
+                const removeBtn = entry.querySelector('.part-remove-btn');
+                if (removeBtn) removeBtn.style.display = entries.length === 1 ? 'none' : '';
+            });
+            document.getElementById('part_count').value = entries.length;
+        }
+
+        window.addWarrantyPart = function () {
+            const container = document.getElementById('parts-container');
+            const index = container.querySelectorAll('.part-entry').length;
+            container.insertAdjacentHTML('beforeend', buildPartHtml(index));
+            renumberParts();
+        };
+
+        window.removeWarrantyPart = function (btn) {
+            btn.closest('.part-entry').remove();
+            renumberParts();
+        };
+
+        renumberParts();
+    })();
+</script>
+{% endblock %}
+{% endblock %}
