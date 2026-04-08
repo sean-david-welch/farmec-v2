@@ -78,3 +78,15 @@ The parts-required section of the warranty claim flow is rendered/updated client
 - Ensure add/remove part interactions update the DOM via HTMX swaps, not manual JS DOM manipulation
 
 ---
+
+## 8. Unit Tests — Comprehensive Coverage for All Views and Forms
+
+No systematic test coverage exists for Django views or forms across the project.
+
+**What's needed:**
+- Per-app `tests.py` with a `ViewsTests` class per module covering all major behaviours: status codes, template used, context data, redirects, permission checks, HTMX responses, and form submission (valid and invalid) where applicable
+- Use `model_bakery.baker` for fixture generation — no hand-rolled `setUp` factories
+- Use Django's `TestCase` as the base class; `pytest-django` markers where needed
+- Priority order: `support/` (warranty, machine registration, parts required), then `catalog/`, `content/`, `team/`, `legal/`
+
+---
