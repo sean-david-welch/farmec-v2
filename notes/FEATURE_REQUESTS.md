@@ -39,3 +39,17 @@ An admin-only tool for staff to log expenses with receipt attachments, exportabl
 - CSV export action on the admin changelist (`ExportActionMixin` or a custom `ModelAdmin.action`)
 - Exported columns: date, staff name, category, description, amount, receipt URL
 - Restrict access to staff/admin users only — no public-facing view needed
+
+---
+
+## 4. Gemini API — AI-Assisted Expense Organisation
+
+Use the Gemini API to help staff categorise and structure expense data automatically.
+
+**Implementation notes:**
+- On receipt upload (or manual trigger), send receipt image and/or description to Gemini API for extraction
+- Extract structured fields: date, amount, vendor, suggested category
+- Pre-populate the expense form with extracted values; staff confirm/correct before saving
+- Could also run on existing uncategorised expenses as a batch clean-up action in the admin
+- Store the raw Gemini response alongside the record for audit purposes
+- API key stored in `.env` only — never exposed to the frontend
