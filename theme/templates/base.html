@@ -60,6 +60,15 @@ window.initializeMap = function () {
 <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js"></script>
 <script src="{% static 'js/components.js' %}" defer></script>
+{% if messages %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            {% for message in messages %}
+            document.dispatchEvent(new CustomEvent('showToast', {detail: {message: '{{ message|escapejs }}', type: '{{ message.tags }}'}}));
+            {% endfor %}
+        });
+    </script>
+{% endif %}
 <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initializeMap" async defer></script>
 {% block extra_js %}{% endblock %}
 </body>

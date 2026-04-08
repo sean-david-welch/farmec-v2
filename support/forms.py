@@ -5,6 +5,13 @@ from .models import Warrantyclaim, Partsrequired, Machineregistration
 
 class WarrantyclaimForm(forms.ModelForm):
     """Form for creating and updating Warrantyclaim instances."""
+    install_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date', 'onfocus': 'this.showPicker()'}))
+    failure_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date', 'onfocus': 'this.showPicker()'}))
+    repair_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date', 'onfocus': 'this.showPicker()'}))
+    failure_details = forms.CharField(widget=forms.Textarea(attrs={'rows': 3}))
+    repair_details = forms.CharField(widget=forms.Textarea(attrs={'rows': 3}))
+    labour_hours = forms.DecimalField(max_digits=8, decimal_places=2, widget=forms.NumberInput(attrs={'step': '0.5', 'min': '0'}))
+    completed_by = forms.CharField(max_length=255)
 
     class Meta:
         model = Warrantyclaim
@@ -22,16 +29,13 @@ class WarrantyclaimForm(forms.ModelForm):
             'labour_hours',
             'completed_by',
         ]
-        widgets: dict = {
-            'install_date': forms.DateInput(attrs={'type': 'date', 'onfocus': 'this.showPicker()'}),
-            'failure_date': forms.DateInput(attrs={'type': 'date', 'onfocus': 'this.showPicker()'}),
-            'repair_date': forms.DateInput(attrs={'type': 'date', 'onfocus': 'this.showPicker()'}),
-            'labour_hours': forms.NumberInput(attrs={'step': '0.5', 'min': '0'}),
-        }
 
 
 class PartsrequiredForm(forms.ModelForm):
     """Form for creating and updating Partsrequired instances."""
+    part_number = forms.CharField(max_length=100)
+    invoice_number = forms.CharField(max_length=100)
+    description = forms.CharField(widget=forms.Textarea())
 
     class Meta:
         model = Partsrequired
@@ -46,6 +50,12 @@ class PartsrequiredForm(forms.ModelForm):
 
 class MachineregistrationForm(forms.ModelForm):
     """Form for creating and updating Machineregistration instances."""
+    dealer_address = forms.CharField(max_length=500)
+    owner_address = forms.CharField(max_length=500)
+    install_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date', 'onfocus': 'this.showPicker()'}))
+    invoice_number = forms.CharField(max_length=100)
+    date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date', 'onfocus': 'this.showPicker()'}))
+    completed_by = forms.CharField(max_length=255)
     complete_supply = forms.BooleanField(required=False)
     pdi_complete = forms.BooleanField(required=False)
     pto_correct = forms.BooleanField(required=False)
@@ -73,7 +83,3 @@ class MachineregistrationForm(forms.ModelForm):
             'date',
             'completed_by',
         ]
-        widgets: dict = {
-            'install_date': forms.DateInput(attrs={'type': 'date', 'onfocus': 'this.showPicker()'}),
-            'date': forms.DateInput(attrs={'type': 'date', 'onfocus': 'this.showPicker()'}),
-        }

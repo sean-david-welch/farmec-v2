@@ -179,6 +179,42 @@
     margin: 0 1.25rem;
 }
 
+/* Form Page Layout */
+.form-page-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3rem 1rem 5rem;
+}
+
+.form-page-section .form {
+    width: 100%;
+    max-width: 860px;
+    border-radius: 1rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.form-row > div {
+    margin: 0.5rem 0;
+}
+
+.form-section-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #a1a1aa;
+    text-align: left;
+    border-bottom: 1px solid #52525b;
+    padding-bottom: 0.4rem;
+    margin-bottom: 0;
+}
+
 /* Contact Form */
 .form-grid {
     display: flex;
@@ -238,6 +274,10 @@
     margin-top: 1rem;
     width: 100%;
     align-self: flex-start;
+}
+
+.input-error {
+    border-color: #b91c1c;
 }
 
 .form-errors {

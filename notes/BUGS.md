@@ -33,3 +33,72 @@ Nightly backup cron (`0 2 * * *`) copies the SQLite DB to `s3://farmec-backups/`
 - Either way: add `AWS_DEFAULT_REGION=eu-west-1` to `.env` on the server (currently missing)
 
 ---
+
+## 4. Inline JS — Move to Dedicated JS Files
+
+Inline `<script>` blocks scattered across templates should be extracted into dedicated static JS files.
+
+**What's needed:**
+- Audit templates for inline `<script>` blocks
+- Move logic into appropriately named files under `theme/static/js/`
+- Reference them via `{% static %}` tags
+- Ensures CSP compatibility, cacheability, and easier maintenance
+
+---
+
+## 5. Google Maps — Move to Backend Rendering
+
+Google Maps is currently rendered client-side (API key exposed in templates/JS).
+
+**What's needed:**
+- Move map generation to the backend — use the Maps Static API or embed URL server-side
+- Remove the JS Maps SDK from the frontend entirely
+- Store the API key only in `.env` / server environment, never in templates or static files
+
+---
+
+## 6. Carousel — Move to HTMX Rendering
+
+The homepage carousel is currently driven by client-side JS.
+
+**What's needed:**
+- Replace JS carousel logic with an HTMX-driven approach (e.g. `hx-get` polling or swap on interaction)
+- Render slide markup server-side from `Carousel` model data
+- Remove or minimise the JS dependency for slide transitions
+
+---
+
+## 7. Warranty Parts Required — Move to HTMX Rendering
+
+The parts-required section of the warranty claim flow is rendered/updated client-side.
+
+**What's needed:**
+- Replace JS-driven parts list with HTMX requests against a Django view
+- Use `HTMXViewMixin` / `django-template-partials` for partial responses
+- Ensure add/remove part interactions update the DOM via HTMX swaps, not manual JS DOM manipulation
+
+---
+
+## 8. Unit Tests — Comprehensive Coverage for All Views and Forms
+
+No systematic test coverage exists for Django views or forms across the project.
+
+**What's needed:**
+- Per-app `tests.py` with a `ViewsTests` class per module covering all major behaviours: status codes, template used, context data, redirects, permission checks, HTMX responses, and form submission (valid and invalid) where applicable
+- Use `model_bakery.baker` for fixture generation — no hand-rolled `setUp` factories
+- Use Django's `TestCase` as the base class; `pytest-django` markers where needed
+- Priority order: `support/` (warranty, machine registration, parts required), then `catalog/`, `content/`, `team/`, `legal/`
+
+---
+
+## 9. Bot Protection — reCAPTCHA or Equivalent on Public Forms
+
+Unauthenticated forms (primarily the contact form) have no bot protection and are vulnerable to spam submissions.
+
+**What's needed:**
+- Add reCAPTCHA v3 (invisible, score-based) or hCaptcha to all public-facing forms — at minimum the contact form, and also warranty claim and machine registration
+- Validate the token server-side in the view before processing the form; reject submissions below the score threshold
+- Store the site key in settings (from `.env`) and pass to templates via context — secret key never leaves the server
+- Consider a lightweight honeypot field as a fallback if a third-party captcha service is undesirable
+
+---
