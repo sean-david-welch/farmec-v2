@@ -58,9 +58,7 @@ class SparePartsIndexView(ListView):
     model: type[Spareparts] = Spareparts
     template_name: str = 'support/spareparts.html'
     context_object_name: str = 'spareparts'
-    queryset: SupplierQuerySet = Supplier.objects.publish().filter(
-        Exists(Spareparts.objects.publish().filter(supplier=OuterRef('pk'))),
-    ).order_by('-created')
+    queryset: SupplierQuerySet = Supplier.objects.publish().filter(Exists(Spareparts.objects.publish().filter(supplier=OuterRef('pk')))).order_by('-created')
 
 
 class SparePartsListView(ListView):
