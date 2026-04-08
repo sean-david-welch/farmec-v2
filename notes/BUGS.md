@@ -90,3 +90,15 @@ No systematic test coverage exists for Django views or forms across the project.
 - Priority order: `support/` (warranty, machine registration, parts required), then `catalog/`, `content/`, `team/`, `legal/`
 
 ---
+
+## 9. Bot Protection — reCAPTCHA or Equivalent on Public Forms
+
+Unauthenticated forms (primarily the contact form) have no bot protection and are vulnerable to spam submissions.
+
+**What's needed:**
+- Add reCAPTCHA v3 (invisible, score-based) or hCaptcha to all public-facing forms — at minimum the contact form, and also warranty claim and machine registration
+- Validate the token server-side in the view before processing the form; reject submissions below the score threshold
+- Store the site key in settings (from `.env`) and pass to templates via context — secret key never leaves the server
+- Consider a lightweight honeypot field as a fallback if a third-party captcha service is undesirable
+
+---
