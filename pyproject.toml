@@ -30,6 +30,13 @@ dependencies = [
     "whitenoise>=6.12.0",
 ]
 
+[tool.mypy]
+plugins = ["mypy_django_plugin.main"]
+ignore_missing_imports = true
+
+[tool.django-stubs]
+django_settings_module = "farmec.settings"
+
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "farmec.settings"
 python_files = ["test_*.py", "conftest.py"]
@@ -37,4 +44,10 @@ testpaths = ["test_scripts"]
 addopts = "--strict-markers --nomigrations"
 markers = [
     "django_db: mark test as requiring database access",
+]
+
+[dependency-groups]
+dev = [
+    "django-stubs>=6.0.2",
+    "mypy>=1.20.0",
 ]
