@@ -63,4 +63,37 @@
     };
 
     renumberParts();
+
+    function validateParts() {
+        const entries = document.querySelectorAll('#parts-container .part-entry');
+        let valid = true;
+        entries.forEach((entry) => {
+            const partNumber = entry.querySelector('[name^="part_number_"]');
+            const quantityNeeded = entry.querySelector('[name^="quantity_needed_"]');
+            const anyFilled = [partNumber, quantityNeeded,
+                entry.querySelector('[name^="invoice_number_"]'),
+                entry.querySelector('[name^="part_description_"]'),
+            ].some(el => el && el.value.trim() !== '');
+
+            [partNumber, quantityNeeded].forEach(el => el && el.classList.remove('input-error'));
+
+            if (anyFilled) {
+                if (!partNumber.value.trim()) { partNumber.classList.add('input-error'); valid = false; }
+                if (!quantityNeeded.value.trim()) { quantityNeeded.classList.add('input-error'); valid = false; }
+            }
+        });
+        return valid;
+    }
+
+    const form = document.querySelector('.form');
+    if (form._submitHandler) {
+        form.removeEventListener('submit', form._submitHandler);
+    }
+    form._submitHandler = function (e) {
+        if (!validateParts()) {
+            e.preventDefault();
+            window.showToast('Please fill in Part Number and Quantity for each part.', 'error');
+        }
+    };
+    form.addEventListener('submit', form._submitHandler);
 })();
