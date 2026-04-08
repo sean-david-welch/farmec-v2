@@ -204,13 +204,13 @@
 }
 
 .form-section-title {
-    font-size: 0.7rem;
+    font-size: 0.85rem;
     font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: #71717a;
+    color: #a1a1aa;
     text-align: left;
-    border-bottom: 1px solid #3f3f46;
+    border-bottom: 1px solid #52525b;
     padding-bottom: 0.4rem;
     margin-bottom: 0;
 }
