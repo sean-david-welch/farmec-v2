@@ -6,6 +6,15 @@ from .models import Warrantyclaim, Partsrequired, Machineregistration
 class WarrantyclaimForm(forms.ModelForm):
     """Form for creating and updating Warrantyclaim instances."""
 
+    # Model fields are nullable but all are required for a valid warranty claim
+    install_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date', 'onfocus': 'this.showPicker()'}))
+    failure_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date', 'onfocus': 'this.showPicker()'}))
+    repair_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date', 'onfocus': 'this.showPicker()'}))
+    failure_details = forms.CharField(widget=forms.Textarea(attrs={'rows': 3}))
+    repair_details = forms.CharField(widget=forms.Textarea(attrs={'rows': 3}))
+    labour_hours = forms.DecimalField(max_digits=8, decimal_places=2, widget=forms.NumberInput(attrs={'step': '0.5', 'min': '0'}))
+    completed_by = forms.CharField(max_length=255)
+
     class Meta:
         model = Warrantyclaim
         fields: list[str] = [
@@ -22,12 +31,6 @@ class WarrantyclaimForm(forms.ModelForm):
             'labour_hours',
             'completed_by',
         ]
-        widgets: dict = {
-            'install_date': forms.DateInput(attrs={'type': 'date', 'onfocus': 'this.showPicker()'}),
-            'failure_date': forms.DateInput(attrs={'type': 'date', 'onfocus': 'this.showPicker()'}),
-            'repair_date': forms.DateInput(attrs={'type': 'date', 'onfocus': 'this.showPicker()'}),
-            'labour_hours': forms.NumberInput(attrs={'step': '0.5', 'min': '0'}),
-        }
 
 
 class PartsrequiredForm(forms.ModelForm):
