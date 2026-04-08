@@ -5,8 +5,6 @@ from .models import Warrantyclaim, Partsrequired, Machineregistration
 
 class WarrantyclaimForm(forms.ModelForm):
     """Form for creating and updating Warrantyclaim instances."""
-
-    # Model fields are nullable but all are required for a valid warranty claim
     install_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date', 'onfocus': 'this.showPicker()'}))
     failure_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date', 'onfocus': 'this.showPicker()'}))
     repair_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date', 'onfocus': 'this.showPicker()'}))
@@ -35,6 +33,9 @@ class WarrantyclaimForm(forms.ModelForm):
 
 class PartsrequiredForm(forms.ModelForm):
     """Form for creating and updating Partsrequired instances."""
+    part_number = forms.CharField(max_length=100)
+    invoice_number = forms.CharField(max_length=100)
+    description = forms.CharField(widget=forms.Textarea())
 
     class Meta:
         model = Partsrequired
