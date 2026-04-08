@@ -56,3 +56,25 @@ Google Maps is currently rendered client-side (API key exposed in templates/JS).
 - Store the API key only in `.env` / server environment, never in templates or static files
 
 ---
+
+## 6. Carousel — Move to HTMX Rendering
+
+The homepage carousel is currently driven by client-side JS.
+
+**What's needed:**
+- Replace JS carousel logic with an HTMX-driven approach (e.g. `hx-get` polling or swap on interaction)
+- Render slide markup server-side from `Carousel` model data
+- Remove or minimise the JS dependency for slide transitions
+
+---
+
+## 7. Warranty Parts Required — Move to HTMX Rendering
+
+The parts-required section of the warranty claim flow is rendered/updated client-side.
+
+**What's needed:**
+- Replace JS-driven parts list with HTMX requests against a Django view
+- Use `HTMXViewMixin` / `django-template-partials` for partial responses
+- Ensure add/remove part interactions update the DOM via HTMX swaps, not manual JS DOM manipulation
+
+---
