@@ -9,10 +9,11 @@ document.addEventListener('showToast', function (e) {
     const { message, type = 'success' } = e.detail;
     Toastify({
         text: message,
-        duration: 3500,
+        duration: 6000,
         gravity: 'top',
         position: 'center',
         stopOnFocus: true,
+        close: true,
         style: {
             background: TOAST_COLOURS[type] ?? TOAST_COLOURS.success,
             padding: '16px 28px',
