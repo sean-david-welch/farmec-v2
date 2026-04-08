@@ -276,6 +276,10 @@
     align-self: flex-start;
 }
 
+.input-error {
+    border-color: #b91c1c;
+}
+
 .form-errors {
     list-style: none;
     padding: 0;
