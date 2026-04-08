@@ -33,3 +33,26 @@ Nightly backup cron (`0 2 * * *`) copies the SQLite DB to `s3://farmec-backups/`
 - Either way: add `AWS_DEFAULT_REGION=eu-west-1` to `.env` on the server (currently missing)
 
 ---
+
+## 4. Inline JS — Move to Dedicated JS Files
+
+Inline `<script>` blocks scattered across templates should be extracted into dedicated static JS files.
+
+**What's needed:**
+- Audit templates for inline `<script>` blocks
+- Move logic into appropriately named files under `theme/static/js/`
+- Reference them via `{% static %}` tags
+- Ensures CSP compatibility, cacheability, and easier maintenance
+
+---
+
+## 5. Google Maps — Move to Backend Rendering
+
+Google Maps is currently rendered client-side (API key exposed in templates/JS).
+
+**What's needed:**
+- Move map generation to the backend — use the Maps Static API or embed URL server-side
+- Remove the JS Maps SDK from the frontend entirely
+- Store the API key only in `.env` / server environment, never in templates or static files
+
+---
