@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}Machine Registration - Farmec Ireland{% endblock %}
+
+{% block content %}
+<section class="form-page-section">
+    <form class="form" method="post" action=".">
+        {% csrf_token %}
+        <h1 class="main-heading">Machine Registration Form</h1>
+
+        <p class="form-section-title">Dealer Information</p>
+        <div class="form-row">
+            <div>
+                {{ form.dealer_name.label_tag }}
+                {{ form.dealer_name }}
+                {% for error in form.dealer_name.errors %}<p class="error-message">{{ error }}</p>{% endfor %}
+            </div>
+            <div>
+                {{ form.dealer_address.label_tag }}
+                {{ form.dealer_address }}
+                {% for error in form.dealer_address.errors %}<p class="error-message">{{ error }}</p>{% endfor %}
+            </div>
+        </div>
+
+        <p class="form-section-title">Owner Information</p>
+        <div class="form-row">
+            <div>
+                {{ form.owner_name.label_tag }}
+                {{ form.owner_name }}
+                {% for error in form.owner_name.errors %}<p class="error-message">{{ error }}</p>{% endfor %}
+            </div>
+            <div>
+                {{ form.owner_address.label_tag }}
+                {{ form.owner_address }}
+                {% for error in form.owner_address.errors %}<p class="error-message">{{ error }}</p>{% endfor %}
+            </div>
+        </div>
+
+        <p class="form-section-title">Machine Information</p>
+        <div class="form-row">
+            <div>
+                {{ form.machine_model.label_tag }}
+                {{ form.machine_model }}
+                {% for error in form.machine_model.errors %}<p class="error-message">{{ error }}</p>{% endfor %}
+            </div>
+            <div>
+                {{ form.serial_number.label_tag }}
+                {{ form.serial_number }}
+                {% for error in form.serial_number.errors %}<p class="error-message">{{ error }}</p>{% endfor %}
+            </div>
+            <div>
+                {{ form.invoice_number.label_tag }}
+                {{ form.invoice_number }}
+                {% for error in form.invoice_number.errors %}<p class="error-message">{{ error }}</p>{% endfor %}
+            </div>
+        </div>
+
+        <p class="form-section-title">Checklist</p>
+        <div>
+            {{ form.complete_supply.label_tag }}
+            {{ form.complete_supply }}
+            {% for error in form.complete_supply.errors %}<p class="error-message">{{ error }}</p>{% endfor %}
+        </div>
+        <div>
+            {{ form.pdi_complete.label_tag }}
+            {{ form.pdi_complete }}
+            {% for error in form.pdi_complete.errors %}<p class="error-message">{{ error }}</p>{% endfor %}
+        </div>
+        <div>
+            {{ form.pto_correct.label_tag }}
+            {{ form.pto_correct }}
+            {% for error in form.pto_correct.errors %}<p class="error-message">{{ error }}</p>{% endfor %}
+        </div>
+        <div>
+            {{ form.machine_test_run.label_tag }}
+            {{ form.machine_test_run }}
+            {% for error in form.machine_test_run.errors %}<p class="error-message">{{ error }}</p>{% endfor %}
+        </div>
+        <div>
+            {{ form.safety_induction.label_tag }}
+            {{ form.safety_induction }}
+            {% for error in form.safety_induction.errors %}<p class="error-message">{{ error }}</p>{% endfor %}
+        </div>
+        <div>
+            {{ form.operator_handbook.label_tag }}
+            {{ form.operator_handbook }}
+            {% for error in form.operator_handbook.errors %}<p class="error-message">{{ error }}</p>{% endfor %}
+        </div>
+
+        <p class="form-section-title">Completion</p>
+        <div class="form-row">
+            <div>
+                {{ form.install_date.label_tag }}
+                {{ form.install_date }}
+                {% for error in form.install_date.errors %}<p class="error-message">{{ error }}</p>{% endfor %}
+            </div>
+            <div>
+                {{ form.date.label_tag }}
+                {{ form.date }}
+                {% for error in form.date.errors %}<p class="error-message">{{ error }}</p>{% endfor %}
+            </div>
+            <div>
+                {{ form.completed_by.label_tag }}
+                {{ form.completed_by }}
+                {% for error in form.completed_by.errors %}<p class="error-message">{{ error }}</p>{% endfor %}
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <a href="{% url 'catalog:spareparts' %}" class="btn btn-form">
+                Cancel <i class="fa-solid fa-xmark"></i>
+            </a>
+            <button class="btn btn-form" type="submit">
+                Submit <i class="fa-solid fa-paper-plane"></i>
+            </button>
+        </div>
+    </form>
+</section>
+{% endblock %}
