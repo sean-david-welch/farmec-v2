@@ -50,6 +50,12 @@ class PartsrequiredForm(forms.ModelForm):
 
 class MachineregistrationForm(forms.ModelForm):
     """Form for creating and updating Machineregistration instances."""
+    dealer_address = forms.CharField(max_length=500)
+    owner_address = forms.CharField(max_length=500)
+    install_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date', 'onfocus': 'this.showPicker()'}))
+    invoice_number = forms.CharField(max_length=100)
+    date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date', 'onfocus': 'this.showPicker()'}))
+    completed_by = forms.CharField(max_length=255)
     complete_supply = forms.BooleanField(required=False)
     pdi_complete = forms.BooleanField(required=False)
     pto_correct = forms.BooleanField(required=False)
@@ -77,7 +83,3 @@ class MachineregistrationForm(forms.ModelForm):
             'date',
             'completed_by',
         ]
-        widgets: dict = {
-            'install_date': forms.DateInput(attrs={'type': 'date', 'onfocus': 'this.showPicker()'}),
-            'date': forms.DateInput(attrs={'type': 'date', 'onfocus': 'this.showPicker()'}),
-        }
