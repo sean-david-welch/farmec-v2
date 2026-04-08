@@ -1,12 +1,11 @@
-// ===== Toastify HTMX Integration =====
+// ===== Toastify Integration =====
 const TOAST_COLOURS = {
     success: '#16a34a',
     error:   '#b91c1c',
     info:    '#2563eb',
 };
 
-document.addEventListener('showToast', function (e) {
-    const { message, type = 'success' } = e.detail;
+window.showToast = function (message, type = 'success') {
     Toastify({
         text: message,
         duration: 6000,
@@ -22,6 +21,11 @@ document.addEventListener('showToast', function (e) {
             borderRadius: '8px',
         },
     }).showToast();
+};
+
+document.addEventListener('showToast', function (e) {
+    const { message, type = 'success' } = e.detail;
+    window.showToast(message, type);
 });
 
 // ===== Scroll Reveal =====
