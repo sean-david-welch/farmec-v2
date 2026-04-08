@@ -16,6 +16,10 @@ class WarrantyclaimFormView(LoginRequiredMixin, FormView):
     template_name: str = 'support/warranty_form.html'
     form_class: type[WarrantyclaimForm] = WarrantyclaimForm
 
+    def form_invalid(self, form: WarrantyclaimForm) -> HttpResponse:
+        messages.error(self.request, 'Please correct the errors below.')
+        return super().form_invalid(form)
+
     def form_valid(self, form: WarrantyclaimForm) -> HttpResponse:
         claim: Warrantyclaim = form.save(commit=False)
         claim.id = str(uuid.uuid4())
@@ -44,6 +48,10 @@ class WarrantyclaimFormView(LoginRequiredMixin, FormView):
 class MachineregistrationFormView(LoginRequiredMixin, FormView):
     template_name: str = 'support/machineregistration_form.html'
     form_class: type[MachineregistrationForm] = MachineregistrationForm
+
+    def form_invalid(self, form: MachineregistrationForm) -> HttpResponse:
+        messages.error(self.request, 'Please correct the errors below.')
+        return super().form_invalid(form)
 
     def form_valid(self, form: MachineregistrationForm) -> HttpResponse:
         registration: Machineregistration = form.save(commit=False)
