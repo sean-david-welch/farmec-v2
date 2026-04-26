@@ -28,7 +28,11 @@
                             {% endif %}
                         </div>
                     {% endfor %}
+                    {% if turnstile_error %}
+                        <p class="error-message form-group-full">Security check failed. Please try again.</p>
+                    {% endif %}
                     <button type="submit" class="btn form-submit">Submit</button>
+                    <div class="cf-turnstile form-group-full" data-sitekey="{{ cloudflare_site_key }}"></div>
                 </form>
             </div>
             {% endpartialdef %}
