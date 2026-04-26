@@ -18,6 +18,13 @@
 
 {% block extra_js %}
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<script>
+    document.body.addEventListener('htmx:afterSwap', function () {
+        if (typeof turnstile !== 'undefined') {
+            turnstile.render('.cf-turnstile');
+        }
+    });
+</script>
 {% endblock %}
 
 {% block content %}
