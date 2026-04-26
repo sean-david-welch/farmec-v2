@@ -161,7 +161,7 @@ AWS_S3_REGION_NAME = 'eu-west-1'
 AWS_S3_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID', default='')
 AWS_S3_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY', default='')
 AWS_S3_CUSTOM_DOMAIN = 'static.farmec.ie'
-AWS_DEFAULT_ACL = 'public-read'
+AWS_DEFAULT_ACL = None
 AWS_QUERYSTRING_AUTH = False
 
 MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
