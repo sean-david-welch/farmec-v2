@@ -32,6 +32,7 @@ class HomeView(HTMXViewMixin, ListView):
         if not form.is_valid():
             return self.render_htmx_response(
                 'includes/contact.html#contact_form',
+                include_base_context=False,
                 extra_context={'form': form},
             )
         EmailClient().send_contact_notification(
