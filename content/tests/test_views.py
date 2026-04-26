@@ -1,5 +1,4 @@
-from unittest.mock import patch
-
+from django.core import mail
 from django.test import TestCase, Client
 from django.urls import reverse_lazy
 from django.contrib.auth.models import User
@@ -34,18 +33,14 @@ class HomeViewTest(TestCase):
             self.assertIn('form', response.context)
 
     def test_home__htmx_contact_valid(self):
-        with patch('content.views.EmailClient') as mock_email:
-            response = self.htmx_client.post(self.url, data={
-                'name': 'Test User',
-                'email': 'test@example.com',
-                'message': 'Hello there',
-            })
+        response = self.htmx_client.post(self.url, data={
+            'name': 'Test User',
+            'email': 'test@example.com',
+            'message': 'Hello there',
+        })
         self.assertEqual(response.status_code, 200)
-        mock_email().send_contact_notification.assert_called_once_with(
-            name='Test User',
-            email='test@example.com',
-            message='Hello there',
-        )
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertIn('Test User', mail.outbox[0].subject)
 
     def test_home__htmx_contact_invalid(self):
         response = self.htmx_client.post(self.url, data={'name': '', 'email': '', 'message': ''})
