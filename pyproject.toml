@@ -40,7 +40,7 @@ django_settings_module = "farmec.settings"
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "farmec.settings"
 python_files = ["test_*.py", "conftest.py"]
-testpaths = ["test_scripts"]
+testpaths = ["."]
 addopts = "--strict-markers --nomigrations"
 markers = [
     "django_db: mark test as requiring database access",
