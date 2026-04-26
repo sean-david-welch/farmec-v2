@@ -166,8 +166,14 @@ AWS_QUERYSTRING_AUTH = False
 
 MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
 
-# Resend email configuration
-RESEND_TOKEN = env('RESEND_TOKEN', default='')
+# Email configuration (Resend SMTP)
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.resend.com'
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = 'resend'
+EMAIL_HOST_PASSWORD = env('RESEND_TOKEN', default='')
+DEFAULT_FROM_EMAIL = 'Farmec Ireland Ltd <info@farmec.ie>'
 EMAIL_USER = env('EMAIL_USER', default='')
 
 # Google API keys
