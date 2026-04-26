@@ -4,8 +4,7 @@
     <h1 class="section-heading">Contact Us:</h1>
     <div class="contact-section">
         <div class="contact-form">
-            <h2 class="main-heading">Get in touch:</h2>
-            {% partialdef contact_form inline=True %}
+            {% partialdef contact_form inline %}
             <div id="contact-form">
                 <form hx-post="{% url 'content:home' %}" hx-target="#contact-form" hx-swap="outerHTML" class="form-grid">
                     {% csrf_token %}
