@@ -28,6 +28,12 @@ class HomeView(HTMXViewMixin, ListView):
         return context
 
     def handle_htmx(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
+        token: str = request.POST.get('cf-turnstile-response', '')
+        if not self.verify_turnstile(token):
+            return self.render_htmx_response(
+                'includes/contact.html#contact_form', include_base_context=False, extra_context={
+                    'form': ContactForm(), 'turnstile_error': True
+                })
         form: ContactForm = ContactForm(request.POST)
         if not form.is_valid():
             return self.render_htmx_response(
