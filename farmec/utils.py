@@ -1,6 +1,6 @@
 import css_inline
-import resend
 from django.conf import settings
+from django.core.mail import EmailMultiAlternatives
 from django.db.models import QuerySet
 from django.template.loader import render_to_string
 from django.utils import timezone
@@ -9,17 +9,21 @@ from support.models import Warrantyclaim, Partsrequired, Machineregistration
 
 
 class EmailClient:
-    """Resend-backed email client for internal notification emails."""
     email_css: str = (settings.BASE_DIR / 'theme' / 'static' / 'css' / 'emails.css').read_text()
     inliner: css_inline.CSSInliner = css_inline.CSSInliner(extra_css=email_css)
     from_email: str = 'Farmec Ireland Ltd <info@farmec.ie>'
 
     def __init__(self) -> None:
-        """Initialise Resend API key and recipient from settings."""
-        resend.api_key: str = settings.RESEND_TOKEN
         self.recipient: str = settings.EMAIL_USER
 
     def send(self, subject: str, text: str, html: str) -> None:
+        """
+        Send an HTML email with a plain-text fallback via Django's email backend.
+
+        :param subject: Email subject line.
+        :param text: Plain-text fallback body.
+        :param html: HTML body (CSS already inlined).
+        """
         email: EmailMultiAlternatives = EmailMultiAlternatives(
             subject=subject,
             body=text,
@@ -30,7 +34,8 @@ class EmailClient:
         email.send()
 
     def send_contact_notification(self, name: str, email: str, message: str) -> None:
-        """Send a contact form notification.
+        """
+        Send a contact form notification.
 
         :param name: Sender's name.
         :param email: Sender's email address.
@@ -44,17 +49,11 @@ class EmailClient:
             "generated_date": timezone.now().strftime("%d %b %Y, %H:%M"),
         }
         html: str = self.inliner.inline(render_to_string("support/email/contact.html", context))
-        params: resend.Emails.SendParams = {
-            "from": "Farmec Ireland Ltd <info@farmec.ie>",
-            "to": [self.recipient],
-            "subject": subject,
-            "text": message,
-            "html": html,
-        }
-        resend.Emails.send(params)
+        self.send(subject=subject, text=message, html=html)
 
     def send_warranty_notification(self, claim: Warrantyclaim, parts: QuerySet[Partsrequired]) -> None:
-        """Send a warranty claim submission notification.
+        """
+        Send a warranty claim submission notification.
 
         :param claim: Submitted ``Warrantyclaim`` instance.
         :param parts: Related ``Partsrequired`` queryset for the claim.
@@ -73,17 +72,11 @@ class EmailClient:
             f"Machine Model: {claim.machine_model}\n"
             f"Serial Number: {claim.serial_number}\n"
         )
-        params: resend.Emails.SendParams = {
-            "from": "Farmec Ireland Ltd <info@farmec.ie>",
-            "to": [self.recipient],
-            "subject": subject,
-            "text": text,
-            "html": html,
-        }
-        resend.Emails.send(params)
+        self.send(subject=subject, text=text, html=html)
 
     def send_registration_notification(self, reg: Machineregistration) -> None:
-        """Send a machine registration submission notification.
+        """
+        Send a machine registration submission notification.
 
         :param reg: Submitted ``Machineregistration`` instance.
         """
@@ -100,11 +93,4 @@ class EmailClient:
             f"Machine Model: {reg.machine_model}\n"
             f"Serial Number: {reg.serial_number}\n"
         )
-        params: resend.Emails.SendParams = {
-            "from": "Farmec Ireland Ltd <info@farmec.ie>",
-            "to": [self.recipient],
-            "subject": subject,
-            "text": text,
-            "html": html,
-        }
-        resend.Emails.send(params)
+        self.send(subject=subject, text=text, html=html)
