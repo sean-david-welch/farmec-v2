@@ -1,3 +1,7 @@
+import json
+import urllib.parse
+import urllib.request
+
 from django.http import HttpRequest, HttpResponse
 from django.views.generic import ListView, DetailView
 
@@ -25,7 +29,24 @@ class HomeView(HTMXViewMixin, ListView):
         context = super().get_context_data(**kwargs)
         context['form'] = ContactForm()
         context['google_maps_api_key'] = settings.GOOGLE_MAPS_API_KEY
+        context['cloudflare_site_key'] = settings.CLOUDFLARE_SITE_KEY
         return context
+
+    def verify_turnstile(self, token: str) -> bool:
+        """
+        Verify a Cloudflare Turnstile token against the siteverify API.
+
+        :param token: The ``cf-turnstile-response`` token from the POST request.
+        :returns: ``True`` if the token is valid, ``False`` otherwise.
+        """
+        data: bytes = urllib.parse.urlencode({
+            'secret': settings.CLOUDFLARE_SECRET_KEY,
+            'response': token,
+        }).encode()
+        req = urllib.request.Request('https://challenges.cloudflare.com/turnstile/v0/siteverify', data=data)
+        with urllib.request.urlopen(req) as response:
+            result: dict = json.loads(response.read())
+        return result.get('success', False)
 
     def handle_htmx(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
         token: str = request.POST.get('cf-turnstile-response', '')
