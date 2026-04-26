@@ -12,6 +12,7 @@ class EmailClient:
     """Resend-backed email client for internal notification emails."""
     email_css: str = (settings.BASE_DIR / 'theme' / 'static' / 'css' / 'emails.css').read_text()
     inliner: css_inline.CSSInliner = css_inline.CSSInliner(extra_css=email_css)
+    from_email: str = 'Farmec Ireland Ltd <info@farmec.ie>'
 
     def __init__(self) -> None:
         """Initialise Resend API key and recipient from settings."""
