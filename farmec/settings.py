@@ -176,6 +176,10 @@ EMAIL_HOST_PASSWORD = env('RESEND_TOKEN', default='')
 DEFAULT_FROM_EMAIL = 'Farmec Ireland Ltd <info@farmec.ie>'
 EMAIL_USER = env('EMAIL_USER', default='')
 
+# Cloudflare Turnstile
+CLOUDFLARE_SITE_KEY = env('CLOUDFLARE_SITE_KEY', default='')
+CLOUDFLARE_SECRET_KEY = env('CLOUDFLARE_SECRET_KEY', default='')
+
 # Google API keys
 GOOGLE_MAPS_API_KEY = env('GOOGLE_MAPS_API_KEY', default='')
 YOUTUBE_API_KEY = env('YOUTUBE_API_KEY', default='')
