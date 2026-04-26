@@ -4,16 +4,18 @@
 {% block title %}{{ blog.title }} - Farmec Blog{% endblock %}
 
 {% block meta %}
-<meta name="description" content="{{ blog.subheading }}">
+{% with description=blog.subheading|default:blog.body|truncatechars:160 %}
+<meta name="description" content="{{ description }}">
 <meta property="og:title" content="{{ blog.title }} - Farmec Blog">
-<meta property="og:description" content="{{ blog.subheading }}">
+<meta property="og:description" content="{{ description }}">
 <meta property="og:image" content="{% if blog.main_image %}{{ blog.main_image.url }}{% else %}https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp{% endif %}">
 <meta property="og:url" content="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
 <meta property="og:type" content="article">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{ blog.title }} - Farmec Blog">
-<meta name="twitter:description" content="{{ blog.subheading }}">
+<meta name="twitter:description" content="{{ description }}">
 <meta name="twitter:image" content="{% if blog.main_image %}{{ blog.main_image.url }}{% else %}https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp{% endif %}">
+{% endwith %}
 {% endblock %}
 
 {% block content %}
