@@ -1,6 +1,7 @@
 import json
 import urllib.parse
 import urllib.request
+from typing import Any
 
 from django.http import HttpRequest, HttpResponse
 from django.views.generic import ListView, DetailView
@@ -49,18 +50,16 @@ class HomeView(HTMXViewMixin, ListView):
         return result.get('success', False)
 
     def handle_htmx(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
+        base: dict[str, Any] = {'form': ContactForm(), 'cloudflare_site_key': settings.CLOUDFLARE_SITE_KEY}
         token: str = request.POST.get('cf-turnstile-response', '')
         if not self.verify_turnstile(token):
             return self.render_htmx_response(
-                'includes/contact.html#contact_form', include_base_context=False, extra_context={
-                    'form': ContactForm(), 'turnstile_error': True
-                })
+                'includes/contact.html#contact_form', include_base_context=False, extra_context={**base, 'turnstile_error': True},
+            )
         form: ContactForm = ContactForm(request.POST)
         if not form.is_valid():
             return self.render_htmx_response(
-                'includes/contact.html#contact_form',
-                include_base_context=False,
-                extra_context={'form': form},
+                'includes/contact.html#contact_form', include_base_context=False, extra_context={**base, 'form': form},
             )
         EmailClient().send_contact_notification(
             name=form.cleaned_data['name'],
@@ -68,7 +67,7 @@ class HomeView(HTMXViewMixin, ListView):
             message=form.cleaned_data['message'],
         )
         return self.render_htmx_response(
-            'includes/contact.html#contact_form', include_base_context=False, extra_context={'form': ContactForm()}, message="Message sent! We'll be in touch shortly.",
+            'includes/contact.html#contact_form', include_base_context=False, extra_context=base, message="Message sent! We'll be in touch shortly.",
         )
 
 
