@@ -18,6 +18,16 @@ class EmailClient:
         resend.api_key: str = settings.RESEND_TOKEN
         self.recipient: str = settings.EMAIL_USER
 
+    def send(self, subject: str, text: str, html: str) -> None:
+        email: EmailMultiAlternatives = EmailMultiAlternatives(
+            subject=subject,
+            body=text,
+            from_email=self.from_email,
+            to=[self.recipient],
+        )
+        email.attach_alternative(html, 'text/html')
+        email.send()
+
     def send_contact_notification(self, name: str, email: str, message: str) -> None:
         """Send a contact form notification.
 
