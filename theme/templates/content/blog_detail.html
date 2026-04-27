@@ -22,24 +22,25 @@
 <section id="blog">
     {% if blog %}
     <div class="blog-detail">
-        <h1 class="section-heading">{{ blog.title }}</h1>
-
-        <div class="blog-body">
+        <div class="blog-article">
+            {% if blog.main_image %}
             <img
-                src="{% if blog.main_image %}{{ blog.main_image.url }}{% endif %}"
+                src="{{ blog.main_image.url }}"
                 alt="{{ blog.title }}"
-                class="blog-main-image"
-                onerror="this.src='{% static 'default.jpg' %}'"
+                class="blog-article-image"
+                onerror="this.style.display='none'"
             />
-            <div class="blog-text">
+            {% endif %}
+            <header class="blog-article-header">
                 {% if blog.date %}<p class="blog-date">{{ blog.date|date:"d M Y" }}</p>{% endif %}
+                <h1 class="blog-article-title">{{ blog.title }}</h1>
                 {% if blog.subheading %}
-                <h2 class="main-heading">{{ blog.subheading }}</h2>
+                <p class="blog-article-subheading">{{ blog.subheading }}</p>
                 {% endif %}
-                {% if blog.body %}
-                <p class="paragraph">{{ blog.body|linebreaks }}</p>
-                {% endif %}
-            </div>
+            </header>
+            {% if blog.body %}
+            <div class="blog-article-body">{{ blog.body|linebreaks }}</div>
+            {% endif %}
         </div>
     </div>
     {% endif %}
