@@ -1,13 +1,5 @@
 # SEO Notes
 
-## Current State
-- Meta titles: unique per page ✓
-- Meta descriptions: improved for supplier list, spare parts list/detail ✓
-- Supplier detail: uses `supplier.description` dynamically ✓
-- OG/Twitter tags: present on all key pages ✓
-- Google Analytics: configured (G-SENSREH8YD) ✓
-- Canonical URLs: present in base.html ✓
-
 ## Ranking Context
 - "farmec ireland" — ranking #1 ✓
 - "farmec" — unwinnable; Romanian cosmetics company (est. 1889, Wikipedia page) dominates
@@ -15,37 +7,44 @@
 
 ---
 
+## Supplier Backlink Status
+Checked May 2026. Priority: email those with existing distributor pages first.
+
+| Supplier | Links to Farmec? | Notes |
+|---|---|---|
+| BFS | ✅ Yes | `bfs.uk.com/stockists/farmec-ireland-ltd/` |
+| SIP Slovenia | ✅ Yes | Listed on dealer map at `sip.si` |
+| Woodbay Turf | ✅ Yes | `woodbayturftech.com/distributor/farmec-ireland-ltd` — links to `farmecireland.com` not `farmec.ie`, needs updating |
+| Ovlac | ❌ No | Has a distributors page — email to be added |
+| MX-Mailleux | ❌ No | Has a dealer finder map — email to be added |
+| TeeJet | ❌ No | Has a distributor locator — email to be added |
+| Falc | ❌ No | Distributes to 60+ countries, no Farmec mention |
+| Aerway / Salford | ❌ No | No distributor page visible |
+| Annovi Reverberi | ❌ No | No distributor page visible |
+| Arag GPS | ❌ No | No distributor page visible |
+| Bargam | ❌ No | No distributor page visible |
+| Rogers Sprayer | ❌ No | No distributor page visible |
+| Twose | ❌ No | No distributor page visible |
+
+---
+
 ## Pending Improvements
 
-### 1. robots.txt + sitemap.xml (High Priority)
-Currently getting 404s from bots on robots.txt. Without a sitemap, Google has to discover pages by crawling links alone.
+### 1. Machine SEO copy (High Priority)
+`meta_title` and `meta_description` fields added to `Machine` model but not yet populated. Same approach as suppliers — query DB, search each machine, generate and apply copy.
 
-**Implementation:**
-- Add `django.contrib.sitemaps` to `INSTALLED_APPS`
-- Create `farmec/sitemaps.py` with sitemap classes for `Supplier`, `Machine`, `Blog`, `Exhibition`, `SpareParts`
-- Add sitemap and robots.txt URLs to `farmec/urls.py`
-- robots.txt should point to sitemap URL
+### 2. Backlinks from supplier websites (High Priority — no code needed)
+Email Ovlac, MX-Mailleux, TeeJet, Falc to add Farmec to their distributor/dealer pages. These have existing infrastructure.
+Also email Woodbay Turf to update their link from `farmecireland.com` → `farmec.ie`.
 
-### 2. Structured Data / JSON-LD (High Priority)
-Tells Google explicitly what the business is. Can enable rich results in search.
-
-**Implementation:**
-- Add `LocalBusiness` JSON-LD to homepage (`pages/home.html`):
-  - name, url, telephone, address (Clonross, Drumree, Co. Meath), geo coordinates
-- Add `Product` JSON-LD to machine detail pages (`catalog/machine_detail.html`)
-- Add `ItemList` JSON-LD to supplier list page
-
-### 3. Machine Detail Meta Descriptions (Medium Priority)
-Machine detail pages have unique titles but no description override — falling back to the generic base.html description.
-
-**Implementation:**
-- Add `{% block meta %}` to `catalog/machine_detail.html` using `machine.description` + "Farmec Ireland" + "Co. Meath"
+### 3. Google Business Profile (High Priority — no code needed)
+Ensure Farmec is listed, fully filled out with correct categories ("Agricultural Machinery Dealer"), photos, and reviews enabled. Local SEO is a separate ranking layer.
 
 ### 4. Internal Linking — Supplier → Spare Parts (Medium Priority)
-Supplier detail pages don't link to their corresponding spare parts page. This hurts both SEO (crawlability) and UX.
+Supplier detail pages don't link to their corresponding spare parts page. Hurts both SEO (crawlability) and UX.
 
 **Implementation:**
-- Add a "Spare Parts" button/link on `catalog/supplier_detail.html` pointing to the supplier's spare parts page
+- Add a "Spare Parts" link on `catalog/supplier_detail.html` pointing to the supplier's spare parts page
 
 ### 5. Blog Content (Ongoing)
 Each blog post is an opportunity to rank for specific brand/product searches.
@@ -57,4 +56,7 @@ Each blog post is an opportunity to rank for specific brand/product searches.
 - "agricultural spare parts ireland"
 
 ### 6. Supplier Descriptions (Content Review)
-If descriptions in the DB are thin or copied from manufacturer sites, Google may not rank supplier pages well. Each description should mention Ireland, Farmec, and what the supplier is known for.
+Descriptions should mention Ireland, Farmec, and what the supplier is known for. Thin or manufacturer-copied descriptions hurt ranking.
+
+### 7. FAQ Schema on supplier pages (Low Priority)
+Add FAQ JSON-LD to supplier pages with questions like "Where can I buy SIP machinery in Ireland?" — can appear as rich results directly in Google.
