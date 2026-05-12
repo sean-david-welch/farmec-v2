@@ -51,7 +51,7 @@ urlpatterns: list[URLPattern | URLResolver] = [
 
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     path('robots.txt', TemplateView.as_view(template_name='robots.txt', content_type='text/plain')),
-    path('favicon.ico', RedirectView.as_view(url='/static/favicon.svg', permanent=True)),
+    path('favicon.ico', RedirectView.as_view(url='/static/favicon.ico', permanent=True)),
     path('admin/', admin.site.urls),
     path('login/', auth_views.LoginView.as_view(template_name='pages/login.html', next_page='/'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='/'), name='logout'),
