@@ -6,6 +6,7 @@
 {% block meta %}{% include "catalog/product_meta.html" %}{% endblock %}
 
 {% block content %}
+{% include "components/breadcrumbs.html" with breadcrumbs=breadcrumbs %}
     <section id="productDetail">
         <div class="supplier-heading">
             <h1 class="section-heading">{{ product.name }}</h1>
