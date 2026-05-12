@@ -544,9 +544,10 @@
 }
 
 .breadcrumb-link {
-    color: var(--color-text-secondary);
+    color: var(--color-secondary);
     text-decoration: none;
-    font-size: 0.85rem;
+    font-size: 1rem;
+    font-weight: 500;
     transition: color var(--duration-fast) var(--timing);
 }
 
@@ -556,12 +557,12 @@
 
 .breadcrumb-sep {
     color: var(--color-secondary-lighter);
-    font-size: 0.65rem;
+    font-size: 0.75rem;
 }
 
 .breadcrumb-current {
     color: var(--color-primary);
-    font-size: 0.85rem;
+    font-size: 1rem;
     font-weight: 600;
 }
 
