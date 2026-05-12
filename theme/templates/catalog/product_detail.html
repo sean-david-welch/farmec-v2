@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ product.name }} | {{ product.machine.supplier.name }} | Farmec Ireland{% endblock %}
+
+{% block content %}
+    <section id="productDetail">
+        <div class="supplier-heading">
+            <h1 class="section-heading">{{ product.name }}</h1>
+        </div>
+
+        <div class="product-detail-layout">
+            <a href="{{ product.product_link|default:'#' }}" target="_blank" rel="noopener noreferrer">
+                <img
+                        src="{% if product.product_image %}{{ product.product_image.url }}{% endif %}"
+                        alt="{{ product.name }}"
+                        class="product-detail-image"
+                        width="500"
+                        height="500"
+                        onerror="this.src='{% static 'default.jpg' %}'"
+                />
+            </a>
+            <div class="product-detail-content">
+                <p class="paragraph">{{ product.description }}</p>
+                <div class="product-detail-actions">
+                    {% if product.product_link %}
+                        <a href="{{ product.product_link }}" target="_blank" rel="noopener noreferrer" class="btn">
+                            Supplier Website <i class="fa-solid fa-right-to-bracket"></i>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
