@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}{{ product.name }} | {{ product.machine.supplier.name }} | Farmec Ireland{% endblock %}
+{% block title %}{% if product.meta_title %}{{ product.meta_title }}{% else %}{{ product.name }} | {{ product.machine.supplier.name }} | Farmec Ireland{% endif %}{% endblock %}
+
+{% block meta %}{% include "catalog/product_meta.html" %}{% endblock %}
 
 {% block content %}
     <section id="productDetail">
