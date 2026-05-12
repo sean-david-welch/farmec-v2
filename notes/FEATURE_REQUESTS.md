@@ -42,6 +42,17 @@ An admin-only tool for staff to log expenses with receipt attachments, exportabl
 
 ---
 
+## 5. Error Monitoring — Sentry + UptimeRobot
+
+Set up proper error visibility for production.
+
+**Implementation notes:**
+- **Sentry** — install `sentry-sdk`, add DSN to `.env`, configure in `settings.py`. Catches every unhandled exception with full traceback, stack locals and request context. Emails on first occurrence of each new error. Free tier sufficient.
+- **UptimeRobot** — free external uptime monitor, pings site every 5 minutes, emails if down. Catches outages even if Sentry itself fails.
+- Both take ~30 minutes total to set up.
+
+---
+
 ## 4. Gemini API — AI-Assisted Expense Organisation
 
 Use the Gemini API to help staff categorise and structure expense data automatically.
