@@ -1,0 +1,34 @@
+<meta name="description" content="{% if supplier.meta_description %}{{ supplier.meta_description }}{% else %}Farmec Ireland is the authorised distributor of {{ supplier.name }} agricultural machinery in Ireland. Browse our full range of {{ supplier.name }} machines and equipment.{% endif %}">
+<meta property="og:title" content="{% if supplier.meta_title %}{{ supplier.meta_title }}{% else %}{{ supplier.name }} Agricultural Machinery Ireland | Farmec Ireland Ltd{% endif %}">
+<meta property="og:description" content="{% if supplier.meta_description %}{{ supplier.meta_description }}{% else %}Farmec Ireland is the authorised distributor of {{ supplier.name }} agricultural machinery in Ireland. Browse our full range of {{ supplier.name }} machines and equipment.{% endif %}">
+<meta property="og:image" content="{% if supplier.marketing_image %}{{ supplier.marketing_image.url }}{% else %}https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp{% endif %}">
+<meta property="og:url" content="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{% if supplier.meta_title %}{{ supplier.meta_title }}{% else %}{{ supplier.name }} Agricultural Machinery Ireland | Farmec Ireland Ltd{% endif %}">
+<meta name="twitter:description" content="{% if supplier.meta_description %}{{ supplier.meta_description }}{% else %}Farmec Ireland is the authorised distributor of {{ supplier.name }} agricultural machinery in Ireland. Browse our full range of {{ supplier.name }} machines and equipment.{% endif %}">
+<meta name="twitter:image" content="{% if supplier.marketing_image %}{{ supplier.marketing_image.url }}{% else %}https://www.farmec.ie/farmec_images/Suppliers/sip1250.webp{% endif %}">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Home", "item": "{{ request.scheme }}://{{ request.get_host }}/"},
+        {"@type": "ListItem", "position": 2, "name": "Suppliers", "item": "{{ request.scheme }}://{{ request.get_host }}/suppliers/"},
+        {"@type": "ListItem", "position": 3, "name": "{{ supplier.name }}", "item": "{{ request.scheme }}://{{ request.get_host }}{{ request.path }}"}
+      ]
+    },
+    {
+      "@type": "Organization",
+      "name": "{{ supplier.name }}"{% if supplier.description %},
+      "description": "{{ supplier.description|truncatechars:200|escapejs }}"{% endif %}{% if supplier.social_website %},
+      "url": "{{ supplier.social_website }}"{% endif %}{% if supplier.logo_image %},
+      "logo": "{{ supplier.logo_image.url }}"{% endif %}{% if supplier.social_facebook or supplier.social_instagram or supplier.social_youtube or supplier.social_linkedin or supplier.social_twitter %},
+      "sameAs": [{% if supplier.social_facebook %}"{{ supplier.social_facebook }}"{% endif %}{% if supplier.social_instagram %}{% if supplier.social_facebook %},{% endif %}"{{ supplier.social_instagram }}"{% endif %}{% if supplier.social_youtube %}{% if supplier.social_facebook or supplier.social_instagram %},{% endif %}"{{ supplier.social_youtube }}"{% endif %}{% if supplier.social_linkedin %}{% if supplier.social_facebook or supplier.social_instagram or supplier.social_youtube %},{% endif %}"{{ supplier.social_linkedin }}"{% endif %}{% if supplier.social_twitter %}{% if supplier.social_facebook or supplier.social_instagram or supplier.social_youtube or supplier.social_linkedin %},{% endif %}"{{ supplier.social_twitter }}"{% endif %}]{% endif %}
+    }
+  ]
+}
+</script>
