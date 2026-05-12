@@ -21,6 +21,8 @@ class Supplier(BaseModel):
     social_linkedin = models.URLField(blank=True, null=True, verbose_name=_('linkedin'), help_text=_('LinkedIn company URL'))
     social_website = models.URLField(blank=True, null=True, verbose_name=_('website'), help_text=_('Company website URL'))
     slug = models.SlugField(max_length=255, blank=True, null=True, verbose_name=_('slug'), help_text=_('URL-friendly identifier for this supplier'))
+    meta_title = models.CharField(max_length=70, blank=True, null=True, verbose_name=_('meta title'), help_text=_('SEO title tag (max 70 chars). Leave blank to auto-generate.'))
+    meta_description = models.CharField(max_length=160, blank=True, null=True, verbose_name=_('meta description'), help_text=_('SEO meta description (max 160 chars). Leave blank to auto-generate.'))
 
     objects = SupplierQuerySet.as_manager()
 
@@ -44,6 +46,8 @@ class Machine(BaseModel):
     description = models.TextField(blank=True, null=True, verbose_name=_('description'), help_text=_('Detailed machine specifications and features'))
     machine_link = models.URLField(blank=True, null=True, verbose_name=_('link'), help_text=_('URL to machine product page'))
     slug = models.SlugField(max_length=255, blank=True, null=True, verbose_name=_('slug'), help_text=_('URL-friendly identifier'))
+    meta_title = models.CharField(max_length=70, blank=True, null=True, verbose_name=_('meta title'), help_text=_('SEO title tag (max 70 chars). Leave blank to auto-generate.'))
+    meta_description = models.CharField(max_length=160, blank=True, null=True, verbose_name=_('meta description'), help_text=_('SEO meta description (max 160 chars). Leave blank to auto-generate.'))
 
     objects = MachineQuerySet.as_manager()
 
