@@ -52,6 +52,11 @@ class MachineDetailView(DetailView):
     def get_context_data(self, **kwargs) -> dict:
         context: dict = super().get_context_data(**kwargs)
         context['products'] = Product.objects.filter(machine=self.object).publish()
+        context['breadcrumbs'] = [
+            {'name': 'Suppliers', 'url': '/suppliers/'},
+            {'name': self.object.supplier.name, 'url': f'/suppliers/{self.object.supplier.slug}/'},
+            {'name': self.object.name, 'url': ''},
+        ]
         return context
 
 
@@ -62,6 +67,17 @@ class ProductDetailView(DetailView):
     slug_field: str = 'slug'
     slug_url_kwarg: str = 'slug'
     queryset: ProductQuerySet = Product.objects.publish()
+
+    def get_context_data(self, **kwargs) -> dict:
+        context: dict = super().get_context_data(**kwargs)
+        machine: Machine = self.object.machine
+        context['breadcrumbs'] = [
+            {'name': 'Suppliers', 'url': '/suppliers/'},
+            {'name': machine.supplier.name, 'url': f'/suppliers/{machine.supplier.slug}/'},
+            {'name': machine.name, 'url': f'/machines/{machine.slug}/'},
+            {'name': self.object.name, 'url': ''},
+        ]
+        return context
 
 
 class SparePartsIndexView(ListView):
