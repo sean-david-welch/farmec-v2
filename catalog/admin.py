@@ -43,6 +43,10 @@ class ProductAdmin(ModelAdmin):
     list_filter = ('machine__supplier', 'machine')
     date_hierarchy = 'created'
     ordering = ('order', 'machine__name', 'name')
+    fieldsets = (
+        (None, {'fields': ('machine', 'name', 'slug', 'order', 'publish', 'description', 'product_image', 'product_link')}),
+        ('SEO', {'fields': ('meta_title', 'meta_description'), 'classes': ('collapse',)}),
+    )
 
 
 @admin.register(Spareparts)
