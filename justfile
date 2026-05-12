@@ -29,3 +29,11 @@ db-push:
 # Copy EC2 database down to local
 db-pull:
     scp -i {{key}} {{ec2}}:{{remote_db}} {{local_db}}
+
+# Show recent errors from Docker container logs
+logs:
+    ssh -i {{key}} {{ec2}} "docker logs \$(docker ps -q) 2>&1 | grep -E '(Error|Exception|Traceback|500)' | tail -50"
+
+# Follow live Docker container logs
+logs-live:
+    ssh -i {{key}} {{ec2}} "docker logs \$(docker ps -q) -f 2>&1"
