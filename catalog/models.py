@@ -71,6 +71,8 @@ class Product(BaseModel):
     description = models.TextField(blank=True, null=True, verbose_name=_('description'), help_text=_('Product description and details'))
     product_link = models.URLField(blank=True, null=True, verbose_name=_('link'), help_text=_('URL to product page or datasheet'))
     slug = models.SlugField(max_length=255, blank=True, null=True, verbose_name=_('slug'), help_text=_('URL-friendly identifier'))
+    meta_title = models.CharField(max_length=70, blank=True, null=True, verbose_name=_('meta title'), help_text=_('SEO title tag (max 70 chars). Leave blank to auto-generate.'))
+    meta_description = models.CharField(max_length=160, blank=True, null=True, verbose_name=_('meta description'), help_text=_('SEO meta description (max 160 chars). Leave blank to auto-generate.'))
 
     objects = ProductQuerySet.as_manager()
 
