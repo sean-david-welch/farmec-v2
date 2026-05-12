@@ -7,8 +7,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{% block title %}Farmec Ireland Ltd{% endblock %}</title>
 
-    <link rel="icon" type="image/svg+xml" href="{% static 'favicon.svg' %}">
+    <link rel="icon" href="{% static 'favicon.ico' %}" sizes="48x48">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon-32x32.png' %}">
     <link rel="icon" type="image/png" sizes="192x192" href="{% static 'favicon.png' %}">
+    <link rel="apple-touch-icon" href="{% static 'favicon.png' %}">
     <meta name="description" content="{% block description %}Farmec Ireland Ltd specializes in providing high-quality agricultural machinery and services to enhance your farming operations. Explore our range of products and services tailored for Irish farms.{% endblock %}">
     <meta name="author" content="Farmec Ireland Ltd">
     <link rel="canonical" href="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
