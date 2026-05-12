@@ -7,6 +7,7 @@ from catalog.models import (
     Machine,
     MachineQuerySet,
     Product,
+    ProductQuerySet,
     Video, SparepartsQuerySet, Spareparts,
 )
 
@@ -52,6 +53,15 @@ class MachineDetailView(DetailView):
         context: dict = super().get_context_data(**kwargs)
         context['products'] = Product.objects.filter(machine=self.object).publish()
         return context
+
+
+class ProductDetailView(DetailView):
+    model: type[Product] = Product
+    template_name: str = 'catalog/product_detail.html'
+    context_object_name: str = 'product'
+    slug_field: str = 'slug'
+    slug_url_kwarg: str = 'slug'
+    queryset: ProductQuerySet = Product.objects.publish()
 
 
 class SparePartsIndexView(ListView):
