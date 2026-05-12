@@ -18,6 +18,12 @@
             </a>
 
             <p class="paragraph">{{ product.description }}</p>
+
+            {% if product.slug %}
+            <a href="{% url 'catalog:product_detail' product.slug %}" class="btn">
+                View Details <i class="fa-solid fa-arrow-right"></i>
+            </a>
+            {% endif %}
         </div>
         {% empty %}
         <p class="paragraph">No products to display.</p>
