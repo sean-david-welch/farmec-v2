@@ -4,10 +4,16 @@ from unfold.admin import ModelAdmin, TabularInline
 from unfold.decorators import action
 
 from .forms import WarrantyclaimForm, PartsrequiredForm, MachineregistrationForm
-from .models import Warrantyclaim, Partsrequired, Machineregistration
+from .models import Warrantyclaim, WarrantyImage, Partsrequired, Machineregistration
 from .pdf import PDFDownloadAction
 
 BASE_READONLY = ('created', 'modified')
+
+
+class WarrantyImageInline(TabularInline):
+    model = WarrantyImage
+    extra = 0
+    fields = ('image',)
 
 
 class PartsrequiredInline(TabularInline):
@@ -20,7 +26,7 @@ class PartsrequiredInline(TabularInline):
 @admin.register(Warrantyclaim)
 class WarrantyclaimAdmin(ModelAdmin):
     form = WarrantyclaimForm
-    inlines = [PartsrequiredInline]
+    inlines = [PartsrequiredInline, WarrantyImageInline]
     actions = ['download_pdf']
     actions_detail = ['download_pdf_detail']
     list_display = ('owner_name', 'dealer', 'machine_model', 'serial_number', 'failure_date', 'parts_count', 'completed_by')
