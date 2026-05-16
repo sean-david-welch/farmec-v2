@@ -80,6 +80,18 @@
         <div class="field-value multiline">{{ claim.repair_details|default:'' }}</div>
     </div>
 
+    {% if images %}
+        <div class="section">
+            <div class="section-title">Repair Images</div>
+            <div class="image-grid">
+                {% for image in images %}
+                    <img src="{{ image.image.url }}" alt="Repair image {{ forloop.counter }}" class="repair-image">
+                {% endfor %}
+                <div style="clear: both;"></div>
+            </div>
+        </div>
+    {% endif %}
+
     <div class="section">
         <div class="section-title">Labour</div>
         <div class="field-row">
