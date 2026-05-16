@@ -130,6 +130,30 @@
                                 </td>
                             </tr>
                         </table>
+                        <!-- Repair Images -->
+                        {% if images %}
+                            <table class="section full-width">
+                                <tr>
+                                    <td class="section-title">Repair Images</td>
+                                </tr>
+                                <tr>
+                                    <td class="section-body">
+                                        <div class="field-label" style="margin-bottom: 8px;">Click an image to open it in your browser.</div>
+                                        <table class="full-width">
+                                            {% for image in images %}
+                                                <tr>
+                                                    <td style="padding-bottom: 12px;">
+                                                        <a href="{{ image.image.url }}">
+                                                            <img src="{{ image.image.url }}" alt="Repair image {{ forloop.counter }}" style="max-width: 100%; height: auto; display: block; border-radius: 4px;">
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        {% endif %}
                         <!-- Labour -->
                         <table class="section full-width">
                             <tr>
