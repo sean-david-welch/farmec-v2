@@ -117,16 +117,29 @@ class WarrantyclaimFormViewTest(TestCase):
             self.assertIn('PN-001', parts.values_list('part_number', flat=True))
             self.assertIn('PN-002', parts.values_list('part_number', flat=True))
 
+    def _make_image(self, name: str) -> SimpleUploadedFile:
+        return SimpleUploadedFile(name, b'\xff\xd8\xff' + b'\x00' * 10, content_type='image/jpeg')
+
     def test_warranty_claim__with_images(self):
-        img1: SimpleUploadedFile = SimpleUploadedFile('repair1.jpg', b'\xff\xd8\xff' + b'\x00' * 10, content_type='image/jpeg')
-        img2: SimpleUploadedFile = SimpleUploadedFile('repair2.jpg', b'\xff\xd8\xff' + b'\x00' * 10, content_type='image/jpeg')
-        data: dict[str, Any] = {**VALID_WARRANTY_DATA, 'warranty_images': [img1, img2]}
+        images: list[SimpleUploadedFile] = [self._make_image(f'repair{i}.jpg') for i in range(4)]
+        data: dict[str, Any] = {**VALID_WARRANTY_DATA, 'warranty_images': images}
         self.client.post(self.url, data=data)
         claim: Warrantyclaim = Warrantyclaim.objects.get()
-        with self.subTest('two images saved'):
-            self.assertEqual(WarrantyImage.objects.filter(warranty=claim).count(), 2)
+        with self.subTest('four images saved'):
+            self.assertEqual(WarrantyImage.objects.filter(warranty=claim).count(), 4)
         with self.subTest('images linked to claim'):
             self.assertTrue(WarrantyImage.objects.filter(warranty=claim).exists())
+
+    def test_warranty_claim__fewer_than_four_images_rejected(self):
+        images: list[SimpleUploadedFile] = [self._make_image(f'repair{i}.jpg') for i in range(2)]
+        data: dict[str, Any] = {**VALID_WARRANTY_DATA, 'warranty_images': images}
+        response = self.client.post(self.url, data=data)
+        with self.subTest('returns 200'):
+            self.assertEqual(response.status_code, 200)
+        with self.subTest('no claim saved'):
+            self.assertEqual(Warrantyclaim.objects.count(), 0)
+        with self.subTest('form error on warranty_images'):
+            self.assertIn('warranty_images', response.context['form'].errors)
 
     def test_warranty_claim__no_images_is_valid(self):
         response: TemplateResponse = self.client.post(self.url, data=VALID_WARRANTY_DATA, follow=True)
