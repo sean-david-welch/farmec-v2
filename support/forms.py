@@ -1,5 +1,4 @@
 from django import forms
-
 from .models import Warrantyclaim, Partsrequired, Machineregistration
 
 
@@ -30,6 +29,9 @@ class WarrantyclaimForm(forms.ModelForm):
     repair_details = forms.CharField(widget=forms.Textarea(attrs={'rows': 3}))
     labour_hours = forms.DecimalField(max_digits=8, decimal_places=2, widget=forms.NumberInput(attrs={'step': '0.5', 'min': '0'}))
     completed_by = forms.CharField(max_length=255)
+    warranty_images = MultipleFileField(
+        required=False, label='Warranty Images', help_text='Pleease upload at least four images of the the machine including all sides as well as the serial number',
+    )
 
     class Meta:
         model = Warrantyclaim
