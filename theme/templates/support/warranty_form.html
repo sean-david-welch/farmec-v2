@@ -19,7 +19,6 @@
             <div>
                 {{ form.dealer_contact.label_tag }}
                 {{ form.dealer_contact }}
-                <p class="form-help-text">{{ form.dealer_contact.help_text }}</p>
                 {% for error in form.dealer_contact.errors %}<p class="error-message">{{ error }}</p>{% endfor %}
             </div>
         </div>
