@@ -12,7 +12,7 @@ from support.models import Warrantyclaim, WarrantyImage, Partsrequired, Machiner
 
 VALID_WARRANTY_DATA = {
     'dealer': 'Test Dealer',
-    'dealer_contact': 'John',
+    'dealer_contact': 'john@dealer.com',
     'owner_name': 'Jane Doe',
     'machine_model': 'SIP 350',
     'serial_number': 'SN123456',
@@ -94,6 +94,12 @@ class WarrantyclaimFormViewTest(TestCase):
         response = self.client.post(self.url, data=data)
         self.assertEqual(response.status_code, 200)
         self.assertIn('install_date', response.context['form'].errors)
+
+    def test_warranty_claim__invalid_dealer_contact_not_email(self):
+        data = {**VALID_WARRANTY_DATA, 'dealer_contact': 'not-an-email'}
+        response = self.client.post(self.url, data=data)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('dealer_contact', response.context['form'].errors)
 
     def test_warranty_claim__with_parts(self):
         data = {
