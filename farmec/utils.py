@@ -16,19 +16,21 @@ class EmailClient:
     def __init__(self) -> None:
         self.recipient: str = settings.EMAIL_USER
 
-    def send(self, subject: str, text: str, html: str) -> None:
+    def send(self, subject: str, text: str, html: str, cc: list[str] | None = None) -> None:
         """
         Send an HTML email with a plain-text fallback via Django's email backend.
 
         :param subject: Email subject line.
         :param text: Plain-text fallback body.
         :param html: HTML body (CSS already inlined).
+        :param cc: Optional list of CC recipients.
         """
         email: EmailMultiAlternatives = EmailMultiAlternatives(
             subject=subject,
             body=text,
             from_email=self.from_email,
             to=[self.recipient],
+            cc=cc or [],
         )
         email.attach_alternative(html, 'text/html')
         email.send()
@@ -74,7 +76,8 @@ class EmailClient:
             f"Machine Model: {claim.machine_model}\n"
             f"Serial Number: {claim.serial_number}\n"
         )
-        self.send(subject=subject, text=text, html=html)
+        cc: list[str] = [claim.dealer_contact] if claim.dealer_contact else []
+        self.send(subject=subject, text=text, html=html, cc=cc)
 
     def send_registration_notification(self, reg: Machineregistration) -> None:
         """
