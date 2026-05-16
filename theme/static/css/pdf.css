@@ -168,6 +168,12 @@ body {
     margin-right: 0;
 }
 
+.image-item:last-child:nth-child(odd) {
+    float: none;
+    width: 48%;
+    margin: 0 auto 12px auto;
+}
+
 .repair-image {
     width: 100%;
     height: 180px;
