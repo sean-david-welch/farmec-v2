@@ -75,6 +75,7 @@
         <div>
             {{ form.warranty_images.label_tag }}
             {{ form.warranty_images }}
+            <p class="form-help-text">{{ form.warranty_images.help_text }}</p>
             {% for error in form.warranty_images.errors %}<p class="error-message">{{ error }}</p>{% endfor %}
         </div>
 
