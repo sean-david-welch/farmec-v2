@@ -287,10 +287,13 @@
 }
 
 .form-help-text {
-    font-size: 1rem;
-    color: #e5e7eb;
+    font-size: 0.875rem;
+    color: #d1d5db;
     margin: 0.5rem 0 0 0;
     text-align: left;
+    padding-left: 0.6rem;
+    border-left: 2px solid #4b5563;
+    letter-spacing: 0.01em;
 }
 
 .error-message {
