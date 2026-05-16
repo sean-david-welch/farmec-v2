@@ -17,7 +17,9 @@ class WarrantyclaimFormView(LoginRequiredMixin, FormView):
     form_class: type[WarrantyclaimForm] = WarrantyclaimForm
 
     def form_invalid(self, form: WarrantyclaimForm) -> HttpResponse:
-        messages.error(self.request, 'Please correct the errors below.')
+        field_labels: list[str] = [form.fields[f].label or f.replace('_', ' ').title() for f in form.errors if f != '__all__']
+        fields_str: str = ', '.join(field_labels)
+        messages.error(self.request, f'Please correct the errors in: {fields_str}.')
         return super().form_invalid(form)
 
     def form_valid(self, form: WarrantyclaimForm) -> HttpResponse:
