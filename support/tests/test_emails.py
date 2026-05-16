@@ -36,6 +36,24 @@ class WarrantyEmailTest(TestCase):
         )
         self.assertEqual(len(mail.outbox), 1)
 
+    def test_warranty_email__ccs_dealer_contact(self):
+        claim: Warrantyclaim = baker.make(Warrantyclaim, dealer_contact='dealer@example.com')
+        EmailClient().send_warranty_notification(
+            claim=claim,
+            parts=Partsrequired.objects.none(),
+            images=WarrantyImage.objects.none(),
+        )
+        self.assertIn('dealer@example.com', mail.outbox[0].cc)
+
+    def test_warranty_email__no_cc_when_dealer_contact_empty(self):
+        claim: Warrantyclaim = baker.make(Warrantyclaim, dealer_contact='')
+        EmailClient().send_warranty_notification(
+            claim=claim,
+            parts=Partsrequired.objects.none(),
+            images=WarrantyImage.objects.none(),
+        )
+        self.assertEqual(mail.outbox[0].cc, [])
+
     def test_warranty_email__renders_with_images(self):
         claim: Warrantyclaim = baker.make(Warrantyclaim)
         baker.make(WarrantyImage, warranty=claim, image='farmec_images/Warranty/test.jpg', _quantity=4)
