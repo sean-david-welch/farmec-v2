@@ -1,11 +1,15 @@
 import css_inline
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
-from django.db.models import QuerySet
 from django.template.loader import render_to_string
 from django.utils import timezone
 
-from support.models import Warrantyclaim, Partsrequired, Machineregistration
+from support.models import (
+    Warrantyclaim,
+    Machineregistration,
+    WarrantyImageQuerySet,
+    PartsrequiredQuerySet,
+)
 
 
 class EmailClient:
@@ -16,19 +20,21 @@ class EmailClient:
     def __init__(self) -> None:
         self.recipient: str = settings.EMAIL_USER
 
-    def send(self, subject: str, text: str, html: str) -> None:
+    def send(self, subject: str, text: str, html: str, cc: list[str] | None = None) -> None:
         """
         Send an HTML email with a plain-text fallback via Django's email backend.
 
         :param subject: Email subject line.
         :param text: Plain-text fallback body.
         :param html: HTML body (CSS already inlined).
+        :param cc: Optional list of CC recipients.
         """
         email: EmailMultiAlternatives = EmailMultiAlternatives(
             subject=subject,
             body=text,
             from_email=self.from_email,
             to=[self.recipient],
+            cc=cc or [],
         )
         email.attach_alternative(html, 'text/html')
         email.send()
@@ -51,17 +57,19 @@ class EmailClient:
         html: str = self.inliner.inline(render_to_string("support/email/contact.html", context))
         self.send(subject=subject, text=message, html=html)
 
-    def send_warranty_notification(self, claim: Warrantyclaim, parts: QuerySet[Partsrequired]) -> None:
+    def send_warranty_notification(self, claim: Warrantyclaim, parts: PartsrequiredQuerySet, images: WarrantyImageQuerySet) -> None:
         """
         Send a warranty claim submission notification.
 
         :param claim: Submitted ``Warrantyclaim`` instance.
         :param parts: Related ``Partsrequired`` queryset for the claim.
+        :param images: Related ``WarrantyImage`` queryset for the claim.
         """
         subject: str = f"New Warranty Claim - {claim.owner_name} / {claim.machine_model}"
         context: dict[str, object] = {
             "claim": claim,
             "parts": parts,
+            "images": images,
             "generated_date": timezone.now().strftime("%d %b %Y, %H:%M"),
         }
         html: str = self.inliner.inline(render_to_string("support/email/warranty_claim.html", context))
@@ -72,7 +80,8 @@ class EmailClient:
             f"Machine Model: {claim.machine_model}\n"
             f"Serial Number: {claim.serial_number}\n"
         )
-        self.send(subject=subject, text=text, html=html)
+        cc: list[str] = [claim.dealer_contact] if claim.dealer_contact else []
+        self.send(subject=subject, text=text, html=html, cc=cc)
 
     def send_registration_notification(self, reg: Machineregistration) -> None:
         """

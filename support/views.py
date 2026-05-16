@@ -9,7 +9,7 @@ from django.views.generic.edit import FormView
 
 from farmec.utils import EmailClient
 from support.forms import WarrantyclaimForm, MachineregistrationForm
-from support.models import Warrantyclaim, Machineregistration, Partsrequired
+from support.models import Warrantyclaim, WarrantyImage, Machineregistration, Partsrequired
 
 
 class WarrantyclaimFormView(LoginRequiredMixin, FormView):
@@ -17,7 +17,9 @@ class WarrantyclaimFormView(LoginRequiredMixin, FormView):
     form_class: type[WarrantyclaimForm] = WarrantyclaimForm
 
     def form_invalid(self, form: WarrantyclaimForm) -> HttpResponse:
-        messages.error(self.request, 'Please correct the errors below.')
+        field_labels: list[str] = [str(form.fields[f].label) or f.replace('_', ' ').title() for f in form.errors if f != '__all__']
+        fields_str: str = ', '.join(field_labels)
+        messages.error(self.request, f'Please correct the errors in: {fields_str}.')
         return super().form_invalid(form)
 
     def form_valid(self, form: WarrantyclaimForm) -> HttpResponse:
@@ -39,8 +41,11 @@ class WarrantyclaimFormView(LoginRequiredMixin, FormView):
                     invoice_number=invoice_number or None,
                     description=description or None,
                 )
+        for image_file in self.request.FILES.getlist('warranty_images'):
+            WarrantyImage.objects.create(id=str(uuid.uuid4()), warranty=claim, image=image_file)
         parts: QuerySet[Partsrequired] = Partsrequired.objects.filter(warranty=claim)
-        EmailClient().send_warranty_notification(claim=claim, parts=parts)
+        images: QuerySet[WarrantyImage] = WarrantyImage.objects.filter(warranty=claim)
+        EmailClient().send_warranty_notification(claim=claim, parts=parts, images=images)
         messages.success(self.request, 'Warranty claim submitted successfully.')
         return redirect('catalog:spareparts')
 

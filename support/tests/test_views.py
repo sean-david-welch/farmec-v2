@@ -1,15 +1,22 @@
+from typing import Any
+
 from django.core import mail
-from django.test import TestCase, Client
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.template.response import TemplateResponse
+from django.test import TestCase
 from django.urls import reverse_lazy
 from django.contrib.auth.models import User
-from model_bakery import baker
 
-from support.models import Warrantyclaim, Partsrequired, Machineregistration
+from support.models import Warrantyclaim, WarrantyImage, Partsrequired, Machineregistration
+
+
+def make_images(count: int = 4) -> list[SimpleUploadedFile]:
+    return [SimpleUploadedFile(f'img{i}.jpg', b'\xff\xd8\xff' + b'\x00' * 10, content_type='image/jpeg') for i in range(count)]
 
 
 VALID_WARRANTY_DATA = {
     'dealer': 'Test Dealer',
-    'dealer_contact': 'John',
+    'dealer_contact': 'john@dealer.com',
     'owner_name': 'Jane Doe',
     'machine_model': 'SIP 350',
     'serial_number': 'SN123456',
@@ -65,7 +72,7 @@ class WarrantyclaimFormViewTest(TestCase):
         self.assertIn('/login/', response['Location'])
 
     def test_warranty_claim__valid_submission(self):
-        response = self.client.post(self.url, data=VALID_WARRANTY_DATA, follow=True)
+        response = self.client.post(self.url, data={**VALID_WARRANTY_DATA, 'warranty_images': make_images()}, follow=True)
         with self.subTest('redirects to spareparts'):
             self.assertRedirects(response, reverse_lazy('catalog:spareparts'))
         with self.subTest('claim saved to db'):
@@ -92,9 +99,16 @@ class WarrantyclaimFormViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn('install_date', response.context['form'].errors)
 
+    def test_warranty_claim__invalid_dealer_contact_not_email(self):
+        data = {**VALID_WARRANTY_DATA, 'dealer_contact': 'not-an-email'}
+        response = self.client.post(self.url, data=data)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('dealer_contact', response.context['form'].errors)
+
     def test_warranty_claim__with_parts(self):
         data = {
             **VALID_WARRANTY_DATA,
+            'warranty_images': make_images(),
             'part_count': '2',
             'part_number_0': 'PN-001',
             'quantity_needed_0': '3',
@@ -114,9 +128,36 @@ class WarrantyclaimFormViewTest(TestCase):
             self.assertIn('PN-001', parts.values_list('part_number', flat=True))
             self.assertIn('PN-002', parts.values_list('part_number', flat=True))
 
+    def test_warranty_claim__with_images(self):
+        images: list[SimpleUploadedFile] = make_images(4)
+        data: dict[str, Any] = {**VALID_WARRANTY_DATA, 'warranty_images': images}
+        self.client.post(self.url, data=data)
+        claim: Warrantyclaim = Warrantyclaim.objects.get()
+        with self.subTest('four images saved'):
+            self.assertEqual(WarrantyImage.objects.filter(warranty=claim).count(), 4)
+        with self.subTest('images linked to claim'):
+            self.assertTrue(WarrantyImage.objects.filter(warranty=claim).exists())
+
+    def test_warranty_claim__fewer_than_four_images_rejected(self):
+        images: list[SimpleUploadedFile] = make_images(2)
+        data: dict[str, Any] = {**VALID_WARRANTY_DATA, 'warranty_images': images}
+        response = self.client.post(self.url, data=data)
+        with self.subTest('returns 200'):
+            self.assertEqual(response.status_code, 200)
+        with self.subTest('no claim saved'):
+            self.assertEqual(Warrantyclaim.objects.count(), 0)
+        with self.subTest('form error on warranty_images'):
+            self.assertIn('warranty_images', response.context['form'].errors)
+
+    def test_warranty_claim__no_images_rejected(self):
+        response: TemplateResponse = self.client.post(self.url, data=VALID_WARRANTY_DATA)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('warranty_images', response.context['form'].errors)
+
     def test_warranty_claim__parts_with_empty_rows_skipped(self):
         data = {
             **VALID_WARRANTY_DATA,
+            'warranty_images': make_images(),
             'part_count': '2',
             'part_number_0': '',
             'quantity_needed_0': '',
