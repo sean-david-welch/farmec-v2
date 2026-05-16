@@ -3,6 +3,24 @@ from django import forms
 from .models import Warrantyclaim, Partsrequired, Machineregistration
 
 
+class MultipleFileInput(forms.FileInput):
+    allow_multiple_selected = True
+
+    def value_from_datadict(self, data, files, name):
+        return files.getlist(name)
+
+
+class MultipleFileField(forms.FileField):
+    widget = MultipleFileInput
+
+    def clean(self, data, initial=None):
+        if not data:
+            if self.required:
+                raise forms.ValidationError(self.error_messages['required'])
+            return []
+        return [super().clean(f, initial) for f in data]
+
+
 class WarrantyclaimForm(forms.ModelForm):
     """Form for creating and updating Warrantyclaim instances."""
     install_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date', 'onfocus': 'this.showPicker()'}))
