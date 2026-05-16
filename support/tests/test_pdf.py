@@ -1,7 +1,7 @@
 from django.test import TestCase
 from model_bakery import baker
 
-from support.models import Warrantyclaim, WarrantyImage, Partsrequired
+from support.models import Warrantyclaim, WarrantyImage, Partsrequired, Machineregistration
 from support.pdf import PDFDownloadAction
 
 
@@ -37,3 +37,23 @@ class WarrantyclaimPDFTest(TestCase):
     def test_warranty_pdf__build_filename(self):
         claim: Warrantyclaim = baker.make(Warrantyclaim, owner_name='Jane Doe', machine_model='SIP 350')
         self.assertEqual(WARRANTY_PDF.build_filename(claim), 'warranty_jane_doe_sip_350.pdf')
+
+
+REGISTRATION_PDF = PDFDownloadAction(
+    template='support/pdf/machine_registration.html',
+    context_fn=lambda reg: {'reg': reg},
+    filename_fn=lambda reg: f'registration_{reg.owner_name}_{reg.machine_model}',
+    zip_filename='machine_registrations.zip',
+)
+
+
+class MachineregistrationPDFTest(TestCase):
+    def test_registration_pdf__renders(self):
+        reg: Machineregistration = baker.make(Machineregistration)
+        result: bytes = REGISTRATION_PDF.render_pdf(reg)
+        self.assertIsInstance(result, bytes)
+        self.assertTrue(result.startswith(b'%PDF'))
+
+    def test_registration_pdf__build_filename(self):
+        reg: Machineregistration = baker.make(Machineregistration, owner_name='Jane Doe', machine_model='SIP 350')
+        self.assertEqual(REGISTRATION_PDF.build_filename(reg), 'registration_jane_doe_sip_350.pdf')
