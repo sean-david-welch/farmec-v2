@@ -20,10 +20,7 @@ class MultipleFileField(forms.FileField):
             if self.required:
                 raise forms.ValidationError(self.error_messages['required'])
             return []
-        files: list[UploadedFile] = [super().clean(f, initial) for f in data]
-        if len(files) < 4:
-            raise forms.ValidationError('Please upload at least 4 images.')
-        return files
+        return [super().clean(f, initial) for f in data]
 
 
 class WarrantyclaimForm(forms.ModelForm):
@@ -42,9 +39,15 @@ class WarrantyclaimForm(forms.ModelForm):
         required=False, label='Warranty Images', help_text='Please upload at least four images of the the machine including all sides as well as the serial number of the machine',
     )
 
+    def clean_warranty_images(self) -> list[UploadedFile]:
+        files: list[UploadedFile] = self.cleaned_data.get('warranty_images', [])
+        if self.instance._state.adding and 0 < len(files) < 4:
+            raise forms.ValidationError('Please upload at least 4 images.')
+        return files
+
     def clean_dealer_contact(self) -> str:
         value: str = self.cleaned_data.get('dealer_contact', '')
-        if not self.instance.pk and value:
+        if self.instance._state.adding and value:
             try:
                 forms.EmailField().clean(value)
             except forms.ValidationError:
