@@ -9,7 +9,7 @@ from django.views.generic.edit import FormView
 
 from farmec.utils import EmailClient
 from support.forms import WarrantyclaimForm, MachineregistrationForm
-from support.models import Warrantyclaim, Machineregistration, Partsrequired
+from support.models import Warrantyclaim, WarrantyImage, Machineregistration, Partsrequired
 
 
 class WarrantyclaimFormView(LoginRequiredMixin, FormView):
@@ -39,6 +39,8 @@ class WarrantyclaimFormView(LoginRequiredMixin, FormView):
                     invoice_number=invoice_number or None,
                     description=description or None,
                 )
+        for image_file in self.request.FILES.getlist('warranty_images'):
+            WarrantyImage.objects.create(id=str(uuid.uuid4()), warranty=claim, image=image_file)
         parts: QuerySet[Partsrequired] = Partsrequired.objects.filter(warranty=claim)
         EmailClient().send_warranty_notification(claim=claim, parts=parts)
         messages.success(self.request, 'Warranty claim submitted successfully.')
