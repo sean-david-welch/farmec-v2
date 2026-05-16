@@ -33,6 +33,9 @@ class WarrantyclaimForm(forms.ModelForm):
     repair_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date', 'onfocus': 'this.showPicker()'}))
     failure_details = forms.CharField(widget=forms.Textarea(attrs={'rows': 3}))
     repair_details = forms.CharField(widget=forms.Textarea(attrs={'rows': 3}))
+    dealer_contact = forms.EmailField(
+        max_length=255, required=False, label='Dealer Contact', help_text='Enter the dealer contact email address',
+    )
     labour_hours = forms.DecimalField(max_digits=8, decimal_places=2, widget=forms.NumberInput(attrs={'step': '0.5', 'min': '0'}))
     completed_by = forms.CharField(max_length=255)
     warranty_images = MultipleFileField(
