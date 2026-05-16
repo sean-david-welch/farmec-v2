@@ -33,7 +33,7 @@ class WarrantyclaimForm(forms.ModelForm):
     repair_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date', 'onfocus': 'this.showPicker()'}))
     failure_details = forms.CharField(widget=forms.Textarea(attrs={'rows': 3}))
     repair_details = forms.CharField(widget=forms.Textarea(attrs={'rows': 3}))
-    dealer_contact = forms.EmailField(
+    dealer_contact = forms.CharField(
         max_length=255, required=False, label='Dealer Contact (Email Address)',
     )
     labour_hours = forms.DecimalField(max_digits=8, decimal_places=2, widget=forms.NumberInput(attrs={'step': '0.5', 'min': '0'}))
@@ -41,6 +41,15 @@ class WarrantyclaimForm(forms.ModelForm):
     warranty_images = MultipleFileField(
         required=False, label='Warranty Images', help_text='Please upload at least four images of the the machine including all sides as well as the serial number of the machine',
     )
+
+    def clean_dealer_contact(self) -> str:
+        value: str = self.cleaned_data.get('dealer_contact', '')
+        if not self.instance.pk and value:
+            try:
+                forms.EmailField().clean(value)
+            except forms.ValidationError:
+                raise forms.ValidationError('Enter a valid email address.')
+        return value
 
     class Meta:
         model = Warrantyclaim
