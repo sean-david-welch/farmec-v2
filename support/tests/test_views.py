@@ -1,10 +1,13 @@
+from typing import Any
+
 from django.core import mail
-from django.test import TestCase, Client
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.template.response import TemplateResponse
+from django.test import TestCase
 from django.urls import reverse_lazy
 from django.contrib.auth.models import User
-from model_bakery import baker
 
-from support.models import Warrantyclaim, Partsrequired, Machineregistration
+from support.models import Warrantyclaim, WarrantyImage, Partsrequired, Machineregistration
 
 
 VALID_WARRANTY_DATA = {
@@ -113,6 +116,22 @@ class WarrantyclaimFormViewTest(TestCase):
         with self.subTest('part numbers correct'):
             self.assertIn('PN-001', parts.values_list('part_number', flat=True))
             self.assertIn('PN-002', parts.values_list('part_number', flat=True))
+
+    def test_warranty_claim__with_images(self):
+        img1: SimpleUploadedFile = SimpleUploadedFile('repair1.jpg', b'\xff\xd8\xff' + b'\x00' * 10, content_type='image/jpeg')
+        img2: SimpleUploadedFile = SimpleUploadedFile('repair2.jpg', b'\xff\xd8\xff' + b'\x00' * 10, content_type='image/jpeg')
+        data: dict[str, Any] = {**VALID_WARRANTY_DATA, 'warranty_images': [img1, img2]}
+        self.client.post(self.url, data=data)
+        claim: Warrantyclaim = Warrantyclaim.objects.get()
+        with self.subTest('two images saved'):
+            self.assertEqual(WarrantyImage.objects.filter(warranty=claim).count(), 2)
+        with self.subTest('images linked to claim'):
+            self.assertTrue(WarrantyImage.objects.filter(warranty=claim).exists())
+
+    def test_warranty_claim__no_images_is_valid(self):
+        response: TemplateResponse = self.client.post(self.url, data=VALID_WARRANTY_DATA, follow=True)
+        self.assertRedirects(response, reverse_lazy('catalog:spareparts'))
+        self.assertEqual(WarrantyImage.objects.count(), 0)
 
     def test_warranty_claim__parts_with_empty_rows_skipped(self):
         data = {
