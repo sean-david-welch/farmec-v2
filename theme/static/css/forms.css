@@ -297,9 +297,10 @@
 }
 
 .error-message {
-    font-size: 0.85rem;
-    color: #ef4444;
-    margin: 0.25rem 0;
+    font-size: 1rem;
+    color: #f87171;
+    margin: 0.5rem 0 0 0;
+    font-weight: 500;
 }
 
 @media (max-width: 768px) {
