@@ -41,7 +41,7 @@ class WarrantyclaimForm(forms.ModelForm):
 
     def clean_warranty_images(self) -> list[UploadedFile]:
         files: list[UploadedFile] = self.cleaned_data.get('warranty_images', [])
-        if self.instance._state.adding and 0 < len(files) < 4:
+        if self.instance._state.adding and len(files) < 4:
             raise forms.ValidationError('Please upload at least 4 images.')
         return files
 
