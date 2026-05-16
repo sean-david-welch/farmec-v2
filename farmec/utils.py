@@ -51,17 +51,19 @@ class EmailClient:
         html: str = self.inliner.inline(render_to_string("support/email/contact.html", context))
         self.send(subject=subject, text=message, html=html)
 
-    def send_warranty_notification(self, claim: Warrantyclaim, parts: QuerySet[Partsrequired]) -> None:
+    def send_warranty_notification(self, claim: Warrantyclaim, parts: QuerySet[Partsrequired], images: QuerySet) -> None:
         """
         Send a warranty claim submission notification.
 
         :param claim: Submitted ``Warrantyclaim`` instance.
         :param parts: Related ``Partsrequired`` queryset for the claim.
+        :param images: Related ``WarrantyImage`` queryset for the claim.
         """
         subject: str = f"New Warranty Claim - {claim.owner_name} / {claim.machine_model}"
         context: dict[str, object] = {
             "claim": claim,
             "parts": parts,
+            "images": images,
             "generated_date": timezone.now().strftime("%d %b %Y, %H:%M"),
         }
         html: str = self.inliner.inline(render_to_string("support/email/warranty_claim.html", context))
