@@ -1,3 +1,6 @@
+from typing import Any
+
+from django.core.files.uploadedfile import UploadedFile
 from django import forms
 from .models import Warrantyclaim, Partsrequired, Machineregistration
 
@@ -5,19 +8,22 @@ from .models import Warrantyclaim, Partsrequired, Machineregistration
 class MultipleFileInput(forms.FileInput):
     allow_multiple_selected = True
 
-    def value_from_datadict(self, data, files, name):
+    def value_from_datadict(self, data: dict[str, Any], files: Any, name: str) -> list[UploadedFile]:
         return files.getlist(name)
 
 
 class MultipleFileField(forms.FileField):
     widget = MultipleFileInput
 
-    def clean(self, data, initial=None):
+    def clean(self, data: list[UploadedFile], initial: Any = None) -> list[UploadedFile]:
         if not data:
             if self.required:
                 raise forms.ValidationError(self.error_messages['required'])
             return []
-        return [super().clean(f, initial) for f in data]
+        files: list[UploadedFile] = [super().clean(f, initial) for f in data]
+        if len(files) < 4:
+            raise forms.ValidationError('Please upload at least 4 images.')
+        return files
 
 
 class WarrantyclaimForm(forms.ModelForm):
