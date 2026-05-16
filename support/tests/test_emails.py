@@ -60,3 +60,16 @@ class MachineregistrationEmailTest(TestCase):
         EmailClient().send_registration_notification(reg=reg)
         self.assertIn('Jane Doe', mail.outbox[0].subject)
         self.assertIn('SIP 350', mail.outbox[0].subject)
+
+    def test_registration_email__html_contains_owner_and_model(self):
+        reg: Machineregistration = baker.make(Machineregistration, owner_name='Jane Doe', machine_model='SIP 350')
+        EmailClient().send_registration_notification(reg=reg)
+        html: str = mail.outbox[0].alternatives[0][0]
+        self.assertIn('Jane Doe', html)
+        self.assertIn('SIP 350', html)
+
+    def test_registration_email__html_contains_serial_number(self):
+        reg: Machineregistration = baker.make(Machineregistration, serial_number='SN123456')
+        EmailClient().send_registration_notification(reg=reg)
+        html: str = mail.outbox[0].alternatives[0][0]
+        self.assertIn('SN123456', html)
