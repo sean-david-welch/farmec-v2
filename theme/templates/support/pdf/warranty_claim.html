@@ -83,9 +83,14 @@
     {% if images %}
         <div class="section">
             <div class="section-title">Repair Images</div>
+            <p class="image-help-text">Click an image to open it in your browser.</p>
             <div class="image-grid">
                 {% for image in images %}
-                    <img src="{{ image.image.url }}" alt="Repair image {{ forloop.counter }}" class="repair-image">
+                    <div class="image-item">
+                        <a href="{{ image.image.url }}" target="_blank">
+                            <img src="{{ image.image.url }}" alt="Repair image {{ forloop.counter }}" class="repair-image">
+                        </a>
+                    </div>
                 {% endfor %}
                 <div style="clear: both;"></div>
             </div>
