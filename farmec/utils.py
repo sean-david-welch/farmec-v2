@@ -1,11 +1,15 @@
 import css_inline
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
-from django.db.models import QuerySet
 from django.template.loader import render_to_string
 from django.utils import timezone
 
-from support.models import Warrantyclaim, Partsrequired, Machineregistration
+from support.models import (
+    Warrantyclaim,
+    Machineregistration,
+    WarrantyImageQuerySet,
+    PartsrequiredQuerySet,
+)
 
 
 class EmailClient:
@@ -53,7 +57,7 @@ class EmailClient:
         html: str = self.inliner.inline(render_to_string("support/email/contact.html", context))
         self.send(subject=subject, text=message, html=html)
 
-    def send_warranty_notification(self, claim: Warrantyclaim, parts: QuerySet[Partsrequired], images: QuerySet) -> None:
+    def send_warranty_notification(self, claim: Warrantyclaim, parts: PartsrequiredQuerySet, images: WarrantyImageQuerySet) -> None:
         """
         Send a warranty claim submission notification.
 
