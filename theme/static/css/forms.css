@@ -286,6 +286,12 @@
     margin: 0.5rem 0 0 0;
 }
 
+.form-help-text {
+    font-size: 0.85rem;
+    color: #6b7280;
+    margin: 0.25rem 0;
+}
+
 .error-message {
     font-size: 0.85rem;
     color: #ef4444;
