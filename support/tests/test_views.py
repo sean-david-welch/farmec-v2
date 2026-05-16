@@ -139,7 +139,7 @@ class WarrantyclaimFormViewTest(TestCase):
             self.assertTrue(WarrantyImage.objects.filter(warranty=claim).exists())
 
     def test_warranty_claim__fewer_than_four_images_rejected(self):
-        images: list[SimpleUploadedFile] = [self._make_image(f'repair{i}.jpg') for i in range(2)]
+        images: list[SimpleUploadedFile] = make_images(2)
         data: dict[str, Any] = {**VALID_WARRANTY_DATA, 'warranty_images': images}
         response = self.client.post(self.url, data=data)
         with self.subTest('returns 200'):
