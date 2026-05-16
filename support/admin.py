@@ -44,7 +44,7 @@ class WarrantyclaimAdmin(ModelAdmin):
 
     download_pdf: PDFDownloadAction = PDFDownloadAction(
         template='support/pdf/warranty_claim.html',
-        context_fn=lambda claim: {'claim': claim, 'parts': claim.partsrequired_set.all()},
+        context_fn=lambda claim: {'claim': claim, 'parts': claim.partsrequired_set.all(), 'images': claim.images.all()},
         filename_fn=lambda claim: f'warranty_{claim.owner_name}_{claim.machine_model}',
         zip_filename='warranty_claims.zip',
     )
@@ -54,7 +54,7 @@ class WarrantyclaimAdmin(ModelAdmin):
         return obj.partsrequired_set.count()
 
     def get_queryset(self, request: HttpRequest):
-        return super().get_queryset(request).prefetch_related('partsrequired_set')
+        return super().get_queryset(request).prefetch_related('partsrequired_set', 'images')
 
     @action(description='Download PDF', icon='download')
     def download_pdf_detail(self, request: HttpRequest, object_id: str) -> HttpResponse:
