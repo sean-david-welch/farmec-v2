@@ -35,6 +35,27 @@ class Warrantyclaim(BaseModel):
         return f"Claim {self.id} - {self.owner_name}"
 
 
+class WarrantyImageQuerySet(BaseQuerySet):
+    pass
+
+
+class WarrantyImage(BaseModel):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, verbose_name=_('ID'))
+    warranty = models.ForeignKey('Warrantyclaim', on_delete=models.CASCADE, related_name='images', verbose_name=_('warranty claim'))
+    image = models.ImageField(upload_to='farmec_images/Warranty/', verbose_name=_('image'), help_text=_('Repair or damage photo'))
+
+    objects = WarrantyImageQuerySet.as_manager()
+
+    class Meta:
+        managed = True
+        db_table = 'WarrantyImage'
+        verbose_name = _('warranty image')
+        verbose_name_plural = _('warranty images')
+
+    def __str__(self):
+        return f"Image for {self.warranty_id}"
+
+
 class PartsrequiredQuerySet(BaseQuerySet):
     pass
 

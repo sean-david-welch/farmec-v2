@@ -1,6 +1,26 @@
-from django import forms
+from typing import Any
 
+from django.core.files.uploadedfile import UploadedFile
+from django import forms
 from .models import Warrantyclaim, Partsrequired, Machineregistration
+
+
+class MultipleFileInput(forms.FileInput):
+    allow_multiple_selected = True
+
+    def value_from_datadict(self, data: dict[str, Any], files: Any, name: str) -> list[UploadedFile]:
+        return files.getlist(name)
+
+
+class MultipleFileField(forms.FileField):
+    widget = MultipleFileInput
+
+    def clean(self, data: list[UploadedFile], initial: Any = None) -> list[UploadedFile]:
+        if not data:
+            if self.required:
+                raise forms.ValidationError(self.error_messages['required'])
+            return []
+        return [super().clean(f, initial) for f in data]
 
 
 class WarrantyclaimForm(forms.ModelForm):
@@ -10,8 +30,29 @@ class WarrantyclaimForm(forms.ModelForm):
     repair_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date', 'onfocus': 'this.showPicker()'}))
     failure_details = forms.CharField(widget=forms.Textarea(attrs={'rows': 3}))
     repair_details = forms.CharField(widget=forms.Textarea(attrs={'rows': 3}))
+    dealer_contact = forms.CharField(
+        max_length=255, required=False, label='Dealer Contact (Email Address)',
+    )
     labour_hours = forms.DecimalField(max_digits=8, decimal_places=2, widget=forms.NumberInput(attrs={'step': '0.5', 'min': '0'}))
     completed_by = forms.CharField(max_length=255)
+    warranty_images = MultipleFileField(
+        required=False, label='Warranty Images', help_text='Please upload at least four images of the the machine including all sides as well as the serial number of the machine',
+    )
+
+    def clean_warranty_images(self) -> list[UploadedFile]:
+        files: list[UploadedFile] = self.cleaned_data.get('warranty_images', [])
+        if self.instance._state.adding and len(files) < 4:
+            raise forms.ValidationError('Please upload at least 4 images.')
+        return files
+
+    def clean_dealer_contact(self) -> str:
+        value: str = self.cleaned_data.get('dealer_contact', '')
+        if self.instance._state.adding and value:
+            try:
+                forms.EmailField().clean(value)
+            except forms.ValidationError:
+                raise forms.ValidationError('Enter a valid email address.')
+        return value
 
     class Meta:
         model = Warrantyclaim

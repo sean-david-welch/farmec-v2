@@ -5,7 +5,7 @@
 
 {% block content %}
 <section class="form-page-section">
-    <form class="form" method="post" action="." novalidate>
+    <form class="form" method="post" action="." enctype="multipart/form-data" novalidate>
         {% csrf_token %}
         <h1 class="main-heading">Warranty Claim Form</h1>
 
@@ -71,6 +71,12 @@
             {{ form.repair_details.label_tag }}
             {{ form.repair_details }}
             {% for error in form.repair_details.errors %}<p class="error-message">{{ error }}</p>{% endfor %}
+        </div>
+        <div>
+            {{ form.warranty_images.label_tag }}
+            {{ form.warranty_images }}
+            <p class="form-help-text">{{ form.warranty_images.help_text }}</p>
+            {% for error in form.warranty_images.errors %}<p class="error-message">{{ error }}</p>{% endfor %}
         </div>
 
         <p class="form-section-title">Completion</p>
