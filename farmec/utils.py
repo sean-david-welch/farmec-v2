@@ -80,7 +80,9 @@ class EmailClient:
             f"Machine Model: {claim.machine_model}\n"
             f"Serial Number: {claim.serial_number}\n"
         )
-        cc: list[str] = [claim.dealer_contact] if claim.dealer_contact else []
+        cc: list[str] = ['stephen@farmec.ie']
+        if claim.dealer_contact:
+            cc.append(claim.dealer_contact)
         self.send(subject=subject, text=text, html=html, cc=cc)
 
     def send_registration_notification(self, reg: Machineregistration) -> None:
