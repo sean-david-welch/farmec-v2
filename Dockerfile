@@ -25,4 +25,4 @@ COPY . .
 
 EXPOSE 8000
 
-CMD ["sh", "-c", "uv run python manage.py collectstatic --noinput && uv run gunicorn farmec.wsgi:application --bind 0.0.0.0:8000 --workers 3 --timeout 120 --access-logfile - --error-logfile -"]
+CMD ["sh", "-c", "uv run python manage.py collectstatic --noinput && uv run gunicorn farmec.wsgi:application --bind 0.0.0.0:8000 --workers 3 --timeout 120 --max-requests 1000 --max-requests-jitter 50 --access-logfile - --error-logfile -"]
