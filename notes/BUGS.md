@@ -91,6 +91,39 @@ No systematic test coverage exists for Django views or forms across the project.
 
 ---
 
+## 10. EC2 — Add Swap Space
+
+Server has 924MB RAM and no swap. Memory exhaustion causes site slowdowns and kills Docker/SSH responsiveness.
+
+**What's needed:**
+- Add 2GB swap file (persistent across reboots):
+```bash
+sudo fallocate -l 2G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+```
+
+---
+
+## 11. EC2 — Incident 2026-06-03: Site Slow / Memory Exhaustion
+
+**What happened:**
+- `unattended-upgrade` spawned 4 stuck Python processes consuming ~40% RAM
+- Gunicorn workers (3) had been running since 2026-05-18 with gradual memory leak (~32% RAM)
+- Combined left only 40MB available from 924MB total — no swap to fall back on
+- Docker daemon starved, `docker ps` hung, SSH login slow
+
+**How fixed:**
+1. Killed stuck `unattended-upgrade` processes (`kill -9`)
+2. Restarted Docker container (`docker restart $(docker ps -q)`) — freed Gunicorn worker memory
+3. Available memory recovered from 40MB → 250MB, load dropped from ~5 → ~2
+
+**Prevention:** Add swap (see #10) and consider setting `--max-requests` on Gunicorn workers to auto-recycle on memory leak.
+
+---
+
 ## 9. Bot Protection — reCAPTCHA or Equivalent on Public Forms
 
 Unauthenticated forms (primarily the contact form) have no bot protection and are vulnerable to spam submissions.
