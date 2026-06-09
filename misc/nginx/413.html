@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Too Large - Farmec Ireland Ltd</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-primary: #dc2626;
+            --color-secondary: #18181b;
+            --color-text-primary: #fafafa;
+            --color-text-secondary: #d4d4d8;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Dosis', sans-serif;
+            background-color: var(--color-secondary);
+            color: var(--color-text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+        }
+        .error-page { max-width: 600px; }
+        h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        p {
+            color: var(--color-text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        a {
+            display: inline-block;
+            background-color: var(--color-primary);
+            color: #fff;
+            text-decoration: none;
+            padding: 0.6rem 1.4rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: background-color 300ms ease-in-out;
+        }
+        a:hover { background-color: #b91c1c; }
+    </style>
+</head>
+<body>
+    <div class="error-page">
+        <h1>File Too Large</h1>
+        <p>Your upload exceeded the maximum allowed size. Please reduce your image sizes (maximum 5MB per image, 16MB total) and try again.</p>
+        <a href="/warranty-claim/">Go Back</a>
+    </div>
+</body>
+</html>
