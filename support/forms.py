@@ -43,6 +43,14 @@ class WarrantyclaimForm(forms.ModelForm):
         files: list[UploadedFile] = self.cleaned_data.get('warranty_images', [])
         if self.instance._state.adding and len(files) < 4:
             raise forms.ValidationError('Please upload at least 4 images.')
+        max_file_bytes = 5 * 1024 * 1024
+        max_total_bytes = 16 * 1024 * 1024
+        for f in files:
+            if f.size > max_file_bytes:
+                raise forms.ValidationError(f'"{f.name}" exceeds 5MB. Please reduce the image size before uploading.')
+        total = sum(f.size for f in files)
+        if total > max_total_bytes:
+            raise forms.ValidationError(f'Total upload size is {total / 1024 / 1024:.1f}MB. Maximum is 16MB — please reduce image sizes.')
         return files
 
     def clean_dealer_contact(self) -> str:
