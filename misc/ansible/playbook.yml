@@ -64,6 +64,17 @@
 
     # --- nginx ---
 
+    - name: Create nginx error pages directory
+      file:
+        path: /etc/nginx/error_pages
+        state: directory
+        mode: '0755'
+
+    - name: Copy nginx 413 error page
+      copy:
+        src: ../nginx/413.html
+        dest: /etc/nginx/error_pages/413.html
+
     - name: Copy nginx config
       copy:
         src: ../nginx/nginx.conf
