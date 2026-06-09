@@ -53,6 +53,18 @@ Set up proper error visibility for production.
 
 ---
 
+## 6. JavaScript Unit Testing with Vitest
+
+Add Vitest for frontend JS testing. No build tool currently exists so setup cost is non-trivial — worth doing when frontend complexity grows.
+
+**Implementation notes:**
+- Install Vitest as a dev dependency (`npm install -D vitest`)
+- Priority files to test: `warranty_form.js` (`validateImageSize`, `validateParts`, `addWarrantyPart`, `removeWarrantyPart`)
+- Use jsdom environment for DOM-dependent tests
+- Add a `package.json` at repo root with a `test` script pointing to vitest
+
+---
+
 ## 4. Gemini API — AI-Assisted Expense Organisation
 
 Use the Gemini API to help staff categorise and structure expense data automatically.
