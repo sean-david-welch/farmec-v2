@@ -138,6 +138,43 @@ class WarrantyclaimFormViewTest(TestCase):
         with self.subTest('images linked to claim'):
             self.assertTrue(WarrantyImage.objects.filter(warranty=claim).exists())
 
+    def test_warranty_claim__single_image_over_5mb_rejected(self):
+        oversized = SimpleUploadedFile('big.jpg', b'\xff\xd8\xff' + b'\x00' * (5 * 1024 * 1024 + 1), content_type='image/jpeg')
+        images = make_images(3) + [oversized]
+        data: dict[str, Any] = {**VALID_WARRANTY_DATA, 'warranty_images': images}
+        response = self.client.post(self.url, data=data)
+        with self.subTest('returns 200'):
+            self.assertEqual(response.status_code, 200)
+        with self.subTest('no claim saved'):
+            self.assertEqual(Warrantyclaim.objects.count(), 0)
+        with self.subTest('form error on warranty_images'):
+            self.assertIn('warranty_images', response.context['form'].errors)
+        with self.subTest('error mentions file name'):
+            error_text = str(response.context['form'].errors['warranty_images'])
+            self.assertIn('big.jpg', error_text)
+
+    def test_warranty_claim__total_size_over_16mb_rejected(self):
+        chunk = b'\xff\xd8\xff' + b'\x00' * (4 * 1024 * 1024 + 1)
+        images = [SimpleUploadedFile(f'img{i}.jpg', chunk, content_type='image/jpeg') for i in range(4)]
+        data: dict[str, Any] = {**VALID_WARRANTY_DATA, 'warranty_images': images}
+        response = self.client.post(self.url, data=data)
+        with self.subTest('returns 200'):
+            self.assertEqual(response.status_code, 200)
+        with self.subTest('no claim saved'):
+            self.assertEqual(Warrantyclaim.objects.count(), 0)
+        with self.subTest('form error on warranty_images'):
+            self.assertIn('warranty_images', response.context['form'].errors)
+        with self.subTest('error mentions total size'):
+            error_text = str(response.context['form'].errors['warranty_images'])
+            self.assertIn('16MB', error_text)
+
+    def test_warranty_claim__images_within_size_limits_accepted(self):
+        images = [SimpleUploadedFile(f'img{i}.jpg', b'\xff\xd8\xff' + b'\x00' * (1 * 1024 * 1024), content_type='image/jpeg') for i in range(4)]
+        data: dict[str, Any] = {**VALID_WARRANTY_DATA, 'warranty_images': images}
+        response = self.client.post(self.url, data=data, follow=True)
+        self.assertRedirects(response, reverse_lazy('catalog:spareparts'))
+        self.assertEqual(Warrantyclaim.objects.count(), 1)
+
     def test_warranty_claim__fewer_than_four_images_rejected(self):
         images: list[SimpleUploadedFile] = make_images(2)
         data: dict[str, Any] = {**VALID_WARRANTY_DATA, 'warranty_images': images}
