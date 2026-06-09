@@ -23,14 +23,20 @@ Need to define the keyword set the site should rank for before any on-page or me
 
 ---
 
-## 3. EC2 — AWS CLI Not Configured for S3 Backup
+## 3. EC2 — S3 Backup Cron Silently Failing (Investigated 2026-06-09)
 
-Nightly backup cron (`0 2 * * *`) copies the SQLite DB to `s3://farmec-backups/` but has been silently failing since at least 2026-04-05 — AWS credentials are not configured on the server.
+Nightly backup cron (`0 2 * * *`) copies the SQLite DB to `s3://farmec-backups/` but stopped producing backups after 2026-04-07. Last confirmed backups: `database-20260405.db`, `database-20260407.db`.
 
-**What's needed:**
-- Preferred: attach an IAM instance profile to the EC2 instance scoped to `s3:PutObject` on `s3://farmec-backups/*` — no credentials in `.env` required
-- Quick fix alternative: add `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` to `.env` on the server
-- Either way: add `AWS_DEFAULT_REGION=eu-west-1` to `.env` on the server (currently missing)
+**Investigation findings:**
+- Cron daemon running continuously since 2026-03-29 (no reboots)
+- Job registered correctly in seanwelch's crontab — confirmed with `crontab -l`
+- Root had no crontab (checked and cleared with `sudo crontab -r`)
+- Manual run works fine — AWS credentials in `.env` are valid
+- Most likely cause: AWS credentials in `.env` expired or were rotated around April 7th and backups failed silently (no logging on the cron job)
+- Credentials now valid — backups should resume at 2am UTC
+
+**Still needed:**
+- Add `>> /var/log/farmec-backup.log 2>&1` to the cron job so failures are visible in future — do this next time `just provision` is run naturally
 
 ---
 
