@@ -89,10 +89,33 @@
     if (form._submitHandler) {
         form.removeEventListener('submit', form._submitHandler);
     }
+    function validateImageSize() {
+        const input = document.querySelector('input[name="warranty_images"]');
+        if (!input || !input.files.length) return true;
+        const MAX_TOTAL_MB = 16;
+        const MAX_FILE_MB = 5;
+        const oversized = Array.from(input.files).find(f => f.size > MAX_FILE_MB * 1024 * 1024);
+        if (oversized) {
+            window.showToast(`"${oversized.name}" exceeds ${MAX_FILE_MB}MB. Please reduce the image size before uploading.`, 'error');
+            return false;
+        }
+        const totalBytes = Array.from(input.files).reduce((sum, f) => sum + f.size, 0);
+        if (totalBytes > MAX_TOTAL_MB * 1024 * 1024) {
+            const totalMB = (totalBytes / 1024 / 1024).toFixed(1);
+            window.showToast(`Total upload size is ${totalMB}MB. Maximum is ${MAX_TOTAL_MB}MB — please reduce image sizes.`, 'error');
+            return false;
+        }
+        return true;
+    }
+
     form._submitHandler = function (e) {
-        if (!validateParts()) {
+        const partsOk = validateParts();
+        const imagesOk = validateImageSize();
+        if (!partsOk || !imagesOk) {
             e.preventDefault();
-            window.showToast('Please fill in Part Number and Quantity for each part.', 'error');
+            if (!partsOk) {
+                window.showToast('Please fill in Part Number and Quantity for each part.', 'error');
+            }
         }
     };
     form.addEventListener('submit', form._submitHandler);
