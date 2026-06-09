@@ -34,6 +34,10 @@ def server_error(request: HttpRequest, exception: Exception | None = None) -> Ht
     return render(request, 'error.html', status=500)
 
 
+def forbidden(request: HttpRequest, exception: Exception | None = None) -> HttpResponse:
+    return render(request, '403.html', status=403)
+
+
 urlpatterns: list[URLPattern | URLResolver] = [
     path('supplier', RedirectView.as_view(url='/suppliers/', permanent=True)),
     path('supplier/', RedirectView.as_view(url='/suppliers/', permanent=True)),
@@ -68,8 +72,10 @@ if settings.DEBUG:
         path('__debug__/', include(debug_toolbar.urls)),
         path('test-404/', lambda r: page_not_found(r)),
         path('test-500/', lambda r: server_error(r)),
+        path('test-403/', lambda r: forbidden(r)),
     ]
 
 # Error handlers
+handler403 = forbidden
 handler404 = page_not_found
 handler500 = server_error
