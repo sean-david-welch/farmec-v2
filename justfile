@@ -21,6 +21,15 @@ tf-apply:
 provision:
     set -a && source .env && set +a && ansible-playbook -i misc/ansible/inventory.yml misc/ansible/playbook.yml -K
 
+# Dry run provisioning - shows what would change without applying
+provision-check:
+    set -a && source .env && set +a && ansible-playbook -i misc/ansible/inventory.yml misc/ansible/playbook.yml -K --check --diff
+
+# Provision only nginx config (validates + reloads, skips packages/docker/git/cron)
+[confirm]
+provision-nginx:
+    set -a && source .env && set +a && ansible-playbook -i misc/ansible/inventory.yml misc/ansible/playbook.yml -K --tags nginx
+
 # Copy local database up to EC2
 [confirm]
 db-push:
