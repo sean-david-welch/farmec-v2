@@ -69,38 +69,68 @@
         path: /etc/nginx/error_pages
         state: directory
         mode: '0755'
+      tags: nginx
+
+    - name: Check if farmec nginx config already exists
+      stat:
+        path: /etc/nginx/sites-available/farmec
+      register: farmec_nginx_config
+      tags: nginx
+
+    - name: Backup existing nginx config
+      copy:
+        src: /etc/nginx/sites-available/farmec
+        dest: /etc/nginx/sites-available/farmec.bak
+        remote_src: true
+      when: farmec_nginx_config.stat.exists
+      tags: nginx
 
     - name: Copy nginx 413 error page
       copy:
         src: ../nginx/413.html
         dest: /etc/nginx/error_pages/413.html
+      tags: nginx
 
     - name: Copy nginx config
       copy:
         src: ../nginx/nginx.conf
         dest: /etc/nginx/sites-available/farmec
+      notify: Reload nginx
+      tags: nginx
 
     - name: Enable farmec nginx site
       file:
         src: /etc/nginx/sites-available/farmec
         dest: /etc/nginx/sites-enabled/farmec
         state: link
+      notify: Reload nginx
+      tags: nginx
 
     - name: Remove default nginx site
       file:
         path: /etc/nginx/sites-enabled/default
         state: absent
+      notify: Reload nginx
+      tags: nginx
 
     - name: Remove old farmec.ie symlink
       file:
         path: /etc/nginx/sites-enabled/farmec.ie
         state: absent
+      notify: Reload nginx
+      tags: nginx
+
+    - name: Validate nginx configuration
+      command: nginx -t
+      changed_when: false
+      tags: nginx
 
     - name: Enable and start nginx
       systemd:
         name: nginx
         enabled: true
         state: started
+      tags: nginx
 
     # --- Sudoers ---
 
@@ -130,4 +160,8 @@
           set -a && source /home/seanwelch/farmec-v2/.env && set +a &&
           aws s3 cp /home/seanwelch/farmec-v2/database/database.db
           s3://farmec-backups/database-$(date +\%Y\%m\%d).db
+
+  handlers:
+    - name: Reload nginx
+      command: nginx -s reload
 
