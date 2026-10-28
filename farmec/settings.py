@@ -14,6 +14,7 @@ from pathlib import Path
 
 import environ
 from farmec.admin_config import UNFOLD
+from farmec.logging import LOGGING as LOGGING_SETTINGS
 
 env = environ.Env()
 
@@ -186,6 +187,9 @@ YOUTUBE_API_KEY = env('YOUTUBE_API_KEY', default='')
 
 # Admin Conifg
 UNFOLD = UNFOLD
+
+# Logging (stdout -> Docker logs)
+LOGGING = LOGGING_SETTINGS
 
 # Sentry
 SENTRY_DSN = env('SENTRY_DSN', default='')
