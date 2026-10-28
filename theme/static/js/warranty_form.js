@@ -85,6 +85,70 @@
         return valid;
     }
 
+    function setupImagePicker() {
+        const input = document.querySelector('input[name="warranty_images"]');
+        const list = document.getElementById('warranty-images-list');
+        const count = document.getElementById('warranty-images-count');
+        if (!input || !list || !count || typeof DataTransfer === 'undefined') return;
+        const MIN_FILES = 4;
+        let selected = [];
+
+        function fileKey(file) {
+            return `${file.name}|${file.size}|${file.lastModified}`;
+        }
+
+        function render() {
+            list.innerHTML = '';
+            selected.forEach((file, index) => {
+                const item = document.createElement('li');
+                item.className = 'file-list-item';
+                const name = document.createElement('span');
+                name.textContent = file.name;
+                const remove = document.createElement('button');
+                remove.type = 'button';
+                remove.className = 'file-remove-btn';
+                remove.textContent = 'Remove';
+                remove.setAttribute('aria-label', `Remove ${file.name}`);
+                remove.addEventListener('click', () => {
+                    selected.splice(index, 1);
+                    sync();
+                });
+                item.append(name, remove);
+                list.append(item);
+            });
+            const total = selected.length;
+            count.className = total >= MIN_FILES ? 'file-count file-count-ok' : 'file-count';
+            if (total === 0) {
+                count.textContent = `Choose at least ${MIN_FILES} photos. You can pick them all at once, or add them one at a time.`;
+            } else if (total < MIN_FILES) {
+                count.textContent = `${total} of ${MIN_FILES} photos chosen. Click "Choose files" again to add ${MIN_FILES - total} more.`;
+            } else {
+                count.textContent = `${total} photos chosen. You can add more or press Submit.`;
+            }
+        }
+
+        function sync() {
+            const transfer = new DataTransfer();
+            selected.forEach(file => transfer.items.add(file));
+            input.files = transfer.files;
+            render();
+        }
+
+        input.addEventListener('change', () => {
+            const known = new Set(selected.map(fileKey));
+            Array.from(input.files).forEach((file) => {
+                if (!known.has(fileKey(file))) {
+                    selected.push(file);
+                    known.add(fileKey(file));
+                }
+            });
+            sync();
+        });
+        render();
+    }
+
+    setupImagePicker();
+
     const form = document.querySelector('.form');
     if (form._submitHandler) {
         form.removeEventListener('submit', form._submitHandler);
@@ -94,7 +158,7 @@
         if (!input) return true;
         const MIN_FILES = 4;
         if (input.files.length < MIN_FILES) {
-            window.showToast(`Please upload at least ${MIN_FILES} images (you selected ${input.files.length}).`, 'error');
+            window.showToast(`You have chosen ${input.files.length} of ${MIN_FILES} photos. Click "Choose files" again to add more. They will be added to the ones you already chose.`, 'error');
             return false;
         }
         const MAX_TOTAL_MB = 16;
