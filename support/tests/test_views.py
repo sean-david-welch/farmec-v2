@@ -1,4 +1,5 @@
 from typing import Any
+from unittest.mock import patch
 
 from django.core import mail
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -205,6 +206,62 @@ class WarrantyclaimFormViewTest(TestCase):
         claim = Warrantyclaim.objects.get()
         self.assertEqual(Partsrequired.objects.filter(warranty=claim).count(), 1)
 
+    def test_warranty_claim__image_save_failure_rolls_back(self):
+        data: dict[str, Any] = {**VALID_WARRANTY_DATA, 'warranty_images': make_images(), 'part_count': '1', 'part_number_0': 'PN-001', 'quantity_needed_0': '1'}
+        with patch.object(WarrantyImage.objects, 'create', side_effect=OSError('S3 down')):
+            with self.assertLogs('support.views', level='ERROR') as logs:
+                response = self.client.post(self.url, data=data)
+        with self.subTest('returns 200 with form'):
+            self.assertEqual(response.status_code, 200)
+            self.assertIn('form', response.context)
+        with self.subTest('no claim or parts left behind'):
+            self.assertEqual(Warrantyclaim.objects.count(), 0)
+            self.assertEqual(Partsrequired.objects.count(), 0)
+        with self.subTest('user sees error message'):
+            self.assertIn('could not save your claim', ' '.join(str(m) for m in response.context['messages']))
+        with self.subTest('error logged'):
+            self.assertIn('Warranty claim save failed', logs.output[0])
+        with self.subTest('no email sent'):
+            self.assertEqual(len(mail.outbox), 0)
+
+    def test_warranty_claim__email_failure_still_succeeds(self):
+        data: dict[str, Any] = {**VALID_WARRANTY_DATA, 'warranty_images': make_images()}
+        with patch('support.views.EmailClient.send_warranty_notification', side_effect=Exception('Resend down')):
+            with self.assertLogs('support.views', level='ERROR') as logs:
+                response = self.client.post(self.url, data=data, follow=True)
+        with self.subTest('redirects to spareparts'):
+            self.assertRedirects(response, reverse_lazy('catalog:spareparts'))
+        with self.subTest('claim saved'):
+            self.assertEqual(Warrantyclaim.objects.count(), 1)
+        with self.subTest('error logged'):
+            self.assertIn('Warranty claim notification email failed', logs.output[0])
+
+    def test_warranty_claim__invalid_numbers_fall_back(self):
+        data: dict[str, Any] = {
+            **VALID_WARRANTY_DATA, 'warranty_images': make_images(),
+            'part_count': 'abc',
+        }
+        response = self.client.post(self.url, data=data, follow=True)
+        self.assertRedirects(response, reverse_lazy('catalog:spareparts'))
+        self.assertEqual(Partsrequired.objects.count(), 0)
+
+    def test_warranty_claim__bad_quantity_defaults_to_one(self):
+        data: dict[str, Any] = {
+            **VALID_WARRANTY_DATA, 'warranty_images': make_images(),
+            'part_count': '1', 'part_number_0': 'PN-001', 'quantity_needed_0': 'lots',
+        }
+        self.client.post(self.url, data=data)
+        self.assertEqual(Partsrequired.objects.get().quantity_needed, 1)
+
+    def test_warranty_claim__image_rejection_logged(self):
+        with self.assertLogs('support.views', level='ERROR') as logs:
+            self.client.post(self.url, data={**VALID_WARRANTY_DATA, 'warranty_images': make_images(2)})
+        self.assertIn('Warranty claim images rejected', logs.output[0])
+
+    def test_warranty_claim__other_validation_errors_not_logged(self):
+        with self.assertNoLogs('support.views', level='ERROR'):
+            self.client.post(self.url, data={**VALID_WARRANTY_DATA, 'install_date': 'not-a-date', 'warranty_images': make_images()})
+
 
 class MachineregistrationFormViewTest(TestCase):
     @classmethod
@@ -265,3 +322,14 @@ class MachineregistrationFormViewTest(TestCase):
             self.assertFalse(reg.complete_supply)
         with self.subTest('pdi_complete defaults false'):
             self.assertFalse(reg.pdi_complete)
+
+    def test_machine_registration__email_failure_still_succeeds(self):
+        with patch('support.views.EmailClient.send_registration_notification', side_effect=Exception('Resend down')):
+            with self.assertLogs('support.views', level='ERROR') as logs:
+                response = self.client.post(self.url, data=VALID_REGISTRATION_DATA, follow=True)
+        with self.subTest('redirects to spareparts'):
+            self.assertRedirects(response, reverse_lazy('catalog:spareparts'))
+        with self.subTest('registration saved'):
+            self.assertEqual(Machineregistration.objects.count(), 1)
+        with self.subTest('error logged'):
+            self.assertIn('Machine registration notification email failed', logs.output[0])
