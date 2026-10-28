@@ -1,15 +1,49 @@
 import io
+import logging
 import re
 import zipfile
+from collections.abc import Generator
+from contextlib import contextmanager
 from datetime import date
 from typing import Callable
 
+from django.contrib import messages
 from django.contrib.admin import ModelAdmin
 from django.db.models import Model, QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.template.loader import render_to_string
 from django.conf import settings
 from weasyprint import CSS, HTML
+
+logger = logging.getLogger(__name__)
+
+
+@contextmanager
+def collect_image_failures() -> Generator[list[str]]:
+    """
+    Collect WeasyPrint "Failed to load image" log messages raised inside the block.
+
+    WeasyPrint skips images it cannot fetch and logs an error instead of raising.
+    The handler is attached to the global ``weasyprint`` logger, which is safe
+    under gunicorn's sync workers (one request per process at a time).
+
+    :returns: A list that fills with one message per image that failed to load.
+    """
+    failures: list[str] = []
+
+    class FailureHandler(logging.Handler):
+        def emit(self, record: logging.LogRecord) -> None:
+            message: str = record.getMessage()
+            if 'Failed to load image' in message:
+                failures.append(message)
+
+    handler = FailureHandler(level=logging.WARNING)
+    weasyprint_logger = logging.getLogger('weasyprint')
+    weasyprint_logger.addHandler(handler)
+    try:
+        yield failures
+    finally:
+        weasyprint_logger.removeHandler(handler)
 
 
 class PDFDownloadAction:
@@ -101,18 +135,24 @@ class PDFDownloadAction:
             ``application/zip`` content type and a ``Content-Disposition``
             attachment header.
         """
-        if queryset.count() == 1:
-            obj: Model = queryset.first()
-            pdf: bytes = self.render_pdf(obj)
-            response: HttpResponse = HttpResponse(pdf, content_type='application/pdf')
-            response['Content-Disposition'] = f'attachment; filename="{self.build_filename(obj)}"'
-            return response
-
-        buffer: io.BytesIO = io.BytesIO()
-        with zipfile.ZipFile(buffer, 'w') as zf:
-            for obj in queryset:
-                zf.writestr(self.build_filename(obj), self.render_pdf(obj))
-
-        response: HttpResponse = HttpResponse(buffer.getvalue(), content_type='application/zip')
-        response['Content-Disposition'] = f'attachment; filename="{self.zip_filename}"'
+        with collect_image_failures() as failures:
+            if queryset.count() == 1:
+                obj: Model = queryset.first()
+                pdf: bytes = self.render_pdf(obj)
+                response: HttpResponse = HttpResponse(pdf, content_type='application/pdf')
+                response['Content-Disposition'] = f'attachment; filename="{self.build_filename(obj)}"'
+            else:
+                buffer: io.BytesIO = io.BytesIO()
+                with zipfile.ZipFile(buffer, 'w') as zf:
+                    for obj in queryset:
+                        zf.writestr(self.build_filename(obj), self.render_pdf(obj))
+                response = HttpResponse(buffer.getvalue(), content_type='application/zip')
+                response['Content-Disposition'] = f'attachment; filename="{self.zip_filename}"'
+        if failures:
+            logger.warning('PDF generated with %d missing image(s): %s', len(failures), failures)
+            modeladmin.message_user(
+                request,
+                f'{len(failures)} image(s) could not be loaded and were left out of the PDF.',
+                level=messages.WARNING,
+            )
         return response
