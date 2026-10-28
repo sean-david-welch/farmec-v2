@@ -3,13 +3,14 @@ import uuid
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db import transaction
 from django.db.models import QuerySet
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.views.generic.edit import FormView
 
 from farmec.logging import describe_files, log_error
-from farmec.utils import EmailClient
+from farmec.utils import EmailClient, parse_int
 from support.forms import WarrantyclaimForm, MachineregistrationForm
 from support.models import Warrantyclaim, WarrantyImage, Machineregistration, Partsrequired
 
@@ -26,8 +27,9 @@ class WarrantyclaimFormView(LoginRequiredMixin, FormView):
         messages.error(self.request, f'Please correct the errors in: {fields_str}.')
         if 'warranty_images' in form.errors:
             log_error(
-                logger, 'Warranty image upload rejected user=%s', self.request.user.pk,
+                logger, 'Warranty claim images rejected',
                 context={
+                    'user_id': self.request.user.pk,
                     'errors': form.errors.get_json_data(),
                     'files': describe_files(self.request.FILES.getlist('warranty_images')),
                     'content_length': self.request.META.get('CONTENT_LENGTH'),
@@ -36,29 +38,44 @@ class WarrantyclaimFormView(LoginRequiredMixin, FormView):
         return super().form_invalid(form)
 
     def form_valid(self, form: WarrantyclaimForm) -> HttpResponse:
-        claim: Warrantyclaim = form.save(commit=False)
-        claim.id = str(uuid.uuid4())
-        claim.save()
-        part_count: int = int(self.request.POST.get('part_count', 0))
-        for i in range(part_count):
-            part_number: str = self.request.POST.get(f'part_number_{i}', '').strip()
-            quantity_needed: str = self.request.POST.get(f'quantity_needed_{i}', '').strip()
-            invoice_number: str = self.request.POST.get(f'invoice_number_{i}', '').strip()
-            description: str = self.request.POST.get(f'part_description_{i}', '').strip()
-            if part_number or quantity_needed:
-                Partsrequired.objects.create(
-                    id=str(uuid.uuid4()),
-                    warranty=claim,
-                    part_number=part_number or None,
-                    quantity_needed=int(quantity_needed) if quantity_needed else 1,
-                    invoice_number=invoice_number or None,
-                    description=description or None,
-                )
-        for image_file in self.request.FILES.getlist('warranty_images'):
-            WarrantyImage.objects.create(id=str(uuid.uuid4()), warranty=claim, image=image_file)
-        parts: QuerySet[Partsrequired] = Partsrequired.objects.filter(warranty=claim)
-        images: QuerySet[WarrantyImage] = WarrantyImage.objects.filter(warranty=claim)
-        EmailClient().send_warranty_notification(claim=claim, parts=parts, images=images)
+        try:
+            with transaction.atomic():
+                claim: Warrantyclaim = form.save(commit=False)
+                claim.id = str(uuid.uuid4())
+                claim.save()
+                for i in range(parse_int(self.request.POST.get('part_count'), 0)):
+                    part_number: str = self.request.POST.get(f'part_number_{i}', '').strip()
+                    quantity_needed: str = self.request.POST.get(f'quantity_needed_{i}', '').strip()
+                    invoice_number: str = self.request.POST.get(f'invoice_number_{i}', '').strip()
+                    description: str = self.request.POST.get(f'part_description_{i}', '').strip()
+                    if part_number or quantity_needed:
+                        Partsrequired.objects.create(
+                            id=str(uuid.uuid4()),
+                            warranty=claim,
+                            part_number=part_number or None,
+                            quantity_needed=parse_int(quantity_needed, 1),
+                            invoice_number=invoice_number or None,
+                            description=description or None,
+                        )
+                for image_file in self.request.FILES.getlist('warranty_images'):
+                    WarrantyImage.objects.create(id=str(uuid.uuid4()), warranty=claim, image=image_file)
+        except Exception:
+            log_error(
+                logger, 'Warranty claim save failed',
+                context={
+                    'user_id': self.request.user.pk,
+                    'files': describe_files(self.request.FILES.getlist('warranty_images')),
+                },
+                exc_info=True,
+            )
+            messages.error(self.request, 'We could not save your claim. Nothing was submitted, please try again.')
+            return self.render_to_response(self.get_context_data(form=form))
+        try:
+            parts: QuerySet[Partsrequired] = Partsrequired.objects.filter(warranty=claim)
+            images: QuerySet[WarrantyImage] = WarrantyImage.objects.filter(warranty=claim)
+            EmailClient().send_warranty_notification(claim=claim, parts=parts, images=images)
+        except Exception:
+            log_error(logger, 'Warranty claim notification email failed', context={'claim_id': claim.id}, exc_info=True)
         messages.success(self.request, 'Warranty claim submitted successfully.')
         return redirect('catalog:spareparts')
 
