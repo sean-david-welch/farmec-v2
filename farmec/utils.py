@@ -12,6 +12,19 @@ from support.models import (
 )
 
 
+def parse_int(value: str | None, default: int) -> int:
+    """
+    Parse an int from user input.
+
+    :param value: Raw string, e.g. from ``request.POST``.
+    :param default: Returned when ``value`` is empty or not a valid integer.
+    """
+    try:
+        return int(value or '')
+    except ValueError:
+        return default
+
+
 class EmailClient:
     email_css: str = (settings.BASE_DIR / 'theme' / 'static' / 'css' / 'emails.css').read_text()
     inliner: css_inline.CSSInliner = css_inline.CSSInliner(extra_css=email_css)
