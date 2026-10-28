@@ -36,7 +36,7 @@ class WarrantyclaimForm(forms.ModelForm):
     labour_hours = forms.DecimalField(max_digits=8, decimal_places=2, widget=forms.NumberInput(attrs={'step': '0.5', 'min': '0'}))
     completed_by = forms.CharField(max_length=255)
     warranty_images = MultipleFileField(
-        widget=MultipleFileInput(attrs={'accept': 'image/*'}), required=False, label='Warranty Images', help_text='Please upload at least four images of the the machine including all sides as well as the serial number of the machine',
+        widget=MultipleFileInput(attrs={'accept': 'image/*'}), required=False, label='Warranty Images', help_text='Please upload at least four images of the machine including all sides as well as the serial number of the machine. You can add photos one at a time.',
     )
 
     def clean_warranty_images(self) -> list[UploadedFile]:
