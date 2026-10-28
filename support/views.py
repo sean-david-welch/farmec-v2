@@ -24,14 +24,15 @@ class WarrantyclaimFormView(LoginRequiredMixin, FormView):
         field_labels: list[str] = [str(form.fields[f].label) or f.replace('_', ' ').title() for f in form.errors if f != '__all__']
         fields_str: str = ', '.join(field_labels)
         messages.error(self.request, f'Please correct the errors in: {fields_str}.')
-        log_error(
-            logger, 'Warranty form invalid user=%s fields=%s', self.request.user.pk, fields_str,
-            context={
-                'errors': form.errors.get_json_data(),
-                'files': describe_files(self.request.FILES.getlist('warranty_images')),
-                'content_length': self.request.META.get('CONTENT_LENGTH'),
-            },
-        )
+        if 'warranty_images' in form.errors:
+            log_error(
+                logger, 'Warranty image upload rejected user=%s', self.request.user.pk,
+                context={
+                    'errors': form.errors.get_json_data(),
+                    'files': describe_files(self.request.FILES.getlist('warranty_images')),
+                    'content_length': self.request.META.get('CONTENT_LENGTH'),
+                },
+            )
         return super().form_invalid(form)
 
     def form_valid(self, form: WarrantyclaimForm) -> HttpResponse:
