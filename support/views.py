@@ -27,7 +27,7 @@ class WarrantyclaimFormView(LoginRequiredMixin, FormView):
         messages.error(self.request, f'Please correct the errors in: {fields_str}.')
         if 'warranty_images' in form.errors:
             log_error(
-                logger, 'Warranty claim images rejected',
+                logger, 'Warranty claim images rejected', tags={'feature': 'warranty'},
                 context={
                     'user_id': self.request.user.pk,
                     'errors': form.errors.get_json_data(),
@@ -61,7 +61,7 @@ class WarrantyclaimFormView(LoginRequiredMixin, FormView):
                     WarrantyImage.objects.create(id=str(uuid.uuid4()), warranty=claim, image=image_file)
         except Exception:
             log_error(
-                logger, 'Warranty claim save failed',
+                logger, 'Warranty claim save failed', tags={'feature': 'warranty'},
                 context={
                     'user_id': self.request.user.pk,
                     'files': describe_files(self.request.FILES.getlist('warranty_images')),
@@ -75,7 +75,10 @@ class WarrantyclaimFormView(LoginRequiredMixin, FormView):
             images: QuerySet[WarrantyImage] = WarrantyImage.objects.filter(warranty=claim)
             EmailClient().send_warranty_notification(claim=claim, parts=parts, images=images)
         except Exception:
-            log_error(logger, 'Warranty claim notification email failed', context={'claim_id': claim.id}, exc_info=True)
+            log_error(
+                logger, 'Warranty claim notification email failed', tags={'feature': 'warranty'},
+                context={'claim_id': claim.id}, exc_info=True,
+            )
         messages.success(self.request, 'Warranty claim submitted successfully.')
         return redirect('catalog:spareparts')
 
@@ -96,7 +99,7 @@ class MachineregistrationFormView(LoginRequiredMixin, FormView):
             EmailClient().send_registration_notification(reg=registration)
         except Exception:
             log_error(
-                logger, 'Machine registration notification email failed',
+                logger, 'Machine registration notification email failed', tags={'feature': 'machine_registration'},
                 context={'registration_id': registration.id}, exc_info=True,
             )
         messages.success(self.request, 'Machine registration submitted successfully.')
