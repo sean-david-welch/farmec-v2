@@ -1,3 +1,4 @@
+import logging
 import uuid
 
 from django.contrib import messages
@@ -7,9 +8,12 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.views.generic.edit import FormView
 
+from farmec.logging import describe_files, log_error
 from farmec.utils import EmailClient
 from support.forms import WarrantyclaimForm, MachineregistrationForm
 from support.models import Warrantyclaim, WarrantyImage, Machineregistration, Partsrequired
+
+logger = logging.getLogger(__name__)
 
 
 class WarrantyclaimFormView(LoginRequiredMixin, FormView):
@@ -20,6 +24,14 @@ class WarrantyclaimFormView(LoginRequiredMixin, FormView):
         field_labels: list[str] = [str(form.fields[f].label) or f.replace('_', ' ').title() for f in form.errors if f != '__all__']
         fields_str: str = ', '.join(field_labels)
         messages.error(self.request, f'Please correct the errors in: {fields_str}.')
+        log_error(
+            logger, 'Warranty form invalid user=%s fields=%s', self.request.user.pk, fields_str,
+            context={
+                'errors': form.errors.get_json_data(),
+                'files': describe_files(self.request.FILES.getlist('warranty_images')),
+                'content_length': self.request.META.get('CONTENT_LENGTH'),
+            },
+        )
         return super().form_invalid(form)
 
     def form_valid(self, form: WarrantyclaimForm) -> HttpResponse:
