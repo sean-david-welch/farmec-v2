@@ -76,6 +76,8 @@
             {{ form.warranty_images.label_tag }}
             {{ form.warranty_images }}
             <p class="form-help-text">{{ form.warranty_images.help_text }}</p>
+            <p id="warranty-images-count" class="file-count" aria-live="polite"></p>
+            <ul id="warranty-images-list" class="file-list"></ul>
             {% for error in form.warranty_images.errors %}<p class="error-message">{{ error }}</p>{% endfor %}
         </div>
 
