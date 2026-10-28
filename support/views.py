@@ -92,6 +92,12 @@ class MachineregistrationFormView(LoginRequiredMixin, FormView):
         registration: Machineregistration = form.save(commit=False)
         registration.id = str(uuid.uuid4())
         registration.save()
-        EmailClient().send_registration_notification(reg=registration)
+        try:
+            EmailClient().send_registration_notification(reg=registration)
+        except Exception:
+            log_error(
+                logger, 'Machine registration notification email failed',
+                context={'registration_id': registration.id}, exc_info=True,
+            )
         messages.success(self.request, 'Machine registration submitted successfully.')
         return redirect('catalog:spareparts')
