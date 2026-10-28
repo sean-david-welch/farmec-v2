@@ -1,4 +1,6 @@
-from django.test import TestCase
+from unittest.mock import MagicMock
+
+from django.test import RequestFactory, TestCase
 from model_bakery import baker
 
 from support.models import Warrantyclaim, WarrantyImage, Partsrequired, Machineregistration
@@ -26,6 +28,29 @@ class WarrantyclaimPDFTest(TestCase):
         result: bytes = WARRANTY_PDF.render_pdf(claim)
         self.assertIsInstance(result, bytes)
         self.assertTrue(result.startswith(b'%PDF'))
+
+    def test_warranty_pdf__missing_image_warns_staff_and_still_downloads(self):
+        claim: Warrantyclaim = baker.make(Warrantyclaim)
+        for i in range(2):
+            baker.make(WarrantyImage, warranty=claim, image=f'farmec_images/Warranty/missing{i}.jpg')
+        modeladmin = MagicMock()
+        request = RequestFactory().get('/')
+        with self.assertLogs('support.pdf', level='WARNING') as logs:
+            response = WARRANTY_PDF(modeladmin, request, Warrantyclaim.objects.filter(pk=claim.pk))
+        with self.subTest('pdf still returned'):
+            self.assertEqual(response['Content-Type'], 'application/pdf')
+            self.assertTrue(response.content.startswith(b'%PDF'))
+        with self.subTest('staff warned'):
+            modeladmin.message_user.assert_called_once()
+            self.assertIn('2 image(s) could not be loaded', modeladmin.message_user.call_args.args[1])
+        with self.subTest('warning logged'):
+            self.assertIn('2 missing image(s)', logs.output[0])
+
+    def test_warranty_pdf__no_missing_images_no_warning(self):
+        claim: Warrantyclaim = baker.make(Warrantyclaim)
+        modeladmin = MagicMock()
+        WARRANTY_PDF(modeladmin, RequestFactory().get('/'), Warrantyclaim.objects.filter(pk=claim.pk))
+        modeladmin.message_user.assert_not_called()
 
     def test_warranty_pdf__renders_with_parts(self):
         claim: Warrantyclaim = baker.make(Warrantyclaim)
