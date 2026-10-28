@@ -193,11 +193,11 @@ LOGGING = LOGGING_SETTINGS
 
 # Sentry
 SENTRY_DSN = env('SENTRY_DSN', default='')
-if SENTRY_DSN:
+if SENTRY_DSN and not DEBUG:
     import sentry_sdk
     sentry_sdk.init(
         dsn=SENTRY_DSN,
-        environment='production' if not DEBUG else 'development',
+        environment='production',
         traces_sample_rate=0.2,
         send_default_pii=False,
     )
