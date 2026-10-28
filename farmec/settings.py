@@ -195,8 +195,14 @@ LOGGING = LOGGING_SETTINGS
 SENTRY_DSN = env('SENTRY_DSN', default='')
 if SENTRY_DSN and not DEBUG:
     import sentry_sdk
+    from django.core.exceptions import DisallowedHost
+    from sentry_sdk.integrations.logging import ignore_logger
+
+    # Bots sending bad Host headers; not actionable
+    ignore_logger('django.security.DisallowedHost')
     sentry_sdk.init(
         dsn=SENTRY_DSN,
+        ignore_errors=[DisallowedHost],
         environment='production',
         traces_sample_rate=0.2,
         send_default_pii=False,
