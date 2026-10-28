@@ -303,6 +303,51 @@
     font-weight: 500;
 }
 
+.file-count {
+    font-size: 1rem;
+    color: #fbbf24;
+    margin: 0.75rem 0 0 0;
+    font-weight: 500;
+}
+
+.file-count-ok {
+    color: #4ade80;
+}
+
+.file-list {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0 0 0;
+}
+
+.file-list-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.4rem 0.6rem;
+    margin-bottom: 0.35rem;
+    border: 1px solid #4b5563;
+    border-radius: 4px;
+    color: #d1d5db;
+    word-break: break-all;
+}
+
+.file-remove-btn {
+    flex-shrink: 0;
+    background: none;
+    border: 1px solid #f87171;
+    color: #f87171;
+    border-radius: 4px;
+    padding: 0.2rem 0.6rem;
+    cursor: pointer;
+}
+
+.file-remove-btn:hover {
+    background: #f87171;
+    color: #111827;
+}
+
 @media (max-width: 768px) {
     .login-form {
         margin: 0 1.25rem;
