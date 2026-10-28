@@ -24,7 +24,8 @@ LOGGING: dict[str, Any] = {
 
 
 def log_error(
-    logger: logging.Logger, message: str, *args: Any, context: dict[str, Any] | None = None, exc_info: bool = False,
+    logger: logging.Logger, message: str, *args: Any,
+    context: dict[str, Any] | None = None, tags: dict[str, str] | None = None, exc_info: bool = False,
 ) -> None:
     """Log at ERROR and attach structured context to the Sentry event.
 
@@ -32,10 +33,13 @@ def log_error(
     :param message: Log message, ``%``-style format string.
     :param args: Values interpolated into ``message``.
     :param context: Extra data attached to the Sentry event under ``logger.name``.
+    :param tags: Searchable Sentry tags, e.g. ``{'feature': 'warranty'}``.
     :param exc_info: Include the current exception traceback.
     """
     if context:
         sentry_sdk.set_context(logger.name, context)
+    for key, value in (tags or {}).items():
+        sentry_sdk.set_tag(key, value)
     logger.error(message, *args, exc_info=exc_info)
 
 
