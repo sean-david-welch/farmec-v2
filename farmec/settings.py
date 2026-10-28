@@ -200,6 +200,8 @@ if SENTRY_DSN and not DEBUG:
 
     # Bots sending bad Host headers; not actionable
     ignore_logger('django.security.DisallowedHost')
+    # WeasyPrint logs missing images at ERROR; the admin PDF action warns staff instead
+    ignore_logger('weasyprint')
     sentry_sdk.init(
         dsn=SENTRY_DSN,
         ignore_errors=[DisallowedHost],
