@@ -66,6 +66,12 @@ class WarrantyclaimFormViewTest(TestCase):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
 
+    def test_warranty_claim__has_image_picker_elements(self):
+        response = self.client.get(self.url)
+        self.assertContains(response, 'id="warranty-images-list"')
+        self.assertContains(response, 'id="warranty-images-count"')
+        self.assertContains(response, 'accept="image/*"')
+
     def test_warranty_claim__anonymous_redirects(self):
         self.client.logout()
         response = self.client.get(self.url)
