@@ -89,9 +89,14 @@
     if (form._submitHandler) {
         form.removeEventListener('submit', form._submitHandler);
     }
-    function validateImageSize() {
+    function validateImages() {
         const input = document.querySelector('input[name="warranty_images"]');
-        if (!input || !input.files.length) return true;
+        if (!input) return true;
+        const MIN_FILES = 4;
+        if (input.files.length < MIN_FILES) {
+            window.showToast(`Please upload at least ${MIN_FILES} images (you selected ${input.files.length}).`, 'error');
+            return false;
+        }
         const MAX_TOTAL_MB = 16;
         const MAX_FILE_MB = 5;
         const oversized = Array.from(input.files).find(f => f.size > MAX_FILE_MB * 1024 * 1024);
@@ -110,7 +115,7 @@
 
     form._submitHandler = function (e) {
         const partsOk = validateParts();
-        const imagesOk = validateImageSize();
+        const imagesOk = validateImages();
         if (!partsOk || !imagesOk) {
             e.preventDefault();
             if (!partsOk) {
