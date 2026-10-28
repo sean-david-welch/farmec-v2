@@ -21,6 +21,18 @@ class LogErrorTest(SimpleTestCase):
                 log_error(logger, 'Something broke', context={'a': 1})
         set_context.assert_called_once_with('farmec.tests', {'a': 1})
 
+    def test_log_error__sets_sentry_tags(self):
+        with patch('farmec.logging.sentry_sdk.set_tag') as set_tag:
+            with self.assertLogs('farmec.tests', level='ERROR'):
+                log_error(logger, 'Something broke', tags={'feature': 'warranty', 'kind': 'email'})
+        self.assertEqual([c.args for c in set_tag.call_args_list], [('feature', 'warranty'), ('kind', 'email')])
+
+    def test_log_error__no_tags_skips_sentry_tags(self):
+        with patch('farmec.logging.sentry_sdk.set_tag') as set_tag:
+            with self.assertLogs('farmec.tests', level='ERROR'):
+                log_error(logger, 'Something broke')
+        set_tag.assert_not_called()
+
     def test_log_error__no_context_skips_sentry_context(self):
         with patch('farmec.logging.sentry_sdk.set_context') as set_context:
             with self.assertLogs('farmec.tests', level='ERROR'):
