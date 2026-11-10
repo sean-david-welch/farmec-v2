@@ -52,18 +52,20 @@ class EmailClient:
         email.attach_alternative(html, 'text/html')
         email.send()
 
-    def send_contact_notification(self, name: str, email: str, message: str) -> None:
+    def send_contact_notification(self, name: str, email: str, message: str, phone: str = "") -> None:
         """
         Send a contact form notification.
 
         :param name: Sender's name.
         :param email: Sender's email address.
         :param message: Message body.
+        :param phone: Sender's phone number (optional).
         """
         subject: str = f"New Contact Form from {name} - {email}"
         context: dict[str, str] = {
             "name": name,
             "email": email,
+            "phone": phone,
             "message": message,
             "generated_date": timezone.now().strftime("%d %b %Y, %H:%M"),
         }
