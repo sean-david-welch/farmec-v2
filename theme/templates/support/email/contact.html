@@ -52,6 +52,15 @@
                                                                             class="email-link">{{ email }}</a></div>
                                             </td>
                                         </tr>
+                                        {% if phone %}
+                                        <tr>
+                                            <td class="field-col-left col-half">
+                                                <div class="field-label">Phone</div>
+                                                <div class="field-value"><a href="tel:{{ phone }}"
+                                                                            class="email-link">{{ phone }}</a></div>
+                                            </td>
+                                        </tr>
+                                        {% endif %}
                                     </table>
                                 </td>
                             </tr>
