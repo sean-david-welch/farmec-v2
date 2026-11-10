@@ -44,6 +44,29 @@ class HomeViewTest(TestCase):
         self.assertEqual(len(mail.outbox), 1)
         self.assertIn('Test User', mail.outbox[0].subject)
 
+    def test_home__htmx_contact_with_phone(self):
+        with self.settings(CLOUDFLARE_SECRET_KEY='1x0000000000000000000000000000000AA'):
+            response = self.htmx_client.post(self.url, data={
+                'name': 'Test User',
+                'email': 'test@example.com',
+                'phone': '0871234567',
+                'message': 'Hello there',
+                'cf-turnstile-response': 'XXXX.DUMMY.TOKEN.XXXX',
+            })
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertIn('0871234567', mail.outbox[0].alternatives[0][0])
+
+    def test_home__htmx_contact_without_phone_omits_phone_row(self):
+        with self.settings(CLOUDFLARE_SECRET_KEY='1x0000000000000000000000000000000AA'):
+            self.htmx_client.post(self.url, data={
+                'name': 'Test User',
+                'email': 'test@example.com',
+                'message': 'Hello there',
+                'cf-turnstile-response': 'XXXX.DUMMY.TOKEN.XXXX',
+            })
+        self.assertNotIn('tel:', mail.outbox[0].alternatives[0][0])
+
     def test_home__htmx_contact_invalid(self):
         with self.settings(CLOUDFLARE_SECRET_KEY='1x0000000000000000000000000000000AA'):
             response = self.htmx_client.post(self.url, data={'name': '', 'email': '', 'message': '', 'cf-turnstile-response': 'XXXX.DUMMY.TOKEN.XXXX'})
