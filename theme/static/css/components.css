@@ -1373,6 +1373,7 @@
 .contact-form {
     width: 20vw;
     min-width: 320px;
+    max-height: none;
     padding: 0.5rem 0.5rem 1.5rem;
     background-color: transparent;
     border-radius: 0;
