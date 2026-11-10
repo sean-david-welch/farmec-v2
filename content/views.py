@@ -64,6 +64,7 @@ class HomeView(HTMXViewMixin, ListView):
         EmailClient().send_contact_notification(
             name=form.cleaned_data['name'],
             email=form.cleaned_data['email'],
+            phone=form.cleaned_data['phone'],
             message=form.cleaned_data['message'],
         )
         return self.render_htmx_response(
