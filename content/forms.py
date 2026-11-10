@@ -11,6 +11,9 @@ class ContactForm(forms.Form):
     email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={
         'class': 'form-input', 'placeholder': 'your@email.com', 'autocomplete': 'email',
     }))
+    phone = forms.CharField(max_length=30, required=False, label='Phone', widget=forms.TextInput(attrs={
+        'class': 'form-input', 'placeholder': 'Phone number (optional)', 'autocomplete': 'tel', 'type': 'tel',
+    }))
     message = forms.CharField(required=True, widget=forms.Textarea(attrs={
         'class': 'form-input form-textarea', 'placeholder': 'Your message here...', 'rows': 5, 'autocomplete': 'off',
     }))
