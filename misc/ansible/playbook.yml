@@ -2,6 +2,7 @@
 - name: Provision Farmec EC2 server
   hosts: farmec
   become: true
+  gather_facts: false
 
   vars:
     app_user: seanwelch
@@ -148,8 +149,20 @@
         name: awscli
         state: present
 
-    # --- Database backup cron ---
+  handlers:
+    - name: Reload nginx
+      command: nginx -s reload
 
+# Runs as the SSH user with no sudo, so CI can apply it: --tags backup
+- name: Schedule database backup
+  hosts: farmec
+  become: false
+  gather_facts: false
+
+  vars:
+    app_user: seanwelch
+
+  tasks:
     - name: Schedule daily S3 database backup
       cron:
         name: "farmec db backup"
@@ -160,8 +173,5 @@
           cd /home/seanwelch/farmec-v2 &&
           docker compose exec -T web uv run --no-sync python manage.py backup_db
           >> /home/seanwelch/farmec-backup.log 2>&1
-
-  handlers:
-    - name: Reload nginx
-      command: nginx -s reload
+      tags: backup
 

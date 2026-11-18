@@ -56,3 +56,24 @@ jobs:
             docker compose run --rm web uv run python manage.py migrate --noinput
             docker compose up -d --remove-orphans
             sudo nginx -s reload
+
+      # Runs after the new container is up so `backup_db` exists before cron calls it.
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install Ansible
+        run: pip install ansible-core
+
+      - name: Apply backup cron entry
+        env:
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          ANSIBLE_HOST_KEY_CHECKING: "False"
+        run: |
+          set -e
+          export SSH_KEY_FILE="$RUNNER_TEMP/farmec.pem"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$SSH_KEY_FILE"
+          chmod 600 "$SSH_KEY_FILE"
+          ansible-playbook -i misc/ansible/inventory.yml misc/ansible/playbook.yml --tags backup
+          rm -f "$SSH_KEY_FILE"
