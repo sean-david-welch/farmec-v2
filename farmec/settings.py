@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'django_htmx',
     'template_partials',
     # Model apps
+    'farmec',
     'theme',
     'catalog',
     'content',
@@ -166,6 +167,9 @@ AWS_DEFAULT_ACL = None
 AWS_QUERYSTRING_AUTH = False
 
 MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
+
+# Nightly SQLite backups (see farmec/tasks.py)
+BACKUP_BUCKET = env('BACKUP_BUCKET', default='farmec-backups')
 
 # Email configuration (Resend SMTP)
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

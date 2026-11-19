@@ -30,6 +30,10 @@ provision-check:
 provision-nginx:
     set -a && source .env && set +a && ansible-playbook -i misc/ansible/inventory.yml misc/ansible/playbook.yml -K --tags nginx
 
+# Apply only the nightly backup cron entry (no sudo needed; CI runs the same thing)
+provision-backup:
+    set -a && source .env && set +a && ansible-playbook -i misc/ansible/inventory.yml misc/ansible/playbook.yml --tags backup
+
 # Copy local database up to EC2
 [confirm]
 db-push:
